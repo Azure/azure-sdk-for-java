@@ -76,6 +76,8 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.Callable;
 
+import static com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils.wrapServiceCallWithExceptionMapping;
+
 /**
  * This class provides a client that contains file operations for Azure Storage Data Lake. Operations provided by
  * this client include creating a file, deleting a file, renaming a file, setting metadata and
@@ -1684,9 +1686,9 @@ public class DataLakeFileClient extends DataLakePathClient {
             expiresOn = null;
         }
 
-        Callable<ResponseBase<PathsSetExpiryHeaders, Void>> operation = () ->
+        Callable<ResponseBase<PathsSetExpiryHeaders, Void>> operation = wrapServiceCallWithExceptionMapping(() ->
             this.blobDataLakeStorage.getPaths().setExpiryWithResponse(pathExpiryOptions, null, null, expiresOn,
-                finalContext);
+                finalContext));
 
         ResponseBase<PathsSetExpiryHeaders, Void> response = StorageImplUtils.sendRequest(operation, timeout,
             DataLakeStorageException.class);

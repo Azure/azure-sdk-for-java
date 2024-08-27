@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.fluent.models.ElasticPoolOperationInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The response to a list elastic pool operations request. */
+/**
+ * The response to a list elastic pool operations request.
+ */
 @Immutable
-public final class ElasticPoolOperationListResult {
+public final class ElasticPoolOperationListResult implements JsonSerializable<ElasticPoolOperationListResult> {
     /*
      * Array of results.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<ElasticPoolOperationInner> value;
 
     /*
      * Link to retrieve next page of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of ElasticPoolOperationListResult class. */
+    /**
+     * Creates an instance of ElasticPoolOperationListResult class.
+     */
     public ElasticPoolOperationListResult() {
     }
 
     /**
      * Get the value property: Array of results.
-     *
+     * 
      * @return the value value.
      */
     public List<ElasticPoolOperationInner> value() {
@@ -39,7 +45,7 @@ public final class ElasticPoolOperationListResult {
 
     /**
      * Get the nextLink property: Link to retrieve next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,12 +54,52 @@ public final class ElasticPoolOperationListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ElasticPoolOperationListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ElasticPoolOperationListResult if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ElasticPoolOperationListResult.
+     */
+    public static ElasticPoolOperationListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ElasticPoolOperationListResult deserializedElasticPoolOperationListResult
+                = new ElasticPoolOperationListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ElasticPoolOperationInner> value
+                        = reader.readArray(reader1 -> ElasticPoolOperationInner.fromJson(reader1));
+                    deserializedElasticPoolOperationListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedElasticPoolOperationListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedElasticPoolOperationListResult;
+        });
     }
 }

@@ -6,35 +6,35 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Data used for requesting a SAS.
  */
 @Fluent
-public final class GrantAccessData {
+public final class GrantAccessData implements JsonSerializable<GrantAccessData> {
     /*
      * The access property.
      */
-    @JsonProperty(value = "access", required = true)
     private AccessLevel access;
 
     /*
      * Time duration in seconds until the SAS access expires.
      */
-    @JsonProperty(value = "durationInSeconds", required = true)
     private int durationInSeconds;
 
     /*
      * Set this flag to true to get additional SAS for VM guest state
      */
-    @JsonProperty(value = "getSecureVMGuestStateSAS")
     private Boolean getSecureVMGuestStateSas;
 
     /*
      * Used to specify the file format when making request for SAS on a VHDX file format snapshot
      */
-    @JsonProperty(value = "fileFormat")
     private FileFormat fileFormat;
 
     /**
@@ -138,4 +138,50 @@ public final class GrantAccessData {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(GrantAccessData.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("access", this.access == null ? null : this.access.toString());
+        jsonWriter.writeIntField("durationInSeconds", this.durationInSeconds);
+        jsonWriter.writeBooleanField("getSecureVMGuestStateSAS", this.getSecureVMGuestStateSas);
+        jsonWriter.writeStringField("fileFormat", this.fileFormat == null ? null : this.fileFormat.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GrantAccessData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GrantAccessData if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GrantAccessData.
+     */
+    public static GrantAccessData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GrantAccessData deserializedGrantAccessData = new GrantAccessData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("access".equals(fieldName)) {
+                    deserializedGrantAccessData.access = AccessLevel.fromString(reader.getString());
+                } else if ("durationInSeconds".equals(fieldName)) {
+                    deserializedGrantAccessData.durationInSeconds = reader.getInt();
+                } else if ("getSecureVMGuestStateSAS".equals(fieldName)) {
+                    deserializedGrantAccessData.getSecureVMGuestStateSas = reader.getNullable(JsonReader::getBoolean);
+                } else if ("fileFormat".equals(fieldName)) {
+                    deserializedGrantAccessData.fileFormat = FileFormat.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGrantAccessData;
+        });
+    }
 }

@@ -5,40 +5,43 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** timeRange. */
+/**
+ * timeRange.
+ */
 @Fluent
-public final class MicrosoftGraphTimeRange {
+public final class MicrosoftGraphTimeRange implements JsonSerializable<MicrosoftGraphTimeRange> {
     /*
      * End time for the time range.
      */
-    @JsonProperty(value = "endTime")
     private String endTime;
 
     /*
      * Start time for the time range.
      */
-    @JsonProperty(value = "startTime")
     private String startTime;
 
     /*
      * timeRange
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphTimeRange class. */
+    /**
+     * Creates an instance of MicrosoftGraphTimeRange class.
+     */
     public MicrosoftGraphTimeRange() {
     }
 
     /**
      * Get the endTime property: End time for the time range.
-     *
+     * 
      * @return the endTime value.
      */
     public String endTime() {
@@ -47,7 +50,7 @@ public final class MicrosoftGraphTimeRange {
 
     /**
      * Set the endTime property: End time for the time range.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the MicrosoftGraphTimeRange object itself.
      */
@@ -58,7 +61,7 @@ public final class MicrosoftGraphTimeRange {
 
     /**
      * Get the startTime property: Start time for the time range.
-     *
+     * 
      * @return the startTime value.
      */
     public String startTime() {
@@ -67,7 +70,7 @@ public final class MicrosoftGraphTimeRange {
 
     /**
      * Set the startTime property: Start time for the time range.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the MicrosoftGraphTimeRange object itself.
      */
@@ -78,17 +81,16 @@ public final class MicrosoftGraphTimeRange {
 
     /**
      * Get the additionalProperties property: timeRange.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: timeRange.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphTimeRange object itself.
      */
@@ -97,19 +99,61 @@ public final class MicrosoftGraphTimeRange {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("endTime", this.endTime);
+        jsonWriter.writeStringField("startTime", this.startTime);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphTimeRange from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphTimeRange if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphTimeRange.
+     */
+    public static MicrosoftGraphTimeRange fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphTimeRange deserializedMicrosoftGraphTimeRange = new MicrosoftGraphTimeRange();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("endTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphTimeRange.endTime = reader.getString();
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphTimeRange.startTime = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphTimeRange.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphTimeRange;
+        });
     }
 }

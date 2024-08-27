@@ -5,156 +5,140 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.Channels;
 import com.azure.resourcemanager.appservice.models.NotificationLevel;
 import com.azure.resourcemanager.appservice.models.ResourceScopeType;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
  * Recommendation resource specific properties.
  */
 @Fluent
-public final class RecommendationProperties {
+public final class RecommendationProperties implements JsonSerializable<RecommendationProperties> {
     /*
      * Timestamp when this instance was created.
      */
-    @JsonProperty(value = "creationTime")
     private OffsetDateTime creationTime;
 
     /*
      * A GUID value that each recommendation object is associated with.
      */
-    @JsonProperty(value = "recommendationId")
     private UUID recommendationId;
 
     /*
      * Full ARM resource ID string that this recommendation object is associated with.
      */
-    @JsonProperty(value = "resourceId")
     private String resourceId;
 
     /*
      * Name of a resource type this recommendation applies, e.g. Subscription, ServerFarm, Site.
      */
-    @JsonProperty(value = "resourceScope")
     private ResourceScopeType resourceScope;
 
     /*
      * Unique name of the rule.
      */
-    @JsonProperty(value = "ruleName")
     private String ruleName;
 
     /*
      * UI friendly name of the rule (may not be unique).
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * Recommendation text.
      */
-    @JsonProperty(value = "message")
     private String message;
 
     /*
      * Level indicating how critical this recommendation can impact.
      */
-    @JsonProperty(value = "level")
     private NotificationLevel level;
 
     /*
      * List of channels that this recommendation can apply.
      */
-    @JsonProperty(value = "channels")
     private Channels channels;
 
     /*
      * The list of category tags that this recommendation belongs to.
      */
-    @JsonProperty(value = "categoryTags", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> categoryTags;
 
     /*
      * Name of action recommended by this object.
      */
-    @JsonProperty(value = "actionName")
     private String actionName;
 
     /*
      * True if this recommendation is still valid (i.e. "actionable"). False if it is invalid.
      */
-    @JsonProperty(value = "enabled")
     private Integer enabled;
 
     /*
      * The list of states of this recommendation. If it's null then it should be considered "Active".
      */
-    @JsonProperty(value = "states")
     private List<String> states;
 
     /*
      * The beginning time in UTC of a range that the recommendation refers to.
      */
-    @JsonProperty(value = "startTime")
     private OffsetDateTime startTime;
 
     /*
      * The end time in UTC of a range that the recommendation refers to.
      */
-    @JsonProperty(value = "endTime")
     private OffsetDateTime endTime;
 
     /*
      * When to notify this recommendation next in UTC. Null means that this will never be notified anymore.
      */
-    @JsonProperty(value = "nextNotificationTime")
     private OffsetDateTime nextNotificationTime;
 
     /*
      * Date and time in UTC when this notification expires.
      */
-    @JsonProperty(value = "notificationExpirationTime")
     private OffsetDateTime notificationExpirationTime;
 
     /*
-     * Last timestamp in UTC this instance was actually notified. Null means that this recommendation hasn't been notified yet.
+     * Last timestamp in UTC this instance was actually notified. Null means that this recommendation hasn't been
+     * notified yet.
      */
-    @JsonProperty(value = "notifiedTime")
     private OffsetDateTime notifiedTime;
 
     /*
      * A metric value measured by the rule.
      */
-    @JsonProperty(value = "score")
     private Double score;
 
     /*
      * True if this is associated with a dynamically added rule
      */
-    @JsonProperty(value = "isDynamic")
     private Boolean isDynamic;
 
     /*
      * Extension name of the portal if exists.
      */
-    @JsonProperty(value = "extensionName")
     private String extensionName;
 
     /*
      * Deep link to a blade on the portal.
      */
-    @JsonProperty(value = "bladeName")
     private String bladeName;
 
     /*
      * Forward link to an external document associated with the rule.
      */
-    @JsonProperty(value = "forwardLink")
     private String forwardLink;
 
     /**
@@ -165,7 +149,7 @@ public final class RecommendationProperties {
 
     /**
      * Get the creationTime property: Timestamp when this instance was created.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -174,7 +158,7 @@ public final class RecommendationProperties {
 
     /**
      * Set the creationTime property: Timestamp when this instance was created.
-     *
+     * 
      * @param creationTime the creationTime value to set.
      * @return the RecommendationProperties object itself.
      */
@@ -185,7 +169,7 @@ public final class RecommendationProperties {
 
     /**
      * Get the recommendationId property: A GUID value that each recommendation object is associated with.
-     *
+     * 
      * @return the recommendationId value.
      */
     public UUID recommendationId() {
@@ -194,7 +178,7 @@ public final class RecommendationProperties {
 
     /**
      * Set the recommendationId property: A GUID value that each recommendation object is associated with.
-     *
+     * 
      * @param recommendationId the recommendationId value to set.
      * @return the RecommendationProperties object itself.
      */
@@ -205,7 +189,7 @@ public final class RecommendationProperties {
 
     /**
      * Get the resourceId property: Full ARM resource ID string that this recommendation object is associated with.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -214,7 +198,7 @@ public final class RecommendationProperties {
 
     /**
      * Set the resourceId property: Full ARM resource ID string that this recommendation object is associated with.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the RecommendationProperties object itself.
      */
@@ -226,7 +210,7 @@ public final class RecommendationProperties {
     /**
      * Get the resourceScope property: Name of a resource type this recommendation applies, e.g. Subscription,
      * ServerFarm, Site.
-     *
+     * 
      * @return the resourceScope value.
      */
     public ResourceScopeType resourceScope() {
@@ -236,7 +220,7 @@ public final class RecommendationProperties {
     /**
      * Set the resourceScope property: Name of a resource type this recommendation applies, e.g. Subscription,
      * ServerFarm, Site.
-     *
+     * 
      * @param resourceScope the resourceScope value to set.
      * @return the RecommendationProperties object itself.
      */
@@ -247,7 +231,7 @@ public final class RecommendationProperties {
 
     /**
      * Get the ruleName property: Unique name of the rule.
-     *
+     * 
      * @return the ruleName value.
      */
     public String ruleName() {
@@ -256,7 +240,7 @@ public final class RecommendationProperties {
 
     /**
      * Set the ruleName property: Unique name of the rule.
-     *
+     * 
      * @param ruleName the ruleName value to set.
      * @return the RecommendationProperties object itself.
      */
@@ -267,7 +251,7 @@ public final class RecommendationProperties {
 
     /**
      * Get the displayName property: UI friendly name of the rule (may not be unique).
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -276,7 +260,7 @@ public final class RecommendationProperties {
 
     /**
      * Set the displayName property: UI friendly name of the rule (may not be unique).
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the RecommendationProperties object itself.
      */
@@ -287,7 +271,7 @@ public final class RecommendationProperties {
 
     /**
      * Get the message property: Recommendation text.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -296,7 +280,7 @@ public final class RecommendationProperties {
 
     /**
      * Set the message property: Recommendation text.
-     *
+     * 
      * @param message the message value to set.
      * @return the RecommendationProperties object itself.
      */
@@ -307,7 +291,7 @@ public final class RecommendationProperties {
 
     /**
      * Get the level property: Level indicating how critical this recommendation can impact.
-     *
+     * 
      * @return the level value.
      */
     public NotificationLevel level() {
@@ -316,7 +300,7 @@ public final class RecommendationProperties {
 
     /**
      * Set the level property: Level indicating how critical this recommendation can impact.
-     *
+     * 
      * @param level the level value to set.
      * @return the RecommendationProperties object itself.
      */
@@ -327,7 +311,7 @@ public final class RecommendationProperties {
 
     /**
      * Get the channels property: List of channels that this recommendation can apply.
-     *
+     * 
      * @return the channels value.
      */
     public Channels channels() {
@@ -336,7 +320,7 @@ public final class RecommendationProperties {
 
     /**
      * Set the channels property: List of channels that this recommendation can apply.
-     *
+     * 
      * @param channels the channels value to set.
      * @return the RecommendationProperties object itself.
      */
@@ -347,7 +331,7 @@ public final class RecommendationProperties {
 
     /**
      * Get the categoryTags property: The list of category tags that this recommendation belongs to.
-     *
+     * 
      * @return the categoryTags value.
      */
     public List<String> categoryTags() {
@@ -356,7 +340,7 @@ public final class RecommendationProperties {
 
     /**
      * Get the actionName property: Name of action recommended by this object.
-     *
+     * 
      * @return the actionName value.
      */
     public String actionName() {
@@ -365,7 +349,7 @@ public final class RecommendationProperties {
 
     /**
      * Set the actionName property: Name of action recommended by this object.
-     *
+     * 
      * @param actionName the actionName value to set.
      * @return the RecommendationProperties object itself.
      */
@@ -376,7 +360,7 @@ public final class RecommendationProperties {
 
     /**
      * Get the enabled property: True if this recommendation is still valid (i.e. "actionable"). False if it is invalid.
-     *
+     * 
      * @return the enabled value.
      */
     public Integer enabled() {
@@ -385,7 +369,7 @@ public final class RecommendationProperties {
 
     /**
      * Set the enabled property: True if this recommendation is still valid (i.e. "actionable"). False if it is invalid.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the RecommendationProperties object itself.
      */
@@ -397,7 +381,7 @@ public final class RecommendationProperties {
     /**
      * Get the states property: The list of states of this recommendation. If it's null then it should be considered
      * "Active".
-     *
+     * 
      * @return the states value.
      */
     public List<String> states() {
@@ -407,7 +391,7 @@ public final class RecommendationProperties {
     /**
      * Set the states property: The list of states of this recommendation. If it's null then it should be considered
      * "Active".
-     *
+     * 
      * @param states the states value to set.
      * @return the RecommendationProperties object itself.
      */
@@ -418,7 +402,7 @@ public final class RecommendationProperties {
 
     /**
      * Get the startTime property: The beginning time in UTC of a range that the recommendation refers to.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -427,7 +411,7 @@ public final class RecommendationProperties {
 
     /**
      * Set the startTime property: The beginning time in UTC of a range that the recommendation refers to.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the RecommendationProperties object itself.
      */
@@ -438,7 +422,7 @@ public final class RecommendationProperties {
 
     /**
      * Get the endTime property: The end time in UTC of a range that the recommendation refers to.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -447,7 +431,7 @@ public final class RecommendationProperties {
 
     /**
      * Set the endTime property: The end time in UTC of a range that the recommendation refers to.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the RecommendationProperties object itself.
      */
@@ -459,7 +443,7 @@ public final class RecommendationProperties {
     /**
      * Get the nextNotificationTime property: When to notify this recommendation next in UTC. Null means that this will
      * never be notified anymore.
-     *
+     * 
      * @return the nextNotificationTime value.
      */
     public OffsetDateTime nextNotificationTime() {
@@ -469,7 +453,7 @@ public final class RecommendationProperties {
     /**
      * Set the nextNotificationTime property: When to notify this recommendation next in UTC. Null means that this will
      * never be notified anymore.
-     *
+     * 
      * @param nextNotificationTime the nextNotificationTime value to set.
      * @return the RecommendationProperties object itself.
      */
@@ -480,7 +464,7 @@ public final class RecommendationProperties {
 
     /**
      * Get the notificationExpirationTime property: Date and time in UTC when this notification expires.
-     *
+     * 
      * @return the notificationExpirationTime value.
      */
     public OffsetDateTime notificationExpirationTime() {
@@ -489,7 +473,7 @@ public final class RecommendationProperties {
 
     /**
      * Set the notificationExpirationTime property: Date and time in UTC when this notification expires.
-     *
+     * 
      * @param notificationExpirationTime the notificationExpirationTime value to set.
      * @return the RecommendationProperties object itself.
      */
@@ -501,7 +485,7 @@ public final class RecommendationProperties {
     /**
      * Get the notifiedTime property: Last timestamp in UTC this instance was actually notified. Null means that this
      * recommendation hasn't been notified yet.
-     *
+     * 
      * @return the notifiedTime value.
      */
     public OffsetDateTime notifiedTime() {
@@ -511,7 +495,7 @@ public final class RecommendationProperties {
     /**
      * Set the notifiedTime property: Last timestamp in UTC this instance was actually notified. Null means that this
      * recommendation hasn't been notified yet.
-     *
+     * 
      * @param notifiedTime the notifiedTime value to set.
      * @return the RecommendationProperties object itself.
      */
@@ -522,7 +506,7 @@ public final class RecommendationProperties {
 
     /**
      * Get the score property: A metric value measured by the rule.
-     *
+     * 
      * @return the score value.
      */
     public Double score() {
@@ -531,7 +515,7 @@ public final class RecommendationProperties {
 
     /**
      * Set the score property: A metric value measured by the rule.
-     *
+     * 
      * @param score the score value to set.
      * @return the RecommendationProperties object itself.
      */
@@ -542,7 +526,7 @@ public final class RecommendationProperties {
 
     /**
      * Get the isDynamic property: True if this is associated with a dynamically added rule.
-     *
+     * 
      * @return the isDynamic value.
      */
     public Boolean isDynamic() {
@@ -551,7 +535,7 @@ public final class RecommendationProperties {
 
     /**
      * Set the isDynamic property: True if this is associated with a dynamically added rule.
-     *
+     * 
      * @param isDynamic the isDynamic value to set.
      * @return the RecommendationProperties object itself.
      */
@@ -562,7 +546,7 @@ public final class RecommendationProperties {
 
     /**
      * Get the extensionName property: Extension name of the portal if exists.
-     *
+     * 
      * @return the extensionName value.
      */
     public String extensionName() {
@@ -571,7 +555,7 @@ public final class RecommendationProperties {
 
     /**
      * Set the extensionName property: Extension name of the portal if exists.
-     *
+     * 
      * @param extensionName the extensionName value to set.
      * @return the RecommendationProperties object itself.
      */
@@ -582,7 +566,7 @@ public final class RecommendationProperties {
 
     /**
      * Get the bladeName property: Deep link to a blade on the portal.
-     *
+     * 
      * @return the bladeName value.
      */
     public String bladeName() {
@@ -591,7 +575,7 @@ public final class RecommendationProperties {
 
     /**
      * Set the bladeName property: Deep link to a blade on the portal.
-     *
+     * 
      * @param bladeName the bladeName value to set.
      * @return the RecommendationProperties object itself.
      */
@@ -602,7 +586,7 @@ public final class RecommendationProperties {
 
     /**
      * Get the forwardLink property: Forward link to an external document associated with the rule.
-     *
+     * 
      * @return the forwardLink value.
      */
     public String forwardLink() {
@@ -611,7 +595,7 @@ public final class RecommendationProperties {
 
     /**
      * Set the forwardLink property: Forward link to an external document associated with the rule.
-     *
+     * 
      * @param forwardLink the forwardLink value to set.
      * @return the RecommendationProperties object itself.
      */
@@ -622,9 +606,130 @@ public final class RecommendationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("creationTime",
+            this.creationTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.creationTime));
+        jsonWriter.writeStringField("recommendationId", Objects.toString(this.recommendationId, null));
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        jsonWriter.writeStringField("resourceScope", this.resourceScope == null ? null : this.resourceScope.toString());
+        jsonWriter.writeStringField("ruleName", this.ruleName);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("message", this.message);
+        jsonWriter.writeStringField("level", this.level == null ? null : this.level.toString());
+        jsonWriter.writeStringField("channels", this.channels == null ? null : this.channels.toString());
+        jsonWriter.writeStringField("actionName", this.actionName);
+        jsonWriter.writeNumberField("enabled", this.enabled);
+        jsonWriter.writeArrayField("states", this.states, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("endTime",
+            this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
+        jsonWriter.writeStringField("nextNotificationTime",
+            this.nextNotificationTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.nextNotificationTime));
+        jsonWriter.writeStringField("notificationExpirationTime",
+            this.notificationExpirationTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.notificationExpirationTime));
+        jsonWriter.writeStringField("notifiedTime",
+            this.notifiedTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.notifiedTime));
+        jsonWriter.writeNumberField("score", this.score);
+        jsonWriter.writeBooleanField("isDynamic", this.isDynamic);
+        jsonWriter.writeStringField("extensionName", this.extensionName);
+        jsonWriter.writeStringField("bladeName", this.bladeName);
+        jsonWriter.writeStringField("forwardLink", this.forwardLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RecommendationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RecommendationProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RecommendationProperties.
+     */
+    public static RecommendationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RecommendationProperties deserializedRecommendationProperties = new RecommendationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("creationTime".equals(fieldName)) {
+                    deserializedRecommendationProperties.creationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("recommendationId".equals(fieldName)) {
+                    deserializedRecommendationProperties.recommendationId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("resourceId".equals(fieldName)) {
+                    deserializedRecommendationProperties.resourceId = reader.getString();
+                } else if ("resourceScope".equals(fieldName)) {
+                    deserializedRecommendationProperties.resourceScope
+                        = ResourceScopeType.fromString(reader.getString());
+                } else if ("ruleName".equals(fieldName)) {
+                    deserializedRecommendationProperties.ruleName = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedRecommendationProperties.displayName = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedRecommendationProperties.message = reader.getString();
+                } else if ("level".equals(fieldName)) {
+                    deserializedRecommendationProperties.level = NotificationLevel.fromString(reader.getString());
+                } else if ("channels".equals(fieldName)) {
+                    deserializedRecommendationProperties.channels = Channels.fromString(reader.getString());
+                } else if ("categoryTags".equals(fieldName)) {
+                    List<String> categoryTags = reader.readArray(reader1 -> reader1.getString());
+                    deserializedRecommendationProperties.categoryTags = categoryTags;
+                } else if ("actionName".equals(fieldName)) {
+                    deserializedRecommendationProperties.actionName = reader.getString();
+                } else if ("enabled".equals(fieldName)) {
+                    deserializedRecommendationProperties.enabled = reader.getNullable(JsonReader::getInt);
+                } else if ("states".equals(fieldName)) {
+                    List<String> states = reader.readArray(reader1 -> reader1.getString());
+                    deserializedRecommendationProperties.states = states;
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedRecommendationProperties.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedRecommendationProperties.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("nextNotificationTime".equals(fieldName)) {
+                    deserializedRecommendationProperties.nextNotificationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("notificationExpirationTime".equals(fieldName)) {
+                    deserializedRecommendationProperties.notificationExpirationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("notifiedTime".equals(fieldName)) {
+                    deserializedRecommendationProperties.notifiedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("score".equals(fieldName)) {
+                    deserializedRecommendationProperties.score = reader.getNullable(JsonReader::getDouble);
+                } else if ("isDynamic".equals(fieldName)) {
+                    deserializedRecommendationProperties.isDynamic = reader.getNullable(JsonReader::getBoolean);
+                } else if ("extensionName".equals(fieldName)) {
+                    deserializedRecommendationProperties.extensionName = reader.getString();
+                } else if ("bladeName".equals(fieldName)) {
+                    deserializedRecommendationProperties.bladeName = reader.getString();
+                } else if ("forwardLink".equals(fieldName)) {
+                    deserializedRecommendationProperties.forwardLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRecommendationProperties;
+        });
     }
 }

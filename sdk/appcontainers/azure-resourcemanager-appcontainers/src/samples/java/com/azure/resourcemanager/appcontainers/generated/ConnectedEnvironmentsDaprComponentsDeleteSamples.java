@@ -9,7 +9,7 @@ package com.azure.resourcemanager.appcontainers.generated;
  */
 public final class ConnectedEnvironmentsDaprComponentsDeleteSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/stable/2024-03-01/examples/
      * ConnectedEnvironmentsDaprComponents_Delete.json
      */
     /**
@@ -18,7 +18,7 @@ public final class ConnectedEnvironmentsDaprComponentsDeleteSamples {
      * @param manager Entry point to ContainerAppsApiManager.
      */
     public static void deleteDaprComponent(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        manager.connectedEnvironmentsDaprComponents().deleteWithResponse("examplerg", "myenvironment", "reddog",
-            com.azure.core.util.Context.NONE);
+        manager.connectedEnvironmentsDaprComponents()
+            .deleteWithResponse("examplerg", "myenvironment", "reddog", com.azure.core.util.Context.NONE);
     }
 }

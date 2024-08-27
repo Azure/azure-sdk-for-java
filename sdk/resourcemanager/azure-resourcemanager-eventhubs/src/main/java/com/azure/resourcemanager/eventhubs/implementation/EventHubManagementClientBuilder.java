@@ -12,7 +12,6 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerAdapter;
-
 import java.time.Duration;
 
 /**
@@ -29,7 +28,7 @@ public final class EventHubManagementClientBuilder {
     /**
      * Sets Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms
      * part of the URI for every service call.
-     *
+     * 
      * @param subscriptionId the subscriptionId value.
      * @return the EventHubManagementClientBuilder.
      */
@@ -45,7 +44,7 @@ public final class EventHubManagementClientBuilder {
 
     /**
      * Sets server parameter.
-     *
+     * 
      * @param endpoint the endpoint value.
      * @return the EventHubManagementClientBuilder.
      */
@@ -61,7 +60,7 @@ public final class EventHubManagementClientBuilder {
 
     /**
      * Sets The environment to connect to.
-     *
+     * 
      * @param environment the environment value.
      * @return the EventHubManagementClientBuilder.
      */
@@ -77,7 +76,7 @@ public final class EventHubManagementClientBuilder {
 
     /**
      * Sets The HTTP pipeline to send requests through.
-     *
+     * 
      * @param pipeline the pipeline value.
      * @return the EventHubManagementClientBuilder.
      */
@@ -93,7 +92,7 @@ public final class EventHubManagementClientBuilder {
 
     /**
      * Sets The default poll interval for long-running operation.
-     *
+     * 
      * @param defaultPollInterval the defaultPollInterval value.
      * @return the EventHubManagementClientBuilder.
      */
@@ -109,7 +108,7 @@ public final class EventHubManagementClientBuilder {
 
     /**
      * Sets The serializer to serialize an object into a string.
-     *
+     * 
      * @param serializerAdapter the serializerAdapter value.
      * @return the EventHubManagementClientBuilder.
      */
@@ -120,7 +119,7 @@ public final class EventHubManagementClientBuilder {
 
     /**
      * Builds an instance of EventHubManagementClientImpl with the provided parameters.
-     *
+     * 
      * @return an instance of EventHubManagementClientImpl.
      */
     public EventHubManagementClientImpl buildClient() {

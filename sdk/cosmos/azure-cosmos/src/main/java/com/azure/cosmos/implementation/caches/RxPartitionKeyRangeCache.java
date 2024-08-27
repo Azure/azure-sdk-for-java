@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.Exceptions;
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.NotFoundException;
 import com.azure.cosmos.implementation.OperationType;
@@ -69,7 +70,10 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
             .onErrorResume(err -> {
                 logger.debug("tryLookupAsync on collectionRid {} encountered failure", collectionRid, err);
                 CosmosException dce = Utils.as(err, CosmosException.class);
-                if (dce != null && Exceptions.isNotFound(dce)) {
+
+                // bubble up in case a 404:1002 is seen to force retries as a part of document retries
+                // todo: revert change when fault injection excludes 404:1002 for master resources
+                if (dce != null && Exceptions.isNotFound(dce) && !Exceptions.isSubStatusCode(dce, HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE)) {
                     return Mono.just(new Utils.ValueHolder<>(null));
                 }
 
@@ -178,7 +182,9 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
                             partitionKeyRangeId,
                             err);
 
-                    if (dce != null && Exceptions.isNotFound(dce)) {
+                    // bubble up in case a 404:1002 is seen to force retries as a part of document retries
+                    // todo: revert change when fault injection excludes 404:1002 for master resources
+                    if (dce != null && Exceptions.isNotFound(dce) && !Exceptions.isSubStatusCode(dce, HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE)) {
                         return Mono.just(new Utils.ValueHolder<>(null));
                     }
 
@@ -249,6 +255,7 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
         ); //this request doesn't actually go to server
 
         request.requestContext.resolvedCollectionRid = collectionRid;
+        request.setResourceId(collectionRid);
         Mono<DocumentCollection> collectionObs = collectionCache.resolveCollectionAsync(metaDataDiagnosticsContext, request)
             .map(collectionValueHolder -> collectionValueHolder.v);
 

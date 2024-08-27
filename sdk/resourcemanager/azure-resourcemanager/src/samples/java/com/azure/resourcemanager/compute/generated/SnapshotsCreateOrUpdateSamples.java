@@ -15,7 +15,7 @@ import com.azure.resourcemanager.compute.models.ProvisionedBandwidthCopyOption;
 public final class SnapshotsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/snapshotExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2024-03-02/examples/snapshotExamples/
      * Snapshot_Create_FromAnExistingSnapshot.json
      */
     /**
@@ -38,7 +38,7 @@ public final class SnapshotsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/snapshotExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2024-03-02/examples/snapshotExamples/
      * Snapshot_Create_FromAnElasticSanVolumeSnapshot.json
      */
     /**
@@ -61,7 +61,7 @@ public final class SnapshotsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/snapshotExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2024-03-02/examples/snapshotExamples/
      * Snapshot_Create_EnhancedProvisionedBandwidthCopySpeed.json
      */
     /**
@@ -87,7 +87,7 @@ public final class SnapshotsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/snapshotExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2024-03-02/examples/snapshotExamples/
      * Snapshot_Create_FromAnExistingSnapshotInDifferentRegion.json
      */
     /**
@@ -111,7 +111,7 @@ public final class SnapshotsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/snapshotExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2024-03-02/examples/snapshotExamples/
      * Snapshot_Create_ByImportingAnUnmanagedBlobFromTheSameSubscription.json
      */
     /**
@@ -134,7 +134,7 @@ public final class SnapshotsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/snapshotExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2024-03-02/examples/snapshotExamples/
      * Snapshot_Create_ByImportingAnUnmanagedBlobFromADifferentSubscription.json
      */
     /**

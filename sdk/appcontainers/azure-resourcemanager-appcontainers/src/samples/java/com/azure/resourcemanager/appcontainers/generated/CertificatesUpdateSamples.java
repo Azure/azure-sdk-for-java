@@ -14,7 +14,7 @@ import java.util.Map;
 public final class CertificatesUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/Certificates_Patch.json
+     * specification/app/resource-manager/Microsoft.App/stable/2024-03-01/examples/Certificates_Patch.json
      */
     /**
      * Sample code: Patch Certificate.
@@ -22,9 +22,10 @@ public final class CertificatesUpdateSamples {
      * @param manager Entry point to ContainerAppsApiManager.
      */
     public static void patchCertificate(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        manager.certificates().updateWithResponse("examplerg", "testcontainerenv", "certificate-firendly-name",
-            new CertificatePatch().withTags(mapOf("tag1", "value1", "tag2", "value2")),
-            com.azure.core.util.Context.NONE);
+        manager.certificates()
+            .updateWithResponse("examplerg", "testcontainerenv", "certificate-firendly-name",
+                new CertificatePatch().withTags(mapOf("tag1", "value1", "tag2", "value2")),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

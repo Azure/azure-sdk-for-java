@@ -11,18 +11,18 @@ public final class DynamicsSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DynamicsSource model = BinaryData.fromString(
-            "{\"type\":\"DynamicsSource\",\"query\":\"databqxlsam\",\"additionalColumns\":\"datajqh\",\"sourceRetryCount\":\"dataojnbbbgvmowy\",\"sourceRetryWait\":\"dataqhuhmldhnzsc\",\"maxConcurrentConnections\":\"datauzuchotdz\",\"disableMetricsCollection\":\"datahqhwpuaermaww\",\"\":{\"qcemco\":\"datada\",\"hisxz\":\"datawfuo\",\"oj\":\"dataikvdfszxbupsx\",\"zlmwfncwlwov\":\"datagxcgqkhyvtajwkrx\"}}")
+            "{\"type\":\"DynamicsSource\",\"query\":\"datarjuiuzl\",\"additionalColumns\":\"datahzihlzljqcmmgsm\",\"sourceRetryCount\":\"datajunqwkjfmtuybdzr\",\"sourceRetryWait\":\"datackxennzowguirh\",\"maxConcurrentConnections\":\"datajpw\",\"disableMetricsCollection\":\"datamktpykoicpk\",\"\":{\"jaof\":\"dataqfdtbao\",\"rwsj\":\"datacvhhrgvkuuikrsie\",\"vygrfyyknxuacfm\":\"datadxenxjvapdqg\",\"kt\":\"dataynlcimjmurocryfu\"}}")
             .toObject(DynamicsSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DynamicsSource model = new DynamicsSource().withSourceRetryCount("dataojnbbbgvmowy")
-            .withSourceRetryWait("dataqhuhmldhnzsc")
-            .withMaxConcurrentConnections("datauzuchotdz")
-            .withDisableMetricsCollection("datahqhwpuaermaww")
-            .withQuery("databqxlsam")
-            .withAdditionalColumns("datajqh");
+        DynamicsSource model = new DynamicsSource().withSourceRetryCount("datajunqwkjfmtuybdzr")
+            .withSourceRetryWait("datackxennzowguirh")
+            .withMaxConcurrentConnections("datajpw")
+            .withDisableMetricsCollection("datamktpykoicpk")
+            .withQuery("datarjuiuzl")
+            .withAdditionalColumns("datahzihlzljqcmmgsm");
         model = BinaryData.fromObject(model).toObject(DynamicsSource.class);
     }
 }

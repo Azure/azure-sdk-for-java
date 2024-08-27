@@ -5,74 +5,74 @@
 package com.azure.resourcemanager.trafficmanager.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.trafficmanager.models.AllowedEndpointRecordType;
 import com.azure.resourcemanager.trafficmanager.models.DnsConfig;
 import com.azure.resourcemanager.trafficmanager.models.MonitorConfig;
 import com.azure.resourcemanager.trafficmanager.models.ProfileStatus;
 import com.azure.resourcemanager.trafficmanager.models.TrafficRoutingMethod;
 import com.azure.resourcemanager.trafficmanager.models.TrafficViewEnrollmentStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Class representing the Traffic Manager profile properties. */
+/**
+ * Class representing the Traffic Manager profile properties.
+ */
 @Fluent
-public final class ProfileProperties {
+public final class ProfileProperties implements JsonSerializable<ProfileProperties> {
     /*
      * The status of the Traffic Manager profile.
      */
-    @JsonProperty(value = "profileStatus")
     private ProfileStatus profileStatus;
 
     /*
      * The traffic routing method of the Traffic Manager profile.
      */
-    @JsonProperty(value = "trafficRoutingMethod")
     private TrafficRoutingMethod trafficRoutingMethod;
 
     /*
      * The DNS settings of the Traffic Manager profile.
      */
-    @JsonProperty(value = "dnsConfig")
     private DnsConfig dnsConfig;
 
     /*
      * The endpoint monitoring settings of the Traffic Manager profile.
      */
-    @JsonProperty(value = "monitorConfig")
     private MonitorConfig monitorConfig;
 
     /*
      * The list of endpoints in the Traffic Manager profile.
      */
-    @JsonProperty(value = "endpoints")
     private List<EndpointInner> endpoints;
 
     /*
      * Indicates whether Traffic View is 'Enabled' or 'Disabled' for the Traffic Manager profile. Null, indicates
      * 'Disabled'. Enabling this feature will increase the cost of the Traffic Manage profile.
      */
-    @JsonProperty(value = "trafficViewEnrollmentStatus")
     private TrafficViewEnrollmentStatus trafficViewEnrollmentStatus;
 
     /*
      * The list of allowed endpoint record types.
      */
-    @JsonProperty(value = "allowedEndpointRecordTypes")
     private List<AllowedEndpointRecordType> allowedEndpointRecordTypes;
 
     /*
      * Maximum number of endpoints to be returned for MultiValue routing type.
      */
-    @JsonProperty(value = "maxReturn")
     private Long maxReturn;
 
-    /** Creates an instance of ProfileProperties class. */
+    /**
+     * Creates an instance of ProfileProperties class.
+     */
     public ProfileProperties() {
     }
 
     /**
      * Get the profileStatus property: The status of the Traffic Manager profile.
-     *
+     * 
      * @return the profileStatus value.
      */
     public ProfileStatus profileStatus() {
@@ -81,7 +81,7 @@ public final class ProfileProperties {
 
     /**
      * Set the profileStatus property: The status of the Traffic Manager profile.
-     *
+     * 
      * @param profileStatus the profileStatus value to set.
      * @return the ProfileProperties object itself.
      */
@@ -92,7 +92,7 @@ public final class ProfileProperties {
 
     /**
      * Get the trafficRoutingMethod property: The traffic routing method of the Traffic Manager profile.
-     *
+     * 
      * @return the trafficRoutingMethod value.
      */
     public TrafficRoutingMethod trafficRoutingMethod() {
@@ -101,7 +101,7 @@ public final class ProfileProperties {
 
     /**
      * Set the trafficRoutingMethod property: The traffic routing method of the Traffic Manager profile.
-     *
+     * 
      * @param trafficRoutingMethod the trafficRoutingMethod value to set.
      * @return the ProfileProperties object itself.
      */
@@ -112,7 +112,7 @@ public final class ProfileProperties {
 
     /**
      * Get the dnsConfig property: The DNS settings of the Traffic Manager profile.
-     *
+     * 
      * @return the dnsConfig value.
      */
     public DnsConfig dnsConfig() {
@@ -121,7 +121,7 @@ public final class ProfileProperties {
 
     /**
      * Set the dnsConfig property: The DNS settings of the Traffic Manager profile.
-     *
+     * 
      * @param dnsConfig the dnsConfig value to set.
      * @return the ProfileProperties object itself.
      */
@@ -132,7 +132,7 @@ public final class ProfileProperties {
 
     /**
      * Get the monitorConfig property: The endpoint monitoring settings of the Traffic Manager profile.
-     *
+     * 
      * @return the monitorConfig value.
      */
     public MonitorConfig monitorConfig() {
@@ -141,7 +141,7 @@ public final class ProfileProperties {
 
     /**
      * Set the monitorConfig property: The endpoint monitoring settings of the Traffic Manager profile.
-     *
+     * 
      * @param monitorConfig the monitorConfig value to set.
      * @return the ProfileProperties object itself.
      */
@@ -152,7 +152,7 @@ public final class ProfileProperties {
 
     /**
      * Get the endpoints property: The list of endpoints in the Traffic Manager profile.
-     *
+     * 
      * @return the endpoints value.
      */
     public List<EndpointInner> endpoints() {
@@ -161,7 +161,7 @@ public final class ProfileProperties {
 
     /**
      * Set the endpoints property: The list of endpoints in the Traffic Manager profile.
-     *
+     * 
      * @param endpoints the endpoints value to set.
      * @return the ProfileProperties object itself.
      */
@@ -174,7 +174,7 @@ public final class ProfileProperties {
      * Get the trafficViewEnrollmentStatus property: Indicates whether Traffic View is 'Enabled' or 'Disabled' for the
      * Traffic Manager profile. Null, indicates 'Disabled'. Enabling this feature will increase the cost of the Traffic
      * Manage profile.
-     *
+     * 
      * @return the trafficViewEnrollmentStatus value.
      */
     public TrafficViewEnrollmentStatus trafficViewEnrollmentStatus() {
@@ -185,7 +185,7 @@ public final class ProfileProperties {
      * Set the trafficViewEnrollmentStatus property: Indicates whether Traffic View is 'Enabled' or 'Disabled' for the
      * Traffic Manager profile. Null, indicates 'Disabled'. Enabling this feature will increase the cost of the Traffic
      * Manage profile.
-     *
+     * 
      * @param trafficViewEnrollmentStatus the trafficViewEnrollmentStatus value to set.
      * @return the ProfileProperties object itself.
      */
@@ -196,7 +196,7 @@ public final class ProfileProperties {
 
     /**
      * Get the allowedEndpointRecordTypes property: The list of allowed endpoint record types.
-     *
+     * 
      * @return the allowedEndpointRecordTypes value.
      */
     public List<AllowedEndpointRecordType> allowedEndpointRecordTypes() {
@@ -205,19 +205,19 @@ public final class ProfileProperties {
 
     /**
      * Set the allowedEndpointRecordTypes property: The list of allowed endpoint record types.
-     *
+     * 
      * @param allowedEndpointRecordTypes the allowedEndpointRecordTypes value to set.
      * @return the ProfileProperties object itself.
      */
-    public ProfileProperties withAllowedEndpointRecordTypes(
-        List<AllowedEndpointRecordType> allowedEndpointRecordTypes) {
+    public ProfileProperties
+        withAllowedEndpointRecordTypes(List<AllowedEndpointRecordType> allowedEndpointRecordTypes) {
         this.allowedEndpointRecordTypes = allowedEndpointRecordTypes;
         return this;
     }
 
     /**
      * Get the maxReturn property: Maximum number of endpoints to be returned for MultiValue routing type.
-     *
+     * 
      * @return the maxReturn value.
      */
     public Long maxReturn() {
@@ -226,7 +226,7 @@ public final class ProfileProperties {
 
     /**
      * Set the maxReturn property: Maximum number of endpoints to be returned for MultiValue routing type.
-     *
+     * 
      * @param maxReturn the maxReturn value to set.
      * @return the ProfileProperties object itself.
      */
@@ -237,7 +237,7 @@ public final class ProfileProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -250,5 +250,70 @@ public final class ProfileProperties {
         if (endpoints() != null) {
             endpoints().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("profileStatus", this.profileStatus == null ? null : this.profileStatus.toString());
+        jsonWriter.writeStringField("trafficRoutingMethod",
+            this.trafficRoutingMethod == null ? null : this.trafficRoutingMethod.toString());
+        jsonWriter.writeJsonField("dnsConfig", this.dnsConfig);
+        jsonWriter.writeJsonField("monitorConfig", this.monitorConfig);
+        jsonWriter.writeArrayField("endpoints", this.endpoints, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("trafficViewEnrollmentStatus",
+            this.trafficViewEnrollmentStatus == null ? null : this.trafficViewEnrollmentStatus.toString());
+        jsonWriter.writeArrayField("allowedEndpointRecordTypes", this.allowedEndpointRecordTypes,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeNumberField("maxReturn", this.maxReturn);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProfileProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProfileProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ProfileProperties.
+     */
+    public static ProfileProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProfileProperties deserializedProfileProperties = new ProfileProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("profileStatus".equals(fieldName)) {
+                    deserializedProfileProperties.profileStatus = ProfileStatus.fromString(reader.getString());
+                } else if ("trafficRoutingMethod".equals(fieldName)) {
+                    deserializedProfileProperties.trafficRoutingMethod
+                        = TrafficRoutingMethod.fromString(reader.getString());
+                } else if ("dnsConfig".equals(fieldName)) {
+                    deserializedProfileProperties.dnsConfig = DnsConfig.fromJson(reader);
+                } else if ("monitorConfig".equals(fieldName)) {
+                    deserializedProfileProperties.monitorConfig = MonitorConfig.fromJson(reader);
+                } else if ("endpoints".equals(fieldName)) {
+                    List<EndpointInner> endpoints = reader.readArray(reader1 -> EndpointInner.fromJson(reader1));
+                    deserializedProfileProperties.endpoints = endpoints;
+                } else if ("trafficViewEnrollmentStatus".equals(fieldName)) {
+                    deserializedProfileProperties.trafficViewEnrollmentStatus
+                        = TrafficViewEnrollmentStatus.fromString(reader.getString());
+                } else if ("allowedEndpointRecordTypes".equals(fieldName)) {
+                    List<AllowedEndpointRecordType> allowedEndpointRecordTypes
+                        = reader.readArray(reader1 -> AllowedEndpointRecordType.fromString(reader1.getString()));
+                    deserializedProfileProperties.allowedEndpointRecordTypes = allowedEndpointRecordTypes;
+                } else if ("maxReturn".equals(fieldName)) {
+                    deserializedProfileProperties.maxReturn = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProfileProperties;
+        });
     }
 }

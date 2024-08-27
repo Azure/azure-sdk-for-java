@@ -5,8 +5,13 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
 
@@ -14,68 +19,57 @@ import java.util.List;
  * The trigger that results in a scaling action.
  */
 @Fluent
-public final class MetricTrigger {
+public final class MetricTrigger implements JsonSerializable<MetricTrigger> {
     /*
      * the name of the metric that defines what the rule monitors.
      */
-    @JsonProperty(value = "metricName", required = true)
     private String metricName;
 
     /*
      * the namespace of the metric that defines what the rule monitors.
      */
-    @JsonProperty(value = "metricNamespace")
     private String metricNamespace;
 
     /*
      * the resource identifier of the resource the rule monitors.
      */
-    @JsonProperty(value = "metricResourceUri", required = true)
     private String metricResourceUri;
 
     /*
      * the location of the resource the rule monitors.
      */
-    @JsonProperty(value = "metricResourceLocation")
     private String metricResourceLocation;
 
     /*
      * the granularity of metrics the rule monitors. Must be one of the predefined values returned from metric
      * definitions for the metric. Must be between 12 hours and 1 minute.
      */
-    @JsonProperty(value = "timeGrain", required = true)
     private Duration timeGrain;
 
     /*
      * the metric statistic type. How the metrics from multiple instances are combined.
      */
-    @JsonProperty(value = "statistic", required = true)
     private MetricStatisticType statistic;
 
     /*
      * the range of time in which instance data is collected. This value must be greater than the delay in metric
      * collection, which can vary from resource-to-resource. Must be between 12 hours and 5 minutes.
      */
-    @JsonProperty(value = "timeWindow", required = true)
     private Duration timeWindow;
 
     /*
-     * time aggregation type. How the data that is collected should be combined over time. The default value is
-     * Average.
+     * time aggregation type. How the data that is collected should be combined over time. The default value is Average.
      */
-    @JsonProperty(value = "timeAggregation", required = true)
     private TimeAggregationType timeAggregation;
 
     /*
      * the operator that is used to compare the metric data and the threshold.
      */
-    @JsonProperty(value = "operator", required = true)
     private ComparisonOperationType operator;
 
     /*
      * the threshold of the metric that triggers the scale action.
      */
-    @JsonProperty(value = "threshold", required = true)
     private double threshold;
 
     /*
@@ -83,13 +77,11 @@ public final class MetricTrigger {
      * [{"DimensionName":"AppName","Operator":"Equals","Values":["App1"]},{"DimensionName":"Deployment","Operator":
      * "Equals","Values":["default"]}].
      */
-    @JsonProperty(value = "dimensions")
     private List<ScaleRuleMetricDimension> dimensions;
 
     /*
      * a value indicating whether metric should divide per instance.
      */
-    @JsonProperty(value = "dividePerInstance")
     private Boolean dividePerInstance;
 
     /**
@@ -355,32 +347,33 @@ public final class MetricTrigger {
      */
     public void validate() {
         if (metricName() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property metricName in model MetricTrigger"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property metricName in model MetricTrigger"));
         }
         if (metricResourceUri() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property metricResourceUri in model MetricTrigger"));
+            throw LOGGER.atError()
+                .log(
+                    new IllegalArgumentException("Missing required property metricResourceUri in model MetricTrigger"));
         }
         if (timeGrain() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property timeGrain in model MetricTrigger"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property timeGrain in model MetricTrigger"));
         }
         if (statistic() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property statistic in model MetricTrigger"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property statistic in model MetricTrigger"));
         }
         if (timeWindow() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property timeWindow in model MetricTrigger"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property timeWindow in model MetricTrigger"));
         }
         if (timeAggregation() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property timeAggregation in model MetricTrigger"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property timeAggregation in model MetricTrigger"));
         }
         if (operator() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property operator in model MetricTrigger"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property operator in model MetricTrigger"));
         }
         if (dimensions() != null) {
             dimensions().forEach(e -> e.validate());
@@ -388,4 +381,79 @@ public final class MetricTrigger {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(MetricTrigger.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("metricName", this.metricName);
+        jsonWriter.writeStringField("metricResourceUri", this.metricResourceUri);
+        jsonWriter.writeStringField("timeGrain", CoreUtils.durationToStringWithDays(this.timeGrain));
+        jsonWriter.writeStringField("statistic", this.statistic == null ? null : this.statistic.toString());
+        jsonWriter.writeStringField("timeWindow", CoreUtils.durationToStringWithDays(this.timeWindow));
+        jsonWriter.writeStringField("timeAggregation",
+            this.timeAggregation == null ? null : this.timeAggregation.toString());
+        jsonWriter.writeStringField("operator", this.operator == null ? null : this.operator.toString());
+        jsonWriter.writeDoubleField("threshold", this.threshold);
+        jsonWriter.writeStringField("metricNamespace", this.metricNamespace);
+        jsonWriter.writeStringField("metricResourceLocation", this.metricResourceLocation);
+        jsonWriter.writeArrayField("dimensions", this.dimensions, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("dividePerInstance", this.dividePerInstance);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MetricTrigger from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MetricTrigger if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MetricTrigger.
+     */
+    public static MetricTrigger fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MetricTrigger deserializedMetricTrigger = new MetricTrigger();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("metricName".equals(fieldName)) {
+                    deserializedMetricTrigger.metricName = reader.getString();
+                } else if ("metricResourceUri".equals(fieldName)) {
+                    deserializedMetricTrigger.metricResourceUri = reader.getString();
+                } else if ("timeGrain".equals(fieldName)) {
+                    deserializedMetricTrigger.timeGrain
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("statistic".equals(fieldName)) {
+                    deserializedMetricTrigger.statistic = MetricStatisticType.fromString(reader.getString());
+                } else if ("timeWindow".equals(fieldName)) {
+                    deserializedMetricTrigger.timeWindow
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("timeAggregation".equals(fieldName)) {
+                    deserializedMetricTrigger.timeAggregation = TimeAggregationType.fromString(reader.getString());
+                } else if ("operator".equals(fieldName)) {
+                    deserializedMetricTrigger.operator = ComparisonOperationType.fromString(reader.getString());
+                } else if ("threshold".equals(fieldName)) {
+                    deserializedMetricTrigger.threshold = reader.getDouble();
+                } else if ("metricNamespace".equals(fieldName)) {
+                    deserializedMetricTrigger.metricNamespace = reader.getString();
+                } else if ("metricResourceLocation".equals(fieldName)) {
+                    deserializedMetricTrigger.metricResourceLocation = reader.getString();
+                } else if ("dimensions".equals(fieldName)) {
+                    List<ScaleRuleMetricDimension> dimensions
+                        = reader.readArray(reader1 -> ScaleRuleMetricDimension.fromJson(reader1));
+                    deserializedMetricTrigger.dimensions = dimensions;
+                } else if ("dividePerInstance".equals(fieldName)) {
+                    deserializedMetricTrigger.dividePerInstance = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMetricTrigger;
+        });
+    }
 }

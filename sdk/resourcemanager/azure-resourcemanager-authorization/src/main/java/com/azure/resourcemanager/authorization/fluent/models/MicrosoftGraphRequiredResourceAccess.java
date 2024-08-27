@@ -5,43 +5,47 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** requiredResourceAccess. */
+/**
+ * requiredResourceAccess.
+ */
 @Fluent
-public final class MicrosoftGraphRequiredResourceAccess {
+public final class MicrosoftGraphRequiredResourceAccess
+    implements JsonSerializable<MicrosoftGraphRequiredResourceAccess> {
     /*
      * The list of OAuth2.0 permission scopes and app roles that the application requires from the specified resource.
      */
-    @JsonProperty(value = "resourceAccess")
     private List<MicrosoftGraphResourceAccess> resourceAccess;
 
     /*
-     * The unique identifier for the resource that the application requires access to.  This should be equal to the
-     * appId declared on the target resource application.
+     * The unique identifier for the resource that the application requires access to. This should be equal to the appId
+     * declared on the target resource application.
      */
-    @JsonProperty(value = "resourceAppId")
     private String resourceAppId;
 
     /*
      * requiredResourceAccess
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphRequiredResourceAccess class. */
+    /**
+     * Creates an instance of MicrosoftGraphRequiredResourceAccess class.
+     */
     public MicrosoftGraphRequiredResourceAccess() {
     }
 
     /**
      * Get the resourceAccess property: The list of OAuth2.0 permission scopes and app roles that the application
      * requires from the specified resource.
-     *
+     * 
      * @return the resourceAccess value.
      */
     public List<MicrosoftGraphResourceAccess> resourceAccess() {
@@ -51,7 +55,7 @@ public final class MicrosoftGraphRequiredResourceAccess {
     /**
      * Set the resourceAccess property: The list of OAuth2.0 permission scopes and app roles that the application
      * requires from the specified resource.
-     *
+     * 
      * @param resourceAccess the resourceAccess value to set.
      * @return the MicrosoftGraphRequiredResourceAccess object itself.
      */
@@ -63,7 +67,7 @@ public final class MicrosoftGraphRequiredResourceAccess {
     /**
      * Get the resourceAppId property: The unique identifier for the resource that the application requires access to.
      * This should be equal to the appId declared on the target resource application.
-     *
+     * 
      * @return the resourceAppId value.
      */
     public String resourceAppId() {
@@ -73,7 +77,7 @@ public final class MicrosoftGraphRequiredResourceAccess {
     /**
      * Set the resourceAppId property: The unique identifier for the resource that the application requires access to.
      * This should be equal to the appId declared on the target resource application.
-     *
+     * 
      * @param resourceAppId the resourceAppId value to set.
      * @return the MicrosoftGraphRequiredResourceAccess object itself.
      */
@@ -84,17 +88,16 @@ public final class MicrosoftGraphRequiredResourceAccess {
 
     /**
      * Get the additionalProperties property: requiredResourceAccess.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: requiredResourceAccess.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphRequiredResourceAccess object itself.
      */
@@ -103,22 +106,68 @@ public final class MicrosoftGraphRequiredResourceAccess {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (resourceAccess() != null) {
             resourceAccess().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("resourceAccess", this.resourceAccess,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("resourceAppId", this.resourceAppId);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphRequiredResourceAccess from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphRequiredResourceAccess if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphRequiredResourceAccess.
+     */
+    public static MicrosoftGraphRequiredResourceAccess fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphRequiredResourceAccess deserializedMicrosoftGraphRequiredResourceAccess
+                = new MicrosoftGraphRequiredResourceAccess();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceAccess".equals(fieldName)) {
+                    List<MicrosoftGraphResourceAccess> resourceAccess
+                        = reader.readArray(reader1 -> MicrosoftGraphResourceAccess.fromJson(reader1));
+                    deserializedMicrosoftGraphRequiredResourceAccess.resourceAccess = resourceAccess;
+                } else if ("resourceAppId".equals(fieldName)) {
+                    deserializedMicrosoftGraphRequiredResourceAccess.resourceAppId = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphRequiredResourceAccess.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphRequiredResourceAccess;
+        });
     }
 }

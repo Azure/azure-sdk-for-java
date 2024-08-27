@@ -11,7 +11,8 @@ import com.azure.resourcemanager.netapp.models.SubvolumeInfo;
  */
 public final class SubvolumesUpdateSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2023-11-01/examples/Subvolumes_Update.json
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2024-03-01/examples/Subvolumes_Update.json
      */
     /**
      * Sample code: Subvolumes_Update.

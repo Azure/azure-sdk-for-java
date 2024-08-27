@@ -22,7 +22,7 @@ public final class VolumeQuotaRulesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"quotaSizeInKiBs\":907482374428904956,\"quotaType\":\"IndividualGroupQuota\",\"quotaTarget\":\"fjmyccxlzhco\"},\"location\":\"vnekhenlusfnrdtj\",\"tags\":{\"cq\":\"r\",\"uslvyjtcvuwkasi\":\"jvidttge\"},\"id\":\"iesfuug\",\"name\":\"tuqfecjxeygtu\",\"type\":\"xu\"}";
+            = "{\"properties\":{\"provisioningState\":\"Creating\",\"quotaSizeInKiBs\":8540357974239086249,\"quotaType\":\"DefaultGroupQuota\",\"quotaTarget\":\"hfphwpnulaiywze\"},\"location\":\"whslwkoj\",\"tags\":{\"nnfhyetefypo\":\"ndnpdwrpqafgfug\"},\"id\":\"octfjgtixrjvzuyt\",\"name\":\"rmlmuowo\",\"type\":\"bauiropi\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,14 +32,14 @@ public final class VolumeQuotaRulesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         VolumeQuotaRule response = manager.volumeQuotaRules()
-            .getWithResponse("ctfjgtixr", "vzuyturmlmu", "wolba", "iropionszon", "pngajin",
+            .getWithResponse("ttaboidvmfqh", "pubowsepdfg", "mtdherngb", "c", "uahokq",
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("vnekhenlusfnrdtj", response.location());
-        Assertions.assertEquals("r", response.tags().get("cq"));
-        Assertions.assertEquals(907482374428904956L, response.quotaSizeInKiBs());
-        Assertions.assertEquals(Type.INDIVIDUAL_GROUP_QUOTA, response.quotaType());
-        Assertions.assertEquals("fjmyccxlzhco", response.quotaTarget());
+        Assertions.assertEquals("whslwkoj", response.location());
+        Assertions.assertEquals("ndnpdwrpqafgfug", response.tags().get("nnfhyetefypo"));
+        Assertions.assertEquals(8540357974239086249L, response.quotaSizeInKiBs());
+        Assertions.assertEquals(Type.DEFAULT_GROUP_QUOTA, response.quotaType());
+        Assertions.assertEquals("hfphwpnulaiywze", response.quotaTarget());
     }
 }

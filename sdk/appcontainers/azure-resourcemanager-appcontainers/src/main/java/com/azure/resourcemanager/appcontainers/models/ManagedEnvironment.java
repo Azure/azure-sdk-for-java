@@ -59,14 +59,6 @@ public interface ManagedEnvironment {
     String kind();
 
     /**
-     * Gets the identity property: Managed identities for the Managed Environment to interact with other Azure services
-     * without maintaining any secrets or credentials in code.
-     * 
-     * @return the identity value.
-     */
-    ManagedServiceIdentity identity();
-
-    /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
      * @return the systemData value.
@@ -134,20 +126,6 @@ public interface ManagedEnvironment {
     AppLogsConfiguration appLogsConfiguration();
 
     /**
-     * Gets the appInsightsConfiguration property: Environment level Application Insights configuration.
-     * 
-     * @return the appInsightsConfiguration value.
-     */
-    AppInsightsConfiguration appInsightsConfiguration();
-
-    /**
-     * Gets the openTelemetryConfiguration property: Environment Open Telemetry configuration.
-     * 
-     * @return the openTelemetryConfiguration value.
-     */
-    OpenTelemetryConfiguration openTelemetryConfiguration();
-
-    /**
      * Gets the zoneRedundant property: Whether or not this Managed Environment is zone-redundant.
      * 
      * @return the zoneRedundant value.
@@ -204,6 +182,13 @@ public interface ManagedEnvironment {
      * @return the peerAuthentication value.
      */
     ManagedEnvironmentPropertiesPeerAuthentication peerAuthentication();
+
+    /**
+     * Gets the peerTrafficConfiguration property: Peer traffic settings for the Managed Environment.
+     * 
+     * @return the peerTrafficConfiguration value.
+     */
+    ManagedEnvironmentPropertiesPeerTrafficConfiguration peerTrafficConfiguration();
 
     /**
      * Gets the region of the resource.
@@ -289,13 +274,12 @@ public interface ManagedEnvironment {
          * resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithKind,
-            DefinitionStages.WithIdentity, DefinitionStages.WithDaprAIInstrumentationKey,
-            DefinitionStages.WithDaprAIConnectionString, DefinitionStages.WithVnetConfiguration,
-            DefinitionStages.WithAppLogsConfiguration, DefinitionStages.WithAppInsightsConfiguration,
-            DefinitionStages.WithOpenTelemetryConfiguration, DefinitionStages.WithZoneRedundant,
-            DefinitionStages.WithCustomDomainConfiguration, DefinitionStages.WithWorkloadProfiles,
-            DefinitionStages.WithKedaConfiguration, DefinitionStages.WithDaprConfiguration,
-            DefinitionStages.WithInfrastructureResourceGroup, DefinitionStages.WithPeerAuthentication {
+            DefinitionStages.WithDaprAIInstrumentationKey, DefinitionStages.WithDaprAIConnectionString,
+            DefinitionStages.WithVnetConfiguration, DefinitionStages.WithAppLogsConfiguration,
+            DefinitionStages.WithZoneRedundant, DefinitionStages.WithCustomDomainConfiguration,
+            DefinitionStages.WithWorkloadProfiles, DefinitionStages.WithKedaConfiguration,
+            DefinitionStages.WithDaprConfiguration, DefinitionStages.WithInfrastructureResourceGroup,
+            DefinitionStages.WithPeerAuthentication, DefinitionStages.WithPeerTrafficConfiguration {
             /**
              * Executes the create request.
              * 
@@ -336,21 +320,6 @@ public interface ManagedEnvironment {
              * @return the next definition stage.
              */
             WithCreate withKind(String kind);
-        }
-
-        /**
-         * The stage of the ManagedEnvironment definition allowing to specify identity.
-         */
-        interface WithIdentity {
-            /**
-             * Specifies the identity property: Managed identities for the Managed Environment to interact with other
-             * Azure services without maintaining any secrets or credentials in code..
-             * 
-             * @param identity Managed identities for the Managed Environment to interact with other Azure services
-             * without maintaining any secrets or credentials in code.
-             * @return the next definition stage.
-             */
-            WithCreate withIdentity(ManagedServiceIdentity identity);
         }
 
         /**
@@ -411,32 +380,6 @@ public interface ManagedEnvironment {
              * @return the next definition stage.
              */
             WithCreate withAppLogsConfiguration(AppLogsConfiguration appLogsConfiguration);
-        }
-
-        /**
-         * The stage of the ManagedEnvironment definition allowing to specify appInsightsConfiguration.
-         */
-        interface WithAppInsightsConfiguration {
-            /**
-             * Specifies the appInsightsConfiguration property: Environment level Application Insights configuration.
-             * 
-             * @param appInsightsConfiguration Environment level Application Insights configuration.
-             * @return the next definition stage.
-             */
-            WithCreate withAppInsightsConfiguration(AppInsightsConfiguration appInsightsConfiguration);
-        }
-
-        /**
-         * The stage of the ManagedEnvironment definition allowing to specify openTelemetryConfiguration.
-         */
-        interface WithOpenTelemetryConfiguration {
-            /**
-             * Specifies the openTelemetryConfiguration property: Environment Open Telemetry configuration.
-             * 
-             * @param openTelemetryConfiguration Environment Open Telemetry configuration.
-             * @return the next definition stage.
-             */
-            WithCreate withOpenTelemetryConfiguration(OpenTelemetryConfiguration openTelemetryConfiguration);
         }
 
         /**
@@ -533,6 +476,20 @@ public interface ManagedEnvironment {
              */
             WithCreate withPeerAuthentication(ManagedEnvironmentPropertiesPeerAuthentication peerAuthentication);
         }
+
+        /**
+         * The stage of the ManagedEnvironment definition allowing to specify peerTrafficConfiguration.
+         */
+        interface WithPeerTrafficConfiguration {
+            /**
+             * Specifies the peerTrafficConfiguration property: Peer traffic settings for the Managed Environment.
+             * 
+             * @param peerTrafficConfiguration Peer traffic settings for the Managed Environment.
+             * @return the next definition stage.
+             */
+            WithCreate withPeerTrafficConfiguration(
+                ManagedEnvironmentPropertiesPeerTrafficConfiguration peerTrafficConfiguration);
+        }
     }
 
     /**
@@ -545,12 +502,11 @@ public interface ManagedEnvironment {
     /**
      * The template for ManagedEnvironment update.
      */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithKind, UpdateStages.WithIdentity,
-        UpdateStages.WithDaprAIInstrumentationKey, UpdateStages.WithDaprAIConnectionString,
-        UpdateStages.WithVnetConfiguration, UpdateStages.WithAppLogsConfiguration,
-        UpdateStages.WithAppInsightsConfiguration, UpdateStages.WithOpenTelemetryConfiguration,
-        UpdateStages.WithCustomDomainConfiguration, UpdateStages.WithWorkloadProfiles,
-        UpdateStages.WithKedaConfiguration, UpdateStages.WithDaprConfiguration, UpdateStages.WithPeerAuthentication {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithKind, UpdateStages.WithDaprAIInstrumentationKey,
+        UpdateStages.WithDaprAIConnectionString, UpdateStages.WithVnetConfiguration,
+        UpdateStages.WithAppLogsConfiguration, UpdateStages.WithCustomDomainConfiguration,
+        UpdateStages.WithWorkloadProfiles, UpdateStages.WithKedaConfiguration, UpdateStages.WithDaprConfiguration,
+        UpdateStages.WithPeerAuthentication, UpdateStages.WithPeerTrafficConfiguration {
         /**
          * Executes the update request.
          * 
@@ -595,21 +551,6 @@ public interface ManagedEnvironment {
              * @return the next definition stage.
              */
             Update withKind(String kind);
-        }
-
-        /**
-         * The stage of the ManagedEnvironment update allowing to specify identity.
-         */
-        interface WithIdentity {
-            /**
-             * Specifies the identity property: Managed identities for the Managed Environment to interact with other
-             * Azure services without maintaining any secrets or credentials in code..
-             * 
-             * @param identity Managed identities for the Managed Environment to interact with other Azure services
-             * without maintaining any secrets or credentials in code.
-             * @return the next definition stage.
-             */
-            Update withIdentity(ManagedServiceIdentity identity);
         }
 
         /**
@@ -670,32 +611,6 @@ public interface ManagedEnvironment {
              * @return the next definition stage.
              */
             Update withAppLogsConfiguration(AppLogsConfiguration appLogsConfiguration);
-        }
-
-        /**
-         * The stage of the ManagedEnvironment update allowing to specify appInsightsConfiguration.
-         */
-        interface WithAppInsightsConfiguration {
-            /**
-             * Specifies the appInsightsConfiguration property: Environment level Application Insights configuration.
-             * 
-             * @param appInsightsConfiguration Environment level Application Insights configuration.
-             * @return the next definition stage.
-             */
-            Update withAppInsightsConfiguration(AppInsightsConfiguration appInsightsConfiguration);
-        }
-
-        /**
-         * The stage of the ManagedEnvironment update allowing to specify openTelemetryConfiguration.
-         */
-        interface WithOpenTelemetryConfiguration {
-            /**
-             * Specifies the openTelemetryConfiguration property: Environment Open Telemetry configuration.
-             * 
-             * @param openTelemetryConfiguration Environment Open Telemetry configuration.
-             * @return the next definition stage.
-             */
-            Update withOpenTelemetryConfiguration(OpenTelemetryConfiguration openTelemetryConfiguration);
         }
 
         /**
@@ -761,6 +676,20 @@ public interface ManagedEnvironment {
              * @return the next definition stage.
              */
             Update withPeerAuthentication(ManagedEnvironmentPropertiesPeerAuthentication peerAuthentication);
+        }
+
+        /**
+         * The stage of the ManagedEnvironment update allowing to specify peerTrafficConfiguration.
+         */
+        interface WithPeerTrafficConfiguration {
+            /**
+             * Specifies the peerTrafficConfiguration property: Peer traffic settings for the Managed Environment.
+             * 
+             * @param peerTrafficConfiguration Peer traffic settings for the Managed Environment.
+             * @return the next definition stage.
+             */
+            Update withPeerTrafficConfiguration(
+                ManagedEnvironmentPropertiesPeerTrafficConfiguration peerTrafficConfiguration);
         }
     }
 

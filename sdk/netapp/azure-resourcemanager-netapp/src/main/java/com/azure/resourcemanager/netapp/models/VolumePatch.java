@@ -6,8 +6,12 @@ package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.netapp.fluent.models.VolumePatchProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -18,8 +22,22 @@ public final class VolumePatch extends Resource {
     /*
      * Patchable volume properties
      */
-    @JsonProperty(value = "properties")
     private VolumePatchProperties innerProperties;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
 
     /**
      * Creates an instance of VolumePatch class.
@@ -34,6 +52,36 @@ public final class VolumePatch extends Resource {
      */
     private VolumePatchProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -55,9 +103,7 @@ public final class VolumePatch extends Resource {
     }
 
     /**
-     * Get the serviceLevel property: serviceLevel
-     * 
-     * The service level of the file system.
+     * Get the serviceLevel property: The service level of the file system.
      * 
      * @return the serviceLevel value.
      */
@@ -66,9 +112,7 @@ public final class VolumePatch extends Resource {
     }
 
     /**
-     * Set the serviceLevel property: serviceLevel
-     * 
-     * The service level of the file system.
+     * Set the serviceLevel property: The service level of the file system.
      * 
      * @param serviceLevel the serviceLevel value to set.
      * @return the VolumePatch object itself.
@@ -82,11 +126,10 @@ public final class VolumePatch extends Resource {
     }
 
     /**
-     * Get the usageThreshold property: usageThreshold
-     * 
-     * Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum
-     * size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume or 2400Tib for LargeVolume on exceptional basis.
-     * Specified in bytes.
+     * Get the usageThreshold property: Maximum storage quota allowed for a file system in bytes. This is a soft quota
+     * used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB. For large volumes,
+     * valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB to 2400TiB. Values
+     * expressed in bytes as multiples of 1 GiB.
      * 
      * @return the usageThreshold value.
      */
@@ -95,11 +138,10 @@ public final class VolumePatch extends Resource {
     }
 
     /**
-     * Set the usageThreshold property: usageThreshold
-     * 
-     * Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum
-     * size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume or 2400Tib for LargeVolume on exceptional basis.
-     * Specified in bytes.
+     * Set the usageThreshold property: Maximum storage quota allowed for a file system in bytes. This is a soft quota
+     * used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB. For large volumes,
+     * valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB to 2400TiB. Values
+     * expressed in bytes as multiples of 1 GiB.
      * 
      * @param usageThreshold the usageThreshold value to set.
      * @return the VolumePatch object itself.
@@ -113,9 +155,7 @@ public final class VolumePatch extends Resource {
     }
 
     /**
-     * Get the exportPolicy property: exportPolicy
-     * 
-     * Set of export policy rules.
+     * Get the exportPolicy property: Set of export policy rules.
      * 
      * @return the exportPolicy value.
      */
@@ -124,9 +164,7 @@ public final class VolumePatch extends Resource {
     }
 
     /**
-     * Set the exportPolicy property: exportPolicy
-     * 
-     * Set of export policy rules.
+     * Set the exportPolicy property: Set of export policy rules.
      * 
      * @param exportPolicy the exportPolicy value to set.
      * @return the VolumePatch object itself.
@@ -136,6 +174,29 @@ public final class VolumePatch extends Resource {
             this.innerProperties = new VolumePatchProperties();
         }
         this.innerProperties().withExportPolicy(exportPolicy);
+        return this;
+    }
+
+    /**
+     * Get the protocolTypes property: Set of protocol types, default NFSv3, CIFS for SMB protocol.
+     * 
+     * @return the protocolTypes value.
+     */
+    public List<String> protocolTypes() {
+        return this.innerProperties() == null ? null : this.innerProperties().protocolTypes();
+    }
+
+    /**
+     * Set the protocolTypes property: Set of protocol types, default NFSv3, CIFS for SMB protocol.
+     * 
+     * @param protocolTypes the protocolTypes value to set.
+     * @return the VolumePatch object itself.
+     */
+    public VolumePatch withProtocolTypes(List<String> protocolTypes) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VolumePatchProperties();
+        }
+        this.innerProperties().withProtocolTypes(protocolTypes);
         return this;
     }
 
@@ -165,9 +226,8 @@ public final class VolumePatch extends Resource {
     }
 
     /**
-     * Get the dataProtection property: DataProtection
-     * 
-     * DataProtection type volumes include an object containing details of the replication.
+     * Get the dataProtection property: DataProtection type volumes include an object containing details of the
+     * replication.
      * 
      * @return the dataProtection value.
      */
@@ -176,9 +236,8 @@ public final class VolumePatch extends Resource {
     }
 
     /**
-     * Set the dataProtection property: DataProtection
-     * 
-     * DataProtection type volumes include an object containing details of the replication.
+     * Set the dataProtection property: DataProtection type volumes include an object containing details of the
+     * replication.
      * 
      * @param dataProtection the dataProtection value to set.
      * @return the VolumePatch object itself.
@@ -404,9 +463,8 @@ public final class VolumePatch extends Resource {
     }
 
     /**
-     * Get the smbAccessBasedEnumeration property: smbAccessBasedEnumeration
-     * 
-     * Enables access-based enumeration share property for SMB Shares. Only applicable for SMB/DualProtocol volume.
+     * Get the smbAccessBasedEnumeration property: Enables access-based enumeration share property for SMB Shares. Only
+     * applicable for SMB/DualProtocol volume.
      * 
      * @return the smbAccessBasedEnumeration value.
      */
@@ -415,9 +473,8 @@ public final class VolumePatch extends Resource {
     }
 
     /**
-     * Set the smbAccessBasedEnumeration property: smbAccessBasedEnumeration
-     * 
-     * Enables access-based enumeration share property for SMB Shares. Only applicable for SMB/DualProtocol volume.
+     * Set the smbAccessBasedEnumeration property: Enables access-based enumeration share property for SMB Shares. Only
+     * applicable for SMB/DualProtocol volume.
      * 
      * @param smbAccessBasedEnumeration the smbAccessBasedEnumeration value to set.
      * @return the VolumePatch object itself.
@@ -431,9 +488,8 @@ public final class VolumePatch extends Resource {
     }
 
     /**
-     * Get the smbNonBrowsable property: smbNonBrowsable
-     * 
-     * Enables non-browsable property for SMB Shares. Only applicable for SMB/DualProtocol volume.
+     * Get the smbNonBrowsable property: Enables non-browsable property for SMB Shares. Only applicable for
+     * SMB/DualProtocol volume.
      * 
      * @return the smbNonBrowsable value.
      */
@@ -442,9 +498,8 @@ public final class VolumePatch extends Resource {
     }
 
     /**
-     * Set the smbNonBrowsable property: smbNonBrowsable
-     * 
-     * Enables non-browsable property for SMB Shares. Only applicable for SMB/DualProtocol volume.
+     * Set the smbNonBrowsable property: Enables non-browsable property for SMB Shares. Only applicable for
+     * SMB/DualProtocol volume.
      * 
      * @param smbNonBrowsable the smbNonBrowsable value to set.
      * @return the VolumePatch object itself.
@@ -466,5 +521,55 @@ public final class VolumePatch extends Resource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VolumePatch from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VolumePatch if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VolumePatch.
+     */
+    public static VolumePatch fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VolumePatch deserializedVolumePatch = new VolumePatch();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedVolumePatch.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedVolumePatch.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedVolumePatch.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedVolumePatch.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedVolumePatch.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedVolumePatch.innerProperties = VolumePatchProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVolumePatch;
+        });
     }
 }

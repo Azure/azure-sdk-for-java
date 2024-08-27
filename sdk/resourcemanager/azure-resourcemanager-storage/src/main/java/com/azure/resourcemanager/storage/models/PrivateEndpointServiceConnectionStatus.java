@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -43,7 +42,6 @@ public final class PrivateEndpointServiceConnectionStatus
      * @param name a name to look for.
      * @return the corresponding PrivateEndpointServiceConnectionStatus.
      */
-    @JsonCreator
     public static PrivateEndpointServiceConnectionStatus fromString(String name) {
         return fromString(name, PrivateEndpointServiceConnectionStatus.class);
     }

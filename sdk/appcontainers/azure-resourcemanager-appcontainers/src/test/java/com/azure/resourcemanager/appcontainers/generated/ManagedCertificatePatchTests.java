@@ -13,16 +13,16 @@ import org.junit.jupiter.api.Assertions;
 public final class ManagedCertificatePatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagedCertificatePatch model
-            = BinaryData.fromString("{\"tags\":{\"jmucftby\":\"mtrwah\"}}").toObject(ManagedCertificatePatch.class);
-        Assertions.assertEquals("mtrwah", model.tags().get("jmucftby"));
+        ManagedCertificatePatch model = BinaryData.fromString("{\"tags\":{\"vizbfhfo\":\"boldforobwj\"}}")
+            .toObject(ManagedCertificatePatch.class);
+        Assertions.assertEquals("boldforobwj", model.tags().get("vizbfhfo"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedCertificatePatch model = new ManagedCertificatePatch().withTags(mapOf("jmucftby", "mtrwah"));
+        ManagedCertificatePatch model = new ManagedCertificatePatch().withTags(mapOf("vizbfhfo", "boldforobwj"));
         model = BinaryData.fromObject(model).toObject(ManagedCertificatePatch.class);
-        Assertions.assertEquals("mtrwah", model.tags().get("jmucftby"));
+        Assertions.assertEquals("boldforobwj", model.tags().get("vizbfhfo"));
     }
 
     // Use "Map.of" if available

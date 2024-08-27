@@ -10,7 +10,7 @@ package com.azure.resourcemanager.appcontainers.generated;
 public final class ContainerAppsSourceControlsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/SourceControls_Get.json
+     * specification/app/resource-manager/Microsoft.App/stable/2024-03-01/examples/SourceControls_Get.json
      */
     /**
      * Sample code: Get Container App's SourceControl.
@@ -19,7 +19,7 @@ public final class ContainerAppsSourceControlsGetSamples {
      */
     public static void
         getContainerAppSSourceControl(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        manager.containerAppsSourceControls().getWithResponse("workerapps-rg-xj", "testcanadacentral", "current",
-            com.azure.core.util.Context.NONE);
+        manager.containerAppsSourceControls()
+            .getWithResponse("workerapps-rg-xj", "testcanadacentral", "current", com.azure.core.util.Context.NONE);
     }
 }

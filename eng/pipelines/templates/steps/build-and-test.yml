@@ -2,6 +2,9 @@ parameters:
   - name: BuildParallelization
     type: string
     default: '2C'
+  - name: BuildOptions
+    type: string
+    default: ''
   - name: TestGoals
     type: string
     default: $(TestGoals)
@@ -40,14 +43,14 @@ parameters:
     default: ''
 
 steps:
-  - task: Maven@3
+  - task: Maven@4
     ${{ if ne(parameters.VersionOverride, '') }}:
       displayName: '${{ parameters.VersionOverride }} - Build for non-From Source run'
     ${{ else }}:
       displayName: 'Build for non-From Source run'
     inputs:
       mavenPomFile: pom.xml
-      options: $(DefaultOptions) -DskipTests $(DefaultSkipOptions) -Djacoco.skip=true -T ${{ parameters.BuildParallelization }} -pl $(ProjectList) -am
+      options: $(DefaultOptions) -DskipTests $(DefaultSkipOptions) -Djacoco.skip=true ${{ parameters.BuildOptions }} -T ${{ parameters.BuildParallelization }} -pl $(ProjectList) -am
       mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
       javaHomeOption: 'JDKVersion'
       jdkVersionOption: $(JavaTestVersion)
@@ -65,7 +68,7 @@ steps:
       arguments: '--update-type external_dependency --build-type client --sr --vo ${{ parameters.VersionOverride }}'
     condition: and(succeeded(), eq(variables['TestVersionSupport'], 'true'))
 
-  - task: Maven@3
+  - task: Maven@4
     displayName: '${{ parameters.VersionOverride }} - Re-build for version override run'
     inputs:
       mavenPomFile: pom.xml
@@ -117,7 +120,7 @@ steps:
         ${{ insert }}: ${{ parameters.TestEnvVars }}
 
   - ${{ else }}:
-    - task: Maven@3
+    - task: Maven@4
       condition: and(succeeded(), ne(variables['TestFromSource'], 'true'))
       ${{ if ne(parameters.VersionOverride, '') }}:
         displayName: '${{ parameters.VersionOverride }} - Run tests'
@@ -143,7 +146,7 @@ steps:
       workingDirectory: '$(System.DefaultWorkingDirectory)'
     condition: eq(variables['RunAggregateReports'], 'true')
 
-  - task: Maven@3
+  - task: Maven@4
     displayName: 'Generate aggregate code coverage report'
     inputs:
       mavenPomFile: aggregate-pom.xml
@@ -155,7 +158,7 @@ steps:
       goals: jacoco:report-aggregate
     condition: eq(variables['RunAggregateReports'], 'true')
 
-  - task: Maven@3
+  - task: Maven@4
     displayName: 'Build for From Source run'
     inputs:
       mavenPomFile: ClientFromSourcePom.xml
@@ -165,7 +168,7 @@ steps:
       # bloated the ci.yml files' AdditionalModules because we ended up having to list every transitive azure client
       # dependency. Note: The -T 1C says spin up a build thread per core. Since we're building
       # all the track 2, client, libraries (which is now over 100) this effectively cuts the build time in half.
-      options: $(DefaultOptions) -DskipTests $(DefaultSkipOptions) -Djacoco.skip=true -T ${{ parameters.BuildParallelization }}
+      options: $(DefaultOptions) -DskipTests $(DefaultSkipOptions) -Djacoco.skip=true ${{ parameters.BuildOptions }} -T ${{ parameters.BuildParallelization }}
       mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
       javaHomeOption: 'JDKVersion'
       jdkVersionOption: $(JavaTestVersion)
@@ -196,7 +199,7 @@ steps:
           $env:AZURESUBSCRIPTION_CLIENT_ID = $account.Id
           $env:AZURESUBSCRIPTION_TENANT_ID = $account.Tenants
 
-          mvn --% -f $(Build.SourcesDirectory)/ClientFromSourcePom.xml ${{ parameters.TestGoals }} $(DefaultTestOptions) -DAZURE_TEST_DEBUG=$(IsDebug) -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} ${{ parameters.TestOptions }} $(LiveTestSourceParams) -T ${{ parameters.TestParallelization }}
+          mvn --% -f $(Build.SourcesDirectory)/ClientFromSourcePom.xml ${{ parameters.TestGoals }} $(DefaultTestOptions) -DAZURE_TEST_DEBUG=$(IsDebug) -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} ${{ parameters.TestOptions }} $(LiveTestSourceParams) ${{ parameters.BuildOptions }} -T ${{ parameters.TestParallelization }}
           exit $LASTEXITCODE
       env:
         # PowerShellJavaHome is set in the 'Set PowerShellJavaHome'
@@ -207,7 +210,7 @@ steps:
         ${{ insert }}: ${{ parameters.TestEnvVars }}
 
   - ${{ else }}:
-    - task: Maven@3
+    - task: Maven@4
       displayName: 'Run tests for From Source run'
       inputs:
         mavenPomFile: ClientFromSourcePom.xml

@@ -6,24 +6,26 @@ package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Kafka disk storage profile.
  */
 @Fluent
-public final class DiskStorageProfile {
+public final class DiskStorageProfile implements JsonSerializable<DiskStorageProfile> {
     /*
      * Managed Disk size in GB. The maximum supported disk size for Standard and Premium HDD/SSD is 32TB, except for
      * Premium SSD v2, which supports up to 64TB.
      */
-    @JsonProperty(value = "dataDiskSize", required = true)
     private int dataDiskSize;
 
     /*
      * Managed Disk Type.
      */
-    @JsonProperty(value = "dataDiskType", required = true)
     private DataDiskType dataDiskType;
 
     /**
@@ -81,10 +83,51 @@ public final class DiskStorageProfile {
      */
     public void validate() {
         if (dataDiskType() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property dataDiskType in model DiskStorageProfile"));
+            throw LOGGER.atError()
+                .log(
+                    new IllegalArgumentException("Missing required property dataDiskType in model DiskStorageProfile"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DiskStorageProfile.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("dataDiskSize", this.dataDiskSize);
+        jsonWriter.writeStringField("dataDiskType", this.dataDiskType == null ? null : this.dataDiskType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DiskStorageProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DiskStorageProfile if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DiskStorageProfile.
+     */
+    public static DiskStorageProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DiskStorageProfile deserializedDiskStorageProfile = new DiskStorageProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dataDiskSize".equals(fieldName)) {
+                    deserializedDiskStorageProfile.dataDiskSize = reader.getInt();
+                } else if ("dataDiskType".equals(fieldName)) {
+                    deserializedDiskStorageProfile.dataDiskType = DataDiskType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDiskStorageProfile;
+        });
+    }
 }

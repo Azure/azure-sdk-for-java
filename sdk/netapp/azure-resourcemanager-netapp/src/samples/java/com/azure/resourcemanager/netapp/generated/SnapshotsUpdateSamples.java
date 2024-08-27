@@ -13,7 +13,8 @@ import java.io.IOException;
  */
 public final class SnapshotsUpdateSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2023-11-01/examples/Snapshots_Update.json
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2024-03-01/examples/Snapshots_Update.json
      */
     /**
      * Sample code: Snapshots_Update.

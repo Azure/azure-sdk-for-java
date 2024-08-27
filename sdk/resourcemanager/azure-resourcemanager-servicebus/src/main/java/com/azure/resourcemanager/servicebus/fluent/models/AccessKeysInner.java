@@ -5,56 +5,61 @@
 package com.azure.resourcemanager.servicebus.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Namespace/ServiceBus Connection String. */
+/**
+ * Namespace/ServiceBus Connection String.
+ */
 @Immutable
-public final class AccessKeysInner {
+public final class AccessKeysInner implements JsonSerializable<AccessKeysInner> {
     /*
      * Primary connection string of the created namespace authorization rule.
      */
-    @JsonProperty(value = "primaryConnectionString", access = JsonProperty.Access.WRITE_ONLY)
     private String primaryConnectionString;
 
     /*
      * Secondary connection string of the created namespace authorization rule.
      */
-    @JsonProperty(value = "secondaryConnectionString", access = JsonProperty.Access.WRITE_ONLY)
     private String secondaryConnectionString;
 
     /*
      * Primary connection string of the alias if GEO DR is enabled
      */
-    @JsonProperty(value = "aliasPrimaryConnectionString", access = JsonProperty.Access.WRITE_ONLY)
     private String aliasPrimaryConnectionString;
 
     /*
-     * Secondary  connection string of the alias if GEO DR is enabled
+     * Secondary connection string of the alias if GEO DR is enabled
      */
-    @JsonProperty(value = "aliasSecondaryConnectionString", access = JsonProperty.Access.WRITE_ONLY)
     private String aliasSecondaryConnectionString;
 
     /*
      * A base64-encoded 256-bit primary key for signing and validating the SAS token.
      */
-    @JsonProperty(value = "primaryKey", access = JsonProperty.Access.WRITE_ONLY)
     private String primaryKey;
 
     /*
      * A base64-encoded 256-bit primary key for signing and validating the SAS token.
      */
-    @JsonProperty(value = "secondaryKey", access = JsonProperty.Access.WRITE_ONLY)
     private String secondaryKey;
 
     /*
      * A string that describes the authorization rule.
      */
-    @JsonProperty(value = "keyName", access = JsonProperty.Access.WRITE_ONLY)
     private String keyName;
 
     /**
+     * Creates an instance of AccessKeysInner class.
+     */
+    public AccessKeysInner() {
+    }
+
+    /**
      * Get the primaryConnectionString property: Primary connection string of the created namespace authorization rule.
-     *
+     * 
      * @return the primaryConnectionString value.
      */
     public String primaryConnectionString() {
@@ -64,7 +69,7 @@ public final class AccessKeysInner {
     /**
      * Get the secondaryConnectionString property: Secondary connection string of the created namespace authorization
      * rule.
-     *
+     * 
      * @return the secondaryConnectionString value.
      */
     public String secondaryConnectionString() {
@@ -73,7 +78,7 @@ public final class AccessKeysInner {
 
     /**
      * Get the aliasPrimaryConnectionString property: Primary connection string of the alias if GEO DR is enabled.
-     *
+     * 
      * @return the aliasPrimaryConnectionString value.
      */
     public String aliasPrimaryConnectionString() {
@@ -82,7 +87,7 @@ public final class AccessKeysInner {
 
     /**
      * Get the aliasSecondaryConnectionString property: Secondary connection string of the alias if GEO DR is enabled.
-     *
+     * 
      * @return the aliasSecondaryConnectionString value.
      */
     public String aliasSecondaryConnectionString() {
@@ -91,7 +96,7 @@ public final class AccessKeysInner {
 
     /**
      * Get the primaryKey property: A base64-encoded 256-bit primary key for signing and validating the SAS token.
-     *
+     * 
      * @return the primaryKey value.
      */
     public String primaryKey() {
@@ -100,7 +105,7 @@ public final class AccessKeysInner {
 
     /**
      * Get the secondaryKey property: A base64-encoded 256-bit primary key for signing and validating the SAS token.
-     *
+     * 
      * @return the secondaryKey value.
      */
     public String secondaryKey() {
@@ -109,7 +114,7 @@ public final class AccessKeysInner {
 
     /**
      * Get the keyName property: A string that describes the authorization rule.
-     *
+     * 
      * @return the keyName value.
      */
     public String keyName() {
@@ -118,9 +123,56 @@ public final class AccessKeysInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AccessKeysInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AccessKeysInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AccessKeysInner.
+     */
+    public static AccessKeysInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AccessKeysInner deserializedAccessKeysInner = new AccessKeysInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("primaryConnectionString".equals(fieldName)) {
+                    deserializedAccessKeysInner.primaryConnectionString = reader.getString();
+                } else if ("secondaryConnectionString".equals(fieldName)) {
+                    deserializedAccessKeysInner.secondaryConnectionString = reader.getString();
+                } else if ("aliasPrimaryConnectionString".equals(fieldName)) {
+                    deserializedAccessKeysInner.aliasPrimaryConnectionString = reader.getString();
+                } else if ("aliasSecondaryConnectionString".equals(fieldName)) {
+                    deserializedAccessKeysInner.aliasSecondaryConnectionString = reader.getString();
+                } else if ("primaryKey".equals(fieldName)) {
+                    deserializedAccessKeysInner.primaryKey = reader.getString();
+                } else if ("secondaryKey".equals(fieldName)) {
+                    deserializedAccessKeysInner.secondaryKey = reader.getString();
+                } else if ("keyName".equals(fieldName)) {
+                    deserializedAccessKeysInner.keyName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAccessKeysInner;
+        });
     }
 }

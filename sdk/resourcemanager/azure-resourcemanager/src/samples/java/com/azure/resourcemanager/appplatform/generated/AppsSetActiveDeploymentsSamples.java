@@ -21,8 +21,12 @@ public final class AppsSetActiveDeploymentsSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void appsSetActiveDeployments(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getApps().setActiveDeployments("myResourceGroup", "myservice",
-            "myapp", new ActiveDeploymentCollection().withActiveDeploymentNames(Arrays.asList("default")),
-            com.azure.core.util.Context.NONE);
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getApps()
+            .setActiveDeployments("myResourceGroup", "myservice", "myapp",
+                new ActiveDeploymentCollection().withActiveDeploymentNames(Arrays.asList("default")),
+                com.azure.core.util.Context.NONE);
     }
 }

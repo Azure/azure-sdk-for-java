@@ -25,17 +25,25 @@ public final class CustomizedAcceleratorsCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void customizedAcceleratorsCreateOrUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getCustomizedAccelerators().createOrUpdate("myResourceGroup",
-            "myservice", "default", "acc-name",
-            new CustomizedAcceleratorResourceInner()
-                .withProperties(
-                    new CustomizedAcceleratorProperties().withDisplayName("acc-name").withDescription("acc-desc")
-                        .withIconUrl("acc-icon").withAcceleratorTags(Arrays.asList("tag-a", "tag-b"))
-                        .withGitRepository(new AcceleratorGitRepository().withUrl("git-url").withIntervalInSeconds(70)
-                            .withBranch("git-branch").withCommit("12345").withGitTag("git-tag")
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getCustomizedAccelerators()
+            .createOrUpdate("myResourceGroup", "myservice", "default", "acc-name",
+                new CustomizedAcceleratorResourceInner()
+                    .withProperties(new CustomizedAcceleratorProperties().withDisplayName("acc-name")
+                        .withDescription("acc-desc")
+                        .withIconUrl("acc-icon")
+                        .withAcceleratorTags(Arrays.asList("tag-a", "tag-b"))
+                        .withGitRepository(new AcceleratorGitRepository().withUrl("git-url")
+                            .withIntervalInSeconds(70)
+                            .withBranch("git-branch")
+                            .withCommit("12345")
+                            .withGitTag("git-tag")
                             .withAuthSetting(new AcceleratorSshSetting().withHostKey("fakeTokenPlaceholder")
-                                .withHostKeyAlgorithm("fakeTokenPlaceholder").withPrivateKey("fakeTokenPlaceholder"))))
-                .withSku(new Sku().withName("E0").withTier("Enterprise").withCapacity(2)),
-            com.azure.core.util.Context.NONE);
+                                .withHostKeyAlgorithm("fakeTokenPlaceholder")
+                                .withPrivateKey("fakeTokenPlaceholder"))))
+                    .withSku(new Sku().withName("E0").withTier("Enterprise").withCapacity(2)),
+                com.azure.core.util.Context.NONE);
     }
 }

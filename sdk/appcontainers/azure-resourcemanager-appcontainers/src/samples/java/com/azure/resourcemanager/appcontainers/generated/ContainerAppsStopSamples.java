@@ -10,7 +10,7 @@ package com.azure.resourcemanager.appcontainers.generated;
 public final class ContainerAppsStopSamples {
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/ContainerApps_Stop.json
+     * specification/app/resource-manager/Microsoft.App/stable/2024-03-01/examples/ContainerApps_Stop.json
      */
     /**
      * Sample code: Stop Container App.
@@ -18,6 +18,6 @@ public final class ContainerAppsStopSamples {
      * @param manager Entry point to ContainerAppsApiManager.
      */
     public static void stopContainerApp(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        manager.containerApps().stop("rg", "testWorkerApp0", com.azure.core.util.Context.NONE);
+        manager.containerApps().stop("rg", "testworkerApp0", com.azure.core.util.Context.NONE);
     }
 }

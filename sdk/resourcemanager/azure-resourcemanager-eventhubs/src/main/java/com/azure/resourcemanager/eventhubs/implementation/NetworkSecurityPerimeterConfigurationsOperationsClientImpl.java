@@ -25,10 +25,9 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.eventhubs.fluent.NetworkSecurityPerimeterConfigurationsOperationsClient;
+import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.nio.ByteBuffer;
 
 /**
  * An instance of this class provides access to all the operations defined in
@@ -48,7 +47,7 @@ public final class NetworkSecurityPerimeterConfigurationsOperationsClientImpl
 
     /**
      * Initializes an instance of NetworkSecurityPerimeterConfigurationsOperationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     NetworkSecurityPerimeterConfigurationsOperationsClientImpl(EventHubManagementClientImpl client) {
@@ -78,7 +77,7 @@ public final class NetworkSecurityPerimeterConfigurationsOperationsClientImpl
 
     /**
      * Refreshes any information about the association.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param resourceAssociationName The ResourceAssociation Name.
@@ -119,7 +118,7 @@ public final class NetworkSecurityPerimeterConfigurationsOperationsClientImpl
 
     /**
      * Refreshes any information about the association.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param resourceAssociationName The ResourceAssociation Name.
@@ -160,7 +159,7 @@ public final class NetworkSecurityPerimeterConfigurationsOperationsClientImpl
 
     /**
      * Refreshes any information about the association.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param resourceAssociationName The ResourceAssociation Name.
@@ -180,7 +179,7 @@ public final class NetworkSecurityPerimeterConfigurationsOperationsClientImpl
 
     /**
      * Refreshes any information about the association.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param resourceAssociationName The ResourceAssociation Name.
@@ -202,7 +201,7 @@ public final class NetworkSecurityPerimeterConfigurationsOperationsClientImpl
 
     /**
      * Refreshes any information about the association.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param resourceAssociationName The ResourceAssociation Name.
@@ -219,7 +218,7 @@ public final class NetworkSecurityPerimeterConfigurationsOperationsClientImpl
 
     /**
      * Refreshes any information about the association.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param resourceAssociationName The ResourceAssociation Name.
@@ -238,7 +237,7 @@ public final class NetworkSecurityPerimeterConfigurationsOperationsClientImpl
 
     /**
      * Refreshes any information about the association.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param resourceAssociationName The ResourceAssociation Name.
@@ -256,7 +255,7 @@ public final class NetworkSecurityPerimeterConfigurationsOperationsClientImpl
 
     /**
      * Refreshes any information about the association.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param resourceAssociationName The ResourceAssociation Name.
@@ -275,7 +274,7 @@ public final class NetworkSecurityPerimeterConfigurationsOperationsClientImpl
 
     /**
      * Refreshes any information about the association.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param resourceAssociationName The ResourceAssociation Name.
@@ -290,7 +289,7 @@ public final class NetworkSecurityPerimeterConfigurationsOperationsClientImpl
 
     /**
      * Refreshes any information about the association.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param resourceAssociationName The ResourceAssociation Name.

@@ -13,14 +13,9 @@ final class QuickPulseCoordinatorInitData {
     final long waitBetweenPostsInMillis;
     final long waitOnErrorInMillis;
 
-    QuickPulseCoordinatorInitData(
-        QuickPulsePingSender pingSender,
-        QuickPulseDataFetcher dataFetcher,
-        QuickPulseDataSender dataSender,
-        QuickPulseDataCollector collector,
-        long waitBetweenPingsInMillis,
-        long waitBetweenPostsInMillis,
-        long waitOnErrorInMillis) {
+    QuickPulseCoordinatorInitData(QuickPulsePingSender pingSender, QuickPulseDataFetcher dataFetcher,
+        QuickPulseDataSender dataSender, QuickPulseDataCollector collector, long waitBetweenPingsInMillis,
+        long waitBetweenPostsInMillis, long waitOnErrorInMillis) {
 
         this.pingSender = pingSender;
         this.dataFetcher = dataFetcher;

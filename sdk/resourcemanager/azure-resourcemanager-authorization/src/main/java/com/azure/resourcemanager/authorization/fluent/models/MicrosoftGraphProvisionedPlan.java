@@ -5,46 +5,48 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** provisionedPlan. */
+/**
+ * provisionedPlan.
+ */
 @Fluent
-public final class MicrosoftGraphProvisionedPlan {
+public final class MicrosoftGraphProvisionedPlan implements JsonSerializable<MicrosoftGraphProvisionedPlan> {
     /*
      * For example, 'Enabled'.
      */
-    @JsonProperty(value = "capabilityStatus")
     private String capabilityStatus;
 
     /*
      * For example, 'Success'.
      */
-    @JsonProperty(value = "provisioningStatus")
     private String provisioningStatus;
 
     /*
      * The name of the service; for example, 'AccessControlS2S'
      */
-    @JsonProperty(value = "service")
     private String service;
 
     /*
      * provisionedPlan
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphProvisionedPlan class. */
+    /**
+     * Creates an instance of MicrosoftGraphProvisionedPlan class.
+     */
     public MicrosoftGraphProvisionedPlan() {
     }
 
     /**
      * Get the capabilityStatus property: For example, 'Enabled'.
-     *
+     * 
      * @return the capabilityStatus value.
      */
     public String capabilityStatus() {
@@ -53,7 +55,7 @@ public final class MicrosoftGraphProvisionedPlan {
 
     /**
      * Set the capabilityStatus property: For example, 'Enabled'.
-     *
+     * 
      * @param capabilityStatus the capabilityStatus value to set.
      * @return the MicrosoftGraphProvisionedPlan object itself.
      */
@@ -64,7 +66,7 @@ public final class MicrosoftGraphProvisionedPlan {
 
     /**
      * Get the provisioningStatus property: For example, 'Success'.
-     *
+     * 
      * @return the provisioningStatus value.
      */
     public String provisioningStatus() {
@@ -73,7 +75,7 @@ public final class MicrosoftGraphProvisionedPlan {
 
     /**
      * Set the provisioningStatus property: For example, 'Success'.
-     *
+     * 
      * @param provisioningStatus the provisioningStatus value to set.
      * @return the MicrosoftGraphProvisionedPlan object itself.
      */
@@ -84,7 +86,7 @@ public final class MicrosoftGraphProvisionedPlan {
 
     /**
      * Get the service property: The name of the service; for example, 'AccessControlS2S'.
-     *
+     * 
      * @return the service value.
      */
     public String service() {
@@ -93,7 +95,7 @@ public final class MicrosoftGraphProvisionedPlan {
 
     /**
      * Set the service property: The name of the service; for example, 'AccessControlS2S'.
-     *
+     * 
      * @param service the service value to set.
      * @return the MicrosoftGraphProvisionedPlan object itself.
      */
@@ -104,17 +106,16 @@ public final class MicrosoftGraphProvisionedPlan {
 
     /**
      * Get the additionalProperties property: provisionedPlan.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: provisionedPlan.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphProvisionedPlan object itself.
      */
@@ -123,19 +124,65 @@ public final class MicrosoftGraphProvisionedPlan {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("capabilityStatus", this.capabilityStatus);
+        jsonWriter.writeStringField("provisioningStatus", this.provisioningStatus);
+        jsonWriter.writeStringField("service", this.service);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphProvisionedPlan from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphProvisionedPlan if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphProvisionedPlan.
+     */
+    public static MicrosoftGraphProvisionedPlan fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphProvisionedPlan deserializedMicrosoftGraphProvisionedPlan
+                = new MicrosoftGraphProvisionedPlan();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("capabilityStatus".equals(fieldName)) {
+                    deserializedMicrosoftGraphProvisionedPlan.capabilityStatus = reader.getString();
+                } else if ("provisioningStatus".equals(fieldName)) {
+                    deserializedMicrosoftGraphProvisionedPlan.provisioningStatus = reader.getString();
+                } else if ("service".equals(fieldName)) {
+                    deserializedMicrosoftGraphProvisionedPlan.service = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphProvisionedPlan.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphProvisionedPlan;
+        });
     }
 }

@@ -30,6 +30,12 @@
         "description": "The location of the resource. By default, this is the same as the resource group."
       }
     },
+    "testApplicationOid": {
+      "type": "string",
+      "metadata": {
+        "description": "The principal to assign the role to. This is application object id."
+      }
+    },
     "searchSku": {
       "type": "string",
       "defaultValue": "basic",
@@ -45,11 +51,31 @@
   },
   "variables": {
     "searchServiceName": "[concat('azs-java-', parameters('baseName'))]",
-    "searchApiVersion": "2020-03-13",
+    "searchApiVersion": "2023-11-01",
     "storageAccountName": "[concat('search', parameters('baseName'))]",
-    "storageApiVersion": "2022-05-01"
+    "storageApiVersion": "2022-05-01",
+    "searchIndexDataContributorRoleId": "8ebe5a00-799e-43f5-93ac-243d3dce84a7",
+    "searchServiceContributorRoleId": "7ca78c08-252a-4471-8644-bb5ff32d4ba0"
   },
   "resources": [
+    {
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2019-04-01-preview",
+      "name": "[guid(resourceGroup().id, parameters('testApplicationOid'), variables('searchIndexDataContributorRoleId'))]",
+      "properties": {
+        "roleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', variables('searchIndexDataContributorRoleId'))]",
+        "principalId": "[parameters('testApplicationOid')]"
+      }
+    },
+    {
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2019-04-01-preview",
+      "name": "[guid(resourceGroup().id, parameters('testApplicationOid'), variables('searchServiceContributorRoleId'))]",
+      "properties": {
+        "roleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', variables('searchServiceContributorRoleId'))]",
+        "principalId": "[parameters('testApplicationOid')]"
+      }
+    },
     {
       "name": "[variables('searchServiceName')]",
       "type": "Microsoft.Search/searchServices",
@@ -62,10 +88,15 @@
         "replicaCount": 1,
         "partitionCount": 1,
         "hostingMode": "Default",
+        "roleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', variables('searchIndexDataContributorRoleId'))]",
+        "principalId": "[parameters('testApplicationOid')]",
+        "scope": "[resourceGroup().id]",
         "publicNetworkAccess": "Enabled",
         "networkRuleSet": {
           "ipRules": []
-        }
+        },
+        "disableLocalAuth": true,
+        "authOptions": null
       }
     },
     {

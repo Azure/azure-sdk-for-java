@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class UserAssignedIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UserAssignedIdentity model =
-            BinaryData
-                .fromString("{\"principalId\":\"ualupjmkh\",\"clientId\":\"obbc\",\"tenantId\":\"s\"}")
-                .toObject(UserAssignedIdentity.class);
-        Assertions.assertEquals("s", model.tenantId());
+        UserAssignedIdentity model = BinaryData
+            .fromString(
+                "{\"principalId\":\"vxqtayriwwroyqbe\",\"clientId\":\"mcqibycnojv\",\"tenantId\":\"mefqsgzvahapjyzh\"}")
+            .toObject(UserAssignedIdentity.class);
+        Assertions.assertEquals("mefqsgzvahapjyzh", model.tenantId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UserAssignedIdentity model = new UserAssignedIdentity().withTenantId("s");
+        UserAssignedIdentity model = new UserAssignedIdentity().withTenantId("mefqsgzvahapjyzh");
         model = BinaryData.fromObject(model).toObject(UserAssignedIdentity.class);
-        Assertions.assertEquals("s", model.tenantId());
+        Assertions.assertEquals("mefqsgzvahapjyzh", model.tenantId());
     }
 }

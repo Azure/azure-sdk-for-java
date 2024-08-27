@@ -7,22 +7,30 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.management.serializer.SerializerFactory;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineExtension;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
+import com.azure.resourcemanager.keyvault.models.Secret;
+import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.resourcemanager.storage.models.StorageAccount;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 public class VirtualMachineExtensionOperationsTests extends ComputeManagementTest {
     private String rgName = "";
-    private Region region = Region.US_EAST;
+    private Region region = Region.US_WEST2;
 
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
@@ -69,7 +77,12 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
 
         final InputStream embeddedJsonConfig =
             VirtualMachineExtensionOperationsTests.class.getResourceAsStream("/linux_diagnostics_public_config.json");
-        String jsonConfig = ((new ObjectMapper()).readTree(embeddedJsonConfig)).toString();
+        String jsonConfig = SerializerFactory.createDefaultManagementSerializerAdapter()
+            .serialize(
+                SerializerFactory.createDefaultManagementSerializerAdapter()
+                    .deserialize(embeddedJsonConfig, Object.class, SerializerEncoding.JSON),
+                SerializerEncoding.JSON
+            );
         jsonConfig = jsonConfig.replace("%VirtualMachineResourceId%", vm.id());
 
         // Update Linux VM to enable Diagnostics
@@ -176,7 +189,7 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
                 .withRootUsername("Foo12")
                 .withSsh(sshPublicKey())
-                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+                .withSize(VirtualMachineSizeTypes.fromString("Standard_A1_v2"))
                 .defineNewExtension("CustomScriptForLinux")
                 .withPublisher("Microsoft.OSTCExtensions")
                 .withType("CustomScriptForLinux")
@@ -315,5 +328,59 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
         // In deallocated state, we can get VM's extensions but not their instance views.
         Assertions.assertTrue(vm.listExtensions().size() > 0);
         Assertions.assertTrue(vm.listExtensions().values().stream().allMatch(extension -> extension.getInstanceView() == null));
+    }
+
+    @Test
+    public void canIgnoreInvalidJson() throws IOException {
+        String vmName = generateRandomResourceName("javavm", 15);
+        String vaultName = generateRandomResourceName("javavt", 15);
+        final String secretName = generateRandomResourceName("srt", 10);
+
+        Vault vault =
+            this
+                .keyVaultManager
+                .vaults()
+                .define(vaultName)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
+                .defineAccessPolicy()
+                .forUser(azureCliSignedInUser().userPrincipalName())
+                .allowSecretAllPermissions()
+                .attach()
+                .withDeploymentEnabled()
+                .create();
+        final InputStream embeddedJsonConfig =
+            this.getClass().getResourceAsStream("/myTest.txt");
+        String secretValue = IOUtils.toString(embeddedJsonConfig, StandardCharsets.UTF_8);
+        Secret secret = vault.secrets().define(secretName).withValue(secretValue).create();
+
+        Map<String, Object> extensionSecretSettings = new HashMap<>();
+        extensionSecretSettings.put("pollingIntervalInS", "3600");
+        extensionSecretSettings.put("observedCertificates", Collections.singletonList(secret.id()));
+
+        VirtualMachine vm =
+            computeManager
+                .virtualMachines()
+                .define(vmName)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
+                .withNewPrimaryNetwork("10.0.0.0/28")
+                .withPrimaryPrivateIPAddressDynamic()
+                .withoutPrimaryPublicIPAddress()
+                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
+                .withRootUsername("Foo12")
+                .withSsh(sshPublicKey())
+                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+                .defineNewExtension("KeyVaultForLinux")
+                .withPublisher("Microsoft.Azure.KeyVault")
+                .withType("KeyVaultForLinux")
+                .withVersion("1.0")
+                .withPublicSetting("secretsManagementSettings", extensionSecretSettings)
+                .attach()
+                .create();
+        VirtualMachineExtension extension = vm.listExtensions().get("KeyVaultForLinux");
+        Assertions.assertNotNull(extension);
+        Assertions.assertNotNull(extension.publicSettingsAsJsonString());
+        Assertions.assertFalse(extension.publicSettings().isEmpty());
     }
 }

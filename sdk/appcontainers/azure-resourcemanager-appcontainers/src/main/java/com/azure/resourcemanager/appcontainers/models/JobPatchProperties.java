@@ -5,39 +5,32 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * Container Apps Job resource specific properties.
  */
 @Fluent
-public final class JobPatchProperties {
-    /*
-     * The complex type of the extended location.
-     */
-    @JsonProperty(value = "extendedLocation")
-    private ExtendedLocation extendedLocation;
-
+public final class JobPatchProperties implements JsonSerializable<JobPatchProperties> {
     /*
      * Managed identities needed by a container app job to interact with other Azure services to not maintain any
      * secrets or credentials in code.
      */
-    @JsonProperty(value = "identity")
     private ManagedServiceIdentity identity;
 
     /*
      * Resource tags.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * The properties property.
      */
-    @JsonProperty(value = "properties")
     private JobPatchPropertiesProperties properties;
 
     /**
@@ -47,28 +40,8 @@ public final class JobPatchProperties {
     }
 
     /**
-     * Get the extendedLocation property: The complex type of the extended location.
-     * 
-     * @return the extendedLocation value.
-     */
-    public ExtendedLocation extendedLocation() {
-        return this.extendedLocation;
-    }
-
-    /**
-     * Set the extendedLocation property: The complex type of the extended location.
-     * 
-     * @param extendedLocation the extendedLocation value to set.
-     * @return the JobPatchProperties object itself.
-     */
-    public JobPatchProperties withExtendedLocation(ExtendedLocation extendedLocation) {
-        this.extendedLocation = extendedLocation;
-        return this;
-    }
-
-    /**
-     * Get the identity property: Managed identities needed by a container app job to interact with other Azure
-     * services to not maintain any secrets or credentials in code.
+     * Get the identity property: Managed identities needed by a container app job to interact with other Azure services
+     * to not maintain any secrets or credentials in code.
      * 
      * @return the identity value.
      */
@@ -77,8 +50,8 @@ public final class JobPatchProperties {
     }
 
     /**
-     * Set the identity property: Managed identities needed by a container app job to interact with other Azure
-     * services to not maintain any secrets or credentials in code.
+     * Set the identity property: Managed identities needed by a container app job to interact with other Azure services
+     * to not maintain any secrets or credentials in code.
      * 
      * @param identity the identity value to set.
      * @return the JobPatchProperties object itself.
@@ -134,14 +107,54 @@ public final class JobPatchProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (extendedLocation() != null) {
-            extendedLocation().validate();
-        }
         if (identity() != null) {
             identity().validate();
         }
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JobPatchProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JobPatchProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the JobPatchProperties.
+     */
+    public static JobPatchProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JobPatchProperties deserializedJobPatchProperties = new JobPatchProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("identity".equals(fieldName)) {
+                    deserializedJobPatchProperties.identity = ManagedServiceIdentity.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedJobPatchProperties.tags = tags;
+                } else if ("properties".equals(fieldName)) {
+                    deserializedJobPatchProperties.properties = JobPatchPropertiesProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJobPatchProperties;
+        });
     }
 }

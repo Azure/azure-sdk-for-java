@@ -5,18 +5,21 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Describes Windows Remote Management configuration of the VM.
  */
 @Fluent
-public final class WinRMConfiguration {
+public final class WinRMConfiguration implements JsonSerializable<WinRMConfiguration> {
     /*
      * The list of Windows Remote Management listeners
      */
-    @JsonProperty(value = "listeners")
     private List<WinRMListener> listeners;
 
     /**
@@ -54,5 +57,42 @@ public final class WinRMConfiguration {
         if (listeners() != null) {
             listeners().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("listeners", this.listeners, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WinRMConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WinRMConfiguration if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WinRMConfiguration.
+     */
+    public static WinRMConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WinRMConfiguration deserializedWinRMConfiguration = new WinRMConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("listeners".equals(fieldName)) {
+                    List<WinRMListener> listeners = reader.readArray(reader1 -> WinRMListener.fromJson(reader1));
+                    deserializedWinRMConfiguration.listeners = listeners;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWinRMConfiguration;
+        });
     }
 }

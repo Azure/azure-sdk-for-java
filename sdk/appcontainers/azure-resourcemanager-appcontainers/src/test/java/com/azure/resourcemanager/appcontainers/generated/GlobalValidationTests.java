@@ -14,23 +14,22 @@ public final class GlobalValidationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GlobalValidation model = BinaryData.fromString(
-            "{\"unauthenticatedClientAction\":\"RedirectToLoginPage\",\"redirectToProvider\":\"rkujy\",\"excludedPaths\":[\"eju\"]}")
+            "{\"unauthenticatedClientAction\":\"Return401\",\"redirectToProvider\":\"mglzufcy\",\"excludedPaths\":[\"hdbihan\",\"fhfcb\",\"y\"]}")
             .toObject(GlobalValidation.class);
-        Assertions.assertEquals(UnauthenticatedClientActionV2.REDIRECT_TO_LOGIN_PAGE,
-            model.unauthenticatedClientAction());
-        Assertions.assertEquals("rkujy", model.redirectToProvider());
-        Assertions.assertEquals("eju", model.excludedPaths().get(0));
+        Assertions.assertEquals(UnauthenticatedClientActionV2.RETURN401, model.unauthenticatedClientAction());
+        Assertions.assertEquals("mglzufcy", model.redirectToProvider());
+        Assertions.assertEquals("hdbihan", model.excludedPaths().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GlobalValidation model = new GlobalValidation()
-            .withUnauthenticatedClientAction(UnauthenticatedClientActionV2.REDIRECT_TO_LOGIN_PAGE)
-            .withRedirectToProvider("rkujy").withExcludedPaths(Arrays.asList("eju"));
+        GlobalValidation model
+            = new GlobalValidation().withUnauthenticatedClientAction(UnauthenticatedClientActionV2.RETURN401)
+                .withRedirectToProvider("mglzufcy")
+                .withExcludedPaths(Arrays.asList("hdbihan", "fhfcb", "y"));
         model = BinaryData.fromObject(model).toObject(GlobalValidation.class);
-        Assertions.assertEquals(UnauthenticatedClientActionV2.REDIRECT_TO_LOGIN_PAGE,
-            model.unauthenticatedClientAction());
-        Assertions.assertEquals("rkujy", model.redirectToProvider());
-        Assertions.assertEquals("eju", model.excludedPaths().get(0));
+        Assertions.assertEquals(UnauthenticatedClientActionV2.RETURN401, model.unauthenticatedClientAction());
+        Assertions.assertEquals("mglzufcy", model.redirectToProvider());
+        Assertions.assertEquals("hdbihan", model.excludedPaths().get(0));
     }
 }

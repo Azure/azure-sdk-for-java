@@ -5,38 +5,40 @@
 package com.azure.resourcemanager.appcontainers.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appcontainers.models.JobExecutionRunningState;
 import com.azure.resourcemanager.appcontainers.models.JobExecutionTemplate;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Container Apps Job execution specific properties.
  */
 @Fluent
-public final class JobExecutionProperties {
+public final class JobExecutionProperties implements JsonSerializable<JobExecutionProperties> {
     /*
      * Current running State of the job
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private JobExecutionRunningState status;
 
     /*
      * Job execution start time.
      */
-    @JsonProperty(value = "startTime")
     private OffsetDateTime startTime;
 
     /*
      * Job execution end time.
      */
-    @JsonProperty(value = "endTime")
     private OffsetDateTime endTime;
 
     /*
      * Job's execution container.
      */
-    @JsonProperty(value = "template")
     private JobExecutionTemplate template;
 
     /**
@@ -123,5 +125,53 @@ public final class JobExecutionProperties {
         if (template() != null) {
             template().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("endTime",
+            this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
+        jsonWriter.writeJsonField("template", this.template);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JobExecutionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JobExecutionProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the JobExecutionProperties.
+     */
+    public static JobExecutionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JobExecutionProperties deserializedJobExecutionProperties = new JobExecutionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedJobExecutionProperties.status = JobExecutionRunningState.fromString(reader.getString());
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedJobExecutionProperties.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedJobExecutionProperties.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("template".equals(fieldName)) {
+                    deserializedJobExecutionProperties.template = JobExecutionTemplate.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJobExecutionProperties;
+        });
     }
 }

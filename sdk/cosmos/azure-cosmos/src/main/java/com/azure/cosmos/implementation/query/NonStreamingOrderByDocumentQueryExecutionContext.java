@@ -155,7 +155,9 @@ public class NonStreamingOrderByDocumentQueryExecutionContext
         TriFunction<FeedRangeEpkImpl, String, Integer, RxDocumentServiceRequest> createRequestFunc,
         Function<RxDocumentServiceRequest, Mono<FeedResponse<Document>>> executeFunc,
         Supplier<DocumentClientRetryPolicy> createRetryPolicyFunc,
-        FeedRangeEpkImpl feedRange) {
+        FeedRangeEpkImpl feedRange,
+        String collectionLink) {
+
         return new NonStreamingOrderByDocumentProducer(
             consumeComparer,
             client,
@@ -164,7 +166,7 @@ public class NonStreamingOrderByDocumentQueryExecutionContext
             createRequestFunc,
             executeFunc,
             feedRange,
-            collectionRid,
+            collectionLink,
             createRetryPolicyFunc,
             Document.class,
             correlatedActivityId,

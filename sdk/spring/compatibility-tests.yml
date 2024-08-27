@@ -5,7 +5,7 @@ variables:
   - template: ../../eng/pipelines/templates/variables/globals.yml
 
 stages:
-  - stage: "spring_boot_compatibility_tests"
+  - stage: "LatestVersionCompatibility"
     jobs:
       - template: /eng/common/pipelines/templates/jobs/generate-job-matrix.yml
         parameters:
@@ -14,7 +14,7 @@ stages:
           AdditionalParameters:
             ServiceDirectory: spring
           MatrixConfigs:
-            - Name: spring_boot_supported_version_tests
+            - Name: latest_supported_version_tests
               Path: sdk/spring/pipeline/supported-version-matrix.json
               Selection: sparse
               NonSparseParameters:
@@ -23,9 +23,30 @@ stages:
           PreGenerationSteps:
             - script: |
                 python -m pip install termcolor
-              displayName: 'python module install'
+              displayName: 'Install python module'
             - script: |
-                python ./sdk/spring/scripts/compatibility_update_supported_version_matrix_json.py --target-version-prefix 3. --non-target-version-prefix-list 3.0.
-              displayName: 'update test version'
-          MatrixFilters:
-            - JavaTestVersion=^(?!1.8|1.11).*
+                python ./sdk/spring/scripts/compatibility_update_supported_version_matrix_json.py --target-version-prefix 3. --non-target-version-prefix-list 3.0. --use-the-latest-version yes
+              displayName: 'Update supported Spring versions'
+  - stage: "NonLatestVersionsCompatibility"
+    dependsOn: []
+    jobs:
+      - template: /eng/common/pipelines/templates/jobs/generate-job-matrix.yml
+        parameters:
+          SparseCheckout: true
+          JobTemplatePath: ../../../../../sdk/spring/pipeline/compatibility-tests-job.yml
+          AdditionalParameters:
+            ServiceDirectory: spring
+          MatrixConfigs:
+            - Name: non_latest_supported_version_tests
+              Path: sdk/spring/pipeline/supported-version-matrix.json
+              Selection: sparse
+              NonSparseParameters:
+                - SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION
+              GenerateVMJobs: true
+          PreGenerationSteps:
+            - script: |
+                python -m pip install termcolor
+              displayName: 'Install python module'
+            - script: |
+                python ./sdk/spring/scripts/compatibility_update_supported_version_matrix_json.py --target-version-prefix 3. --non-target-version-prefix-list 3.0. --use-the-latest-version no
+              displayName: 'Update supported Spring versions'

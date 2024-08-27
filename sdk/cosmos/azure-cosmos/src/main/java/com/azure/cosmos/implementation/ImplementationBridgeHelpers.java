@@ -84,12 +84,14 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 
+import java.net.URI;
 import java.time.Duration;
 import java.util.Collection;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -298,6 +300,10 @@ public class ImplementationBridgeHelpers {
             void setPartitionKeyDefinition(CosmosQueryRequestOptions options, PartitionKeyDefinition partitionKeyDefinition);
 
             PartitionKeyDefinition getPartitionKeyDefinition(CosmosQueryRequestOptions options);
+
+            void setCollectionRid(CosmosQueryRequestOptions options, String collectionRid);
+
+            String getCollectionRid(CosmosQueryRequestOptions options);
         }
     }
 
@@ -331,7 +337,7 @@ public class ImplementationBridgeHelpers {
         }
 
         public interface CosmosReadManyRequestOptionsAccessor {
-            public CosmosQueryRequestOptionsBase<?> getImpl(CosmosReadManyRequestOptions options);
+            CosmosQueryRequestOptionsBase<?> getImpl(CosmosReadManyRequestOptions options);
         }
     }
 
@@ -374,6 +380,14 @@ public class ImplementationBridgeHelpers {
             CosmosChangeFeedRequestOptions createForProcessingFromContinuation(String continuation, FeedRange targetRange, String continuationLsn);
 
             CosmosChangeFeedRequestOptions clone(CosmosChangeFeedRequestOptions toBeCloned);
+
+            String getCollectionRid(CosmosChangeFeedRequestOptions changeFeedRequestOptions);
+
+            void setCollectionRid(CosmosChangeFeedRequestOptions changeFeedRequestOptions, String collectionRid);
+
+            PartitionKeyDefinition getPartitionKeyDefinition(CosmosChangeFeedRequestOptions changeFeedRequestOptions);
+
+            void setPartitionKeyDefinition(CosmosChangeFeedRequestOptions changeFeedRequestOptions, PartitionKeyDefinition partitionKeyDefinition);
         }
     }
 
@@ -451,54 +465,6 @@ public class ImplementationBridgeHelpers {
         }
 
         public interface CosmosBulkExecutionOptionsAccessor {
-
-            void setOperationContext(CosmosBulkExecutionOptions options,
-                                     OperationContextAndListenerTuple operationContextAndListenerTuple);
-
-            OperationContextAndListenerTuple getOperationContext(CosmosBulkExecutionOptions options);
-
-            Duration getMaxMicroBatchInterval(CosmosBulkExecutionOptions options);
-
-            CosmosBulkExecutionOptions setTargetedMicroBatchRetryRate(
-                CosmosBulkExecutionOptions options,
-                double minRetryRate,
-                double maxRetryRate);
-
-            @SuppressWarnings({"unchecked"})
-            <T> T getLegacyBatchScopedContext(CosmosBulkExecutionOptions options);
-
-            double getMinTargetedMicroBatchRetryRate(CosmosBulkExecutionOptions options);
-
-            double getMaxTargetedMicroBatchRetryRate(CosmosBulkExecutionOptions options);
-
-            int getMaxMicroBatchPayloadSizeInBytes(CosmosBulkExecutionOptions options);
-
-            CosmosBulkExecutionOptions setMaxMicroBatchPayloadSizeInBytes(
-                CosmosBulkExecutionOptions options,
-                int maxMicroBatchPayloadSizeInBytes);
-
-            int getMaxMicroBatchConcurrency(CosmosBulkExecutionOptions options);
-
-            Integer getMaxConcurrentCosmosPartitions(CosmosBulkExecutionOptions options);
-
-            CosmosBulkExecutionOptions setMaxConcurrentCosmosPartitions(
-                CosmosBulkExecutionOptions options, int mxConcurrentCosmosPartitions);
-
-            CosmosBulkExecutionOptions setHeader(CosmosBulkExecutionOptions cosmosBulkExecutionOptions,
-                                                 String name, String value);
-
-            Map<String, String> getHeader(CosmosBulkExecutionOptions cosmosBulkExecutionOptions);
-
-            Map<String, String> getCustomOptions(CosmosBulkExecutionOptions cosmosBulkExecutionOptions);
-
-            int getMaxMicroBatchSize(CosmosBulkExecutionOptions cosmosBulkExecutionOptions);
-
-            void setDiagnosticsTracker(CosmosBulkExecutionOptions cosmosBulkExecutionOptions, BulkExecutorDiagnosticsTracker tracker);
-
-            BulkExecutorDiagnosticsTracker getDiagnosticsTracker(CosmosBulkExecutionOptions cosmosBulkExecutionOptions);
-
-            CosmosBulkExecutionOptions setSchedulerOverride(CosmosBulkExecutionOptions cosmosBulkExecutionOptions, Scheduler customScheduler);
-
             CosmosBulkExecutionOptions clone(CosmosBulkExecutionOptions toBeCloned);
             CosmosBulkExecutionOptionsImpl getImpl(CosmosBulkExecutionOptions options);
         }
@@ -869,6 +835,12 @@ public class ImplementationBridgeHelpers {
             boolean isNotEmpty(CosmosDiagnostics cosmosDiagnostics);
 
             void setDiagnosticsContext(CosmosDiagnostics cosmosDiagnostics, CosmosDiagnosticsContext ctx);
+
+            URI getFirstContactedLocationEndpoint(CosmosDiagnostics cosmosDiagnostics);
+
+            void mergeMetadataDiagnosticContext(CosmosDiagnostics cosmosDiagnostics, MetadataDiagnosticsContext otherMetadataDiagnosticsContext);
+
+            void mergeSerializationDiagnosticContext(CosmosDiagnostics cosmosDiagnostics, SerializationDiagnosticsContext otherSerializationDiagnosticsContext);
         }
     }
 
@@ -1104,6 +1076,12 @@ public class ImplementationBridgeHelpers {
             <T> FeedResponse<T> createChangeFeedResponse(RxDocumentServiceResponse response,
                                                    CosmosItemSerializer itemSerializer,
                                                    Class<T> cls);
+
+            <T> FeedResponse<T> createChangeFeedResponse(RxDocumentServiceResponse response,
+                                                         CosmosItemSerializer itemSerializer,
+                                                         Class<T> cls,
+                                                         CosmosDiagnostics diagnostics);
+
             <T> boolean getNoChanges(FeedResponse<T> feedResponse);
             <TNew, T> FeedResponse<TNew> convertGenericType(FeedResponse<T> feedResponse, Function<T, TNew> conversion);
             <T> FeedResponse<T> createFeedResponse(

@@ -5,127 +5,114 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * managedAppRegistration
- *
- * <p>The ManagedAppEntity is the base entity type for all other entity types under app management workflow.
+ * 
+ * The ManagedAppEntity is the base entity type for all other entity types under app management workflow.
  */
 @Fluent
 public final class MicrosoftGraphManagedAppRegistration extends MicrosoftGraphEntity {
     /*
      * The identifier for a mobile app.
      */
-    @JsonProperty(value = "appIdentifier")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> appIdentifier;
 
     /*
      * App version
      */
-    @JsonProperty(value = "applicationVersion")
     private String applicationVersion;
 
     /*
      * Date and time of creation
      */
-    @JsonProperty(value = "createdDateTime")
     private OffsetDateTime createdDateTime;
 
     /*
      * Host device name
      */
-    @JsonProperty(value = "deviceName")
     private String deviceName;
 
     /*
      * App management SDK generated tag, which helps relate apps hosted on the same device. Not guaranteed to relate
      * apps in all conditions.
      */
-    @JsonProperty(value = "deviceTag")
     private String deviceTag;
 
     /*
      * Host device type
      */
-    @JsonProperty(value = "deviceType")
     private String deviceType;
 
     /*
      * Zero or more reasons an app registration is flagged. E.g. app running on rooted device
      */
-    @JsonProperty(value = "flaggedReasons")
     private List<MicrosoftGraphManagedAppFlaggedReason> flaggedReasons;
 
     /*
      * Date and time of last the app synced with management service.
      */
-    @JsonProperty(value = "lastSyncDateTime")
     private OffsetDateTime lastSyncDateTime;
 
     /*
      * App management SDK version
      */
-    @JsonProperty(value = "managementSdkVersion")
     private String managementSdkVersion;
 
     /*
      * Operating System version
      */
-    @JsonProperty(value = "platformVersion")
     private String platformVersion;
 
     /*
      * The user Id to who this app registration belongs.
      */
-    @JsonProperty(value = "userId")
     private String userId;
 
     /*
      * Version of the entity.
      */
-    @JsonProperty(value = "version")
     private String version;
 
     /*
      * Zero or more policys already applied on the registered app when it last synchronized with managment service.
      */
-    @JsonProperty(value = "appliedPolicies")
     private List<MicrosoftGraphManagedAppPolicy> appliedPolicies;
 
     /*
      * Zero or more policies admin intended for the app as of now.
      */
-    @JsonProperty(value = "intendedPolicies")
     private List<MicrosoftGraphManagedAppPolicy> intendedPolicies;
 
     /*
      * Zero or more long running operations triggered on the app registration.
      */
-    @JsonProperty(value = "operations")
     private List<MicrosoftGraphManagedAppOperation> operations;
 
     /*
      * The ManagedAppEntity is the base entity type for all other entity types under app management workflow.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphManagedAppRegistration class. */
+    /**
+     * Creates an instance of MicrosoftGraphManagedAppRegistration class.
+     */
     public MicrosoftGraphManagedAppRegistration() {
     }
 
     /**
      * Get the appIdentifier property: The identifier for a mobile app.
-     *
+     * 
      * @return the appIdentifier value.
      */
     public Map<String, Object> appIdentifier() {
@@ -134,7 +121,7 @@ public final class MicrosoftGraphManagedAppRegistration extends MicrosoftGraphEn
 
     /**
      * Set the appIdentifier property: The identifier for a mobile app.
-     *
+     * 
      * @param appIdentifier the appIdentifier value to set.
      * @return the MicrosoftGraphManagedAppRegistration object itself.
      */
@@ -145,7 +132,7 @@ public final class MicrosoftGraphManagedAppRegistration extends MicrosoftGraphEn
 
     /**
      * Get the applicationVersion property: App version.
-     *
+     * 
      * @return the applicationVersion value.
      */
     public String applicationVersion() {
@@ -154,7 +141,7 @@ public final class MicrosoftGraphManagedAppRegistration extends MicrosoftGraphEn
 
     /**
      * Set the applicationVersion property: App version.
-     *
+     * 
      * @param applicationVersion the applicationVersion value to set.
      * @return the MicrosoftGraphManagedAppRegistration object itself.
      */
@@ -165,7 +152,7 @@ public final class MicrosoftGraphManagedAppRegistration extends MicrosoftGraphEn
 
     /**
      * Get the createdDateTime property: Date and time of creation.
-     *
+     * 
      * @return the createdDateTime value.
      */
     public OffsetDateTime createdDateTime() {
@@ -174,7 +161,7 @@ public final class MicrosoftGraphManagedAppRegistration extends MicrosoftGraphEn
 
     /**
      * Set the createdDateTime property: Date and time of creation.
-     *
+     * 
      * @param createdDateTime the createdDateTime value to set.
      * @return the MicrosoftGraphManagedAppRegistration object itself.
      */
@@ -185,7 +172,7 @@ public final class MicrosoftGraphManagedAppRegistration extends MicrosoftGraphEn
 
     /**
      * Get the deviceName property: Host device name.
-     *
+     * 
      * @return the deviceName value.
      */
     public String deviceName() {
@@ -194,7 +181,7 @@ public final class MicrosoftGraphManagedAppRegistration extends MicrosoftGraphEn
 
     /**
      * Set the deviceName property: Host device name.
-     *
+     * 
      * @param deviceName the deviceName value to set.
      * @return the MicrosoftGraphManagedAppRegistration object itself.
      */
@@ -206,7 +193,7 @@ public final class MicrosoftGraphManagedAppRegistration extends MicrosoftGraphEn
     /**
      * Get the deviceTag property: App management SDK generated tag, which helps relate apps hosted on the same device.
      * Not guaranteed to relate apps in all conditions.
-     *
+     * 
      * @return the deviceTag value.
      */
     public String deviceTag() {
@@ -216,7 +203,7 @@ public final class MicrosoftGraphManagedAppRegistration extends MicrosoftGraphEn
     /**
      * Set the deviceTag property: App management SDK generated tag, which helps relate apps hosted on the same device.
      * Not guaranteed to relate apps in all conditions.
-     *
+     * 
      * @param deviceTag the deviceTag value to set.
      * @return the MicrosoftGraphManagedAppRegistration object itself.
      */
@@ -227,7 +214,7 @@ public final class MicrosoftGraphManagedAppRegistration extends MicrosoftGraphEn
 
     /**
      * Get the deviceType property: Host device type.
-     *
+     * 
      * @return the deviceType value.
      */
     public String deviceType() {
@@ -236,7 +223,7 @@ public final class MicrosoftGraphManagedAppRegistration extends MicrosoftGraphEn
 
     /**
      * Set the deviceType property: Host device type.
-     *
+     * 
      * @param deviceType the deviceType value to set.
      * @return the MicrosoftGraphManagedAppRegistration object itself.
      */
@@ -248,7 +235,7 @@ public final class MicrosoftGraphManagedAppRegistration extends MicrosoftGraphEn
     /**
      * Get the flaggedReasons property: Zero or more reasons an app registration is flagged. E.g. app running on rooted
      * device.
-     *
+     * 
      * @return the flaggedReasons value.
      */
     public List<MicrosoftGraphManagedAppFlaggedReason> flaggedReasons() {
@@ -258,19 +245,19 @@ public final class MicrosoftGraphManagedAppRegistration extends MicrosoftGraphEn
     /**
      * Set the flaggedReasons property: Zero or more reasons an app registration is flagged. E.g. app running on rooted
      * device.
-     *
+     * 
      * @param flaggedReasons the flaggedReasons value to set.
      * @return the MicrosoftGraphManagedAppRegistration object itself.
      */
-    public MicrosoftGraphManagedAppRegistration withFlaggedReasons(
-        List<MicrosoftGraphManagedAppFlaggedReason> flaggedReasons) {
+    public MicrosoftGraphManagedAppRegistration
+        withFlaggedReasons(List<MicrosoftGraphManagedAppFlaggedReason> flaggedReasons) {
         this.flaggedReasons = flaggedReasons;
         return this;
     }
 
     /**
      * Get the lastSyncDateTime property: Date and time of last the app synced with management service.
-     *
+     * 
      * @return the lastSyncDateTime value.
      */
     public OffsetDateTime lastSyncDateTime() {
@@ -279,7 +266,7 @@ public final class MicrosoftGraphManagedAppRegistration extends MicrosoftGraphEn
 
     /**
      * Set the lastSyncDateTime property: Date and time of last the app synced with management service.
-     *
+     * 
      * @param lastSyncDateTime the lastSyncDateTime value to set.
      * @return the MicrosoftGraphManagedAppRegistration object itself.
      */
@@ -290,7 +277,7 @@ public final class MicrosoftGraphManagedAppRegistration extends MicrosoftGraphEn
 
     /**
      * Get the managementSdkVersion property: App management SDK version.
-     *
+     * 
      * @return the managementSdkVersion value.
      */
     public String managementSdkVersion() {
@@ -299,7 +286,7 @@ public final class MicrosoftGraphManagedAppRegistration extends MicrosoftGraphEn
 
     /**
      * Set the managementSdkVersion property: App management SDK version.
-     *
+     * 
      * @param managementSdkVersion the managementSdkVersion value to set.
      * @return the MicrosoftGraphManagedAppRegistration object itself.
      */
@@ -310,7 +297,7 @@ public final class MicrosoftGraphManagedAppRegistration extends MicrosoftGraphEn
 
     /**
      * Get the platformVersion property: Operating System version.
-     *
+     * 
      * @return the platformVersion value.
      */
     public String platformVersion() {
@@ -319,7 +306,7 @@ public final class MicrosoftGraphManagedAppRegistration extends MicrosoftGraphEn
 
     /**
      * Set the platformVersion property: Operating System version.
-     *
+     * 
      * @param platformVersion the platformVersion value to set.
      * @return the MicrosoftGraphManagedAppRegistration object itself.
      */
@@ -330,7 +317,7 @@ public final class MicrosoftGraphManagedAppRegistration extends MicrosoftGraphEn
 
     /**
      * Get the userId property: The user Id to who this app registration belongs.
-     *
+     * 
      * @return the userId value.
      */
     public String userId() {
@@ -339,7 +326,7 @@ public final class MicrosoftGraphManagedAppRegistration extends MicrosoftGraphEn
 
     /**
      * Set the userId property: The user Id to who this app registration belongs.
-     *
+     * 
      * @param userId the userId value to set.
      * @return the MicrosoftGraphManagedAppRegistration object itself.
      */
@@ -350,7 +337,7 @@ public final class MicrosoftGraphManagedAppRegistration extends MicrosoftGraphEn
 
     /**
      * Get the version property: Version of the entity.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -359,7 +346,7 @@ public final class MicrosoftGraphManagedAppRegistration extends MicrosoftGraphEn
 
     /**
      * Set the version property: Version of the entity.
-     *
+     * 
      * @param version the version value to set.
      * @return the MicrosoftGraphManagedAppRegistration object itself.
      */
@@ -371,7 +358,7 @@ public final class MicrosoftGraphManagedAppRegistration extends MicrosoftGraphEn
     /**
      * Get the appliedPolicies property: Zero or more policys already applied on the registered app when it last
      * synchronized with managment service.
-     *
+     * 
      * @return the appliedPolicies value.
      */
     public List<MicrosoftGraphManagedAppPolicy> appliedPolicies() {
@@ -381,19 +368,19 @@ public final class MicrosoftGraphManagedAppRegistration extends MicrosoftGraphEn
     /**
      * Set the appliedPolicies property: Zero or more policys already applied on the registered app when it last
      * synchronized with managment service.
-     *
+     * 
      * @param appliedPolicies the appliedPolicies value to set.
      * @return the MicrosoftGraphManagedAppRegistration object itself.
      */
-    public MicrosoftGraphManagedAppRegistration withAppliedPolicies(
-        List<MicrosoftGraphManagedAppPolicy> appliedPolicies) {
+    public MicrosoftGraphManagedAppRegistration
+        withAppliedPolicies(List<MicrosoftGraphManagedAppPolicy> appliedPolicies) {
         this.appliedPolicies = appliedPolicies;
         return this;
     }
 
     /**
      * Get the intendedPolicies property: Zero or more policies admin intended for the app as of now.
-     *
+     * 
      * @return the intendedPolicies value.
      */
     public List<MicrosoftGraphManagedAppPolicy> intendedPolicies() {
@@ -402,19 +389,19 @@ public final class MicrosoftGraphManagedAppRegistration extends MicrosoftGraphEn
 
     /**
      * Set the intendedPolicies property: Zero or more policies admin intended for the app as of now.
-     *
+     * 
      * @param intendedPolicies the intendedPolicies value to set.
      * @return the MicrosoftGraphManagedAppRegistration object itself.
      */
-    public MicrosoftGraphManagedAppRegistration withIntendedPolicies(
-        List<MicrosoftGraphManagedAppPolicy> intendedPolicies) {
+    public MicrosoftGraphManagedAppRegistration
+        withIntendedPolicies(List<MicrosoftGraphManagedAppPolicy> intendedPolicies) {
         this.intendedPolicies = intendedPolicies;
         return this;
     }
 
     /**
      * Get the operations property: Zero or more long running operations triggered on the app registration.
-     *
+     * 
      * @return the operations value.
      */
     public List<MicrosoftGraphManagedAppOperation> operations() {
@@ -423,7 +410,7 @@ public final class MicrosoftGraphManagedAppRegistration extends MicrosoftGraphEn
 
     /**
      * Set the operations property: Zero or more long running operations triggered on the app registration.
-     *
+     * 
      * @param operations the operations value to set.
      * @return the MicrosoftGraphManagedAppRegistration object itself.
      */
@@ -435,10 +422,9 @@ public final class MicrosoftGraphManagedAppRegistration extends MicrosoftGraphEn
     /**
      * Get the additionalProperties property: The ManagedAppEntity is the base entity type for all other entity types
      * under app management workflow.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
@@ -446,7 +432,7 @@ public final class MicrosoftGraphManagedAppRegistration extends MicrosoftGraphEn
     /**
      * Set the additionalProperties property: The ManagedAppEntity is the base entity type for all other entity types
      * under app management workflow.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphManagedAppRegistration object itself.
      */
@@ -455,15 +441,9 @@ public final class MicrosoftGraphManagedAppRegistration extends MicrosoftGraphEn
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphManagedAppRegistration withId(String id) {
         super.withId(id);
@@ -472,7 +452,7 @@ public final class MicrosoftGraphManagedAppRegistration extends MicrosoftGraphEn
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -487,5 +467,117 @@ public final class MicrosoftGraphManagedAppRegistration extends MicrosoftGraphEn
         if (operations() != null) {
             operations().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeMapField("appIdentifier", this.appIdentifier,
+            (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeStringField("applicationVersion", this.applicationVersion);
+        jsonWriter.writeStringField("createdDateTime",
+            this.createdDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdDateTime));
+        jsonWriter.writeStringField("deviceName", this.deviceName);
+        jsonWriter.writeStringField("deviceTag", this.deviceTag);
+        jsonWriter.writeStringField("deviceType", this.deviceType);
+        jsonWriter.writeArrayField("flaggedReasons", this.flaggedReasons,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeStringField("lastSyncDateTime",
+            this.lastSyncDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastSyncDateTime));
+        jsonWriter.writeStringField("managementSdkVersion", this.managementSdkVersion);
+        jsonWriter.writeStringField("platformVersion", this.platformVersion);
+        jsonWriter.writeStringField("userId", this.userId);
+        jsonWriter.writeStringField("version", this.version);
+        jsonWriter.writeArrayField("appliedPolicies", this.appliedPolicies,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("intendedPolicies", this.intendedPolicies,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("operations", this.operations, (writer, element) -> writer.writeJson(element));
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphManagedAppRegistration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphManagedAppRegistration if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphManagedAppRegistration.
+     */
+    public static MicrosoftGraphManagedAppRegistration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphManagedAppRegistration deserializedMicrosoftGraphManagedAppRegistration
+                = new MicrosoftGraphManagedAppRegistration();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphManagedAppRegistration.withId(reader.getString());
+                } else if ("appIdentifier".equals(fieldName)) {
+                    Map<String, Object> appIdentifier = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedMicrosoftGraphManagedAppRegistration.appIdentifier = appIdentifier;
+                } else if ("applicationVersion".equals(fieldName)) {
+                    deserializedMicrosoftGraphManagedAppRegistration.applicationVersion = reader.getString();
+                } else if ("createdDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphManagedAppRegistration.createdDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("deviceName".equals(fieldName)) {
+                    deserializedMicrosoftGraphManagedAppRegistration.deviceName = reader.getString();
+                } else if ("deviceTag".equals(fieldName)) {
+                    deserializedMicrosoftGraphManagedAppRegistration.deviceTag = reader.getString();
+                } else if ("deviceType".equals(fieldName)) {
+                    deserializedMicrosoftGraphManagedAppRegistration.deviceType = reader.getString();
+                } else if ("flaggedReasons".equals(fieldName)) {
+                    List<MicrosoftGraphManagedAppFlaggedReason> flaggedReasons = reader
+                        .readArray(reader1 -> MicrosoftGraphManagedAppFlaggedReason.fromString(reader1.getString()));
+                    deserializedMicrosoftGraphManagedAppRegistration.flaggedReasons = flaggedReasons;
+                } else if ("lastSyncDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphManagedAppRegistration.lastSyncDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("managementSdkVersion".equals(fieldName)) {
+                    deserializedMicrosoftGraphManagedAppRegistration.managementSdkVersion = reader.getString();
+                } else if ("platformVersion".equals(fieldName)) {
+                    deserializedMicrosoftGraphManagedAppRegistration.platformVersion = reader.getString();
+                } else if ("userId".equals(fieldName)) {
+                    deserializedMicrosoftGraphManagedAppRegistration.userId = reader.getString();
+                } else if ("version".equals(fieldName)) {
+                    deserializedMicrosoftGraphManagedAppRegistration.version = reader.getString();
+                } else if ("appliedPolicies".equals(fieldName)) {
+                    List<MicrosoftGraphManagedAppPolicy> appliedPolicies
+                        = reader.readArray(reader1 -> MicrosoftGraphManagedAppPolicy.fromJson(reader1));
+                    deserializedMicrosoftGraphManagedAppRegistration.appliedPolicies = appliedPolicies;
+                } else if ("intendedPolicies".equals(fieldName)) {
+                    List<MicrosoftGraphManagedAppPolicy> intendedPolicies
+                        = reader.readArray(reader1 -> MicrosoftGraphManagedAppPolicy.fromJson(reader1));
+                    deserializedMicrosoftGraphManagedAppRegistration.intendedPolicies = intendedPolicies;
+                } else if ("operations".equals(fieldName)) {
+                    List<MicrosoftGraphManagedAppOperation> operations
+                        = reader.readArray(reader1 -> MicrosoftGraphManagedAppOperation.fromJson(reader1));
+                    deserializedMicrosoftGraphManagedAppRegistration.operations = operations;
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphManagedAppRegistration.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphManagedAppRegistration;
+        });
     }
 }

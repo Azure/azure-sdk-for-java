@@ -6,11 +6,15 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.ChangeDataCaptureFolder;
 import com.azure.resourcemanager.datafactory.models.MapperPolicy;
 import com.azure.resourcemanager.datafactory.models.MapperSourceConnectionsInfo;
 import com.azure.resourcemanager.datafactory.models.MapperTargetConnectionsInfo;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -18,47 +22,40 @@ import java.util.List;
  * the destination.
  */
 @Fluent
-public final class ChangeDataCapture {
+public final class ChangeDataCapture implements JsonSerializable<ChangeDataCapture> {
     /*
      * The folder that this CDC is in. If not specified, CDC will appear at the root level.
      */
-    @JsonProperty(value = "folder")
     private ChangeDataCaptureFolder folder;
 
     /*
      * The description of the change data capture.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * List of sources connections that can be used as sources in the CDC.
      */
-    @JsonProperty(value = "sourceConnectionsInfo", required = true)
     private List<MapperSourceConnectionsInfo> sourceConnectionsInfo;
 
     /*
      * List of target connections that can be used as sources in the CDC.
      */
-    @JsonProperty(value = "targetConnectionsInfo", required = true)
     private List<MapperTargetConnectionsInfo> targetConnectionsInfo;
 
     /*
      * CDC policy
      */
-    @JsonProperty(value = "policy", required = true)
     private MapperPolicy policy;
 
     /*
      * A boolean to determine if the vnet configuration needs to be overwritten.
      */
-    @JsonProperty(value = "allowVNetOverride")
     private Boolean allowVNetOverride;
 
     /*
      * Status of the CDC as to if it is running or stopped.
      */
-    @JsonProperty(value = "status")
     private String status;
 
     /**
@@ -239,4 +236,65 @@ public final class ChangeDataCapture {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ChangeDataCapture.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("sourceConnectionsInfo", this.sourceConnectionsInfo,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("targetConnectionsInfo", this.targetConnectionsInfo,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("policy", this.policy);
+        jsonWriter.writeJsonField("folder", this.folder);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeBooleanField("allowVNetOverride", this.allowVNetOverride);
+        jsonWriter.writeStringField("status", this.status);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ChangeDataCapture from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ChangeDataCapture if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ChangeDataCapture.
+     */
+    public static ChangeDataCapture fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ChangeDataCapture deserializedChangeDataCapture = new ChangeDataCapture();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceConnectionsInfo".equals(fieldName)) {
+                    List<MapperSourceConnectionsInfo> sourceConnectionsInfo
+                        = reader.readArray(reader1 -> MapperSourceConnectionsInfo.fromJson(reader1));
+                    deserializedChangeDataCapture.sourceConnectionsInfo = sourceConnectionsInfo;
+                } else if ("targetConnectionsInfo".equals(fieldName)) {
+                    List<MapperTargetConnectionsInfo> targetConnectionsInfo
+                        = reader.readArray(reader1 -> MapperTargetConnectionsInfo.fromJson(reader1));
+                    deserializedChangeDataCapture.targetConnectionsInfo = targetConnectionsInfo;
+                } else if ("policy".equals(fieldName)) {
+                    deserializedChangeDataCapture.policy = MapperPolicy.fromJson(reader);
+                } else if ("folder".equals(fieldName)) {
+                    deserializedChangeDataCapture.folder = ChangeDataCaptureFolder.fromJson(reader);
+                } else if ("description".equals(fieldName)) {
+                    deserializedChangeDataCapture.description = reader.getString();
+                } else if ("allowVNetOverride".equals(fieldName)) {
+                    deserializedChangeDataCapture.allowVNetOverride = reader.getNullable(JsonReader::getBoolean);
+                } else if ("status".equals(fieldName)) {
+                    deserializedChangeDataCapture.status = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedChangeDataCapture;
+        });
+    }
 }

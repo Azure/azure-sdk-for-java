@@ -6,57 +6,55 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.LoadBalancerBackendAddressAdminState;
 import com.azure.resourcemanager.network.models.NatRulePortMapping;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Properties of the load balancer backend addresses.
  */
 @Fluent
-public final class LoadBalancerBackendAddressPropertiesFormat {
+public final class LoadBalancerBackendAddressPropertiesFormat
+    implements JsonSerializable<LoadBalancerBackendAddressPropertiesFormat> {
     /*
      * Reference to an existing virtual network.
      */
-    @JsonProperty(value = "virtualNetwork")
     private SubResource virtualNetwork;
 
     /*
      * Reference to an existing subnet.
      */
-    @JsonProperty(value = "subnet")
     private SubResource subnet;
 
     /*
      * IP Address belonging to the referenced virtual network.
      */
-    @JsonProperty(value = "ipAddress")
     private String ipAddress;
 
     /*
      * Reference to IP address defined in network interfaces.
      */
-    @JsonProperty(value = "networkInterfaceIPConfiguration", access = JsonProperty.Access.WRITE_ONLY)
     private SubResource networkInterfaceIpConfiguration;
 
     /*
      * Reference to the frontend ip address configuration defined in regional loadbalancer.
      */
-    @JsonProperty(value = "loadBalancerFrontendIPConfiguration")
     private SubResource loadBalancerFrontendIpConfiguration;
 
     /*
      * Collection of inbound NAT rule port mappings.
      */
-    @JsonProperty(value = "inboundNatRulesPortMapping", access = JsonProperty.Access.WRITE_ONLY)
     private List<NatRulePortMapping> inboundNatRulesPortMapping;
 
     /*
      * A list of administrative states which once set can override health probe so that Load Balancer will always
      * forward new connections to backend, or deny new connections and reset existing connections.
      */
-    @JsonProperty(value = "adminState")
     private LoadBalancerBackendAddressAdminState adminState;
 
     /**
@@ -199,5 +197,65 @@ public final class LoadBalancerBackendAddressPropertiesFormat {
         if (inboundNatRulesPortMapping() != null) {
             inboundNatRulesPortMapping().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("virtualNetwork", this.virtualNetwork);
+        jsonWriter.writeJsonField("subnet", this.subnet);
+        jsonWriter.writeStringField("ipAddress", this.ipAddress);
+        jsonWriter.writeJsonField("loadBalancerFrontendIPConfiguration", this.loadBalancerFrontendIpConfiguration);
+        jsonWriter.writeStringField("adminState", this.adminState == null ? null : this.adminState.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LoadBalancerBackendAddressPropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LoadBalancerBackendAddressPropertiesFormat if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LoadBalancerBackendAddressPropertiesFormat.
+     */
+    public static LoadBalancerBackendAddressPropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LoadBalancerBackendAddressPropertiesFormat deserializedLoadBalancerBackendAddressPropertiesFormat
+                = new LoadBalancerBackendAddressPropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("virtualNetwork".equals(fieldName)) {
+                    deserializedLoadBalancerBackendAddressPropertiesFormat.virtualNetwork
+                        = SubResource.fromJson(reader);
+                } else if ("subnet".equals(fieldName)) {
+                    deserializedLoadBalancerBackendAddressPropertiesFormat.subnet = SubResource.fromJson(reader);
+                } else if ("ipAddress".equals(fieldName)) {
+                    deserializedLoadBalancerBackendAddressPropertiesFormat.ipAddress = reader.getString();
+                } else if ("networkInterfaceIPConfiguration".equals(fieldName)) {
+                    deserializedLoadBalancerBackendAddressPropertiesFormat.networkInterfaceIpConfiguration
+                        = SubResource.fromJson(reader);
+                } else if ("loadBalancerFrontendIPConfiguration".equals(fieldName)) {
+                    deserializedLoadBalancerBackendAddressPropertiesFormat.loadBalancerFrontendIpConfiguration
+                        = SubResource.fromJson(reader);
+                } else if ("inboundNatRulesPortMapping".equals(fieldName)) {
+                    List<NatRulePortMapping> inboundNatRulesPortMapping
+                        = reader.readArray(reader1 -> NatRulePortMapping.fromJson(reader1));
+                    deserializedLoadBalancerBackendAddressPropertiesFormat.inboundNatRulesPortMapping
+                        = inboundNatRulesPortMapping;
+                } else if ("adminState".equals(fieldName)) {
+                    deserializedLoadBalancerBackendAddressPropertiesFormat.adminState
+                        = LoadBalancerBackendAddressAdminState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLoadBalancerBackendAddressPropertiesFormat;
+        });
     }
 }

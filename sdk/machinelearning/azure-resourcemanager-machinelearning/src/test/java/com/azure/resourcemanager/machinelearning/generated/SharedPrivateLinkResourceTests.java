@@ -12,32 +12,28 @@ import org.junit.jupiter.api.Assertions;
 public final class SharedPrivateLinkResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SharedPrivateLinkResource model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"bwjzr\",\"properties\":{\"privateLinkResourceId\":\"gxg\",\"groupId\":\"pemvtzfkufubljof\",\"requestMessage\":\"eofjaeqjh\",\"status\":\"Pending\"}}")
-                .toObject(SharedPrivateLinkResource.class);
-        Assertions.assertEquals("bwjzr", model.name());
-        Assertions.assertEquals("gxg", model.privateLinkResourceId());
-        Assertions.assertEquals("pemvtzfkufubljof", model.groupId());
-        Assertions.assertEquals("eofjaeqjh", model.requestMessage());
-        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.PENDING, model.status());
+        SharedPrivateLinkResource model = BinaryData.fromString(
+            "{\"name\":\"itcjczdz\",\"properties\":{\"privateLinkResourceId\":\"dhkrwpdappdsbdk\",\"groupId\":\"rwjfe\",\"requestMessage\":\"nhutjeltmrldhugj\",\"status\":\"Approved\"}}")
+            .toObject(SharedPrivateLinkResource.class);
+        Assertions.assertEquals("itcjczdz", model.name());
+        Assertions.assertEquals("dhkrwpdappdsbdk", model.privateLinkResourceId());
+        Assertions.assertEquals("rwjfe", model.groupId());
+        Assertions.assertEquals("nhutjeltmrldhugj", model.requestMessage());
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED, model.status());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SharedPrivateLinkResource model =
-            new SharedPrivateLinkResource()
-                .withName("bwjzr")
-                .withPrivateLinkResourceId("gxg")
-                .withGroupId("pemvtzfkufubljof")
-                .withRequestMessage("eofjaeqjh")
-                .withStatus(PrivateEndpointServiceConnectionStatus.PENDING);
+        SharedPrivateLinkResource model = new SharedPrivateLinkResource().withName("itcjczdz")
+            .withPrivateLinkResourceId("dhkrwpdappdsbdk")
+            .withGroupId("rwjfe")
+            .withRequestMessage("nhutjeltmrldhugj")
+            .withStatus(PrivateEndpointServiceConnectionStatus.APPROVED);
         model = BinaryData.fromObject(model).toObject(SharedPrivateLinkResource.class);
-        Assertions.assertEquals("bwjzr", model.name());
-        Assertions.assertEquals("gxg", model.privateLinkResourceId());
-        Assertions.assertEquals("pemvtzfkufubljof", model.groupId());
-        Assertions.assertEquals("eofjaeqjh", model.requestMessage());
-        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.PENDING, model.status());
+        Assertions.assertEquals("itcjczdz", model.name());
+        Assertions.assertEquals("dhkrwpdappdsbdk", model.privateLinkResourceId());
+        Assertions.assertEquals("rwjfe", model.groupId());
+        Assertions.assertEquals("nhutjeltmrldhugj", model.requestMessage());
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED, model.status());
     }
 }

@@ -12,14 +12,14 @@ public final class GetGroupIdListForLdapUserRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GetGroupIdListForLdapUserRequest model
-            = BinaryData.fromString("{\"username\":\"pwiyzvqtm\"}").toObject(GetGroupIdListForLdapUserRequest.class);
-        Assertions.assertEquals("pwiyzvqtm", model.username());
+            = BinaryData.fromString("{\"username\":\"helxprglya\"}").toObject(GetGroupIdListForLdapUserRequest.class);
+        Assertions.assertEquals("helxprglya", model.username());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GetGroupIdListForLdapUserRequest model = new GetGroupIdListForLdapUserRequest().withUsername("pwiyzvqtm");
+        GetGroupIdListForLdapUserRequest model = new GetGroupIdListForLdapUserRequest().withUsername("helxprglya");
         model = BinaryData.fromObject(model).toObject(GetGroupIdListForLdapUserRequest.class);
-        Assertions.assertEquals("pwiyzvqtm", model.username());
+        Assertions.assertEquals("helxprglya", model.username());
     }
 }

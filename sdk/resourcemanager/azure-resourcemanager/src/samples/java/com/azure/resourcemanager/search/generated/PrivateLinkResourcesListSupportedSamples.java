@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.search.generated;
 
-/** Samples for PrivateLinkResources ListSupported. */
+/**
+ * Samples for PrivateLinkResources ListSupported.
+ */
 public final class PrivateLinkResourcesListSupportedSamples {
     /*
-     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/ListSupportedPrivateLinkResources.json
+     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/
+     * ListSupportedPrivateLinkResources.json
      */
     /**
      * Sample code: ListSupportedPrivateLinkResources.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listSupportedPrivateLinkResources(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .searchServices()
+        azure.searchServices()
             .manager()
             .serviceClient()
             .getPrivateLinkResources()

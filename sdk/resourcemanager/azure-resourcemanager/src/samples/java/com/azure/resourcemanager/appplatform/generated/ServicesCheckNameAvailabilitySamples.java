@@ -20,8 +20,12 @@ public final class ServicesCheckNameAvailabilitySamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void servicesCheckNameAvailability(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getServices().checkNameAvailabilityWithResponse("eastus",
-            new NameAvailabilityParameters().withType("Microsoft.AppPlatform/Spring").withName("myservice"),
-            com.azure.core.util.Context.NONE);
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getServices()
+            .checkNameAvailabilityWithResponse("eastus",
+                new NameAvailabilityParameters().withType("Microsoft.AppPlatform/Spring").withName("myservice"),
+                com.azure.core.util.Context.NONE);
     }
 }

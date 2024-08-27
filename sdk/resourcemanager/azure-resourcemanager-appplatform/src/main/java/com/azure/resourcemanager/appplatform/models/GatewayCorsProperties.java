@@ -5,55 +5,52 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Cross-Origin Resource Sharing property.
  */
 @Fluent
-public final class GatewayCorsProperties {
+public final class GatewayCorsProperties implements JsonSerializable<GatewayCorsProperties> {
     /*
      * Allowed origins to make cross-site requests. The special value `*` allows all domains.
      */
-    @JsonProperty(value = "allowedOrigins")
     private List<String> allowedOrigins;
 
     /*
      * Allowed origin patterns to make cross-site requests.
      */
-    @JsonProperty(value = "allowedOriginPatterns")
     private List<String> allowedOriginPatterns;
 
     /*
      * Allowed HTTP methods on cross-site requests. The special value `*` allows all methods. If not set, `GET` and
      * `HEAD` are allowed by default.
      */
-    @JsonProperty(value = "allowedMethods")
     private List<String> allowedMethods;
 
     /*
      * Allowed headers in cross-site requests. The special value `*` allows actual requests to send any header.
      */
-    @JsonProperty(value = "allowedHeaders")
     private List<String> allowedHeaders;
 
     /*
      * How long, in seconds, the response from a pre-flight request can be cached by clients.
      */
-    @JsonProperty(value = "maxAge")
     private Integer maxAge;
 
     /*
      * Whether user credentials are supported on cross-site requests. Valid values: `true`, `false`.
      */
-    @JsonProperty(value = "allowCredentials")
     private Boolean allowCredentials;
 
     /*
      * HTTP response headers to expose for cross-site requests.
      */
-    @JsonProperty(value = "exposedHeaders")
     private List<String> exposedHeaders;
 
     /**
@@ -216,5 +213,69 @@ public final class GatewayCorsProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("allowedOrigins", this.allowedOrigins,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("allowedOriginPatterns", this.allowedOriginPatterns,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("allowedMethods", this.allowedMethods,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("allowedHeaders", this.allowedHeaders,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeNumberField("maxAge", this.maxAge);
+        jsonWriter.writeBooleanField("allowCredentials", this.allowCredentials);
+        jsonWriter.writeArrayField("exposedHeaders", this.exposedHeaders,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GatewayCorsProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GatewayCorsProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GatewayCorsProperties.
+     */
+    public static GatewayCorsProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GatewayCorsProperties deserializedGatewayCorsProperties = new GatewayCorsProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("allowedOrigins".equals(fieldName)) {
+                    List<String> allowedOrigins = reader.readArray(reader1 -> reader1.getString());
+                    deserializedGatewayCorsProperties.allowedOrigins = allowedOrigins;
+                } else if ("allowedOriginPatterns".equals(fieldName)) {
+                    List<String> allowedOriginPatterns = reader.readArray(reader1 -> reader1.getString());
+                    deserializedGatewayCorsProperties.allowedOriginPatterns = allowedOriginPatterns;
+                } else if ("allowedMethods".equals(fieldName)) {
+                    List<String> allowedMethods = reader.readArray(reader1 -> reader1.getString());
+                    deserializedGatewayCorsProperties.allowedMethods = allowedMethods;
+                } else if ("allowedHeaders".equals(fieldName)) {
+                    List<String> allowedHeaders = reader.readArray(reader1 -> reader1.getString());
+                    deserializedGatewayCorsProperties.allowedHeaders = allowedHeaders;
+                } else if ("maxAge".equals(fieldName)) {
+                    deserializedGatewayCorsProperties.maxAge = reader.getNullable(JsonReader::getInt);
+                } else if ("allowCredentials".equals(fieldName)) {
+                    deserializedGatewayCorsProperties.allowCredentials = reader.getNullable(JsonReader::getBoolean);
+                } else if ("exposedHeaders".equals(fieldName)) {
+                    List<String> exposedHeaders = reader.readArray(reader1 -> reader1.getString());
+                    deserializedGatewayCorsProperties.exposedHeaders = exposedHeaders;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGatewayCorsProperties;
+        });
     }
 }

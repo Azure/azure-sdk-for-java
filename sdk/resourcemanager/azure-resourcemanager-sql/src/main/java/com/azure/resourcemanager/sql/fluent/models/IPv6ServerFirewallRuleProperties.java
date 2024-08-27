@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The properties of an IPv6 server firewall rule. */
+/**
+ * The properties of an IPv6 server firewall rule.
+ */
 @Fluent
-public final class IPv6ServerFirewallRuleProperties {
+public final class IPv6ServerFirewallRuleProperties implements JsonSerializable<IPv6ServerFirewallRuleProperties> {
     /*
      * The start IP address of the firewall rule. Must be IPv6 format.
      */
-    @JsonProperty(value = "startIPv6Address")
     private String startIPv6Address;
 
     /*
      * The end IP address of the firewall rule. Must be IPv6 format. Must be greater than or equal to startIpAddress.
      */
-    @JsonProperty(value = "endIPv6Address")
     private String endIPv6Address;
 
-    /** Creates an instance of IPv6ServerFirewallRuleProperties class. */
+    /**
+     * Creates an instance of IPv6ServerFirewallRuleProperties class.
+     */
     public IPv6ServerFirewallRuleProperties() {
     }
 
     /**
      * Get the startIPv6Address property: The start IP address of the firewall rule. Must be IPv6 format.
-     *
+     * 
      * @return the startIPv6Address value.
      */
     public String startIPv6Address() {
@@ -37,7 +43,7 @@ public final class IPv6ServerFirewallRuleProperties {
 
     /**
      * Set the startIPv6Address property: The start IP address of the firewall rule. Must be IPv6 format.
-     *
+     * 
      * @param startIPv6Address the startIPv6Address value to set.
      * @return the IPv6ServerFirewallRuleProperties object itself.
      */
@@ -49,7 +55,7 @@ public final class IPv6ServerFirewallRuleProperties {
     /**
      * Get the endIPv6Address property: The end IP address of the firewall rule. Must be IPv6 format. Must be greater
      * than or equal to startIpAddress.
-     *
+     * 
      * @return the endIPv6Address value.
      */
     public String endIPv6Address() {
@@ -59,7 +65,7 @@ public final class IPv6ServerFirewallRuleProperties {
     /**
      * Set the endIPv6Address property: The end IP address of the firewall rule. Must be IPv6 format. Must be greater
      * than or equal to startIpAddress.
-     *
+     * 
      * @param endIPv6Address the endIPv6Address value to set.
      * @return the IPv6ServerFirewallRuleProperties object itself.
      */
@@ -70,9 +76,49 @@ public final class IPv6ServerFirewallRuleProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("startIPv6Address", this.startIPv6Address);
+        jsonWriter.writeStringField("endIPv6Address", this.endIPv6Address);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IPv6ServerFirewallRuleProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IPv6ServerFirewallRuleProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IPv6ServerFirewallRuleProperties.
+     */
+    public static IPv6ServerFirewallRuleProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IPv6ServerFirewallRuleProperties deserializedIPv6ServerFirewallRuleProperties
+                = new IPv6ServerFirewallRuleProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("startIPv6Address".equals(fieldName)) {
+                    deserializedIPv6ServerFirewallRuleProperties.startIPv6Address = reader.getString();
+                } else if ("endIPv6Address".equals(fieldName)) {
+                    deserializedIPv6ServerFirewallRuleProperties.endIPv6Address = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIPv6ServerFirewallRuleProperties;
+        });
     }
 }

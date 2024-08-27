@@ -6,99 +6,95 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.DataMaskingFunction;
 import com.azure.resourcemanager.sql.models.DataMaskingRuleState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The properties of a database data masking rule. */
+/**
+ * The properties of a database data masking rule.
+ */
 @Fluent
-public final class DataMaskingRuleProperties {
+public final class DataMaskingRuleProperties implements JsonSerializable<DataMaskingRuleProperties> {
     /*
      * The rule Id.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
-     * The rule state. Used to delete a rule. To delete an existing rule, specify the schemaName, tableName,
-     * columnName, maskingFunction, and specify ruleState as disabled. However, if the rule doesn't already exist, the
-     * rule will be created with ruleState set to enabled, regardless of the provided value of ruleState.
+     * The rule state. Used to delete a rule. To delete an existing rule, specify the schemaName, tableName, columnName,
+     * maskingFunction, and specify ruleState as disabled. However, if the rule doesn't already exist, the rule will be
+     * created with ruleState set to enabled, regardless of the provided value of ruleState.
      */
-    @JsonProperty(value = "ruleState")
     private DataMaskingRuleState ruleState;
 
     /*
      * The schema name on which the data masking rule is applied.
      */
-    @JsonProperty(value = "schemaName", required = true)
     private String schemaName;
 
     /*
      * The table name on which the data masking rule is applied.
      */
-    @JsonProperty(value = "tableName", required = true)
     private String tableName;
 
     /*
      * The column name on which the data masking rule is applied.
      */
-    @JsonProperty(value = "columnName", required = true)
     private String columnName;
 
     /*
      * The alias name. This is a legacy parameter and is no longer used.
      */
-    @JsonProperty(value = "aliasName")
     private String aliasName;
 
     /*
      * The masking function that is used for the data masking rule.
      */
-    @JsonProperty(value = "maskingFunction", required = true)
     private DataMaskingFunction maskingFunction;
 
     /*
      * The numberFrom property of the masking rule. Required if maskingFunction is set to Number, otherwise this
      * parameter will be ignored.
      */
-    @JsonProperty(value = "numberFrom")
     private String numberFrom;
 
     /*
      * The numberTo property of the data masking rule. Required if maskingFunction is set to Number, otherwise this
      * parameter will be ignored.
      */
-    @JsonProperty(value = "numberTo")
     private String numberTo;
 
     /*
      * If maskingFunction is set to Text, the number of characters to show unmasked in the beginning of the string.
      * Otherwise, this parameter will be ignored.
      */
-    @JsonProperty(value = "prefixSize")
     private String prefixSize;
 
     /*
-     * If maskingFunction is set to Text, the number of characters to show unmasked at the end of the string.
-     * Otherwise, this parameter will be ignored.
+     * If maskingFunction is set to Text, the number of characters to show unmasked at the end of the string. Otherwise,
+     * this parameter will be ignored.
      */
-    @JsonProperty(value = "suffixSize")
     private String suffixSize;
 
     /*
      * If maskingFunction is set to Text, the character to use for masking the unexposed part of the string. Otherwise,
      * this parameter will be ignored.
      */
-    @JsonProperty(value = "replacementString")
     private String replacementString;
 
-    /** Creates an instance of DataMaskingRuleProperties class. */
+    /**
+     * Creates an instance of DataMaskingRuleProperties class.
+     */
     public DataMaskingRuleProperties() {
     }
 
     /**
      * Get the id property: The rule Id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -110,7 +106,7 @@ public final class DataMaskingRuleProperties {
      * schemaName, tableName, columnName, maskingFunction, and specify ruleState as disabled. However, if the rule
      * doesn't already exist, the rule will be created with ruleState set to enabled, regardless of the provided value
      * of ruleState.
-     *
+     * 
      * @return the ruleState value.
      */
     public DataMaskingRuleState ruleState() {
@@ -122,7 +118,7 @@ public final class DataMaskingRuleProperties {
      * schemaName, tableName, columnName, maskingFunction, and specify ruleState as disabled. However, if the rule
      * doesn't already exist, the rule will be created with ruleState set to enabled, regardless of the provided value
      * of ruleState.
-     *
+     * 
      * @param ruleState the ruleState value to set.
      * @return the DataMaskingRuleProperties object itself.
      */
@@ -133,7 +129,7 @@ public final class DataMaskingRuleProperties {
 
     /**
      * Get the schemaName property: The schema name on which the data masking rule is applied.
-     *
+     * 
      * @return the schemaName value.
      */
     public String schemaName() {
@@ -142,7 +138,7 @@ public final class DataMaskingRuleProperties {
 
     /**
      * Set the schemaName property: The schema name on which the data masking rule is applied.
-     *
+     * 
      * @param schemaName the schemaName value to set.
      * @return the DataMaskingRuleProperties object itself.
      */
@@ -153,7 +149,7 @@ public final class DataMaskingRuleProperties {
 
     /**
      * Get the tableName property: The table name on which the data masking rule is applied.
-     *
+     * 
      * @return the tableName value.
      */
     public String tableName() {
@@ -162,7 +158,7 @@ public final class DataMaskingRuleProperties {
 
     /**
      * Set the tableName property: The table name on which the data masking rule is applied.
-     *
+     * 
      * @param tableName the tableName value to set.
      * @return the DataMaskingRuleProperties object itself.
      */
@@ -173,7 +169,7 @@ public final class DataMaskingRuleProperties {
 
     /**
      * Get the columnName property: The column name on which the data masking rule is applied.
-     *
+     * 
      * @return the columnName value.
      */
     public String columnName() {
@@ -182,7 +178,7 @@ public final class DataMaskingRuleProperties {
 
     /**
      * Set the columnName property: The column name on which the data masking rule is applied.
-     *
+     * 
      * @param columnName the columnName value to set.
      * @return the DataMaskingRuleProperties object itself.
      */
@@ -193,7 +189,7 @@ public final class DataMaskingRuleProperties {
 
     /**
      * Get the aliasName property: The alias name. This is a legacy parameter and is no longer used.
-     *
+     * 
      * @return the aliasName value.
      */
     public String aliasName() {
@@ -202,7 +198,7 @@ public final class DataMaskingRuleProperties {
 
     /**
      * Set the aliasName property: The alias name. This is a legacy parameter and is no longer used.
-     *
+     * 
      * @param aliasName the aliasName value to set.
      * @return the DataMaskingRuleProperties object itself.
      */
@@ -213,7 +209,7 @@ public final class DataMaskingRuleProperties {
 
     /**
      * Get the maskingFunction property: The masking function that is used for the data masking rule.
-     *
+     * 
      * @return the maskingFunction value.
      */
     public DataMaskingFunction maskingFunction() {
@@ -222,7 +218,7 @@ public final class DataMaskingRuleProperties {
 
     /**
      * Set the maskingFunction property: The masking function that is used for the data masking rule.
-     *
+     * 
      * @param maskingFunction the maskingFunction value to set.
      * @return the DataMaskingRuleProperties object itself.
      */
@@ -234,7 +230,7 @@ public final class DataMaskingRuleProperties {
     /**
      * Get the numberFrom property: The numberFrom property of the masking rule. Required if maskingFunction is set to
      * Number, otherwise this parameter will be ignored.
-     *
+     * 
      * @return the numberFrom value.
      */
     public String numberFrom() {
@@ -244,7 +240,7 @@ public final class DataMaskingRuleProperties {
     /**
      * Set the numberFrom property: The numberFrom property of the masking rule. Required if maskingFunction is set to
      * Number, otherwise this parameter will be ignored.
-     *
+     * 
      * @param numberFrom the numberFrom value to set.
      * @return the DataMaskingRuleProperties object itself.
      */
@@ -256,7 +252,7 @@ public final class DataMaskingRuleProperties {
     /**
      * Get the numberTo property: The numberTo property of the data masking rule. Required if maskingFunction is set to
      * Number, otherwise this parameter will be ignored.
-     *
+     * 
      * @return the numberTo value.
      */
     public String numberTo() {
@@ -266,7 +262,7 @@ public final class DataMaskingRuleProperties {
     /**
      * Set the numberTo property: The numberTo property of the data masking rule. Required if maskingFunction is set to
      * Number, otherwise this parameter will be ignored.
-     *
+     * 
      * @param numberTo the numberTo value to set.
      * @return the DataMaskingRuleProperties object itself.
      */
@@ -278,7 +274,7 @@ public final class DataMaskingRuleProperties {
     /**
      * Get the prefixSize property: If maskingFunction is set to Text, the number of characters to show unmasked in the
      * beginning of the string. Otherwise, this parameter will be ignored.
-     *
+     * 
      * @return the prefixSize value.
      */
     public String prefixSize() {
@@ -288,7 +284,7 @@ public final class DataMaskingRuleProperties {
     /**
      * Set the prefixSize property: If maskingFunction is set to Text, the number of characters to show unmasked in the
      * beginning of the string. Otherwise, this parameter will be ignored.
-     *
+     * 
      * @param prefixSize the prefixSize value to set.
      * @return the DataMaskingRuleProperties object itself.
      */
@@ -300,7 +296,7 @@ public final class DataMaskingRuleProperties {
     /**
      * Get the suffixSize property: If maskingFunction is set to Text, the number of characters to show unmasked at the
      * end of the string. Otherwise, this parameter will be ignored.
-     *
+     * 
      * @return the suffixSize value.
      */
     public String suffixSize() {
@@ -310,7 +306,7 @@ public final class DataMaskingRuleProperties {
     /**
      * Set the suffixSize property: If maskingFunction is set to Text, the number of characters to show unmasked at the
      * end of the string. Otherwise, this parameter will be ignored.
-     *
+     * 
      * @param suffixSize the suffixSize value to set.
      * @return the DataMaskingRuleProperties object itself.
      */
@@ -322,7 +318,7 @@ public final class DataMaskingRuleProperties {
     /**
      * Get the replacementString property: If maskingFunction is set to Text, the character to use for masking the
      * unexposed part of the string. Otherwise, this parameter will be ignored.
-     *
+     * 
      * @return the replacementString value.
      */
     public String replacementString() {
@@ -332,7 +328,7 @@ public final class DataMaskingRuleProperties {
     /**
      * Set the replacementString property: If maskingFunction is set to Text, the character to use for masking the
      * unexposed part of the string. Otherwise, this parameter will be ignored.
-     *
+     * 
      * @param replacementString the replacementString value to set.
      * @return the DataMaskingRuleProperties object itself.
      */
@@ -343,35 +339,103 @@ public final class DataMaskingRuleProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (schemaName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property schemaName in model DataMaskingRuleProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property schemaName in model DataMaskingRuleProperties"));
         }
         if (tableName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property tableName in model DataMaskingRuleProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property tableName in model DataMaskingRuleProperties"));
         }
         if (columnName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property columnName in model DataMaskingRuleProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property columnName in model DataMaskingRuleProperties"));
         }
         if (maskingFunction() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property maskingFunction in model DataMaskingRuleProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property maskingFunction in model DataMaskingRuleProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DataMaskingRuleProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("schemaName", this.schemaName);
+        jsonWriter.writeStringField("tableName", this.tableName);
+        jsonWriter.writeStringField("columnName", this.columnName);
+        jsonWriter.writeStringField("maskingFunction",
+            this.maskingFunction == null ? null : this.maskingFunction.toString());
+        jsonWriter.writeStringField("ruleState", this.ruleState == null ? null : this.ruleState.toString());
+        jsonWriter.writeStringField("aliasName", this.aliasName);
+        jsonWriter.writeStringField("numberFrom", this.numberFrom);
+        jsonWriter.writeStringField("numberTo", this.numberTo);
+        jsonWriter.writeStringField("prefixSize", this.prefixSize);
+        jsonWriter.writeStringField("suffixSize", this.suffixSize);
+        jsonWriter.writeStringField("replacementString", this.replacementString);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataMaskingRuleProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataMaskingRuleProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DataMaskingRuleProperties.
+     */
+    public static DataMaskingRuleProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataMaskingRuleProperties deserializedDataMaskingRuleProperties = new DataMaskingRuleProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("schemaName".equals(fieldName)) {
+                    deserializedDataMaskingRuleProperties.schemaName = reader.getString();
+                } else if ("tableName".equals(fieldName)) {
+                    deserializedDataMaskingRuleProperties.tableName = reader.getString();
+                } else if ("columnName".equals(fieldName)) {
+                    deserializedDataMaskingRuleProperties.columnName = reader.getString();
+                } else if ("maskingFunction".equals(fieldName)) {
+                    deserializedDataMaskingRuleProperties.maskingFunction
+                        = DataMaskingFunction.fromString(reader.getString());
+                } else if ("id".equals(fieldName)) {
+                    deserializedDataMaskingRuleProperties.id = reader.getString();
+                } else if ("ruleState".equals(fieldName)) {
+                    deserializedDataMaskingRuleProperties.ruleState
+                        = DataMaskingRuleState.fromString(reader.getString());
+                } else if ("aliasName".equals(fieldName)) {
+                    deserializedDataMaskingRuleProperties.aliasName = reader.getString();
+                } else if ("numberFrom".equals(fieldName)) {
+                    deserializedDataMaskingRuleProperties.numberFrom = reader.getString();
+                } else if ("numberTo".equals(fieldName)) {
+                    deserializedDataMaskingRuleProperties.numberTo = reader.getString();
+                } else if ("prefixSize".equals(fieldName)) {
+                    deserializedDataMaskingRuleProperties.prefixSize = reader.getString();
+                } else if ("suffixSize".equals(fieldName)) {
+                    deserializedDataMaskingRuleProperties.suffixSize = reader.getString();
+                } else if ("replacementString".equals(fieldName)) {
+                    deserializedDataMaskingRuleProperties.replacementString = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataMaskingRuleProperties;
+        });
+    }
 }

@@ -132,7 +132,7 @@ public class DefaultDocumentQueryExecutionContext<T> extends DocumentQueryExecut
 
         return Paginator
     			.getPaginatedQueryResultAsObservable(
-    			    newCosmosQueryRequestOptions, createRequestFunc, executeFunc, maxPageSize);
+    			    newCosmosQueryRequestOptions, createRequestFunc, executeFunc, maxPageSize, this.client.getGlobalEndpointManager(), this.client.getGlobalPartitionEndpointManagerForCircuitBreaker());
     }
 
     public Mono<List<PartitionKeyRange>> getTargetPartitionKeyRanges(String resourceId, List<Range<String>> queryRanges) {
@@ -187,7 +187,8 @@ public class DefaultDocumentQueryExecutionContext<T> extends DocumentQueryExecut
             OperationType.Query,
             this::createClientRetryPolicyInstance,
             req,
-            this::executeInternalFuncCore);
+            this::executeInternalFuncCore,
+            PathsHelper.getCollectionPath(super.resourceLink));
     }
 
     private Mono<FeedResponse<T>> executeInternalFuncCore(
@@ -202,33 +203,44 @@ public class DefaultDocumentQueryExecutionContext<T> extends DocumentQueryExecut
 
         return BackoffRetryUtility.executeRetry(() -> {
                                       this.retries.incrementAndGet();
-                                      return executeRequestAsync(
-                                          this.itemSerializer,
-                                          req);
-                                  }, finalRetryPolicyInstance)
-                                  .map(tFeedResponse -> {
-                                      this.fetchSchedulingMetrics.stop();
-                                      this.fetchExecutionRangeAccumulator.endFetchRange(tFeedResponse.getActivityId(),
-                                          tFeedResponse.getResults().size(),
-                                          this.retries.get());
-                                      ImmutablePair<String, SchedulingTimeSpan> schedulingTimeSpanMap =
-                                          new ImmutablePair<>(DEFAULT_PARTITION_RANGE, this.fetchSchedulingMetrics.getElapsedTime());
-                                      if (!StringUtils.isEmpty(tFeedResponse.getResponseHeaders().get(HttpConstants.HttpHeaders.QUERY_METRICS))) {
-                                          QueryMetrics qm =
-                                              BridgeInternal.createQueryMetricsFromDelimitedStringAndClientSideMetrics(tFeedResponse.getResponseHeaders()
-                                                                                                                                    .get(HttpConstants.HttpHeaders.QUERY_METRICS),
-                                                  new ClientSideMetrics(this.retries.get(),
-                                                      tFeedResponse.getRequestCharge(),
-                                                      this.fetchExecutionRangeAccumulator.getExecutionRanges(),
-                                                      Collections.singletonList(schedulingTimeSpanMap)),
-                                                  tFeedResponse.getActivityId(),
-                                                  tFeedResponse.getResponseHeaders().getOrDefault(HttpConstants.HttpHeaders.INDEX_UTILIZATION, null));
-                                          String pkrId = tFeedResponse.getResponseHeaders().get(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID);
-                                          String queryMetricKey = DEFAULT_PARTITION_RANGE + ",pkrId:" + pkrId;
-                                          BridgeInternal.putQueryMetricsIntoMap(tFeedResponse, queryMetricKey, qm);
-                                      }
-                                      return tFeedResponse;
-                                  });
+
+                return Mono.just(req)
+                    .flatMap(request -> {
+
+                        if(finalRetryPolicyInstance != null) {
+                            finalRetryPolicyInstance.onBeforeSendRequest(request);
+                        }
+
+                        return client.populateFeedRangeHeader(request);
+                    })
+                    .flatMap(request -> client.addPartitionLevelUnavailableRegionsOnRequest(request, cosmosQueryRequestOptions, finalRetryPolicyInstance))
+                    .flatMap(request -> executeRequestAsync(
+                        this.itemSerializer,
+                        req));
+            }, finalRetryPolicyInstance)
+            .map(tFeedResponse -> {
+                this.fetchSchedulingMetrics.stop();
+                this.fetchExecutionRangeAccumulator.endFetchRange(tFeedResponse.getActivityId(),
+                    tFeedResponse.getResults().size(),
+                    this.retries.get());
+                ImmutablePair<String, SchedulingTimeSpan> schedulingTimeSpanMap =
+                    new ImmutablePair<>(DEFAULT_PARTITION_RANGE, this.fetchSchedulingMetrics.getElapsedTime());
+                if (!StringUtils.isEmpty(tFeedResponse.getResponseHeaders().get(HttpConstants.HttpHeaders.QUERY_METRICS))) {
+                    QueryMetrics qm =
+                        BridgeInternal.createQueryMetricsFromDelimitedStringAndClientSideMetrics(tFeedResponse.getResponseHeaders()
+                                .get(HttpConstants.HttpHeaders.QUERY_METRICS),
+                            new ClientSideMetrics(this.retries.get(),
+                                tFeedResponse.getRequestCharge(),
+                                this.fetchExecutionRangeAccumulator.getExecutionRanges(),
+                                Collections.singletonList(schedulingTimeSpanMap)),
+                            tFeedResponse.getActivityId(),
+                            tFeedResponse.getResponseHeaders().getOrDefault(HttpConstants.HttpHeaders.INDEX_UTILIZATION, null));
+                    String pkrId = tFeedResponse.getResponseHeaders().get(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID);
+                    String queryMetricKey = DEFAULT_PARTITION_RANGE + ",pkrId:" + pkrId;
+                    BridgeInternal.putQueryMetricsIntoMap(tFeedResponse, queryMetricKey, qm);
+                }
+                return tFeedResponse;
+            });
     }
 
     public RxDocumentServiceRequest createRequestAsync(String continuationToken, Integer maxPageSize) {

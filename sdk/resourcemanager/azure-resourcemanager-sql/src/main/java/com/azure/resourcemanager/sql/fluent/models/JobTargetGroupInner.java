@@ -6,26 +6,47 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.JobTarget;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** A group of job targets. */
+/**
+ * A group of job targets.
+ */
 @Fluent
 public final class JobTargetGroupInner extends ProxyResource {
     /*
      * Resource properties.
      */
-    @JsonProperty(value = "properties")
     private JobTargetGroupProperties innerProperties;
 
-    /** Creates an instance of JobTargetGroupInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of JobTargetGroupInner class.
+     */
     public JobTargetGroupInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private JobTargetGroupProperties innerProperties() {
@@ -33,8 +54,38 @@ public final class JobTargetGroupInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the members property: Members of the target group.
-     *
+     * 
      * @return the members value.
      */
     public List<JobTarget> members() {
@@ -43,7 +94,7 @@ public final class JobTargetGroupInner extends ProxyResource {
 
     /**
      * Set the members property: Members of the target group.
-     *
+     * 
      * @param members the members value to set.
      * @return the JobTargetGroupInner object itself.
      */
@@ -57,12 +108,55 @@ public final class JobTargetGroupInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JobTargetGroupInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JobTargetGroupInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the JobTargetGroupInner.
+     */
+    public static JobTargetGroupInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JobTargetGroupInner deserializedJobTargetGroupInner = new JobTargetGroupInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedJobTargetGroupInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedJobTargetGroupInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedJobTargetGroupInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedJobTargetGroupInner.innerProperties = JobTargetGroupProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJobTargetGroupInner;
+        });
     }
 }

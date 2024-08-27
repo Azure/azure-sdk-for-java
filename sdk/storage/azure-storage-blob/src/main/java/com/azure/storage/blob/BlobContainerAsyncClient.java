@@ -62,6 +62,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
@@ -426,7 +427,8 @@ public final class BlobContainerAsyncClient {
         Context context) {
         context = context == null ? Context.NONE : context;
         return this.azureBlobStorage.getContainers().createNoCustomHeadersWithResponseAsync(containerName, null,
-            metadata, accessType, null, blobContainerEncryptionScope, context);
+            metadata, accessType, null, blobContainerEncryptionScope, context)
+            .onErrorMap(ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -574,7 +576,8 @@ public final class BlobContainerAsyncClient {
 
         return this.azureBlobStorage.getContainers().deleteNoCustomHeadersWithResponseAsync(containerName, null,
             requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
-            requestConditions.getIfUnmodifiedSince(), null, context);
+            requestConditions.getIfUnmodifiedSince(), null, context)
+            .onErrorMap(ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -715,6 +718,7 @@ public final class BlobContainerAsyncClient {
 
         return this.azureBlobStorage.getContainers()
             .getPropertiesWithResponseAsync(containerName, null, leaseId, null, context)
+            .onErrorMap(ModelHelper::mapToBlobStorageException)
             .map(rb -> {
                 ContainersGetPropertiesHeaders hd = rb.getDeserializedHeaders();
                 BlobContainerProperties properties = new BlobContainerProperties(hd.getXMsMeta(), hd.getETag(),
@@ -798,7 +802,8 @@ public final class BlobContainerAsyncClient {
         }
 
         return this.azureBlobStorage.getContainers().setMetadataNoCustomHeadersWithResponseAsync(containerName, null,
-            requestConditions.getLeaseId(), metadata, requestConditions.getIfModifiedSince(), null, context);
+            requestConditions.getLeaseId(), metadata, requestConditions.getIfModifiedSince(), null, context)
+            .onErrorMap(ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -866,9 +871,10 @@ public final class BlobContainerAsyncClient {
         context = context == null ? Context.NONE : context;
         return this.azureBlobStorage.getContainers().getAccessPolicyWithResponseAsync(
             containerName, null, leaseId, null, context)
+            .onErrorMap(ModelHelper::mapToBlobStorageException)
             .map(response -> new SimpleResponse<>(response,
                 new BlobContainerAccessPolicies(response.getDeserializedHeaders().getXMsBlobPublicAccess(),
-                response.getValue())));
+                response.getValue().items())));
     }
 
     /**
@@ -989,7 +995,8 @@ public final class BlobContainerAsyncClient {
 
         return this.azureBlobStorage.getContainers().setAccessPolicyNoCustomHeadersWithResponseAsync(containerName,
             null, requestConditions.getLeaseId(), accessType, requestConditions.getIfModifiedSince(),
-            requestConditions.getIfUnmodifiedSince(), null, identifiers, context);
+            requestConditions.getIfUnmodifiedSince(), null, identifiers, context)
+            .onErrorMap(ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -1196,7 +1203,8 @@ public final class BlobContainerAsyncClient {
         return StorageImplUtils.applyOptionalTimeout(
             this.azureBlobStorage.getContainers().listBlobFlatSegmentWithResponseAsync(containerName,
                 options.getPrefix(), marker, options.getMaxResultsPerPage(), include, null, null, Context.NONE),
-            timeout);
+            timeout)
+            .onErrorMap(ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -1370,7 +1378,8 @@ public final class BlobContainerAsyncClient {
             this.azureBlobStorage.getContainers().listBlobHierarchySegmentWithResponseAsync(containerName, delimiter,
                 options.getPrefix(), marker, options.getMaxResultsPerPage(), include, null, null,
                 Context.NONE),
-            timeout);
+            timeout)
+            .onErrorMap(ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -1453,10 +1462,9 @@ public final class BlobContainerAsyncClient {
         return StorageImplUtils.applyOptionalTimeout(
             this.azureBlobStorage.getContainers().filterBlobsWithResponseAsync(containerName, null, null,
                 options.getQuery(), marker, options.getMaxResultsPerPage(), null, context), timeout)
+            .onErrorMap(ModelHelper::mapToBlobStorageException)
             .map(response -> {
-                List<TaggedBlobItem> value = response.getValue().getBlobs() == null
-                    ? Collections.emptyList()
-                    : response.getValue().getBlobs().stream()
+                List<TaggedBlobItem> value = response.getValue().getBlobs().stream()
                     .map(ModelHelper::populateTaggedBlobItem)
                     .collect(Collectors.toList());
 
@@ -1520,8 +1528,8 @@ public final class BlobContainerAsyncClient {
 
     Mono<Response<StorageAccountInfo>> getAccountInfoWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
-        return this.azureBlobStorage.getContainers().getAccountInfoWithResponseAsync(containerName, null,
-            null, context)
+        return this.azureBlobStorage.getContainers().getAccountInfoWithResponseAsync(containerName, context)
+            .onErrorMap(ModelHelper::mapToBlobStorageException)
             .map(rb -> {
                 ContainersGetAccountInfoHeaders hd = rb.getDeserializedHeaders();
                 return new SimpleResponse<>(rb, new StorageAccountInfo(hd.getXMsSkuName(), hd.getXMsAccountKind()));
@@ -1564,6 +1572,7 @@ public final class BlobContainerAsyncClient {
 //        return this.azureBlobStorage.getContainers().renameWithResponseAsync(containerName,
 //            sourceContainerName, null, null, requestConditions.getLeaseId(),
 //            context)
+//            .onErrorMap(ModelHelper::mapToBlobStorageException)
 //            .map(response -> new SimpleResponse<>(response, this));
 //    }
 
@@ -1627,8 +1636,29 @@ public final class BlobContainerAsyncClient {
      */
     public String generateUserDelegationSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues,
         UserDelegationKey userDelegationKey, String accountName, Context context) {
+        return generateUserDelegationSas(blobServiceSasSignatureValues, userDelegationKey, accountName,
+            null, context);
+    }
+
+    /**
+     * Generates a user delegation SAS for the container using the specified {@link BlobServiceSasSignatureValues}.
+     * <p>See {@link BlobServiceSasSignatureValues} for more information on how to construct a user delegation SAS.</p>
+     *
+     * @param blobServiceSasSignatureValues {@link BlobServiceSasSignatureValues}
+     * @param userDelegationKey A {@link UserDelegationKey} object used to sign the SAS values.
+     * See {@link BlobServiceAsyncClient#getUserDelegationKey(OffsetDateTime, OffsetDateTime)} for more information on
+     * how to get a user delegation key.
+     * @param accountName The account name.
+     * @param stringToSignHandler For debugging purposes only. Returns the string to sign that was used to generate the
+     * signature.
+     * @param context Additional context that is passed through the code when generating a SAS.
+     *
+     * @return A {@code String} representing the SAS query parameters.
+     */
+    public String generateUserDelegationSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues,
+        UserDelegationKey userDelegationKey, String accountName, Consumer<String> stringToSignHandler, Context context) {
         return new BlobSasImplUtil(blobServiceSasSignatureValues, getBlobContainerName())
-            .generateUserDelegationSas(userDelegationKey, accountName, context);
+            .generateUserDelegationSas(userDelegationKey, accountName, stringToSignHandler, context);
     }
 
     /**
@@ -1684,8 +1714,25 @@ public final class BlobContainerAsyncClient {
      * @return A {@code String} representing the SAS query parameters.
      */
     public String generateSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues, Context context) {
+        return generateSas(blobServiceSasSignatureValues, null, context);
+    }
+
+    /**
+     * Generates a service SAS for the container using the specified {@link BlobServiceSasSignatureValues}
+     * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>See {@link BlobServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
+     *
+     * @param blobServiceSasSignatureValues {@link BlobServiceSasSignatureValues}
+     * @param stringToSignHandler For debugging purposes only. Returns the string to sign that was used to generate the
+     * signature.
+     * @param context Additional context that is passed through the code when generating a SAS.
+     *
+     * @return A {@code String} representing the SAS query parameters.
+     */
+    public String generateSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues,
+        Consumer<String> stringToSignHandler, Context context) {
         return new BlobSasImplUtil(blobServiceSasSignatureValues, getBlobContainerName())
-            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), context);
+            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), stringToSignHandler, context);
     }
 
     private static boolean validateNoETag(BlobRequestConditions modifiedRequestConditions) {

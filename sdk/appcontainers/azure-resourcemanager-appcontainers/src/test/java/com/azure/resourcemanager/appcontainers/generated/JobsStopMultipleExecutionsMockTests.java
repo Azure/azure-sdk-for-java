@@ -6,55 +6,37 @@ package com.azure.resourcemanager.appcontainers.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.appcontainers.ContainerAppsApiManager;
 import com.azure.resourcemanager.appcontainers.models.ContainerAppJobExecutions;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class JobsStopMultipleExecutionsMockTests {
     @Test
     public void testStopMultipleExecutions() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"value\":[{\"name\":\"cyheqwbpqqncj\",\"id\":\"khjoz\",\"type\":\"mcwmbup\",\"properties\":{\"status\":\"Failed\",\"startTime\":\"2021-04-23T03:13:25Z\",\"endTime\":\"2021-08-31T23:28:22Z\",\"template\":{\"containers\":[{},{},{},{}],\"initContainers\":[{},{},{}]}}},{\"name\":\"bsvs\",\"id\":\"ieswhddzydisn\",\"type\":\"pywyjlnld\",\"properties\":{\"status\":\"Succeeded\",\"startTime\":\"2021-02-22T08:36:21Z\",\"endTime\":\"2021-08-08T07:22:04Z\",\"template\":{\"containers\":[{},{}],\"initContainers\":[{}]}}},{\"name\":\"zjihweebiphr\",\"id\":\"cjwqw\",\"type\":\"sratjhdhzyb\",\"properties\":{\"status\":\"Stopped\",\"startTime\":\"2021-04-15T18:17:15Z\",\"endTime\":\"2021-09-02T11:19:23Z\",\"template\":{\"containers\":[{},{},{},{}],\"initContainers\":[{},{}]}}}],\"nextLink\":\"v\"}";
+            = "{\"value\":[{\"name\":\"xigpxvkqmaupxvpi\",\"id\":\"f\",\"type\":\"fyzyzeyuub\",\"properties\":{\"status\":\"Succeeded\",\"startTime\":\"2020-12-29T14:04:31Z\",\"endTime\":\"2021-01-12T02:10:57Z\",\"template\":{\"containers\":[{}],\"initContainers\":[{},{},{}]}}},{\"name\":\"ygvfltgvdihoyn\",\"id\":\"xwetwkdrcyrucpc\",\"type\":\"nuzdqumo\",\"properties\":{\"status\":\"Failed\",\"startTime\":\"2021-01-18T16:39:51Z\",\"endTime\":\"2021-06-19T02:50:24Z\",\"template\":{\"containers\":[{}],\"initContainers\":[{},{},{},{}]}}},{\"name\":\"ndnelqkaadlknw\",\"id\":\"anniyopetxivcnr\",\"type\":\"xnucaephblkwqp\",\"properties\":{\"status\":\"Running\",\"startTime\":\"2021-02-09T00:06:02Z\",\"endTime\":\"2021-03-16T07:15:59Z\",\"template\":{\"containers\":[{},{},{}],\"initContainers\":[{},{},{}]}}}],\"nextLink\":\"i\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        ContainerAppsApiManager manager = ContainerAppsApiManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        ContainerAppsApiManager manager = ContainerAppsApiManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ContainerAppJobExecutions response
-            = manager.jobs().stopMultipleExecutions("qoqpepiaeap", "sergdtpe", com.azure.core.util.Context.NONE);
+            = manager.jobs().stopMultipleExecutions("cclfgxannn", "ytzpo", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("cyheqwbpqqncj", response.value().get(0).name());
-        Assertions.assertEquals("khjoz", response.value().get(0).id());
-        Assertions.assertEquals("mcwmbup", response.value().get(0).type());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-23T03:13:25Z"), response.value().get(0).startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-31T23:28:22Z"), response.value().get(0).endTime());
+        Assertions.assertEquals("xigpxvkqmaupxvpi", response.value().get(0).name());
+        Assertions.assertEquals("f", response.value().get(0).id());
+        Assertions.assertEquals("fyzyzeyuub", response.value().get(0).type());
+        Assertions.assertEquals(OffsetDateTime.parse("2020-12-29T14:04:31Z"), response.value().get(0).startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-12T02:10:57Z"), response.value().get(0).endTime());
     }
 }

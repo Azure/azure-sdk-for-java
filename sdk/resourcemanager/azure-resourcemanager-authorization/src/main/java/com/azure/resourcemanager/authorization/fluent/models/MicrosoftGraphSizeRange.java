@@ -5,43 +5,46 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** sizeRange. */
+/**
+ * sizeRange.
+ */
 @Fluent
-public final class MicrosoftGraphSizeRange {
+public final class MicrosoftGraphSizeRange implements JsonSerializable<MicrosoftGraphSizeRange> {
     /*
      * The maximum size (in kilobytes) that an incoming message must have in order for a condition or exception to
      * apply.
      */
-    @JsonProperty(value = "maximumSize")
     private Integer maximumSize;
 
     /*
      * The minimum size (in kilobytes) that an incoming message must have in order for a condition or exception to
      * apply.
      */
-    @JsonProperty(value = "minimumSize")
     private Integer minimumSize;
 
     /*
      * sizeRange
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphSizeRange class. */
+    /**
+     * Creates an instance of MicrosoftGraphSizeRange class.
+     */
     public MicrosoftGraphSizeRange() {
     }
 
     /**
      * Get the maximumSize property: The maximum size (in kilobytes) that an incoming message must have in order for a
      * condition or exception to apply.
-     *
+     * 
      * @return the maximumSize value.
      */
     public Integer maximumSize() {
@@ -51,7 +54,7 @@ public final class MicrosoftGraphSizeRange {
     /**
      * Set the maximumSize property: The maximum size (in kilobytes) that an incoming message must have in order for a
      * condition or exception to apply.
-     *
+     * 
      * @param maximumSize the maximumSize value to set.
      * @return the MicrosoftGraphSizeRange object itself.
      */
@@ -63,7 +66,7 @@ public final class MicrosoftGraphSizeRange {
     /**
      * Get the minimumSize property: The minimum size (in kilobytes) that an incoming message must have in order for a
      * condition or exception to apply.
-     *
+     * 
      * @return the minimumSize value.
      */
     public Integer minimumSize() {
@@ -73,7 +76,7 @@ public final class MicrosoftGraphSizeRange {
     /**
      * Set the minimumSize property: The minimum size (in kilobytes) that an incoming message must have in order for a
      * condition or exception to apply.
-     *
+     * 
      * @param minimumSize the minimumSize value to set.
      * @return the MicrosoftGraphSizeRange object itself.
      */
@@ -84,17 +87,16 @@ public final class MicrosoftGraphSizeRange {
 
     /**
      * Get the additionalProperties property: sizeRange.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: sizeRange.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphSizeRange object itself.
      */
@@ -103,19 +105,61 @@ public final class MicrosoftGraphSizeRange {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("maximumSize", this.maximumSize);
+        jsonWriter.writeNumberField("minimumSize", this.minimumSize);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphSizeRange from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphSizeRange if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphSizeRange.
+     */
+    public static MicrosoftGraphSizeRange fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphSizeRange deserializedMicrosoftGraphSizeRange = new MicrosoftGraphSizeRange();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("maximumSize".equals(fieldName)) {
+                    deserializedMicrosoftGraphSizeRange.maximumSize = reader.getNullable(JsonReader::getInt);
+                } else if ("minimumSize".equals(fieldName)) {
+                    deserializedMicrosoftGraphSizeRange.minimumSize = reader.getNullable(JsonReader::getInt);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphSizeRange.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphSizeRange;
+        });
     }
 }

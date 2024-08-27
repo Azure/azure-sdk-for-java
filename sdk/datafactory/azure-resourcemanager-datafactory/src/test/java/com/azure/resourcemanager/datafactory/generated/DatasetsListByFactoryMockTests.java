@@ -23,7 +23,7 @@ public final class DatasetsListByFactoryMockTests {
     @Test
     public void testListByFactory() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"type\":\"Dataset\",\"description\":\"mxibpcnm\",\"structure\":\"datayzka\",\"schema\":\"datatiprriqwftrjd\",\"linkedServiceName\":{\"referenceName\":\"ingrcjoycqnd\",\"parameters\":{\"hntchigub\":\"datatzytesz\",\"dcmjfieydtnpqtwo\":\"dataidwgyazppefsdo\",\"goaxtwtkkmuir\":\"datafhsckecume\",\"iiudnmojjmimy\":\"datakoaxstqqjqliyxze\"}},\"parameters\":{\"zmijirpwltbl\":{\"type\":\"Float\",\"defaultValue\":\"datataaxluo\"}},\"annotations\":[\"databafcmsotudnkr\"],\"folder\":{\"name\":\"hyqeiguxixfe\"},\"\":{\"ikanybo\":\"datamavinumdngqyvzzr\",\"zzqolmoifxl\":\"dataagaigtpj\",\"jubjqjxobmv\":\"databwdkjqxqj\",\"arneug\":\"datajtzatr\"}},\"name\":\"pkjyo\",\"type\":\"wcxedkkd\",\"etag\":\"frisreh\",\"id\":\"fiflpiq\"}]}";
+            = "{\"value\":[{\"properties\":{\"type\":\"Dataset\",\"description\":\"zflydywbn\",\"structure\":\"dataygsifsahkc\",\"schema\":\"datavajnsu\",\"linkedServiceName\":{\"referenceName\":\"xbyrvguojkysol\",\"parameters\":{\"qfhnqxqtemvqxxuw\":\"datafhlynkiusbyysbjt\",\"ylkdbyo\":\"dataatuiqc\"}},\"parameters\":{\"imtouclsabjzh\":{\"type\":\"Bool\",\"defaultValue\":\"dataavppos\"},\"bhnuujk\":{\"type\":\"String\",\"defaultValue\":\"datavuvjs\"},\"thduactizzhln\":{\"type\":\"Bool\",\"defaultValue\":\"datayewtlomagxaqvra\"},\"djdptruiegrauy\":{\"type\":\"SecureString\",\"defaultValue\":\"datagqciiopoamgheamx\"}},\"annotations\":[\"datagwauipatodfyrf\",\"datapmcjrfj\",\"dataisypkif\",\"datatynhulefltub\"],\"folder\":{\"name\":\"bbl\"},\"\":{\"hfoephiphoygmc\":\"dataahrdxytk\",\"oukimvhqis\":\"dataq\",\"cf\":\"datavologfxbvl\"}},\"name\":\"ajncefqnhr\",\"type\":\"mu\",\"etag\":\"de\",\"id\":\"uohtnjtahdtdc\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,14 +33,14 @@ public final class DatasetsListByFactoryMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<DatasetResource> response
-            = manager.datasets().listByFactory("khlopy", "rsvyjrqhpz", com.azure.core.util.Context.NONE);
+            = manager.datasets().listByFactory("zxtrjruwljfdcy", "p", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("fiflpiq", response.iterator().next().id());
-        Assertions.assertEquals("mxibpcnm", response.iterator().next().properties().description());
-        Assertions.assertEquals("ingrcjoycqnd",
+        Assertions.assertEquals("uohtnjtahdtdc", response.iterator().next().id());
+        Assertions.assertEquals("zflydywbn", response.iterator().next().properties().description());
+        Assertions.assertEquals("xbyrvguojkysol",
             response.iterator().next().properties().linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.FLOAT,
-            response.iterator().next().properties().parameters().get("zmijirpwltbl").type());
-        Assertions.assertEquals("hyqeiguxixfe", response.iterator().next().properties().folder().name());
+        Assertions.assertEquals(ParameterType.BOOL,
+            response.iterator().next().properties().parameters().get("imtouclsabjzh").type());
+        Assertions.assertEquals("bbl", response.iterator().next().properties().folder().name());
     }
 }

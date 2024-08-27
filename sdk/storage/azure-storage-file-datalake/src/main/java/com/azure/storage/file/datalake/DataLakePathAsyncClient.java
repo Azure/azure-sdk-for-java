@@ -28,6 +28,7 @@ import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.datalake.implementation.AzureDataLakeStorageRestAPIImpl;
 import com.azure.storage.file.datalake.implementation.AzureDataLakeStorageRestAPIImplBuilder;
+import com.azure.storage.file.datalake.implementation.models.CpkInfo;
 import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.PathExpiryOptions;
@@ -47,7 +48,6 @@ import com.azure.storage.file.datalake.models.AccessControlChangeCounters;
 import com.azure.storage.file.datalake.models.AccessControlChangeFailure;
 import com.azure.storage.file.datalake.models.AccessControlChangeResult;
 import com.azure.storage.file.datalake.models.AccessControlChanges;
-import com.azure.storage.file.datalake.implementation.models.CpkInfo;
 import com.azure.storage.file.datalake.models.CustomerProvidedKey;
 import com.azure.storage.file.datalake.models.DataLakeAclChangeFailedException;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
@@ -159,10 +159,14 @@ public class DataLakePathAsyncClient {
         this.customerProvidedKey = customerProvidedKey;
         this.isTokenCredentialAuthenticated = isTokenCredentialAuthenticated;
 
-        // Split on / in the path
-        String[] pathParts = pathName.split("/");
-        // Grab last part of path
-        this.objectName = pathParts[pathParts.length - 1];
+        if (("").equals(pathName) || ("/").equals(pathName)) {
+            this.objectName = pathName;
+        } else {
+            // Split on / in the path
+            String[] pathParts = pathName.split("/");
+            // Grab last part of path
+            this.objectName = pathParts[pathParts.length - 1];
+        }
     }
 
     /**
@@ -464,6 +468,7 @@ public class DataLakePathAsyncClient {
                 options.getProposedLeaseId(), leaseDuration, expiryOptions, expiresOnString,
                 options.getEncryptionContext(), options.getPathHttpHeaders(), lac, mac, null, customerProvidedKey,
                 context)
+            .onErrorMap(ModelHelper::mapToDataLakeStorageException)
             .map(response -> new SimpleResponse<>(response, new PathInfo(
                 response.getDeserializedHeaders().getETag(),
                 response.getDeserializedHeaders().getLastModified(),
@@ -547,6 +552,7 @@ public class DataLakePathAsyncClient {
             options.setRequestConditions(new DataLakeRequestConditions()
                 .setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD));
             return createWithResponse(options, context)
+                .onErrorMap(ModelHelper::mapToDataLakeStorageException)
                 .onErrorResume(t -> t instanceof DataLakeStorageException
                         && ((DataLakeStorageException) t).getStatusCode() == 409,
                     t -> {
@@ -586,6 +592,7 @@ public class DataLakePathAsyncClient {
         Context finalContext = context == null ? Context.NONE : context;
         return this.dataLakeStorage.getPaths()
             .deleteNoCustomHeadersWithResponseAsync(null, null, recursive, null, paginated, lac, mac, context)
+            .onErrorMap(ModelHelper::mapToDataLakeStorageException)
             .expand(resp -> {
                 String continuation = resp.getHeaders().getValue(Transforms.X_MS_CONTINUATION);
                 if (continuation != null && !continuation.isEmpty()) {
@@ -668,6 +675,7 @@ public class DataLakePathAsyncClient {
         try {
             options = options == null ? new DataLakePathDeleteOptions() : options;
             return deleteWithResponse(options.getIsRecursive(), options.getRequestConditions(), context)
+                .onErrorMap(ModelHelper::mapToDataLakeStorageException)
                 .map(response -> (Response<Boolean>) new SimpleResponse<>(response, true))
                 .onErrorResume(t -> t instanceof DataLakeStorageException
                         && ((DataLakeStorageException) t).getStatusCode() == 404,
@@ -1100,6 +1108,7 @@ public class DataLakePathAsyncClient {
         context = context == null ? Context.NONE : context;
         return this.dataLakeStorage.getPaths().setAccessControlWithResponseAsync(null, owner, group, permissionsString,
             accessControlListString, null, lac, mac, context)
+            .onErrorMap(ModelHelper::mapToDataLakeStorageException)
             .map(response -> new SimpleResponse<>(response, new PathInfo(response.getDeserializedHeaders().getETag(),
                 response.getDeserializedHeaders().getLastModified())));
     }
@@ -1393,6 +1402,7 @@ public class DataLakePathAsyncClient {
 
         return this.dataLakeStorage.getPaths().setAccessControlRecursiveWithResponseAsync(mode, null,
             continuationToken, continueOnFailure, batchSize, accessControlList, null, contextFinal)
+            .onErrorMap(ModelHelper::mapToDataLakeStorageException)
             .onErrorMap(e -> {
                 if (e instanceof DataLakeStorageException) {
                     return LOGGER.logExceptionAsError(ModelHelper.changeAclRequestFailed((DataLakeStorageException) e,
@@ -1506,6 +1516,7 @@ public class DataLakePathAsyncClient {
         // If we're not finished, issue another request
         return this.dataLakeStorage.getPaths().setAccessControlRecursiveWithResponseAsync(mode, null,
             effectiveNextToken, continueOnFailure, batchSize, accessControlStr, null, context)
+            .onErrorMap(ModelHelper::mapToDataLakeStorageException)
             .onErrorMap(e -> {
                 if (e instanceof DataLakeStorageException) {
                     return LOGGER.logExceptionAsError(ModelHelper.changeAclRequestFailed((DataLakeStorageException) e,
@@ -1594,6 +1605,7 @@ public class DataLakePathAsyncClient {
         context = context == null ? Context.NONE : context;
         return this.dataLakeStorage.getPaths().getPropertiesWithResponseAsync(null, null,
             PathGetPropertiesAction.GET_ACCESS_CONTROL, userPrincipalNameReturned, lac, mac, context)
+            .onErrorMap(ModelHelper::mapToDataLakeStorageException)
             .map(response -> new SimpleResponse<>(response, new PathAccessControl(
                 PathAccessControlEntry.parseList(response.getDeserializedHeaders().getXMsAcl()),
                 PathPermissions.parseSymbolic(response.getDeserializedHeaders().getXMsPermissions()),
@@ -1661,6 +1673,7 @@ public class DataLakePathAsyncClient {
                 null /* expiryOptions */, null /* expiresOn */, null /* encryptionContext */,
                 null /* pathHttpHeaders */, destLac, destMac, sourceConditions, null /* cpkInfo */,
                 context)
+            .onErrorMap(ModelHelper::mapToDataLakeStorageException)
             .map(response -> new SimpleResponse<>(response, dataLakePathAsyncClient));
     }
 
@@ -1771,9 +1784,31 @@ public class DataLakePathAsyncClient {
      */
     public String generateUserDelegationSas(DataLakeServiceSasSignatureValues dataLakeServiceSasSignatureValues,
         UserDelegationKey userDelegationKey, String accountName, Context context) {
+        return generateUserDelegationSas(dataLakeServiceSasSignatureValues, userDelegationKey, accountName,
+            null, context);
+    }
+
+    /**
+     * Generates a user delegation SAS for the path using the specified {@link DataLakeServiceSasSignatureValues}.
+     * <p>See {@link DataLakeServiceSasSignatureValues} for more information on how to construct a user delegation SAS.
+     * </p>
+     *
+     * @param dataLakeServiceSasSignatureValues {@link DataLakeServiceSasSignatureValues}
+     * @param userDelegationKey A {@link UserDelegationKey} object used to sign the SAS values.
+     * See {@link DataLakeServiceAsyncClient#getUserDelegationKey(OffsetDateTime, OffsetDateTime)} for more information
+     * on how to get a user delegation key.
+     * @param accountName The account name.
+     * @param stringToSignHandler For debugging purposes only. Returns the string to sign that was used to generate the
+     * signature.
+     * @param context Additional context that is passed through the code when generating a SAS.
+     *
+     * @return A {@code String} representing the SAS query parameters.
+     */
+    public String generateUserDelegationSas(DataLakeServiceSasSignatureValues dataLakeServiceSasSignatureValues,
+        UserDelegationKey userDelegationKey, String accountName, Consumer<String> stringToSignHandler, Context context) {
         return new DataLakeSasImplUtil(dataLakeServiceSasSignatureValues, getFileSystemName(), getObjectPath(),
             PathResourceType.DIRECTORY.equals(this.pathResourceType))
-            .generateUserDelegationSas(userDelegationKey, accountName, context);
+            .generateUserDelegationSas(userDelegationKey, accountName, stringToSignHandler, context);
     }
 
     /**
@@ -1829,8 +1864,25 @@ public class DataLakePathAsyncClient {
      * @return A {@code String} representing the SAS query parameters.
      */
     public String generateSas(DataLakeServiceSasSignatureValues dataLakeServiceSasSignatureValues, Context context) {
+        return generateSas(dataLakeServiceSasSignatureValues, null, context);
+    }
+
+    /**
+     * Generates a service SAS for the path using the specified {@link DataLakeServiceSasSignatureValues}
+     * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>See {@link DataLakeServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
+     *
+     * @param dataLakeServiceSasSignatureValues {@link DataLakeServiceSasSignatureValues}
+     * @param stringToSignHandler For debugging purposes only. Returns the string to sign that was used to generate the
+     * signature.
+     * @param context Additional context that is passed through the code when generating a SAS.
+     *
+     * @return A {@code String} representing the SAS query parameters.
+     */
+    public String generateSas(DataLakeServiceSasSignatureValues dataLakeServiceSasSignatureValues,
+        Consumer<String> stringToSignHandler, Context context) {
         return new DataLakeSasImplUtil(dataLakeServiceSasSignatureValues, getFileSystemName(), getObjectPath(),
             PathResourceType.DIRECTORY.equals(this.pathResourceType))
-            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), context);
+            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), stringToSignHandler, context);
     }
 }

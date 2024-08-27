@@ -10,7 +10,7 @@ package com.azure.resourcemanager.appcontainers.generated;
 public final class ManagedEnvironmentsDiagnosticsGetRootSamples {
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/ManagedEnvironments_Get.json
+     * specification/app/resource-manager/Microsoft.App/stable/2024-03-01/examples/ManagedEnvironments_Get.json
      */
     /**
      * Sample code: Get environments by name.
@@ -18,7 +18,7 @@ public final class ManagedEnvironmentsDiagnosticsGetRootSamples {
      * @param manager Entry point to ContainerAppsApiManager.
      */
     public static void getEnvironmentsByName(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        manager.managedEnvironmentsDiagnostics().getRootWithResponse("examplerg", "jlaw-demo1",
-            com.azure.core.util.Context.NONE);
+        manager.managedEnvironmentsDiagnostics()
+            .getRootWithResponse("examplerg", "jlaw-demo1", com.azure.core.util.Context.NONE);
     }
 }

@@ -20,7 +20,10 @@ public final class PrivateLinkScopedResourcesListByPrivateLinkScopeSamples {
      */
     public static void
         getsListOfScopedResourcesInAPrivateLinkScope(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getPrivateLinkScopedResources()
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getPrivateLinkScopedResources()
             .listByPrivateLinkScope("MyResourceGroup", "MyPrivateLinkScope", com.azure.core.util.Context.NONE);
     }
 }

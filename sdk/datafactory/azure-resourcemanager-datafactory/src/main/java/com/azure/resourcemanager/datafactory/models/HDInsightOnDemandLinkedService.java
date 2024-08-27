@@ -6,36 +6,28 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.fluent.models.HDInsightOnDemandLinkedServiceTypeProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * HDInsight ondemand linked service.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "type",
-    defaultImpl = HDInsightOnDemandLinkedService.class,
-    visible = true)
-@JsonTypeName("HDInsightOnDemand")
 @Fluent
 public final class HDInsightOnDemandLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private String type = "HDInsightOnDemand";
 
     /*
      * HDInsight ondemand linked service properties.
      */
-    @JsonProperty(value = "typeProperties", required = true)
     private HDInsightOnDemandLinkedServiceTypeProperties innerTypeProperties
         = new HDInsightOnDemandLinkedServiceTypeProperties();
 
@@ -62,6 +54,15 @@ public final class HDInsightOnDemandLinkedService extends LinkedService {
      */
     private HDInsightOnDemandLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public HDInsightOnDemandLinkedService withVersion(String version) {
+        super.withVersion(version);
+        return this;
     }
 
     /**
@@ -157,7 +158,7 @@ public final class HDInsightOnDemandLinkedService extends LinkedService {
      * 
      * @return the version value.
      */
-    public Object version() {
+    public Object versionTypePropertiesVersion() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().version();
     }
 
@@ -167,7 +168,7 @@ public final class HDInsightOnDemandLinkedService extends LinkedService {
      * @param version the version value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
      */
-    public HDInsightOnDemandLinkedService withVersion(Object version) {
+    public HDInsightOnDemandLinkedService withVersionTypePropertiesVersion(Object version) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new HDInsightOnDemandLinkedServiceTypeProperties();
         }
@@ -956,4 +957,76 @@ public final class HDInsightOnDemandLinkedService extends LinkedService {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(HDInsightOnDemandLinkedService.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", version());
+        jsonWriter.writeJsonField("connectVia", connectVia());
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeMapField("parameters", parameters(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("annotations", annotations(), (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeJsonField("typeProperties", this.innerTypeProperties);
+        jsonWriter.writeStringField("type", this.type);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HDInsightOnDemandLinkedService from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HDInsightOnDemandLinkedService if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the HDInsightOnDemandLinkedService.
+     */
+    public static HDInsightOnDemandLinkedService fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HDInsightOnDemandLinkedService deserializedHDInsightOnDemandLinkedService
+                = new HDInsightOnDemandLinkedService();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("version".equals(fieldName)) {
+                    deserializedHDInsightOnDemandLinkedService.withVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
+                    deserializedHDInsightOnDemandLinkedService
+                        .withConnectVia(IntegrationRuntimeReference.fromJson(reader));
+                } else if ("description".equals(fieldName)) {
+                    deserializedHDInsightOnDemandLinkedService.withDescription(reader.getString());
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, ParameterSpecification> parameters
+                        = reader.readMap(reader1 -> ParameterSpecification.fromJson(reader1));
+                    deserializedHDInsightOnDemandLinkedService.withParameters(parameters);
+                } else if ("annotations".equals(fieldName)) {
+                    List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedHDInsightOnDemandLinkedService.withAnnotations(annotations);
+                } else if ("typeProperties".equals(fieldName)) {
+                    deserializedHDInsightOnDemandLinkedService.innerTypeProperties
+                        = HDInsightOnDemandLinkedServiceTypeProperties.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedHDInsightOnDemandLinkedService.type = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedHDInsightOnDemandLinkedService.withAdditionalProperties(additionalProperties);
+
+            return deserializedHDInsightOnDemandLinkedService;
+        });
+    }
 }

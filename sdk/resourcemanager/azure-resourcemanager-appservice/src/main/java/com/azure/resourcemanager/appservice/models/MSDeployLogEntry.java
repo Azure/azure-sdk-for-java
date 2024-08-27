@@ -5,30 +5,32 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
  * MSDeploy log entry.
  */
 @Immutable
-public final class MSDeployLogEntry {
+public final class MSDeployLogEntry implements JsonSerializable<MSDeployLogEntry> {
     /*
      * Timestamp of log entry
      */
-    @JsonProperty(value = "time", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime time;
 
     /*
      * Log entry type
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private MSDeployLogEntryType type;
 
     /*
      * Log entry message
      */
-    @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
     /**
@@ -70,5 +72,45 @@ public final class MSDeployLogEntry {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MSDeployLogEntry from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MSDeployLogEntry if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MSDeployLogEntry.
+     */
+    public static MSDeployLogEntry fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MSDeployLogEntry deserializedMSDeployLogEntry = new MSDeployLogEntry();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("time".equals(fieldName)) {
+                    deserializedMSDeployLogEntry.time = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("type".equals(fieldName)) {
+                    deserializedMSDeployLogEntry.type = MSDeployLogEntryType.fromString(reader.getString());
+                } else if ("message".equals(fieldName)) {
+                    deserializedMSDeployLogEntry.message = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMSDeployLogEntry;
+        });
     }
 }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class BaselineSensitivity extends ExpandableStringEnum<BaselineSens
      * @param name a name to look for.
      * @return the corresponding BaselineSensitivity.
      */
-    @JsonCreator
     public static BaselineSensitivity fromString(String name) {
         return fromString(name, BaselineSensitivity.class);
     }

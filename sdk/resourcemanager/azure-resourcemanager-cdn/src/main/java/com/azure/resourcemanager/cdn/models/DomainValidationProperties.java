@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The JSON object that contains the properties to validate a domain.
  */
 @Immutable
-public final class DomainValidationProperties {
+public final class DomainValidationProperties implements JsonSerializable<DomainValidationProperties> {
     /*
      * Challenge used for DNS TXT record or file based validation
      */
-    @JsonProperty(value = "validationToken", access = JsonProperty.Access.WRITE_ONLY)
     private String validationToken;
 
     /*
      * The date time that the token expires
      */
-    @JsonProperty(value = "expirationDate", access = JsonProperty.Access.WRITE_ONLY)
     private String expirationDate;
 
     /**
@@ -54,5 +56,42 @@ public final class DomainValidationProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DomainValidationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DomainValidationProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DomainValidationProperties.
+     */
+    public static DomainValidationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DomainValidationProperties deserializedDomainValidationProperties = new DomainValidationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("validationToken".equals(fieldName)) {
+                    deserializedDomainValidationProperties.validationToken = reader.getString();
+                } else if ("expirationDate".equals(fieldName)) {
+                    deserializedDomainValidationProperties.expirationDate = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDomainValidationProperties;
+        });
     }
 }

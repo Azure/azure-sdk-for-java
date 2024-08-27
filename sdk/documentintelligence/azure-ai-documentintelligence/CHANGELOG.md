@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.4 (Unreleased)
+## 1.0.0-beta.5 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,41 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.4 (2024-08-14)
+
+### Features Added
+- Added support for the Analyze Batch Documents API with the LRO method `beginAnalyzeBatchDocuments` to `DocumentIntelligenceClient` and `DocumentIntelligenceAsyncClient`.
+- Added support for method `getAnalyzeResultPdfWithResponse` and `getAnalyzeResultPdf` to `DocumentIntelligenceClient` and `DocumentIntelligenceAsyncClient`.
+- Added support for method `getAnalyzeResultFiguresWithResponse` and `getAnalyzeResultFigures` to `DocumentIntelligenceClient` and `DocumentIntelligenceAsyncClient`.
+- Added a model `AnalyzeOutputOption` to specify other kinds of output: either `Pdf` and `Figures`.
+- Added property `Id` to `DocumentFigure` model.
+- Added support for the Copy Classifier API with method `authorizeClassifierCopy` and `authorizeClassifierCopyWithResponse` to
+`DocumentIntelligenceAdministrationClient` and `DocumentIntelligenceAdministrationAsyncClient`.
+- Added method `copyClassifierTo` to `DocumentIntelligenceAdministrationClient` and `DocumentIntelligenceAdministrationAsyncClient`.
+- Added new enum type to `DocumentBuildMode`: `GENERATIVE`.
+- Added property `Warnings` to `AnalyzeResult` model.
+- Added properties `ClassifierId`, `Split`, and `TrainingHours` to `DocumentModelDetails` model.
+- Added properties `ConfidenceThreshold`, `Features`, `MaxDocumentsToAnalyze`, `ModelId`, and `QueryFields` to `DocumentTypeDetails` model.
+- Added properties `AllowOverwrite` and `MaxTrainingHours` to `BuildDocumentModelContent` model.
+- Added parameter `pages` to `ClassifyDocument` overloads in `DocumentIntelligenceClient` and `DocumentIntelligenceAsyncClient`.
+- Added properties `ClassifierId`, `DocTypes`, and `Split` to `ComposeDocumentModelRequest`.
+- Added property `AllowOverwrite` to `BuildDocumentClassifierRequest`.
+- Added property `operationId` to `AnalyzeResultOperation`.
+
+### Breaking Changes
+- `DocumentIntelligenceClient` and `DocumentIntelligenceAdministrationClient` now target service API version `2024-07-31-preview`. Support for `2024-02-29-preview` has been removed.
+- Removed support for extracting lists from analyzed documents:
+    - Removed models `DocumentList` and `DocumentListItem`.
+    - Removed property `Lists` from `AnalyzeResult`.
+- Changes to the Compose Document API:
+    - Removed model `ComponentDocumentModelDetails`.
+    - Removed property `ComponentModels` from `ComposeDocumentModelRequest`.
+    - `ComposeDocumentModelRequest` now requires a map of `DocumentTypeDetails` and a classifier ID.
+- Removed model `QuotaDetails`.
+- Removed property `CustomNeuralDocumentModelBuilds` from `ResourceDetails.`
+- Removed required property `fieldSchema` and from `DocumentTypeDetails` and made it settable.
+- `DocumentFieldType` is now a required property on the constructor of `DocumentFieldSchema`.- 
 
 ## 1.0.0-beta.3 (2024-06-12)
 

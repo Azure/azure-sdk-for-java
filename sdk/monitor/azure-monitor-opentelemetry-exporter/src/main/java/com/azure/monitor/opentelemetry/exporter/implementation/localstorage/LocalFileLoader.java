@@ -28,24 +28,19 @@ class LocalFileLoader {
     private final OperationLogger operationLogger;
     private final OperationLogger updateOperationLogger;
 
-    LocalFileLoader(
-        LocalFileCache localFileCache,
-        File telemetryFolder,
-        LocalStorageStats stats,
+    LocalFileLoader(LocalFileCache localFileCache, File telemetryFolder, LocalStorageStats stats,
         boolean suppressWarnings) { // used to suppress warnings from statsbeat
         this.localFileCache = localFileCache;
         this.telemetryFolder = telemetryFolder;
         this.stats = stats;
 
-        operationLogger =
-            suppressWarnings
-                ? OperationLogger.NOOP
-                : new OperationLogger(LocalFileLoader.class, "Loading telemetry from disk");
+        operationLogger = suppressWarnings
+            ? OperationLogger.NOOP
+            : new OperationLogger(LocalFileLoader.class, "Loading telemetry from disk");
 
-        updateOperationLogger =
-            suppressWarnings
-                ? OperationLogger.NOOP
-                : new OperationLogger(LocalFileLoader.class, "Updating local telemetry on disk");
+        updateOperationLogger = suppressWarnings
+            ? OperationLogger.NOOP
+            : new OperationLogger(LocalFileLoader.class, "Updating local telemetry on disk");
     }
 
     // Load ByteBuffer from persisted files on disk in FIFO order.
@@ -68,13 +63,10 @@ class LocalFileLoader {
                 return null;
             }
 
-            tempFile =
-                new File(
-                    telemetryFolder, FileUtil.getBaseName(fileToBeLoaded) + TEMPORARY_FILE_EXTENSION);
+            tempFile = new File(telemetryFolder, FileUtil.getBaseName(fileToBeLoaded) + TEMPORARY_FILE_EXTENSION);
             FileUtil.moveFile(fileToBeLoaded, tempFile);
         } catch (IOException e) {
-            operationLogger.recordFailure(
-                "Error renaming file: " + fileToBeLoaded.getAbsolutePath(),
+            operationLogger.recordFailure("Error renaming file: " + fileToBeLoaded.getAbsolutePath(),
                 DISK_PERSISTENCE_LOADER_ERROR);
             stats.incrementReadFailureCount();
             return null;
@@ -85,8 +77,7 @@ class LocalFileLoader {
             return null;
         }
 
-        try (DataInputStream dataInputStream =
-                 new DataInputStream(Files.newInputStream(tempFile.toPath()))) {
+        try (DataInputStream dataInputStream = new DataInputStream(Files.newInputStream(tempFile.toPath()))) {
 
             int version = dataInputStream.readInt();
             if (version == 1) {
@@ -107,8 +98,8 @@ class LocalFileLoader {
             // try-with-resources
 
         } catch (IOException e) {
-            operationLogger.recordFailure(
-                "Error reading file: " + tempFile.getAbsolutePath(), e, DISK_PERSISTENCE_LOADER_ERROR);
+            operationLogger.recordFailure("Error reading file: " + tempFile.getAbsolutePath(), e,
+                DISK_PERSISTENCE_LOADER_ERROR);
             stats.incrementReadFailureCount();
             return null;
         }
@@ -119,8 +110,8 @@ class LocalFileLoader {
 
     private void deleteFile(File tempFile) {
         if (!FileUtil.deleteFileWithRetries(tempFile)) {
-            operationLogger.recordFailure(
-                "Unable to delete file: " + tempFile.getAbsolutePath(), DISK_PERSISTENCE_LOADER_ERROR);
+            operationLogger.recordFailure("Unable to delete file: " + tempFile.getAbsolutePath(),
+                DISK_PERSISTENCE_LOADER_ERROR);
         }
     }
 
@@ -129,15 +120,15 @@ class LocalFileLoader {
     void updateProcessedFileStatus(boolean successOrNonRetryableError, File file) {
         if (!file.exists()) {
             // not sure why this would happen
-            updateOperationLogger.recordFailure(
-                "File no longer exists: " + file.getAbsolutePath(), DISK_PERSISTENCE_LOADER_ERROR);
+            updateOperationLogger.recordFailure("File no longer exists: " + file.getAbsolutePath(),
+                DISK_PERSISTENCE_LOADER_ERROR);
             return;
         }
         if (successOrNonRetryableError) {
             // delete a file on the queue permanently when http response returns success.
             if (!FileUtil.deleteFileWithRetries(file)) {
-                updateOperationLogger.recordFailure(
-                    "Unable to delete file: " + file.getAbsolutePath(), DISK_PERSISTENCE_LOADER_ERROR);
+                updateOperationLogger.recordFailure("Unable to delete file: " + file.getAbsolutePath(),
+                    DISK_PERSISTENCE_LOADER_ERROR);
             } else {
                 updateOperationLogger.recordSuccess();
             }
@@ -147,8 +138,8 @@ class LocalFileLoader {
             try {
                 FileUtil.moveFile(file, sourceFile);
             } catch (IOException e) {
-                updateOperationLogger.recordFailure(
-                    "Error renaming file: " + file.getAbsolutePath(), e, DISK_PERSISTENCE_LOADER_ERROR);
+                updateOperationLogger.recordFailure("Error renaming file: " + file.getAbsolutePath(), e,
+                    DISK_PERSISTENCE_LOADER_ERROR);
                 return;
             }
             updateOperationLogger.recordSuccess();

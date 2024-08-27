@@ -28,3 +28,5 @@ resource pageBlobStorageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' =
 
 output STORAGE_CONNECTION_STRING string = '"DefaultEndpointsProtocol=https;AccountName=${primaryAccountName};AccountKey=${listKeys(primaryAccount.id, storageApiVersion).keys[0].value};EndpointSuffix=${endpointSuffix}"'
 output PAGE_BLOB_STORAGE_CONNECTION_STRING string = '"DefaultEndpointsProtocol=https;AccountName=${pageBlobStorageAccountName};AccountKey=${listKeys(pageBlobStorageAccount.id, storageApiVersion).keys[0].value};EndpointSuffix=${endpointSuffix}"'
+output STORAGE_ENDPOINT_STRING string = '"https://${primaryAccountName}.blob.core.windows.net"'
+output PAGE_BLOB_STORAGE_ENDPOINT_STRING string = '"https://${pageBlobStorageAccountName}.blob.core.windows.net"'

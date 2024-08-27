@@ -6,23 +6,25 @@ package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Custom persistent disk resource payload.
  */
 @Fluent
-public final class CustomPersistentDiskResource {
+public final class CustomPersistentDiskResource implements JsonSerializable<CustomPersistentDiskResource> {
     /*
      * Properties of the custom persistent disk resource payload.
      */
-    @JsonProperty(value = "customPersistentDiskProperties")
     private CustomPersistentDiskProperties customPersistentDiskProperties;
 
     /*
      * The resource id of Azure Spring Apps Storage resource.
      */
-    @JsonProperty(value = "storageId", required = true)
     private String storageId;
 
     /**
@@ -82,10 +84,52 @@ public final class CustomPersistentDiskResource {
             customPersistentDiskProperties().validate();
         }
         if (storageId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property storageId in model CustomPersistentDiskResource"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property storageId in model CustomPersistentDiskResource"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CustomPersistentDiskResource.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("storageId", this.storageId);
+        jsonWriter.writeJsonField("customPersistentDiskProperties", this.customPersistentDiskProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomPersistentDiskResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomPersistentDiskResource if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CustomPersistentDiskResource.
+     */
+    public static CustomPersistentDiskResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomPersistentDiskResource deserializedCustomPersistentDiskResource = new CustomPersistentDiskResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("storageId".equals(fieldName)) {
+                    deserializedCustomPersistentDiskResource.storageId = reader.getString();
+                } else if ("customPersistentDiskProperties".equals(fieldName)) {
+                    deserializedCustomPersistentDiskResource.customPersistentDiskProperties
+                        = CustomPersistentDiskProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomPersistentDiskResource;
+        });
+    }
 }

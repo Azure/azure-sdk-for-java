@@ -19,15 +19,13 @@ public interface Jobs {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName Job Name.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of diagnostics for a Container App Job along with {@link Response}.
+     * @return the list of diagnostics for a Container App Job as paginated response with {@link PagedIterable}.
      */
-    Response<DiagnosticsCollection> listDetectorsWithResponse(String resourceGroupName, String jobName,
-        Context context);
+    PagedIterable<Diagnostics> listDetectors(String resourceGroupName, String jobName);
 
     /**
      * Get the list of diagnostics for a given Container App Job.
@@ -36,13 +34,14 @@ public interface Jobs {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName Job Name.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of diagnostics for a Container App Job.
+     * @return the list of diagnostics for a Container App Job as paginated response with {@link PagedIterable}.
      */
-    DiagnosticsCollection listDetectors(String resourceGroupName, String jobName);
+    PagedIterable<Diagnostics> listDetectors(String resourceGroupName, String jobName, Context context);
 
     /**
      * Get the diagnostics data for a given Container App Job.
@@ -79,12 +78,11 @@ public interface Jobs {
     Diagnostics getDetector(String resourceGroupName, String jobName, String detectorName);
 
     /**
-     * Get the properties for a given Container App Job.
-     * 
      * Get the properties of a Container App Job.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName Job Name.
+     * @param apiName Proxy API Name for Container App Job.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
@@ -92,22 +90,21 @@ public interface Jobs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a Container App Job along with {@link Response}.
      */
-    Response<Job> proxyGetWithResponse(String resourceGroupName, String jobName, Context context);
+    Response<Job> proxyGetWithResponse(String resourceGroupName, String jobName, String apiName, Context context);
 
     /**
-     * Get the properties for a given Container App Job.
-     * 
      * Get the properties of a Container App Job.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName Job Name.
+     * @param apiName Proxy API Name for Container App Job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a Container App Job.
      */
-    Job proxyGet(String resourceGroupName, String jobName);
+    Job proxyGet(String resourceGroupName, String jobName, String apiName);
 
     /**
      * Get the Container Apps Jobs in a given subscription.

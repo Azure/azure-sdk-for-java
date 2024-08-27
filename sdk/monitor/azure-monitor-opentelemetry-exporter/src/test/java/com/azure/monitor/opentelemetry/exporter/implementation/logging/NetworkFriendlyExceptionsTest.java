@@ -20,8 +20,8 @@ public class NetworkFriendlyExceptionsTest {
     public void testCipherExceptionDetectorWithNoCiphers() {
         Exception ioException = new IOException();
         List<String> existingCiphers = new ArrayList<>();
-        NetworkFriendlyExceptions.CipherExceptionDetector cipherExceptionDetector =
-            new NetworkFriendlyExceptions.CipherExceptionDetector(existingCiphers);
+        NetworkFriendlyExceptions.CipherExceptionDetector cipherExceptionDetector
+            = new NetworkFriendlyExceptions.CipherExceptionDetector(existingCiphers);
         assertThat(cipherExceptionDetector.detect(ioException)).isEqualTo(true);
     }
 
@@ -29,34 +29,33 @@ public class NetworkFriendlyExceptionsTest {
     public void testCipherExceptionDetectorWithCiphers() {
         Exception ioException = new IOException();
         List<String> existingCiphers = Arrays.asList("TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384");
-        NetworkFriendlyExceptions.CipherExceptionDetector cipherExceptionDetector =
-            new NetworkFriendlyExceptions.CipherExceptionDetector(existingCiphers);
+        NetworkFriendlyExceptions.CipherExceptionDetector cipherExceptionDetector
+            = new NetworkFriendlyExceptions.CipherExceptionDetector(existingCiphers);
         assertThat(cipherExceptionDetector.detect(ioException)).isEqualTo(false);
     }
 
     @Test
     public void testSslExceptionDetectorWithWrongMessage() {
         Exception sslException = new SSLHandshakeException("sample");
-        NetworkFriendlyExceptions.SslExceptionDetector sslExceptionDetector =
-            new NetworkFriendlyExceptions.SslExceptionDetector();
+        NetworkFriendlyExceptions.SslExceptionDetector sslExceptionDetector
+            = new NetworkFriendlyExceptions.SslExceptionDetector();
         assertThat(sslExceptionDetector.detect(sslException)).isEqualTo(false);
     }
 
     @Test
     public void testSslExceptionDetectorWithRightMessage() {
-        Exception sslException =
-            new SSLHandshakeException(
-                "stuff: unable to find valid certification path to requested target");
-        NetworkFriendlyExceptions.SslExceptionDetector sslExceptionDetector =
-            new NetworkFriendlyExceptions.SslExceptionDetector();
+        Exception sslException
+            = new SSLHandshakeException("stuff: unable to find valid certification path to requested target");
+        NetworkFriendlyExceptions.SslExceptionDetector sslExceptionDetector
+            = new NetworkFriendlyExceptions.SslExceptionDetector();
         assertThat(sslExceptionDetector.detect(sslException)).isEqualTo(true);
     }
 
     @Test
     public void testUnknownHostExceptionDetector() {
         Exception unknownHostException = new UnknownHostException("sample");
-        NetworkFriendlyExceptions.UnknownHostExceptionDetector unknownHostExceptionDetector =
-            new NetworkFriendlyExceptions.UnknownHostExceptionDetector();
+        NetworkFriendlyExceptions.UnknownHostExceptionDetector unknownHostExceptionDetector
+            = new NetworkFriendlyExceptions.UnknownHostExceptionDetector();
         assertThat(unknownHostExceptionDetector.detect(unknownHostException)).isEqualTo(true);
     }
 }

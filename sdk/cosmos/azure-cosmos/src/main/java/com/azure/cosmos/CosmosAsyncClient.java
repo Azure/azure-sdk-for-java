@@ -731,7 +731,7 @@ public final class CosmosAsyncClient implements Closeable {
                 requestOptions);
     }
 
-    private ConsistencyLevel getEffectiveConsistencyLevel(
+    ConsistencyLevel getEffectiveConsistencyLevel(
         OperationType operationType,
         ConsistencyLevel desiredConsistencyLevelOfOperation) {
 
@@ -860,7 +860,7 @@ public final class CosmosAsyncClient implements Closeable {
 
                 @Override
                 public String getConnectionMode(CosmosAsyncClient client) {
-                    return client.connectionPolicy.getConnectionMode().toString();
+                    return client.getConnectionPolicy().getConnectionMode().toString();
                 }
 
                 @Override

@@ -5,7 +5,11 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Network Virtual Appliance Additional Nic Properties
@@ -13,17 +17,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Network Virtual Appliance Additional NIC properties.
  */
 @Fluent
-public final class VirtualApplianceAdditionalNicProperties {
+public final class VirtualApplianceAdditionalNicProperties
+    implements JsonSerializable<VirtualApplianceAdditionalNicProperties> {
     /*
      * Name of additional nic
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Flag (true or false) for Intent for Public Ip on additional nic
      */
-    @JsonProperty(value = "hasPublicIp")
     private Boolean hasPublicIp;
 
     /**
@@ -78,5 +81,46 @@ public final class VirtualApplianceAdditionalNicProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeBooleanField("hasPublicIp", this.hasPublicIp);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualApplianceAdditionalNicProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualApplianceAdditionalNicProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualApplianceAdditionalNicProperties.
+     */
+    public static VirtualApplianceAdditionalNicProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualApplianceAdditionalNicProperties deserializedVirtualApplianceAdditionalNicProperties
+                = new VirtualApplianceAdditionalNicProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedVirtualApplianceAdditionalNicProperties.name = reader.getString();
+                } else if ("hasPublicIp".equals(fieldName)) {
+                    deserializedVirtualApplianceAdditionalNicProperties.hasPublicIp
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualApplianceAdditionalNicProperties;
+        });
     }
 }

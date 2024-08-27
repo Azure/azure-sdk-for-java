@@ -17,35 +17,46 @@ public final class ContainerAppJobExecutionsInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ContainerAppJobExecutionsInner model = BinaryData.fromString(
-            "{\"value\":[{\"name\":\"uartvti\",\"id\":\"yefchnm\",\"type\":\"hmnxhkxjqi\",\"properties\":{\"status\":\"Degraded\",\"startTime\":\"2021-02-25T22:43:28Z\",\"endTime\":\"2021-08-15T18:00:46Z\",\"template\":{\"containers\":[{}],\"initContainers\":[{}]}}},{\"name\":\"wrsnewmozqvbu\",\"id\":\"ma\",\"type\":\"sycxhxzgaz\",\"properties\":{\"status\":\"Running\",\"startTime\":\"2021-09-16T19:45:24Z\",\"endTime\":\"2021-01-19T00:16:09Z\",\"template\":{\"containers\":[{},{},{},{}],\"initContainers\":[{}]}}}],\"nextLink\":\"ubowsepdfgkm\"}")
+            "{\"value\":[{\"name\":\"erteeammxqiekk\",\"id\":\"ddrtkgdojb\",\"type\":\"vavrefdees\",\"properties\":{\"status\":\"Succeeded\",\"startTime\":\"2021-07-23T13:42:28Z\",\"endTime\":\"2021-08-23T12:07:03Z\",\"template\":{\"containers\":[{}],\"initContainers\":[{},{}]}}},{\"name\":\"rtujwsawddjibab\",\"id\":\"ititvtzeexavoxt\",\"type\":\"lecdmdqbw\",\"properties\":{\"status\":\"Running\",\"startTime\":\"2021-11-30T11:49:15Z\",\"endTime\":\"2021-06-26T00:13:12Z\",\"template\":{\"containers\":[{},{}],\"initContainers\":[{},{},{}]}}},{\"name\":\"hhxud\",\"id\":\"vodhtn\",\"type\":\"rudhzmmesckdl\",\"properties\":{\"status\":\"Degraded\",\"startTime\":\"2021-07-08T07:35:07Z\",\"endTime\":\"2021-09-27T03:23:27Z\",\"template\":{\"containers\":[{}],\"initContainers\":[{}]}}}],\"nextLink\":\"wmdboxdfgsftuf\"}")
             .toObject(ContainerAppJobExecutionsInner.class);
-        Assertions.assertEquals("uartvti", model.value().get(0).name());
-        Assertions.assertEquals("yefchnm", model.value().get(0).id());
-        Assertions.assertEquals("hmnxhkxjqi", model.value().get(0).type());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-25T22:43:28Z"), model.value().get(0).startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-15T18:00:46Z"), model.value().get(0).endTime());
+        Assertions.assertEquals("erteeammxqiekk", model.value().get(0).name());
+        Assertions.assertEquals("ddrtkgdojb", model.value().get(0).id());
+        Assertions.assertEquals("vavrefdees", model.value().get(0).type());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-23T13:42:28Z"), model.value().get(0).startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-23T12:07:03Z"), model.value().get(0).endTime());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ContainerAppJobExecutionsInner model = new ContainerAppJobExecutionsInner().withValue(Arrays.asList(
-            new JobExecutionInner().withName("uartvti").withId("yefchnm").withType("hmnxhkxjqi")
-                .withStartTime(OffsetDateTime.parse("2021-02-25T22:43:28Z"))
-                .withEndTime(OffsetDateTime.parse("2021-08-15T18:00:46Z"))
+            new JobExecutionInner().withName("erteeammxqiekk")
+                .withId("ddrtkgdojb")
+                .withType("vavrefdees")
+                .withStartTime(OffsetDateTime.parse("2021-07-23T13:42:28Z"))
+                .withEndTime(OffsetDateTime.parse("2021-08-23T12:07:03Z"))
                 .withTemplate(new JobExecutionTemplate().withContainers(Arrays.asList(new JobExecutionContainer()))
-                    .withInitContainers(Arrays.asList(new JobExecutionContainer()))),
-            new JobExecutionInner().withName("wrsnewmozqvbu").withId("ma").withType("sycxhxzgaz")
-                .withStartTime(OffsetDateTime.parse("2021-09-16T19:45:24Z"))
-                .withEndTime(OffsetDateTime.parse("2021-01-19T00:16:09Z"))
+                    .withInitContainers(Arrays.asList(new JobExecutionContainer(), new JobExecutionContainer()))),
+            new JobExecutionInner().withName("rtujwsawddjibab")
+                .withId("ititvtzeexavoxt")
+                .withType("lecdmdqbw")
+                .withStartTime(OffsetDateTime.parse("2021-11-30T11:49:15Z"))
+                .withEndTime(OffsetDateTime.parse("2021-06-26T00:13:12Z"))
                 .withTemplate(new JobExecutionTemplate()
-                    .withContainers(Arrays.asList(new JobExecutionContainer(), new JobExecutionContainer(),
-                        new JobExecutionContainer(), new JobExecutionContainer()))
+                    .withContainers(Arrays.asList(new JobExecutionContainer(), new JobExecutionContainer()))
+                    .withInitContainers(Arrays.asList(new JobExecutionContainer(), new JobExecutionContainer(),
+                        new JobExecutionContainer()))),
+            new JobExecutionInner().withName("hhxud")
+                .withId("vodhtn")
+                .withType("rudhzmmesckdl")
+                .withStartTime(OffsetDateTime.parse("2021-07-08T07:35:07Z"))
+                .withEndTime(OffsetDateTime.parse("2021-09-27T03:23:27Z"))
+                .withTemplate(new JobExecutionTemplate().withContainers(Arrays.asList(new JobExecutionContainer()))
                     .withInitContainers(Arrays.asList(new JobExecutionContainer())))));
         model = BinaryData.fromObject(model).toObject(ContainerAppJobExecutionsInner.class);
-        Assertions.assertEquals("uartvti", model.value().get(0).name());
-        Assertions.assertEquals("yefchnm", model.value().get(0).id());
-        Assertions.assertEquals("hmnxhkxjqi", model.value().get(0).type());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-25T22:43:28Z"), model.value().get(0).startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-15T18:00:46Z"), model.value().get(0).endTime());
+        Assertions.assertEquals("erteeammxqiekk", model.value().get(0).name());
+        Assertions.assertEquals("ddrtkgdojb", model.value().get(0).id());
+        Assertions.assertEquals("vavrefdees", model.value().get(0).type());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-23T13:42:28Z"), model.value().get(0).startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-23T12:07:03Z"), model.value().get(0).endTime());
     }
 }

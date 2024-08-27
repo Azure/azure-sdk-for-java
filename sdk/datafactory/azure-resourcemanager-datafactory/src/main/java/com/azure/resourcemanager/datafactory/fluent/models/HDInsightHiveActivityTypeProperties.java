@@ -5,10 +5,13 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.HDInsightActivityDebugInfoOption;
 import com.azure.resourcemanager.datafactory.models.LinkedServiceReference;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -16,55 +19,46 @@ import java.util.Map;
  * HDInsight Hive activity properties.
  */
 @Fluent
-public final class HDInsightHiveActivityTypeProperties {
+public final class HDInsightHiveActivityTypeProperties
+    implements JsonSerializable<HDInsightHiveActivityTypeProperties> {
     /*
      * Storage linked service references.
      */
-    @JsonProperty(value = "storageLinkedServices")
     private List<LinkedServiceReference> storageLinkedServices;
 
     /*
      * User specified arguments to HDInsightActivity.
      */
-    @JsonProperty(value = "arguments")
     private List<Object> arguments;
 
     /*
      * Debug info option.
      */
-    @JsonProperty(value = "getDebugInfo")
     private HDInsightActivityDebugInfoOption getDebugInfo;
 
     /*
      * Script path. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "scriptPath")
     private Object scriptPath;
 
     /*
      * Script linked service reference.
      */
-    @JsonProperty(value = "scriptLinkedService")
     private LinkedServiceReference scriptLinkedService;
 
     /*
      * Allows user to specify defines for Hive job request.
      */
-    @JsonProperty(value = "defines")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> defines;
 
     /*
      * User specified arguments under hivevar namespace.
      */
-    @JsonProperty(value = "variables")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> variables;
 
     /*
      * Query timeout value (in minutes). Effective when the HDInsight cluster is with ESP (Enterprise Security Package)
      */
-    @JsonProperty(value = "queryTimeout")
     private Integer queryTimeout;
 
     /**
@@ -248,5 +242,72 @@ public final class HDInsightHiveActivityTypeProperties {
         if (scriptLinkedService() != null) {
             scriptLinkedService().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("storageLinkedServices", this.storageLinkedServices,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("arguments", this.arguments, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeStringField("getDebugInfo", this.getDebugInfo == null ? null : this.getDebugInfo.toString());
+        jsonWriter.writeUntypedField("scriptPath", this.scriptPath);
+        jsonWriter.writeJsonField("scriptLinkedService", this.scriptLinkedService);
+        jsonWriter.writeMapField("defines", this.defines, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeMapField("variables", this.variables, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeNumberField("queryTimeout", this.queryTimeout);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HDInsightHiveActivityTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HDInsightHiveActivityTypeProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HDInsightHiveActivityTypeProperties.
+     */
+    public static HDInsightHiveActivityTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HDInsightHiveActivityTypeProperties deserializedHDInsightHiveActivityTypeProperties
+                = new HDInsightHiveActivityTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("storageLinkedServices".equals(fieldName)) {
+                    List<LinkedServiceReference> storageLinkedServices
+                        = reader.readArray(reader1 -> LinkedServiceReference.fromJson(reader1));
+                    deserializedHDInsightHiveActivityTypeProperties.storageLinkedServices = storageLinkedServices;
+                } else if ("arguments".equals(fieldName)) {
+                    List<Object> arguments = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedHDInsightHiveActivityTypeProperties.arguments = arguments;
+                } else if ("getDebugInfo".equals(fieldName)) {
+                    deserializedHDInsightHiveActivityTypeProperties.getDebugInfo
+                        = HDInsightActivityDebugInfoOption.fromString(reader.getString());
+                } else if ("scriptPath".equals(fieldName)) {
+                    deserializedHDInsightHiveActivityTypeProperties.scriptPath = reader.readUntyped();
+                } else if ("scriptLinkedService".equals(fieldName)) {
+                    deserializedHDInsightHiveActivityTypeProperties.scriptLinkedService
+                        = LinkedServiceReference.fromJson(reader);
+                } else if ("defines".equals(fieldName)) {
+                    Map<String, Object> defines = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedHDInsightHiveActivityTypeProperties.defines = defines;
+                } else if ("variables".equals(fieldName)) {
+                    Map<String, Object> variables = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedHDInsightHiveActivityTypeProperties.variables = variables;
+                } else if ("queryTimeout".equals(fieldName)) {
+                    deserializedHDInsightHiveActivityTypeProperties.queryTimeout
+                        = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHDInsightHiveActivityTypeProperties;
+        });
     }
 }

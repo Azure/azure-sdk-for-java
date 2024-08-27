@@ -14,8 +14,7 @@ import java.util.Map;
 public final class ManagedCertificatesUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/ManagedCertificates_Patch.
-     * json
+     * specification/app/resource-manager/Microsoft.App/stable/2024-03-01/examples/ManagedCertificates_Patch.json
      */
     /**
      * Sample code: Patch Managed Certificate.
@@ -24,8 +23,10 @@ public final class ManagedCertificatesUpdateSamples {
      */
     public static void
         patchManagedCertificate(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        ManagedCertificate resource = manager.managedCertificates().getWithResponse("examplerg", "testcontainerenv",
-            "certificate-firendly-name", com.azure.core.util.Context.NONE).getValue();
+        ManagedCertificate resource = manager.managedCertificates()
+            .getWithResponse("examplerg", "testcontainerenv", "certificate-firendly-name",
+                com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }
 

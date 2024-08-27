@@ -14,8 +14,7 @@ import java.util.Map;
 public final class ManagedEnvironmentsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/ManagedEnvironments_Patch.
-     * json
+     * specification/app/resource-manager/Microsoft.App/stable/2024-03-01/examples/ManagedEnvironments_Patch.json
      */
     /**
      * Sample code: Patch Managed Environment.

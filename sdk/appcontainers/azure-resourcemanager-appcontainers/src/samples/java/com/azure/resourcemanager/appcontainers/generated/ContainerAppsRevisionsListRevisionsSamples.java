@@ -10,7 +10,7 @@ package com.azure.resourcemanager.appcontainers.generated;
 public final class ContainerAppsRevisionsListRevisionsSamples {
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/Revisions_List.json
+     * specification/app/resource-manager/Microsoft.App/stable/2024-03-01/examples/Revisions_List.json
      */
     /**
      * Sample code: List Container App's revisions.
@@ -19,7 +19,7 @@ public final class ContainerAppsRevisionsListRevisionsSamples {
      */
     public static void
         listContainerAppSRevisions(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        manager.containerAppsRevisions().listRevisions("rg", "testcontainerApp0", null,
-            com.azure.core.util.Context.NONE);
+        manager.containerAppsRevisions()
+            .listRevisions("rg", "testcontainerApp0", null, com.azure.core.util.Context.NONE);
     }
 }

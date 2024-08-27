@@ -72,8 +72,8 @@ public final class JobsClientImpl implements JobsClient {
     }
 
     /**
-     * The interface defining all the services for ContainerAppsApiClientJobs to be used by the proxy service to
-     * perform REST calls.
+     * The interface defining all the services for ContainerAppsApiClientJobs to be used by the proxy service to perform
+     * REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "ContainerAppsApiClie")
@@ -204,6 +204,14 @@ public final class JobsClientImpl implements JobsClient {
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Mono<Response<DiagnosticsCollectionInner>> listDetectorsNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<JobsCollection>> listBySubscriptionNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
@@ -227,11 +235,11 @@ public final class JobsClientImpl implements JobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of diagnostics for a Container App Job along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return the list of diagnostics for a Container App Job along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DiagnosticsCollectionInner>> listDetectorsWithResponseAsync(String resourceGroupName,
+    private Mono<PagedResponse<DiagnosticsInner>> listDetectorsSinglePageAsync(String resourceGroupName,
         String jobName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -252,6 +260,8 @@ public final class JobsClientImpl implements JobsClient {
         return FluxUtil
             .withContext(context -> service.listDetectors(this.client.getEndpoint(), this.client.getSubscriptionId(),
                 resourceGroupName, jobName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<DiagnosticsInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -266,12 +276,12 @@ public final class JobsClientImpl implements JobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of diagnostics for a Container App Job along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return the list of diagnostics for a Container App Job along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DiagnosticsCollectionInner>> listDetectorsWithResponseAsync(String resourceGroupName,
-        String jobName, Context context) {
+    private Mono<PagedResponse<DiagnosticsInner>> listDetectorsSinglePageAsync(String resourceGroupName, String jobName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -289,8 +299,11 @@ public final class JobsClientImpl implements JobsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listDetectors(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            jobName, this.client.getApiVersion(), accept, context);
+        return service
+            .listDetectors(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, jobName,
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -303,12 +316,12 @@ public final class JobsClientImpl implements JobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of diagnostics for a Container App Job on successful completion of {@link Mono}.
+     * @return the list of diagnostics for a Container App Job as paginated response with {@link PagedFlux}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DiagnosticsCollectionInner> listDetectorsAsync(String resourceGroupName, String jobName) {
-        return listDetectorsWithResponseAsync(resourceGroupName, jobName)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<DiagnosticsInner> listDetectorsAsync(String resourceGroupName, String jobName) {
+        return new PagedFlux<>(() -> listDetectorsSinglePageAsync(resourceGroupName, jobName),
+            nextLink -> listDetectorsNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -322,12 +335,12 @@ public final class JobsClientImpl implements JobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of diagnostics for a Container App Job along with {@link Response}.
+     * @return the list of diagnostics for a Container App Job as paginated response with {@link PagedFlux}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DiagnosticsCollectionInner> listDetectorsWithResponse(String resourceGroupName, String jobName,
-        Context context) {
-        return listDetectorsWithResponseAsync(resourceGroupName, jobName, context).block();
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<DiagnosticsInner> listDetectorsAsync(String resourceGroupName, String jobName, Context context) {
+        return new PagedFlux<>(() -> listDetectorsSinglePageAsync(resourceGroupName, jobName, context),
+            nextLink -> listDetectorsNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -340,11 +353,29 @@ public final class JobsClientImpl implements JobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of diagnostics for a Container App Job.
+     * @return the list of diagnostics for a Container App Job as paginated response with {@link PagedIterable}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DiagnosticsCollectionInner listDetectors(String resourceGroupName, String jobName) {
-        return listDetectorsWithResponse(resourceGroupName, jobName, Context.NONE).getValue();
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<DiagnosticsInner> listDetectors(String resourceGroupName, String jobName) {
+        return new PagedIterable<>(listDetectorsAsync(resourceGroupName, jobName));
+    }
+
+    /**
+     * Get the list of diagnostics for a given Container App Job.
+     * 
+     * Get the list of diagnostics for a Container App Job.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param jobName Job Name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of diagnostics for a Container App Job as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<DiagnosticsInner> listDetectors(String resourceGroupName, String jobName, Context context) {
+        return new PagedIterable<>(listDetectorsAsync(resourceGroupName, jobName, context));
     }
 
     /**
@@ -489,12 +520,11 @@ public final class JobsClientImpl implements JobsClient {
     }
 
     /**
-     * Get the properties for a given Container App Job.
-     * 
      * Get the properties of a Container App Job.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName Job Name.
+     * @param apiName Proxy API Name for Container App Job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -502,7 +532,8 @@ public final class JobsClientImpl implements JobsClient {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<JobInner>> proxyGetWithResponseAsync(String resourceGroupName, String jobName) {
+    private Mono<Response<JobInner>> proxyGetWithResponseAsync(String resourceGroupName, String jobName,
+        String apiName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -518,7 +549,9 @@ public final class JobsClientImpl implements JobsClient {
         if (jobName == null) {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
-        final String apiName = "rootApi";
+        if (apiName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter apiName is required and cannot be null."));
+        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.proxyGet(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -527,12 +560,11 @@ public final class JobsClientImpl implements JobsClient {
     }
 
     /**
-     * Get the properties for a given Container App Job.
-     * 
      * Get the properties of a Container App Job.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName Job Name.
+     * @param apiName Proxy API Name for Container App Job.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -541,7 +573,7 @@ public final class JobsClientImpl implements JobsClient {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<JobInner>> proxyGetWithResponseAsync(String resourceGroupName, String jobName,
+    private Mono<Response<JobInner>> proxyGetWithResponseAsync(String resourceGroupName, String jobName, String apiName,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -558,7 +590,9 @@ public final class JobsClientImpl implements JobsClient {
         if (jobName == null) {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
-        final String apiName = "rootApi";
+        if (apiName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter apiName is required and cannot be null."));
+        }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.proxyGet(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, jobName,
@@ -566,29 +600,28 @@ public final class JobsClientImpl implements JobsClient {
     }
 
     /**
-     * Get the properties for a given Container App Job.
-     * 
      * Get the properties of a Container App Job.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName Job Name.
+     * @param apiName Proxy API Name for Container App Job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a Container App Job on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<JobInner> proxyGetAsync(String resourceGroupName, String jobName) {
-        return proxyGetWithResponseAsync(resourceGroupName, jobName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    private Mono<JobInner> proxyGetAsync(String resourceGroupName, String jobName, String apiName) {
+        return proxyGetWithResponseAsync(resourceGroupName, jobName, apiName)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Get the properties for a given Container App Job.
-     * 
      * Get the properties of a Container App Job.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName Job Name.
+     * @param apiName Proxy API Name for Container App Job.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -596,25 +629,25 @@ public final class JobsClientImpl implements JobsClient {
      * @return the properties of a Container App Job along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<JobInner> proxyGetWithResponse(String resourceGroupName, String jobName, Context context) {
-        return proxyGetWithResponseAsync(resourceGroupName, jobName, context).block();
+    public Response<JobInner> proxyGetWithResponse(String resourceGroupName, String jobName, String apiName,
+        Context context) {
+        return proxyGetWithResponseAsync(resourceGroupName, jobName, apiName, context).block();
     }
 
     /**
-     * Get the properties for a given Container App Job.
-     * 
      * Get the properties of a Container App Job.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName Job Name.
+     * @param apiName Proxy API Name for Container App Job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a Container App Job.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public JobInner proxyGet(String resourceGroupName, String jobName) {
-        return proxyGetWithResponse(resourceGroupName, jobName, Context.NONE).getValue();
+    public JobInner proxyGet(String resourceGroupName, String jobName, String apiName) {
+        return proxyGetWithResponse(resourceGroupName, jobName, apiName, Context.NONE).getValue();
     }
 
     /**
@@ -2470,9 +2503,61 @@ public final class JobsClientImpl implements JobsClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return diagnostics data collection for a resource along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<DiagnosticsInner>> listDetectorsNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listDetectorsNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<DiagnosticsInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get the next page of items.
      * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return diagnostics data collection for a resource along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<DiagnosticsInner>> listDetectorsNextSinglePageAsync(String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.listDetectorsNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2500,9 +2585,7 @@ public final class JobsClientImpl implements JobsClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -2529,9 +2612,7 @@ public final class JobsClientImpl implements JobsClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2559,9 +2640,7 @@ public final class JobsClientImpl implements JobsClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.

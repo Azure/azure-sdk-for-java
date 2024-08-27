@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -47,7 +46,6 @@ public final class EnterpriseGradeCdnStatus extends ExpandableStringEnum<Enterpr
      * @param name a name to look for.
      * @return the corresponding EnterpriseGradeCdnStatus.
      */
-    @JsonCreator
     public static EnterpriseGradeCdnStatus fromString(String name) {
         return fromString(name, EnterpriseGradeCdnStatus.class);
     }

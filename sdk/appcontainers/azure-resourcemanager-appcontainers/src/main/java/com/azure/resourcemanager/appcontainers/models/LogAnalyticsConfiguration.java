@@ -5,30 +5,26 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Log Analytics configuration, must only be provided when destination is configured as 'log-analytics'.
  */
 @Fluent
-public final class LogAnalyticsConfiguration {
+public final class LogAnalyticsConfiguration implements JsonSerializable<LogAnalyticsConfiguration> {
     /*
      * Log analytics customer id
      */
-    @JsonProperty(value = "customerId")
     private String customerId;
 
     /*
      * Log analytics customer key
      */
-    @JsonProperty(value = "sharedKey")
     private String sharedKey;
-
-    /*
-     * Boolean indicating whether to parse json string log into dynamic json columns
-     */
-    @JsonProperty(value = "dynamicJsonColumns")
-    private Boolean dynamicJsonColumns;
 
     /**
      * Creates an instance of LogAnalyticsConfiguration class.
@@ -77,32 +73,49 @@ public final class LogAnalyticsConfiguration {
     }
 
     /**
-     * Get the dynamicJsonColumns property: Boolean indicating whether to parse json string log into dynamic json
-     * columns.
-     * 
-     * @return the dynamicJsonColumns value.
-     */
-    public Boolean dynamicJsonColumns() {
-        return this.dynamicJsonColumns;
-    }
-
-    /**
-     * Set the dynamicJsonColumns property: Boolean indicating whether to parse json string log into dynamic json
-     * columns.
-     * 
-     * @param dynamicJsonColumns the dynamicJsonColumns value to set.
-     * @return the LogAnalyticsConfiguration object itself.
-     */
-    public LogAnalyticsConfiguration withDynamicJsonColumns(Boolean dynamicJsonColumns) {
-        this.dynamicJsonColumns = dynamicJsonColumns;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("customerId", this.customerId);
+        jsonWriter.writeStringField("sharedKey", this.sharedKey);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LogAnalyticsConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LogAnalyticsConfiguration if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LogAnalyticsConfiguration.
+     */
+    public static LogAnalyticsConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LogAnalyticsConfiguration deserializedLogAnalyticsConfiguration = new LogAnalyticsConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("customerId".equals(fieldName)) {
+                    deserializedLogAnalyticsConfiguration.customerId = reader.getString();
+                } else if ("sharedKey".equals(fieldName)) {
+                    deserializedLogAnalyticsConfiguration.sharedKey = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLogAnalyticsConfiguration;
+        });
     }
 }

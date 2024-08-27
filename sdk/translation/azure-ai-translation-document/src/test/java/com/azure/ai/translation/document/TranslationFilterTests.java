@@ -5,22 +5,21 @@ package com.azure.ai.translation.document;
 
 import com.azure.ai.translation.document.models.BatchRequest;
 import com.azure.ai.translation.document.models.SourceInput;
+import com.azure.ai.translation.document.models.Status;
 import com.azure.ai.translation.document.models.TargetInput;
 import com.azure.ai.translation.document.models.TranslationStatus;
-import com.azure.ai.translation.document.models.Status;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import org.junit.jupiter.api.Test;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.test.annotation.RecordWithoutRequestBody;
 import com.azure.core.util.polling.SyncPoller;
+import org.junit.jupiter.api.Test;
+
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -162,7 +161,7 @@ public class TranslationFilterTests extends DocumentTranslationClientTestBase {
                 String createdDateTimeString = translationStatus.getCreatedDateTimeUtc().toString();
                 LocalDateTime createdDateTimeUtc = LocalDateTime.parse(createdDateTimeString,
                         DateTimeFormatter.ISO_DATE_TIME);
-                assertTrue(createdDateTimeUtc.compareTo(timestamp) > 0 || createdDateTimeUtc.compareTo(timestamp) == 0);
+                assertTrue(createdDateTimeUtc.isAfter(timestamp) || createdDateTimeUtc.isEqual(timestamp));
                 timestamp = createdDateTimeUtc;
             }
         } catch (Exception e) {
@@ -193,8 +192,8 @@ public class TranslationFilterTests extends DocumentTranslationClientTestBase {
             targetInputs.add(targetInput);
             BatchRequest batchRequest = new BatchRequest(sourceInput, targetInputs);
 
-            SyncPoller<TranslationStatus, Void> poller = documentTranslationClient
-                    .beginStartTranslation(TestHelper.getStartTranslationDetails(batchRequest));
+            SyncPoller<TranslationStatus, Void> poller = setPlaybackSyncPollerPollInterval(documentTranslationClient
+                .beginStartTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
 
             String translationId = poller.poll().getValue().getId();
             translationIds.add(translationId);
@@ -217,13 +216,9 @@ public class TranslationFilterTests extends DocumentTranslationClientTestBase {
         for (String translationId : translationIds) {
             TranslationStatus translationStatus = null;
             do {
-                try {
-                    Thread.sleep(10000);
-                    retryCount--;
-                    translationStatus = documentTranslationClient.getTranslationStatus(translationId);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(DocumentTranslationTests.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                sleepIfRunningAgainstService(10000);
+                retryCount--;
+                translationStatus = documentTranslationClient.getTranslationStatus(translationId);
             } while ((translationStatus != null) && (translationStatus.getSummary().getCancelled() > 0)
                     && (retryCount > 0));
         }

@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.UUID;
 
-/** Azure Active Directory identity configuration for a resource. */
+/**
+ * Azure Active Directory identity configuration for a resource.
+ */
 @Immutable
-public class UserIdentity {
+public final class UserIdentity implements JsonSerializable<UserIdentity> {
     /*
      * The Azure Active Directory principal id.
      */
-    @JsonProperty(value = "principalId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID principalId;
 
     /*
      * The Azure Active Directory client id.
      */
-    @JsonProperty(value = "clientId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID clientId;
 
-    /** Creates an instance of UserIdentity class. */
+    /**
+     * Creates an instance of UserIdentity class.
+     */
     public UserIdentity() {
     }
 
     /**
      * Get the principalId property: The Azure Active Directory principal id.
-     *
+     * 
      * @return the principalId value.
      */
     public UUID principalId() {
@@ -38,7 +44,7 @@ public class UserIdentity {
 
     /**
      * Get the clientId property: The Azure Active Directory client id.
-     *
+     * 
      * @return the clientId value.
      */
     public UUID clientId() {
@@ -47,9 +53,48 @@ public class UserIdentity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UserIdentity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UserIdentity if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UserIdentity.
+     */
+    public static UserIdentity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UserIdentity deserializedUserIdentity = new UserIdentity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("principalId".equals(fieldName)) {
+                    deserializedUserIdentity.principalId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("clientId".equals(fieldName)) {
+                    deserializedUserIdentity.clientId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUserIdentity;
+        });
     }
 }

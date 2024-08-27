@@ -7,59 +7,73 @@ package com.azure.resourcemanager.machinelearning.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.machinelearning.fluent.models.PrivateLinkResourceProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** A private link resource. */
+/**
+ * A private link resource.
+ */
 @Fluent
 public final class PrivateLinkResource extends ProxyResource {
     /*
      * Resource properties.
      */
-    @JsonProperty(value = "properties")
     private PrivateLinkResourceProperties innerProperties;
 
     /*
      * The identity of the resource.
      */
-    @JsonProperty(value = "identity")
     private ManagedServiceIdentity identity;
 
     /*
      * Specifies the location of the resource.
      */
-    @JsonProperty(value = "location")
     private String location;
 
     /*
      * Contains resource tags defined as key/value pairs.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * The sku of the workspace.
      */
-    @JsonProperty(value = "sku")
     private Sku sku;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of PrivateLinkResource class. */
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /**
+     * Creates an instance of PrivateLinkResource class.
+     */
     public PrivateLinkResource() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private PrivateLinkResourceProperties innerProperties() {
@@ -68,7 +82,7 @@ public final class PrivateLinkResource extends ProxyResource {
 
     /**
      * Get the identity property: The identity of the resource.
-     *
+     * 
      * @return the identity value.
      */
     public ManagedServiceIdentity identity() {
@@ -77,7 +91,7 @@ public final class PrivateLinkResource extends ProxyResource {
 
     /**
      * Set the identity property: The identity of the resource.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the PrivateLinkResource object itself.
      */
@@ -88,7 +102,7 @@ public final class PrivateLinkResource extends ProxyResource {
 
     /**
      * Get the location property: Specifies the location of the resource.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -97,7 +111,7 @@ public final class PrivateLinkResource extends ProxyResource {
 
     /**
      * Set the location property: Specifies the location of the resource.
-     *
+     * 
      * @param location the location value to set.
      * @return the PrivateLinkResource object itself.
      */
@@ -108,7 +122,7 @@ public final class PrivateLinkResource extends ProxyResource {
 
     /**
      * Get the tags property: Contains resource tags defined as key/value pairs.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -117,7 +131,7 @@ public final class PrivateLinkResource extends ProxyResource {
 
     /**
      * Set the tags property: Contains resource tags defined as key/value pairs.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the PrivateLinkResource object itself.
      */
@@ -128,7 +142,7 @@ public final class PrivateLinkResource extends ProxyResource {
 
     /**
      * Get the sku property: The sku of the workspace.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -137,7 +151,7 @@ public final class PrivateLinkResource extends ProxyResource {
 
     /**
      * Set the sku property: The sku of the workspace.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the PrivateLinkResource object itself.
      */
@@ -148,7 +162,7 @@ public final class PrivateLinkResource extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -156,8 +170,38 @@ public final class PrivateLinkResource extends ProxyResource {
     }
 
     /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the groupId property: The private link resource group id.
-     *
+     * 
      * @return the groupId value.
      */
     public String groupId() {
@@ -166,7 +210,7 @@ public final class PrivateLinkResource extends ProxyResource {
 
     /**
      * Get the requiredMembers property: The private link resource required member names.
-     *
+     * 
      * @return the requiredMembers value.
      */
     public List<String> requiredMembers() {
@@ -175,7 +219,7 @@ public final class PrivateLinkResource extends ProxyResource {
 
     /**
      * Get the requiredZoneNames property: The private link resource Private link DNS zone name.
-     *
+     * 
      * @return the requiredZoneNames value.
      */
     public List<String> requiredZoneNames() {
@@ -184,7 +228,7 @@ public final class PrivateLinkResource extends ProxyResource {
 
     /**
      * Set the requiredZoneNames property: The private link resource Private link DNS zone name.
-     *
+     * 
      * @param requiredZoneNames the requiredZoneNames value to set.
      * @return the PrivateLinkResource object itself.
      */
@@ -198,7 +242,7 @@ public final class PrivateLinkResource extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -211,5 +255,63 @@ public final class PrivateLinkResource extends ProxyResource {
         if (sku() != null) {
             sku().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("sku", this.sku);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PrivateLinkResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PrivateLinkResource if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PrivateLinkResource.
+     */
+    public static PrivateLinkResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PrivateLinkResource deserializedPrivateLinkResource = new PrivateLinkResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedPrivateLinkResource.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedPrivateLinkResource.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedPrivateLinkResource.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedPrivateLinkResource.innerProperties = PrivateLinkResourceProperties.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedPrivateLinkResource.identity = ManagedServiceIdentity.fromJson(reader);
+                } else if ("location".equals(fieldName)) {
+                    deserializedPrivateLinkResource.location = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedPrivateLinkResource.tags = tags;
+                } else if ("sku".equals(fieldName)) {
+                    deserializedPrivateLinkResource.sku = Sku.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedPrivateLinkResource.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPrivateLinkResource;
+        });
     }
 }

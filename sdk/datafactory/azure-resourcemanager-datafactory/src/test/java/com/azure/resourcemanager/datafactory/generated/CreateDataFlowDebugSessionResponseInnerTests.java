@@ -12,18 +12,18 @@ public final class CreateDataFlowDebugSessionResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CreateDataFlowDebugSessionResponseInner model
-            = BinaryData.fromString("{\"status\":\"zvd\",\"sessionId\":\"zdix\"}")
+            = BinaryData.fromString("{\"status\":\"srboldforobw\",\"sessionId\":\"vizbfhfo\"}")
                 .toObject(CreateDataFlowDebugSessionResponseInner.class);
-        Assertions.assertEquals("zvd", model.status());
-        Assertions.assertEquals("zdix", model.sessionId());
+        Assertions.assertEquals("srboldforobw", model.status());
+        Assertions.assertEquals("vizbfhfo", model.sessionId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CreateDataFlowDebugSessionResponseInner model
-            = new CreateDataFlowDebugSessionResponseInner().withStatus("zvd").withSessionId("zdix");
+            = new CreateDataFlowDebugSessionResponseInner().withStatus("srboldforobw").withSessionId("vizbfhfo");
         model = BinaryData.fromObject(model).toObject(CreateDataFlowDebugSessionResponseInner.class);
-        Assertions.assertEquals("zvd", model.status());
-        Assertions.assertEquals("zdix", model.sessionId());
+        Assertions.assertEquals("srboldforobw", model.status());
+        Assertions.assertEquals("vizbfhfo", model.sessionId());
     }
 }

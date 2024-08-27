@@ -5,37 +5,33 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Orc write settings.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = OrcWriteSettings.class, visible = true)
-@JsonTypeName("OrcWriteSettings")
 @Fluent
 public final class OrcWriteSettings extends FormatWriteSettings {
     /*
      * The write setting type.
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private String type = "OrcWriteSettings";
 
     /*
      * Limit the written file's row count to be smaller than or equal to the specified count. Type: integer (or
      * Expression with resultType integer).
      */
-    @JsonProperty(value = "maxRowsPerFile")
     private Object maxRowsPerFile;
 
     /*
      * Specifies the file name pattern <fileNamePrefix>_<fileIndex>.<fileExtension> when copy from non-file based store
      * without partitionOptions. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "fileNamePrefix")
     private Object fileNamePrefix;
 
     /**
@@ -108,5 +104,58 @@ public final class OrcWriteSettings extends FormatWriteSettings {
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeUntypedField("maxRowsPerFile", this.maxRowsPerFile);
+        jsonWriter.writeUntypedField("fileNamePrefix", this.fileNamePrefix);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OrcWriteSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OrcWriteSettings if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OrcWriteSettings.
+     */
+    public static OrcWriteSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OrcWriteSettings deserializedOrcWriteSettings = new OrcWriteSettings();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedOrcWriteSettings.type = reader.getString();
+                } else if ("maxRowsPerFile".equals(fieldName)) {
+                    deserializedOrcWriteSettings.maxRowsPerFile = reader.readUntyped();
+                } else if ("fileNamePrefix".equals(fieldName)) {
+                    deserializedOrcWriteSettings.fileNamePrefix = reader.readUntyped();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedOrcWriteSettings.withAdditionalProperties(additionalProperties);
+
+            return deserializedOrcWriteSettings;
+        });
     }
 }

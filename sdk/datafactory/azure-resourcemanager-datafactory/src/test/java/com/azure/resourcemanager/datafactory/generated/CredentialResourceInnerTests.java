@@ -16,21 +16,21 @@ public final class CredentialResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CredentialResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"type\":\"Credential\",\"description\":\"uzk\",\"annotations\":[\"datazolxrzvhqjwtr\",\"datatgvgzp\",\"datarrkolawjmjs\"],\"\":{\"tlhguynuchl\":\"dataokcdxfzzzwyjaf\",\"whmozusgzvlnsnnj\":\"datamltx\",\"rag\":\"datafpafolpymwamxq\",\"vl\":\"datagdphtvdula\"}},\"name\":\"c\",\"type\":\"srlzknmzlan\",\"etag\":\"pdwvnphcn\",\"id\":\"tpjhm\"}")
+            "{\"properties\":{\"type\":\"Credential\",\"description\":\"xepmrut\",\"annotations\":[\"databaobn\",\"datalujdjltymkmv\",\"datauihywart\",\"datapphkixkykxds\"],\"\":{\"kkflrmymyincqlhr\":\"dataemmucfxh\",\"sl\":\"datas\",\"ctotiowlx\":\"dataiiiovgqcgxuugq\"}},\"name\":\"qd\",\"type\":\"jgwdtgukranbl\",\"etag\":\"hqlkccuzgygqwaho\",\"id\":\"lwgniiprglvawu\"}")
             .toObject(CredentialResourceInner.class);
-        Assertions.assertEquals("tpjhm", model.id());
-        Assertions.assertEquals("uzk", model.properties().description());
+        Assertions.assertEquals("lwgniiprglvawu", model.id());
+        Assertions.assertEquals("xepmrut", model.properties().description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CredentialResourceInner model = new CredentialResourceInner().withId("tpjhm")
-            .withProperties(new Credential().withDescription("uzk")
-                .withAnnotations(Arrays.asList("datazolxrzvhqjwtr", "datatgvgzp", "datarrkolawjmjs"))
+        CredentialResourceInner model = new CredentialResourceInner().withId("lwgniiprglvawu")
+            .withProperties(new Credential().withDescription("xepmrut")
+                .withAnnotations(Arrays.asList("databaobn", "datalujdjltymkmv", "datauihywart", "datapphkixkykxds"))
                 .withAdditionalProperties(mapOf("type", "Credential")));
         model = BinaryData.fromObject(model).toObject(CredentialResourceInner.class);
-        Assertions.assertEquals("tpjhm", model.id());
-        Assertions.assertEquals("uzk", model.properties().description());
+        Assertions.assertEquals("lwgniiprglvawu", model.id());
+        Assertions.assertEquals("xepmrut", model.properties().description());
     }
 
     // Use "Map.of" if available

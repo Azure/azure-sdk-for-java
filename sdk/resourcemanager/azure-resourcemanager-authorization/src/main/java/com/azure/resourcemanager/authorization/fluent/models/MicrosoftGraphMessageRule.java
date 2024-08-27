@@ -5,76 +5,72 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** messageRule. */
+/**
+ * messageRule.
+ */
 @Fluent
 public final class MicrosoftGraphMessageRule extends MicrosoftGraphEntity {
     /*
      * messageRuleActions
      */
-    @JsonProperty(value = "actions")
     private MicrosoftGraphMessageRuleActions actions;
 
     /*
      * messageRulePredicates
      */
-    @JsonProperty(value = "conditions")
     private MicrosoftGraphMessageRulePredicates conditions;
 
     /*
      * The display name of the rule.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * messageRulePredicates
      */
-    @JsonProperty(value = "exceptions")
     private MicrosoftGraphMessageRulePredicates exceptions;
 
     /*
      * Indicates whether the rule is in an error condition. Read-only.
      */
-    @JsonProperty(value = "hasError")
     private Boolean hasError;
 
     /*
      * Indicates whether the rule is enabled to be applied to messages.
      */
-    @JsonProperty(value = "isEnabled")
     private Boolean isEnabled;
 
     /*
      * Indicates if the rule is read-only and cannot be modified or deleted by the rules REST API.
      */
-    @JsonProperty(value = "isReadOnly")
     private Boolean isReadOnly;
 
     /*
      * Indicates the order in which the rule is executed, among other rules.
      */
-    @JsonProperty(value = "sequence")
     private Integer sequence;
 
     /*
      * messageRule
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphMessageRule class. */
+    /**
+     * Creates an instance of MicrosoftGraphMessageRule class.
+     */
     public MicrosoftGraphMessageRule() {
     }
 
     /**
      * Get the actions property: messageRuleActions.
-     *
+     * 
      * @return the actions value.
      */
     public MicrosoftGraphMessageRuleActions actions() {
@@ -83,7 +79,7 @@ public final class MicrosoftGraphMessageRule extends MicrosoftGraphEntity {
 
     /**
      * Set the actions property: messageRuleActions.
-     *
+     * 
      * @param actions the actions value to set.
      * @return the MicrosoftGraphMessageRule object itself.
      */
@@ -94,7 +90,7 @@ public final class MicrosoftGraphMessageRule extends MicrosoftGraphEntity {
 
     /**
      * Get the conditions property: messageRulePredicates.
-     *
+     * 
      * @return the conditions value.
      */
     public MicrosoftGraphMessageRulePredicates conditions() {
@@ -103,7 +99,7 @@ public final class MicrosoftGraphMessageRule extends MicrosoftGraphEntity {
 
     /**
      * Set the conditions property: messageRulePredicates.
-     *
+     * 
      * @param conditions the conditions value to set.
      * @return the MicrosoftGraphMessageRule object itself.
      */
@@ -114,7 +110,7 @@ public final class MicrosoftGraphMessageRule extends MicrosoftGraphEntity {
 
     /**
      * Get the displayName property: The display name of the rule.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -123,7 +119,7 @@ public final class MicrosoftGraphMessageRule extends MicrosoftGraphEntity {
 
     /**
      * Set the displayName property: The display name of the rule.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the MicrosoftGraphMessageRule object itself.
      */
@@ -134,7 +130,7 @@ public final class MicrosoftGraphMessageRule extends MicrosoftGraphEntity {
 
     /**
      * Get the exceptions property: messageRulePredicates.
-     *
+     * 
      * @return the exceptions value.
      */
     public MicrosoftGraphMessageRulePredicates exceptions() {
@@ -143,7 +139,7 @@ public final class MicrosoftGraphMessageRule extends MicrosoftGraphEntity {
 
     /**
      * Set the exceptions property: messageRulePredicates.
-     *
+     * 
      * @param exceptions the exceptions value to set.
      * @return the MicrosoftGraphMessageRule object itself.
      */
@@ -154,7 +150,7 @@ public final class MicrosoftGraphMessageRule extends MicrosoftGraphEntity {
 
     /**
      * Get the hasError property: Indicates whether the rule is in an error condition. Read-only.
-     *
+     * 
      * @return the hasError value.
      */
     public Boolean hasError() {
@@ -163,7 +159,7 @@ public final class MicrosoftGraphMessageRule extends MicrosoftGraphEntity {
 
     /**
      * Set the hasError property: Indicates whether the rule is in an error condition. Read-only.
-     *
+     * 
      * @param hasError the hasError value to set.
      * @return the MicrosoftGraphMessageRule object itself.
      */
@@ -174,7 +170,7 @@ public final class MicrosoftGraphMessageRule extends MicrosoftGraphEntity {
 
     /**
      * Get the isEnabled property: Indicates whether the rule is enabled to be applied to messages.
-     *
+     * 
      * @return the isEnabled value.
      */
     public Boolean isEnabled() {
@@ -183,7 +179,7 @@ public final class MicrosoftGraphMessageRule extends MicrosoftGraphEntity {
 
     /**
      * Set the isEnabled property: Indicates whether the rule is enabled to be applied to messages.
-     *
+     * 
      * @param isEnabled the isEnabled value to set.
      * @return the MicrosoftGraphMessageRule object itself.
      */
@@ -195,7 +191,7 @@ public final class MicrosoftGraphMessageRule extends MicrosoftGraphEntity {
     /**
      * Get the isReadOnly property: Indicates if the rule is read-only and cannot be modified or deleted by the rules
      * REST API.
-     *
+     * 
      * @return the isReadOnly value.
      */
     public Boolean isReadOnly() {
@@ -205,7 +201,7 @@ public final class MicrosoftGraphMessageRule extends MicrosoftGraphEntity {
     /**
      * Set the isReadOnly property: Indicates if the rule is read-only and cannot be modified or deleted by the rules
      * REST API.
-     *
+     * 
      * @param isReadOnly the isReadOnly value to set.
      * @return the MicrosoftGraphMessageRule object itself.
      */
@@ -216,7 +212,7 @@ public final class MicrosoftGraphMessageRule extends MicrosoftGraphEntity {
 
     /**
      * Get the sequence property: Indicates the order in which the rule is executed, among other rules.
-     *
+     * 
      * @return the sequence value.
      */
     public Integer sequence() {
@@ -225,7 +221,7 @@ public final class MicrosoftGraphMessageRule extends MicrosoftGraphEntity {
 
     /**
      * Set the sequence property: Indicates the order in which the rule is executed, among other rules.
-     *
+     * 
      * @param sequence the sequence value to set.
      * @return the MicrosoftGraphMessageRule object itself.
      */
@@ -236,17 +232,16 @@ public final class MicrosoftGraphMessageRule extends MicrosoftGraphEntity {
 
     /**
      * Get the additionalProperties property: messageRule.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: messageRule.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphMessageRule object itself.
      */
@@ -255,15 +250,9 @@ public final class MicrosoftGraphMessageRule extends MicrosoftGraphEntity {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphMessageRule withId(String id) {
         super.withId(id);
@@ -272,7 +261,7 @@ public final class MicrosoftGraphMessageRule extends MicrosoftGraphEntity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -287,5 +276,78 @@ public final class MicrosoftGraphMessageRule extends MicrosoftGraphEntity {
         if (exceptions() != null) {
             exceptions().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("actions", this.actions);
+        jsonWriter.writeJsonField("conditions", this.conditions);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeJsonField("exceptions", this.exceptions);
+        jsonWriter.writeBooleanField("hasError", this.hasError);
+        jsonWriter.writeBooleanField("isEnabled", this.isEnabled);
+        jsonWriter.writeBooleanField("isReadOnly", this.isReadOnly);
+        jsonWriter.writeNumberField("sequence", this.sequence);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphMessageRule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphMessageRule if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphMessageRule.
+     */
+    public static MicrosoftGraphMessageRule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphMessageRule deserializedMicrosoftGraphMessageRule = new MicrosoftGraphMessageRule();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphMessageRule.withId(reader.getString());
+                } else if ("actions".equals(fieldName)) {
+                    deserializedMicrosoftGraphMessageRule.actions = MicrosoftGraphMessageRuleActions.fromJson(reader);
+                } else if ("conditions".equals(fieldName)) {
+                    deserializedMicrosoftGraphMessageRule.conditions
+                        = MicrosoftGraphMessageRulePredicates.fromJson(reader);
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedMicrosoftGraphMessageRule.displayName = reader.getString();
+                } else if ("exceptions".equals(fieldName)) {
+                    deserializedMicrosoftGraphMessageRule.exceptions
+                        = MicrosoftGraphMessageRulePredicates.fromJson(reader);
+                } else if ("hasError".equals(fieldName)) {
+                    deserializedMicrosoftGraphMessageRule.hasError = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isEnabled".equals(fieldName)) {
+                    deserializedMicrosoftGraphMessageRule.isEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isReadOnly".equals(fieldName)) {
+                    deserializedMicrosoftGraphMessageRule.isReadOnly = reader.getNullable(JsonReader::getBoolean);
+                } else if ("sequence".equals(fieldName)) {
+                    deserializedMicrosoftGraphMessageRule.sequence = reader.getNullable(JsonReader::getInt);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphMessageRule.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphMessageRule;
+        });
     }
 }

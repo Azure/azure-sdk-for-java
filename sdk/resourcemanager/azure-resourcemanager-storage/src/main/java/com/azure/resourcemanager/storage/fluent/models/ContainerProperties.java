@@ -5,6 +5,11 @@
 package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storage.models.ImmutabilityPolicyProperties;
 import com.azure.resourcemanager.storage.models.ImmutableStorageWithVersioning;
 import com.azure.resourcemanager.storage.models.LeaseDuration;
@@ -12,8 +17,7 @@ import com.azure.resourcemanager.storage.models.LeaseState;
 import com.azure.resourcemanager.storage.models.LeaseStatus;
 import com.azure.resourcemanager.storage.models.LegalHoldProperties;
 import com.azure.resourcemanager.storage.models.PublicAccess;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
@@ -21,90 +25,75 @@ import java.util.Map;
  * The properties of a container.
  */
 @Fluent
-public final class ContainerProperties {
+public final class ContainerProperties implements JsonSerializable<ContainerProperties> {
     /*
      * The version of the deleted blob container.
      */
-    @JsonProperty(value = "version", access = JsonProperty.Access.WRITE_ONLY)
     private String version;
 
     /*
      * Indicates whether the blob container was deleted.
      */
-    @JsonProperty(value = "deleted", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean deleted;
 
     /*
      * Blob container deletion time.
      */
-    @JsonProperty(value = "deletedTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime deletedTime;
 
     /*
      * Remaining retention days for soft deleted blob container.
      */
-    @JsonProperty(value = "remainingRetentionDays", access = JsonProperty.Access.WRITE_ONLY)
     private Integer remainingRetentionDays;
 
     /*
      * Default the container to use specified encryption scope for all writes.
      */
-    @JsonProperty(value = "defaultEncryptionScope")
     private String defaultEncryptionScope;
 
     /*
      * Block override of encryption scope from the container default.
      */
-    @JsonProperty(value = "denyEncryptionScopeOverride")
     private Boolean denyEncryptionScopeOverride;
 
     /*
      * Specifies whether data in the container may be accessed publicly and the level of access.
      */
-    @JsonProperty(value = "publicAccess")
     private PublicAccess publicAccess;
 
     /*
      * Returns the date and time the container was last modified.
      */
-    @JsonProperty(value = "lastModifiedTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastModifiedTime;
 
     /*
      * The lease status of the container.
      */
-    @JsonProperty(value = "leaseStatus", access = JsonProperty.Access.WRITE_ONLY)
     private LeaseStatus leaseStatus;
 
     /*
      * Lease state of the container.
      */
-    @JsonProperty(value = "leaseState", access = JsonProperty.Access.WRITE_ONLY)
     private LeaseState leaseState;
 
     /*
      * Specifies whether the lease on a container is of infinite or fixed duration, only when the container is leased.
      */
-    @JsonProperty(value = "leaseDuration", access = JsonProperty.Access.WRITE_ONLY)
     private LeaseDuration leaseDuration;
 
     /*
      * A name-value pair to associate with the container as metadata.
      */
-    @JsonProperty(value = "metadata")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> metadata;
 
     /*
      * The ImmutabilityPolicy property of the container.
      */
-    @JsonProperty(value = "immutabilityPolicy", access = JsonProperty.Access.WRITE_ONLY)
     private ImmutabilityPolicyProperties immutabilityPolicy;
 
     /*
      * The LegalHold property of the container.
      */
-    @JsonProperty(value = "legalHold", access = JsonProperty.Access.WRITE_ONLY)
     private LegalHoldProperties legalHold;
 
     /*
@@ -112,7 +101,6 @@ public final class ContainerProperties {
      * public property is set to false by SRP if all existing legal hold tags are cleared out. There can be a maximum of
      * 1000 blob containers with hasLegalHold=true for a given account.
      */
-    @JsonProperty(value = "hasLegalHold", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean hasLegalHold;
 
     /*
@@ -120,26 +108,22 @@ public final class ContainerProperties {
      * container. The hasImmutabilityPolicy public property is set to false by SRP if ImmutabilityPolicy has not been
      * created for this container.
      */
-    @JsonProperty(value = "hasImmutabilityPolicy", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean hasImmutabilityPolicy;
 
     /*
      * The object level immutability property of the container. The property is immutable and can only be set to true at
      * the container creation time. Existing containers must undergo a migration process.
      */
-    @JsonProperty(value = "immutableStorageWithVersioning")
     private ImmutableStorageWithVersioning immutableStorageWithVersioning;
 
     /*
      * Enable NFSv3 root squash on blob container.
      */
-    @JsonProperty(value = "enableNfsV3RootSquash")
     private Boolean enableNfsV3RootSquash;
 
     /*
      * Enable NFSv3 all squash on blob container.
      */
-    @JsonProperty(value = "enableNfsV3AllSquash")
     private Boolean enableNfsV3AllSquash;
 
     /**
@@ -423,5 +407,88 @@ public final class ContainerProperties {
         if (immutableStorageWithVersioning() != null) {
             immutableStorageWithVersioning().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("defaultEncryptionScope", this.defaultEncryptionScope);
+        jsonWriter.writeBooleanField("denyEncryptionScopeOverride", this.denyEncryptionScopeOverride);
+        jsonWriter.writeStringField("publicAccess", this.publicAccess == null ? null : this.publicAccess.toString());
+        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("immutableStorageWithVersioning", this.immutableStorageWithVersioning);
+        jsonWriter.writeBooleanField("enableNfsV3RootSquash", this.enableNfsV3RootSquash);
+        jsonWriter.writeBooleanField("enableNfsV3AllSquash", this.enableNfsV3AllSquash);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContainerProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContainerProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ContainerProperties.
+     */
+    public static ContainerProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContainerProperties deserializedContainerProperties = new ContainerProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("version".equals(fieldName)) {
+                    deserializedContainerProperties.version = reader.getString();
+                } else if ("deleted".equals(fieldName)) {
+                    deserializedContainerProperties.deleted = reader.getNullable(JsonReader::getBoolean);
+                } else if ("deletedTime".equals(fieldName)) {
+                    deserializedContainerProperties.deletedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("remainingRetentionDays".equals(fieldName)) {
+                    deserializedContainerProperties.remainingRetentionDays = reader.getNullable(JsonReader::getInt);
+                } else if ("defaultEncryptionScope".equals(fieldName)) {
+                    deserializedContainerProperties.defaultEncryptionScope = reader.getString();
+                } else if ("denyEncryptionScopeOverride".equals(fieldName)) {
+                    deserializedContainerProperties.denyEncryptionScopeOverride
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("publicAccess".equals(fieldName)) {
+                    deserializedContainerProperties.publicAccess = PublicAccess.fromString(reader.getString());
+                } else if ("lastModifiedTime".equals(fieldName)) {
+                    deserializedContainerProperties.lastModifiedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("leaseStatus".equals(fieldName)) {
+                    deserializedContainerProperties.leaseStatus = LeaseStatus.fromString(reader.getString());
+                } else if ("leaseState".equals(fieldName)) {
+                    deserializedContainerProperties.leaseState = LeaseState.fromString(reader.getString());
+                } else if ("leaseDuration".equals(fieldName)) {
+                    deserializedContainerProperties.leaseDuration = LeaseDuration.fromString(reader.getString());
+                } else if ("metadata".equals(fieldName)) {
+                    Map<String, String> metadata = reader.readMap(reader1 -> reader1.getString());
+                    deserializedContainerProperties.metadata = metadata;
+                } else if ("immutabilityPolicy".equals(fieldName)) {
+                    deserializedContainerProperties.immutabilityPolicy = ImmutabilityPolicyProperties.fromJson(reader);
+                } else if ("legalHold".equals(fieldName)) {
+                    deserializedContainerProperties.legalHold = LegalHoldProperties.fromJson(reader);
+                } else if ("hasLegalHold".equals(fieldName)) {
+                    deserializedContainerProperties.hasLegalHold = reader.getNullable(JsonReader::getBoolean);
+                } else if ("hasImmutabilityPolicy".equals(fieldName)) {
+                    deserializedContainerProperties.hasImmutabilityPolicy = reader.getNullable(JsonReader::getBoolean);
+                } else if ("immutableStorageWithVersioning".equals(fieldName)) {
+                    deserializedContainerProperties.immutableStorageWithVersioning
+                        = ImmutableStorageWithVersioning.fromJson(reader);
+                } else if ("enableNfsV3RootSquash".equals(fieldName)) {
+                    deserializedContainerProperties.enableNfsV3RootSquash = reader.getNullable(JsonReader::getBoolean);
+                } else if ("enableNfsV3AllSquash".equals(fieldName)) {
+                    deserializedContainerProperties.enableNfsV3AllSquash = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContainerProperties;
+        });
     }
 }

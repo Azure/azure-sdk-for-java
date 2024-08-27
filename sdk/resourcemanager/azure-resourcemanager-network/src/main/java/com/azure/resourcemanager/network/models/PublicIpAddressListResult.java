@@ -5,25 +5,27 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.fluent.models.PublicIpAddressInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Response for ListPublicIpAddresses API service call.
  */
 @Fluent
-public final class PublicIpAddressListResult {
+public final class PublicIpAddressListResult implements JsonSerializable<PublicIpAddressListResult> {
     /*
      * A list of public IP addresses that exists in a resource group.
      */
-    @JsonProperty(value = "value")
     private List<PublicIpAddressInner> value;
 
     /*
      * The URL to get the next set of results.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -81,5 +83,46 @@ public final class PublicIpAddressListResult {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PublicIpAddressListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PublicIpAddressListResult if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PublicIpAddressListResult.
+     */
+    public static PublicIpAddressListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PublicIpAddressListResult deserializedPublicIpAddressListResult = new PublicIpAddressListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<PublicIpAddressInner> value
+                        = reader.readArray(reader1 -> PublicIpAddressInner.fromJson(reader1));
+                    deserializedPublicIpAddressListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedPublicIpAddressListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPublicIpAddressListResult;
+        });
     }
 }

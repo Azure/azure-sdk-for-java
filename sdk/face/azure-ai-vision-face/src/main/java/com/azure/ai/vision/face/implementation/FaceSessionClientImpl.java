@@ -401,6 +401,8 @@ public final class FaceSessionClientImpl {
      *     livenessOperationMode: String(Passive/PassiveActive) (Required)
      *     sendResultsToClient: Boolean (Optional)
      *     deviceCorrelationIdSetInClient: Boolean (Optional)
+     *     enableSessionImage: Boolean (Optional)
+     *     livenessSingleModalModel: String(2022-10-15-preview.04/2023-12-20-preview.06) (Optional)
      *     deviceCorrelationId: String (Optional)
      *     authTokenTimeToLiveInSeconds: Integer (Optional)
      * }
@@ -456,6 +458,8 @@ public final class FaceSessionClientImpl {
      *     livenessOperationMode: String(Passive/PassiveActive) (Required)
      *     sendResultsToClient: Boolean (Optional)
      *     deviceCorrelationIdSetInClient: Boolean (Optional)
+     *     enableSessionImage: Boolean (Optional)
+     *     livenessSingleModalModel: String(2022-10-15-preview.04/2023-12-20-preview.06) (Optional)
      *     deviceCorrelationId: String (Optional)
      *     authTokenTimeToLiveInSeconds: Integer (Optional)
      * }
@@ -574,7 +578,7 @@ public final class FaceSessionClientImpl {
      *                     timeOffsetWithinFile: int (Required)
      *                     imageType: String(Color/Infrared/Depth) (Required)
      *                 }
-     *                 modelVersionUsed: String(2020-02-15-preview.01/2021-11-12-preview.03/2022-10-15-preview.04/2023-03-02-preview.05) (Optional)
+     *                 modelVersionUsed: String(2022-10-15-preview.04/2023-12-20-preview.06) (Optional)
      *                 verifyResult (Optional): {
      *                     verifyImage (Required): {
      *                         faceRectangle (Required): (recursive schema, see faceRectangle above)
@@ -591,6 +595,8 @@ public final class FaceSessionClientImpl {
      *             latencyInMilliseconds: long (Required)
      *         }
      *         digest: String (Required)
+     *         sessionImageId: String (Optional)
+     *         verifyImageHash: String (Optional)
      *     }
      * }
      * }</pre>
@@ -652,7 +658,7 @@ public final class FaceSessionClientImpl {
      *                     timeOffsetWithinFile: int (Required)
      *                     imageType: String(Color/Infrared/Depth) (Required)
      *                 }
-     *                 modelVersionUsed: String(2020-02-15-preview.01/2021-11-12-preview.03/2022-10-15-preview.04/2023-03-02-preview.05) (Optional)
+     *                 modelVersionUsed: String(2022-10-15-preview.04/2023-12-20-preview.06) (Optional)
      *                 verifyResult (Optional): {
      *                     verifyImage (Required): {
      *                         faceRectangle (Required): (recursive schema, see faceRectangle above)
@@ -669,6 +675,8 @@ public final class FaceSessionClientImpl {
      *             latencyInMilliseconds: long (Required)
      *         }
      *         digest: String (Required)
+     *         sessionImageId: String (Optional)
+     *         verifyImageHash: String (Optional)
      *     }
      * }
      * }</pre>
@@ -821,7 +829,7 @@ public final class FaceSessionClientImpl {
      *                     timeOffsetWithinFile: int (Required)
      *                     imageType: String(Color/Infrared/Depth) (Required)
      *                 }
-     *                 modelVersionUsed: String(2020-02-15-preview.01/2021-11-12-preview.03/2022-10-15-preview.04/2023-03-02-preview.05) (Optional)
+     *                 modelVersionUsed: String(2022-10-15-preview.04/2023-12-20-preview.06) (Optional)
      *                 verifyResult (Optional): {
      *                     verifyImage (Required): {
      *                         faceRectangle (Required): (recursive schema, see faceRectangle above)
@@ -838,6 +846,8 @@ public final class FaceSessionClientImpl {
      *             latencyInMilliseconds: long (Required)
      *         }
      *         digest: String (Required)
+     *         sessionImageId: String (Optional)
+     *         verifyImageHash: String (Optional)
      *     }
      * ]
      * }</pre>
@@ -902,7 +912,7 @@ public final class FaceSessionClientImpl {
      *                     timeOffsetWithinFile: int (Required)
      *                     imageType: String(Color/Infrared/Depth) (Required)
      *                 }
-     *                 modelVersionUsed: String(2020-02-15-preview.01/2021-11-12-preview.03/2022-10-15-preview.04/2023-03-02-preview.05) (Optional)
+     *                 modelVersionUsed: String(2022-10-15-preview.04/2023-12-20-preview.06) (Optional)
      *                 verifyResult (Optional): {
      *                     verifyImage (Required): {
      *                         faceRectangle (Required): (recursive schema, see faceRectangle above)
@@ -919,6 +929,8 @@ public final class FaceSessionClientImpl {
      *             latencyInMilliseconds: long (Required)
      *         }
      *         digest: String (Required)
+     *         sessionImageId: String (Optional)
+     *         verifyImageHash: String (Optional)
      *     }
      * ]
      * }</pre>
@@ -972,8 +984,12 @@ public final class FaceSessionClientImpl {
      *     livenessOperationMode: String(Passive/PassiveActive) (Required)
      *     sendResultsToClient: Boolean (Optional)
      *     deviceCorrelationIdSetInClient: Boolean (Optional)
+     *     enableSessionImage: Boolean (Optional)
+     *     livenessSingleModalModel: String(2022-10-15-preview.04/2023-12-20-preview.06) (Optional)
      *     deviceCorrelationId: String (Optional)
      *     authTokenTimeToLiveInSeconds: Integer (Optional)
+     *     returnVerifyImageHash: Boolean (Optional)
+     *     verifyConfidenceThreshold: Double (Optional)
      * }
      * }</pre>
      * 
@@ -1045,8 +1061,12 @@ public final class FaceSessionClientImpl {
      *     livenessOperationMode: String(Passive/PassiveActive) (Required)
      *     sendResultsToClient: Boolean (Optional)
      *     deviceCorrelationIdSetInClient: Boolean (Optional)
+     *     enableSessionImage: Boolean (Optional)
+     *     livenessSingleModalModel: String(2022-10-15-preview.04/2023-12-20-preview.06) (Optional)
      *     deviceCorrelationId: String (Optional)
      *     authTokenTimeToLiveInSeconds: Integer (Optional)
+     *     returnVerifyImageHash: Boolean (Optional)
+     *     verifyConfidenceThreshold: Double (Optional)
      * }
      * }</pre>
      * 
@@ -1291,7 +1311,7 @@ public final class FaceSessionClientImpl {
      *                     timeOffsetWithinFile: int (Required)
      *                     imageType: String(Color/Infrared/Depth) (Required)
      *                 }
-     *                 modelVersionUsed: String(2020-02-15-preview.01/2021-11-12-preview.03/2022-10-15-preview.04/2023-03-02-preview.05) (Optional)
+     *                 modelVersionUsed: String(2022-10-15-preview.04/2023-12-20-preview.06) (Optional)
      *                 verifyResult (Optional): {
      *                     verifyImage (Required): {
      *                         faceRectangle (Required): (recursive schema, see faceRectangle above)
@@ -1308,6 +1328,8 @@ public final class FaceSessionClientImpl {
      *             latencyInMilliseconds: long (Required)
      *         }
      *         digest: String (Required)
+     *         sessionImageId: String (Optional)
+     *         verifyImageHash: String (Optional)
      *     }
      * }
      * }</pre>
@@ -1369,7 +1391,7 @@ public final class FaceSessionClientImpl {
      *                     timeOffsetWithinFile: int (Required)
      *                     imageType: String(Color/Infrared/Depth) (Required)
      *                 }
-     *                 modelVersionUsed: String(2020-02-15-preview.01/2021-11-12-preview.03/2022-10-15-preview.04/2023-03-02-preview.05) (Optional)
+     *                 modelVersionUsed: String(2022-10-15-preview.04/2023-12-20-preview.06) (Optional)
      *                 verifyResult (Optional): {
      *                     verifyImage (Required): {
      *                         faceRectangle (Required): (recursive schema, see faceRectangle above)
@@ -1386,6 +1408,8 @@ public final class FaceSessionClientImpl {
      *             latencyInMilliseconds: long (Required)
      *         }
      *         digest: String (Required)
+     *         sessionImageId: String (Optional)
+     *         verifyImageHash: String (Optional)
      *     }
      * }
      * }</pre>
@@ -1539,7 +1563,7 @@ public final class FaceSessionClientImpl {
      *                     timeOffsetWithinFile: int (Required)
      *                     imageType: String(Color/Infrared/Depth) (Required)
      *                 }
-     *                 modelVersionUsed: String(2020-02-15-preview.01/2021-11-12-preview.03/2022-10-15-preview.04/2023-03-02-preview.05) (Optional)
+     *                 modelVersionUsed: String(2022-10-15-preview.04/2023-12-20-preview.06) (Optional)
      *                 verifyResult (Optional): {
      *                     verifyImage (Required): {
      *                         faceRectangle (Required): (recursive schema, see faceRectangle above)
@@ -1556,6 +1580,8 @@ public final class FaceSessionClientImpl {
      *             latencyInMilliseconds: long (Required)
      *         }
      *         digest: String (Required)
+     *         sessionImageId: String (Optional)
+     *         verifyImageHash: String (Optional)
      *     }
      * ]
      * }</pre>
@@ -1620,7 +1646,7 @@ public final class FaceSessionClientImpl {
      *                     timeOffsetWithinFile: int (Required)
      *                     imageType: String(Color/Infrared/Depth) (Required)
      *                 }
-     *                 modelVersionUsed: String(2020-02-15-preview.01/2021-11-12-preview.03/2022-10-15-preview.04/2023-03-02-preview.05) (Optional)
+     *                 modelVersionUsed: String(2022-10-15-preview.04/2023-12-20-preview.06) (Optional)
      *                 verifyResult (Optional): {
      *                     verifyImage (Required): {
      *                         faceRectangle (Required): (recursive schema, see faceRectangle above)
@@ -1637,6 +1663,8 @@ public final class FaceSessionClientImpl {
      *             latencyInMilliseconds: long (Required)
      *         }
      *         digest: String (Required)
+     *         sessionImageId: String (Optional)
+     *         verifyImageHash: String (Optional)
      *     }
      * ]
      * }</pre>

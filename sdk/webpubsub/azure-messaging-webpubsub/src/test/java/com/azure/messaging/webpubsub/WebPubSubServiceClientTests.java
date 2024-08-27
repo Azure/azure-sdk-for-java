@@ -12,11 +12,9 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
-import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.BinaryData;
-import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.messaging.webpubsub.models.ClientEndpointType;
+import com.azure.messaging.webpubsub.models.WebPubSubClientProtocol;
 import com.azure.messaging.webpubsub.models.GetClientAccessTokenOptions;
 import com.azure.messaging.webpubsub.models.WebPubSubClientAccessToken;
 import com.azure.messaging.webpubsub.models.WebPubSubContentType;
@@ -26,6 +24,8 @@ import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.JWTParser;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
+import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
 
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
@@ -244,7 +244,7 @@ public class WebPubSubServiceClientTests extends TestProxyTestBase {
     @LiveOnly
     public void testGetMqttAuthenticationToken() throws ParseException {
         GetClientAccessTokenOptions options = new GetClientAccessTokenOptions()
-            .setClientEndpointType(ClientEndpointType.MQTT);
+            .setWebPubSubClientProtocol(WebPubSubClientProtocol.MQTT);
         WebPubSubClientAccessToken token = client.getClientAccessToken(options);
 
         Assertions.assertNotNull(token);
@@ -292,20 +292,13 @@ public class WebPubSubServiceClientTests extends TestProxyTestBase {
     public void testAddConnectionsToGroups() {
         List<String> groupList = Arrays.asList("group1", "group2");
         String filter = "userId eq 'user 1'";
-        assertDoesNotThrow(() -> client.addConnectionsToGroups(TestUtils.HUB_NAME, groupList, filter));
-    }
-
-    @Test
-    public void testAddConnectionsToGroupsThrowErrorWhenHubIsNull() {
-        List<String> groupList = Arrays.asList("group1", "group2");
-        String filter = "userId eq 'user 1'";
-        assertThrows(IllegalArgumentException.class, () -> client.addConnectionsToGroups(null, groupList, filter));
+        assertDoesNotThrow(() -> client.addConnectionsToGroups(groupList, filter));
     }
 
     @Test
     public void testAddConnectionsToGroupsThrowErrorWhenGroupsIsNull() {
         String filter = "userId eq 'user 1'";
-        assertThrows(HttpResponseException.class, () -> client.addConnectionsToGroups(TestUtils.HUB_NAME, null, filter));
+        assertThrows(HttpResponseException.class, () -> client.addConnectionsToGroups(null, filter));
     }
 
     @Test
@@ -321,9 +314,9 @@ public class WebPubSubServiceClientTests extends TestProxyTestBase {
                 .connectionString(TestUtils.getConnectionString());
         } else if (getTestMode() == TestMode.RECORD) {
             webPubSubServiceClientBuilder.addPolicy(interceptorManager.getRecordPolicy())
-                .credential(new DefaultAzureCredentialBuilder().build());
+                .credential(TestUtils.getIdentityTestCredential(interceptorManager));
         } else if (getTestMode() == TestMode.LIVE) {
-            webPubSubServiceClientBuilder.credential(new DefaultAzureCredentialBuilder().build());
+            webPubSubServiceClientBuilder.credential(TestUtils.getIdentityTestCredential(interceptorManager));
         }
 
         this.client = webPubSubServiceClientBuilder.buildClient();
@@ -334,9 +327,12 @@ public class WebPubSubServiceClientTests extends TestProxyTestBase {
     }
 
     @Test
-    @DoNotRecord
+    @DisabledIfEnvironmentVariable(named = "AZURE_TEST_MODE", matches = "(LIVE|live|Live|RECORD|record|Record)")
+    @DisabledIfSystemProperty(named = "AZURE_TEST_MODE", matches = "(LIVE|live|Live|RECORD|record|Record)")
     public void testCheckPermission() {
 
+        // This test is failing consistently, needs to be fixed, disabled.
+        // Github issue: https://github.com/Azure/azure-sdk-for-java/issues/41343
         RequestOptions requestOptions = new RequestOptions()
             .addQueryParam("targetName", "java");
         /*

@@ -51,6 +51,7 @@ public class AnalyzeAddOnKeyValuePairAsync {
                         Arrays.asList(DocumentAnalysisFeature.KEY_VALUE_PAIRS),
                         null,
                         null,
+                        null,
                         new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(invoiceDocument.toPath())));
 
         Mono<AnalyzeResult> analyzeLayoutResultMono =
@@ -78,7 +79,8 @@ public class AnalyzeAddOnKeyValuePairAsync {
                             boundingRegions.forEach(boundingRegion -> {
                                 System.out.printf("  Bounding regions page: %s, polygon: %s%n",
                                         boundingRegion.getPageNumber(), boundingRegion.getPolygon());
-                            });                    }
+                            });
+                        }
                         if (value != null) {
                             System.out.println("- Value: " + value.getContent());
                             List<BoundingRegion> boundingRegions = value.getBoundingRegions();
