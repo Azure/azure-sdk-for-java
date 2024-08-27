@@ -14,8 +14,11 @@ import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InternalServerErrorException;
 import com.azure.cosmos.implementation.LifeCycleUtils;
 import com.azure.cosmos.implementation.OperationCancelledException;
+import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RequestTimeline;
+import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.ServiceUnavailableException;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.clienttelemetry.CosmosMeterOptions;
@@ -292,6 +295,12 @@ public class RntbdTransportClient extends TransportClient {
         final RntbdRequestRecord record = endpoint.request(requestArgs);
 
         final Context reactorContext = Context.of(KEY_ON_ERROR_DROPPED, onErrorDropHookWithReduceLogLevel);
+
+        if ((request.getOperationType().equals(OperationType.Create) || request.getOperationType().equals(OperationType.Read)) && request.getResourceType().equals(ResourceType.Document)) {
+            if (!(request.requestContext.locationEndpointToRoute.toString().contains("east") || request.requestContext.locationEndpointToRoute.toString().contains("west"))) {
+                return Mono.error(new ServiceUnavailableException("", null, request.requestContext.locationEndpointToRoute, HttpConstants.SubStatusCodes.SERVER_GENERATED_503));
+            }
+        }
 
         // Since reactor-core 3.4.23, if the Mono.fromCompletionStage is cancelled, then it will also cancel the internal future
         // If SDK has not sent the request to server, then SDK will not send the request to server

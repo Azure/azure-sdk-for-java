@@ -181,12 +181,6 @@ public class ConsistencyReader {
                                          boolean isInRetry,
                                          boolean forceRefresh) {
 
-        if (entity.getOperationType().equals(OperationType.Read) && entity.getResourceType().equals(ResourceType.Document)) {
-            if (!(entity.requestContext.locationEndpointToRoute.toString().contains("east") || entity.requestContext.locationEndpointToRoute.toString().contains("west"))) {
-                return Mono.error(new ServiceUnavailableException("", null, entity.requestContext.locationEndpointToRoute, HttpConstants.SubStatusCodes.SERVER_GENERATED_503));
-            }
-        }
-
         if (!isInRetry) {
             if (timeout.isElapsed()) {
                 return Mono.error(new RequestTimeoutException());

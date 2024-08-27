@@ -125,12 +125,6 @@ public class ConsistencyWriter {
 
         String sessionToken = entity.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN);
 
-        if (entity.getOperationType().equals(OperationType.Create) && entity.getResourceType().equals(ResourceType.Document)) {
-            if (!(entity.requestContext.locationEndpointToRoute.toString().contains("east") || entity.requestContext.locationEndpointToRoute.toString().contains("west"))) {
-                return Mono.error(new ServiceUnavailableException("", null, entity.requestContext.locationEndpointToRoute, HttpConstants.SubStatusCodes.SERVER_GENERATED_503));
-            }
-        }
-
         return  BackoffRetryUtility
             .executeRetry(
                 () -> this.writePrivateAsync(entity, timeout, forceRefresh),
