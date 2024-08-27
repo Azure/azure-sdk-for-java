@@ -204,8 +204,7 @@ EmailAttachment attachment = new EmailAttachment(
     "inlineimage.jpg",
     "image/jpeg",
     attachmentContent
-);
-attachment.setContentId("inline_image");
+).setContentId("inline_image");
 
 EmailMessage message = new EmailMessage()
     .setSenderAddress("<sender-email-address>")

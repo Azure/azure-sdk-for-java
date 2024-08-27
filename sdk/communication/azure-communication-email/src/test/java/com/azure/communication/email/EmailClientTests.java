@@ -94,8 +94,7 @@ public class EmailClientTests extends EmailTestBase {
             "inlineimage.jpg",
             "image/jpeg",
             BinaryData.fromString("test")
-        );
-        attachment.setContentId("inline_image");
+        ).setContentId("inline_image");
 
         EmailMessage message = new EmailMessage()
             .setSenderAddress(SENDER_ADDRESS)
