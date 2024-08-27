@@ -31,7 +31,7 @@ pr:
 
 parameters:
   - name: release_azureaiinference
-    displayName: azure-ai-inference
+    displayName: 'azure-ai-inference'
     type: boolean
     default: true
 
