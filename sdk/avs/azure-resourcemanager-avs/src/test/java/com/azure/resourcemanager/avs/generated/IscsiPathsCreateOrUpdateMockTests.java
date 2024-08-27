@@ -10,7 +10,6 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.avs.AvsManager;
-import com.azure.resourcemanager.avs.fluent.models.IscsiPathInner;
 import com.azure.resourcemanager.avs.models.IscsiPath;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -22,7 +21,7 @@ public final class IscsiPathsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"networkBlock\":\"qyzqedikdfrdb\"},\"id\":\"mrjgeihfqlggwfi\",\"name\":\"zcxmjpbyep\",\"type\":\"mgtvlj\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"networkBlock\":\"gyamlbnseqacjjv\"},\"id\":\"lguooqjagmd\",\"name\":\"tg\",\"type\":\"eiookjbsah\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,9 +31,11 @@ public final class IscsiPathsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         IscsiPath response = manager.iscsiPaths()
-            .createOrUpdate("sbbjpmcu", "kmifoxxkub", new IscsiPathInner().withNetworkBlock("v"),
-                com.azure.core.util.Context.NONE);
+            .define("cgbjbgdlfgt")
+            .withExistingPrivateCloud("xncnwfe", "bnwgfmxj")
+            .withNetworkBlock("aquflqbctqha")
+            .create();
 
-        Assertions.assertEquals("qyzqedikdfrdb", response.networkBlock());
+        Assertions.assertEquals("gyamlbnseqacjjv", response.networkBlock());
     }
 }

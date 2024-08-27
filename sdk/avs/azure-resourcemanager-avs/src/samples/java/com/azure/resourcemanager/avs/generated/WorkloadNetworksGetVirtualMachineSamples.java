@@ -9,8 +9,7 @@ package com.azure.resourcemanager.avs.generated;
  */
 public final class WorkloadNetworksGetVirtualMachineSamples {
     /*
-     * x-ms-original-file:
-     * specification/vmware/Microsoft.AVS.Management/examples/2023-09-01/WorkloadNetworks_GetVirtualMachine.json
+     * x-ms-original-file: 2023-09-01/WorkloadNetworks_GetVirtualMachine.json
      */
     /**
      * Sample code: WorkloadNetworks_GetVirtualMachine.
@@ -19,6 +18,6 @@ public final class WorkloadNetworksGetVirtualMachineSamples {
      */
     public static void workloadNetworksGetVirtualMachine(com.azure.resourcemanager.avs.AvsManager manager) {
         manager.workloadNetworks()
-            .getVirtualMachineWithResponse("group1", "cloud1", "vm1", com.azure.core.util.Context.NONE);
+            .getVirtualMachineWithResponse("group1", "cloud1", null, "vm1", com.azure.core.util.Context.NONE);
     }
 }

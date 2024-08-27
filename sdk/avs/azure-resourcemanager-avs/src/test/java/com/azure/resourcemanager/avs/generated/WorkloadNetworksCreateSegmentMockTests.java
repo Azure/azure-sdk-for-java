@@ -23,7 +23,7 @@ public final class WorkloadNetworksCreateSegmentMockTests {
     @Test
     public void testCreateSegment() throws Exception {
         String responseStr
-            = "{\"properties\":{\"displayName\":\"hslhca\",\"connectedGateway\":\"u\",\"subnet\":{\"dhcpRanges\":[\"wfmvigorqjbt\",\"zhraglkafh\",\"n\"],\"gatewayAddress\":\"ujeickp\"},\"portVif\":[{\"portName\":\"opmx\"},{\"portName\":\"nwcl\"}],\"status\":\"FAILURE\",\"provisioningState\":\"Succeeded\",\"revision\":6137899211514369318},\"id\":\"lfmk\",\"name\":\"scazuawxtzxpu\",\"type\":\"mwabzxrvxc\"}";
+            = "{\"properties\":{\"displayName\":\"ylhk\",\"connectedGateway\":\"nsghp\",\"subnet\":{\"dhcpRanges\":[\"hdrwjjkh\",\"yomacluzvxnqm\"],\"gatewayAddress\":\"pqpdfwmkoisqc\"},\"portVif\":[{\"portName\":\"xuifmcsypobkdqz\"}],\"status\":\"FAILURE\",\"provisioningState\":\"Succeeded\",\"revision\":4296638133304358080},\"id\":\"gtrczzydmxzjijpv\",\"name\":\"aurkihcirlde\",\"type\":\"xrdcoxnbkkja\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,19 +33,19 @@ public final class WorkloadNetworksCreateSegmentMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         WorkloadNetworkSegment response = manager.workloadNetworks()
-            .defineSegment("jqg")
-            .withExistingPrivateCloud("svtui", "zh")
-            .withDisplayName("hm")
-            .withConnectedGateway("qryxyn")
-            .withSubnet(new WorkloadNetworkSegmentSubnet().withDhcpRanges(Arrays.asList("dpsovwxznptgo"))
-                .withGatewayAddress("ybbabpfhvfsl"))
-            .withRevision(4417408561997868139L)
+            .defineSegment("nuilee")
+            .withExistingWorkloadNetwork("byephmgt", "ljvrcmyfqipgxhnp", "myqwcab")
+            .withDisplayName("wlpaugmrmfjlrxwt")
+            .withConnectedGateway("ukhfkvc")
+            .withSubnet(new WorkloadNetworkSegmentSubnet().withDhcpRanges(Arrays.asList("moaedsxj", "uivedwcgyeewxeiq"))
+                .withGatewayAddress("smgomguaml"))
+            .withRevision(7283254554944912845L)
             .create();
 
-        Assertions.assertEquals("hslhca", response.displayName());
-        Assertions.assertEquals("u", response.connectedGateway());
-        Assertions.assertEquals("wfmvigorqjbt", response.subnet().dhcpRanges().get(0));
-        Assertions.assertEquals("ujeickp", response.subnet().gatewayAddress());
-        Assertions.assertEquals(6137899211514369318L, response.revision());
+        Assertions.assertEquals("ylhk", response.displayName());
+        Assertions.assertEquals("nsghp", response.connectedGateway());
+        Assertions.assertEquals("hdrwjjkh", response.subnet().dhcpRanges().get(0));
+        Assertions.assertEquals("pqpdfwmkoisqc", response.subnet().gatewayAddress());
+        Assertions.assertEquals(4296638133304358080L, response.revision());
     }
 }

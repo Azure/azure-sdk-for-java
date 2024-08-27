@@ -11,8 +11,7 @@ import com.azure.resourcemanager.avs.models.WorkloadNetworkSegment;
  */
 public final class WorkloadNetworksUpdateSegmentSamples {
     /*
-     * x-ms-original-file:
-     * specification/vmware/Microsoft.AVS.Management/examples/2023-09-01/WorkloadNetworks_UpdateSegments.json
+     * x-ms-original-file: 2023-09-01/WorkloadNetworks_UpdateSegments.json
      */
     /**
      * Sample code: WorkloadNetworks_UpdateSegments.
@@ -21,7 +20,7 @@ public final class WorkloadNetworksUpdateSegmentSamples {
      */
     public static void workloadNetworksUpdateSegments(com.azure.resourcemanager.avs.AvsManager manager) {
         WorkloadNetworkSegment resource = manager.workloadNetworks()
-            .getSegmentWithResponse("group1", "cloud1", "segment1", com.azure.core.util.Context.NONE)
+            .getSegmentWithResponse("group1", "cloud1", null, "segment1", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update().apply();
     }

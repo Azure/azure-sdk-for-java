@@ -12,8 +12,7 @@ import com.azure.resourcemanager.avs.models.WorkloadNetworkPortMirroring;
  */
 public final class WorkloadNetworksUpdatePortMirroringSamples {
     /*
-     * x-ms-original-file:
-     * specification/vmware/Microsoft.AVS.Management/examples/2023-09-01/WorkloadNetworks_UpdatePortMirroring.json
+     * x-ms-original-file: 2023-09-01/WorkloadNetworks_UpdatePortMirroring.json
      */
     /**
      * Sample code: WorkloadNetworks_UpdatePortMirroring.
@@ -22,7 +21,7 @@ public final class WorkloadNetworksUpdatePortMirroringSamples {
      */
     public static void workloadNetworksUpdatePortMirroring(com.azure.resourcemanager.avs.AvsManager manager) {
         WorkloadNetworkPortMirroring resource = manager.workloadNetworks()
-            .getPortMirroringWithResponse("group1", "cloud1", "portMirroring1", com.azure.core.util.Context.NONE)
+            .getPortMirroringWithResponse("group1", "cloud1", null, "portMirroring1", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
             .withDirection(PortMirroringDirectionEnum.BIDIRECTIONAL)

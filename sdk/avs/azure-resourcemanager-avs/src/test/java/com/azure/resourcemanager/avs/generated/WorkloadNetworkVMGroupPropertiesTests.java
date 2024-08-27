@@ -13,21 +13,22 @@ public final class WorkloadNetworkVMGroupPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkloadNetworkVMGroupProperties model = BinaryData.fromString(
-            "{\"displayName\":\"gycdu\",\"members\":[\"tgccymvaolpss\"],\"status\":\"FAILURE\",\"provisioningState\":\"Failed\",\"revision\":940610692718193227}")
+            "{\"displayName\":\"tnovqfzgemjdftul\",\"members\":[\"duceamtmc\",\"u\"],\"status\":\"FAILURE\",\"provisioningState\":\"Building\",\"revision\":708418830447367497}")
             .toObject(WorkloadNetworkVMGroupProperties.class);
-        Assertions.assertEquals("gycdu", model.displayName());
-        Assertions.assertEquals("tgccymvaolpss", model.members().get(0));
-        Assertions.assertEquals(940610692718193227L, model.revision());
+        Assertions.assertEquals("tnovqfzgemjdftul", model.displayName());
+        Assertions.assertEquals("duceamtmc", model.members().get(0));
+        Assertions.assertEquals(708418830447367497L, model.revision());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkloadNetworkVMGroupProperties model = new WorkloadNetworkVMGroupProperties().withDisplayName("gycdu")
-            .withMembers(Arrays.asList("tgccymvaolpss"))
-            .withRevision(940610692718193227L);
+        WorkloadNetworkVMGroupProperties model
+            = new WorkloadNetworkVMGroupProperties().withDisplayName("tnovqfzgemjdftul")
+                .withMembers(Arrays.asList("duceamtmc", "u"))
+                .withRevision(708418830447367497L);
         model = BinaryData.fromObject(model).toObject(WorkloadNetworkVMGroupProperties.class);
-        Assertions.assertEquals("gycdu", model.displayName());
-        Assertions.assertEquals("tgccymvaolpss", model.members().get(0));
-        Assertions.assertEquals(940610692718193227L, model.revision());
+        Assertions.assertEquals("tnovqfzgemjdftul", model.displayName());
+        Assertions.assertEquals("duceamtmc", model.members().get(0));
+        Assertions.assertEquals(708418830447367497L, model.revision());
     }
 }

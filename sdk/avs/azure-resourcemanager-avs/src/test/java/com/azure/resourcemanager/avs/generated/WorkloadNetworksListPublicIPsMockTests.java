@@ -18,11 +18,11 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
-public final class WorkloadNetworksListPublicIPsMockTests {
+public final class WorkloadNetworksListPublicIpsMockTests {
     @Test
-    public void testListPublicIPs() throws Exception {
+    public void testListPublicIps() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"displayName\":\"yzejnhlbk\",\"numberOfPublicIPs\":72002495094677042,\"publicIPBlock\":\"piljhahzvech\",\"provisioningState\":\"Failed\"},\"id\":\"wieholewjwiu\",\"name\":\"bwefqsfapaqtfer\",\"type\":\"q\"}]}";
+            = "{\"value\":[{\"properties\":{\"displayName\":\"flrmymyi\",\"numberOfPublicIPs\":5842475212910239296,\"publicIPBlock\":\"riswslmiiio\",\"provisioningState\":\"Canceled\"},\"id\":\"gxuugqkctotio\",\"name\":\"l\",\"type\":\"teqdptj\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class WorkloadNetworksListPublicIPsMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<WorkloadNetworkPublicIp> response
-            = manager.workloadNetworks().listPublicIPs("hppr", "rsnm", com.azure.core.util.Context.NONE);
+        PagedIterable<WorkloadNetworkPublicIp> response = manager.workloadNetworks()
+            .listPublicIps("pphkixkykxds", "j", "emmucfxh", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("yzejnhlbk", response.iterator().next().displayName());
-        Assertions.assertEquals(72002495094677042L, response.iterator().next().numberOfPublicIPs());
+        Assertions.assertEquals("flrmymyi", response.iterator().next().displayName());
+        Assertions.assertEquals(5842475212910239296L, response.iterator().next().numberOfPublicIPs());
     }
 }

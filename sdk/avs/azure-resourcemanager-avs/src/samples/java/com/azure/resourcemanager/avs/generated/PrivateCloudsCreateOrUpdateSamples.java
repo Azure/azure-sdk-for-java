@@ -4,6 +4,8 @@
 
 package com.azure.resourcemanager.avs.generated;
 
+import com.azure.resourcemanager.avs.models.AvailabilityProperties;
+import com.azure.resourcemanager.avs.models.AvailabilityStrategy;
 import com.azure.resourcemanager.avs.models.ManagementCluster;
 import com.azure.resourcemanager.avs.models.PrivateCloudIdentity;
 import com.azure.resourcemanager.avs.models.Sku;
@@ -16,8 +18,7 @@ import java.util.Map;
  */
 public final class PrivateCloudsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/vmware/Microsoft.AVS.Management/examples/2023-09-01/PrivateClouds_CreateOrUpdate.json
+     * x-ms-original-file: 2023-09-01/PrivateClouds_CreateOrUpdate.json
      */
     /**
      * Sample code: PrivateClouds_CreateOrUpdate.
@@ -33,6 +34,29 @@ public final class PrivateCloudsCreateOrUpdateSamples {
             .withTags(mapOf())
             .withIdentity(new PrivateCloudIdentity().withType(SystemAssignedServiceIdentityType.SYSTEM_ASSIGNED))
             .withManagementCluster(new ManagementCluster().withClusterSize(4))
+            .withNetworkBlock("192.168.48.0/22")
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2023-09-01/PrivateClouds_CreateOrUpdate_Stretched.json
+     */
+    /**
+     * Sample code: PrivateClouds_CreateOrUpdate_Stretched.
+     * 
+     * @param manager Entry point to AvsManager.
+     */
+    public static void privateCloudsCreateOrUpdateStretched(com.azure.resourcemanager.avs.AvsManager manager) {
+        manager.privateClouds()
+            .define("cloud1")
+            .withRegion("eastus2")
+            .withExistingResourceGroup("group1")
+            .withSku(new Sku().withName("AV36"))
+            .withTags(mapOf())
+            .withManagementCluster(new ManagementCluster().withClusterSize(4))
+            .withAvailability(new AvailabilityProperties().withStrategy(AvailabilityStrategy.DUAL_ZONE)
+                .withZone(1)
+                .withSecondaryZone(2))
             .withNetworkBlock("192.168.48.0/22")
             .create();
     }

@@ -21,7 +21,7 @@ public final class AddonsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"addonType\":\"AddonProperties\",\"provisioningState\":\"Cancelled\"},\"id\":\"swvxwlmzqwmv\",\"name\":\"xnjmxm\",\"type\":\"uqudtcvclxyn\"}]}";
+            = "{\"value\":[{\"properties\":{\"addonType\":\"AddonProperties\",\"provisioningState\":\"Updating\"},\"id\":\"sccbiuimzd\",\"name\":\"yjdfqwmky\",\"type\":\"qufdvruzslzojh\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,8 +30,7 @@ public final class AddonsListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Addon> response
-            = manager.addons().list("vmribiat", "gplucfotangcfhny", com.azure.core.util.Context.NONE);
+        PagedIterable<Addon> response = manager.addons().list("rjtloq", "fuojrngif", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -17,7 +17,7 @@ import com.azure.resourcemanager.avs.models.SystemAssignedServiceIdentityType;
  */
 public final class PrivateCloudsUpdateSamples {
     /*
-     * x-ms-original-file: specification/vmware/Microsoft.AVS.Management/examples/2023-09-01/PrivateClouds_Update.json
+     * x-ms-original-file: 2023-09-01/PrivateClouds_Update.json
      */
     /**
      * Sample code: PrivateClouds_Update.
@@ -36,5 +36,20 @@ public final class PrivateCloudsUpdateSamples {
                     .withKeyVersion("fakeTokenPlaceholder")
                     .withKeyVaultUrl("fakeTokenPlaceholder")))
             .apply();
+    }
+
+    /*
+     * x-ms-original-file: 2023-09-01/PrivateClouds_Update_Stretched.json
+     */
+    /**
+     * Sample code: PrivateClouds_Update_Stretched.
+     * 
+     * @param manager Entry point to AvsManager.
+     */
+    public static void privateCloudsUpdateStretched(com.azure.resourcemanager.avs.AvsManager manager) {
+        PrivateCloud resource = manager.privateClouds()
+            .getByResourceGroupWithResponse("group1", "cloud1", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update().withManagementCluster(new ManagementCluster().withClusterSize(4)).apply();
     }
 }

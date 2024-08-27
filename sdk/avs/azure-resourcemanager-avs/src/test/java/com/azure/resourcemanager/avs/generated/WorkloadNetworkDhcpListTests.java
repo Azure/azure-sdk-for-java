@@ -12,10 +12,10 @@ public final class WorkloadNetworkDhcpListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkloadNetworkDhcpList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"dhcpType\":\"WorkloadNetworkDhcpEntity\",\"displayName\":\"mgyudxytlmoyrxv\",\"segments\":[\"dw\"],\"provisioningState\":\"Building\",\"revision\":6478150774243714531},\"id\":\"zhlrqjb\",\"name\":\"ck\",\"type\":\"rlhrxs\"}],\"nextLink\":\"yvpycanuzbpzk\"}")
+            "{\"value\":[{\"properties\":{\"dhcpType\":\"WorkloadNetworkDhcpEntity\",\"displayName\":\"xu\",\"segments\":[\"dwzrmuh\",\"pfcqdp\",\"qxqvpsvuoymgc\",\"elvezrypq\"],\"provisioningState\":\"Deleting\",\"revision\":6554810180988949657},\"id\":\"rqwky\",\"name\":\"kobopgxed\",\"type\":\"owepbqpcrfkb\"}],\"nextLink\":\"csnjvcdwxlpqekft\"}")
             .toObject(WorkloadNetworkDhcpList.class);
-        Assertions.assertEquals("mgyudxytlmoyrxv", model.value().get(0).properties().displayName());
-        Assertions.assertEquals(6478150774243714531L, model.value().get(0).properties().revision());
-        Assertions.assertEquals("yvpycanuzbpzk", model.nextLink());
+        Assertions.assertEquals("xu", model.value().get(0).properties().displayName());
+        Assertions.assertEquals(6554810180988949657L, model.value().get(0).properties().revision());
+        Assertions.assertEquals("csnjvcdwxlpqekft", model.nextLink());
     }
 }

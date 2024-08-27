@@ -9,8 +9,7 @@ package com.azure.resourcemanager.avs.generated;
  */
 public final class PrivateCloudsRotateNsxtPasswordSamples {
     /*
-     * x-ms-original-file:
-     * specification/vmware/Microsoft.AVS.Management/examples/2023-09-01/PrivateClouds_RotateNsxtPassword.json
+     * x-ms-original-file: 2023-09-01/PrivateClouds_RotateNsxtPassword.json
      */
     /**
      * Sample code: PrivateClouds_RotateNsxtPassword.

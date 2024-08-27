@@ -9,8 +9,7 @@ package com.azure.resourcemanager.avs.generated;
  */
 public final class WorkloadNetworksDeleteDnsServiceSamples {
     /*
-     * x-ms-original-file:
-     * specification/vmware/Microsoft.AVS.Management/examples/2023-09-01/WorkloadNetworks_DeleteDnsService.json
+     * x-ms-original-file: 2023-09-01/WorkloadNetworks_DeleteDnsService.json
      */
     /**
      * Sample code: WorkloadNetworks_DeleteDnsService.

@@ -13,13 +13,13 @@ public final class WorkloadNetworkPortMirroringListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkloadNetworkPortMirroringList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"displayName\":\"v\",\"direction\":\"EGRESS\",\"source\":\"begibtnmxiebwwa\",\"destination\":\"ayqcgw\",\"status\":\"SUCCESS\",\"provisioningState\":\"Updating\",\"revision\":4790866258005538380},\"id\":\"zmh\",\"name\":\"xongmtsavjcbpwxq\",\"type\":\"srknftguv\"},{\"properties\":{\"displayName\":\"hprwmdyv\",\"direction\":\"INGRESS\",\"source\":\"yriwwroyqb\",\"destination\":\"rmcqiby\",\"status\":\"FAILURE\",\"provisioningState\":\"Failed\",\"revision\":6160997583833316786},\"id\":\"fqsgzvahapjy\",\"name\":\"hpvgqz\",\"type\":\"j\"},{\"properties\":{\"displayName\":\"djzlmwlx\",\"direction\":\"EGRESS\",\"source\":\"fhzovawjvzunluth\",\"destination\":\"prnxipeil\",\"status\":\"SUCCESS\",\"provisioningState\":\"Canceled\",\"revision\":7642090703106785822},\"id\":\"ultskzbbtdz\",\"name\":\"mv\",\"type\":\"ekg\"},{\"properties\":{\"displayName\":\"zuhkfpbsjyof\",\"direction\":\"INGRESS\",\"source\":\"us\",\"destination\":\"touwaboekqv\",\"status\":\"SUCCESS\",\"provisioningState\":\"Building\",\"revision\":2434745920403430654},\"id\":\"wyjsflhhcaalnjix\",\"name\":\"sxyawjoyaqcs\",\"type\":\"yjpkiidzyexz\"}],\"nextLink\":\"lixhnrztfol\"}")
+            "{\"value\":[{\"properties\":{\"displayName\":\"dntwjchrdgo\",\"direction\":\"BIDIRECTIONAL\",\"source\":\"mwctondzjluudfd\",\"destination\":\"gg\",\"status\":\"SUCCESS\",\"provisioningState\":\"Building\",\"revision\":5516945390083190100},\"id\":\"tgseinqfiufxqkn\",\"name\":\"irgne\",\"type\":\"ttwqmsni\"}],\"nextLink\":\"cdm\"}")
             .toObject(WorkloadNetworkPortMirroringList.class);
-        Assertions.assertEquals("v", model.value().get(0).displayName());
-        Assertions.assertEquals(PortMirroringDirectionEnum.EGRESS, model.value().get(0).direction());
-        Assertions.assertEquals("begibtnmxiebwwa", model.value().get(0).source());
-        Assertions.assertEquals("ayqcgw", model.value().get(0).destination());
-        Assertions.assertEquals(4790866258005538380L, model.value().get(0).revision());
-        Assertions.assertEquals("lixhnrztfol", model.nextLink());
+        Assertions.assertEquals("dntwjchrdgo", model.value().get(0).displayName());
+        Assertions.assertEquals(PortMirroringDirectionEnum.BIDIRECTIONAL, model.value().get(0).direction());
+        Assertions.assertEquals("mwctondzjluudfd", model.value().get(0).source());
+        Assertions.assertEquals("gg", model.value().get(0).destination());
+        Assertions.assertEquals(5516945390083190100L, model.value().get(0).revision());
+        Assertions.assertEquals("cdm", model.nextLink());
     }
 }

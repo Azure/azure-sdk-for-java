@@ -9,7 +9,7 @@ package com.azure.resourcemanager.avs.generated;
  */
 public final class IscsiPathsGetSamples {
     /*
-     * x-ms-original-file: specification/vmware/Microsoft.AVS.Management/examples/2023-09-01/IscsiPaths_Get.json
+     * x-ms-original-file: 2023-09-01/IscsiPaths_Get.json
      */
     /**
      * Sample code: IscsiPaths_Get.
@@ -17,6 +17,6 @@ public final class IscsiPathsGetSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void iscsiPathsGet(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.iscsiPaths().getWithResponse("group1", "cloud1", com.azure.core.util.Context.NONE);
+        manager.iscsiPaths().getWithResponse("group1", "cloud1", null, com.azure.core.util.Context.NONE);
     }
 }

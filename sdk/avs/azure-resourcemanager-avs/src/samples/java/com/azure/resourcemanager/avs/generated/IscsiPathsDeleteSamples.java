@@ -9,7 +9,7 @@ package com.azure.resourcemanager.avs.generated;
  */
 public final class IscsiPathsDeleteSamples {
     /*
-     * x-ms-original-file: specification/vmware/Microsoft.AVS.Management/examples/2023-09-01/IscsiPaths_Delete.json
+     * x-ms-original-file: 2023-09-01/IscsiPaths_Delete.json
      */
     /**
      * Sample code: IscsiPaths_Delete.
@@ -17,6 +17,6 @@ public final class IscsiPathsDeleteSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void iscsiPathsDelete(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.iscsiPaths().delete("group1", "cloud1", com.azure.core.util.Context.NONE);
+        manager.iscsiPaths().delete("group1", "cloud1", null, com.azure.core.util.Context.NONE);
     }
 }

@@ -27,7 +27,7 @@ public final class DatastoresDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.datastores().delete("nbtgkbugrjqctoj", "mi", "of", "eypefojyqd", com.azure.core.util.Context.NONE);
+        manager.datastores().delete("slhhxudbxv", "d", "tnsi", "ud", com.azure.core.util.Context.NONE);
 
     }
 }

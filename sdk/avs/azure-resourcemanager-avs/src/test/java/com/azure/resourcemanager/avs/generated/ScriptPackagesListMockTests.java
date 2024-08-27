@@ -21,7 +21,7 @@ public final class ScriptPackagesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"description\":\"wv\",\"version\":\"vcdlg\",\"company\":\"ucmfdj\",\"uri\":\"laxpunj\"},\"id\":\"kczvvita\",\"name\":\"gx\",\"type\":\"fcsserxhtvsox\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"description\":\"eiybbabpfhvfsl\",\"version\":\"ntjlr\",\"company\":\"jkskyr\",\"uri\":\"ovzidsx\"},\"id\":\"abzmifrygznmmaxr\",\"name\":\"zkzobgopxlhslnel\",\"type\":\"ieixynllxe\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class ScriptPackagesListMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<ScriptPackage> response
-            = manager.scriptPackages().list("qxfzyjqttvwk", "qhjpenuygbqe", com.azure.core.util.Context.NONE);
+            = manager.scriptPackages().list("qryxyn", "nzrdpsovwxz", com.azure.core.util.Context.NONE);
 
     }
 }

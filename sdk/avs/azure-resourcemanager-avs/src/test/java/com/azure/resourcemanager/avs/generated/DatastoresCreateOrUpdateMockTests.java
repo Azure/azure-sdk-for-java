@@ -25,7 +25,7 @@ public final class DatastoresCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"netAppVolume\":{\"id\":\"t\"},\"diskPoolVolume\":{\"targetId\":\"dslqxihhrmooizqs\",\"lunName\":\"ypxiutcxap\",\"mountOption\":\"MOUNT\",\"path\":\"petogebjox\"},\"elasticSanVolume\":{\"targetId\":\"hvnh\"},\"status\":\"Unknown\"},\"id\":\"q\",\"name\":\"kkzjcjbtrga\",\"type\":\"hvv\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"netAppVolume\":{\"id\":\"jsvg\"},\"diskPoolVolume\":{\"targetId\":\"whryvycytdcl\",\"lunName\":\"gc\",\"mountOption\":\"MOUNT\",\"path\":\"nwm\"},\"elasticSanVolume\":{\"targetId\":\"mvpdvjdhttzaef\"},\"status\":\"LostCommunication\"},\"id\":\"hchrphkmcrjdqn\",\"name\":\"dfzpbgtgkylkdg\",\"type\":\"rjeuut\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,19 +35,18 @@ public final class DatastoresCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Datastore response = manager.datastores()
-            .define("teyowclu")
-            .withExistingCluster("cuplcplcwkhih", "hlhzdsqtzbsrgno", "cjhfgmvecactxmw")
-            .withNetAppVolume(new NetAppVolume().withId("qvgqouw"))
-            .withDiskPoolVolume(new DiskPoolVolume().withTargetId("zmpjwyiv")
-                .withLunName("ikf")
-                .withMountOption(MountOptionEnum.ATTACH))
-            .withElasticSanVolume(new ElasticSanVolume().withTargetId("kteusqczk"))
+            .define("zrcxfailcfxwmdbo")
+            .withExistingCluster("z", "mes", "kdlpa")
+            .withNetAppVolume(new NetAppVolume().withId("ft"))
+            .withDiskPoolVolume(
+                new DiskPoolVolume().withTargetId("qobr").withLunName("lnacgcc").withMountOption(MountOptionEnum.MOUNT))
+            .withElasticSanVolume(new ElasticSanVolume().withTargetId("rzvul"))
             .create();
 
-        Assertions.assertEquals("t", response.netAppVolume().id());
-        Assertions.assertEquals("dslqxihhrmooizqs", response.diskPoolVolume().targetId());
-        Assertions.assertEquals("ypxiutcxap", response.diskPoolVolume().lunName());
+        Assertions.assertEquals("jsvg", response.netAppVolume().id());
+        Assertions.assertEquals("whryvycytdcl", response.diskPoolVolume().targetId());
+        Assertions.assertEquals("gc", response.diskPoolVolume().lunName());
         Assertions.assertEquals(MountOptionEnum.MOUNT, response.diskPoolVolume().mountOption());
-        Assertions.assertEquals("hvnh", response.elasticSanVolume().targetId());
+        Assertions.assertEquals("mvpdvjdhttzaef", response.elasticSanVolume().targetId());
     }
 }

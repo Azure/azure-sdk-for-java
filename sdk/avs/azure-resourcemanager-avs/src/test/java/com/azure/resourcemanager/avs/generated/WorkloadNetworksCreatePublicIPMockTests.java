@@ -17,11 +17,11 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
-public final class WorkloadNetworksCreatePublicIPMockTests {
+public final class WorkloadNetworksCreatePublicIpMockTests {
     @Test
-    public void testCreatePublicIP() throws Exception {
+    public void testCreatePublicIp() throws Exception {
         String responseStr
-            = "{\"properties\":{\"displayName\":\"nfprnjletlxs\",\"numberOfPublicIPs\":8927877098345650470,\"publicIPBlock\":\"ou\",\"provisioningState\":\"Succeeded\"},\"id\":\"owa\",\"name\":\"iynknlq\",\"type\":\"zdvpiw\"}";
+            = "{\"properties\":{\"displayName\":\"hntasfaymx\",\"numberOfPublicIPs\":8670362255944644435,\"publicIPBlock\":\"ealbmqkyo\",\"provisioningState\":\"Succeeded\"},\"id\":\"fkmbtsuahxsgxj\",\"name\":\"mmzrrscub\",\"type\":\"wsdrnpxqwodif\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,13 +31,13 @@ public final class WorkloadNetworksCreatePublicIPMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         WorkloadNetworkPublicIp response = manager.workloadNetworks()
-            .definePublicIP("yg")
-            .withExistingPrivateCloud("hkwfbkgozxwop", "bydpizqaclnapxb")
-            .withDisplayName("j")
-            .withNumberOfPublicIPs(5251325077784054834L)
+            .definePublicIp("pydjfboc")
+            .withExistingWorkloadNetwork("wqejpmvsse", "aepwamcxtcz", "upeuknijduyye")
+            .withDisplayName("hulrtywikdmhla")
+            .withNumberOfPublicIPs(8589946500530915839L)
             .create();
 
-        Assertions.assertEquals("nfprnjletlxs", response.displayName());
-        Assertions.assertEquals(8927877098345650470L, response.numberOfPublicIPs());
+        Assertions.assertEquals("hntasfaymx", response.displayName());
+        Assertions.assertEquals(8670362255944644435L, response.numberOfPublicIPs());
     }
 }

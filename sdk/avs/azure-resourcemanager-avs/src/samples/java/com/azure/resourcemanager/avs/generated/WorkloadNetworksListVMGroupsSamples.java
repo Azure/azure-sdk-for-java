@@ -9,8 +9,7 @@ package com.azure.resourcemanager.avs.generated;
  */
 public final class WorkloadNetworksListVMGroupsSamples {
     /*
-     * x-ms-original-file:
-     * specification/vmware/Microsoft.AVS.Management/examples/2023-09-01/WorkloadNetworks_ListVMGroups.json
+     * x-ms-original-file: 2023-09-01/WorkloadNetworks_ListVMGroups.json
      */
     /**
      * Sample code: WorkloadNetworks_ListVMGroups.
@@ -18,6 +17,6 @@ public final class WorkloadNetworksListVMGroupsSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void workloadNetworksListVMGroups(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.workloadNetworks().listVMGroups("group1", "cloud1", com.azure.core.util.Context.NONE);
+        manager.workloadNetworks().listVMGroups("group1", "cloud1", null, com.azure.core.util.Context.NONE);
     }
 }

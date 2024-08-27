@@ -9,8 +9,7 @@ package com.azure.resourcemanager.avs.generated;
  */
 public final class WorkloadNetworksCreateVMGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/vmware/Microsoft.AVS.Management/examples/2023-09-01/WorkloadNetworks_CreateVMGroup.json
+     * x-ms-original-file: 2023-09-01/WorkloadNetworks_CreateVMGroup.json
      */
     /**
      * Sample code: WorkloadNetworks_CreateVMGroup.
@@ -18,6 +17,9 @@ public final class WorkloadNetworksCreateVMGroupSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void workloadNetworksCreateVMGroup(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.workloadNetworks().defineVMGroup("vmGroup1").withExistingPrivateCloud("group1", "cloud1").create();
+        manager.workloadNetworks()
+            .defineVMGroup("vmGroup1")
+            .withExistingWorkloadNetwork("group1", "cloud1", null)
+            .create();
     }
 }

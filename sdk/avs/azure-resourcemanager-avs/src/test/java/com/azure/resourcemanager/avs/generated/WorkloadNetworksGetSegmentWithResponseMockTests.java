@@ -21,7 +21,7 @@ public final class WorkloadNetworksGetSegmentWithResponseMockTests {
     @Test
     public void testGetSegmentWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"displayName\":\"erteeammxqiekk\",\"connectedGateway\":\"ddrtkgdojb\",\"subnet\":{\"dhcpRanges\":[\"vrefdeesv\"],\"gatewayAddress\":\"uij\"},\"portVif\":[{\"portName\":\"s\"}],\"status\":\"FAILURE\",\"provisioningState\":\"Building\",\"revision\":4136420798110514219},\"id\":\"awddjibab\",\"name\":\"vit\",\"type\":\"tvtzeexavoxtfg\"}";
+            = "{\"properties\":{\"displayName\":\"mkwkl\",\"connectedGateway\":\"oxaxm\",\"subnet\":{\"dhcpRanges\":[\"lhhjnh\",\"wy\",\"yynfsvkhgbv\",\"ta\"],\"gatewayAddress\":\"rfdl\"},\"portVif\":[{\"portName\":\"py\"}],\"status\":\"FAILURE\",\"provisioningState\":\"Deleting\",\"revision\":6610220677789785913},\"id\":\"ogkhnmgbr\",\"name\":\"uxddbhfh\",\"type\":\"fpazjzoywjxhpd\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,13 +31,14 @@ public final class WorkloadNetworksGetSegmentWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         WorkloadNetworkSegment response = manager.workloadNetworks()
-            .getSegmentWithResponse("svxeizzgwklnsr", "ffeycx", "ktp", com.azure.core.util.Context.NONE)
+            .getSegmentWithResponse("etndnbfqyggagf", "nlgmtrwahzjmu", "ftbyrplro", "kpigqfusu",
+                com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("erteeammxqiekk", response.displayName());
-        Assertions.assertEquals("ddrtkgdojb", response.connectedGateway());
-        Assertions.assertEquals("vrefdeesv", response.subnet().dhcpRanges().get(0));
-        Assertions.assertEquals("uij", response.subnet().gatewayAddress());
-        Assertions.assertEquals(4136420798110514219L, response.revision());
+        Assertions.assertEquals("mkwkl", response.displayName());
+        Assertions.assertEquals("oxaxm", response.connectedGateway());
+        Assertions.assertEquals("lhhjnh", response.subnet().dhcpRanges().get(0));
+        Assertions.assertEquals("rfdl", response.subnet().gatewayAddress());
+        Assertions.assertEquals(6610220677789785913L, response.revision());
     }
 }

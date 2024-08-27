@@ -9,8 +9,7 @@ package com.azure.resourcemanager.avs.generated;
  */
 public final class WorkloadNetworksGetPortMirroringSamples {
     /*
-     * x-ms-original-file:
-     * specification/vmware/Microsoft.AVS.Management/examples/2023-09-01/WorkloadNetworks_GetPortMirroring.json
+     * x-ms-original-file: 2023-09-01/WorkloadNetworks_GetPortMirroring.json
      */
     /**
      * Sample code: WorkloadNetworks_GetPortMirroring.
@@ -19,6 +18,6 @@ public final class WorkloadNetworksGetPortMirroringSamples {
      */
     public static void workloadNetworksGetPortMirroring(com.azure.resourcemanager.avs.AvsManager manager) {
         manager.workloadNetworks()
-            .getPortMirroringWithResponse("group1", "cloud1", "portMirroring1", com.azure.core.util.Context.NONE);
+            .getPortMirroringWithResponse("group1", "cloud1", null, "portMirroring1", com.azure.core.util.Context.NONE);
     }
 }

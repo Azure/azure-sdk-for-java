@@ -53,25 +53,25 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
     /**
      * The service client containing this operation class.
      */
-    private final AVSClientImpl client;
+    private final AvsClientImpl client;
 
     /**
      * Initializes an instance of ScriptExecutionsClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    ScriptExecutionsClientImpl(AVSClientImpl client) {
+    ScriptExecutionsClientImpl(AvsClientImpl client) {
         this.service
             = RestProxy.create(ScriptExecutionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AVSClientScriptExecutions to be used by the proxy service to perform
+     * The interface defining all the services for AvsClientScriptExecutions to be used by the proxy service to perform
      * REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AVSClientScriptExecu")
+    @ServiceInterface(name = "AvsClientScriptExecu")
     public interface ScriptExecutionsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/scriptExecutions")

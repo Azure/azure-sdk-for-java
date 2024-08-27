@@ -28,7 +28,7 @@ public final class WorkloadNetworksDeleteDnsZoneMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.workloadNetworks()
-            .deleteDnsZone("la", "utmzlbiojlvfhrbb", "neqvcwwyyurmo", com.azure.core.util.Context.NONE);
+            .deleteDnsZone("xepmrut", "nabaobnslujd", "ltymkmvguihywart", com.azure.core.util.Context.NONE);
 
     }
 }

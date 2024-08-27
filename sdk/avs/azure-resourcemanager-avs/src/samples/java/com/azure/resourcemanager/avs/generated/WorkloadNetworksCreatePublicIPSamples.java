@@ -5,12 +5,11 @@
 package com.azure.resourcemanager.avs.generated;
 
 /**
- * Samples for WorkloadNetworks CreatePublicIP.
+ * Samples for WorkloadNetworks CreatePublicIp.
  */
-public final class WorkloadNetworksCreatePublicIPSamples {
+public final class WorkloadNetworksCreatePublicIpSamples {
     /*
-     * x-ms-original-file:
-     * specification/vmware/Microsoft.AVS.Management/examples/2023-09-01/WorkloadNetworks_CreatePublicIP.json
+     * x-ms-original-file: 2023-09-01/WorkloadNetworks_CreatePublicIP.json
      */
     /**
      * Sample code: WorkloadNetworks_CreatePublicIP.
@@ -19,8 +18,8 @@ public final class WorkloadNetworksCreatePublicIPSamples {
      */
     public static void workloadNetworksCreatePublicIP(com.azure.resourcemanager.avs.AvsManager manager) {
         manager.workloadNetworks()
-            .definePublicIP("publicIP1")
-            .withExistingPrivateCloud("group1", "cloud1")
+            .definePublicIp("publicIP1")
+            .withExistingWorkloadNetwork("group1", "cloud1", null)
             .withDisplayName("publicIP1")
             .withNumberOfPublicIPs(32L)
             .create();

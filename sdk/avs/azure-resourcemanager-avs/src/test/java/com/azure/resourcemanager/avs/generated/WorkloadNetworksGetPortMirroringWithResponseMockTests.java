@@ -22,7 +22,7 @@ public final class WorkloadNetworksGetPortMirroringWithResponseMockTests {
     @Test
     public void testGetPortMirroringWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"displayName\":\"bu\",\"direction\":\"BIDIRECTIONAL\",\"source\":\"xebeybpmz\",\"destination\":\"rtffyaqitmh\",\"status\":\"SUCCESS\",\"provisioningState\":\"Deleting\",\"revision\":1147864952141338837},\"id\":\"seufuqy\",\"name\":\"xpdlcgqlsis\",\"type\":\"jqfrddgamquh\"}";
+            = "{\"properties\":{\"displayName\":\"vuicp\",\"direction\":\"EGRESS\",\"source\":\"rmhw\",\"destination\":\"fdpyflubh\",\"status\":\"SUCCESS\",\"provisioningState\":\"Failed\",\"revision\":8847370311593118177},\"id\":\"zlwhhmemhooclu\",\"name\":\"n\",\"type\":\"qmemc\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,14 +32,14 @@ public final class WorkloadNetworksGetPortMirroringWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         WorkloadNetworkPortMirroring response = manager.workloadNetworks()
-            .getPortMirroringWithResponse("yijddtvqcttad", "jaeukmrsieekpn", "zaapmudqmeqwi",
+            .getPortMirroringWithResponse("mtkhlowkxxpvbr", "fjmzsyzfho", "lhikcyychunsj", "pjrtws",
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("bu", response.displayName());
-        Assertions.assertEquals(PortMirroringDirectionEnum.BIDIRECTIONAL, response.direction());
-        Assertions.assertEquals("xebeybpmz", response.source());
-        Assertions.assertEquals("rtffyaqitmh", response.destination());
-        Assertions.assertEquals(1147864952141338837L, response.revision());
+        Assertions.assertEquals("vuicp", response.displayName());
+        Assertions.assertEquals(PortMirroringDirectionEnum.EGRESS, response.direction());
+        Assertions.assertEquals("rmhw", response.source());
+        Assertions.assertEquals("fdpyflubh", response.destination());
+        Assertions.assertEquals(8847370311593118177L, response.revision());
     }
 }

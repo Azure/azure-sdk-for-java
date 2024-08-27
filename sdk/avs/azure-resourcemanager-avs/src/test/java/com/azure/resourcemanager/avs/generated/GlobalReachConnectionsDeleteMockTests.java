@@ -27,7 +27,7 @@ public final class GlobalReachConnectionsDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.globalReachConnections().delete("hyuemslyn", "qyrp", "oobrlttyms", com.azure.core.util.Context.NONE);
+        manager.globalReachConnections().delete("khgn", "nzonzl", "piqywnc", com.azure.core.util.Context.NONE);
 
     }
 }

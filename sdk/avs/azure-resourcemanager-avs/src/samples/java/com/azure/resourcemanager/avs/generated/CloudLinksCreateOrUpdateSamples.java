@@ -9,8 +9,7 @@ package com.azure.resourcemanager.avs.generated;
  */
 public final class CloudLinksCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/vmware/Microsoft.AVS.Management/examples/2023-09-01/CloudLinks_CreateOrUpdate.json
+     * x-ms-original-file: 2023-09-01/CloudLinks_CreateOrUpdate.json
      */
     /**
      * Sample code: CloudLinks_CreateOrUpdate.

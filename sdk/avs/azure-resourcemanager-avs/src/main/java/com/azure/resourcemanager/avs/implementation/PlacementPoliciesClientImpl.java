@@ -52,25 +52,25 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
     /**
      * The service client containing this operation class.
      */
-    private final AVSClientImpl client;
+    private final AvsClientImpl client;
 
     /**
      * Initializes an instance of PlacementPoliciesClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    PlacementPoliciesClientImpl(AVSClientImpl client) {
+    PlacementPoliciesClientImpl(AvsClientImpl client) {
         this.service
             = RestProxy.create(PlacementPoliciesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AVSClientPlacementPolicies to be used by the proxy service to perform
+     * The interface defining all the services for AvsClientPlacementPolicies to be used by the proxy service to perform
      * REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AVSClientPlacementPo")
+    @ServiceInterface(name = "AvsClientPlacementPo")
     public interface PlacementPoliciesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/clusters/{clusterName}/placementPolicies")

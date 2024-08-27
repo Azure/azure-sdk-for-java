@@ -9,7 +9,43 @@ package com.azure.resourcemanager.avs.generated;
  */
 public final class AddonsGetSamples {
     /*
-     * x-ms-original-file: specification/vmware/Microsoft.AVS.Management/examples/2023-09-01/Addons_Get_ArcReg.json
+     * x-ms-original-file: 2023-09-01/Addons_Get_SRM.json
+     */
+    /**
+     * Sample code: Addons_Get_SRM.
+     * 
+     * @param manager Entry point to AvsManager.
+     */
+    public static void addonsGetSRM(com.azure.resourcemanager.avs.AvsManager manager) {
+        manager.addons().getWithResponse("group1", "cloud1", "srm", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2023-09-01/Addons_Get_VR.json
+     */
+    /**
+     * Sample code: Addons_Get_VR.
+     * 
+     * @param manager Entry point to AvsManager.
+     */
+    public static void addonsGetVR(com.azure.resourcemanager.avs.AvsManager manager) {
+        manager.addons().getWithResponse("group1", "cloud1", "vr", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2023-09-01/Addons_Get_HCX.json
+     */
+    /**
+     * Sample code: Addons_Get_HCX.
+     * 
+     * @param manager Entry point to AvsManager.
+     */
+    public static void addonsGetHCX(com.azure.resourcemanager.avs.AvsManager manager) {
+        manager.addons().getWithResponse("group1", "cloud1", "hcx", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2023-09-01/Addons_Get_ArcReg.json
      */
     /**
      * Sample code: Addons_Get_ArcReg.

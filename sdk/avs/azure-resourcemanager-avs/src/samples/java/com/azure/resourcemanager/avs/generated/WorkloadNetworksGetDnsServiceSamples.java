@@ -9,8 +9,7 @@ package com.azure.resourcemanager.avs.generated;
  */
 public final class WorkloadNetworksGetDnsServiceSamples {
     /*
-     * x-ms-original-file:
-     * specification/vmware/Microsoft.AVS.Management/examples/2023-09-01/WorkloadNetworks_GetDnsService.json
+     * x-ms-original-file: 2023-09-01/WorkloadNetworks_GetDnsService.json
      */
     /**
      * Sample code: WorkloadNetworks_GetDnsService.
@@ -19,6 +18,6 @@ public final class WorkloadNetworksGetDnsServiceSamples {
      */
     public static void workloadNetworksGetDnsService(com.azure.resourcemanager.avs.AvsManager manager) {
         manager.workloadNetworks()
-            .getDnsServiceWithResponse("group1", "cloud1", "dnsService1", com.azure.core.util.Context.NONE);
+            .getDnsServiceWithResponse("group1", "cloud1", null, "dnsService1", com.azure.core.util.Context.NONE);
     }
 }

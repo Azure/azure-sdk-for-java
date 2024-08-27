@@ -9,8 +9,7 @@ package com.azure.resourcemanager.avs.generated;
  */
 public final class WorkloadNetworksListGatewaysSamples {
     /*
-     * x-ms-original-file:
-     * specification/vmware/Microsoft.AVS.Management/examples/2023-09-01/WorkloadNetworks_ListGateways.json
+     * x-ms-original-file: 2023-09-01/WorkloadNetworks_ListGateways.json
      */
     /**
      * Sample code: WorkloadNetworks_ListGateways.
@@ -18,6 +17,6 @@ public final class WorkloadNetworksListGatewaysSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void workloadNetworksListGateways(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.workloadNetworks().listGateways("group1", "cloud1", com.azure.core.util.Context.NONE);
+        manager.workloadNetworks().listGateways("group1", "cloud1", null, com.azure.core.util.Context.NONE);
     }
 }

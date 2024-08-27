@@ -12,8 +12,7 @@ import java.util.Arrays;
  */
 public final class WorkloadNetworksCreateSegmentSamples {
     /*
-     * x-ms-original-file:
-     * specification/vmware/Microsoft.AVS.Management/examples/2023-09-01/WorkloadNetworks_CreateSegments.json
+     * x-ms-original-file: 2023-09-01/WorkloadNetworks_CreateSegments.json
      */
     /**
      * Sample code: WorkloadNetworks_CreateSegments.
@@ -23,7 +22,7 @@ public final class WorkloadNetworksCreateSegmentSamples {
     public static void workloadNetworksCreateSegments(com.azure.resourcemanager.avs.AvsManager manager) {
         manager.workloadNetworks()
             .defineSegment("segment1")
-            .withExistingPrivateCloud("group1", "cloud1")
+            .withExistingWorkloadNetwork("group1", "cloud1", null)
             .withDisplayName("segment1")
             .withConnectedGateway("/infra/tier-1s/gateway")
             .withSubnet(new WorkloadNetworkSegmentSubnet().withDhcpRanges(Arrays.asList("40.20.0.0-40.20.0.1"))

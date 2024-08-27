@@ -12,8 +12,7 @@ import java.util.Arrays;
  */
 public final class WorkloadNetworksUpdateDnsZoneSamples {
     /*
-     * x-ms-original-file:
-     * specification/vmware/Microsoft.AVS.Management/examples/2023-09-01/WorkloadNetworks_UpdateDnsZone.json
+     * x-ms-original-file: 2023-09-01/WorkloadNetworks_UpdateDnsZone.json
      */
     /**
      * Sample code: WorkloadNetworks_UpdateDnsZone.
@@ -22,7 +21,7 @@ public final class WorkloadNetworksUpdateDnsZoneSamples {
      */
     public static void workloadNetworksUpdateDnsZone(com.azure.resourcemanager.avs.AvsManager manager) {
         WorkloadNetworkDnsZone resource = manager.workloadNetworks()
-            .getDnsZoneWithResponse("group1", "cloud1", "dnsZone1", com.azure.core.util.Context.NONE)
+            .getDnsZoneWithResponse("group1", "cloud1", null, "dnsZone1", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
             .withDisplayName("dnsZone1")

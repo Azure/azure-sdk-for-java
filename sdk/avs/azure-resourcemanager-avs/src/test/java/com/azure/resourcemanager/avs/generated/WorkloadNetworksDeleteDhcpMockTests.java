@@ -27,7 +27,7 @@ public final class WorkloadNetworksDeleteDhcpMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.workloadNetworks().deleteDhcp("rjeuut", "wxezwzhok", "bwnhhtql", com.azure.core.util.Context.NONE);
+        manager.workloadNetworks().deleteDhcp("fyuicdh", "bd", "bwwg", "d", com.azure.core.util.Context.NONE);
 
     }
 }

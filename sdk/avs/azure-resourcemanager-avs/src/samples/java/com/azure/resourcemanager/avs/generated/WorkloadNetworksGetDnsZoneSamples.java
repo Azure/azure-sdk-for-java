@@ -9,8 +9,7 @@ package com.azure.resourcemanager.avs.generated;
  */
 public final class WorkloadNetworksGetDnsZoneSamples {
     /*
-     * x-ms-original-file:
-     * specification/vmware/Microsoft.AVS.Management/examples/2023-09-01/WorkloadNetworks_GetDnsZone.json
+     * x-ms-original-file: 2023-09-01/WorkloadNetworks_GetDnsZone.json
      */
     /**
      * Sample code: WorkloadNetworks_GetDnsZone.
@@ -19,6 +18,6 @@ public final class WorkloadNetworksGetDnsZoneSamples {
      */
     public static void workloadNetworksGetDnsZone(com.azure.resourcemanager.avs.AvsManager manager) {
         manager.workloadNetworks()
-            .getDnsZoneWithResponse("group1", "cloud1", "dnsZone1", com.azure.core.util.Context.NONE);
+            .getDnsZoneWithResponse("group1", "cloud1", null, "dnsZone1", com.azure.core.util.Context.NONE);
     }
 }

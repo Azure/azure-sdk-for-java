@@ -23,7 +23,7 @@ public final class WorkloadNetworksListPortMirroringMockTests {
     @Test
     public void testListPortMirroring() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"displayName\":\"vasylwxdzau\",\"direction\":\"INGRESS\",\"source\":\"ohguuf\",\"destination\":\"boyjathwt\",\"status\":\"FAILURE\",\"provisioningState\":\"Updating\",\"revision\":7359436654104402484},\"id\":\"dxmeb\",\"name\":\"jscjpahl\",\"type\":\"veabfqxnmwmqtib\"}]}";
+            = "{\"value\":[{\"properties\":{\"displayName\":\"oafcluqvox\",\"direction\":\"INGRESS\",\"source\":\"im\",\"destination\":\"vwg\",\"status\":\"FAILURE\",\"provisioningState\":\"Failed\",\"revision\":3665873837701448622},\"id\":\"esyds\",\"name\":\"wefohecbvo\",\"type\":\"wndyqleallk\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,12 +33,12 @@ public final class WorkloadNetworksListPortMirroringMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<WorkloadNetworkPortMirroring> response
-            = manager.workloadNetworks().listPortMirroring("xprimrsop", "eecjmeis", com.azure.core.util.Context.NONE);
+            = manager.workloadNetworks().listPortMirroring("gf", "tmhqykiz", "d", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("vasylwxdzau", response.iterator().next().displayName());
+        Assertions.assertEquals("oafcluqvox", response.iterator().next().displayName());
         Assertions.assertEquals(PortMirroringDirectionEnum.INGRESS, response.iterator().next().direction());
-        Assertions.assertEquals("ohguuf", response.iterator().next().source());
-        Assertions.assertEquals("boyjathwt", response.iterator().next().destination());
-        Assertions.assertEquals(7359436654104402484L, response.iterator().next().revision());
+        Assertions.assertEquals("im", response.iterator().next().source());
+        Assertions.assertEquals("vwg", response.iterator().next().destination());
+        Assertions.assertEquals(3665873837701448622L, response.iterator().next().revision());
     }
 }

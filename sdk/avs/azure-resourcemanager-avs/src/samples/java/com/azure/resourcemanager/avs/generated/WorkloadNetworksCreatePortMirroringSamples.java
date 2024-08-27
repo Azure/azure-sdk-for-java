@@ -11,8 +11,7 @@ import com.azure.resourcemanager.avs.models.PortMirroringDirectionEnum;
  */
 public final class WorkloadNetworksCreatePortMirroringSamples {
     /*
-     * x-ms-original-file:
-     * specification/vmware/Microsoft.AVS.Management/examples/2023-09-01/WorkloadNetworks_CreatePortMirroring.json
+     * x-ms-original-file: 2023-09-01/WorkloadNetworks_CreatePortMirroring.json
      */
     /**
      * Sample code: WorkloadNetworks_CreatePortMirroring.
@@ -22,7 +21,7 @@ public final class WorkloadNetworksCreatePortMirroringSamples {
     public static void workloadNetworksCreatePortMirroring(com.azure.resourcemanager.avs.AvsManager manager) {
         manager.workloadNetworks()
             .definePortMirroring("portMirroring1")
-            .withExistingPrivateCloud("group1", "cloud1")
+            .withExistingWorkloadNetwork("group1", "cloud1", null)
             .withDisplayName("portMirroring1")
             .withDirection(PortMirroringDirectionEnum.BIDIRECTIONAL)
             .withSource("vmGroup1")

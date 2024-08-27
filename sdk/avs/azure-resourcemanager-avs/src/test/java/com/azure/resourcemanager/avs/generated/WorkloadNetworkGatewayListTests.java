@@ -12,9 +12,9 @@ public final class WorkloadNetworkGatewayListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkloadNetworkGatewayList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"displayName\":\"meue\",\"path\":\"vyhzceuojgjrwj\"},\"id\":\"iotwmcdytdxwit\",\"name\":\"nrjawgqwg\",\"type\":\"hniskxfbkpyc\"}],\"nextLink\":\"lwn\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Building\",\"displayName\":\"gjqppy\",\"path\":\"tronzmyhgfi\"},\"id\":\"sxkm\",\"name\":\"waekrrjreafxtsgu\",\"type\":\"hjglikk\"},{\"properties\":{\"provisioningState\":\"Canceled\",\"displayName\":\"lbqpvuzlmvfelf\",\"path\":\"gplcrpwjxeznoigb\"},\"id\":\"jwmwkpnbs\",\"name\":\"zejjoqk\",\"type\":\"gfhsxttaugzxn\"},{\"properties\":{\"provisioningState\":\"Canceled\",\"displayName\":\"xdtnkdmkqjjlw\",\"path\":\"nvrk\"},\"id\":\"ou\",\"name\":\"ibreb\",\"type\":\"aays\"},{\"properties\":{\"provisioningState\":\"Canceled\",\"displayName\":\"tnqttezlwfffiak\",\"path\":\"pqqmted\"},\"id\":\"mmji\",\"name\":\"yeozphvwauyqncy\",\"type\":\"upkvipmdsc\"}],\"nextLink\":\"qupevzh\"}")
             .toObject(WorkloadNetworkGatewayList.class);
-        Assertions.assertEquals("meue", model.value().get(0).displayName());
-        Assertions.assertEquals("lwn", model.nextLink());
+        Assertions.assertEquals("gjqppy", model.value().get(0).displayName());
+        Assertions.assertEquals("qupevzh", model.nextLink());
     }
 }

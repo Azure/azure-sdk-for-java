@@ -17,11 +17,11 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
-public final class WorkloadNetworksGetPublicIPWithResponseMockTests {
+public final class WorkloadNetworksGetPublicIpWithResponseMockTests {
     @Test
-    public void testGetPublicIPWithResponse() throws Exception {
+    public void testGetPublicIpWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"displayName\":\"dcdab\",\"numberOfPublicIPs\":8090697821679343432,\"publicIPBlock\":\"yawbzasqbu\",\"provisioningState\":\"Updating\"},\"id\":\"kyexaoguyaipi\",\"name\":\"sdaultxij\",\"type\":\"um\"}";
+            = "{\"properties\":{\"displayName\":\"pivlsbbjpm\",\"numberOfPublicIPs\":2333317127183841178,\"publicIPBlock\":\"ifoxxkubvphav\",\"provisioningState\":\"Succeeded\"},\"id\":\"rbqgvgov\",\"name\":\"bbttefjo\",\"type\":\"nssqyzqed\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,11 @@ public final class WorkloadNetworksGetPublicIPWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         WorkloadNetworkPublicIp response = manager.workloadNetworks()
-            .getPublicIPWithResponse("ex", "kmfx", "pjwogqqno", com.azure.core.util.Context.NONE)
+            .getPublicIpWithResponse("wdtgukranblw", "hqlkccuzgygqwaho", "ulwgniiprglvawuw", "d",
+                com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("dcdab", response.displayName());
-        Assertions.assertEquals(8090697821679343432L, response.numberOfPublicIPs());
+        Assertions.assertEquals("pivlsbbjpm", response.displayName());
+        Assertions.assertEquals(2333317127183841178L, response.numberOfPublicIPs());
     }
 }

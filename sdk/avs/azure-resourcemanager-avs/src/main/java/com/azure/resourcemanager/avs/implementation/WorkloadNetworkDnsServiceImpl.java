@@ -89,25 +89,31 @@ public final class WorkloadNetworkDnsServiceImpl
 
     private String privateCloudName;
 
+    private String workloadNetworkName;
+
     private String dnsServiceId;
 
-    public WorkloadNetworkDnsServiceImpl withExistingPrivateCloud(String resourceGroupName, String privateCloudName) {
+    public WorkloadNetworkDnsServiceImpl withExistingWorkloadNetwork(String resourceGroupName, String privateCloudName,
+        String workloadNetworkName) {
         this.resourceGroupName = resourceGroupName;
         this.privateCloudName = privateCloudName;
+        this.workloadNetworkName = workloadNetworkName;
         return this;
     }
 
     public WorkloadNetworkDnsService create() {
         this.innerObject = serviceManager.serviceClient()
             .getWorkloadNetworks()
-            .createDnsService(resourceGroupName, privateCloudName, dnsServiceId, this.innerModel(), Context.NONE);
+            .createDnsService(resourceGroupName, privateCloudName, workloadNetworkName, dnsServiceId, this.innerModel(),
+                Context.NONE);
         return this;
     }
 
     public WorkloadNetworkDnsService create(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getWorkloadNetworks()
-            .createDnsService(resourceGroupName, privateCloudName, dnsServiceId, this.innerModel(), context);
+            .createDnsService(resourceGroupName, privateCloudName, workloadNetworkName, dnsServiceId, this.innerModel(),
+                context);
         return this;
     }
 
@@ -124,14 +130,16 @@ public final class WorkloadNetworkDnsServiceImpl
     public WorkloadNetworkDnsService apply() {
         this.innerObject = serviceManager.serviceClient()
             .getWorkloadNetworks()
-            .updateDnsService(resourceGroupName, privateCloudName, dnsServiceId, this.innerModel(), Context.NONE);
+            .updateDnsService(resourceGroupName, privateCloudName, workloadNetworkName, dnsServiceId, this.innerModel(),
+                Context.NONE);
         return this;
     }
 
     public WorkloadNetworkDnsService apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getWorkloadNetworks()
-            .updateDnsService(resourceGroupName, privateCloudName, dnsServiceId, this.innerModel(), context);
+            .updateDnsService(resourceGroupName, privateCloudName, workloadNetworkName, dnsServiceId, this.innerModel(),
+                context);
         return this;
     }
 
@@ -141,13 +149,15 @@ public final class WorkloadNetworkDnsServiceImpl
         this.serviceManager = serviceManager;
         this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
         this.privateCloudName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "privateClouds");
+        this.workloadNetworkName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workloadNetworks");
         this.dnsServiceId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "dnsServices");
     }
 
     public WorkloadNetworkDnsService refresh() {
         this.innerObject = serviceManager.serviceClient()
             .getWorkloadNetworks()
-            .getDnsServiceWithResponse(resourceGroupName, privateCloudName, dnsServiceId, Context.NONE)
+            .getDnsServiceWithResponse(resourceGroupName, privateCloudName, workloadNetworkName, dnsServiceId,
+                Context.NONE)
             .getValue();
         return this;
     }
@@ -155,7 +165,7 @@ public final class WorkloadNetworkDnsServiceImpl
     public WorkloadNetworkDnsService refresh(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getWorkloadNetworks()
-            .getDnsServiceWithResponse(resourceGroupName, privateCloudName, dnsServiceId, context)
+            .getDnsServiceWithResponse(resourceGroupName, privateCloudName, workloadNetworkName, dnsServiceId, context)
             .getValue();
         return this;
     }

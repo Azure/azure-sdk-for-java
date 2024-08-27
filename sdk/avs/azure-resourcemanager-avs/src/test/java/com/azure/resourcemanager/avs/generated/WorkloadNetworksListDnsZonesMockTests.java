@@ -22,7 +22,7 @@ public final class WorkloadNetworksListDnsZonesMockTests {
     @Test
     public void testListDnsZones() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"displayName\":\"gcmjkavl\",\"domain\":[\"bmftpmdt\"],\"dnsServerIps\":[\"ltfvnz\",\"yj\",\"otp\",\"opv\"],\"sourceIp\":\"dbzqgqqihed\",\"dnsServices\":7204032751679115216,\"provisioningState\":\"Failed\",\"revision\":1811434069334068168},\"id\":\"bcysih\",\"name\":\"gqcwdhohsdtmc\",\"type\":\"zsu\"}]}";
+            = "{\"value\":[{\"properties\":{\"displayName\":\"twvc\",\"domain\":[\"wka\",\"ve\"],\"dnsServerIps\":[\"dvlvhbwrnfxtgdd\"],\"sourceIp\":\"th\",\"dnsServices\":319815820315480755,\"provisioningState\":\"Updating\",\"revision\":4507134734871641065},\"id\":\"kcoeqswank\",\"name\":\"t\",\"type\":\"tmhdroznnhdr\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,14 +31,14 @@ public final class WorkloadNetworksListDnsZonesMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<WorkloadNetworkDnsZone> response
-            = manager.workloadNetworks().listDnsZones("oudorhcgyyp", "otwypundmb", com.azure.core.util.Context.NONE);
+        PagedIterable<WorkloadNetworkDnsZone> response = manager.workloadNetworks()
+            .listDnsZones("gkkumuikjcj", "aztb", "snsqowxwcoml", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("gcmjkavl", response.iterator().next().displayName());
-        Assertions.assertEquals("bmftpmdt", response.iterator().next().domain().get(0));
-        Assertions.assertEquals("ltfvnz", response.iterator().next().dnsServerIps().get(0));
-        Assertions.assertEquals("dbzqgqqihed", response.iterator().next().sourceIp());
-        Assertions.assertEquals(7204032751679115216L, response.iterator().next().dnsServices());
-        Assertions.assertEquals(1811434069334068168L, response.iterator().next().revision());
+        Assertions.assertEquals("twvc", response.iterator().next().displayName());
+        Assertions.assertEquals("wka", response.iterator().next().domain().get(0));
+        Assertions.assertEquals("dvlvhbwrnfxtgdd", response.iterator().next().dnsServerIps().get(0));
+        Assertions.assertEquals("th", response.iterator().next().sourceIp());
+        Assertions.assertEquals(319815820315480755L, response.iterator().next().dnsServices());
+        Assertions.assertEquals(4507134734871641065L, response.iterator().next().revision());
     }
 }

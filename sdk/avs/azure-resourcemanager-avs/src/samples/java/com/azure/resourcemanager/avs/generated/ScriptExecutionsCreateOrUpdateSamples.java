@@ -13,8 +13,7 @@ import java.util.Arrays;
  */
 public final class ScriptExecutionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/vmware/Microsoft.AVS.Management/examples/2023-09-01/ScriptExecutions_CreateOrUpdate.json
+     * x-ms-original-file: 2023-09-01/ScriptExecutions_CreateOrUpdate.json
      */
     /**
      * Sample code: ScriptExecutions_CreateOrUpdate.

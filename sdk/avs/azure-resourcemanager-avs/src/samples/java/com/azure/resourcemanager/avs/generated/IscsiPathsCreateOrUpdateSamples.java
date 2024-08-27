@@ -4,15 +4,12 @@
 
 package com.azure.resourcemanager.avs.generated;
 
-import com.azure.resourcemanager.avs.fluent.models.IscsiPathInner;
-
 /**
  * Samples for IscsiPaths CreateOrUpdate.
  */
 public final class IscsiPathsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/vmware/Microsoft.AVS.Management/examples/2023-09-01/IscsiPaths_CreateOrUpdate.json
+     * x-ms-original-file: 2023-09-01/IscsiPaths_CreateOrUpdate.json
      */
     /**
      * Sample code: IscsiPaths_CreateOrUpdate.
@@ -21,7 +18,9 @@ public final class IscsiPathsCreateOrUpdateSamples {
      */
     public static void iscsiPathsCreateOrUpdate(com.azure.resourcemanager.avs.AvsManager manager) {
         manager.iscsiPaths()
-            .createOrUpdate("group1", "cloud1", new IscsiPathInner().withNetworkBlock("192.168.0.0/24"),
-                com.azure.core.util.Context.NONE);
+            .define("default")
+            .withExistingPrivateCloud("group1", "cloud1")
+            .withNetworkBlock("192.168.0.0/24")
+            .create();
     }
 }

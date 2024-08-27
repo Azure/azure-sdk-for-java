@@ -9,8 +9,7 @@ package com.azure.resourcemanager.avs.generated;
  */
 public final class WorkloadNetworksDeleteSegmentSamples {
     /*
-     * x-ms-original-file:
-     * specification/vmware/Microsoft.AVS.Management/examples/2023-09-01/WorkloadNetworks_DeleteSegment.json
+     * x-ms-original-file: 2023-09-01/WorkloadNetworks_DeleteSegment.json
      */
     /**
      * Sample code: WorkloadNetworks_DeleteSegment.
@@ -18,6 +17,7 @@ public final class WorkloadNetworksDeleteSegmentSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void workloadNetworksDeleteSegment(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.workloadNetworks().deleteSegment("group1", "cloud1", "segment1", com.azure.core.util.Context.NONE);
+        manager.workloadNetworks()
+            .deleteSegment("group1", "cloud1", null, "segment1", com.azure.core.util.Context.NONE);
     }
 }

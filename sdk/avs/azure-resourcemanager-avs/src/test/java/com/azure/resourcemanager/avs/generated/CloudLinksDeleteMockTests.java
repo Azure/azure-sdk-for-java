@@ -27,7 +27,7 @@ public final class CloudLinksDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.cloudLinks().delete("hgovfgp", "kqmhhaowjr", "zvuporqzdfuydz", com.azure.core.util.Context.NONE);
+        manager.cloudLinks().delete("lniexz", "rzpgep", "tybbwwpgda", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -19,7 +19,7 @@ import reactor.core.publisher.Mono;
 public final class LocationsCheckQuotaAvailabilityWithResponseMockTests {
     @Test
     public void testCheckQuotaAvailabilityWithResponse() throws Exception {
-        String responseStr = "{\"hostsRemaining\":{\"vyvnqqyb\":382394727},\"quotaEnabled\":\"Enabled\"}";
+        String responseStr = "{\"hostsRemaining\":{\"yutnwytpzdmov\":254109783},\"quotaEnabled\":\"Enabled\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -29,7 +29,7 @@ public final class LocationsCheckQuotaAvailabilityWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Quota response = manager.locations()
-            .checkQuotaAvailabilityWithResponse("orfmluiqt", com.azure.core.util.Context.NONE)
+            .checkQuotaAvailabilityWithResponse("qeevt", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

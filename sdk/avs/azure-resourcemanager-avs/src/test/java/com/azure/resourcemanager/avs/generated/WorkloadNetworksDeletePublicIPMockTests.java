@@ -15,9 +15,9 @@ import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
-public final class WorkloadNetworksDeletePublicIPMockTests {
+public final class WorkloadNetworksDeletePublicIpMockTests {
     @Test
-    public void testDeletePublicIP() throws Exception {
+    public void testDeletePublicIp() throws Exception {
         String responseStr = "{}";
 
         HttpClient httpClient
@@ -28,7 +28,7 @@ public final class WorkloadNetworksDeletePublicIPMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.workloadNetworks()
-            .deletePublicIP("qwazlnqnmcjngzq", "qxtbjwgnyf", "sf", com.azure.core.util.Context.NONE);
+            .deletePublicIp("kdfrdbiqmrjgeihf", "lg", "wfiwzcxmj", com.azure.core.util.Context.NONE);
 
     }
 }

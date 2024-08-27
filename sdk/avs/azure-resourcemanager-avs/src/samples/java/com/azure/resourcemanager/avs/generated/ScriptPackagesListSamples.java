@@ -9,7 +9,7 @@ package com.azure.resourcemanager.avs.generated;
  */
 public final class ScriptPackagesListSamples {
     /*
-     * x-ms-original-file: specification/vmware/Microsoft.AVS.Management/examples/2023-09-01/ScriptPackages_List.json
+     * x-ms-original-file: 2023-09-01/ScriptPackages_List.json
      */
     /**
      * Sample code: ScriptPackages_List.

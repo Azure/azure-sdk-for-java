@@ -11,8 +11,7 @@ import java.util.Arrays;
  */
 public final class WorkloadNetworksCreateDnsZoneSamples {
     /*
-     * x-ms-original-file:
-     * specification/vmware/Microsoft.AVS.Management/examples/2023-09-01/WorkloadNetworks_CreateDnsZone.json
+     * x-ms-original-file: 2023-09-01/WorkloadNetworks_CreateDnsZone.json
      */
     /**
      * Sample code: WorkloadNetworks_CreateDnsZone.
@@ -22,7 +21,7 @@ public final class WorkloadNetworksCreateDnsZoneSamples {
     public static void workloadNetworksCreateDnsZone(com.azure.resourcemanager.avs.AvsManager manager) {
         manager.workloadNetworks()
             .defineDnsZone("dnsZone1")
-            .withExistingPrivateCloud("group1", "cloud1")
+            .withExistingWorkloadNetwork("group1", "cloud1", null)
             .withDisplayName("dnsZone1")
             .withDomain(Arrays.asList())
             .withDnsServerIps(Arrays.asList("1.1.1.1"))

@@ -13,27 +13,27 @@ public final class WorkloadNetworkPortMirroringInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkloadNetworkPortMirroringInner model = BinaryData.fromString(
-            "{\"properties\":{\"displayName\":\"xknalaulppg\",\"direction\":\"INGRESS\",\"source\":\"napnyiropuhpigv\",\"destination\":\"ylgqgitxmedjvcsl\",\"status\":\"SUCCESS\",\"provisioningState\":\"Deleting\",\"revision\":1214544725492398973},\"id\":\"zhxgktrmgucn\",\"name\":\"pkteo\",\"type\":\"llwptfdy\"}")
+            "{\"properties\":{\"displayName\":\"ojlpijnkrxf\",\"direction\":\"EGRESS\",\"source\":\"c\",\"destination\":\"tizzronasxif\",\"status\":\"SUCCESS\",\"provisioningState\":\"Deleting\",\"revision\":319144288054659459},\"id\":\"wesgogczh\",\"name\":\"nnxk\",\"type\":\"lgnyhmo\"}")
             .toObject(WorkloadNetworkPortMirroringInner.class);
-        Assertions.assertEquals("xknalaulppg", model.displayName());
-        Assertions.assertEquals(PortMirroringDirectionEnum.INGRESS, model.direction());
-        Assertions.assertEquals("napnyiropuhpigv", model.source());
-        Assertions.assertEquals("ylgqgitxmedjvcsl", model.destination());
-        Assertions.assertEquals(1214544725492398973L, model.revision());
+        Assertions.assertEquals("ojlpijnkrxf", model.displayName());
+        Assertions.assertEquals(PortMirroringDirectionEnum.EGRESS, model.direction());
+        Assertions.assertEquals("c", model.source());
+        Assertions.assertEquals("tizzronasxif", model.destination());
+        Assertions.assertEquals(319144288054659459L, model.revision());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkloadNetworkPortMirroringInner model = new WorkloadNetworkPortMirroringInner().withDisplayName("xknalaulppg")
-            .withDirection(PortMirroringDirectionEnum.INGRESS)
-            .withSource("napnyiropuhpigv")
-            .withDestination("ylgqgitxmedjvcsl")
-            .withRevision(1214544725492398973L);
+        WorkloadNetworkPortMirroringInner model = new WorkloadNetworkPortMirroringInner().withDisplayName("ojlpijnkrxf")
+            .withDirection(PortMirroringDirectionEnum.EGRESS)
+            .withSource("c")
+            .withDestination("tizzronasxif")
+            .withRevision(319144288054659459L);
         model = BinaryData.fromObject(model).toObject(WorkloadNetworkPortMirroringInner.class);
-        Assertions.assertEquals("xknalaulppg", model.displayName());
-        Assertions.assertEquals(PortMirroringDirectionEnum.INGRESS, model.direction());
-        Assertions.assertEquals("napnyiropuhpigv", model.source());
-        Assertions.assertEquals("ylgqgitxmedjvcsl", model.destination());
-        Assertions.assertEquals(1214544725492398973L, model.revision());
+        Assertions.assertEquals("ojlpijnkrxf", model.displayName());
+        Assertions.assertEquals(PortMirroringDirectionEnum.EGRESS, model.direction());
+        Assertions.assertEquals("c", model.source());
+        Assertions.assertEquals("tizzronasxif", model.destination());
+        Assertions.assertEquals(319144288054659459L, model.revision());
     }
 }

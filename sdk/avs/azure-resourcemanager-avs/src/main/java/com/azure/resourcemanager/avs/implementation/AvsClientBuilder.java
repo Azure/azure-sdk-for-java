@@ -15,10 +15,10 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
 /**
- * A builder for creating a new instance of the AVSClientImpl type.
+ * A builder for creating a new instance of the AvsClientImpl type.
  */
-@ServiceClientBuilder(serviceClients = { AVSClientImpl.class })
-public final class AVSClientBuilder {
+@ServiceClientBuilder(serviceClients = { AvsClientImpl.class })
+public final class AvsClientBuilder {
     /*
      * Server parameter
      */
@@ -28,9 +28,9 @@ public final class AVSClientBuilder {
      * Sets Server parameter.
      * 
      * @param endpoint the endpoint value.
-     * @return the AVSClientBuilder.
+     * @return the AvsClientBuilder.
      */
-    public AVSClientBuilder endpoint(String endpoint) {
+    public AvsClientBuilder endpoint(String endpoint) {
         this.endpoint = endpoint;
         return this;
     }
@@ -44,9 +44,9 @@ public final class AVSClientBuilder {
      * Sets The ID of the target subscription. The value must be an UUID.
      * 
      * @param subscriptionId the subscriptionId value.
-     * @return the AVSClientBuilder.
+     * @return the AvsClientBuilder.
      */
-    public AVSClientBuilder subscriptionId(String subscriptionId) {
+    public AvsClientBuilder subscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;
         return this;
     }
@@ -60,9 +60,9 @@ public final class AVSClientBuilder {
      * Sets The environment to connect to.
      * 
      * @param environment the environment value.
-     * @return the AVSClientBuilder.
+     * @return the AvsClientBuilder.
      */
-    public AVSClientBuilder environment(AzureEnvironment environment) {
+    public AvsClientBuilder environment(AzureEnvironment environment) {
         this.environment = environment;
         return this;
     }
@@ -76,9 +76,9 @@ public final class AVSClientBuilder {
      * Sets The HTTP pipeline to send requests through.
      * 
      * @param pipeline the pipeline value.
-     * @return the AVSClientBuilder.
+     * @return the AvsClientBuilder.
      */
-    public AVSClientBuilder pipeline(HttpPipeline pipeline) {
+    public AvsClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
         return this;
     }
@@ -92,9 +92,9 @@ public final class AVSClientBuilder {
      * Sets The default poll interval for long-running operation.
      * 
      * @param defaultPollInterval the defaultPollInterval value.
-     * @return the AVSClientBuilder.
+     * @return the AvsClientBuilder.
      */
-    public AVSClientBuilder defaultPollInterval(Duration defaultPollInterval) {
+    public AvsClientBuilder defaultPollInterval(Duration defaultPollInterval) {
         this.defaultPollInterval = defaultPollInterval;
         return this;
     }
@@ -108,19 +108,19 @@ public final class AVSClientBuilder {
      * Sets The serializer to serialize an object into a string.
      * 
      * @param serializerAdapter the serializerAdapter value.
-     * @return the AVSClientBuilder.
+     * @return the AvsClientBuilder.
      */
-    public AVSClientBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
+    public AvsClientBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
         this.serializerAdapter = serializerAdapter;
         return this;
     }
 
     /**
-     * Builds an instance of AVSClientImpl with the provided parameters.
+     * Builds an instance of AvsClientImpl with the provided parameters.
      * 
-     * @return an instance of AVSClientImpl.
+     * @return an instance of AvsClientImpl.
      */
-    public AVSClientImpl buildClient() {
+    public AvsClientImpl buildClient() {
         AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
         HttpPipeline localPipeline = (pipeline != null)
             ? pipeline
@@ -130,7 +130,7 @@ public final class AVSClientBuilder {
         SerializerAdapter localSerializerAdapter = (serializerAdapter != null)
             ? serializerAdapter
             : SerializerFactory.createDefaultManagementSerializerAdapter();
-        AVSClientImpl client = new AVSClientImpl(localPipeline, localSerializerAdapter, localDefaultPollInterval,
+        AvsClientImpl client = new AvsClientImpl(localPipeline, localSerializerAdapter, localDefaultPollInterval,
             localEnvironment, this.endpoint, this.subscriptionId);
         return client;
     }

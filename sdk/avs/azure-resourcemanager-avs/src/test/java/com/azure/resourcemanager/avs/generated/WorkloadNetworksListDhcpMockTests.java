@@ -22,7 +22,7 @@ public final class WorkloadNetworksListDhcpMockTests {
     @Test
     public void testListDhcp() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"dhcpType\":\"WorkloadNetworkDhcpEntity\",\"displayName\":\"sirudhzmmesckdlp\",\"segments\":[\"rcxfailcfxwmdb\",\"xdfgsftufqobr\",\"lnacgcc\",\"knh\"],\"provisioningState\":\"Succeeded\",\"revision\":589895181395208986},\"id\":\"nrzvuljraaer\",\"name\":\"nok\",\"type\":\"gukkjqnvbroy\"}]}";
+            = "{\"value\":[{\"properties\":{\"dhcpType\":\"WorkloadNetworkDhcpEntity\",\"displayName\":\"y\",\"segments\":[\"khminqcymc\",\"ngnbdxxew\",\"ninvudbchaqdt\",\"qecrqctmxx\"],\"provisioningState\":\"Failed\",\"revision\":8298485303331231105},\"id\":\"huytxzvtzn\",\"name\":\"pxbannovvoxc\",\"type\":\"ytprwnwvroev\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class WorkloadNetworksListDhcpMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<WorkloadNetworkDhcp> response
-            = manager.workloadNetworks().listDhcp("slhhxudbxv", "d", com.azure.core.util.Context.NONE);
+        PagedIterable<WorkloadNetworkDhcp> response = manager.workloadNetworks()
+            .listDhcp("ugwbsreurfqkf", "arenlvhhtklnvnaf", "vkyfedevjbosl", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("sirudhzmmesckdlp", response.iterator().next().properties().displayName());
-        Assertions.assertEquals(589895181395208986L, response.iterator().next().properties().revision());
+        Assertions.assertEquals("y", response.iterator().next().properties().displayName());
+        Assertions.assertEquals(8298485303331231105L, response.iterator().next().properties().revision());
     }
 }

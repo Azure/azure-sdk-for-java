@@ -9,8 +9,7 @@ package com.azure.resourcemanager.avs.generated;
  */
 public final class WorkloadNetworksGetGatewaySamples {
     /*
-     * x-ms-original-file:
-     * specification/vmware/Microsoft.AVS.Management/examples/2023-09-01/WorkloadNetworks_GetGateway.json
+     * x-ms-original-file: 2023-09-01/WorkloadNetworks_GetGateway.json
      */
     /**
      * Sample code: WorkloadNetworks_GetGateway.
@@ -19,6 +18,6 @@ public final class WorkloadNetworksGetGatewaySamples {
      */
     public static void workloadNetworksGetGateway(com.azure.resourcemanager.avs.AvsManager manager) {
         manager.workloadNetworks()
-            .getGatewayWithResponse("group1", "cloud1", "gateway1", com.azure.core.util.Context.NONE);
+            .getGatewayWithResponse("group1", "cloud1", null, "gateway1", com.azure.core.util.Context.NONE);
     }
 }

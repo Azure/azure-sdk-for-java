@@ -50,25 +50,25 @@ public final class AuthorizationsClientImpl implements AuthorizationsClient {
     /**
      * The service client containing this operation class.
      */
-    private final AVSClientImpl client;
+    private final AvsClientImpl client;
 
     /**
      * Initializes an instance of AuthorizationsClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    AuthorizationsClientImpl(AVSClientImpl client) {
+    AuthorizationsClientImpl(AvsClientImpl client) {
         this.service
             = RestProxy.create(AuthorizationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AVSClientAuthorizations to be used by the proxy service to perform
+     * The interface defining all the services for AvsClientAuthorizations to be used by the proxy service to perform
      * REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AVSClientAuthorizati")
+    @ServiceInterface(name = "AvsClientAuthorizati")
     public interface AuthorizationsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/authorizations")

@@ -9,8 +9,7 @@ package com.azure.resourcemanager.avs.generated;
  */
 public final class WorkloadNetworksListDnsZonesSamples {
     /*
-     * x-ms-original-file:
-     * specification/vmware/Microsoft.AVS.Management/examples/2023-09-01/WorkloadNetworks_ListDnsZones.json
+     * x-ms-original-file: 2023-09-01/WorkloadNetworks_ListDnsZones.json
      */
     /**
      * Sample code: WorkloadNetworks_ListDnsZones.
@@ -18,6 +17,6 @@ public final class WorkloadNetworksListDnsZonesSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void workloadNetworksListDnsZones(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.workloadNetworks().listDnsZones("group1", "cloud1", com.azure.core.util.Context.NONE);
+        manager.workloadNetworks().listDnsZones("group1", "cloud1", null, com.azure.core.util.Context.NONE);
     }
 }

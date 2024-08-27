@@ -21,7 +21,7 @@ public final class IscsiPathsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Deleting\",\"networkBlock\":\"qlkccuzgygqwaho\"},\"id\":\"lwgniiprglvawu\",\"name\":\"z\",\"type\":\"ufypiv\"}";
+            = "{\"properties\":{\"provisioningState\":\"Failed\",\"networkBlock\":\"uughtuqfecjxeyg\"},\"id\":\"hxuicbuewmrs\",\"name\":\"njlx\",\"type\":\"zrhwp\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,9 +30,10 @@ public final class IscsiPathsGetWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        IscsiPath response
-            = manager.iscsiPaths().getWithResponse("e", "dptjgwdtgukranb", com.azure.core.util.Context.NONE).getValue();
+        IscsiPath response = manager.iscsiPaths()
+            .getWithResponse("tjvidt", "gepuslvyjtc", "uwkasiz", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals("qlkccuzgygqwaho", response.networkBlock());
+        Assertions.assertEquals("uughtuqfecjxeyg", response.networkBlock());
     }
 }

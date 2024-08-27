@@ -12,8 +12,7 @@ import java.util.Arrays;
  */
 public final class WorkloadNetworksCreateDnsServiceSamples {
     /*
-     * x-ms-original-file:
-     * specification/vmware/Microsoft.AVS.Management/examples/2023-09-01/WorkloadNetworks_CreateDnsService.json
+     * x-ms-original-file: 2023-09-01/WorkloadNetworks_CreateDnsService.json
      */
     /**
      * Sample code: WorkloadNetworks_CreateDnsService.
@@ -23,7 +22,7 @@ public final class WorkloadNetworksCreateDnsServiceSamples {
     public static void workloadNetworksCreateDnsService(com.azure.resourcemanager.avs.AvsManager manager) {
         manager.workloadNetworks()
             .defineDnsService("dnsService1")
-            .withExistingPrivateCloud("group1", "cloud1")
+            .withExistingWorkloadNetwork("group1", "cloud1", null)
             .withDisplayName("dnsService1")
             .withDnsServiceIp("5.5.5.5")
             .withDefaultDnsZone("defaultDnsZone1")

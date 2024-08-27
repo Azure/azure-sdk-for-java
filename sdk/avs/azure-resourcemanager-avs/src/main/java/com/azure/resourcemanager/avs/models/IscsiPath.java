@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.management.SystemData;
+import com.azure.core.util.Context;
 import com.azure.resourcemanager.avs.fluent.models.IscsiPathInner;
 
 /**
@@ -54,9 +55,130 @@ public interface IscsiPath {
     String networkBlock();
 
     /**
+     * Gets the name of the resource group.
+     * 
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.avs.fluent.models.IscsiPathInner object.
      * 
      * @return the inner object.
      */
     IscsiPathInner innerModel();
+
+    /**
+     * The entirety of the IscsiPath definition.
+     */
+    interface Definition
+        extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
+    }
+
+    /**
+     * The IscsiPath definition stages.
+     */
+    interface DefinitionStages {
+        /**
+         * The first stage of the IscsiPath definition.
+         */
+        interface Blank extends WithParentResource {
+        }
+
+        /**
+         * The stage of the IscsiPath definition allowing to specify parent resource.
+         */
+        interface WithParentResource {
+            /**
+             * Specifies resourceGroupName, privateCloudName.
+             * 
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
+             * @param privateCloudName Name of the private cloud.
+             * @return the next definition stage.
+             */
+            WithCreate withExistingPrivateCloud(String resourceGroupName, String privateCloudName);
+        }
+
+        /**
+         * The stage of the IscsiPath definition which contains all the minimum required properties for the resource to
+         * be created, but also allows for any other optional properties to be specified.
+         */
+        interface WithCreate extends DefinitionStages.WithNetworkBlock {
+            /**
+             * Executes the create request.
+             * 
+             * @return the created resource.
+             */
+            IscsiPath create();
+
+            /**
+             * Executes the create request.
+             * 
+             * @param context The context to associate with this operation.
+             * @return the created resource.
+             */
+            IscsiPath create(Context context);
+        }
+
+        /**
+         * The stage of the IscsiPath definition allowing to specify networkBlock.
+         */
+        interface WithNetworkBlock {
+            /**
+             * Specifies the networkBlock property: CIDR Block for iSCSI path..
+             * 
+             * @param networkBlock CIDR Block for iSCSI path.
+             * @return the next definition stage.
+             */
+            WithCreate withNetworkBlock(String networkBlock);
+        }
+    }
+
+    /**
+     * Begins update for the IscsiPath resource.
+     * 
+     * @return the stage of resource update.
+     */
+    IscsiPath.Update update();
+
+    /**
+     * The template for IscsiPath update.
+     */
+    interface Update {
+        /**
+         * Executes the update request.
+         * 
+         * @return the updated resource.
+         */
+        IscsiPath apply();
+
+        /**
+         * Executes the update request.
+         * 
+         * @param context The context to associate with this operation.
+         * @return the updated resource.
+         */
+        IscsiPath apply(Context context);
+    }
+
+    /**
+     * The IscsiPath update stages.
+     */
+    interface UpdateStages {
+    }
+
+    /**
+     * Refreshes the resource to sync with Azure.
+     * 
+     * @return the refreshed resource.
+     */
+    IscsiPath refresh();
+
+    /**
+     * Refreshes the resource to sync with Azure.
+     * 
+     * @param context The context to associate with this operation.
+     * @return the refreshed resource.
+     */
+    IscsiPath refresh(Context context);
 }

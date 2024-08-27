@@ -12,8 +12,7 @@ import java.util.Arrays;
  */
 public final class ScriptExecutionsGetExecutionLogsSamples {
     /*
-     * x-ms-original-file:
-     * specification/vmware/Microsoft.AVS.Management/examples/2023-09-01/ScriptExecutions_GetExecutionLogs.json
+     * x-ms-original-file: 2023-09-01/ScriptExecutions_GetExecutionLogs.json
      */
     /**
      * Sample code: ScriptExecutions_GetExecutionLogs.

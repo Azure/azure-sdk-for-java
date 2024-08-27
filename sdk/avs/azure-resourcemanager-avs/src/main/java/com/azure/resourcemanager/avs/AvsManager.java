@@ -23,10 +23,10 @@ import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.avs.fluent.AVSClient;
+import com.azure.resourcemanager.avs.fluent.AvsClient;
 import com.azure.resourcemanager.avs.implementation.AddonsImpl;
 import com.azure.resourcemanager.avs.implementation.AuthorizationsImpl;
-import com.azure.resourcemanager.avs.implementation.AVSClientBuilder;
+import com.azure.resourcemanager.avs.implementation.AvsClientBuilder;
 import com.azure.resourcemanager.avs.implementation.CloudLinksImpl;
 import com.azure.resourcemanager.avs.implementation.ClustersImpl;
 import com.azure.resourcemanager.avs.implementation.DatastoresImpl;
@@ -87,8 +87,6 @@ public final class AvsManager {
 
     private GlobalReachConnections globalReachConnections;
 
-    private WorkloadNetworks workloadNetworks;
-
     private CloudLinks cloudLinks;
 
     private Addons addons;
@@ -105,12 +103,14 @@ public final class AvsManager {
 
     private IscsiPaths iscsiPaths;
 
-    private final AVSClient clientObject;
+    private WorkloadNetworks workloadNetworks;
+
+    private final AvsClient clientObject;
 
     private AvsManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        this.clientObject = new AVSClientBuilder().pipeline(httpPipeline)
+        this.clientObject = new AvsClientBuilder().pipeline(httpPipeline)
             .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
             .subscriptionId(profile.getSubscriptionId())
             .defaultPollInterval(defaultPollInterval)
@@ -413,20 +413,6 @@ public final class AvsManager {
     }
 
     /**
-     * Gets the resource collection API of WorkloadNetworks. It manages WorkloadNetworkSegment, WorkloadNetworkDhcp,
-     * WorkloadNetworkPortMirroring, WorkloadNetworkVMGroup, WorkloadNetworkDnsService, WorkloadNetworkDnsZone,
-     * WorkloadNetworkPublicIp.
-     * 
-     * @return Resource collection API of WorkloadNetworks.
-     */
-    public WorkloadNetworks workloadNetworks() {
-        if (this.workloadNetworks == null) {
-            this.workloadNetworks = new WorkloadNetworksImpl(clientObject.getWorkloadNetworks(), this);
-        }
-        return workloadNetworks;
-    }
-
-    /**
      * Gets the resource collection API of CloudLinks. It manages CloudLink.
      * 
      * @return Resource collection API of CloudLinks.
@@ -511,7 +497,7 @@ public final class AvsManager {
     }
 
     /**
-     * Gets the resource collection API of IscsiPaths.
+     * Gets the resource collection API of IscsiPaths. It manages IscsiPath.
      * 
      * @return Resource collection API of IscsiPaths.
      */
@@ -523,12 +509,26 @@ public final class AvsManager {
     }
 
     /**
-     * Gets wrapped service client AVSClient providing direct access to the underlying auto-generated API
+     * Gets the resource collection API of WorkloadNetworks. It manages WorkloadNetworkSegment, WorkloadNetworkDhcp,
+     * WorkloadNetworkPortMirroring, WorkloadNetworkVMGroup, WorkloadNetworkDnsService, WorkloadNetworkDnsZone,
+     * WorkloadNetworkPublicIp.
+     * 
+     * @return Resource collection API of WorkloadNetworks.
+     */
+    public WorkloadNetworks workloadNetworks() {
+        if (this.workloadNetworks == null) {
+            this.workloadNetworks = new WorkloadNetworksImpl(clientObject.getWorkloadNetworks(), this);
+        }
+        return workloadNetworks;
+    }
+
+    /**
+     * Gets wrapped service client AvsClient providing direct access to the underlying auto-generated API
      * implementation, based on Azure REST API.
      * 
-     * @return Wrapped service client AVSClient.
+     * @return Wrapped service client AvsClient.
      */
-    public AVSClient serviceClient() {
+    public AvsClient serviceClient() {
         return this.clientObject;
     }
 }

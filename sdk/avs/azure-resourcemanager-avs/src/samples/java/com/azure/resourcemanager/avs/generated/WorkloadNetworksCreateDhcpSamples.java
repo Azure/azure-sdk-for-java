@@ -11,8 +11,7 @@ import com.azure.resourcemanager.avs.models.WorkloadNetworkDhcpServer;
  */
 public final class WorkloadNetworksCreateDhcpSamples {
     /*
-     * x-ms-original-file:
-     * specification/vmware/Microsoft.AVS.Management/examples/2023-09-01/WorkloadNetworks_CreateDhcp.json
+     * x-ms-original-file: 2023-09-01/WorkloadNetworks_CreateDhcp.json
      */
     /**
      * Sample code: WorkloadNetworks_CreateDhcp.
@@ -22,7 +21,7 @@ public final class WorkloadNetworksCreateDhcpSamples {
     public static void workloadNetworksCreateDhcp(com.azure.resourcemanager.avs.AvsManager manager) {
         manager.workloadNetworks()
             .defineDhcp("dhcp1")
-            .withExistingPrivateCloud("group1", "cloud1")
+            .withExistingWorkloadNetwork("group1", "cloud1", null)
             .withProperties(new WorkloadNetworkDhcpServer().withDisplayName("dhcpConfigurations1")
                 .withRevision(1L)
                 .withServerAddress("40.1.5.1/24")

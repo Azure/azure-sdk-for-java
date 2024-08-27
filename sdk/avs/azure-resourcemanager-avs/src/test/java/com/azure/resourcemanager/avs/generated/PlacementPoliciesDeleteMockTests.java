@@ -28,7 +28,7 @@ public final class PlacementPoliciesDeleteMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.placementPolicies()
-            .delete("eqacjjvpilguooq", "agmdit", "ueio", "kjbsah", com.azure.core.util.Context.NONE);
+            .delete("efqsfapaqtferrqw", "x", "kmfx", "pjwogqqno", com.azure.core.util.Context.NONE);
 
     }
 }

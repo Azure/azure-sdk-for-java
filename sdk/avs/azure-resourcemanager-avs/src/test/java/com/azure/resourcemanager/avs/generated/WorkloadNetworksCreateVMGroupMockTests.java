@@ -22,7 +22,7 @@ public final class WorkloadNetworksCreateVMGroupMockTests {
     @Test
     public void testCreateVMGroup() throws Exception {
         String responseStr
-            = "{\"properties\":{\"displayName\":\"jgehkf\",\"members\":[\"rtixokff\"],\"status\":\"FAILURE\",\"provisioningState\":\"Succeeded\",\"revision\":3258323746921369776},\"id\":\"qwhix\",\"name\":\"onsts\",\"type\":\"i\"}";
+            = "{\"properties\":{\"displayName\":\"xne\",\"members\":[\"mtodl\"],\"status\":\"FAILURE\",\"provisioningState\":\"Succeeded\",\"revision\":5140968994172392364},\"id\":\"voavyunssxl\",\"name\":\"hi\",\"type\":\"egjlgvvpa\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,15 +32,15 @@ public final class WorkloadNetworksCreateVMGroupMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         WorkloadNetworkVMGroup response = manager.workloadNetworks()
-            .defineVMGroup("zvaylptrsqqw")
-            .withExistingPrivateCloud("fwyfwlwxjwet", "psihcla")
-            .withDisplayName("mwqkchcxwaxf")
-            .withMembers(Arrays.asList("jkjexf", "eqvhpsylkk", "hkbffmbm"))
-            .withRevision(3427888664971158449L)
+            .defineVMGroup("ebwgga")
+            .withExistingWorkloadNetwork("jj", "cqtjzmi", "vgbgatzuuvbxng")
+            .withDisplayName("zlswvajqf")
+            .withMembers(Arrays.asList("x"))
+            .withRevision(5388655277273530028L)
             .create();
 
-        Assertions.assertEquals("jgehkf", response.displayName());
-        Assertions.assertEquals("rtixokff", response.members().get(0));
-        Assertions.assertEquals(3258323746921369776L, response.revision());
+        Assertions.assertEquals("xne", response.displayName());
+        Assertions.assertEquals("mtodl", response.members().get(0));
+        Assertions.assertEquals(5140968994172392364L, response.revision());
     }
 }

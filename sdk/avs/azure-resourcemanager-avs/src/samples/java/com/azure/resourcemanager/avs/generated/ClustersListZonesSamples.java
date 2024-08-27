@@ -9,7 +9,7 @@ package com.azure.resourcemanager.avs.generated;
  */
 public final class ClustersListZonesSamples {
     /*
-     * x-ms-original-file: specification/vmware/Microsoft.AVS.Management/examples/2023-09-01/Clusters_ListZones.json
+     * x-ms-original-file: 2023-09-01/Clusters_ListZones.json
      */
     /**
      * Sample code: Clusters_ListZones.
@@ -17,6 +17,18 @@ public final class ClustersListZonesSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void clustersListZones(com.azure.resourcemanager.avs.AvsManager manager) {
+        manager.clusters().listZonesWithResponse("group1", "cloud1", "cluster1", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2023-09-01/Clusters_ListZones_Stretched.json
+     */
+    /**
+     * Sample code: Clusters_ListZones_Stretched.
+     * 
+     * @param manager Entry point to AvsManager.
+     */
+    public static void clustersListZonesStretched(com.azure.resourcemanager.avs.AvsManager manager) {
         manager.clusters().listZonesWithResponse("group1", "cloud1", "cluster1", com.azure.core.util.Context.NONE);
     }
 }

@@ -50,6 +50,7 @@ public interface IscsiPathsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
+     * @param iscsiPathName Name of the iSCSI path resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -57,26 +58,29 @@ public interface IscsiPathsClient {
      * @return a IscsiPath along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IscsiPathInner> getWithResponse(String resourceGroupName, String privateCloudName, Context context);
+    Response<IscsiPathInner> getWithResponse(String resourceGroupName, String privateCloudName, String iscsiPathName,
+        Context context);
 
     /**
      * Get a IscsiPath.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
+     * @param iscsiPathName Name of the iSCSI path resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a IscsiPath.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IscsiPathInner get(String resourceGroupName, String privateCloudName);
+    IscsiPathInner get(String resourceGroupName, String privateCloudName, String iscsiPathName);
 
     /**
      * Create a IscsiPath.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
+     * @param iscsiPathName Name of the iSCSI path resource.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -85,13 +89,14 @@ public interface IscsiPathsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<IscsiPathInner>, IscsiPathInner> beginCreateOrUpdate(String resourceGroupName,
-        String privateCloudName, IscsiPathInner resource);
+        String privateCloudName, String iscsiPathName, IscsiPathInner resource);
 
     /**
      * Create a IscsiPath.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
+     * @param iscsiPathName Name of the iSCSI path resource.
      * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -101,13 +106,14 @@ public interface IscsiPathsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<IscsiPathInner>, IscsiPathInner> beginCreateOrUpdate(String resourceGroupName,
-        String privateCloudName, IscsiPathInner resource, Context context);
+        String privateCloudName, String iscsiPathName, IscsiPathInner resource, Context context);
 
     /**
      * Create a IscsiPath.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
+     * @param iscsiPathName Name of the iSCSI path resource.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -115,13 +121,15 @@ public interface IscsiPathsClient {
      * @return an iSCSI path resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IscsiPathInner createOrUpdate(String resourceGroupName, String privateCloudName, IscsiPathInner resource);
+    IscsiPathInner createOrUpdate(String resourceGroupName, String privateCloudName, String iscsiPathName,
+        IscsiPathInner resource);
 
     /**
      * Create a IscsiPath.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
+     * @param iscsiPathName Name of the iSCSI path resource.
      * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -130,27 +138,30 @@ public interface IscsiPathsClient {
      * @return an iSCSI path resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IscsiPathInner createOrUpdate(String resourceGroupName, String privateCloudName, IscsiPathInner resource,
-        Context context);
+    IscsiPathInner createOrUpdate(String resourceGroupName, String privateCloudName, String iscsiPathName,
+        IscsiPathInner resource, Context context);
 
     /**
      * Delete a IscsiPath.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
+     * @param iscsiPathName Name of the iSCSI path resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String privateCloudName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String privateCloudName,
+        String iscsiPathName);
 
     /**
      * Delete a IscsiPath.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
+     * @param iscsiPathName Name of the iSCSI path resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -158,30 +169,33 @@ public interface IscsiPathsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String privateCloudName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String privateCloudName,
+        String iscsiPathName, Context context);
 
     /**
      * Delete a IscsiPath.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
+     * @param iscsiPathName Name of the iSCSI path resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String privateCloudName);
+    void delete(String resourceGroupName, String privateCloudName, String iscsiPathName);
 
     /**
      * Delete a IscsiPath.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
+     * @param iscsiPathName Name of the iSCSI path resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String privateCloudName, Context context);
+    void delete(String resourceGroupName, String privateCloudName, String iscsiPathName, Context context);
 }
