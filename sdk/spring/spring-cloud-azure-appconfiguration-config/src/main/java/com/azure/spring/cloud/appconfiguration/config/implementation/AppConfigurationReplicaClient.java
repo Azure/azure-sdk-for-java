@@ -14,6 +14,7 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.MatchConditions;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.util.Context;
 import com.azure.data.appconfiguration.ConfigurationClient;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
@@ -91,11 +92,14 @@ class AppConfigurationReplicaClient {
      * @param label String value of the watch key, use \0 for null.
      * @return The first returned configuration.
      */
-    ConfigurationSetting getWatchKey(String key, String label)
+    ConfigurationSetting getWatchKey(String key, String label, Boolean isRefresh)
         throws HttpResponseException {
         try {
+            Context context = new Context("refresh", isRefresh);
+            ConfigurationSetting selector = new ConfigurationSetting().setKey(key).setLabel(label);
             ConfigurationSetting watchKey = NormalizeNull
-                .normalizeNullLabel(client.getConfigurationSetting(key, label));
+                .normalizeNullLabel(
+                    client.getConfigurationSettingWithResponse(selector, null, false, context).getValue());
             this.failedAttempts = 0;
             return watchKey;
         } catch (HttpResponseException e) {
@@ -111,11 +115,12 @@ class AppConfigurationReplicaClient {
      * @param settingSelector Information on which setting to pull. i.e. number of results, key value...
      * @return List of Configuration Settings.
      */
-    List<ConfigurationSetting> listSettings(SettingSelector settingSelector)
+    List<ConfigurationSetting> listSettings(SettingSelector settingSelector, Boolean isRefresh)
         throws HttpResponseException {
         List<ConfigurationSetting> configurationSettings = new ArrayList<>();
         try {
-            PagedIterable<ConfigurationSetting> settings = client.listConfigurationSettings(settingSelector);
+            Context context = new Context("refresh", isRefresh);
+            PagedIterable<ConfigurationSetting> settings = client.listConfigurationSettings(settingSelector, context);
             settings.forEach(setting -> {
                 configurationSettings.add(NormalizeNull.normalizeNullLabel(setting));
             });
@@ -129,11 +134,12 @@ class AppConfigurationReplicaClient {
         }
     }
 
-    FeatureFlags listFeatureFlags(SettingSelector settingSelector) throws HttpResponseException {
+    FeatureFlags listFeatureFlags(SettingSelector settingSelector, Boolean isRefresh) throws HttpResponseException {
         List<ConfigurationSetting> configurationSettings = new ArrayList<>();
         List<MatchConditions> checks = new ArrayList<>();
         try {
-            client.listConfigurationSettings(settingSelector).streamByPage().forEach(pagedResponse -> {
+            Context context = new Context("refresh", isRefresh);
+            client.listConfigurationSettings(settingSelector, context).streamByPage().forEach(pagedResponse -> {
                 checks.add(
                     new MatchConditions().setIfNoneMatch(pagedResponse.getHeaders().getValue(HttpHeaderName.ETAG)));
                 for (ConfigurationSetting featureFlag : pagedResponse.getValue()) {
@@ -172,8 +178,9 @@ class AppConfigurationReplicaClient {
         }
     }
 
-    Boolean checkWatchKeys(SettingSelector settingSelector) {
-        List<PagedResponse<ConfigurationSetting>> results = client.listConfigurationSettings(settingSelector)
+    Boolean checkWatchKeys(SettingSelector settingSelector, Boolean isRefresh) {
+        Context context = new Context("refresh", isRefresh);
+        List<PagedResponse<ConfigurationSetting>> results = client.listConfigurationSettings(settingSelector, context)
             .streamByPage().filter(pagedResponse -> pagedResponse.getStatusCode() != 304).toList();
         return results.size() > 0;
     }

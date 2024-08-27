@@ -15,7 +15,6 @@ import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.spring.cloud.appconfiguration.config.implementation.autofailover.ReplicaLookUp;
 import com.azure.spring.cloud.appconfiguration.config.implementation.feature.FeatureFlagState;
 import com.azure.spring.cloud.appconfiguration.config.implementation.feature.FeatureFlags;
-import com.azure.spring.cloud.appconfiguration.config.implementation.http.policy.BaseAppConfigurationPolicy;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationStoreMonitoring;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.FeatureFlagStore;
 
@@ -32,7 +31,6 @@ public class AppConfigurationRefreshUtil {
     RefreshEventData refreshStoresCheck(AppConfigurationReplicaClientFactory clientFactory, Duration refreshInterval,
         Long defaultMinBackoff, ReplicaLookUp replicaLookUp) {
         RefreshEventData eventData = new RefreshEventData();
-        BaseAppConfigurationPolicy.setWatchRequests(true);
 
         try {
             if (refreshInterval != null && StateHolder.getNextForcedRefresh() != null
@@ -178,7 +176,7 @@ public class AppConfigurationRefreshUtil {
     private static void refreshWithoutTime(AppConfigurationReplicaClient client, List<ConfigurationSetting> watchKeys,
         RefreshEventData eventData) throws AppConfigurationStatusException {
         for (ConfigurationSetting watchKey : watchKeys) {
-            ConfigurationSetting watchedKey = client.getWatchKey(watchKey.getKey(), watchKey.getLabel());
+            ConfigurationSetting watchedKey = client.getWatchKey(watchKey.getKey(), watchKey.getLabel(), true);
 
             // If there is no result, etag will be considered empty.
             // A refresh will trigger once the selector returns a value.
@@ -200,7 +198,7 @@ public class AppConfigurationRefreshUtil {
 
             for (FeatureFlags featureFlags : state.getWatchKeys()) {
 
-                if (client.checkWatchKeys(featureFlags.getSettingSelector())) {
+                if (client.checkWatchKeys(featureFlags.getSettingSelector(), true)) {
                     String eventDataInfo = ".appconfig.featureflag/*";
 
                     // Only one refresh Event needs to be call to update all of the
@@ -222,7 +220,7 @@ public class AppConfigurationRefreshUtil {
 
         for (FeatureFlags featureFlags : watchKeys.getWatchKeys()) {
 
-            if (client.checkWatchKeys(featureFlags.getSettingSelector())) {
+            if (client.checkWatchKeys(featureFlags.getSettingSelector(), true)) {
                 String eventDataInfo = ".appconfig.featureflag/*";
 
                 // Only one refresh Event needs to be call to update all of the

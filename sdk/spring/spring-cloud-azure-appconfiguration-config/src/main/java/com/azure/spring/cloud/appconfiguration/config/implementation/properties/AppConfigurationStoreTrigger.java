@@ -14,9 +14,16 @@ import jakarta.validation.constraints.NotNull;
  */
 public final class AppConfigurationStoreTrigger {
 
+    /**
+     * Key value of the configuration setting checked when looking for changes.
+     */
     @NotNull
     private String key;
 
+    /**
+     * Label value of the configuration setting checked when looking for changes.
+     * If the label is not set, the default value is no label.
+     */
     private String label;
 
     /**
