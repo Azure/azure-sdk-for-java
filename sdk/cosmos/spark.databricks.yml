@@ -43,7 +43,7 @@ stages:
         vmImage: 'ubuntu-20.04'
 
       steps:
-      - task: Maven@3
+      - task: Maven@4
         displayName: Building spark package
         inputs:
           mavenPOMFile: pom.xml

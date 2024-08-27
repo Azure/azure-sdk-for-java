@@ -1,10 +1,10 @@
 # Release History
 
-## 2.42.0-beta.1 (Unreleased)
+## 2.43.0-beta.1 (Unreleased)
 
 ### Features Added
 
-- Add `VpnSites` and `VpnSite` support in `NetworkManager`.
+- Add `VpnSites` and `VpnSite` support in `NetworkManage
 
 ### Breaking Changes
 
