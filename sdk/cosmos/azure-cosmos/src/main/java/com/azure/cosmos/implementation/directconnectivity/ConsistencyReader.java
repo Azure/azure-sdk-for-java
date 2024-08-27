@@ -16,13 +16,10 @@ import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.ISessionContainer;
 import com.azure.cosmos.implementation.ISessionToken;
 import com.azure.cosmos.implementation.NotFoundException;
-import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RMResources;
 import com.azure.cosmos.implementation.RequestChargeTracker;
 import com.azure.cosmos.implementation.RequestTimeoutException;
-import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
-import com.azure.cosmos.implementation.ServiceUnavailableException;
 import com.azure.cosmos.implementation.SessionTokenMismatchRetryPolicy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -180,7 +177,6 @@ public class ConsistencyReader {
                                          TimeoutHelper timeout,
                                          boolean isInRetry,
                                          boolean forceRefresh) {
-
         if (!isInRetry) {
             if (timeout.isElapsed()) {
                 return Mono.error(new RequestTimeoutException());
