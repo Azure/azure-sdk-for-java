@@ -4,11 +4,7 @@
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Added `deploy` and `pushDeploy` API to `FunctionApp` class for deploying zip file to FunctionApp of Flex Consumption plan.
 
 ## 2.42.0 (2024-08-23)
 
