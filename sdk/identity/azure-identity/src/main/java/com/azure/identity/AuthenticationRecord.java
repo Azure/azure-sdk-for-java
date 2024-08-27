@@ -117,7 +117,7 @@ public final class AuthenticationRecord {
     public Mono<OutputStream> serializeAsync(OutputStream outputStream) {
         return Mono.fromCallable(() -> {
             serialize(outputStream);
-            return outputStream; // this method's signature should have been Mono<Void>, so keep returning the outputStream.
+            return outputStream;
         });
     }
 
