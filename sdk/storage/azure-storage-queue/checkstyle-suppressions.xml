@@ -21,4 +21,14 @@
   <suppress files="com.azure.storage.queue.implementation.models.QueueSignedIdentifierWrapper.java" checks="com.azure.tools.checkstyle.checks.JavadocThrowsChecks" />
   <suppress files="com.azure.storage.queue.implementation.models.SendMessageResultWrapper.java" checks="com.azure.tools.checkstyle.checks.JavadocThrowsChecks" />
   <suppress files="com.azure.storage.queue.implementation.util.ModelHelper.java" checks="com.azure.tools.checkstyle.checks.JavadocThrowsChecks" />
+
+  <suppress files="com.azure.storage.queue.implementation.MessageIdsImpl" checks="com.azure.tools.checkstyle.checks.JavadocThrowsChecks" />
+  <suppress files="com.azure.storage.queue.implementation.MessagesImpl" checks="com.azure.tools.checkstyle.checks.JavadocThrowsChecks" />
+  <suppress files="com.azure.storage.queue.implementation.QueuesImpl" checks="com.azure.tools.checkstyle.checks.JavadocThrowsChecks" />
+  <suppress files="com.azure.storage.queue.implementation.ServicesImpl" checks="com.azure.tools.checkstyle.checks.JavadocThrowsChecks" />
+
+  <suppress files="com.azure.storage.queue.implementation.MessageIdsImpl" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
+  <suppress files="com.azure.storage.queue.implementation.MessagesImpl" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
+  <suppress files="com.azure.storage.queue.implementation.QueuesImpl" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
+  <suppress files="com.azure.storage.queue.implementation.ServicesImpl" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
 </suppressions>
