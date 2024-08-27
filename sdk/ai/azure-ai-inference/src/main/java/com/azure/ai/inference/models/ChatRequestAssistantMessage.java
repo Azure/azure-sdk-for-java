@@ -40,12 +40,11 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
     /**
      * Creates an instance of ChatRequestAssistantMessage class.
      */
-    @Generated
     public ChatRequestAssistantMessage() {
     }
 
     /**
-     * Creates an instance of ChatRequestUserMessage class.
+     * Creates an instance of ChatRequestAssistantMessage class.
      *
      * @param content the content value to set.
      */
