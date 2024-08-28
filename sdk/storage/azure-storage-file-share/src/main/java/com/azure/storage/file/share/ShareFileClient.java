@@ -2073,7 +2073,7 @@ public class ShareFileClient {
         long validatedOffset = options.getOffset() == null ? 0 : options.getOffset();
         int chunkSize = (int) Math.min(validatedParallelTransferOptions.getBlockSizeLong(), Integer.MAX_VALUE);
 
-        Response<ShareFileUploadInfo> finalResponse = wrapServiceCallWithExceptionMapping(() -> {
+        Callable<Response<ShareFileUploadInfo>> operation = () -> {
             try (InputStream dataStream = options.getDataStream()) {
                 long currentOffset = validatedOffset;
                 byte[] buffer = new byte[chunkSize];
@@ -2097,8 +2097,8 @@ public class ShareFileClient {
             } catch (IOException e) {
                 throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
             }
-        });
-        return finalResponse;
+        };
+        return sendRequest(operation, timeout, ShareStorageException.class);
     }
 
     /**
@@ -2170,10 +2170,10 @@ public class ShareFileClient {
 
         BinaryData binaryData = BinaryData.fromStream(options.getDataStream());
 
-        Callable<ResponseBase<FilesUploadRangeHeaders, Void>> operation = wrapTimeoutServiceCallWithExceptionMapping(
-            () -> azureFileStorageClient.getFiles().uploadRangeWithResponse(shareName, filePath, range.toString(),
+        Callable<ResponseBase<FilesUploadRangeHeaders, Void>> operation = () ->
+            azureFileStorageClient.getFiles().uploadRangeWithResponse(shareName, filePath, range.toString(),
             ShareFileRangeWriteType.UPDATE, options.getLength(), null, null, requestConditions.getLeaseId(),
-            options.getLastWrittenMode(), binaryData, finalContext));
+            options.getLastWrittenMode(), binaryData, finalContext);
 
         return ModelHelper.uploadRangeHeadersToShareFileInfo(sendRequest(operation, timeout,
             ShareStorageException.class));
