@@ -7,25 +7,131 @@ import java.util.List;
 import java.util.Optional;
 
 import com.azure.core.models.GeoBoundingBox;
+import com.azure.core.models.GeoPosition;
 
 /**
  * Class holding optional parameters for Search.
  *
- * @param <T> The extending type.
  */
-public abstract class BaseSearchOptions<T extends BaseSearchOptions<T>> {
+
+public  class BaseSearchOptions {
     private Integer top;
-    private Integer skip;
-    private List<String> countryFilter;
-    private Integer radiusInMeters;
+    private String query;
+    private String addressLine;
+    private String countryRegion;
     private GeoBoundingBox boundingBox;
-    private String language;
-    private LocalizedMapView localizedMapView;
+    private String view;
+    private GeoPosition coordinates;
+    private String adminDistrict;
+    private String adminDistrict2;
+    private String adminDistrict3;
+    private String locality;
+    private String postalCode;
 
     /**
      * Creates a new instance of {@link BaseSearchOptions}.
      */
     public BaseSearchOptions() {
+    }
+
+    public BaseSearchOptions setTop(Integer top) {
+        this.top = top;
+        return this;
+    }
+
+    public String getQuery() {
+        return query;
+    }
+
+    public BaseSearchOptions setQuery(String query) {
+        this.query = query;
+        return this;
+    }
+
+    public String getAddressLine() {
+        return addressLine;
+    }
+
+    public BaseSearchOptions setAddressLine(String addressLine) {
+        this.addressLine = addressLine;
+        return this;
+    }
+
+    public String getView() {
+        return view;
+    }
+
+    public BaseSearchOptions setView(String view) {
+        this.view = view;
+        return this;
+    }
+
+    public BaseSearchOptions setBoundingBox(GeoBoundingBox boundingBox) {
+        this.boundingBox = boundingBox;
+        return this;
+    }
+
+    public String getCountryRegion() {
+        return countryRegion;
+    }
+
+    public BaseSearchOptions setCountryRegion(String countryRegion) {
+        this.countryRegion = countryRegion;
+        return this;
+    }
+
+    public String getAdminDistrict2() {
+        return adminDistrict2;
+    }
+
+    public BaseSearchOptions setAdminDistrict2(String adminDistrict2) {
+        this.adminDistrict2 = adminDistrict2;
+        return this;
+    }
+
+    public String getLocality() {
+        return locality;
+    }
+
+    public BaseSearchOptions setLocality(String locality) {
+        this.locality = locality;
+        return this;
+    }
+
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    public BaseSearchOptions setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
+        return this;
+    }
+
+    public String getAdminDistrict3() {
+        return adminDistrict3;
+    }
+
+    public BaseSearchOptions setAdminDistrict3(String adminDistrict3) {
+        this.adminDistrict3 = adminDistrict3;
+        return this;
+    }
+
+    public String getAdminDistrict() {
+        return adminDistrict;
+    }
+
+    public BaseSearchOptions setAdminDistrict(String adminDistrict) {
+        this.adminDistrict = adminDistrict;
+        return this;
+    }
+
+    public GeoPosition getCoordinates() {
+        return coordinates;
+    }
+
+    public BaseSearchOptions setCoordinates(GeoPosition coordinates) {
+        this.coordinates = coordinates;
+        return this;
     }
 
     /**
@@ -36,128 +142,8 @@ public abstract class BaseSearchOptions<T extends BaseSearchOptions<T>> {
         return top;
     }
 
-    /**
-     * Returns the skip value.
-     * @return the skip value.
-     */
-    public Integer getSkip() {
-        return skip;
-    }
-
-    /**
-     * Returns the country filter.
-     * @return the country filter.
-     */
-    public List<String> getCountryFilter() {
-        return countryFilter;
-    }
-
-    /**
-     * Returns the radius in meters.
-     * @return the radius in meters.
-     */
-    public Integer getRadiusInMeters() {
-        return radiusInMeters;
-    }
-
-    /**
-     * Returns the bounding box.
-     * @return the bounding box.
-     */
     public Optional<GeoBoundingBox> getBoundingBox() {
         return Optional.ofNullable(boundingBox);
     }
 
-    /**
-     * Returns the language.
-     * @return the language.
-     */
-    public String getLanguage() {
-        return language;
-    }
-
-    /**
-     * Returns the localized map view.
-     * @return the localized map view.
-     */
-    public LocalizedMapView getLocalizedMapView() {
-        return localizedMapView;
-    }
-
-    /**
-     * Sets the top value.
-     * @param top the top value.
-     * @return a reference to this {@code T} class.
-     */
-    @SuppressWarnings("unchecked")
-    public T setTop(Integer top) {
-        this.top = top;
-        return (T) this;
-    }
-
-    /**
-     * Sets the skip value.
-     * @param skip the skip value.
-     * @return a reference to this {@code T} class.
-     */
-    @SuppressWarnings("unchecked")
-    public T setSkip(Integer skip) {
-        this.skip = skip;
-        return (T) this;
-    }
-
-    /**
-     * Sets the country filter.
-     * @param countryFilter the country filter.
-     * @return a reference to this {@code T} class.
-     */
-    @SuppressWarnings("unchecked")
-    public T setCountryFilter(List<String> countryFilter) {
-        this.countryFilter = countryFilter;
-        return (T) this;
-    }
-
-    /**
-     * Sets the radius in meters.
-     * @param radiusInMeters the radius in meters.
-     * @return a reference to this {@code T} class.
-     */
-    @SuppressWarnings("unchecked")
-    public T setRadiusInMeters(Integer radiusInMeters) {
-        this.radiusInMeters = radiusInMeters;
-        return (T) this;
-    }
-
-    /**
-     * Sets the bounding box.
-     * @param box the bounding box.
-     * @return a reference to this {@code T} class.
-     */
-    @SuppressWarnings("unchecked")
-    public T setGeoBoundingBox(GeoBoundingBox box) {
-        this.boundingBox = box;
-        return (T) this;
-    }
-
-    /**
-     * Sets the language.
-     * @param language the language.
-     * @return a reference to this {@code T} class.
-     */
-    @SuppressWarnings("unchecked")
-    public T setLanguage(String language) {
-        this.language = language;
-        return (T) this;
-    }
-
-    /**
-     * Sets the localized map view.
-     * @param localizedMapView the localized map view.
-     * @return a reference to this {@code T} class.
-     */
-    @SuppressWarnings("unchecked")
-    public T setLocalizedMapView(LocalizedMapView localizedMapView) {
-        this.localizedMapView = localizedMapView;
-        return (T) this;
-    }
 }

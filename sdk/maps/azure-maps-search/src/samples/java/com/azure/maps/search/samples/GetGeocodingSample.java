@@ -9,17 +9,16 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.models.GeoPosition;
-import com.azure.core.util.Context;
 import com.azure.maps.search.MapsSearchAsyncClient;
 import com.azure.maps.search.MapsSearchClient;
 import com.azure.maps.search.MapsSearchClientBuilder;
-import com.azure.maps.search.implementation.models.Boundary;
-import com.azure.maps.search.implementation.models.BoundaryResultTypeEnum;
-import com.azure.maps.search.implementation.models.ResolutionEnum;
+import com.azure.maps.search.implementation.models.GeocodingResponse;
+import com.azure.maps.search.implementation.models.SearchesGetGeocodingHeaders;
+import com.azure.maps.search.models.BaseSearchOptions;
 
-public class GetPolygonSample {
-
+public class GetGeocodingSample {
     public static void main(String[] args) throws IOException {
         MapsSearchClientBuilder builder = new MapsSearchClientBuilder();
 
@@ -36,17 +35,25 @@ public class GetPolygonSample {
         builder.httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
         MapsSearchClient client = builder.buildClient();
 
-        // Get polygon
-        // BEGIN: sync.get_polygon
-        System.out.println("Get Polygons:");
-        GeoPosition coordinates = new GeoPosition(-122.204141, 47.61256);
+        // Get Geocoding -
+        // BEGIN: sync.get_geocoding
+        System.out.println("Get Geocoding:");
 
-        Boundary result = client.getPolygons(coordinates, null, BoundaryResultTypeEnum.LOCALITY, ResolutionEnum.SMALL);
+        //simple
+        client.getGeocoding(new BaseSearchOptions().setQuery("1 Microsoft Way, Redmond, WA 98052"));
 
-        //with response
-        Response<Boundary> response = client.getPolygonsWithResponse(coordinates, null, BoundaryResultTypeEnum.LOCALITY, ResolutionEnum.SMALL, Context.NONE);
+        //with multiple options
+        GeocodingResponse result = client.getGeocoding(
+            new BaseSearchOptions().setCoordinates(new GeoPosition(-74.011454, 40.706270)).setTop(5));
 
-        // END: com.azure.maps.search.sync.get_polygon
+        // with response
+        ResponseBase<SearchesGetGeocodingHeaders, GeocodingResponse> response = client.getGeocodingWithResponse(
+            new BaseSearchOptions().setCoordinates(new GeoPosition(-74.011454, 40.706270)).setTop(5), null);
+
+        // with response no custom header
+        Response<GeocodingResponse> responseNoHeader = client.getGeocodingNoCustomHeaderWithResponse(
+            new BaseSearchOptions().setCoordinates(new GeoPosition(-74.011454, 40.706270)).setTop(5), null);
+        // END: sync.get_geocoding
 
         MapsSearchClientBuilder asyncClientbuilder = new MapsSearchClientBuilder();
 
@@ -63,14 +70,25 @@ public class GetPolygonSample {
         asyncClientbuilder.httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
         MapsSearchAsyncClient asyncClient = asyncClientbuilder.buildAsyncClient();
 
-        // Get polygon -
-        // BEGIN: async.get_polygon
-        Boundary asyncResult = asyncClient.getPolygons(coordinates, null, BoundaryResultTypeEnum.LOCALITY, ResolutionEnum.SMALL).block();
+        // Get Geocoding:
+        // BEGIN: async.get_geocoding
+        System.out.println("Get Geocoding:");
 
-        //with response
-        Response<Boundary> asyncResponse = asyncClient.getPolygonsWithResponse(coordinates, null, BoundaryResultTypeEnum.LOCALITY, ResolutionEnum.SMALL, Context.NONE).block();
+        // simple
+        asyncClient.getGeocoding(new BaseSearchOptions().setQuery("1 Microsoft Way, Redmond, WA 98052"));
 
-        // END: async.get_polygon
+        // with multiple options
+        GeocodingResponse asyncResult = asyncClient.getGeocoding(
+            new BaseSearchOptions().setCoordinates(new GeoPosition(-74.011454, 40.706270)).setTop(5)).block();
+
+        // with response
+        ResponseBase<SearchesGetGeocodingHeaders, GeocodingResponse> asyncResponse = asyncClient.getGeocodingWithResponse(
+            new BaseSearchOptions().setCoordinates(new GeoPosition(-74.011454, 40.706270)).setTop(5)).block();
+
+        // with response no custom header
+        Response<GeocodingResponse> asyncResponseNoCustomHeader = asyncClient.getGeocodingNoCustomHeaderWithResponse(
+            new BaseSearchOptions().setCoordinates(new GeoPosition(-74.011454, 40.706270)).setTop(5)).block();
+        // END: async.get_geocoding
     }
-}
 
+}

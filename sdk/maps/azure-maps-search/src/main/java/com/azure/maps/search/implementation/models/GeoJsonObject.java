@@ -4,22 +4,28 @@
 
 package com.azure.maps.search.implementation.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * A valid `GeoJSON` object. Please refer to [RFC 7946](https://tools.ietf.org/html/rfc7946#section-3) for details.
  */
-@Immutable
+@Fluent
 public class GeoJsonObject implements JsonSerializable<GeoJsonObject> {
     /*
      * Specifies the `GeoJSON` type. Must be one of the nine valid GeoJSON object types - Point, MultiPoint, LineString, MultiLineString, Polygon, MultiPolygon, GeometryCollection, Feature and FeatureCollection.
      */
     private GeoJsonObjectType type;
+
+    /*
+     * Bounding box. Projection used - EPSG:3857. Please refer to [RFC 7946](https://datatracker.ietf.org/doc/html/rfc7946#section-5) for details.
+     */
+    private List<Double> bbox;
 
     /**
      * Creates an instance of GeoJsonObject class.
@@ -40,12 +46,35 @@ public class GeoJsonObject implements JsonSerializable<GeoJsonObject> {
     }
 
     /**
+     * Get the bbox property: Bounding box. Projection used - EPSG:3857. Please refer to [RFC
+     * 7946](https://datatracker.ietf.org/doc/html/rfc7946#section-5) for details.
+     * 
+     * @return the bbox value.
+     */
+    public List<Double> getBbox() {
+        return this.bbox;
+    }
+
+    /**
+     * Set the bbox property: Bounding box. Projection used - EPSG:3857. Please refer to [RFC
+     * 7946](https://datatracker.ietf.org/doc/html/rfc7946#section-5) for details.
+     * 
+     * @param bbox the bbox value to set.
+     * @return the GeoJsonObject object itself.
+     */
+    public GeoJsonObject setBbox(List<Double> bbox) {
+        this.bbox = bbox;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeArrayField("bbox", this.bbox, (writer, element) -> writer.writeDouble(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -75,12 +104,12 @@ public class GeoJsonObject implements JsonSerializable<GeoJsonObject> {
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("GeoJsonGeometry".equals(discriminatorValue)) {
                     return GeoJsonGeometry.fromJsonKnownDiscriminator(readerToUse.reset());
-                } else if ("LineString".equals(discriminatorValue)) {
-                    return GeoJsonLineString.fromJson(readerToUse.reset());
                 } else if ("Point".equals(discriminatorValue)) {
                     return GeoJsonPoint.fromJson(readerToUse.reset());
                 } else if ("MultiPoint".equals(discriminatorValue)) {
                     return GeoJsonMultiPoint.fromJson(readerToUse.reset());
+                } else if ("LineString".equals(discriminatorValue)) {
+                    return GeoJsonLineString.fromJson(readerToUse.reset());
                 } else if ("MultiLineString".equals(discriminatorValue)) {
                     return GeoJsonMultiLineString.fromJson(readerToUse.reset());
                 } else if ("Polygon".equals(discriminatorValue)) {
@@ -90,7 +119,9 @@ public class GeoJsonObject implements JsonSerializable<GeoJsonObject> {
                 } else if ("GeometryCollection".equals(discriminatorValue)) {
                     return GeoJsonGeometryCollection.fromJson(readerToUse.reset());
                 } else if ("Feature".equals(discriminatorValue)) {
-                    return GeoJsonFeature.fromJson(readerToUse.reset());
+                    return GeoJsonFeature.fromJsonKnownDiscriminator(readerToUse.reset());
+                } else if ("Boundary".equals(discriminatorValue)) {
+                    return Boundary.fromJson(readerToUse.reset());
                 } else if ("FeatureCollection".equals(discriminatorValue)) {
                     return GeoJsonFeatureCollection.fromJson(readerToUse.reset());
                 } else {
@@ -109,6 +140,9 @@ public class GeoJsonObject implements JsonSerializable<GeoJsonObject> {
 
                 if ("type".equals(fieldName)) {
                     deserializedGeoJsonObject.type = GeoJsonObjectType.fromString(reader.getString());
+                } else if ("bbox".equals(fieldName)) {
+                    List<Double> bbox = reader.readArray(reader1 -> reader1.getDouble());
+                    deserializedGeoJsonObject.bbox = bbox;
                 } else {
                     reader.skipChildren();
                 }

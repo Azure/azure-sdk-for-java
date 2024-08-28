@@ -364,7 +364,7 @@ public final class MapsSearchClientBuilder implements AzureKeyCredentialTrait<Ma
      * @return an instance of SearchAsyncClient.
      */
     public MapsSearchAsyncClient buildAsyncClient() {
-        return new MapsSearchAsyncClient(buildInnerClient().getSearches(), this.pipeline);
+        return new MapsSearchAsyncClient(buildInnerClient().getSearches());
     }
 
     /**

@@ -9,13 +9,14 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * A valid `GeoJSON Feature` object type. Please refer to [RFC 7946](https://tools.ietf.org/html/rfc7946#section-3.2)
  * for details.
  */
 @Fluent
-public final class GeoJsonFeature extends GeoJsonObject {
+public class GeoJsonFeature extends GeoJsonObject {
     /*
      * Specifies the `GeoJSON` type. Must be one of the nine valid GeoJSON object types - Point, MultiPoint, LineString, MultiLineString, Polygon, MultiPolygon, GeometryCollection, Feature and FeatureCollection.
      */
@@ -151,8 +152,18 @@ public final class GeoJsonFeature extends GeoJsonObject {
      * {@inheritDoc}
      */
     @Override
+    public GeoJsonFeature setBbox(List<Double> bbox) {
+        super.setBbox(bbox);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("bbox", getBbox(), (writer, element) -> writer.writeDouble(element));
         jsonWriter.writeJsonField("geometry", this.geometry);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeUntypedField("properties", this.properties);
@@ -172,12 +183,40 @@ public final class GeoJsonFeature extends GeoJsonObject {
      */
     public static GeoJsonFeature fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("type".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("Boundary".equals(discriminatorValue)) {
+                    return Boundary.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static GeoJsonFeature fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
             GeoJsonFeature deserializedGeoJsonFeature = new GeoJsonFeature();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("geometry".equals(fieldName)) {
+                if ("bbox".equals(fieldName)) {
+                    List<Double> bbox = reader.readArray(reader1 -> reader1.getDouble());
+                    deserializedGeoJsonFeature.setBbox(bbox);
+                } else if ("geometry".equals(fieldName)) {
                     deserializedGeoJsonFeature.geometry = GeoJsonGeometry.fromJson(reader);
                 } else if ("type".equals(fieldName)) {
                     deserializedGeoJsonFeature.type = GeoJsonObjectType.fromString(reader.getString());

@@ -4,6 +4,7 @@
 package com.azure.maps.search.samples;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -14,12 +15,10 @@ import com.azure.core.util.Context;
 import com.azure.maps.search.MapsSearchAsyncClient;
 import com.azure.maps.search.MapsSearchClient;
 import com.azure.maps.search.MapsSearchClientBuilder;
-import com.azure.maps.search.implementation.models.Boundary;
-import com.azure.maps.search.implementation.models.BoundaryResultTypeEnum;
-import com.azure.maps.search.implementation.models.ResolutionEnum;
+import com.azure.maps.search.implementation.models.GeocodingResponse;
+import com.azure.maps.search.implementation.models.ReverseGeocodingResultTypeEnum;
 
-public class GetPolygonSample {
-
+public class GetReverseGeocodingSample {
     public static void main(String[] args) throws IOException {
         MapsSearchClientBuilder builder = new MapsSearchClientBuilder();
 
@@ -36,17 +35,16 @@ public class GetPolygonSample {
         builder.httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
         MapsSearchClient client = builder.buildClient();
 
-        // Get polygon
-        // BEGIN: sync.get_polygon
-        System.out.println("Get Polygons:");
-        GeoPosition coordinates = new GeoPosition(-122.204141, 47.61256);
+        // Get reverse geocoding
+        // BEGIN: sync.get_reverse_geocoding
+        System.out.println("Get Reverse Geocoding:");
 
-        Boundary result = client.getPolygons(coordinates, null, BoundaryResultTypeEnum.LOCALITY, ResolutionEnum.SMALL);
+        GeoPosition coordinates = new GeoPosition(-122.34255, 47.0);
+        GeocodingResponse result = client.getReverseGeocoding(coordinates, Arrays.asList(ReverseGeocodingResultTypeEnum.ADDRESS), null);
 
         //with response
-        Response<Boundary> response = client.getPolygonsWithResponse(coordinates, null, BoundaryResultTypeEnum.LOCALITY, ResolutionEnum.SMALL, Context.NONE);
-
-        // END: com.azure.maps.search.sync.get_polygon
+        Response<GeocodingResponse> response = client.getReverseGeocodingWithResponse(coordinates, Arrays.asList(ReverseGeocodingResultTypeEnum.ADDRESS), null, Context.NONE);
+        // END: sync.get_reverse_geocoding
 
         MapsSearchClientBuilder asyncClientbuilder = new MapsSearchClientBuilder();
 
@@ -63,14 +61,12 @@ public class GetPolygonSample {
         asyncClientbuilder.httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
         MapsSearchAsyncClient asyncClient = asyncClientbuilder.buildAsyncClient();
 
-        // Get polygon -
-        // BEGIN: async.get_polygon
-        Boundary asyncResult = asyncClient.getPolygons(coordinates, null, BoundaryResultTypeEnum.LOCALITY, ResolutionEnum.SMALL).block();
+        // Get reverse geocoding
+        // BEGIN: async.get_reverse_geocoding
+        GeocodingResponse asyncResult = asyncClient.getReverseGeocoding(coordinates, Arrays.asList(ReverseGeocodingResultTypeEnum.ADDRESS), null).block();
 
         //with response
-        Response<Boundary> asyncResponse = asyncClient.getPolygonsWithResponse(coordinates, null, BoundaryResultTypeEnum.LOCALITY, ResolutionEnum.SMALL, Context.NONE).block();
-
-        // END: async.get_polygon
+        Response<GeocodingResponse> asyncResponse = asyncClient.getReverseGeocodingWithResponse(coordinates, Arrays.asList(ReverseGeocodingResultTypeEnum.ADDRESS), null).block();
+        // END: async.get_reverse_geocoding
     }
 }
-

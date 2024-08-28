@@ -58,12 +58,9 @@ directive:
   - rename-model:
       from: ReverseSearchAddressBatchItem
       to: ReverseSearchAddressBatchItemPrivate
-  - rename-model:
-      from: BoundingBox
-      to: BoundingBoxPrivate
 
 title: SearchClient
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/maps/data-plane/Search/preview/1.0/search.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/maps/data-plane/Search/stable/2023-06-01/search.json
 namespace: com.azure.maps.search
 java: true
 use: '@autorest/java@4.1.29'

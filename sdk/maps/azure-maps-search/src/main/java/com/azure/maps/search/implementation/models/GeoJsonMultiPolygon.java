@@ -71,8 +71,18 @@ public final class GeoJsonMultiPolygon extends GeoJsonGeometry {
      * {@inheritDoc}
      */
     @Override
+    public GeoJsonMultiPolygon setBbox(List<Double> bbox) {
+        super.setBbox(bbox);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("bbox", getBbox(), (writer, element) -> writer.writeDouble(element));
         jsonWriter.writeArrayField("coordinates", this.coordinates,
             (writer, element) -> writer.writeArray(element,
                 (writer1, element1) -> writer1.writeArray(element1, (writer2, element2) -> writer2.writeArray(element2,
@@ -97,7 +107,10 @@ public final class GeoJsonMultiPolygon extends GeoJsonGeometry {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("coordinates".equals(fieldName)) {
+                if ("bbox".equals(fieldName)) {
+                    List<Double> bbox = reader.readArray(reader1 -> reader1.getDouble());
+                    deserializedGeoJsonMultiPolygon.setBbox(bbox);
+                } else if ("coordinates".equals(fieldName)) {
                     List<List<List<List<Double>>>> coordinates = reader.readArray(reader1 -> reader1.readArray(
                         reader2 -> reader2.readArray(reader3 -> reader3.readArray(reader4 -> reader4.getDouble()))));
                     deserializedGeoJsonMultiPolygon.coordinates = coordinates;

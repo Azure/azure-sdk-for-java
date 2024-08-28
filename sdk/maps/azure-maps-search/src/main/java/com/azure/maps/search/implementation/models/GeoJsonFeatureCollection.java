@@ -69,8 +69,18 @@ public final class GeoJsonFeatureCollection extends GeoJsonObject {
      * {@inheritDoc}
      */
     @Override
+    public GeoJsonFeatureCollection setBbox(List<Double> bbox) {
+        super.setBbox(bbox);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("bbox", getBbox(), (writer, element) -> writer.writeDouble(element));
         jsonWriter.writeArrayField("features", this.features, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
@@ -92,7 +102,10 @@ public final class GeoJsonFeatureCollection extends GeoJsonObject {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("features".equals(fieldName)) {
+                if ("bbox".equals(fieldName)) {
+                    List<Double> bbox = reader.readArray(reader1 -> reader1.getDouble());
+                    deserializedGeoJsonFeatureCollection.setBbox(bbox);
+                } else if ("features".equals(fieldName)) {
                     List<GeoJsonFeature> features = reader.readArray(reader1 -> GeoJsonFeature.fromJson(reader1));
                     deserializedGeoJsonFeatureCollection.features = features;
                 } else if ("type".equals(fieldName)) {

@@ -69,8 +69,18 @@ public final class GeoJsonMultiPoint extends GeoJsonGeometry {
      * {@inheritDoc}
      */
     @Override
+    public GeoJsonMultiPoint setBbox(List<Double> bbox) {
+        super.setBbox(bbox);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("bbox", getBbox(), (writer, element) -> writer.writeDouble(element));
         jsonWriter.writeArrayField("coordinates", this.coordinates,
             (writer, element) -> writer.writeArray(element, (writer1, element1) -> writer1.writeDouble(element1)));
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
@@ -93,7 +103,10 @@ public final class GeoJsonMultiPoint extends GeoJsonGeometry {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("coordinates".equals(fieldName)) {
+                if ("bbox".equals(fieldName)) {
+                    List<Double> bbox = reader.readArray(reader1 -> reader1.getDouble());
+                    deserializedGeoJsonMultiPoint.setBbox(bbox);
+                } else if ("coordinates".equals(fieldName)) {
                     List<List<Double>> coordinates
                         = reader.readArray(reader1 -> reader1.readArray(reader2 -> reader2.getDouble()));
                     deserializedGeoJsonMultiPoint.coordinates = coordinates;

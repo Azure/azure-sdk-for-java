@@ -9,52 +9,17 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.models.GeoBoundingBox;
 import com.azure.core.models.GeoPosition;
 import com.azure.core.util.Context;
-import com.azure.core.util.FluxUtil;
-import com.azure.core.util.polling.DefaultPollingStrategy;
-import com.azure.core.util.polling.PollerFlux;
-import com.azure.core.util.serializer.TypeReference;
 import com.azure.maps.search.implementation.SearchesImpl;
-import com.azure.maps.search.implementation.helpers.BatchResponseSerializer;
-import com.azure.maps.search.implementation.helpers.Utility;
-import com.azure.maps.search.implementation.models.BatchRequest;
-import com.azure.maps.search.implementation.models.BatchRequestItem;
-import com.azure.maps.search.implementation.models.ErrorResponseException;
-import com.azure.maps.search.implementation.models.GeoJsonLineString;
-import com.azure.maps.search.implementation.models.GeoJsonObject;
-import com.azure.maps.search.implementation.models.JsonFormat;
-import com.azure.maps.search.implementation.models.ResponseFormat;
-import com.azure.maps.search.implementation.models.SearchAlongRouteRequest;
-import com.azure.maps.search.implementation.models.SearchInsideGeometryRequest;
-import com.azure.maps.search.models.BatchReverseSearchResult;
-import com.azure.maps.search.models.BatchSearchResult;
-import com.azure.maps.search.models.FuzzySearchOptions;
-import com.azure.maps.search.models.MapsPolygon;
-import com.azure.maps.search.models.PointOfInterestCategoryTreeResult;
-import com.azure.maps.search.models.ReverseSearchAddressOptions;
-import com.azure.maps.search.models.ReverseSearchAddressResult;
-import com.azure.maps.search.models.ReverseSearchCrossStreetAddressOptions;
-import com.azure.maps.search.models.ReverseSearchCrossStreetAddressResult;
-import com.azure.maps.search.models.SearchAddressOptions;
-import com.azure.maps.search.models.SearchAddressResult;
-import com.azure.maps.search.models.SearchAlongRouteOptions;
-import com.azure.maps.search.models.SearchInsideGeometryOptions;
-import com.azure.maps.search.models.SearchNearbyPointsOfInterestOptions;
-import com.azure.maps.search.models.SearchPointOfInterestCategoryOptions;
-import com.azure.maps.search.models.SearchPointOfInterestOptions;
-import com.azure.maps.search.models.SearchStructuredAddressOptions;
-import com.azure.maps.search.models.StructuredAddress;
+import com.azure.maps.search.implementation.models.*;
+import com.azure.maps.search.models.*;
 import reactor.core.publisher.Mono;
 
-import java.time.Duration;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
+import java.util.*;
 
 import static com.azure.core.util.FluxUtil.withContext;
 
@@ -95,2234 +60,923 @@ import static com.azure.core.util.FluxUtil.withContext;
 
 @ServiceClient(builder = MapsSearchClientBuilder.class, isAsync = true)
 public final class MapsSearchAsyncClient {
-    // constants
-    private static final int BATCH_SIZE = 100;
-    private static final int POLLING_FREQUENCY = 1;
-    private static final String POLLING_BATCH_HEADER_KEY = "BatchId";
-
-    // reference static classes
-    static class BatchSearchTypeReference extends TypeReference<BatchSearchResult> { };
-    static class ReverseBatchSearchTypeReference extends TypeReference<BatchReverseSearchResult> { };
 
     // instance fields
     private final SearchesImpl serviceClient;
-    private final HttpPipeline httpPipeline;
-    private final BatchResponseSerializer serializer;
-    private final DefaultPollingStrategy<BatchSearchResult, BatchSearchResult> forwardStrategy;
-    private final DefaultPollingStrategy<BatchReverseSearchResult, BatchReverseSearchResult> reverseStrategy;
 
     /**
      * Initializes an instance of Searches client.
      *
      * @param serviceClient the service client implementation.
      */
-    MapsSearchAsyncClient(SearchesImpl serviceClient, HttpPipeline pipeline) {
+    MapsSearchAsyncClient(SearchesImpl serviceClient) {
         this.serviceClient = serviceClient;
-        this.httpPipeline = pipeline;
-        this.serializer = new BatchResponseSerializer();
-        this.forwardStrategy = new DefaultPollingStrategy<>(httpPipeline, serializer);
-        this.reverseStrategy = new DefaultPollingStrategy<>(httpPipeline, serializer);
     }
 
     /**
-     * List Polygons
-     * <!-- src_embed com.azure.maps.search.async.get_polygon -->
-     * <pre>
-     * Response&lt;SearchAddressResult&gt; fuzzySearchResponse = asyncClient.fuzzySearchWithResponse&#40;
-     *     new FuzzySearchOptions&#40;&quot;Monaco&quot;&#41;.setEntityType&#40;GeographicEntityType.COUNTRY&#41;
-     *         .setTop&#40;5&#41;&#41;.block&#40;&#41;;
-     * String fuzzySearchId = fuzzySearchResponse.getValue&#40;&#41;.getResults&#40;&#41;.get&#40;0&#41;.getDataSource&#40;&#41;.getGeometry&#40;&#41;;
-     * List&lt;String&gt; getPolygonIds = results.getResults&#40;&#41;.stream&#40;&#41;
-     *     .filter&#40;item -&gt; item.getDataSource&#40;&#41; != null &amp;&amp; item.getDataSource&#40;&#41;.getGeometry&#40;&#41; != null&#41;
-     *     .map&#40;item -&gt; item.getDataSource&#40;&#41;.getGeometry&#40;&#41;&#41;
-     *     .collect&#40;Collectors.toList&#40;&#41;&#41;;
-     * getPolygonIds.add&#40;fuzzySearchId&#41;;
+     * Use to get polygon data of a geographical area shape such as a city or a country region.
      *
-     * if &#40;ids != null &amp;&amp; !getPolygonIds.isEmpty&#40;&#41;&#41; &#123;
-     *     System.out.println&#40;&quot;Get Polygon: &quot; + ids&#41;;
-     * &#125;
-     * </pre>
-     * <!-- end com.azure.maps.search.async.get_polygon -->
      *
-     * @param geometryIds Comma separated list of geometry UUIDs, previously retrieved from an Online Search request.
+     * The `Get Polygon` API is an HTTP `GET` request that supplies polygon data of a geographical area outline such as
+     * a city or a country region.
+     *
+     * @param coordinates A point on the earth specified as a longitude and latitude. Example: &amp;coordinates=lon,lat.
+     * @param view A string that represents an [ISO 3166-1 Alpha-2 region/country
+     * code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2). This will alter Geopolitical disputed borders and labels
+     * to align with the specified user region. By default, the View parameter is set to “Auto” even if you haven’t
+     * defined it in the request.
+     *
+     * Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the available
+     * Views.
+     * @param resultType The geopolitical concept to return a boundary for. If not specified, the default is
+     * `countryRegion` result type.
+     * @param resolution Resolution determines the amount of points to send back. If not specified, the default is
+     * medium resolution.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Polygon call.
+     * @return `GeoJSON GeocodingFeature` object that describe the boundaries of a geographical area.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<MapsPolygon>> getPolygons(List<String> geometryIds) {
-        return getPolygonsWithResponse(geometryIds).flatMap(FluxUtil::toMono);
+    public Mono<Boundary> getPolygons(GeoPosition coordinates, String view, BoundaryResultTypeEnum resultType, ResolutionEnum resolution) {
+        List<Double> coordinatesList = null;
+        if (coordinates != null) {
+            coordinatesList = new ArrayList<>();
+            coordinatesList.add(coordinates.getLongitude());
+            coordinatesList.add(coordinates.getLatitude());
+        }
+        return serviceClient.getPolygonAsync(coordinatesList, view, resultType, resolution);
     }
 
     /**
-     * List Polygons
-     * <!-- src_embed com.azure.maps.search.async.get_polygon -->
-     * <pre>
-     * Response&lt;SearchAddressResult&gt; fuzzySearchResponse = asyncClient.fuzzySearchWithResponse&#40;
-     *     new FuzzySearchOptions&#40;&quot;Monaco&quot;&#41;.setEntityType&#40;GeographicEntityType.COUNTRY&#41;
-     *         .setTop&#40;5&#41;&#41;.block&#40;&#41;;
-     * String fuzzySearchId = fuzzySearchResponse.getValue&#40;&#41;.getResults&#40;&#41;.get&#40;0&#41;.getDataSource&#40;&#41;.getGeometry&#40;&#41;;
-     * List&lt;String&gt; getPolygonIds = results.getResults&#40;&#41;.stream&#40;&#41;
-     *     .filter&#40;item -&gt; item.getDataSource&#40;&#41; != null &amp;&amp; item.getDataSource&#40;&#41;.getGeometry&#40;&#41; != null&#41;
-     *     .map&#40;item -&gt; item.getDataSource&#40;&#41;.getGeometry&#40;&#41;&#41;
-     *     .collect&#40;Collectors.toList&#40;&#41;&#41;;
-     * getPolygonIds.add&#40;fuzzySearchId&#41;;
+     * Use to get polygon data of a geographical area shape such as a city or a country region.
      *
-     * if &#40;ids != null &amp;&amp; !getPolygonIds.isEmpty&#40;&#41;&#41; &#123;
-     *     System.out.println&#40;&quot;Get Polygon: &quot; + ids&#41;;
-     * &#125;
-     * </pre>
-     * <!-- end com.azure.maps.search.async.get_polygon -->
      *
-     * @param geometryIds Comma separated list of geometry UUIDs, previously retrieved from an Online Search request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Polygon call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<MapsPolygon>>> getPolygonsWithResponse(List<String> geometryIds) {
-        return withContext(context -> getPolygonsWithResponse(geometryIds, context));
-    }
-
-    /**
-     * List Polygons
-     * <!-- src_embed com.azure.maps.search.async.get_polygon -->
-     * <pre>
-     * Response&lt;SearchAddressResult&gt; fuzzySearchResponse = asyncClient.fuzzySearchWithResponse&#40;
-     *     new FuzzySearchOptions&#40;&quot;Monaco&quot;&#41;.setEntityType&#40;GeographicEntityType.COUNTRY&#41;
-     *         .setTop&#40;5&#41;&#41;.block&#40;&#41;;
-     * String fuzzySearchId = fuzzySearchResponse.getValue&#40;&#41;.getResults&#40;&#41;.get&#40;0&#41;.getDataSource&#40;&#41;.getGeometry&#40;&#41;;
-     * List&lt;String&gt; getPolygonIds = results.getResults&#40;&#41;.stream&#40;&#41;
-     *     .filter&#40;item -&gt; item.getDataSource&#40;&#41; != null &amp;&amp; item.getDataSource&#40;&#41;.getGeometry&#40;&#41; != null&#41;
-     *     .map&#40;item -&gt; item.getDataSource&#40;&#41;.getGeometry&#40;&#41;&#41;
-     *     .collect&#40;Collectors.toList&#40;&#41;&#41;;
-     * getPolygonIds.add&#40;fuzzySearchId&#41;;
      *
-     * if &#40;ids != null &amp;&amp; !getPolygonIds.isEmpty&#40;&#41;&#41; &#123;
-     *     System.out.println&#40;&quot;Get Polygon: &quot; + ids&#41;;
-     * &#125;
-     * </pre>
-     * <!-- end com.azure.maps.search.async.get_polygon -->
+     * The `Get Polygon` API is an HTTP `GET` request that supplies polygon data of a geographical area outline such as
+     * a city or a country region.
      *
-     * @param geometryIds Comma separated list of geometry UUIDs, previously retrieved from an Online Search request.
+     * @param coordinates A point on the earth specified as a longitude and latitude. Example: &amp;coordinates=lon,lat.
+     * @param view A string that represents an [ISO 3166-1 Alpha-2 region/country
+     * code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2). This will alter Geopolitical disputed borders and labels
+     * to align with the specified user region. By default, the View parameter is set to “Auto” even if you haven’t
+     * defined it in the request.
+     *
+     * Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the available
+     * Views.
+     * @param resultType The geopolitical concept to return a boundary for. If not specified, the default is
+     * `countryRegion` result type.
+     * @param resolution Resolution determines the amount of points to send back. If not specified, the default is
+     * medium resolution.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Polygon call.
+     * @return `GeoJSON GeocodingFeature` object that describe the boundaries of a geographical area along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
-    Mono<Response<List<MapsPolygon>>> getPolygonsWithResponse(List<String> geometryIds, Context context) {
-        return this.serviceClient.listPolygonsWithResponseAsync(JsonFormat.JSON, geometryIds, context)
+    public Mono<Response<Boundary>> getPolygonsWithResponse(GeoPosition coordinates, String view, BoundaryResultTypeEnum resultType, ResolutionEnum resolution, Context context) {
+        List<Double> coordinatesList = null;
+        if (coordinates != null) {
+            coordinatesList = new ArrayList<>();
+            coordinatesList.add(coordinates.getLongitude());
+            coordinatesList.add(coordinates.getLatitude());
+        }
+        return this.serviceClient.getPolygonWithResponseAsync(coordinatesList, view, resultType, resolution, context)
             .onErrorMap(MapsSearchAsyncClient::mapThrowable)
-            .map(response -> new SimpleResponse<>(response, response.getValue().getPolygons()));
+            .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 
     /**
-     * Fuzzy Search
-     * <!-- src_embed com.azure.maps.search.async.fuzzy_search -->
-     * <pre>
-     * System.out.println&#40;&quot;Search Fuzzy:&quot;&#41;;
+     * Use to get longitude and latitude coordinates of a street address or name of a place.
      *
-     * &#47;&#47; simple
-     * asyncClient.fuzzySearch&#40;new FuzzySearchOptions&#40;&quot;starbucks&quot;&#41;&#41;;
      *
-     * &#47;&#47; with options
-     * SearchAddressResult fuzzySearchResults = asyncClient.fuzzySearch&#40;
-     *     new FuzzySearchOptions&#40;&quot;1 Microsoft Way&quot;, new GeoPosition&#40;-74.011454, 40.706270&#41;&#41;
-     *         .setTop&#40;5&#41;&#41;.block&#40;&#41;;
      *
-     * &#47;&#47; with response
-     * Response&lt;SearchAddressResult&gt; fuzzySearchResponse = asyncClient.fuzzySearchWithResponse&#40;
-     *     new FuzzySearchOptions&#40;&quot;Monaco&quot;&#41;.setEntityType&#40;GeographicEntityType.COUNTRY&#41;
-     *         .setTop&#40;5&#41;&#41;.block&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.maps.search.async.fuzzy_search -->
+     * The `Get Geocoding` API is an HTTP `GET` request that returns the longitude and latitude coordinates of the
+     * location being searched.
      *
-     * @param options {@link FuzzySearchOptions} the options to be used in this search.
+     * In many cases, the complete search service might be too much, for instance if you are only interested in
+     * traditional geocoding. Search can also be accessed for address look up exclusively. The geocoding is performed by
+     * hitting the geocoding endpoint with just the address or partial address in question. The geocoding search index
+     * will be queried for everything above the street level data. No Point of Interest (POIs) will be returned. Note
+     * that the geocoder is very tolerant of typos and incomplete addresses. It will also handle everything from exact
+     * street addresses or street or intersections as well as higher level geographies such as city centers, counties
+     * and states. The response also returns detailed address properties such as street, postal code, municipality, and
+     * country/region information.
+     *
+     * @param options base search options.
+     *
+     * **If query is given, should not use this parameter.**.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Fuzzy Search call.
+     * @return this object is returned from a successful Geocoding call on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SearchAddressResult> fuzzySearch(FuzzySearchOptions options) {
-        return fuzzySearchWithResponse(options, null).flatMap(FluxUtil::toMono);
+    public Mono<GeocodingResponse> getGeocoding(BaseSearchOptions options) {
+        return getGeocoding(options, null);
     }
 
     /**
-     * Fuzzy Search
-     * <!-- src_embed com.azure.maps.search.async.fuzzy_search -->
-     * <pre>
-     * System.out.println&#40;&quot;Search Fuzzy:&quot;&#41;;
+     * Use to get longitude and latitude coordinates of a street address or name of a place.
      *
-     * &#47;&#47; simple
-     * asyncClient.fuzzySearch&#40;new FuzzySearchOptions&#40;&quot;starbucks&quot;&#41;&#41;;
      *
-     * &#47;&#47; with options
-     * SearchAddressResult fuzzySearchResults = asyncClient.fuzzySearch&#40;
-     *     new FuzzySearchOptions&#40;&quot;1 Microsoft Way&quot;, new GeoPosition&#40;-74.011454, 40.706270&#41;&#41;
-     *         .setTop&#40;5&#41;&#41;.block&#40;&#41;;
      *
-     * &#47;&#47; with response
-     * Response&lt;SearchAddressResult&gt; fuzzySearchResponse = asyncClient.fuzzySearchWithResponse&#40;
-     *     new FuzzySearchOptions&#40;&quot;Monaco&quot;&#41;.setEntityType&#40;GeographicEntityType.COUNTRY&#41;
-     *         .setTop&#40;5&#41;&#41;.block&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.maps.search.async.fuzzy_search -->
+     * The `Get Geocoding` API is an HTTP `GET` request that returns the longitude and latitude coordinates of the
+     * location being searched.
      *
-     * @param query the query string used in the search.
+     * In many cases, the complete search service might be too much, for instance if you are only interested in
+     * traditional geocoding. Search can also be accessed for address look up exclusively. The geocoding is performed by
+     * hitting the geocoding endpoint with just the address or partial address in question. The geocoding search index
+     * will be queried for everything above the street level data. No Point of Interest (POIs) will be returned. Note
+     * that the geocoder is very tolerant of typos and incomplete addresses. It will also handle everything from exact
+     * street addresses or street or intersections as well as higher level geographies such as city centers, counties
+     * and states. The response also returns detailed address properties such as street, postal code, municipality, and
+     * country/region information.
+     *
+     * @param options Base Search options.
+     *
+     * **If query is given, should not use this parameter.**.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Fuzzy Search call.
+     * @return this object is returned from a successful Geocoding call along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SearchAddressResult> fuzzySearch(String query) {
-        return fuzzySearchWithResponse(new FuzzySearchOptions(query), null).flatMap(FluxUtil::toMono);
+    public Mono<Response<GeocodingResponse>> getGeocodingNoCustomHeaderWithResponse(BaseSearchOptions options) {
+        return withContext(context -> getGeocodingNoCustomHeaderWithResponse(options, context));
     }
 
     /**
-     * Fuzzy Search
-     * <!-- src_embed com.azure.maps.search.async.fuzzy_search -->
-     * <pre>
-     * System.out.println&#40;&quot;Search Fuzzy:&quot;&#41;;
+     * Use to get longitude and latitude coordinates of a street address or name of a place.
      *
-     * &#47;&#47; simple
-     * asyncClient.fuzzySearch&#40;new FuzzySearchOptions&#40;&quot;starbucks&quot;&#41;&#41;;
      *
-     * &#47;&#47; with options
-     * SearchAddressResult fuzzySearchResults = asyncClient.fuzzySearch&#40;
-     *     new FuzzySearchOptions&#40;&quot;1 Microsoft Way&quot;, new GeoPosition&#40;-74.011454, 40.706270&#41;&#41;
-     *         .setTop&#40;5&#41;&#41;.block&#40;&#41;;
      *
-     * &#47;&#47; with response
-     * Response&lt;SearchAddressResult&gt; fuzzySearchResponse = asyncClient.fuzzySearchWithResponse&#40;
-     *     new FuzzySearchOptions&#40;&quot;Monaco&quot;&#41;.setEntityType&#40;GeographicEntityType.COUNTRY&#41;
-     *         .setTop&#40;5&#41;&#41;.block&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.maps.search.async.fuzzy_search -->
+     * The `Get Geocoding` API is an HTTP `GET` request that returns the longitude and latitude coordinates of the
+     * location being searched.
      *
-     * @param options {@link FuzzySearchOptions} the options to be used in this search.
+     * In many cases, the complete search service might be too much, for instance if you are only interested in
+     * traditional geocoding. Search can also be accessed for address look up exclusively. The geocoding is performed by
+     * hitting the geocoding endpoint with just the address or partial address in question. The geocoding search index
+     * will be queried for everything above the street level data. No Point of Interest (POIs) will be returned. Note
+     * that the geocoder is very tolerant of typos and incomplete addresses. It will also handle everything from exact
+     * street addresses or street or intersections as well as higher level geographies such as city centers, counties
+     * and states. The response also returns detailed address properties such as street, postal code, municipality, and
+     * country/region information.
+     *
+     * @param options base search options.
+     *
+     * **If query is given, should not use this parameter.**.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Fuzzy Search call.
+     * @return this object is returned from a successful Geocoding call along with {@link ResponseBase} on successful
+     * completion of {@link Mono}.
      */
+
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SearchAddressResult>> fuzzySearchWithResponse(FuzzySearchOptions options) {
-        return withContext(context -> fuzzySearchWithResponse(options, context));
+    public Mono<ResponseBase<SearchesGetGeocodingHeaders, GeocodingResponse>> getGeocodingWithResponse(BaseSearchOptions options) {
+        return withContext(context -> getGeocodingWithResponse(options, context));
     }
 
     /**
-     * Fuzzy Search
-     * <!-- src_embed com.azure.maps.search.async.fuzzy_search -->
-     * <pre>
-     * System.out.println&#40;&quot;Search Fuzzy:&quot;&#41;;
+     * Use to get longitude and latitude coordinates of a street address or name of a place.
      *
-     * &#47;&#47; simple
-     * asyncClient.fuzzySearch&#40;new FuzzySearchOptions&#40;&quot;starbucks&quot;&#41;&#41;;
      *
-     * &#47;&#47; with options
-     * SearchAddressResult fuzzySearchResults = asyncClient.fuzzySearch&#40;
-     *     new FuzzySearchOptions&#40;&quot;1 Microsoft Way&quot;, new GeoPosition&#40;-74.011454, 40.706270&#41;&#41;
-     *         .setTop&#40;5&#41;&#41;.block&#40;&#41;;
      *
-     * &#47;&#47; with response
-     * Response&lt;SearchAddressResult&gt; fuzzySearchResponse = asyncClient.fuzzySearchWithResponse&#40;
-     *     new FuzzySearchOptions&#40;&quot;Monaco&quot;&#41;.setEntityType&#40;GeographicEntityType.COUNTRY&#41;
-     *         .setTop&#40;5&#41;&#41;.block&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.maps.search.async.fuzzy_search -->
+     * The `Get Geocoding` API is an HTTP `GET` request that returns the longitude and latitude coordinates of the
+     * location being searched.
      *
-     * @param options {@link FuzzySearchOptions} the options to be used in this search.
+     * In many cases, the complete search service might be too much, for instance if you are only interested in
+     * traditional geocoding. Search can also be accessed for address look up exclusively. The geocoding is performed by
+     * hitting the geocoding endpoint with just the address or partial address in question. The geocoding search index
+     * will be queried for everything above the street level data. No Point of Interest (POIs) will be returned. Note
+     * that the geocoder is very tolerant of typos and incomplete addresses. It will also handle everything from exact
+     * street addresses or street or intersections as well as higher level geographies such as city centers, counties
+     * and states. The response also returns detailed address properties such as street, postal code, municipality, and
+     * country/region information.
+     *
+     * @param options base search options.
+     *
+     * **If query is given, should not use this parameter.**.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Fuzzy Search call.
+     * @return this object is returned from a successful Geocoding call along with {@link ResponseBase} on successful
+     * completion of {@link Mono}.
      */
-    Mono<Response<SearchAddressResult>> fuzzySearchWithResponse(FuzzySearchOptions options, Context context) {
-        return serviceClient.fuzzySearchWithResponseAsync(ResponseFormat.JSON, options.getQuery(),
-                options.isTypeAhead(), options.getTop(), options.getSkip(), options.getCategoryFilter(),
-                options.getCountryFilter(), options.getCoordinates().map(GeoPosition::getLatitude).orElse(null),
-                options.getCoordinates().map(GeoPosition::getLongitude).orElse(null), options.getRadiusInMeters(),
-                options.getBoundingBox().map(item -> new GeoPosition(item.getWest(), item.getNorth())).map(Utility::positionToString).orElse(null),
-                options.getBoundingBox().map(item -> new GeoPosition(item.getEast(), item.getSouth())).map(Utility::positionToString).orElse(null),
-                options.getLanguage(), options.getExtendedPostalCodesFor(), options.getMinFuzzyLevel(),
-                options.getMaxFuzzyLevel(), options.getIndexFilter(), options.getBrandFilter(),
-                options.getElectricVehicleConnectorFilter(), options.getEntityType(), options.getLocalizedMapView(),
-                options.getOperatingHours(), context)
-            .onErrorMap(MapsSearchAsyncClient::mapThrowable);
-    }
-
-    /**
-     * Search Point of Interest
-     * <!-- src_embed com.azure.maps.search.async.get_search_poi -->
-     * <pre>
-     * System.out.println&#40;&quot;Search Points of Interest:&quot;&#41;;
-     *
-     * &#47;&#47; coordinates
-     * asyncClient.searchPointOfInterest&#40;
-     *     new SearchPointOfInterestOptions&#40;&quot;pizza&quot;, new GeoPosition&#40;-121.97483, 36.98844&#41;&#41;&#41;;
-     *
-     * &#47;&#47; options
-     * asyncClient.searchPointOfInterest&#40;
-     *     new SearchPointOfInterestOptions&#40;&quot;pizza&quot;, new GeoPosition&#40;-121.97483, 36.98844&#41;&#41;
-     *         .setTop&#40;10&#41;
-     *         .setOperatingHours&#40;OperatingHoursRange.NEXT_SEVEN_DAYS&#41;&#41;;
-     *
-     * &#47;&#47; with response
-     * asyncClient.searchPointOfInterestWithResponse&#40;
-     *     new SearchPointOfInterestOptions&#40;&quot;pizza&quot;, new GeoPosition&#40;-121.97483, 36.98844&#41;&#41;
-     *         .setTop&#40;10&#41;
-     *         .setOperatingHours&#40;OperatingHoursRange.NEXT_SEVEN_DAYS&#41;&#41;.block&#40;&#41;.getStatusCode&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.maps.search.async.get_search_poi -->
-     *
-     * @param options {@link SearchPointOfInterestOptions} the options to be used in this search.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Point of Interest call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SearchAddressResult> searchPointOfInterest(SearchPointOfInterestOptions options) {
-        return searchPointOfInterestWithResponse(options, null).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Search Point of Interest
-     * <!-- src_embed com.azure.maps.search.async.get_search_poi -->
-     * <pre>
-     * System.out.println&#40;&quot;Search Points of Interest:&quot;&#41;;
-     *
-     * &#47;&#47; coordinates
-     * asyncClient.searchPointOfInterest&#40;
-     *     new SearchPointOfInterestOptions&#40;&quot;pizza&quot;, new GeoPosition&#40;-121.97483, 36.98844&#41;&#41;&#41;;
-     *
-     * &#47;&#47; options
-     * asyncClient.searchPointOfInterest&#40;
-     *     new SearchPointOfInterestOptions&#40;&quot;pizza&quot;, new GeoPosition&#40;-121.97483, 36.98844&#41;&#41;
-     *         .setTop&#40;10&#41;
-     *         .setOperatingHours&#40;OperatingHoursRange.NEXT_SEVEN_DAYS&#41;&#41;;
-     *
-     * &#47;&#47; with response
-     * asyncClient.searchPointOfInterestWithResponse&#40;
-     *     new SearchPointOfInterestOptions&#40;&quot;pizza&quot;, new GeoPosition&#40;-121.97483, 36.98844&#41;&#41;
-     *         .setTop&#40;10&#41;
-     *         .setOperatingHours&#40;OperatingHoursRange.NEXT_SEVEN_DAYS&#41;&#41;.block&#40;&#41;.getStatusCode&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.maps.search.async.get_search_poi -->
-     *
-     * @param query The query to be used to search for points of interest.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Point of Interest call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SearchAddressResult> searchPointOfInterest(String query) {
-        return searchPointOfInterestWithResponse(new SearchPointOfInterestOptions(query), null)
-            .flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Search Point of Interest
-     * <!-- src_embed com.azure.maps.search.async.get_search_poi -->
-     * <pre>
-     * System.out.println&#40;&quot;Search Points of Interest:&quot;&#41;;
-     *
-     * &#47;&#47; coordinates
-     * asyncClient.searchPointOfInterest&#40;
-     *     new SearchPointOfInterestOptions&#40;&quot;pizza&quot;, new GeoPosition&#40;-121.97483, 36.98844&#41;&#41;&#41;;
-     *
-     * &#47;&#47; options
-     * asyncClient.searchPointOfInterest&#40;
-     *     new SearchPointOfInterestOptions&#40;&quot;pizza&quot;, new GeoPosition&#40;-121.97483, 36.98844&#41;&#41;
-     *         .setTop&#40;10&#41;
-     *         .setOperatingHours&#40;OperatingHoursRange.NEXT_SEVEN_DAYS&#41;&#41;;
-     *
-     * &#47;&#47; with response
-     * asyncClient.searchPointOfInterestWithResponse&#40;
-     *     new SearchPointOfInterestOptions&#40;&quot;pizza&quot;, new GeoPosition&#40;-121.97483, 36.98844&#41;&#41;
-     *         .setTop&#40;10&#41;
-     *         .setOperatingHours&#40;OperatingHoursRange.NEXT_SEVEN_DAYS&#41;&#41;.block&#40;&#41;.getStatusCode&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.maps.search.async.get_search_poi -->
-     *
-     * @param options {@link SearchPointOfInterestOptions} the options to be used in this search.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Point of Interest call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SearchAddressResult>> searchPointOfInterestWithResponse(SearchPointOfInterestOptions options) {
-        return withContext(context -> searchPointOfInterestWithResponse(options, context));
-    }
-
-    /**
-     * Search Point of Interest
-     * <!-- src_embed com.azure.maps.search.async.get_search_poi -->
-     * <pre>
-     * System.out.println&#40;&quot;Search Points of Interest:&quot;&#41;;
-     *
-     * &#47;&#47; coordinates
-     * asyncClient.searchPointOfInterest&#40;
-     *     new SearchPointOfInterestOptions&#40;&quot;pizza&quot;, new GeoPosition&#40;-121.97483, 36.98844&#41;&#41;&#41;;
-     *
-     * &#47;&#47; options
-     * asyncClient.searchPointOfInterest&#40;
-     *     new SearchPointOfInterestOptions&#40;&quot;pizza&quot;, new GeoPosition&#40;-121.97483, 36.98844&#41;&#41;
-     *         .setTop&#40;10&#41;
-     *         .setOperatingHours&#40;OperatingHoursRange.NEXT_SEVEN_DAYS&#41;&#41;;
-     *
-     * &#47;&#47; with response
-     * asyncClient.searchPointOfInterestWithResponse&#40;
-     *     new SearchPointOfInterestOptions&#40;&quot;pizza&quot;, new GeoPosition&#40;-121.97483, 36.98844&#41;&#41;
-     *         .setTop&#40;10&#41;
-     *         .setOperatingHours&#40;OperatingHoursRange.NEXT_SEVEN_DAYS&#41;&#41;.block&#40;&#41;.getStatusCode&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.maps.search.async.get_search_poi -->
-     *
-     * @param options {@link SearchPointOfInterestOptions} the options to be used in this search.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Point of Interest call.
-     */
-    Mono<Response<SearchAddressResult>> searchPointOfInterestWithResponse(SearchPointOfInterestOptions options,
-        Context context) {
-        return serviceClient.searchPointOfInterestWithResponseAsync(ResponseFormat.JSON, options.getQuery(),
-                options.isTypeAhead(), options.getTop(), options.getSkip(), options.getCategoryFilter(),
-                options.getCountryFilter(), options.getCoordinates().map(GeoPosition::getLatitude).orElse(null),
-                options.getCoordinates().map(GeoPosition::getLongitude).orElse(null), options.getRadiusInMeters(),
-                options.getBoundingBox().map(item -> new GeoPosition(item.getWest(), item.getNorth())).map(Utility::positionToString).orElse(null),
-                options.getBoundingBox().map(item -> new GeoPosition(item.getEast(), item.getSouth())).map(Utility::positionToString).orElse(null),
-                options.getLanguage(), options.getExtendedPostalCodesFor(), options.getBrandFilter(),
-                options.getElectricVehicleConnectorFilter(), options.getLocalizedMapView(), options.getOperatingHours(),
-                context)
-            .onErrorMap(MapsSearchAsyncClient::mapThrowable);
-    }
-
-    /**
-     * Search Nearby Points of Interest
-     * <!-- src_embed com.azure.maps.search.async.search_nearby -->
-     * <pre>
-     * System.out.println&#40;&quot;Search Nearby Points of Interest:&quot;&#41;;
-     *
-     * &#47;&#47; options
-     * asyncClient.searchNearbyPointsOfInterest&#40;
-     *     new SearchNearbyPointsOfInterestOptions&#40;new GeoPosition&#40;-74.011454, 40.706270&#41;&#41;
-     *         .setCountryFilter&#40;Arrays.asList&#40;&quot;US&quot;&#41;&#41;
-     *         .setTop&#40;10&#41;&#41;;
-     *
-     * &#47;&#47; response
-     * asyncClient.searchNearbyPointsOfInterestWithResponse&#40;
-     *     new SearchNearbyPointsOfInterestOptions&#40;new GeoPosition&#40;-74.011454, 40.706270&#41;&#41;
-     *         .setCountryFilter&#40;Arrays.asList&#40;&quot;US&quot;&#41;&#41;
-     *         .setTop&#40;10&#41;&#41;.block&#40;&#41;.getStatusCode&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.maps.search.async.search_nearby -->
-     *
-     * @param options {@link SearchNearbyPointsOfInterestOptions} the options to be used in this search.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Nearby Point of Interest call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SearchAddressResult> searchNearbyPointsOfInterest(SearchNearbyPointsOfInterestOptions options) {
-        return searchNearbyPointsOfInterestWithResponse(options, null).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Search Nearby Points of Interest
-     * <!-- src_embed com.azure.maps.search.async.search_nearby -->
-     * <pre>
-     * System.out.println&#40;&quot;Search Nearby Points of Interest:&quot;&#41;;
-     *
-     * &#47;&#47; options
-     * asyncClient.searchNearbyPointsOfInterest&#40;
-     *     new SearchNearbyPointsOfInterestOptions&#40;new GeoPosition&#40;-74.011454, 40.706270&#41;&#41;
-     *         .setCountryFilter&#40;Arrays.asList&#40;&quot;US&quot;&#41;&#41;
-     *         .setTop&#40;10&#41;&#41;;
-     *
-     * &#47;&#47; response
-     * asyncClient.searchNearbyPointsOfInterestWithResponse&#40;
-     *     new SearchNearbyPointsOfInterestOptions&#40;new GeoPosition&#40;-74.011454, 40.706270&#41;&#41;
-     *         .setCountryFilter&#40;Arrays.asList&#40;&quot;US&quot;&#41;&#41;
-     *         .setTop&#40;10&#41;&#41;.block&#40;&#41;.getStatusCode&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.maps.search.async.search_nearby -->
-     *
-     * @param query A pair of coordinates for query.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Nearby Point of Interest call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SearchAddressResult> searchNearbyPointsOfInterest(GeoPosition query) {
-        return searchNearbyPointsOfInterestWithResponse(new SearchNearbyPointsOfInterestOptions(query), null)
-            .flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Search Nearby Points of Interest
-     * <!-- src_embed com.azure.maps.search.async.search_nearby -->
-     * <pre>
-     * System.out.println&#40;&quot;Search Nearby Points of Interest:&quot;&#41;;
-     *
-     * &#47;&#47; options
-     * asyncClient.searchNearbyPointsOfInterest&#40;
-     *     new SearchNearbyPointsOfInterestOptions&#40;new GeoPosition&#40;-74.011454, 40.706270&#41;&#41;
-     *         .setCountryFilter&#40;Arrays.asList&#40;&quot;US&quot;&#41;&#41;
-     *         .setTop&#40;10&#41;&#41;;
-     *
-     * &#47;&#47; response
-     * asyncClient.searchNearbyPointsOfInterestWithResponse&#40;
-     *     new SearchNearbyPointsOfInterestOptions&#40;new GeoPosition&#40;-74.011454, 40.706270&#41;&#41;
-     *         .setCountryFilter&#40;Arrays.asList&#40;&quot;US&quot;&#41;&#41;
-     *         .setTop&#40;10&#41;&#41;.block&#40;&#41;.getStatusCode&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.maps.search.async.search_nearby -->
-     *
-     * @param options {@link SearchNearbyPointsOfInterestOptions} the options to be used in this search.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Nearby Point of Interest call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SearchAddressResult>> searchNearbyPointsOfInterestWithResponse(
-        SearchNearbyPointsOfInterestOptions options) {
-        return withContext(context -> searchNearbyPointsOfInterestWithResponse(options, context));
-    }
-
-    /**
-     * Search Nearby Points of Interest
-     * <!-- src_embed com.azure.maps.search.async.search_nearby -->
-     * <pre>
-     * System.out.println&#40;&quot;Search Nearby Points of Interest:&quot;&#41;;
-     *
-     * &#47;&#47; options
-     * asyncClient.searchNearbyPointsOfInterest&#40;
-     *     new SearchNearbyPointsOfInterestOptions&#40;new GeoPosition&#40;-74.011454, 40.706270&#41;&#41;
-     *         .setCountryFilter&#40;Arrays.asList&#40;&quot;US&quot;&#41;&#41;
-     *         .setTop&#40;10&#41;&#41;;
-     *
-     * &#47;&#47; response
-     * asyncClient.searchNearbyPointsOfInterestWithResponse&#40;
-     *     new SearchNearbyPointsOfInterestOptions&#40;new GeoPosition&#40;-74.011454, 40.706270&#41;&#41;
-     *         .setCountryFilter&#40;Arrays.asList&#40;&quot;US&quot;&#41;&#41;
-     *         .setTop&#40;10&#41;&#41;.block&#40;&#41;.getStatusCode&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.maps.search.async.search_nearby -->
-     *
-     * @param options {@link SearchNearbyPointsOfInterestOptions} the options to be used in this search.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Nearby Point of Interest call.
-     */
-    Mono<Response<SearchAddressResult>> searchNearbyPointsOfInterestWithResponse(
-        SearchNearbyPointsOfInterestOptions options, Context context) {
-        // this should throw an exception if the coordinates are null, as for
-        // this method they are mandatory
-        final GeoPosition coordinates = options.getCoordinates().get();
-        return serviceClient.searchNearbyPointOfInterestWithResponseAsync(ResponseFormat.JSON,
-                coordinates.getLatitude(), coordinates.getLongitude(), options.getTop(), options.getSkip(),
-                options.getCategoryFilter(), options.getCountryFilter(), options.getRadiusInMeters(),
-                options.getLanguage(), options.getExtendedPostalCodesFor(), options.getBrandFilter(),
-                options.getElectricVehicleConnectorFilter(), options.getLocalizedMapView(), context)
-            .onErrorMap(MapsSearchAsyncClient::mapThrowable);
-    }
-
-    /**
-     * Search Point of Interest per Category
-     * <!-- src_embed com.azure.maps.search.async.search_poi_category -->
-     * <pre>
-     * System.out.println&#40;&quot;Get Point of Interest Category:&quot;&#41;;
-     *
-     * &#47;&#47; complete - search for italian restaurant in NYC
-     * asyncClient.searchPointOfInterestCategory&#40;
-     *     new SearchPointOfInterestCategoryOptions&#40;&quot;pasta&quot;, new GeoPosition&#40;-74.011454, 40.706270&#41;&#41;
-     *         .setCategoryFilter&#40;Arrays.asList&#40;7315&#41;&#41;
-     *         .setTop&#40;3&#41;&#41;;
-     *
-     * &#47;&#47; with response
-     * asyncClient.searchPointOfInterestCategoryWithResponse&#40;
-     *     new SearchPointOfInterestCategoryOptions&#40;&quot;pasta&quot;, new GeoPosition&#40;-74.011454, 40.706270&#41;&#41;
-     *         .setCategoryFilter&#40;Arrays.asList&#40;7315&#41;&#41;
-     *         .setTop&#40;3&#41;&#41;.block&#40;&#41;.getStatusCode&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.maps.search.async.search_poi_category -->
-     *
-     * @param options a {@link SearchPointOfInterestCategoryOptions} representing the search parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Point of Interest per Category calls.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SearchAddressResult> searchPointOfInterestCategory(SearchPointOfInterestCategoryOptions options) {
-        return searchPointOfInterestCategoryWithResponse(options, null).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Search Point of Interest per Category
-     * <!-- src_embed com.azure.maps.search.async.search_poi_category -->
-     * <pre>
-     * System.out.println&#40;&quot;Get Point of Interest Category:&quot;&#41;;
-     *
-     * &#47;&#47; complete - search for italian restaurant in NYC
-     * asyncClient.searchPointOfInterestCategory&#40;
-     *     new SearchPointOfInterestCategoryOptions&#40;&quot;pasta&quot;, new GeoPosition&#40;-74.011454, 40.706270&#41;&#41;
-     *         .setCategoryFilter&#40;Arrays.asList&#40;7315&#41;&#41;
-     *         .setTop&#40;3&#41;&#41;;
-     *
-     * &#47;&#47; with response
-     * asyncClient.searchPointOfInterestCategoryWithResponse&#40;
-     *     new SearchPointOfInterestCategoryOptions&#40;&quot;pasta&quot;, new GeoPosition&#40;-74.011454, 40.706270&#41;&#41;
-     *         .setCategoryFilter&#40;Arrays.asList&#40;7315&#41;&#41;
-     *         .setTop&#40;3&#41;&#41;.block&#40;&#41;.getStatusCode&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.maps.search.async.search_poi_category -->
-     *
-     * @param query The query to be used to search for points of interest.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Point of Interest per Category calls.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SearchAddressResult> searchPointOfInterestCategory(String query) {
-        return searchPointOfInterestCategoryWithResponse(new SearchPointOfInterestCategoryOptions(query), null)
-            .flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Search Point of Interest per Category
-     * <!-- src_embed com.azure.maps.search.async.search_poi_category -->
-     * <pre>
-     * System.out.println&#40;&quot;Get Point of Interest Category:&quot;&#41;;
-     *
-     * &#47;&#47; complete - search for italian restaurant in NYC
-     * asyncClient.searchPointOfInterestCategory&#40;
-     *     new SearchPointOfInterestCategoryOptions&#40;&quot;pasta&quot;, new GeoPosition&#40;-74.011454, 40.706270&#41;&#41;
-     *         .setCategoryFilter&#40;Arrays.asList&#40;7315&#41;&#41;
-     *         .setTop&#40;3&#41;&#41;;
-     *
-     * &#47;&#47; with response
-     * asyncClient.searchPointOfInterestCategoryWithResponse&#40;
-     *     new SearchPointOfInterestCategoryOptions&#40;&quot;pasta&quot;, new GeoPosition&#40;-74.011454, 40.706270&#41;&#41;
-     *         .setCategoryFilter&#40;Arrays.asList&#40;7315&#41;&#41;
-     *         .setTop&#40;3&#41;&#41;.block&#40;&#41;.getStatusCode&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.maps.search.async.search_poi_category -->
-     *
-     * @param options a {@link SearchPointOfInterestCategoryOptions} representing the search parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Point of Interest per Category calls.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SearchAddressResult>> searchPointOfInterestCategoryWithResponse(
-        SearchPointOfInterestCategoryOptions options) {
-        return withContext(context -> searchPointOfInterestCategoryWithResponse(options, context));
-    }
-
-    /**
-     * Search Point of Interest per Category
-     * <!-- src_embed com.azure.maps.search.async.search_poi_category -->
-     * <pre>
-     * System.out.println&#40;&quot;Get Point of Interest Category:&quot;&#41;;
-     *
-     * &#47;&#47; complete - search for italian restaurant in NYC
-     * asyncClient.searchPointOfInterestCategory&#40;
-     *     new SearchPointOfInterestCategoryOptions&#40;&quot;pasta&quot;, new GeoPosition&#40;-74.011454, 40.706270&#41;&#41;
-     *         .setCategoryFilter&#40;Arrays.asList&#40;7315&#41;&#41;
-     *         .setTop&#40;3&#41;&#41;;
-     *
-     * &#47;&#47; with response
-     * asyncClient.searchPointOfInterestCategoryWithResponse&#40;
-     *     new SearchPointOfInterestCategoryOptions&#40;&quot;pasta&quot;, new GeoPosition&#40;-74.011454, 40.706270&#41;&#41;
-     *         .setCategoryFilter&#40;Arrays.asList&#40;7315&#41;&#41;
-     *         .setTop&#40;3&#41;&#41;.block&#40;&#41;.getStatusCode&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.maps.search.async.search_poi_category -->
-     *
-     * @param options a {@link SearchPointOfInterestCategoryOptions} representing the search parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Point of Interest per Category calls.
-     */
-    Mono<Response<SearchAddressResult>> searchPointOfInterestCategoryWithResponse(
-        SearchPointOfInterestCategoryOptions options, Context context) {
-        return serviceClient.searchPointOfInterestCategoryWithResponseAsync(ResponseFormat.JSON, options.getQuery(),
-                options.isTypeAhead(), options.getTop(), options.getSkip(), options.getCategoryFilter(),
-                options.getCountryFilter(), options.getCoordinates().map(GeoPosition::getLatitude).orElse(null),
-                options.getCoordinates().map(GeoPosition::getLongitude).orElse(null), options.getRadiusInMeters(),
-                options.getBoundingBox().map(item -> new GeoPosition(item.getWest(), item.getNorth())).map(Utility::positionToString).orElse(null),
-                options.getBoundingBox().map(item -> new GeoPosition(item.getEast(), item.getSouth())).map(Utility::positionToString).orElse(null),
-                options.getLanguage(), options.getExtendedPostalCodesFor(), options.getBrandFilter(),
-                options.getElectricVehicleConnectorFilter(), options.getLocalizedMapView(), options.getOperatingHours(),
-                context)
-            .onErrorMap(MapsSearchAsyncClient::mapThrowable);
-    }
-
-    /**
-     * Get Point of Interest Category Tree
-     * <!-- src_embed com.azure.maps.search.sync.search_poi_category_tree -->
-     * <pre>
-     * System.out.println&#40;&quot;Get Search POI Category Tree:&quot;&#41;;
-     * client.getPointOfInterestCategoryTree&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.maps.search.sync.search_poi_category_tree -->
-     *
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful POI Category Tree call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PointOfInterestCategoryTreeResult> getPointOfInterestCategoryTree() {
-        return serviceClient.getPointOfInterestCategoryTreeAsync(JsonFormat.JSON, null)
-            .onErrorMap(MapsSearchAsyncClient::mapThrowable);
-    }
-
-    /**
-     * Get Point of Interest Category Tree
-     * <!-- src_embed com.azure.maps.search.sync.search_poi_category_tree -->
-     * <pre>
-     * System.out.println&#40;&quot;Get Search POI Category Tree:&quot;&#41;;
-     * client.getPointOfInterestCategoryTree&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.maps.search.sync.search_poi_category_tree -->
-     *
-     * @param language Language in which search results should be returned. Should be one of supported IETF language
-     *     tags, except NGT and NGT-Latn. Language tag is case-insensitive. When data in specified language is not
-     *     available for a specific field, default language is used (English).
-     *     <p>Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
-     *     details.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful POI Category Tree call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PointOfInterestCategoryTreeResult>> getPointOfInterestCategoryTreeWithResponse(
-        String language) {
-        return withContext(context -> getPointOfInterestCategoryTreeWithResponse(language, context));
-    }
-
-    /**
-     * Get Point of Interest Category Tree
-     * <!-- src_embed com.azure.maps.search.sync.search_poi_category_tree -->
-     * <pre>
-     * System.out.println&#40;&quot;Get Search POI Category Tree:&quot;&#41;;
-     * client.getPointOfInterestCategoryTree&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.maps.search.sync.search_poi_category_tree -->
-     *
-     * @param language Language in which search results should be returned. Should be one of supported IETF language
-     *     tags, except NGT and NGT-Latn. Language tag is case-insensitive. When data in specified language is not
-     *     available for a specific field, default language is used (English).
-     *     <p>Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
-     *     details.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful POI Category Tree call.
-     */
-    Mono<Response<PointOfInterestCategoryTreeResult>> getPointOfInterestCategoryTreeWithResponse(String language,
-        Context context) {
-        return serviceClient.getPointOfInterestCategoryTreeWithResponseAsync(JsonFormat.JSON, language, context)
-            .onErrorMap(MapsSearchAsyncClient::mapThrowable);
-    }
-
-    /**
-     * Search Address
-     * <!-- src_embed com.azure.maps.search.async.search_address -->
-     * <pre>
-     * System.out.println&#40;&quot;Search Address:&quot;&#41;;
-     *
-     * &#47;&#47; simple
-     * asyncClient.searchAddress&#40;
-     *     new SearchAddressOptions&#40;&quot;15127 NE 24th Street, Redmond, WA 98052&quot;&#41;&#41;;
-     *
-     * &#47;&#47; options
-     * asyncClient.searchAddress&#40;
-     *     new SearchAddressOptions&#40;&quot;1 Main Street&quot;&#41;
-     *         .setCoordinates&#40;new GeoPosition&#40;-74.011454, 40.706270&#41;&#41;
-     *         .setRadiusInMeters&#40;40000&#41;
-     *         .setTop&#40;5&#41;&#41;;
-     *
-     * &#47;&#47; complete
-     * asyncClient.searchAddressWithResponse&#40;
-     *     new SearchAddressOptions&#40;&quot;1 Main Street&quot;&#41;
-     *         .setCoordinates&#40;new GeoPosition&#40;-74.011454, 40.706270&#41;&#41;
-     *         .setRadiusInMeters&#40;40000&#41;
-     *         .setTop&#40;5&#41;&#41;.block&#40;&#41;.getStatusCode&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.maps.search.async.search_address -->
-     *
-     * @param options a {@link SearchAddressOptions} representing the search parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Address call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SearchAddressResult> searchAddress(SearchAddressOptions options) {
-        return searchAddressWithResponse(options, null).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Search Address
-     * <!-- src_embed com.azure.maps.search.async.search_address -->
-     * <pre>
-     * System.out.println&#40;&quot;Search Address:&quot;&#41;;
-     *
-     * &#47;&#47; simple
-     * asyncClient.searchAddress&#40;
-     *     new SearchAddressOptions&#40;&quot;15127 NE 24th Street, Redmond, WA 98052&quot;&#41;&#41;;
-     *
-     * &#47;&#47; options
-     * asyncClient.searchAddress&#40;
-     *     new SearchAddressOptions&#40;&quot;1 Main Street&quot;&#41;
-     *         .setCoordinates&#40;new GeoPosition&#40;-74.011454, 40.706270&#41;&#41;
-     *         .setRadiusInMeters&#40;40000&#41;
-     *         .setTop&#40;5&#41;&#41;;
-     *
-     * &#47;&#47; complete
-     * asyncClient.searchAddressWithResponse&#40;
-     *     new SearchAddressOptions&#40;&quot;1 Main Street&quot;&#41;
-     *         .setCoordinates&#40;new GeoPosition&#40;-74.011454, 40.706270&#41;&#41;
-     *         .setRadiusInMeters&#40;40000&#41;
-     *         .setTop&#40;5&#41;&#41;.block&#40;&#41;.getStatusCode&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.maps.search.async.search_address -->
-     *
-     * @param query the query string used in the fuzzy search.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Address call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SearchAddressResult> searchAddress(String query) {
-        return searchAddressWithResponse(new SearchAddressOptions(query), null).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Search Address
-     * <!-- src_embed com.azure.maps.search.async.search_address -->
-     * <pre>
-     * System.out.println&#40;&quot;Search Address:&quot;&#41;;
-     *
-     * &#47;&#47; simple
-     * asyncClient.searchAddress&#40;
-     *     new SearchAddressOptions&#40;&quot;15127 NE 24th Street, Redmond, WA 98052&quot;&#41;&#41;;
-     *
-     * &#47;&#47; options
-     * asyncClient.searchAddress&#40;
-     *     new SearchAddressOptions&#40;&quot;1 Main Street&quot;&#41;
-     *         .setCoordinates&#40;new GeoPosition&#40;-74.011454, 40.706270&#41;&#41;
-     *         .setRadiusInMeters&#40;40000&#41;
-     *         .setTop&#40;5&#41;&#41;;
-     *
-     * &#47;&#47; complete
-     * asyncClient.searchAddressWithResponse&#40;
-     *     new SearchAddressOptions&#40;&quot;1 Main Street&quot;&#41;
-     *         .setCoordinates&#40;new GeoPosition&#40;-74.011454, 40.706270&#41;&#41;
-     *         .setRadiusInMeters&#40;40000&#41;
-     *         .setTop&#40;5&#41;&#41;.block&#40;&#41;.getStatusCode&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.maps.search.async.search_address -->
-     *
-     * @param options a {@link SearchAddressOptions} representing the search parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Address call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SearchAddressResult>> searchAddressWithResponse(SearchAddressOptions options) {
-        return withContext(context -> searchAddressWithResponse(options, context));
-    }
-
-    /**
-     * Search Address
-     * <!-- src_embed com.azure.maps.search.async.search_address -->
-     * <pre>
-     * System.out.println&#40;&quot;Search Address:&quot;&#41;;
-     *
-     * &#47;&#47; simple
-     * asyncClient.searchAddress&#40;
-     *     new SearchAddressOptions&#40;&quot;15127 NE 24th Street, Redmond, WA 98052&quot;&#41;&#41;;
-     *
-     * &#47;&#47; options
-     * asyncClient.searchAddress&#40;
-     *     new SearchAddressOptions&#40;&quot;1 Main Street&quot;&#41;
-     *         .setCoordinates&#40;new GeoPosition&#40;-74.011454, 40.706270&#41;&#41;
-     *         .setRadiusInMeters&#40;40000&#41;
-     *         .setTop&#40;5&#41;&#41;;
-     *
-     * &#47;&#47; complete
-     * asyncClient.searchAddressWithResponse&#40;
-     *     new SearchAddressOptions&#40;&quot;1 Main Street&quot;&#41;
-     *         .setCoordinates&#40;new GeoPosition&#40;-74.011454, 40.706270&#41;&#41;
-     *         .setRadiusInMeters&#40;40000&#41;
-     *         .setTop&#40;5&#41;&#41;.block&#40;&#41;.getStatusCode&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.maps.search.async.search_address -->
-     *
-     * @param options a {@link SearchAddressOptions} representing the search parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Address call.
-     */
-    Mono<Response<SearchAddressResult>> searchAddressWithResponse(SearchAddressOptions options, Context context) {
-        return serviceClient.searchAddressWithResponseAsync(ResponseFormat.JSON, options.getQuery(),
-                options.isTypeAhead(), options.getTop(), options.getSkip(), options.getCountryFilter(),
-                options.getCoordinates().map(GeoPosition::getLatitude).orElse(null),
-                options.getCoordinates().map(GeoPosition::getLongitude).orElse(null), options.getRadiusInMeters(),
-                options.getBoundingBox().map(item -> new GeoPosition(item.getWest(), item.getNorth())).map(Utility::positionToString).orElse(null),
-                options.getBoundingBox().map(item -> new GeoPosition(item.getEast(), item.getSouth())).map(Utility::positionToString).orElse(null),
-                options.getLanguage(), options.getExtendedPostalCodesFor(), options.getEntityType(),
-                options.getLocalizedMapView(), context)
-            .onErrorMap(MapsSearchAsyncClient::mapThrowable);
-    }
-
-    /**
-     * Reverse Address Search
-     * <!-- src_embed com.azure.maps.search.async.reverse_search_address -->
-     * <pre>
-     * System.out.println&#40;&quot;Search Address Reverse:&quot;&#41;;
-     *
-     * &#47;&#47; simple
-     * asyncClient.reverseSearchAddress&#40;
-     *     new ReverseSearchAddressOptions&#40;new GeoPosition&#40;-121.89, 37.337&#41;&#41;&#41;;
-     *
-     * asyncClient.reverseSearchAddress&#40;
-     *     new ReverseSearchAddressOptions&#40;new GeoPosition&#40;-121.89, 37.337&#41;&#41;&#41;;
-     *
-     * &#47;&#47; options
-     * asyncClient.reverseSearchAddress&#40;
-     *     new ReverseSearchAddressOptions&#40;new GeoPosition&#40;-121.89, 37.337&#41;&#41;
-     *         .setIncludeSpeedLimit&#40;true&#41;
-     *         .setEntityType&#40;GeographicEntityType.COUNTRY_SECONDARY_SUBDIVISION&#41; &#47;&#47; returns only city
-     * &#41;;
-     *
-     * &#47;&#47; complete
-     * asyncClient.reverseSearchAddressWithResponse&#40;
-     *     new ReverseSearchAddressOptions&#40;new GeoPosition&#40;-121.89, 37.337&#41;&#41;
-     *         .setIncludeSpeedLimit&#40;true&#41;
-     *         .setEntityType&#40;GeographicEntityType.COUNTRY_SECONDARY_SUBDIVISION&#41;&#41;.block&#40;&#41;.getStatusCode&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.maps.search.async.reverse_search_address -->
-     *
-     * @param options a {@link ReverseSearchAddressOptions} representing the search parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Reverse Search Address call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ReverseSearchAddressResult> reverseSearchAddress(ReverseSearchAddressOptions options) {
-        return reverseSearchAddressWithResponse(options, null).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Reverse Address Search
-     * <!-- src_embed com.azure.maps.search.async.reverse_search_address -->
-     * <pre>
-     * System.out.println&#40;&quot;Search Address Reverse:&quot;&#41;;
-     *
-     * &#47;&#47; simple
-     * asyncClient.reverseSearchAddress&#40;
-     *     new ReverseSearchAddressOptions&#40;new GeoPosition&#40;-121.89, 37.337&#41;&#41;&#41;;
-     *
-     * asyncClient.reverseSearchAddress&#40;
-     *     new ReverseSearchAddressOptions&#40;new GeoPosition&#40;-121.89, 37.337&#41;&#41;&#41;;
-     *
-     * &#47;&#47; options
-     * asyncClient.reverseSearchAddress&#40;
-     *     new ReverseSearchAddressOptions&#40;new GeoPosition&#40;-121.89, 37.337&#41;&#41;
-     *         .setIncludeSpeedLimit&#40;true&#41;
-     *         .setEntityType&#40;GeographicEntityType.COUNTRY_SECONDARY_SUBDIVISION&#41; &#47;&#47; returns only city
-     * &#41;;
-     *
-     * &#47;&#47; complete
-     * asyncClient.reverseSearchAddressWithResponse&#40;
-     *     new ReverseSearchAddressOptions&#40;new GeoPosition&#40;-121.89, 37.337&#41;&#41;
-     *         .setIncludeSpeedLimit&#40;true&#41;
-     *         .setEntityType&#40;GeographicEntityType.COUNTRY_SECONDARY_SUBDIVISION&#41;&#41;.block&#40;&#41;.getStatusCode&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.maps.search.async.reverse_search_address -->
-     *
-     * @param query The applicable query as a pair of coordinates.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Reverse Search Address call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ReverseSearchAddressResult> reverseSearchAddress(GeoPosition query) {
-        return reverseSearchAddressWithResponse(new ReverseSearchAddressOptions(query), null).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Reverse Address Search
-     * <!-- src_embed com.azure.maps.search.async.reverse_search_address -->
-     * <pre>
-     * System.out.println&#40;&quot;Search Address Reverse:&quot;&#41;;
-     *
-     * &#47;&#47; simple
-     * asyncClient.reverseSearchAddress&#40;
-     *     new ReverseSearchAddressOptions&#40;new GeoPosition&#40;-121.89, 37.337&#41;&#41;&#41;;
-     *
-     * asyncClient.reverseSearchAddress&#40;
-     *     new ReverseSearchAddressOptions&#40;new GeoPosition&#40;-121.89, 37.337&#41;&#41;&#41;;
-     *
-     * &#47;&#47; options
-     * asyncClient.reverseSearchAddress&#40;
-     *     new ReverseSearchAddressOptions&#40;new GeoPosition&#40;-121.89, 37.337&#41;&#41;
-     *         .setIncludeSpeedLimit&#40;true&#41;
-     *         .setEntityType&#40;GeographicEntityType.COUNTRY_SECONDARY_SUBDIVISION&#41; &#47;&#47; returns only city
-     * &#41;;
-     *
-     * &#47;&#47; complete
-     * asyncClient.reverseSearchAddressWithResponse&#40;
-     *     new ReverseSearchAddressOptions&#40;new GeoPosition&#40;-121.89, 37.337&#41;&#41;
-     *         .setIncludeSpeedLimit&#40;true&#41;
-     *         .setEntityType&#40;GeographicEntityType.COUNTRY_SECONDARY_SUBDIVISION&#41;&#41;.block&#40;&#41;.getStatusCode&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.maps.search.async.reverse_search_address -->
-     *
-     * @param options a {@link ReverseSearchAddressOptions} representing the search parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Reverse Search Address call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ReverseSearchAddressResult>> reverseSearchAddressWithResponse(
-        ReverseSearchAddressOptions options) {
-        return withContext(context -> reverseSearchAddressWithResponse(options, context));
-    }
-
-    /**
-     * Reverse Address Search
-     * <!-- src_embed com.azure.maps.search.async.reverse_search_address -->
-     * <pre>
-     * System.out.println&#40;&quot;Search Address Reverse:&quot;&#41;;
-     *
-     * &#47;&#47; simple
-     * asyncClient.reverseSearchAddress&#40;
-     *     new ReverseSearchAddressOptions&#40;new GeoPosition&#40;-121.89, 37.337&#41;&#41;&#41;;
-     *
-     * asyncClient.reverseSearchAddress&#40;
-     *     new ReverseSearchAddressOptions&#40;new GeoPosition&#40;-121.89, 37.337&#41;&#41;&#41;;
-     *
-     * &#47;&#47; options
-     * asyncClient.reverseSearchAddress&#40;
-     *     new ReverseSearchAddressOptions&#40;new GeoPosition&#40;-121.89, 37.337&#41;&#41;
-     *         .setIncludeSpeedLimit&#40;true&#41;
-     *         .setEntityType&#40;GeographicEntityType.COUNTRY_SECONDARY_SUBDIVISION&#41; &#47;&#47; returns only city
-     * &#41;;
-     *
-     * &#47;&#47; complete
-     * asyncClient.reverseSearchAddressWithResponse&#40;
-     *     new ReverseSearchAddressOptions&#40;new GeoPosition&#40;-121.89, 37.337&#41;&#41;
-     *         .setIncludeSpeedLimit&#40;true&#41;
-     *         .setEntityType&#40;GeographicEntityType.COUNTRY_SECONDARY_SUBDIVISION&#41;&#41;.block&#40;&#41;.getStatusCode&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.maps.search.async.reverse_search_address -->
-     *
-     * @param options a {@link ReverseSearchAddressOptions} representing the search parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Reverse Search Address call.
-     */
-    Mono<Response<ReverseSearchAddressResult>> reverseSearchAddressWithResponse(ReverseSearchAddressOptions options,
-        Context context) {
-        return serviceClient.reverseSearchAddressWithResponseAsync(ResponseFormat.JSON,
-                Arrays.asList(options.getCoordinates().getLatitude(), options.getCoordinates().getLongitude()),
-                options.getLanguage(), options.includeSpeedLimit(), options.getHeading(), options.getRadiusInMeters(),
-                options.getNumber(), options.includeRoadUse(), options.getRoadUse(), options.allowFreeformNewline(),
-                options.includeMatchType(), options.getEntityType(), options.getLocalizedMapView(), context)
-            .onErrorMap(MapsSearchAsyncClient::mapThrowable);
-    }
-
-    /**
-     * Reverse Address Search to a Cross Street
-     * <!-- src_embed com.azure.maps.search.async.search_reverse_cross_street_address -->
-     * <pre>
-     * System.out.println&#40;&quot;Revere Search Cross Street Address:&quot;&#41;;
-     *
-     * &#47;&#47; options
-     * asyncClient.reverseSearchCrossStreetAddress&#40;
-     *     new ReverseSearchCrossStreetAddressOptions&#40;new GeoPosition&#40;-121.89, 37.337&#41;&#41;&#41;;
-     *
-     * &#47;&#47; options
-     * asyncClient.reverseSearchCrossStreetAddress&#40;
-     *     new ReverseSearchCrossStreetAddressOptions&#40;new GeoPosition&#40;-121.89, 37.337&#41;&#41;
-     *         .setTop&#40;2&#41;
-     *         .setHeading&#40;5&#41;&#41;;
-     *
-     * &#47;&#47; complete
-     * asyncClient.reverseSearchCrossStreetAddressWithResponse&#40;
-     *     new ReverseSearchCrossStreetAddressOptions&#40;new GeoPosition&#40;-121.89, 37.337&#41;&#41;
-     *         .setTop&#40;2&#41;
-     *         .setHeading&#40;5&#41;&#41;.block&#40;&#41;.getStatusCode&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.maps.search.async.search_reverse_cross_street_address -->
-     *
-     * @param options a {@link ReverseSearchCrossStreetAddressOptions} representing the search parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Reverse Search Address call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ReverseSearchCrossStreetAddressResult> reverseSearchCrossStreetAddress(
-        ReverseSearchCrossStreetAddressOptions options) {
-        return reverseSearchCrossStreetAddressWithResponse(options, null).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Reverse Address Search to a Cross Street
-     * <!-- src_embed com.azure.maps.search.async.search_reverse_cross_street_address -->
-     * <pre>
-     * System.out.println&#40;&quot;Revere Search Cross Street Address:&quot;&#41;;
-     *
-     * &#47;&#47; options
-     * asyncClient.reverseSearchCrossStreetAddress&#40;
-     *     new ReverseSearchCrossStreetAddressOptions&#40;new GeoPosition&#40;-121.89, 37.337&#41;&#41;&#41;;
-     *
-     * &#47;&#47; options
-     * asyncClient.reverseSearchCrossStreetAddress&#40;
-     *     new ReverseSearchCrossStreetAddressOptions&#40;new GeoPosition&#40;-121.89, 37.337&#41;&#41;
-     *         .setTop&#40;2&#41;
-     *         .setHeading&#40;5&#41;&#41;;
-     *
-     * &#47;&#47; complete
-     * asyncClient.reverseSearchCrossStreetAddressWithResponse&#40;
-     *     new ReverseSearchCrossStreetAddressOptions&#40;new GeoPosition&#40;-121.89, 37.337&#41;&#41;
-     *         .setTop&#40;2&#41;
-     *         .setHeading&#40;5&#41;&#41;.block&#40;&#41;.getStatusCode&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.maps.search.async.search_reverse_cross_street_address -->
-     *
-     * @param query with a pair of coordinates.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Reverse Search Address call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ReverseSearchCrossStreetAddressResult> reverseSearchCrossStreetAddress(GeoPosition query) {
-        return reverseSearchCrossStreetAddressWithResponse(new ReverseSearchCrossStreetAddressOptions(query), null)
-            .flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Reverse Address Search to a Cross Street
-     * <!-- src_embed com.azure.maps.search.async.search_reverse_cross_street_address -->
-     * <pre>
-     * System.out.println&#40;&quot;Revere Search Cross Street Address:&quot;&#41;;
-     *
-     * &#47;&#47; options
-     * asyncClient.reverseSearchCrossStreetAddress&#40;
-     *     new ReverseSearchCrossStreetAddressOptions&#40;new GeoPosition&#40;-121.89, 37.337&#41;&#41;&#41;;
-     *
-     * &#47;&#47; options
-     * asyncClient.reverseSearchCrossStreetAddress&#40;
-     *     new ReverseSearchCrossStreetAddressOptions&#40;new GeoPosition&#40;-121.89, 37.337&#41;&#41;
-     *         .setTop&#40;2&#41;
-     *         .setHeading&#40;5&#41;&#41;;
-     *
-     * &#47;&#47; complete
-     * asyncClient.reverseSearchCrossStreetAddressWithResponse&#40;
-     *     new ReverseSearchCrossStreetAddressOptions&#40;new GeoPosition&#40;-121.89, 37.337&#41;&#41;
-     *         .setTop&#40;2&#41;
-     *         .setHeading&#40;5&#41;&#41;.block&#40;&#41;.getStatusCode&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.maps.search.async.search_reverse_cross_street_address -->
-     *
-     * @param options a {@link ReverseSearchCrossStreetAddressOptions} representing the search parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Reverse Search Address call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ReverseSearchCrossStreetAddressResult>> reverseSearchCrossStreetAddressWithResponse(
-        ReverseSearchCrossStreetAddressOptions options) {
-        return withContext(context -> reverseSearchCrossStreetAddressWithResponse(options, context));
-    }
-
-    /**
-     * Reverse Address Search to a Cross Street
-     * <!-- src_embed com.azure.maps.search.async.search_reverse_cross_street_address -->
-     * <pre>
-     * System.out.println&#40;&quot;Revere Search Cross Street Address:&quot;&#41;;
-     *
-     * &#47;&#47; options
-     * asyncClient.reverseSearchCrossStreetAddress&#40;
-     *     new ReverseSearchCrossStreetAddressOptions&#40;new GeoPosition&#40;-121.89, 37.337&#41;&#41;&#41;;
-     *
-     * &#47;&#47; options
-     * asyncClient.reverseSearchCrossStreetAddress&#40;
-     *     new ReverseSearchCrossStreetAddressOptions&#40;new GeoPosition&#40;-121.89, 37.337&#41;&#41;
-     *         .setTop&#40;2&#41;
-     *         .setHeading&#40;5&#41;&#41;;
-     *
-     * &#47;&#47; complete
-     * asyncClient.reverseSearchCrossStreetAddressWithResponse&#40;
-     *     new ReverseSearchCrossStreetAddressOptions&#40;new GeoPosition&#40;-121.89, 37.337&#41;&#41;
-     *         .setTop&#40;2&#41;
-     *         .setHeading&#40;5&#41;&#41;.block&#40;&#41;.getStatusCode&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.maps.search.async.search_reverse_cross_street_address -->
-     *
-     * @param options a {@link ReverseSearchCrossStreetAddressOptions} representing the search parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Reverse Search Address call.
-     */
-    Mono<Response<ReverseSearchCrossStreetAddressResult>> reverseSearchCrossStreetAddressWithResponse(
-        ReverseSearchCrossStreetAddressOptions options, Context context) {
-        return serviceClient.reverseSearchCrossStreetAddressWithResponseAsync(ResponseFormat.JSON,
-                Arrays.asList(options.getCoordinates().getLatitude(), options.getCoordinates().getLongitude()),
-                options.getTop(), options.getHeading(), options.getRadiusInMeters(), options.getLanguage(),
-                options.getLocalizedMapView(), context)
-            .onErrorMap(MapsSearchAsyncClient::mapThrowable);
-    }
-
-    /**
-     * Structured Address Search
-     * <!-- src_embed com.azure.maps.search.async.search_structured_address -->
-     * <pre>
-     * System.out.println&#40;&quot;Search Address Structured:&quot;&#41;;
-     *
-     * &#47;&#47; simple
-     * asyncClient.searchStructuredAddress&#40;new StructuredAddress&#40;&quot;US&quot;&#41;
-     *     .setPostalCode&#40;&quot;98121&quot;&#41;
-     *     .setStreetNumber&#40;&quot;15127&quot;&#41;
-     *     .setStreetName&#40;&quot;NE 24th Street&quot;&#41;
-     *     .setMunicipality&#40;&quot;Redmond&quot;&#41;
-     *     .setCountrySubdivision&#40;&quot;WA&quot;&#41;, null&#41;;
-     *
-     * &#47;&#47; complete
-     * asyncClient.searchStructuredAddressWithResponse&#40;new StructuredAddress&#40;&quot;US&quot;&#41;
-     *     .setPostalCode&#40;&quot;98121&quot;&#41;
-     *     .setStreetNumber&#40;&quot;15127&quot;&#41;
-     *     .setStreetName&#40;&quot;NE 24th Street&quot;&#41;
-     *     .setMunicipality&#40;&quot;Redmond&quot;&#41;
-     *     .setCountrySubdivision&#40;&quot;WA&quot;&#41;,
-     *     new SearchStructuredAddressOptions&#40;&#41;
-     *             .setTop&#40;2&#41;
-     *             .setRadiusInMeters&#40;1000&#41;&#41;.block&#40;&#41;.getStatusCode&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.maps.search.async.search_structured_address -->
-     *
-     * @param address a {@link StructuredAddress} to be searched by the API.
-     * @param options a {@link SearchStructuredAddressOptions} representing the search parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Reverse Search Address call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SearchAddressResult> searchStructuredAddress(StructuredAddress address,
-        SearchStructuredAddressOptions options) {
-        return searchStructuredAddressWithResponse(address, options, null).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Structured Address Search
-     * <!-- src_embed com.azure.maps.search.async.search_structured_address -->
-     * <pre>
-     * System.out.println&#40;&quot;Search Address Structured:&quot;&#41;;
-     *
-     * &#47;&#47; simple
-     * asyncClient.searchStructuredAddress&#40;new StructuredAddress&#40;&quot;US&quot;&#41;
-     *     .setPostalCode&#40;&quot;98121&quot;&#41;
-     *     .setStreetNumber&#40;&quot;15127&quot;&#41;
-     *     .setStreetName&#40;&quot;NE 24th Street&quot;&#41;
-     *     .setMunicipality&#40;&quot;Redmond&quot;&#41;
-     *     .setCountrySubdivision&#40;&quot;WA&quot;&#41;, null&#41;;
-     *
-     * &#47;&#47; complete
-     * asyncClient.searchStructuredAddressWithResponse&#40;new StructuredAddress&#40;&quot;US&quot;&#41;
-     *     .setPostalCode&#40;&quot;98121&quot;&#41;
-     *     .setStreetNumber&#40;&quot;15127&quot;&#41;
-     *     .setStreetName&#40;&quot;NE 24th Street&quot;&#41;
-     *     .setMunicipality&#40;&quot;Redmond&quot;&#41;
-     *     .setCountrySubdivision&#40;&quot;WA&quot;&#41;,
-     *     new SearchStructuredAddressOptions&#40;&#41;
-     *             .setTop&#40;2&#41;
-     *             .setRadiusInMeters&#40;1000&#41;&#41;.block&#40;&#41;.getStatusCode&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.maps.search.async.search_structured_address -->
-     *
-     * @param countryCode the country code for query.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Reverse Search Address call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SearchAddressResult> searchStructuredAddress(String countryCode) {
-        return searchStructuredAddressWithResponse(new StructuredAddress(countryCode), null).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Structured Address Search
-     * <!-- src_embed com.azure.maps.search.async.search_structured_address -->
-     * <pre>
-     * System.out.println&#40;&quot;Search Address Structured:&quot;&#41;;
-     *
-     * &#47;&#47; simple
-     * asyncClient.searchStructuredAddress&#40;new StructuredAddress&#40;&quot;US&quot;&#41;
-     *     .setPostalCode&#40;&quot;98121&quot;&#41;
-     *     .setStreetNumber&#40;&quot;15127&quot;&#41;
-     *     .setStreetName&#40;&quot;NE 24th Street&quot;&#41;
-     *     .setMunicipality&#40;&quot;Redmond&quot;&#41;
-     *     .setCountrySubdivision&#40;&quot;WA&quot;&#41;, null&#41;;
-     *
-     * &#47;&#47; complete
-     * asyncClient.searchStructuredAddressWithResponse&#40;new StructuredAddress&#40;&quot;US&quot;&#41;
-     *     .setPostalCode&#40;&quot;98121&quot;&#41;
-     *     .setStreetNumber&#40;&quot;15127&quot;&#41;
-     *     .setStreetName&#40;&quot;NE 24th Street&quot;&#41;
-     *     .setMunicipality&#40;&quot;Redmond&quot;&#41;
-     *     .setCountrySubdivision&#40;&quot;WA&quot;&#41;,
-     *     new SearchStructuredAddressOptions&#40;&#41;
-     *             .setTop&#40;2&#41;
-     *             .setRadiusInMeters&#40;1000&#41;&#41;.block&#40;&#41;.getStatusCode&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.maps.search.async.search_structured_address -->
-     *
-     * @param address a {@link StructuredAddress} to be searched by the API.
-     * @param options a {@link SearchStructuredAddressOptions} representing the search parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Reverse Search Address call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SearchAddressResult>> searchStructuredAddressWithResponse(StructuredAddress address,
-        SearchStructuredAddressOptions options) {
-        return withContext(context -> searchStructuredAddressWithResponse(address, options, context));
-    }
-
-    /**
-     * Structured Address Search
-     * <!-- src_embed com.azure.maps.search.async.search_structured_address -->
-     * <pre>
-     * System.out.println&#40;&quot;Search Address Structured:&quot;&#41;;
-     *
-     * &#47;&#47; simple
-     * asyncClient.searchStructuredAddress&#40;new StructuredAddress&#40;&quot;US&quot;&#41;
-     *     .setPostalCode&#40;&quot;98121&quot;&#41;
-     *     .setStreetNumber&#40;&quot;15127&quot;&#41;
-     *     .setStreetName&#40;&quot;NE 24th Street&quot;&#41;
-     *     .setMunicipality&#40;&quot;Redmond&quot;&#41;
-     *     .setCountrySubdivision&#40;&quot;WA&quot;&#41;, null&#41;;
-     *
-     * &#47;&#47; complete
-     * asyncClient.searchStructuredAddressWithResponse&#40;new StructuredAddress&#40;&quot;US&quot;&#41;
-     *     .setPostalCode&#40;&quot;98121&quot;&#41;
-     *     .setStreetNumber&#40;&quot;15127&quot;&#41;
-     *     .setStreetName&#40;&quot;NE 24th Street&quot;&#41;
-     *     .setMunicipality&#40;&quot;Redmond&quot;&#41;
-     *     .setCountrySubdivision&#40;&quot;WA&quot;&#41;,
-     *     new SearchStructuredAddressOptions&#40;&#41;
-     *             .setTop&#40;2&#41;
-     *             .setRadiusInMeters&#40;1000&#41;&#41;.block&#40;&#41;.getStatusCode&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.maps.search.async.search_structured_address -->
-     *
-     * @param address a {@link StructuredAddress} to be searched by the API.
-     * @param options a {@link SearchStructuredAddressOptions} representing the search parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Structured Address Search call.
-     */
-    Mono<Response<SearchAddressResult>> searchStructuredAddressWithResponse(StructuredAddress address,
-        SearchStructuredAddressOptions options, Context context) {
-        final SearchStructuredAddressOptions param = Optional.ofNullable(options)
-            .orElse(new SearchStructuredAddressOptions());
-        return serviceClient.searchStructuredAddressWithResponseAsync(ResponseFormat.JSON, address.getCountryCode(),
-                param.getLanguage(), param.getTop(), param.getSkip(), address.getStreetNumber(),
-                address.getStreetName(), address.getCrossStreet(), address.getMunicipality(),
-                address.getMunicipalitySubdivision(), address.getCountryTertiarySubdivision(),
-                address.getCountrySecondarySubdivision(), address.getCountrySubdivision(), address.getPostalCode(),
-                param.getExtendedPostalCodesFor(), param.getEntityType(), param.getLocalizedMapView(), context)
-            .onErrorMap(MapsSearchAsyncClient::mapThrowable);
-    }
-
-    /**
-     * Search Inside Geometry
-     * <!-- src_embed com.azure.maps.search.async.search_inside_geometry -->
-     * <pre>
-     * System.out.println&#40;&quot;Search Inside Geometry&quot;&#41;;
-     *
-     * &#47;&#47; create GeoPolygon
-     * List&lt;GeoPosition&gt; searchInsideGeometryCoordinates = new ArrayList&lt;&gt;&#40;&#41;;
-     * searchInsideGeometryCoordinates.add&#40;new GeoPosition&#40;-122.43576049804686, 37.7524152343544&#41;&#41;;
-     * searchInsideGeometryCoordinates.add&#40;new GeoPosition&#40;-122.43301391601562, 37.70660472542312&#41;&#41;;
-     * searchInsideGeometryCoordinates.add&#40;new GeoPosition&#40;-122.36434936523438, 37.712059855877314&#41;&#41;;
-     * searchInsideGeometryCoordinates.add&#40;new GeoPosition&#40;-122.43576049804686, 37.7524152343544&#41;&#41;;
-     * GeoLinearRing searchInsideGeometryRing = new GeoLinearRing&#40;searchInsideGeometryCoordinates&#41;;
-     * GeoPolygon searchInsideGeometryPolygon = new GeoPolygon&#40;searchInsideGeometryRing&#41;;
-     *
-     * &#47;&#47; simple
-     * asyncClient.searchInsideGeometry&#40;
-     *     new SearchInsideGeometryOptions&#40;&quot;Leland Avenue&quot;, searchInsideGeometryPolygon&#41;&#41;;
-     *
-     * &#47;&#47; options
-     * asyncClient.searchInsideGeometry&#40;
-     *     new SearchInsideGeometryOptions&#40;&quot;Leland Avenue&quot;, searchInsideGeometryPolygon&#41;
-     *         .setTop&#40;5&#41;&#41;;
-     *
-     * &#47;&#47; complete
-     * asyncClient.searchInsideGeometryWithResponse&#40;
-     *     new SearchInsideGeometryOptions&#40;&quot;Leland Avenue&quot;, searchInsideGeometryPolygon&#41;
-     *         .setTop&#40;5&#41;&#41;.block&#40;&#41;.getStatusCode&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.maps.search.async.search_inside_geometry -->
-     *
-     * @param options a {@link SearchInsideGeometryOptions} representing the search parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Inside Geometry call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SearchAddressResult> searchInsideGeometry(SearchInsideGeometryOptions options) {
-        return searchInsideGeometryWithResponse(options, null).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Search Inside Geometry
-     * <!-- src_embed com.azure.maps.search.async.search_inside_geometry -->
-     * <pre>
-     * System.out.println&#40;&quot;Search Inside Geometry&quot;&#41;;
-     *
-     * &#47;&#47; create GeoPolygon
-     * List&lt;GeoPosition&gt; searchInsideGeometryCoordinates = new ArrayList&lt;&gt;&#40;&#41;;
-     * searchInsideGeometryCoordinates.add&#40;new GeoPosition&#40;-122.43576049804686, 37.7524152343544&#41;&#41;;
-     * searchInsideGeometryCoordinates.add&#40;new GeoPosition&#40;-122.43301391601562, 37.70660472542312&#41;&#41;;
-     * searchInsideGeometryCoordinates.add&#40;new GeoPosition&#40;-122.36434936523438, 37.712059855877314&#41;&#41;;
-     * searchInsideGeometryCoordinates.add&#40;new GeoPosition&#40;-122.43576049804686, 37.7524152343544&#41;&#41;;
-     * GeoLinearRing searchInsideGeometryRing = new GeoLinearRing&#40;searchInsideGeometryCoordinates&#41;;
-     * GeoPolygon searchInsideGeometryPolygon = new GeoPolygon&#40;searchInsideGeometryRing&#41;;
-     *
-     * &#47;&#47; simple
-     * asyncClient.searchInsideGeometry&#40;
-     *     new SearchInsideGeometryOptions&#40;&quot;Leland Avenue&quot;, searchInsideGeometryPolygon&#41;&#41;;
-     *
-     * &#47;&#47; options
-     * asyncClient.searchInsideGeometry&#40;
-     *     new SearchInsideGeometryOptions&#40;&quot;Leland Avenue&quot;, searchInsideGeometryPolygon&#41;
-     *         .setTop&#40;5&#41;&#41;;
-     *
-     * &#47;&#47; complete
-     * asyncClient.searchInsideGeometryWithResponse&#40;
-     *     new SearchInsideGeometryOptions&#40;&quot;Leland Avenue&quot;, searchInsideGeometryPolygon&#41;
-     *         .setTop&#40;5&#41;&#41;.block&#40;&#41;.getStatusCode&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.maps.search.async.search_inside_geometry -->
-     *
-     * @param query query string
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Inside Geometry call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SearchAddressResult> searchInsideGeometry(String query) {
-        return searchInsideGeometryWithResponse(new SearchInsideGeometryOptions(query), null).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Search Inside Geometry
-     * <!-- src_embed com.azure.maps.search.async.search_inside_geometry -->
-     * <pre>
-     * System.out.println&#40;&quot;Search Inside Geometry&quot;&#41;;
-     *
-     * &#47;&#47; create GeoPolygon
-     * List&lt;GeoPosition&gt; searchInsideGeometryCoordinates = new ArrayList&lt;&gt;&#40;&#41;;
-     * searchInsideGeometryCoordinates.add&#40;new GeoPosition&#40;-122.43576049804686, 37.7524152343544&#41;&#41;;
-     * searchInsideGeometryCoordinates.add&#40;new GeoPosition&#40;-122.43301391601562, 37.70660472542312&#41;&#41;;
-     * searchInsideGeometryCoordinates.add&#40;new GeoPosition&#40;-122.36434936523438, 37.712059855877314&#41;&#41;;
-     * searchInsideGeometryCoordinates.add&#40;new GeoPosition&#40;-122.43576049804686, 37.7524152343544&#41;&#41;;
-     * GeoLinearRing searchInsideGeometryRing = new GeoLinearRing&#40;searchInsideGeometryCoordinates&#41;;
-     * GeoPolygon searchInsideGeometryPolygon = new GeoPolygon&#40;searchInsideGeometryRing&#41;;
-     *
-     * &#47;&#47; simple
-     * asyncClient.searchInsideGeometry&#40;
-     *     new SearchInsideGeometryOptions&#40;&quot;Leland Avenue&quot;, searchInsideGeometryPolygon&#41;&#41;;
-     *
-     * &#47;&#47; options
-     * asyncClient.searchInsideGeometry&#40;
-     *     new SearchInsideGeometryOptions&#40;&quot;Leland Avenue&quot;, searchInsideGeometryPolygon&#41;
-     *         .setTop&#40;5&#41;&#41;;
-     *
-     * &#47;&#47; complete
-     * asyncClient.searchInsideGeometryWithResponse&#40;
-     *     new SearchInsideGeometryOptions&#40;&quot;Leland Avenue&quot;, searchInsideGeometryPolygon&#41;
-     *         .setTop&#40;5&#41;&#41;.block&#40;&#41;.getStatusCode&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.maps.search.async.search_inside_geometry -->
-     *
-     * @param options a {@link SearchInsideGeometryOptions} representing the search parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Inside Geometry call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SearchAddressResult>> searchInsideGeometryWithResponse(SearchInsideGeometryOptions options) {
-        return withContext(context -> searchInsideGeometryWithResponse(options, context));
-    }
-
-    /**
-     * Search Inside Geometry
-     * <!-- src_embed com.azure.maps.search.async.search_inside_geometry -->
-     * <pre>
-     * System.out.println&#40;&quot;Search Inside Geometry&quot;&#41;;
-     *
-     * &#47;&#47; create GeoPolygon
-     * List&lt;GeoPosition&gt; searchInsideGeometryCoordinates = new ArrayList&lt;&gt;&#40;&#41;;
-     * searchInsideGeometryCoordinates.add&#40;new GeoPosition&#40;-122.43576049804686, 37.7524152343544&#41;&#41;;
-     * searchInsideGeometryCoordinates.add&#40;new GeoPosition&#40;-122.43301391601562, 37.70660472542312&#41;&#41;;
-     * searchInsideGeometryCoordinates.add&#40;new GeoPosition&#40;-122.36434936523438, 37.712059855877314&#41;&#41;;
-     * searchInsideGeometryCoordinates.add&#40;new GeoPosition&#40;-122.43576049804686, 37.7524152343544&#41;&#41;;
-     * GeoLinearRing searchInsideGeometryRing = new GeoLinearRing&#40;searchInsideGeometryCoordinates&#41;;
-     * GeoPolygon searchInsideGeometryPolygon = new GeoPolygon&#40;searchInsideGeometryRing&#41;;
-     *
-     * &#47;&#47; simple
-     * asyncClient.searchInsideGeometry&#40;
-     *     new SearchInsideGeometryOptions&#40;&quot;Leland Avenue&quot;, searchInsideGeometryPolygon&#41;&#41;;
-     *
-     * &#47;&#47; options
-     * asyncClient.searchInsideGeometry&#40;
-     *     new SearchInsideGeometryOptions&#40;&quot;Leland Avenue&quot;, searchInsideGeometryPolygon&#41;
-     *         .setTop&#40;5&#41;&#41;;
-     *
-     * &#47;&#47; complete
-     * asyncClient.searchInsideGeometryWithResponse&#40;
-     *     new SearchInsideGeometryOptions&#40;&quot;Leland Avenue&quot;, searchInsideGeometryPolygon&#41;
-     *         .setTop&#40;5&#41;&#41;.block&#40;&#41;.getStatusCode&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.maps.search.async.search_inside_geometry -->
-     *
-     * @param options a {@link SearchInsideGeometryOptions} representing the search parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Inside Geometry call.
-     */
-    Mono<Response<SearchAddressResult>> searchInsideGeometryWithResponse(SearchInsideGeometryOptions options,
-        Context context) {
-        GeoJsonObject geoJsonObject = Utility.toGeoJsonObject(options.getGeometry());
-        return serviceClient.searchInsideGeometryWithResponseAsync(ResponseFormat.JSON, options.getQuery(),
-                new SearchInsideGeometryRequest().setGeometry(geoJsonObject), options.getTop(), options.getLanguage(),
-                options.getCategoryFilter(), options.getExtendedPostalCodesFor(), options.getIndexFilter(),
-                options.getLocalizedMapView(), options.getOperatingHours(), context)
-                .onErrorMap(MapsSearchAsyncClient::mapThrowable);
-    }
-
-    /**
-     * Search Along Route
-     * <!-- src_embed com.azure.maps.search.async.search_along_route -->
-     * <pre>
-     * System.out.println&#40;&quot;Search Along Route&quot;&#41;;
-     *
-     * &#47;&#47; create route points
-     * List&lt;GeoPosition&gt; getPolygonPoints = new ArrayList&lt;&gt;&#40;&#41;;
-     * getPolygonPoints.add&#40;new GeoPosition&#40;-122.143035, 47.653536&#41;&#41;;
-     * getPolygonPoints.add&#40;new GeoPosition&#40;-122.187164, 47.617556&#41;&#41;;
-     * getPolygonPoints.add&#40;new GeoPosition&#40;-122.114981, 47.570599&#41;&#41;;
-     * getPolygonPoints.add&#40;new GeoPosition&#40;-122.132756, 47.654009&#41;&#41;;
-     * GeoLineString getPolygonRoute = new GeoLineString&#40;getPolygonPoints&#41;;
-     *
-     * &#47;&#47; simple
-     * SearchAddressResult result = asyncClient.searchAlongRoute&#40;
-     *     new SearchAlongRouteOptions&#40;&quot;burger&quot;, 1000, getPolygonRoute&#41;&#41;.block&#40;&#41;;
-     *
-     * &#47;&#47; options
-     * asyncClient.searchAlongRoute&#40;
-     *     new SearchAlongRouteOptions&#40;&quot;burger&quot;, 1000, getPolygonRoute&#41;
-     *         .setCategoryFilter&#40;Arrays.asList&#40;7315&#41;&#41;
-     *         .setTop&#40;5&#41;&#41;.block&#40;&#41;;
-     *
-     * &#47;&#47; complete
-     * asyncClient.searchAlongRouteWithResponse&#40;
-     *     new SearchAlongRouteOptions&#40;&quot;burger&quot;, 1000, getPolygonRoute&#41;
-     *     .setCategoryFilter&#40;Arrays.asList&#40;7315&#41;&#41;.setOperatingHours&#40;OperatingHoursRange.NEXT_SEVEN_DAYS&#41;
-     *     .setTop&#40;5&#41;&#41;.block&#40;&#41;.getStatusCode&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.maps.search.async.search_along_route -->
-     *
-     * @param options a {@link SearchAlongRouteOptions} representing the search parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Along Route call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SearchAddressResult> searchAlongRoute(SearchAlongRouteOptions options) {
-        return searchAlongRouteWithResponse(options, null).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Search Along Route
-     * <!-- src_embed com.azure.maps.search.async.search_along_route -->
-     * <pre>
-     * System.out.println&#40;&quot;Search Along Route&quot;&#41;;
-     *
-     * &#47;&#47; create route points
-     * List&lt;GeoPosition&gt; getPolygonPoints = new ArrayList&lt;&gt;&#40;&#41;;
-     * getPolygonPoints.add&#40;new GeoPosition&#40;-122.143035, 47.653536&#41;&#41;;
-     * getPolygonPoints.add&#40;new GeoPosition&#40;-122.187164, 47.617556&#41;&#41;;
-     * getPolygonPoints.add&#40;new GeoPosition&#40;-122.114981, 47.570599&#41;&#41;;
-     * getPolygonPoints.add&#40;new GeoPosition&#40;-122.132756, 47.654009&#41;&#41;;
-     * GeoLineString getPolygonRoute = new GeoLineString&#40;getPolygonPoints&#41;;
-     *
-     * &#47;&#47; simple
-     * SearchAddressResult result = asyncClient.searchAlongRoute&#40;
-     *     new SearchAlongRouteOptions&#40;&quot;burger&quot;, 1000, getPolygonRoute&#41;&#41;.block&#40;&#41;;
-     *
-     * &#47;&#47; options
-     * asyncClient.searchAlongRoute&#40;
-     *     new SearchAlongRouteOptions&#40;&quot;burger&quot;, 1000, getPolygonRoute&#41;
-     *         .setCategoryFilter&#40;Arrays.asList&#40;7315&#41;&#41;
-     *         .setTop&#40;5&#41;&#41;.block&#40;&#41;;
-     *
-     * &#47;&#47; complete
-     * asyncClient.searchAlongRouteWithResponse&#40;
-     *     new SearchAlongRouteOptions&#40;&quot;burger&quot;, 1000, getPolygonRoute&#41;
-     *     .setCategoryFilter&#40;Arrays.asList&#40;7315&#41;&#41;.setOperatingHours&#40;OperatingHoursRange.NEXT_SEVEN_DAYS&#41;
-     *     .setTop&#40;5&#41;&#41;.block&#40;&#41;.getStatusCode&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.maps.search.async.search_along_route -->
-     *
-     * @param query the search query
-     * @param maxDetourTime the maximum detour time allowed
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Along Route call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SearchAddressResult> searchAlongRoute(String query, int maxDetourTime) {
-        return searchAlongRouteWithResponse(new SearchAlongRouteOptions(query, maxDetourTime), null)
-            .flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Search Along Route
-     * <!-- src_embed com.azure.maps.search.async.search_along_route -->
-     * <pre>
-     * System.out.println&#40;&quot;Search Along Route&quot;&#41;;
-     *
-     * &#47;&#47; create route points
-     * List&lt;GeoPosition&gt; getPolygonPoints = new ArrayList&lt;&gt;&#40;&#41;;
-     * getPolygonPoints.add&#40;new GeoPosition&#40;-122.143035, 47.653536&#41;&#41;;
-     * getPolygonPoints.add&#40;new GeoPosition&#40;-122.187164, 47.617556&#41;&#41;;
-     * getPolygonPoints.add&#40;new GeoPosition&#40;-122.114981, 47.570599&#41;&#41;;
-     * getPolygonPoints.add&#40;new GeoPosition&#40;-122.132756, 47.654009&#41;&#41;;
-     * GeoLineString getPolygonRoute = new GeoLineString&#40;getPolygonPoints&#41;;
-     *
-     * &#47;&#47; simple
-     * SearchAddressResult result = asyncClient.searchAlongRoute&#40;
-     *     new SearchAlongRouteOptions&#40;&quot;burger&quot;, 1000, getPolygonRoute&#41;&#41;.block&#40;&#41;;
-     *
-     * &#47;&#47; options
-     * asyncClient.searchAlongRoute&#40;
-     *     new SearchAlongRouteOptions&#40;&quot;burger&quot;, 1000, getPolygonRoute&#41;
-     *         .setCategoryFilter&#40;Arrays.asList&#40;7315&#41;&#41;
-     *         .setTop&#40;5&#41;&#41;.block&#40;&#41;;
-     *
-     * &#47;&#47; complete
-     * asyncClient.searchAlongRouteWithResponse&#40;
-     *     new SearchAlongRouteOptions&#40;&quot;burger&quot;, 1000, getPolygonRoute&#41;
-     *     .setCategoryFilter&#40;Arrays.asList&#40;7315&#41;&#41;.setOperatingHours&#40;OperatingHoursRange.NEXT_SEVEN_DAYS&#41;
-     *     .setTop&#40;5&#41;&#41;.block&#40;&#41;.getStatusCode&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.maps.search.async.search_along_route -->
-     *
-     * @param options a {@link SearchAlongRouteOptions} representing the search parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Along Route call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SearchAddressResult>> searchAlongRouteWithResponse(SearchAlongRouteOptions options) {
-        return withContext(context -> searchAlongRouteWithResponse(options, context));
-    }
-
-    /**
-     * Search Along Route
-     * <!-- src_embed com.azure.maps.search.async.search_along_route -->
-     * <pre>
-     * System.out.println&#40;&quot;Search Along Route&quot;&#41;;
-     *
-     * &#47;&#47; create route points
-     * List&lt;GeoPosition&gt; getPolygonPoints = new ArrayList&lt;&gt;&#40;&#41;;
-     * getPolygonPoints.add&#40;new GeoPosition&#40;-122.143035, 47.653536&#41;&#41;;
-     * getPolygonPoints.add&#40;new GeoPosition&#40;-122.187164, 47.617556&#41;&#41;;
-     * getPolygonPoints.add&#40;new GeoPosition&#40;-122.114981, 47.570599&#41;&#41;;
-     * getPolygonPoints.add&#40;new GeoPosition&#40;-122.132756, 47.654009&#41;&#41;;
-     * GeoLineString getPolygonRoute = new GeoLineString&#40;getPolygonPoints&#41;;
-     *
-     * &#47;&#47; simple
-     * SearchAddressResult result = asyncClient.searchAlongRoute&#40;
-     *     new SearchAlongRouteOptions&#40;&quot;burger&quot;, 1000, getPolygonRoute&#41;&#41;.block&#40;&#41;;
-     *
-     * &#47;&#47; options
-     * asyncClient.searchAlongRoute&#40;
-     *     new SearchAlongRouteOptions&#40;&quot;burger&quot;, 1000, getPolygonRoute&#41;
-     *         .setCategoryFilter&#40;Arrays.asList&#40;7315&#41;&#41;
-     *         .setTop&#40;5&#41;&#41;.block&#40;&#41;;
-     *
-     * &#47;&#47; complete
-     * asyncClient.searchAlongRouteWithResponse&#40;
-     *     new SearchAlongRouteOptions&#40;&quot;burger&quot;, 1000, getPolygonRoute&#41;
-     *     .setCategoryFilter&#40;Arrays.asList&#40;7315&#41;&#41;.setOperatingHours&#40;OperatingHoursRange.NEXT_SEVEN_DAYS&#41;
-     *     .setTop&#40;5&#41;&#41;.block&#40;&#41;.getStatusCode&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.maps.search.async.search_along_route -->
-     *
-     * @param options a {@link SearchAlongRouteOptions} representing the search parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Along Route call.
-     */
-    Mono<Response<SearchAddressResult>> searchAlongRouteWithResponse(SearchAlongRouteOptions options, Context context) {
-        GeoJsonLineString geoJsonLineString = (GeoJsonLineString) Utility.toGeoJsonObject(options.getRoute());
-        return serviceClient.searchAlongRouteWithResponseAsync(ResponseFormat.JSON, options.getQuery(),
-                options.getMaxDetourTime(), new SearchAlongRouteRequest().setRoute(geoJsonLineString), options.getTop(),
-                options.getBrandFilter(), options.getCategoryFilter(), options.getElectricVehicleConnectorFilter(),
-                options.getLocalizedMapView(), options.getOperatingHours(), context)
-            .onErrorMap(MapsSearchAsyncClient::mapThrowable);
-    }
-
-    /**
-     * Batch Fuzzy Search
-     * <!-- src_embed com.azure.maps.search.async.fuzzy_search_batch -->
-     * <pre>
-     * List&lt;FuzzySearchOptions&gt; fuzzySearchBatchOptionsList = new ArrayList&lt;&gt;&#40;&#41;;
-     * fuzzySearchBatchOptionsList.add&#40;new FuzzySearchOptions&#40;&quot;atm&quot;, new GeoPosition&#40;-122.128362, 47.639769&#41;&#41;
-     *     .setRadiusInMeters&#40;5000&#41;.setTop&#40;5&#41;&#41;;
-     * fuzzySearchBatchOptionsList.add&#40;new FuzzySearchOptions&#40;&quot;Statue of Liberty&quot;&#41;.setTop&#40;2&#41;&#41;;
-     * fuzzySearchBatchOptionsList.add&#40;new FuzzySearchOptions&#40;&quot;Starbucks&quot;, new GeoPosition&#40;-122.128362, 47.639769&#41;&#41;
-     *     .setRadiusInMeters&#40;5000&#41;&#41;;
-     *
-     * System.out.println&#40;&quot;Post Search Fuzzy Batch Async&quot;&#41;;
-     * asyncClient.beginFuzzySearchBatch&#40;fuzzyOptionsList&#41;.getSyncPoller&#40;&#41;.getFinalResult&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.maps.search.async.fuzzy_search_batch -->
-     *
-     * @param optionsList a list of {@link FuzzySearchOptions} to be searched.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Batch Fuzzy Search service call.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BatchSearchResult, BatchSearchResult> beginFuzzySearchBatch(
-        List<FuzzySearchOptions> optionsList) {
-        return this.beginFuzzySearchBatch(optionsList, null);
-    }
-
-    /**
-     * Batch Fuzzy Search
-     * <!-- src_embed com.azure.maps.search.async.fuzzy_search_batch -->
-     * <pre>
-     * List&lt;FuzzySearchOptions&gt; fuzzySearchBatchOptionsList = new ArrayList&lt;&gt;&#40;&#41;;
-     * fuzzySearchBatchOptionsList.add&#40;new FuzzySearchOptions&#40;&quot;atm&quot;, new GeoPosition&#40;-122.128362, 47.639769&#41;&#41;
-     *     .setRadiusInMeters&#40;5000&#41;.setTop&#40;5&#41;&#41;;
-     * fuzzySearchBatchOptionsList.add&#40;new FuzzySearchOptions&#40;&quot;Statue of Liberty&quot;&#41;.setTop&#40;2&#41;&#41;;
-     * fuzzySearchBatchOptionsList.add&#40;new FuzzySearchOptions&#40;&quot;Starbucks&quot;, new GeoPosition&#40;-122.128362, 47.639769&#41;&#41;
-     *     .setRadiusInMeters&#40;5000&#41;&#41;;
-     *
-     * System.out.println&#40;&quot;Post Search Fuzzy Batch Async&quot;&#41;;
-     * asyncClient.beginFuzzySearchBatch&#40;fuzzyOptionsList&#41;.getSyncPoller&#40;&#41;.getFinalResult&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.maps.search.async.fuzzy_search_batch -->
-     *
-     * @param optionsList a list of {@link FuzzySearchOptions} to be searched.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Address Batch service call.
-     */
-    PollerFlux<BatchSearchResult, BatchSearchResult> beginFuzzySearchBatch(
-            List<FuzzySearchOptions> optionsList, Context context) {
-        Objects.requireNonNull(optionsList, "'optionsList' is a required parameter.");
-
-        // convert list to batch request
-        List<BatchRequestItem> items = optionsList.stream().map(Utility::toFuzzySearchBatchRequestItem)
-            .collect(Collectors.toList());
-        BatchRequest batchRequest = new BatchRequest().setBatchItems(items);
-
-        if (batchRequest.getBatchItems().size() <= BATCH_SIZE) {
-            return createPollerFlux(
-                () -> this.serviceClient.fuzzySearchBatchSyncWithResponseAsync(JsonFormat.JSON, batchRequest, context)
-                    .flatMap(response -> Mono.just(Utility.createBatchSearchResponse(response))
-                        .onErrorMap(MapsSearchAsyncClient::mapThrowable)), this.forwardStrategy);
-        } else {
-            return createPollerFlux(
-                () -> this.serviceClient.fuzzySearchBatchNoCustomHeadersWithResponseAsync(JsonFormat.JSON, batchRequest,
-                    context)
-                    .flatMap(response -> Mono.just(Utility.createBatchSearchResponse(response))
-                        .onErrorMap(MapsSearchAsyncClient::mapThrowable)), this.forwardStrategy);
+    Mono<Response<GeocodingResponse>> getGeocodingNoCustomHeaderWithResponse(BaseSearchOptions options, Context context) {
+        List<Double> boundingBox = null;
+        if (options.getBoundingBox().isPresent()) {
+            boundingBox = new ArrayList<>();
+            GeoBoundingBox boundingBoxObj = (GeoBoundingBox)options.getBoundingBox().get();
+            boundingBox.add(boundingBoxObj.getNorth());
+            boundingBox.add(boundingBoxObj.getWest());
+            boundingBox.add(boundingBoxObj.getSouth());
+            boundingBox.add(boundingBoxObj.getEast());
         }
-    }
-
-    /**
-     * Get Fuzzy Batch Search by Id
-     * <!-- src_embed com.azure.maps.search.async.fuzzy_search_batch -->
-     * <pre>
-     * List&lt;FuzzySearchOptions&gt; fuzzySearchBatchOptionsList = new ArrayList&lt;&gt;&#40;&#41;;
-     * fuzzySearchBatchOptionsList.add&#40;new FuzzySearchOptions&#40;&quot;atm&quot;, new GeoPosition&#40;-122.128362, 47.639769&#41;&#41;
-     *     .setRadiusInMeters&#40;5000&#41;.setTop&#40;5&#41;&#41;;
-     * fuzzySearchBatchOptionsList.add&#40;new FuzzySearchOptions&#40;&quot;Statue of Liberty&quot;&#41;.setTop&#40;2&#41;&#41;;
-     * fuzzySearchBatchOptionsList.add&#40;new FuzzySearchOptions&#40;&quot;Starbucks&quot;, new GeoPosition&#40;-122.128362, 47.639769&#41;&#41;
-     *     .setRadiusInMeters&#40;5000&#41;&#41;;
-     *
-     * System.out.println&#40;&quot;Post Search Fuzzy Batch Async&quot;&#41;;
-     * asyncClient.beginFuzzySearchBatch&#40;fuzzyOptionsList&#41;.getSyncPoller&#40;&#41;.getFinalResult&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.maps.search.async.fuzzy_search_batch -->
-     *
-     * @param batchId Batch id for querying the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Address Batch service call.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BatchSearchResult, BatchSearchResult> beginGetFuzzySearchBatch(String batchId) {
-        return this.beginGetFuzzySearchBatch(batchId, null);
-    }
-
-    /**
-     * Get Fuzzy Batch Search by Id
-     * <!-- src_embed com.azure.maps.search.async.fuzzy_search_batch -->
-     * <pre>
-     * List&lt;FuzzySearchOptions&gt; fuzzySearchBatchOptionsList = new ArrayList&lt;&gt;&#40;&#41;;
-     * fuzzySearchBatchOptionsList.add&#40;new FuzzySearchOptions&#40;&quot;atm&quot;, new GeoPosition&#40;-122.128362, 47.639769&#41;&#41;
-     *     .setRadiusInMeters&#40;5000&#41;.setTop&#40;5&#41;&#41;;
-     * fuzzySearchBatchOptionsList.add&#40;new FuzzySearchOptions&#40;&quot;Statue of Liberty&quot;&#41;.setTop&#40;2&#41;&#41;;
-     * fuzzySearchBatchOptionsList.add&#40;new FuzzySearchOptions&#40;&quot;Starbucks&quot;, new GeoPosition&#40;-122.128362, 47.639769&#41;&#41;
-     *     .setRadiusInMeters&#40;5000&#41;&#41;;
-     *
-     * System.out.println&#40;&quot;Post Search Fuzzy Batch Async&quot;&#41;;
-     * asyncClient.beginFuzzySearchBatch&#40;fuzzyOptionsList&#41;.getSyncPoller&#40;&#41;.getFinalResult&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.maps.search.async.fuzzy_search_batch -->
-     *
-     * @param batchId Batch id for querying the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Address Batch service call.
-     */
-    PollerFlux<BatchSearchResult, BatchSearchResult> beginGetFuzzySearchBatch(String batchId, Context context) {
-        return createPollerFlux(
-            () -> this.serviceClient.getFuzzySearchBatchNoCustomHeadersWithResponseAsync(batchId, context)
-                .flatMap(response -> Mono.just(Utility.createBatchSearchResponse(response))
-                    .onErrorMap(MapsSearchAsyncClient::mapThrowable)), this.forwardStrategy);
-    }
-
-    /**
-     * Batch Address Search
-     * <!-- src_embed com.azure.maps.search.async.search_address_batch -->
-     * <pre>
-     * List&lt;SearchAddressOptions&gt; list = new ArrayList&lt;&gt;&#40;&#41;;
-     * list.add&#40;new SearchAddressOptions&#40;&quot;400 Broad St, Seattle, WA 98109&quot;&#41;.setTop&#40;3&#41;&#41;;
-     * list.add&#40;new SearchAddressOptions&#40;&quot;One, Microsoft Way, Redmond, WA 98052&quot;&#41;.setTop&#40;3&#41;&#41;;
-     * list.add&#40;new SearchAddressOptions&#40;&quot;350 5th Ave, New York, NY 10118&quot;&#41;.setTop&#40;3&#41;&#41;;
-     * list.add&#40;new SearchAddressOptions&#40;&quot;1 Main Street&quot;&#41;
-     *     .setCountryFilter&#40;Arrays.asList&#40;&quot;GB&quot;, &quot;US&quot;, &quot;AU&quot;&#41;&#41;.setTop&#40;3&#41;&#41;;
-     *
-     * &#47;&#47; Search address batch async -
-     * &#47;&#47; https:&#47;&#47;docs.microsoft.com&#47;en-us&#47;rest&#47;api&#47;maps&#47;search&#47;post-search-address-batch
-     * &#47;&#47; This call posts addresses for search using the Asynchronous Batch API.
-     * &#47;&#47; SyncPoller will do the polling automatically and you can retrieve the result
-     * &#47;&#47; with getFinalResult&#40;&#41;
-     * System.out.println&#40;&quot;Search Address Batch Async&quot;&#41;;
-     * asyncClient.beginSearchAddressBatch&#40;list&#41;.blockFirst&#40;&#41;.getFinalResult&#40;&#41;;
-     * SyncPoller&lt;BatchSearchResult, BatchSearchResult&gt; bp2 = asyncClient.beginSearchAddressBatch&#40;list&#41;.getSyncPoller&#40;&#41;;
-     * BatchSearchResult batchResult2 = bp2.getFinalResult&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.maps.search.async.search_address_batch -->
-     *
-     * @param optionsList a list of {@link FuzzySearchOptions} to be searched.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Address Batch service call.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BatchSearchResult, BatchSearchResult> beginSearchAddressBatch(
-        List<SearchAddressOptions> optionsList) {
-        return this.beginSearchAddressBatch(optionsList, null);
-    }
-
-    /**
-     * Batch Address Search
-     * <!-- src_embed com.azure.maps.search.async.search_address_batch -->
-     * <pre>
-     * List&lt;SearchAddressOptions&gt; list = new ArrayList&lt;&gt;&#40;&#41;;
-     * list.add&#40;new SearchAddressOptions&#40;&quot;400 Broad St, Seattle, WA 98109&quot;&#41;.setTop&#40;3&#41;&#41;;
-     * list.add&#40;new SearchAddressOptions&#40;&quot;One, Microsoft Way, Redmond, WA 98052&quot;&#41;.setTop&#40;3&#41;&#41;;
-     * list.add&#40;new SearchAddressOptions&#40;&quot;350 5th Ave, New York, NY 10118&quot;&#41;.setTop&#40;3&#41;&#41;;
-     * list.add&#40;new SearchAddressOptions&#40;&quot;1 Main Street&quot;&#41;
-     *     .setCountryFilter&#40;Arrays.asList&#40;&quot;GB&quot;, &quot;US&quot;, &quot;AU&quot;&#41;&#41;.setTop&#40;3&#41;&#41;;
-     *
-     * &#47;&#47; Search address batch async -
-     * &#47;&#47; https:&#47;&#47;docs.microsoft.com&#47;en-us&#47;rest&#47;api&#47;maps&#47;search&#47;post-search-address-batch
-     * &#47;&#47; This call posts addresses for search using the Asynchronous Batch API.
-     * &#47;&#47; SyncPoller will do the polling automatically and you can retrieve the result
-     * &#47;&#47; with getFinalResult&#40;&#41;
-     * System.out.println&#40;&quot;Search Address Batch Async&quot;&#41;;
-     * asyncClient.beginSearchAddressBatch&#40;list&#41;.blockFirst&#40;&#41;.getFinalResult&#40;&#41;;
-     * SyncPoller&lt;BatchSearchResult, BatchSearchResult&gt; bp2 = asyncClient.beginSearchAddressBatch&#40;list&#41;.getSyncPoller&#40;&#41;;
-     * BatchSearchResult batchResult2 = bp2.getFinalResult&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.maps.search.async.search_address_batch -->
-     *
-     * @param optionsList a list of {@link SearchAddressOptions} to be searched.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Address Batch service call.
-     */
-    PollerFlux<BatchSearchResult, BatchSearchResult> beginSearchAddressBatch(
-            List<SearchAddressOptions> optionsList, Context context) {
-        Objects.requireNonNull(optionsList, "'optionsList' is a required parameter.");
-
-        // convert list to batch request
-        List<BatchRequestItem> items = optionsList.stream().map(Utility::toSearchBatchRequestItem)
-            .collect(Collectors.toList());
-        BatchRequest batchRequest = new BatchRequest().setBatchItems(items);
-
-        // run
-        if (batchRequest.getBatchItems().size() <= BATCH_SIZE) {
-            return createPollerFlux(() -> this.serviceClient.searchAddressBatchSyncWithResponseAsync(JsonFormat.JSON,
-                    batchRequest, context)
-                .flatMap(response -> Mono.just(Utility.createBatchSearchResponse(response))
-                    .onErrorMap(MapsSearchAsyncClient::mapThrowable)), this.forwardStrategy);
-        } else {
-            return createPollerFlux(
-                () -> this.serviceClient.searchAddressBatchNoCustomHeadersWithResponseAsync(JsonFormat.JSON,
-                    batchRequest, context).flatMap(response -> Mono.just(Utility.createBatchSearchResponse(response))
-                    .onErrorMap(MapsSearchAsyncClient::mapThrowable)), this.forwardStrategy);
+        List<Double> coordinates = null;
+        if (options.getCoordinates() != null) {
+            coordinates = new ArrayList<>();
+            coordinates.add(options.getCoordinates().getLongitude());
+            coordinates.add(options.getCoordinates().getLatitude());
         }
-    }
 
-
-
-    /**
-     * Get Batch Search Id
-     * <!-- src_embed com.azure.maps.search.async.search_address_batch -->
-     * <pre>
-     * List&lt;SearchAddressOptions&gt; list = new ArrayList&lt;&gt;&#40;&#41;;
-     * list.add&#40;new SearchAddressOptions&#40;&quot;400 Broad St, Seattle, WA 98109&quot;&#41;.setTop&#40;3&#41;&#41;;
-     * list.add&#40;new SearchAddressOptions&#40;&quot;One, Microsoft Way, Redmond, WA 98052&quot;&#41;.setTop&#40;3&#41;&#41;;
-     * list.add&#40;new SearchAddressOptions&#40;&quot;350 5th Ave, New York, NY 10118&quot;&#41;.setTop&#40;3&#41;&#41;;
-     * list.add&#40;new SearchAddressOptions&#40;&quot;1 Main Street&quot;&#41;
-     *     .setCountryFilter&#40;Arrays.asList&#40;&quot;GB&quot;, &quot;US&quot;, &quot;AU&quot;&#41;&#41;.setTop&#40;3&#41;&#41;;
-     *
-     * &#47;&#47; Search address batch async -
-     * &#47;&#47; https:&#47;&#47;docs.microsoft.com&#47;en-us&#47;rest&#47;api&#47;maps&#47;search&#47;post-search-address-batch
-     * &#47;&#47; This call posts addresses for search using the Asynchronous Batch API.
-     * &#47;&#47; SyncPoller will do the polling automatically and you can retrieve the result
-     * &#47;&#47; with getFinalResult&#40;&#41;
-     * System.out.println&#40;&quot;Search Address Batch Async&quot;&#41;;
-     * asyncClient.beginSearchAddressBatch&#40;list&#41;.blockFirst&#40;&#41;.getFinalResult&#40;&#41;;
-     * SyncPoller&lt;BatchSearchResult, BatchSearchResult&gt; bp2 = asyncClient.beginSearchAddressBatch&#40;list&#41;.getSyncPoller&#40;&#41;;
-     * BatchSearchResult batchResult2 = bp2.getFinalResult&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.maps.search.async.search_address_batch -->
-     *
-     * @param batchId Batch id for querying the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Address Batch service call.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BatchSearchResult, BatchSearchResult> beginGetSearchAddressBatch(String batchId) {
-        return this.beginGetSearchAddressBatch(batchId, null);
+        return serviceClient.getGeocodingNoCustomHeadersWithResponseAsync(options.getTop(), options.getQuery(),
+                options.getAddressLine(), options.getCountryRegion(), boundingBox, options.getView(), coordinates,
+                options.getAdminDistrict(), options.getAdminDistrict2(), options.getAdminDistrict3(),
+                options.getLocality(), options.getPostalCode(), context)
+            .onErrorMap(MapsSearchAsyncClient::mapThrowable);
     }
 
     /**
-     * Get Batch Search Id
-     * <!-- src_embed com.azure.maps.search.async.search_address_batch -->
-     * <pre>
-     * List&lt;SearchAddressOptions&gt; list = new ArrayList&lt;&gt;&#40;&#41;;
-     * list.add&#40;new SearchAddressOptions&#40;&quot;400 Broad St, Seattle, WA 98109&quot;&#41;.setTop&#40;3&#41;&#41;;
-     * list.add&#40;new SearchAddressOptions&#40;&quot;One, Microsoft Way, Redmond, WA 98052&quot;&#41;.setTop&#40;3&#41;&#41;;
-     * list.add&#40;new SearchAddressOptions&#40;&quot;350 5th Ave, New York, NY 10118&quot;&#41;.setTop&#40;3&#41;&#41;;
-     * list.add&#40;new SearchAddressOptions&#40;&quot;1 Main Street&quot;&#41;
-     *     .setCountryFilter&#40;Arrays.asList&#40;&quot;GB&quot;, &quot;US&quot;, &quot;AU&quot;&#41;&#41;.setTop&#40;3&#41;&#41;;
+     * Use to get longitude and latitude coordinates of a street address or name of a place.
      *
-     * &#47;&#47; Search address batch async -
-     * &#47;&#47; https:&#47;&#47;docs.microsoft.com&#47;en-us&#47;rest&#47;api&#47;maps&#47;search&#47;post-search-address-batch
-     * &#47;&#47; This call posts addresses for search using the Asynchronous Batch API.
-     * &#47;&#47; SyncPoller will do the polling automatically and you can retrieve the result
-     * &#47;&#47; with getFinalResult&#40;&#41;
-     * System.out.println&#40;&quot;Search Address Batch Async&quot;&#41;;
-     * asyncClient.beginSearchAddressBatch&#40;list&#41;.blockFirst&#40;&#41;.getFinalResult&#40;&#41;;
-     * SyncPoller&lt;BatchSearchResult, BatchSearchResult&gt; bp2 = asyncClient.beginSearchAddressBatch&#40;list&#41;.getSyncPoller&#40;&#41;;
-     * BatchSearchResult batchResult2 = bp2.getFinalResult&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.maps.search.async.search_address_batch -->
      *
-     * @param batchId Batch id for querying the operation.
+     *
+     * The `Get Geocoding` API is an HTTP `GET` request that returns the longitude and latitude coordinates of the
+     * location being searched.
+     *
+     * In many cases, the complete search service might be too much, for instance if you are only interested in
+     * traditional geocoding. Search can also be accessed for address look up exclusively. The geocoding is performed by
+     * hitting the geocoding endpoint with just the address or partial address in question. The geocoding search index
+     * will be queried for everything above the street level data. No Point of Interest (POIs) will be returned. Note
+     * that the geocoder is very tolerant of typos and incomplete addresses. It will also handle everything from exact
+     * street addresses or street or intersections as well as higher level geographies such as city centers, counties
+     * and states. The response also returns detailed address properties such as street, postal code, municipality, and
+     * country/region information.
+     *
+     * @param options base search options.
+     *
+     * **If query is given, should not use this parameter.**.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Address Batch service call.
+     * @return this object is returned from a successful Geocoding call along with {@link ResponseBase} on successful
+     * completion of {@link Mono}.
      */
-    PollerFlux<BatchSearchResult, BatchSearchResult> beginGetSearchAddressBatch(
-            String batchId, Context context) {
-        return createPollerFlux(
-            () -> this.serviceClient.getSearchAddressBatchNoCustomHeadersWithResponseAsync(batchId, context)
-                .flatMap(response -> Mono.just(Utility.createBatchSearchResponse(response))
-                    .onErrorMap(MapsSearchAsyncClient::mapThrowable)), this.forwardStrategy);
-    }
 
-    /**
-     * Searches a batch of addresses given their coordinates.
-     * <!-- src_embed com.azure.maps.search.async.reverse_search_address_batch  -->
-     * <pre>
-     * List&lt;ReverseSearchAddressOptions&gt; list2 = new ArrayList&lt;&gt;&#40;&#41;;
-     * list2.add&#40;new ReverseSearchAddressOptions&#40;new GeoPosition&#40;2.294911, 48.858561&#41;&#41;&#41;;
-     * list2.add&#40;
-     *     new ReverseSearchAddressOptions&#40;new GeoPosition&#40;-122.127896, 47.639765&#41;&#41;
-     *         .setRadiusInMeters&#40;5000&#41;
-     * &#41;;
-     * list2.add&#40;new ReverseSearchAddressOptions&#40;new GeoPosition&#40;-122.348170, 47.621028&#41;&#41;&#41;;
-     *
-     * System.out.println&#40;&quot;Reverse Search Address Batch Async&quot;&#41;;
-     * BatchReverseSearchResult batchReverseSearchResult =
-     *     asyncClient.beginReverseSearchAddressBatch&#40;list2&#41;.getSyncPoller&#40;&#41;.getFinalResult&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.maps.search.async.reverse_search_address_batch -->
-     *
-     * @param optionsList a list of {@link ReverseSearchAddressOptions} to be searched.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a {@code SyncPoller} wrapping the service call.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BatchReverseSearchResult, BatchReverseSearchResult> beginReverseSearchAddressBatch(
-        List<ReverseSearchAddressOptions> optionsList) {
-        return this.beginReverseSearchAddressBatch(optionsList, null);
-    }
-
-    /**
-     * Searches a batch of addresses given their coordinates.
-     * <!-- src_embed com.azure.maps.search.async.reverse_search_address_batch  -->
-     * <pre>
-     * List&lt;ReverseSearchAddressOptions&gt; list2 = new ArrayList&lt;&gt;&#40;&#41;;
-     * list2.add&#40;new ReverseSearchAddressOptions&#40;new GeoPosition&#40;2.294911, 48.858561&#41;&#41;&#41;;
-     * list2.add&#40;
-     *     new ReverseSearchAddressOptions&#40;new GeoPosition&#40;-122.127896, 47.639765&#41;&#41;
-     *         .setRadiusInMeters&#40;5000&#41;
-     * &#41;;
-     * list2.add&#40;new ReverseSearchAddressOptions&#40;new GeoPosition&#40;-122.348170, 47.621028&#41;&#41;&#41;;
-     *
-     * System.out.println&#40;&quot;Reverse Search Address Batch Async&quot;&#41;;
-     * BatchReverseSearchResult batchReverseSearchResult =
-     *     asyncClient.beginReverseSearchAddressBatch&#40;list2&#41;.getSyncPoller&#40;&#41;.getFinalResult&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.maps.search.async.reverse_search_address_batch -->
-     *
-     * @param optionsList a list of {@link ReverseSearchAddressOptions} to be searched.
-     * @param context a {@link Context} object for distributed tracing.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a {@code SyncPoller} wrapping the service call.
-     */
-    PollerFlux<BatchReverseSearchResult, BatchReverseSearchResult> beginReverseSearchAddressBatch(
-        List<ReverseSearchAddressOptions> optionsList, Context context) {
-        Objects.requireNonNull(optionsList, "'optionsList' is a required parameter.");
-
-        // convert list to batch request
-        List<BatchRequestItem> items = optionsList.stream().map(Utility::toReverseSearchBatchRequestItem)
-            .collect(Collectors.toList());
-        BatchRequest batchRequest = new BatchRequest().setBatchItems(items);
-
-        if (batchRequest.getBatchItems().size() <= BATCH_SIZE) {
-            return createReversePollerFlux(
-                () -> this.serviceClient.reverseSearchAddressBatchSyncWithResponseAsync(JsonFormat.JSON, batchRequest,
-                        context)
-                    .flatMap(response -> Mono.just(Utility.createBatchReverseSearchResponse(response))
-                        .onErrorMap(MapsSearchAsyncClient::mapThrowable)), this.reverseStrategy);
-        } else {
-            return createReversePollerFlux(
-                () -> this.serviceClient.reverseSearchAddressBatchNoCustomHeadersWithResponseAsync(JsonFormat.JSON,
-                    batchRequest, context).flatMap(response ->
-                    Mono.just(Utility.createBatchReverseSearchResponse(response))
-                        .onErrorMap(MapsSearchAsyncClient::mapThrowable)),
-                this.reverseStrategy);
+    Mono<ResponseBase<SearchesGetGeocodingHeaders, GeocodingResponse>> getGeocodingWithResponse(BaseSearchOptions options, Context context) {
+        List<Double> boundingBox = null;
+        if (options.getBoundingBox().isPresent()) {
+            boundingBox = new ArrayList<>();
+            GeoBoundingBox boundingBoxObj = (GeoBoundingBox)options.getBoundingBox().get();
+            boundingBox.add(boundingBoxObj.getNorth());
+            boundingBox.add(boundingBoxObj.getWest());
+            boundingBox.add(boundingBoxObj.getSouth());
+            boundingBox.add(boundingBoxObj.getEast());
         }
+        List<Double> coordinates = null;
+        if (options.getCoordinates() != null) {
+            coordinates = new ArrayList<>();
+            coordinates.add(options.getCoordinates().getLongitude());
+            coordinates.add(options.getCoordinates().getLatitude());
+        }
+
+        return serviceClient.getGeocodingWithResponseAsync(options.getTop(), options.getQuery(),
+                options.getAddressLine(), options.getCountryRegion(), boundingBox, options.getView(), coordinates,
+                options.getAdminDistrict(), options.getAdminDistrict2(), options.getAdminDistrict3(),
+                options.getLocality(), options.getPostalCode(), context)
+            .onErrorMap(MapsSearchAsyncClient::mapThrowable);
     }
 
     /**
-     * Returns a batch of previously searched addressed given a batch id.
-     * <!-- src_embed com.azure.maps.search.async.reverse_search_address_batch  -->
-     * <pre>
-     * List&lt;ReverseSearchAddressOptions&gt; list2 = new ArrayList&lt;&gt;&#40;&#41;;
-     * list2.add&#40;new ReverseSearchAddressOptions&#40;new GeoPosition&#40;2.294911, 48.858561&#41;&#41;&#41;;
-     * list2.add&#40;
-     *     new ReverseSearchAddressOptions&#40;new GeoPosition&#40;-122.127896, 47.639765&#41;&#41;
-     *         .setRadiusInMeters&#40;5000&#41;
-     * &#41;;
-     * list2.add&#40;new ReverseSearchAddressOptions&#40;new GeoPosition&#40;-122.348170, 47.621028&#41;&#41;&#41;;
+     * Use to get longitude and latitude coordinates of a street address or name of a place.
      *
-     * System.out.println&#40;&quot;Reverse Search Address Batch Async&quot;&#41;;
-     * BatchReverseSearchResult batchReverseSearchResult =
-     *     asyncClient.beginReverseSearchAddressBatch&#40;list2&#41;.getSyncPoller&#40;&#41;.getFinalResult&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.maps.search.async.reverse_search_address_batch -->
      *
-     * @param batchId Batch id for querying the operation.
+     *
+     * The `Get Geocoding` API is an HTTP `GET` request that returns the longitude and latitude coordinates of the
+     * location being searched.
+     *
+     * In many cases, the complete search service might be too much, for instance if you are only interested in
+     * traditional geocoding. Search can also be accessed for address look up exclusively. The geocoding is performed by
+     * hitting the geocoding endpoint with just the address or partial address in question. The geocoding search index
+     * will be queried for everything above the street level data. No Point of Interest (POIs) will be returned. Note
+     * that the geocoder is very tolerant of typos and incomplete addresses. It will also handle everything from exact
+     * street addresses or street or intersections as well as higher level geographies such as city centers, counties
+     * and states. The response also returns detailed address properties such as street, postal code, municipality, and
+     * country/region information.
+     *
+     * @param options base search options..
+     *
+     * **If query is given, should not use this parameter.**.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a {@code SyncPoller} wrapping the service call.
+     * @return this object is returned from a successful Geocoding call on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BatchReverseSearchResult, BatchReverseSearchResult> beginGetReverseSearchAddressBatch(
-        String batchId) {
-        return this.beginGetReverseSearchAddressBatch(batchId, null);
+
+    Mono<GeocodingResponse> getGeocoding(BaseSearchOptions options, Context context) {
+        List<Double> boundingBox = null;
+        if (options.getBoundingBox().isPresent()) {
+            boundingBox = new ArrayList<>();
+            GeoBoundingBox boundingBoxObj = (GeoBoundingBox)options.getBoundingBox().get();
+            boundingBox.add(boundingBoxObj.getNorth());
+            boundingBox.add(boundingBoxObj.getWest());
+            boundingBox.add(boundingBoxObj.getSouth());
+            boundingBox.add(boundingBoxObj.getEast());
+        }
+        List<Double> coordinates = null;
+        if (options.getCoordinates() != null) {
+            coordinates = new ArrayList<>();
+            coordinates.add(options.getCoordinates().getLongitude());
+            coordinates.add(options.getCoordinates().getLatitude());
+        }
+
+        return serviceClient.getGeocodingAsync(options.getTop(), options.getQuery(),
+                options.getAddressLine(), options.getCountryRegion(), boundingBox, options.getView(), coordinates,
+                options.getAdminDistrict(), options.getAdminDistrict2(), options.getAdminDistrict3(),
+                options.getLocality(), options.getPostalCode(), context)
+            .onErrorMap(MapsSearchAsyncClient::mapThrowable);
+    }
+
+
+    /**
+     * Use to send a batch of queries to the [Geocoding](/rest/api/maps/search/get-geocoding) API in a single request.
+     *
+     *
+     *
+     * The `Get Geocoding Batch` API is an HTTP `POST` request that sends batches of up to **100** queries to the
+     * [Geocoding](/rest/api/maps/search/get-geocoding) API in a single request.
+     *
+     * ### Submit Synchronous Batch Request
+     * The Synchronous API is recommended for lightweight batch requests. When the service receives a request, it will
+     * respond as soon as the batch items are calculated and there will be no possibility to retrieve the results later.
+     * The Synchronous API will return a timeout error (a 408 response) if the request takes longer than 60 seconds. The
+     * number of batch items is limited to **100** for this API.
+     * ```
+     * POST https://atlas.microsoft.com/geocode:batch?api-version=2023-06-01
+     * ```
+     * ### POST Body for Batch Request
+     * To send the _geocoding_ queries you will use a `POST` request where the request body will contain the
+     * `batchItems` array in `json` format and the `Content-Type` header will be set to `application/json`. Here's a
+     * sample request body containing 2 _geocoding_ queries:
+     *
+     *
+     * ```
+     * {
+     * "batchItems": [
+     * {
+     * "addressLine": "One, Microsoft Way, Redmond, WA 98052",
+     * "top": 2
+     * },
+     * {
+     * "addressLine": "Pike Pl",
+     * "adminDistrict": "WA",
+     * "locality": "Seattle",
+     * "top": 3
+     * }
+     * ]
+     * }
+     * ```
+     *
+     * A _geocoding_ batchItem object can accept any of the supported _geocoding_ [URI
+     * parameters](/rest/api/maps/search/get-geocoding#uri-parameters).
+     *
+     *
+     * The batch should contain at least **1** query.
+     *
+     *
+     * ### Batch Response Model
+     * The batch response contains a `summary` component that indicates the `totalRequests` that were part of the
+     * original batch request and `successfulRequests` i.e. queries which were executed successfully. The batch response
+     * also includes a `batchItems` array which contains a response for each and every query in the batch request. The
+     * `batchItems` will contain the results in the exact same order the original queries were sent in the batch
+     * request. Each item is of one of the following types:
+     *
+     * - [`GeocodingResponse`](/rest/api/maps/search/get-geocoding#geocodingresponse) - If the query completed
+     * successfully.
+     *
+     * - `Error` - If the query failed. The response will contain a `code` and a `message` in this case.
+     *
+     * @param body The list of address geocoding queries/requests to process. The list can contain
+     * a max of 100 queries and must contain at least 1 query.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return this object is returned from a successful Geocoding Batch service call on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<GeocodingBatchResponse> getGeocodingBatch(GeocodingBatchRequestBody body) {
+        return serviceClient.getGeocodingBatchAsync(body);
     }
 
     /**
-     * Returns a batch of previously searched addressed given a batch id.
-     * <!-- src_embed com.azure.maps.search.async.reverse_search_address_batch  -->
-     * <pre>
-     * List&lt;ReverseSearchAddressOptions&gt; list2 = new ArrayList&lt;&gt;&#40;&#41;;
-     * list2.add&#40;new ReverseSearchAddressOptions&#40;new GeoPosition&#40;2.294911, 48.858561&#41;&#41;&#41;;
-     * list2.add&#40;
-     *     new ReverseSearchAddressOptions&#40;new GeoPosition&#40;-122.127896, 47.639765&#41;&#41;
-     *         .setRadiusInMeters&#40;5000&#41;
-     * &#41;;
-     * list2.add&#40;new ReverseSearchAddressOptions&#40;new GeoPosition&#40;-122.348170, 47.621028&#41;&#41;&#41;;
+     * Use to send a batch of queries to the [Geocoding](/rest/api/maps/search/get-geocoding) API in a single request.
      *
-     * System.out.println&#40;&quot;Reverse Search Address Batch Async&quot;&#41;;
-     * BatchReverseSearchResult batchReverseSearchResult =
-     *     asyncClient.beginReverseSearchAddressBatch&#40;list2&#41;.getSyncPoller&#40;&#41;.getFinalResult&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.maps.search.async.reverse_search_address_batch -->
      *
-     * @param batchId Batch id for querying the operation.
-     * @param context a {@link Context} object for distributed tracing.
+     *
+     * The `Get Geocoding Batch` API is an HTTP `POST` request that sends batches of up to **100** queries to the
+     * [Geocoding](/rest/api/maps/search/get-geocoding) API in a single request.
+     *
+     * ### Submit Synchronous Batch Request
+     * The Synchronous API is recommended for lightweight batch requests. When the service receives a request, it will
+     * respond as soon as the batch items are calculated and there will be no possibility to retrieve the results later.
+     * The Synchronous API will return a timeout error (a 408 response) if the request takes longer than 60 seconds. The
+     * number of batch items is limited to **100** for this API.
+     * ```
+     * POST https://atlas.microsoft.com/geocode:batch?api-version=2023-06-01
+     * ```
+     * ### POST Body for Batch Request
+     * To send the _geocoding_ queries you will use a `POST` request where the request body will contain the
+     * `batchItems` array in `json` format and the `Content-Type` header will be set to `application/json`. Here's a
+     * sample request body containing 2 _geocoding_ queries:
+     *
+     *
+     * ```
+     * {
+     * "batchItems": [
+     * {
+     * "addressLine": "One, Microsoft Way, Redmond, WA 98052",
+     * "top": 2
+     * },
+     * {
+     * "addressLine": "Pike Pl",
+     * "adminDistrict": "WA",
+     * "locality": "Seattle",
+     * "top": 3
+     * }
+     * ]
+     * }
+     * ```
+     *
+     * A _geocoding_ batchItem object can accept any of the supported _geocoding_ [URI
+     * parameters](/rest/api/maps/search/get-geocoding#uri-parameters).
+     *
+     *
+     * The batch should contain at least **1** query.
+     *
+     *
+     * ### Batch Response Model
+     * The batch response contains a `summary` component that indicates the `totalRequests` that were part of the
+     * original batch request and `successfulRequests` i.e. queries which were executed successfully. The batch response
+     * also includes a `batchItems` array which contains a response for each and every query in the batch request. The
+     * `batchItems` will contain the results in the exact same order the original queries were sent in the batch
+     * request. Each item is of one of the following types:
+     *
+     * - [`GeocodingResponse`](/rest/api/maps/search/get-geocoding#geocodingresponse) - If the query completed
+     * successfully.
+     *
+     * - `Error` - If the query failed. The response will contain a `code` and a `message` in this case.
+     *
+     * @param body The list of address geocoding queries/requests to process. The list can contain
+     * a max of 100 queries and must contain at least 1 query.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a {@code SyncPoller} wrapping the service call.
+     * @return this object is returned from a successful Geocoding Batch service call along with {@link Response} on
+     * successful completion of {@link Mono}.
      */
-    PollerFlux<BatchReverseSearchResult, BatchReverseSearchResult> beginGetReverseSearchAddressBatch(String batchId,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<GeocodingBatchResponse>> getGeocodingBatchWithResponse(GeocodingBatchRequestBody body) {
+        return withContext(context -> getGeocodingBatchWithResponse(body, context));
+    }
+
+    /**
+     * Use to send a batch of queries to the [Geocoding](/rest/api/maps/search/get-geocoding) API in a single request.
+     *
+     *
+     *
+     * The `Get Geocoding Batch` API is an HTTP `POST` request that sends batches of up to **100** queries to the
+     * [Geocoding](/rest/api/maps/search/get-geocoding) API in a single request.
+     *
+     * ### Submit Synchronous Batch Request
+     * The Synchronous API is recommended for lightweight batch requests. When the service receives a request, it will
+     * respond as soon as the batch items are calculated and there will be no possibility to retrieve the results later.
+     * The Synchronous API will return a timeout error (a 408 response) if the request takes longer than 60 seconds. The
+     * number of batch items is limited to **100** for this API.
+     * ```
+     * POST https://atlas.microsoft.com/geocode:batch?api-version=2023-06-01
+     * ```
+     * ### POST Body for Batch Request
+     * To send the _geocoding_ queries you will use a `POST` request where the request body will contain the
+     * `batchItems` array in `json` format and the `Content-Type` header will be set to `application/json`. Here's a
+     * sample request body containing 2 _geocoding_ queries:
+     *
+     *
+     * ```
+     * {
+     * "batchItems": [
+     * {
+     * "addressLine": "One, Microsoft Way, Redmond, WA 98052",
+     * "top": 2
+     * },
+     * {
+     * "addressLine": "Pike Pl",
+     * "adminDistrict": "WA",
+     * "locality": "Seattle",
+     * "top": 3
+     * }
+     * ]
+     * }
+     * ```
+     *
+     * A _geocoding_ batchItem object can accept any of the supported _geocoding_ [URI
+     * parameters](/rest/api/maps/search/get-geocoding#uri-parameters).
+     *
+     *
+     * The batch should contain at least **1** query.
+     *
+     *
+     * ### Batch Response Model
+     * The batch response contains a `summary` component that indicates the `totalRequests` that were part of the
+     * original batch request and `successfulRequests` i.e. queries which were executed successfully. The batch response
+     * also includes a `batchItems` array which contains a response for each and every query in the batch request. The
+     * `batchItems` will contain the results in the exact same order the original queries were sent in the batch
+     * request. Each item is of one of the following types:
+     *
+     * - [`GeocodingResponse`](/rest/api/maps/search/get-geocoding#geocodingresponse) - If the query completed
+     * successfully.
+     *
+     * - `Error` - If the query failed. The response will contain a `code` and a `message` in this case.
+     *
+     * @param geocodingBatchRequestBody The list of address geocoding queries/requests to process. The list can contain
+     * a max of 100 queries and must contain at least 1 query.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return this object is returned from a successful Geocoding Batch service call along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    Mono<Response<GeocodingBatchResponse>> getGeocodingBatchWithResponse(GeocodingBatchRequestBody geocodingBatchRequestBody,
         Context context) {
-        return createReversePollerFlux(
-            () -> this.serviceClient.getReverseSearchAddressBatchNoCustomHeadersWithResponseAsync(batchId, context)
-                .flatMap(response -> Mono.just(Utility.createBatchReverseSearchResponse(response))
-                    .onErrorMap(MapsSearchAsyncClient::mapThrowable)), this.reverseStrategy);
+        return serviceClient.getGeocodingBatchWithResponseAsync(geocodingBatchRequestBody, context)
+            .onErrorMap(MapsSearchAsyncClient::mapThrowable);
     }
 
-    // create a poller for a forward search operation
-    private PollerFlux<BatchSearchResult, BatchSearchResult> createPollerFlux(
-        Supplier<Mono<? extends Response<?>>> initialOperation,
-        DefaultPollingStrategy<BatchSearchResult, BatchSearchResult> strategy) {
-
-        // batch search type reference
-        BatchSearchTypeReference reference = new BatchSearchTypeReference();
-
-        // Create poller instance
-        return PollerFlux.create(Duration.ofSeconds(POLLING_FREQUENCY), context -> initialOperation.get()
-                .flatMap(response -> strategy.canPoll(response).flatMap(canPoll -> {
-                    if (!canPoll) {
-                        return Mono.error(new IllegalStateException(
-                            "Cannot poll with strategy " + strategy.getClass().getSimpleName()));
-                    }
-                    context.setData(POLLING_BATCH_HEADER_KEY, Utility.getBatchId(response.getHeaders()));
-                    return strategy.onInitialResponse(response, context, reference);
-                })), context -> strategy.poll(context, reference), strategy::cancel,
-            context -> strategy.getResult(context, reference)
-                .flatMap(result -> {
-                    final String batchId = context.getData(POLLING_BATCH_HEADER_KEY);
-                    result.setBatchId(batchId);
-                    return Mono.just(result);
-                }));
+    /**
+     * Use to get a street address and location info from longitude and latitude coordinates.
+     *
+     *
+     *
+     * The `Get Reverse Geocoding` API is an HTTP `GET` request used to translate a coordinate (example: 37.786505,
+     * -122.3862) into a human understandable street address. Useful in tracking applications where you receive a GPS
+     * feed from the device or asset and wish to know the address associated with the coordinates. This endpoint will
+     * return address information for a given coordinate.
+     *
+     * @param coordinates The coordinates of the location that you want to reverse geocode. Example:
+     * &amp;coordinates=lon,lat.
+     * @param resultTypes Specify entity types that you want in the response. Only the types you specify will be
+     * returned. If the point cannot be mapped to the entity types you specify, no location information is returned in
+     * the response.
+     * Default value is all possible entities.
+     * A comma separated list of entity types selected from the following options.
+     *
+     * - Address
+     * - Neighborhood
+     * - PopulatedPlace
+     * - Postcode1
+     * - AdminDivision1
+     * - AdminDivision2
+     * - CountryRegion
+     *
+     * These entity types are ordered from the most specific entity to the least specific entity. When entities of more
+     * than one entity type are found, only the most specific entity is returned. For example, if you specify Address
+     * and AdminDistrict1 as entity types and entities were found for both types, only the Address entity information is
+     * returned in the response.
+     * @param view A string that represents an [ISO 3166-1 Alpha-2 region/country
+     * code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2). This will alter Geopolitical disputed borders and labels
+     * to align with the specified user region. By default, the View parameter is set to “Auto” even if you haven’t
+     * defined it in the request.
+     *
+     * Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the available
+     * Views.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return this object is returned from a successful Geocoding call on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<GeocodingResponse> getReverseGeocoding(GeoPosition coordinates, List<ReverseGeocodingResultTypeEnum> resultTypes, String view) {
+        List<Double> coordinatesList = null;
+        if (coordinates != null) {
+            coordinatesList = new ArrayList<>();
+            coordinatesList.add(coordinates.getLongitude());
+            coordinatesList.add(coordinates.getLatitude());
+        }
+        return serviceClient.getReverseGeocodingAsync(coordinatesList, resultTypes, view, null);
     }
 
-    // create a poller for the reverse search operation
-    private PollerFlux<BatchReverseSearchResult, BatchReverseSearchResult> createReversePollerFlux(
-        Supplier<Mono<? extends Response<?>>> initialOperation,
-        DefaultPollingStrategy<BatchReverseSearchResult, BatchReverseSearchResult> strategy) {
-
-        // batch search type reference
-        ReverseBatchSearchTypeReference reference = new ReverseBatchSearchTypeReference();
-
-        // Create poller instance
-        return PollerFlux.create(Duration.ofSeconds(POLLING_FREQUENCY), context -> initialOperation.get()
-                .flatMap(response -> strategy.canPoll(response).flatMap(canPoll -> {
-                    if (!canPoll) {
-                        return Mono.error(new IllegalStateException(
-                            "Cannot poll with strategy " + strategy.getClass().getSimpleName()));
-                    }
-                    context.setData(POLLING_BATCH_HEADER_KEY, Utility.getBatchId(response.getHeaders()));
-                    return strategy.onInitialResponse(response, context, reference);
-                })), context -> strategy.poll(context, reference), strategy::cancel,
-            context -> strategy.getResult(context, reference)
-                .flatMap(result -> {
-                    final String batchId = context.getData(POLLING_BATCH_HEADER_KEY);
-                    result.setBatchId(batchId);
-                    return Mono.just(result);
-                }));
+    /**
+     * Use to get a street address and location info from longitude and latitude coordinates.
+     *
+     *
+     *
+     * The `Get Reverse Geocoding` API is an HTTP `GET` request used to translate a coordinate (example: 37.786505,
+     * -122.3862) into a human understandable street address. Useful in tracking applications where you receive a GPS
+     * feed from the device or asset and wish to know the address associated with the coordinates. This endpoint will
+     * return address information for a given coordinate.
+     *
+     * @param coordinates The coordinates of the location that you want to reverse geocode. Example:
+     * &amp;coordinates=lon,lat.
+     * @param resultTypes Specify entity types that you want in the response. Only the types you specify will be
+     * returned. If the point cannot be mapped to the entity types you specify, no location information is returned in
+     * the response.
+     * Default value is all possible entities.
+     * A comma separated list of entity types selected from the following options.
+     *
+     * - Address
+     * - Neighborhood
+     * - PopulatedPlace
+     * - Postcode1
+     * - AdminDivision1
+     * - AdminDivision2
+     * - CountryRegion
+     *
+     * These entity types are ordered from the most specific entity to the least specific entity. When entities of more
+     * than one entity type are found, only the most specific entity is returned. For example, if you specify Address
+     * and AdminDistrict1 as entity types and entities were found for both types, only the Address entity information is
+     * returned in the response.
+     * @param view A string that represents an [ISO 3166-1 Alpha-2 region/country
+     * code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2). This will alter Geopolitical disputed borders and labels
+     * to align with the specified user region. By default, the View parameter is set to “Auto” even if you haven’t
+     * defined it in the request.
+     *
+     * Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the available
+     * Views.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return this object is returned from a successful Geocoding call along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<GeocodingResponse>> getReverseGeocodingWithResponse(
+        GeoPosition coordinates, List<ReverseGeocodingResultTypeEnum> resultTypes, String view) {
+        return withContext(context -> getReverseGeocodingWithResponse(coordinates, resultTypes, view, context));
     }
+
+    /**
+     * Use to get a street address and location info from longitude and latitude coordinates.
+     *
+     *
+     *
+     * The `Get Reverse Geocoding` API is an HTTP `GET` request used to translate a coordinate (example: 37.786505,
+     * -122.3862) into a human understandable street address. Useful in tracking applications where you receive a GPS
+     * feed from the device or asset and wish to know the address associated with the coordinates. This endpoint will
+     * return address information for a given coordinate.
+     *
+     * @param coordinates The coordinates of the location that you want to reverse geocode. Example:
+     * &amp;coordinates=lon,lat.
+     * @param resultTypes Specify entity types that you want in the response. Only the types you specify will be
+     * returned. If the point cannot be mapped to the entity types you specify, no location information is returned in
+     * the response.
+     * Default value is all possible entities.
+     * A comma separated list of entity types selected from the following options.
+     *
+     * - Address
+     * - Neighborhood
+     * - PopulatedPlace
+     * - Postcode1
+     * - AdminDivision1
+     * - AdminDivision2
+     * - CountryRegion
+     *
+     * These entity types are ordered from the most specific entity to the least specific entity. When entities of more
+     * than one entity type are found, only the most specific entity is returned. For example, if you specify Address
+     * and AdminDistrict1 as entity types and entities were found for both types, only the Address entity information is
+     * returned in the response.
+     * @param view A string that represents an [ISO 3166-1 Alpha-2 region/country
+     * code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2). This will alter Geopolitical disputed borders and labels
+     * to align with the specified user region. By default, the View parameter is set to “Auto” even if you haven’t
+     * defined it in the request.
+     *
+     * Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the available
+     * Views.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return this object is returned from a successful Geocoding call along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    Mono<Response<GeocodingResponse>> getReverseGeocodingWithResponse(
+        GeoPosition coordinates, List<ReverseGeocodingResultTypeEnum> resultTypes, String view, Context context) {
+
+        List<Double> coordinatesList = null;
+        if (coordinates != null) {
+            coordinatesList = new ArrayList<>();
+            coordinatesList.add(coordinates.getLongitude());
+            coordinatesList.add(coordinates.getLatitude());
+        }
+        return serviceClient.getReverseGeocodingWithResponseAsync(coordinatesList, resultTypes, view, context)
+            .onErrorMap(MapsSearchAsyncClient::mapThrowable);
+    }
+
+    /**
+     * Use to send a batch of queries to the [Reverse Geocoding](/rest/api/maps/search/get-reverse-geocoding) API in a
+     * single request.
+     *
+     *
+     *
+     * The `Get Reverse Geocoding Batch` API is an HTTP `POST` request that sends batches of up to **100** queries to
+     * [Reverse Geocoding](/rest/api/maps/search/get-reverse-geocoding) API using a single request.
+     *
+     * ### Submit Synchronous Batch Request
+     * The Synchronous API is recommended for lightweight batch requests. When the service receives a request, it will
+     * respond as soon as the batch items are calculated and there will be no possibility to retrieve the results later.
+     * The Synchronous API will return a timeout error (a 408 response) if the request takes longer than 60 seconds. The
+     * number of batch items is limited to **100** for this API.
+     * ```
+     * POST https://atlas.microsoft.com/reverseGeocode:batch?api-version=2023-06-01
+     * ```
+     * ### POST Body for Batch Request
+     * To send the _reverse geocoding_ queries you will use a `POST` request where the request body will contain the
+     * `batchItems` array in `json` format and the `Content-Type` header will be set to `application/json`. Here's a
+     * sample request body containing 2 _reverse geocoding_ queries:
+     *
+     *
+     * ```
+     * {
+     * "batchItems": [
+     * {
+     * "coordinates": [-122.128275, 47.639429],
+     * "resultTypes": ["Address", "PopulatedPlace"]
+     * },
+     * {
+     * "coordinates": [-122.341979399674, 47.6095253501216]
+     * }
+     * ]
+     * }
+     * ```
+     *
+     * A _reverse geocoding_ batchItem object can accept any of the supported _reverse geocoding_ [URI
+     * parameters](/rest/api/maps/search/get-reverse-geocoding#uri-parameters).
+     *
+     *
+     * The batch should contain at least **1** query.
+     *
+     *
+     * ### Batch Response Model
+     * The batch response contains a `summary` component that indicates the `totalRequests` that were part of the
+     * original batch request and `successfulRequests` i.e. queries which were executed successfully. The batch response
+     * also includes a `batchItems` array which contains a response for each and every query in the batch request. The
+     * `batchItems` will contain the results in the exact same order the original queries were sent in the batch
+     * request. Each item is of one of the following types:
+     *
+     * - [`GeocodingResponse`](/rest/api/maps/search/get-reverse-geocoding#geocodingresponse) - If the query completed
+     * successfully.
+     *
+     * - `Error` - If the query failed. The response will contain a `code` and a `message` in this case.
+     *
+     * @param reverseGeocodingBatchRequestBody The list of reverse geocoding queries/requests to process. The list can
+     * contain a max of 100 queries and must contain at least 1 query.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return this object is returned from a successful Geocoding Batch service call on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<GeocodingBatchResponse> getReverseGeocodingBatch(ReverseGeocodingBatchRequestBody reverseGeocodingBatchRequestBody) {
+        return serviceClient.getReverseGeocodingBatchAsync(reverseGeocodingBatchRequestBody);
+    }
+
+    /**
+     * Use to send a batch of queries to the [Reverse Geocoding](/rest/api/maps/search/get-reverse-geocoding) API in a
+     * single request.
+     *
+     *
+     *
+     * The `Get Reverse Geocoding Batch` API is an HTTP `POST` request that sends batches of up to **100** queries to
+     * [Reverse Geocoding](/rest/api/maps/search/get-reverse-geocoding) API using a single request.
+     *
+     * ### Submit Synchronous Batch Request
+     * The Synchronous API is recommended for lightweight batch requests. When the service receives a request, it will
+     * respond as soon as the batch items are calculated and there will be no possibility to retrieve the results later.
+     * The Synchronous API will return a timeout error (a 408 response) if the request takes longer than 60 seconds. The
+     * number of batch items is limited to **100** for this API.
+     * ```
+     * POST https://atlas.microsoft.com/reverseGeocode:batch?api-version=2023-06-01
+     * ```
+     * ### POST Body for Batch Request
+     * To send the _reverse geocoding_ queries you will use a `POST` request where the request body will contain the
+     * `batchItems` array in `json` format and the `Content-Type` header will be set to `application/json`. Here's a
+     * sample request body containing 2 _reverse geocoding_ queries:
+     *
+     *
+     * ```
+     * {
+     * "batchItems": [
+     * {
+     * "coordinates": [-122.128275, 47.639429],
+     * "resultTypes": ["Address", "PopulatedPlace"]
+     * },
+     * {
+     * "coordinates": [-122.341979399674, 47.6095253501216]
+     * }
+     * ]
+     * }
+     * ```
+     *
+     * A _reverse geocoding_ batchItem object can accept any of the supported _reverse geocoding_ [URI
+     * parameters](/rest/api/maps/search/get-reverse-geocoding#uri-parameters).
+     *
+     *
+     * The batch should contain at least **1** query.
+     *
+     *
+     * ### Batch Response Model
+     * The batch response contains a `summary` component that indicates the `totalRequests` that were part of the
+     * original batch request and `successfulRequests` i.e. queries which were executed successfully. The batch response
+     * also includes a `batchItems` array which contains a response for each and every query in the batch request. The
+     * `batchItems` will contain the results in the exact same order the original queries were sent in the batch
+     * request. Each item is of one of the following types:
+     *
+     * - [`GeocodingResponse`](/rest/api/maps/search/get-reverse-geocoding#geocodingresponse) - If the query completed
+     * successfully.
+     *
+     * - `Error` - If the query failed. The response will contain a `code` and a `message` in this case.
+     *
+     * @param reverseGeocodingBatchRequestBody The list of reverse geocoding queries/requests to process. The list can
+     * contain a max of 100 queries and must contain at least 1 query.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return this object is returned from a successful Geocoding Batch service call along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<GeocodingBatchResponse>> getReverseGeocodingBatchWithResponse(ReverseGeocodingBatchRequestBody reverseGeocodingBatchRequestBody) {
+        return withContext(context -> getReverseGeocodingBatchWithResponse(reverseGeocodingBatchRequestBody, context));
+    }
+
+    /**
+     * Use to send a batch of queries to the [Reverse Geocoding](/rest/api/maps/search/get-reverse-geocoding) API in a
+     * single request.
+     *
+     *
+     *
+     * The `Get Reverse Geocoding Batch` API is an HTTP `POST` request that sends batches of up to **100** queries to
+     * [Reverse Geocoding](/rest/api/maps/search/get-reverse-geocoding) API using a single request.
+     *
+     * ### Submit Synchronous Batch Request
+     * The Synchronous API is recommended for lightweight batch requests. When the service receives a request, it will
+     * respond as soon as the batch items are calculated and there will be no possibility to retrieve the results later.
+     * The Synchronous API will return a timeout error (a 408 response) if the request takes longer than 60 seconds. The
+     * number of batch items is limited to **100** for this API.
+     * ```
+     * POST https://atlas.microsoft.com/reverseGeocode:batch?api-version=2023-06-01
+     * ```
+     * ### POST Body for Batch Request
+     * To send the _reverse geocoding_ queries you will use a `POST` request where the request body will contain the
+     * `batchItems` array in `json` format and the `Content-Type` header will be set to `application/json`. Here's a
+     * sample request body containing 2 _reverse geocoding_ queries:
+     *
+     *
+     * ```
+     * {
+     * "batchItems": [
+     * {
+     * "coordinates": [-122.128275, 47.639429],
+     * "resultTypes": ["Address", "PopulatedPlace"]
+     * },
+     * {
+     * "coordinates": [-122.341979399674, 47.6095253501216]
+     * }
+     * ]
+     * }
+     * ```
+     *
+     * A _reverse geocoding_ batchItem object can accept any of the supported _reverse geocoding_ [URI
+     * parameters](/rest/api/maps/search/get-reverse-geocoding#uri-parameters).
+     *
+     *
+     * The batch should contain at least **1** query.
+     *
+     *
+     * ### Batch Response Model
+     * The batch response contains a `summary` component that indicates the `totalRequests` that were part of the
+     * original batch request and `successfulRequests` i.e. queries which were executed successfully. The batch response
+     * also includes a `batchItems` array which contains a response for each and every query in the batch request. The
+     * `batchItems` will contain the results in the exact same order the original queries were sent in the batch
+     * request. Each item is of one of the following types:
+     *
+     * - [`GeocodingResponse`](/rest/api/maps/search/get-reverse-geocoding#geocodingresponse) - If the query completed
+     * successfully.
+     *
+     * - `Error` - If the query failed. The response will contain a `code` and a `message` in this case.
+     *
+     * @param reverseGeocodingBatchRequestBody The list of reverse geocoding queries/requests to process. The list can
+     * contain a max of 100 queries and must contain at least 1 query.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return this object is returned from a successful Geocoding Batch service call along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    Mono<Response<GeocodingBatchResponse>> getReverseGeocodingBatchWithResponse(ReverseGeocodingBatchRequestBody reverseGeocodingBatchRequestBody, Context context) {
+        return serviceClient.getReverseGeocodingBatchWithResponseAsync(reverseGeocodingBatchRequestBody, context)
+            .onErrorMap(MapsSearchAsyncClient::mapThrowable);
+    }
+
 
     private static Throwable mapThrowable(Throwable throwable) {
         if (!(throwable instanceof ErrorResponseException)) {

@@ -4,18 +4,19 @@
 
 package com.azure.maps.search.implementation.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * A valid `GeoJSON` geometry object. The type must be one of the seven valid GeoJSON geometry types - Point,
  * MultiPoint, LineString, MultiLineString, Polygon, MultiPolygon and GeometryCollection. Please refer to [RFC
  * 7946](https://tools.ietf.org/html/rfc7946#section-3.1) for details.
  */
-@Immutable
+@Fluent
 public class GeoJsonGeometry extends GeoJsonObject {
     /*
      * Specifies the `GeoJSON` type. Must be one of the nine valid GeoJSON object types - Point, MultiPoint, LineString, MultiLineString, Polygon, MultiPolygon, GeometryCollection, Feature and FeatureCollection.
@@ -44,8 +45,18 @@ public class GeoJsonGeometry extends GeoJsonObject {
      * {@inheritDoc}
      */
     @Override
+    public GeoJsonGeometry setBbox(List<Double> bbox) {
+        super.setBbox(bbox);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("bbox", getBbox(), (writer, element) -> writer.writeDouble(element));
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
     }
@@ -74,12 +85,12 @@ public class GeoJsonGeometry extends GeoJsonObject {
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("LineString".equals(discriminatorValue)) {
-                    return GeoJsonLineString.fromJson(readerToUse.reset());
-                } else if ("Point".equals(discriminatorValue)) {
+                if ("Point".equals(discriminatorValue)) {
                     return GeoJsonPoint.fromJson(readerToUse.reset());
                 } else if ("MultiPoint".equals(discriminatorValue)) {
                     return GeoJsonMultiPoint.fromJson(readerToUse.reset());
+                } else if ("LineString".equals(discriminatorValue)) {
+                    return GeoJsonLineString.fromJson(readerToUse.reset());
                 } else if ("MultiLineString".equals(discriminatorValue)) {
                     return GeoJsonMultiLineString.fromJson(readerToUse.reset());
                 } else if ("Polygon".equals(discriminatorValue)) {
@@ -102,7 +113,10 @@ public class GeoJsonGeometry extends GeoJsonObject {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("type".equals(fieldName)) {
+                if ("bbox".equals(fieldName)) {
+                    List<Double> bbox = reader.readArray(reader1 -> reader1.getDouble());
+                    deserializedGeoJsonGeometry.setBbox(bbox);
+                } else if ("type".equals(fieldName)) {
                     deserializedGeoJsonGeometry.type = GeoJsonObjectType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
