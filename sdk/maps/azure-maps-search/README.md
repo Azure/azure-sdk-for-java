@@ -74,310 +74,84 @@ See [API design][design] for general introduction on design and key concepts on 
 
 ## Examples
 Get Polygons
-```java com.azure.maps.search.sync.get_polygon
-SearchAddressResult results = client.fuzzySearch(
-    new FuzzySearchOptions("1 Microsoft Way", new GeoPosition(-74.011454, 40.706270))
-        .setTop(5));
-Response<SearchAddressResult> response = client.fuzzySearchWithResponse(
-    new FuzzySearchOptions("Monaco").setEntityType(GeographicEntityType.COUNTRY)
-        .setTop(5), null);
-String id = response.getValue().getResults().get(0).getDataSource().getGeometry();
-List<String> ids = results.getResults().stream()
-    .filter(item -> item.getDataSource() != null && item.getDataSource().getGeometry() != null)
-    .map(item -> item.getDataSource().getGeometry())
-    .collect(Collectors.toList());
-ids.add(id);
+```java sync.get_polygon
+System.out.println("Get Polygons:");
+GeoPosition coordinates = new GeoPosition(-122.204141, 47.61256);
 
-if (ids != null && !ids.isEmpty()) {
-    System.out.println("Get Polygon: " + ids);
-    client.getPolygons(ids);
-    client.getPolygonsWithResponse(ids, null).getValue().getClass();
-}
+Boundary result = client.getPolygons(coordinates, null, BoundaryResultTypeEnum.LOCALITY, ResolutionEnum.SMALL);
+
+//with response
+Response<Boundary> response = client.getPolygonsWithResponse(coordinates, null, BoundaryResultTypeEnum.LOCALITY, ResolutionEnum.SMALL, Context.NONE);
 ```
 
-Fuzzy Search
-```java com.azure.maps.search.sync.fuzzy_search
-System.out.println("Search Fuzzy:");
+Get Geocoding
+```java sync.get_geocoding
+System.out.println("Get Geocoding:");
 
-// simple
-client.fuzzySearch(new FuzzySearchOptions("starbucks"));
+//simple
+client.getGeocoding(new BaseSearchOptions().setQuery("1 Microsoft Way, Redmond, WA 98052"));
 
-// with options
-SearchAddressResult results = client.fuzzySearch(
-    new FuzzySearchOptions("1 Microsoft Way", new GeoPosition(-74.011454, 40.706270))
-        .setTop(5));
+//with multiple options
+GeocodingResponse result = client.getGeocoding(
+    new BaseSearchOptions().setCoordinates(new GeoPosition(-74.011454, 40.706270)).setTop(5));
 
 // with response
-Response<SearchAddressResult> response = client.fuzzySearchWithResponse(
-    new FuzzySearchOptions("Monaco").setEntityType(GeographicEntityType.COUNTRY)
-        .setTop(5), null);
+ResponseBase<SearchesGetGeocodingHeaders, GeocodingResponse> response = client.getGeocodingWithResponse(
+    new BaseSearchOptions().setCoordinates(new GeoPosition(-74.011454, 40.706270)).setTop(5), null);
+
+// with response no custom header
+Response<GeocodingResponse> responseNoHeader = client.getGeocodingNoCustomHeaderWithResponse(
+    new BaseSearchOptions().setCoordinates(new GeoPosition(-74.011454, 40.706270)).setTop(5), null);
 ```
 
-Search Point Of Interest
-```java com.azure.maps.search.sync.get_search_poi
-System.out.println("Search Points of Interest:");
+Get Geocoding Batch
+```java sync.get_geocoding_batch
+System.out.println("Get Geocoding Batch:");
 
-// coordinates
-client.searchPointOfInterest(
-    new SearchPointOfInterestOptions("pizza", new GeoPosition(-121.97483, 36.98844)));
+//with multiple items
+GeocodingBatchRequestBody body = new GeocodingBatchRequestBody();
+GeocodingBatchRequestItem addressLineItem = new GeocodingBatchRequestItem();
+addressLineItem.setAddressLine("400 Broad St");
+GeocodingBatchRequestItem queryItem = new GeocodingBatchRequestItem();
+queryItem.setQuery("15171 NE 24th St, Redmond, WA 98052, United States");
+body.setBatchItems(Arrays.asList(addressLineItem, queryItem));
 
-// options
-client.searchPointOfInterest(
-    new SearchPointOfInterestOptions("pizza", new GeoPosition(-121.97483, 36.98844))
-        .setTop(10)
-        .setOperatingHours(OperatingHoursRange.NEXT_SEVEN_DAYS));
+GeocodingBatchResponse result = client.getGeocodingBatch(body);
 
 // with response
-client.searchPointOfInterestWithResponse(
-    new SearchPointOfInterestOptions("pizza", new GeoPosition(-121.97483, 36.98844))
-        .setTop(10)
-        .setOperatingHours(OperatingHoursRange.NEXT_SEVEN_DAYS),
-    null).getStatusCode();
+Response<GeocodingBatchResponse> response = client.getGeocodingBatchWithResponse(body, Context.NONE);
+
 ```
 
-Search Nearby Point Of Interest
-```java com.azure.maps.search.sync.search_nearby
-System.out.println("Search Nearby Points of Interest:");
+Get Reverse Geocoding
+```java sync.get_reverse_geocoding
+System.out.println("Get Reverse Geocoding:");
 
-// options
-client.searchNearbyPointsOfInterest(
-    new SearchNearbyPointsOfInterestOptions(new GeoPosition(-74.011454, 40.706270))
-        .setCountryFilter(Arrays.asList("US"))
-        .setTop(10));
+GeoPosition coordinates = new GeoPosition(-122.34255, 47.0);
+GeocodingResponse result = client.getReverseGeocoding(coordinates, Arrays.asList(ReverseGeocodingResultTypeEnum.ADDRESS), null);
 
-// response
-client.searchNearbyPointsOfInterestWithResponse(
-    new SearchNearbyPointsOfInterestOptions(new GeoPosition(-74.011454, 40.706270))
-        .setCountryFilter(Arrays.asList("US"))
-        .setTop(10),
-    null).getStatusCode();
+//with response
+Response<GeocodingResponse> response = client.getReverseGeocodingWithResponse(coordinates, Arrays.asList(ReverseGeocodingResultTypeEnum.ADDRESS), null, Context.NONE);
 ```
 
-Search Point Of Interest Category
-```java com.azure.maps.search.sync.search_nearby
-System.out.println("Search Nearby Points of Interest:");
+Get Reverse Geocoding Batch
+```java sync.get_reverse_geocoding_batch
+System.out.println("Get Reverse Geocoding Batch:");
 
-// options
-client.searchNearbyPointsOfInterest(
-    new SearchNearbyPointsOfInterestOptions(new GeoPosition(-74.011454, 40.706270))
-        .setCountryFilter(Arrays.asList("US"))
-        .setTop(10));
+//with multiple items
+ReverseGeocodingBatchRequestBody body = new ReverseGeocodingBatchRequestBody();
+ReverseGeocodingBatchRequestItem item1 = new ReverseGeocodingBatchRequestItem();
+ReverseGeocodingBatchRequestItem item2 = new ReverseGeocodingBatchRequestItem();
+item1.setCoordinates(new GeoPosition(-122.34255, 47.0));
+item2.setCoordinates(new GeoPosition(-122.34255, 47.0));
+body.setBatchItems(Arrays.asList(item1, item2));
 
-// response
-client.searchNearbyPointsOfInterestWithResponse(
-    new SearchNearbyPointsOfInterestOptions(new GeoPosition(-74.011454, 40.706270))
-        .setCountryFilter(Arrays.asList("US"))
-        .setTop(10),
-    null).getStatusCode();
+GeocodingBatchResponse result = client.getReverseGeocodingBatch(body);
+
+// with response
+Response<GeocodingBatchResponse> response = client.getReverseGeocodingBatchWithResponse(body, Context.NONE);
 ```
 
-Get Point Of Interest Category Tree
-```java com.azure.maps.search.sync.search_poi_category_tree
-System.out.println("Get Search POI Category Tree:");
-client.getPointOfInterestCategoryTree();
-```
-
-Search Address
-```java com.azure.maps.search.sync.search_address
-System.out.println("Search Address:");
-
-// simple
-client.searchAddress(
-    new SearchAddressOptions("15127 NE 24th Street, Redmond, WA 98052"));
-
-// options
-client.searchAddress(
-    new SearchAddressOptions("1 Main Street")
-        .setCoordinates(new GeoPosition(-74.011454, 40.706270))
-        .setRadiusInMeters(40000)
-        .setTop(5));
-
-// complete
-client.searchAddressWithResponse(
-    new SearchAddressOptions("1 Main Street")
-        .setCoordinates(new GeoPosition(-74.011454, 40.706270))
-        .setRadiusInMeters(40000)
-        .setTop(5), null).getStatusCode();
-```
-
-Reverse Search Address
-```java com.azure.maps.search.sync.reverse_search_address
-System.out.println("Search Address Reverse:");
-
-// simple
-client.reverseSearchAddress(
-    new ReverseSearchAddressOptions(new GeoPosition(-121.89, 37.337)));
-
-client.reverseSearchAddress(
-    new ReverseSearchAddressOptions(new GeoPosition(-121.89, 37.337)));
-
-// options
-client.reverseSearchAddress(
-    new ReverseSearchAddressOptions(new GeoPosition(-121.89, 37.337))
-        .setIncludeSpeedLimit(true)
-        .setEntityType(GeographicEntityType.COUNTRY_SECONDARY_SUBDIVISION) // returns only city
-);
-
-// complete
-client.reverseSearchAddressWithResponse(
-    new ReverseSearchAddressOptions(new GeoPosition(-121.89, 37.337))
-        .setIncludeSpeedLimit(true)
-        .setEntityType(GeographicEntityType.COUNTRY_SECONDARY_SUBDIVISION),
-        null).getStatusCode();
-```
-
-Reverse Search Cross Street Address
-```java com.azure.maps.search.sync.search_reverse_cross_street_address
-System.out.println("Revere Search Cross Street Address:");
-
-// options
-client.reverseSearchCrossStreetAddress(
-    new ReverseSearchCrossStreetAddressOptions(new GeoPosition(-121.89, 37.337)));
-
-// options
-client.reverseSearchCrossStreetAddress(
-    new ReverseSearchCrossStreetAddressOptions(new GeoPosition(-121.89, 37.337))
-        .setTop(2)
-        .setHeading(5));
-
-// complete
-client.reverseSearchCrossStreetAddressWithResponse(
-    new ReverseSearchCrossStreetAddressOptions(new GeoPosition(-121.89, 37.337))
-        .setTop(2)
-        .setHeading(5),
-    null).getStatusCode();
-```
-
-Search Structured Address
-```java com.azure.maps.search.sync.search_structured_address
-System.out.println("Search Address Structured:");
-
-// simple
-client.searchStructuredAddress(new StructuredAddress("US")
-    .setPostalCode("98121")
-    .setStreetNumber("15127")
-    .setStreetName("NE 24th Street")
-    .setMunicipality("Redmond")
-    .setCountrySubdivision("WA"), null);
-
-// complete
-client.searchStructuredAddressWithResponse(new StructuredAddress("US")
-    .setPostalCode("98121")
-    .setStreetNumber("15127")
-    .setStreetName("NE 24th Street")
-    .setMunicipality("Redmond")
-    .setCountrySubdivision("WA"),
-    new SearchStructuredAddressOptions()
-            .setTop(2)
-            .setRadiusInMeters(1000),
-    null).getStatusCode();
-```
-
-Search Inside Geometry
-```java com.azure.maps.search.sync.search_inside_geometry
-System.out.println("Search Inside Geometry");
-
-// create GeoPolygon
-List<GeoPosition> coordinates = new ArrayList<>();
-coordinates.add(new GeoPosition(-122.43576049804686, 37.7524152343544));
-coordinates.add(new GeoPosition(-122.43301391601562, 37.70660472542312));
-coordinates.add(new GeoPosition(-122.36434936523438, 37.712059855877314));
-coordinates.add(new GeoPosition(-122.43576049804686, 37.7524152343544));
-GeoLinearRing ring = new GeoLinearRing(coordinates);
-GeoPolygon polygon = new GeoPolygon(ring);
-
-// simple
-client.searchInsideGeometry(
-    new SearchInsideGeometryOptions("Leland Avenue", polygon));
-
-// options
-client.searchInsideGeometry(
-    new SearchInsideGeometryOptions("Leland Avenue", polygon)
-        .setTop(5));
-
-// complete
-client.searchInsideGeometryWithResponse(
-    new SearchInsideGeometryOptions("Leland Avenue", polygon)
-        .setTop(5),
-    null).getStatusCode();
-```
-
-Search Along Route
-```java com.azure.maps.search.sync.search_along_route
-System.out.println("Search Along Route");
-
-// create route points
-List<GeoPosition> points = new ArrayList<>();
-points.add(new GeoPosition(-122.143035, 47.653536));
-points.add(new GeoPosition(-122.187164, 47.617556));
-points.add(new GeoPosition(-122.114981, 47.570599));
-points.add(new GeoPosition(-122.132756, 47.654009));
-GeoLineString route = new GeoLineString(points);
-
-// simple
-client.searchAlongRoute(new SearchAlongRouteOptions("burger", 1000, route));
-
-// options
-client.searchAlongRoute(
-    new SearchAlongRouteOptions("burger", 1000, route)
-        .setCategoryFilter(Arrays.asList(7315))
-        .setTop(5));
-
-// complete
-client.searchAlongRouteWithResponse(
-    new SearchAlongRouteOptions("burger", 1000, route)
-        .setCategoryFilter(Arrays.asList(7315))
-        .setTop(5),
-    null).getStatusCode();
-```
-
-Begin Fuzzy Search Batch
-```java com.azure.maps.search.sync.fuzzy_search_batch
-List<FuzzySearchOptions> fuzzyOptionsList = new ArrayList<>();
-fuzzyOptionsList.add(new FuzzySearchOptions("atm", new GeoPosition(-122.128362, 47.639769))
-    .setRadiusInMeters(5000).setTop(5));
-fuzzyOptionsList.add(new FuzzySearchOptions("Statue of Liberty").setTop(2));
-fuzzyOptionsList.add(new FuzzySearchOptions("Starbucks", new GeoPosition(-122.128362, 47.639769))
-    .setRadiusInMeters(5000));
-
-System.out.println("Post Search Fuzzy Batch Async");
-client.beginFuzzySearchBatch(fuzzyOptionsList).getFinalResult();
-```
-
-Begin Search Address Batch
-```java com.azure.maps.search.sync.search_address_batch
-List<SearchAddressOptions> optionsList = new ArrayList<>();
-optionsList.add(new SearchAddressOptions("400 Broad St, Seattle, WA 98109").setTop(3));
-optionsList.add(new SearchAddressOptions("One, Microsoft Way, Redmond, WA 98052").setTop(3));
-optionsList.add(new SearchAddressOptions("350 5th Ave, New York, NY 10118").setTop(3));
-optionsList.add(new SearchAddressOptions("1 Main Street")
-    .setCountryFilter(Arrays.asList("GB", "US", "AU")).setTop(3));
-
-// Search address batch async -
-// https://docs.microsoft.com/en-us/rest/api/maps/search/post-search-address-batch
-// This call posts addresses for search using the Asynchronous Batch API.
-// SyncPoller will do the polling automatically and you can retrieve the result
-// with getFinalResult()
-System.out.println("Search Address Batch Async");
-client.beginSearchAddressBatch(optionsList).getFinalResult();
-SyncPoller<BatchSearchResult, BatchSearchResult> poller = client.beginSearchAddressBatch(optionsList);
-BatchSearchResult result = poller.getFinalResult();
-```
-
-Reverse Reverse Search Address Batch
-```java com.azure.maps.search.sync.reverse_search_address_batch
-List<ReverseSearchAddressOptions> reverseOptionsList = new ArrayList<>();
-reverseOptionsList.add(new ReverseSearchAddressOptions(new GeoPosition(2.294911, 48.858561)));
-reverseOptionsList.add(
-    new ReverseSearchAddressOptions(new GeoPosition(-122.127896, 47.639765))
-        .setRadiusInMeters(5000)
-);
-reverseOptionsList.add(new ReverseSearchAddressOptions(new GeoPosition(-122.348170, 47.621028)));
-
-System.out.println("Reverse Search Address Batch Async");
-BatchReverseSearchResult br1 =
-    client.beginReverseSearchAddressBatch(reverseOptionsList).getFinalResult();
-```
 
 ## Troubleshooting
 When you interact with the Azure Maps Services, errors returned by the Maps service correspond to the same HTTP status codes returned for REST API requests.
