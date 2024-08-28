@@ -56,7 +56,7 @@ abstract class RadiologyInsightsClientTestBase extends TestProxyTestBase {
     private String orderCode;
     private String orderDescription;
 
-    void testRadiologyInsightsWithResponse(Consumer<RadiologyInsightsJob> testRunner) {
+    void testRadiologyInsightsWithResponse(Consumer<RadiologyInsightsData> testRunner) {
         testRunner.accept(createRadiologyInsightsJob());
     }
 
@@ -84,14 +84,12 @@ abstract class RadiologyInsightsClientTestBase extends TestProxyTestBase {
         return builder;
     }
     
-    private RadiologyInsightsJob createRadiologyInsightsJob() {
+    private RadiologyInsightsData createRadiologyInsightsJob() {
         List<PatientRecord> patientRecords = createPatientRecords();
         RadiologyInsightsData radiologyInsightsData = new RadiologyInsightsData(patientRecords);
         RadiologyInsightsModelConfiguration modelConfiguration = createRadiologyInsightsModelConfig();
-        radiologyInsightsData.setConfiguration(modelConfiguration);
-        RadiologyInsightsJob radiologyInsightsJob = new RadiologyInsightsJob();
-        radiologyInsightsJob.setJobData(radiologyInsightsData);
-        return radiologyInsightsJob;
+        radiologyInsightsData.setConfiguration(modelConfiguration);       
+        return radiologyInsightsData;
     }
     
     private List<PatientRecord> createPatientRecords() {

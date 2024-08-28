@@ -37,6 +37,7 @@ import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.health.insights.radiologyinsights.RadiologyInsightsServiceVersion;
+import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsData;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceResult;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsJob;
 import java.time.Duration;
@@ -2688,7 +2689,7 @@ public final class RadiologyInsightsClientImpl {
      * @return the {@link PollerFlux} for polling of response for the Radiology Insights request.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<RadiologyInsightsJob, RadiologyInsightsInferenceResult>
+    public PollerFlux<RadiologyInsightsData, RadiologyInsightsInferenceResult>
         beginInferRadiologyInsightsWithModelAsync(String id, BinaryData resource, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
             () -> this.inferRadiologyInsightsWithResponseAsync(id, resource, requestOptions),
@@ -2700,7 +2701,7 @@ public final class RadiologyInsightsClientImpl {
                         : Context.NONE)
                     .setServiceVersion(this.getServiceVersion().getVersion()),
                 "result"),
-            TypeReference.createInstance(RadiologyInsightsJob.class),
+            TypeReference.createInstance(RadiologyInsightsData.class),
             TypeReference.createInstance(RadiologyInsightsInferenceResult.class));
     }
 
@@ -3196,7 +3197,7 @@ public final class RadiologyInsightsClientImpl {
      * @return the {@link SyncPoller} for polling of response for the Radiology Insights request.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<RadiologyInsightsJob, RadiologyInsightsInferenceResult>
+    public SyncPoller<RadiologyInsightsData, RadiologyInsightsInferenceResult>
         beginInferRadiologyInsightsWithModel(String id, BinaryData resource, RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
             () -> this.inferRadiologyInsightsWithResponse(id, resource, requestOptions),
@@ -3208,7 +3209,7 @@ public final class RadiologyInsightsClientImpl {
                         : Context.NONE)
                     .setServiceVersion(this.getServiceVersion().getVersion()),
                 "result"),
-            TypeReference.createInstance(RadiologyInsightsJob.class),
+            TypeReference.createInstance(RadiologyInsightsData.class),
             TypeReference.createInstance(RadiologyInsightsInferenceResult.class));
     }
 }

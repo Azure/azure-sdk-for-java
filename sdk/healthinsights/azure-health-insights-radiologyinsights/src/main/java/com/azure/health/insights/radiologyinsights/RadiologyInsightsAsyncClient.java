@@ -15,6 +15,7 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.health.insights.radiologyinsights.implementation.RadiologyInsightsClientImpl;
+import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsData;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceResult;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsJob;
 import java.util.List;
@@ -552,11 +553,13 @@ public final class RadiologyInsightsAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of response for the Radiology Insights request.
      */
-    @Generated
+    
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<RadiologyInsightsJob, RadiologyInsightsInferenceResult> beginInferRadiologyInsights(String id,
-        RadiologyInsightsJob resource, List<String> expand) {
+    public PollerFlux<RadiologyInsightsData, RadiologyInsightsInferenceResult> beginInferRadiologyInsights(String id,
+        RadiologyInsightsData resource, List<String> expand) {
         // Generated convenience method for beginInferRadiologyInsightsWithModel
+    	RadiologyInsightsJob job = new RadiologyInsightsJob();
+    	job.setJobData(resource);
         RequestOptions requestOptions = new RequestOptions();
         if (expand != null) {
             for (String paramItemValue : expand) {
@@ -565,7 +568,7 @@ public final class RadiologyInsightsAsyncClient {
                 }
             }
         }
-        return serviceClient.beginInferRadiologyInsightsWithModelAsync(id, BinaryData.fromObject(resource),
+        return serviceClient.beginInferRadiologyInsightsWithModelAsync(id, BinaryData.fromObject(job),
             requestOptions);
     }
 
@@ -584,13 +587,14 @@ public final class RadiologyInsightsAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of response for the Radiology Insights request.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<RadiologyInsightsJob, RadiologyInsightsInferenceResult> beginInferRadiologyInsights(String id,
-        RadiologyInsightsJob resource) {
+    public PollerFlux<RadiologyInsightsData, RadiologyInsightsInferenceResult> beginInferRadiologyInsights(String id,
+        RadiologyInsightsData resource) {
         // Generated convenience method for beginInferRadiologyInsightsWithModel
+    	RadiologyInsightsJob job = new RadiologyInsightsJob();
+    	job.setJobData(resource);
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.beginInferRadiologyInsightsWithModelAsync(id, BinaryData.fromObject(resource),
+        return serviceClient.beginInferRadiologyInsightsWithModelAsync(id, BinaryData.fromObject(job),
             requestOptions);
     }
 }

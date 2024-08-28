@@ -96,7 +96,7 @@ public class SampleAgeMismatchInferenceAsync {
                 .credential(credential);
         RadiologyInsightsAsyncClient radiologyInsightsAsyncClient = clientBuilder.buildAsyncClient();
 
-        PollerFlux<RadiologyInsightsJob, RadiologyInsightsInferenceResult> asyncPoller = radiologyInsightsAsyncClient
+        PollerFlux<RadiologyInsightsData, RadiologyInsightsInferenceResult> asyncPoller = radiologyInsightsAsyncClient
                 .beginInferRadiologyInsights(UUID.randomUUID().toString(), createRadiologyInsightsJob());
         
         CountDownLatch latch = new CountDownLatch(1);
@@ -179,14 +179,12 @@ public class SampleAgeMismatchInferenceAsync {
      * @return A RadiologyInsightsJob object with the created patient records and
      *         model configuration.
      */
-    private static RadiologyInsightsJob createRadiologyInsightsJob() {
+    private static RadiologyInsightsData createRadiologyInsightsJob() {
         List<PatientRecord> patientRecords = createPatientRecords();
         RadiologyInsightsData radiologyInsightsData = new RadiologyInsightsData(patientRecords);
         RadiologyInsightsModelConfiguration modelConfiguration = createRadiologyInsightsModelConfig();
         radiologyInsightsData.setConfiguration(modelConfiguration);
-        RadiologyInsightsJob radiologyInsightsJob = new RadiologyInsightsJob();
-        radiologyInsightsJob.setJobData(radiologyInsightsData);
-        return radiologyInsightsJob;
+        return radiologyInsightsData;
     }
 
     /**
@@ -319,7 +317,7 @@ public class SampleAgeMismatchInferenceAsync {
         return inferenceOptions;
     }
 
-    private static Predicate<AsyncPollResponse<RadiologyInsightsJob, RadiologyInsightsInferenceResult>> isComplete = response -> {
+    private static Predicate<AsyncPollResponse<RadiologyInsightsData, RadiologyInsightsInferenceResult>> isComplete = response -> {
         return response.getStatus() != LongRunningOperationStatus.IN_PROGRESS
             && response.getStatus() != LongRunningOperationStatus.NOT_STARTED;
     };
