@@ -4,7 +4,6 @@
 
 package com.azure.ai.inference.models;
 
-import com.azure.ai.inference.models.ExtraParameters;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.BinaryData;

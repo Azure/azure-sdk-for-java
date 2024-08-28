@@ -111,6 +111,7 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
      * @param content the content value to set.
      * @return An instance of ChatRequestUserMessage if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
+     * @throws RuntimeException If the deserialized JSON object was missing any required properties.
      */
     public static ChatRequestUserMessage fromString(String content) {
         String jsonPrompt = "{" + "\"content\":\"%s\"" + "}";
