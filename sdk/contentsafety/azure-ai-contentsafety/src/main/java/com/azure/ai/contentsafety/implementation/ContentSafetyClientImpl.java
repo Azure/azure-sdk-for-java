@@ -159,8 +159,9 @@ public final class ContentSafetyClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> analyzeImage(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData options, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData options,
+            RequestOptions requestOptions, Context context);
 
         @Post("/image:analyze")
         @ExpectedResponses({ 200 })
@@ -169,8 +170,9 @@ public final class ContentSafetyClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> analyzeImageSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData options, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData options,
+            RequestOptions requestOptions, Context context);
 
         @Post("/text:analyze")
         @ExpectedResponses({ 200 })
@@ -179,8 +181,9 @@ public final class ContentSafetyClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> analyzeText(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData options, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData options,
+            RequestOptions requestOptions, Context context);
 
         @Post("/text:analyze")
         @ExpectedResponses({ 200 })
@@ -189,8 +192,9 @@ public final class ContentSafetyClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> analyzeTextSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData options, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData options,
+            RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -236,9 +240,10 @@ public final class ContentSafetyClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> analyzeImageWithResponseAsync(BinaryData options, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.analyzeImage(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, options, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, accept, options, requestOptions, context));
     }
 
     /**
@@ -284,9 +289,10 @@ public final class ContentSafetyClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> analyzeImageWithResponse(BinaryData options, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return service.analyzeImageSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, options,
-            requestOptions, Context.NONE);
+        return service.analyzeImageSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, accept,
+            options, requestOptions, Context.NONE);
     }
 
     /**
@@ -340,9 +346,10 @@ public final class ContentSafetyClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> analyzeTextWithResponseAsync(BinaryData options, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.analyzeText(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, options, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, accept, options, requestOptions, context));
     }
 
     /**
@@ -396,8 +403,9 @@ public final class ContentSafetyClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> analyzeTextWithResponse(BinaryData options, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return service.analyzeTextSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, options,
-            requestOptions, Context.NONE);
+        return service.analyzeTextSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, accept,
+            options, requestOptions, Context.NONE);
     }
 }

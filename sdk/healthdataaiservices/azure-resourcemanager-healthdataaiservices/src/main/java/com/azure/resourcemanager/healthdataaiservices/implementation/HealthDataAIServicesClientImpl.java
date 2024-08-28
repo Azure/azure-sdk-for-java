@@ -43,12 +43,12 @@ import reactor.core.publisher.Mono;
 @ServiceClient(builder = HealthDataAIServicesClientBuilder.class)
 public final class HealthDataAIServicesClientImpl implements HealthDataAIServicesClient {
     /**
-     * Server parameter.
+     * Service host.
      */
     private final String endpoint;
 
     /**
-     * Gets Server parameter.
+     * Gets Service host.
      * 
      * @return the endpoint value.
      */
@@ -189,7 +189,7 @@ public final class HealthDataAIServicesClientImpl implements HealthDataAIService
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
-     * @param endpoint Server parameter.
+     * @param endpoint Service host.
      * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      */
     HealthDataAIServicesClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,

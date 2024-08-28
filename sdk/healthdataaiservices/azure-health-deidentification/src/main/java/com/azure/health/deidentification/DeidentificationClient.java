@@ -96,7 +96,9 @@ public final class DeidentificationClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a job containing a batch of documents to de-identify along with {@link Response}.
+     * @return a de-identification job.
+     * 
+     * Resource read operation template along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -489,7 +491,9 @@ public final class DeidentificationClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job containing a batch of documents to de-identify.
+     * @return a de-identification job.
+     * 
+     * Resource read operation template.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)

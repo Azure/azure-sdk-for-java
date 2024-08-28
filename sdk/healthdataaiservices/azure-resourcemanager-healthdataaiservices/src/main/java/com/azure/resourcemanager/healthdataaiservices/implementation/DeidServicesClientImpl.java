@@ -79,7 +79,7 @@ public final class DeidServicesClientImpl implements DeidServicesClient {
         Mono<Response<DeidServiceInner>> getByResourceGroup(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("deidServiceName") String deidServiceName, @HeaderParam("accept") String accept,
+            @PathParam("deidServiceName") String deidServiceName, @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -88,7 +88,7 @@ public final class DeidServicesClientImpl implements DeidServicesClient {
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DeidServiceListResult>> listByResourceGroup(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -97,27 +97,27 @@ public final class DeidServicesClientImpl implements DeidServicesClient {
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DeidServiceListResult>> list(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("accept") String accept, Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthDataAIServices/deidServices/{deidServiceName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> create(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("deidServiceName") String deidServiceName, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") DeidServiceInner resource, Context context);
+            @PathParam("deidServiceName") String deidServiceName, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") DeidServiceInner resource,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthDataAIServices/deidServices/{deidServiceName}")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("deidServiceName") String deidServiceName, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") DeidUpdate properties, Context context);
+            @PathParam("deidServiceName") String deidServiceName, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") DeidUpdate properties,
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthDataAIServices/deidServices/{deidServiceName}")
@@ -126,7 +126,7 @@ public final class DeidServicesClientImpl implements DeidServicesClient {
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("deidServiceName") String deidServiceName, @HeaderParam("accept") String accept,
+            @PathParam("deidServiceName") String deidServiceName, @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -135,7 +135,7 @@ public final class DeidServicesClientImpl implements DeidServicesClient {
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DeidServiceListResult>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -143,7 +143,7 @@ public final class DeidServicesClientImpl implements DeidServicesClient {
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DeidServiceListResult>> listBySubscriptionNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, Context context);
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -540,10 +540,12 @@ public final class DeidServicesClientImpl implements DeidServicesClient {
         } else {
             resource.validate();
         }
+        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.create(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, deidServiceName, accept, resource, context))
+                this.client.getSubscriptionId(), resourceGroupName, deidServiceName, contentType, accept, resource,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -584,10 +586,11 @@ public final class DeidServicesClientImpl implements DeidServicesClient {
         } else {
             resource.validate();
         }
+        final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.create(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, deidServiceName, accept, resource, context);
+            resourceGroupName, deidServiceName, contentType, accept, resource, context);
     }
 
     /**
@@ -773,10 +776,12 @@ public final class DeidServicesClientImpl implements DeidServicesClient {
         } else {
             properties.validate();
         }
+        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, deidServiceName, accept, properties, context))
+                this.client.getSubscriptionId(), resourceGroupName, deidServiceName, contentType, accept, properties,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -817,10 +822,11 @@ public final class DeidServicesClientImpl implements DeidServicesClient {
         } else {
             properties.validate();
         }
+        final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.update(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, deidServiceName, accept, properties, context);
+            resourceGroupName, deidServiceName, contentType, accept, properties, context);
     }
 
     /**
@@ -1173,6 +1179,8 @@ public final class DeidServicesClientImpl implements DeidServicesClient {
     }
 
     /**
+     * List DeidService resources by resource group
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1201,6 +1209,8 @@ public final class DeidServicesClientImpl implements DeidServicesClient {
     }
 
     /**
+     * List DeidService resources by resource group
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1229,6 +1239,8 @@ public final class DeidServicesClientImpl implements DeidServicesClient {
     }
 
     /**
+     * List DeidService resources by subscription ID
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1257,6 +1269,8 @@ public final class DeidServicesClientImpl implements DeidServicesClient {
     }
 
     /**
+     * List DeidService resources by subscription ID
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.

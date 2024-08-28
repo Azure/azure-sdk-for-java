@@ -159,7 +159,7 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getAudioTranscriptionAsPlainText(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("deploymentId") String deploymentOrModelName,
-            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("content-type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("multipart/form-data") BinaryData audioTranscriptionOptions, RequestOptions requestOptions,
             Context context);
 
@@ -172,7 +172,7 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getAudioTranscriptionAsPlainTextSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("deploymentId") String deploymentOrModelName,
-            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("content-type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("multipart/form-data") BinaryData audioTranscriptionOptions, RequestOptions requestOptions,
             Context context);
 
@@ -185,7 +185,7 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getAudioTranscriptionAsResponseObject(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("deploymentId") String deploymentOrModelName,
-            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("content-type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("multipart/form-data") BinaryData audioTranscriptionOptions, RequestOptions requestOptions,
             Context context);
 
@@ -198,7 +198,7 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getAudioTranscriptionAsResponseObjectSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("deploymentId") String deploymentOrModelName,
-            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("content-type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("multipart/form-data") BinaryData audioTranscriptionOptions, RequestOptions requestOptions,
             Context context);
 
@@ -211,7 +211,7 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getAudioTranslationAsPlainText(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("deploymentId") String deploymentOrModelName,
-            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("content-type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("multipart/form-data") BinaryData audioTranslationOptions, RequestOptions requestOptions,
             Context context);
 
@@ -224,7 +224,7 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getAudioTranslationAsPlainTextSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("deploymentId") String deploymentOrModelName,
-            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("content-type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("multipart/form-data") BinaryData audioTranslationOptions, RequestOptions requestOptions,
             Context context);
 
@@ -237,7 +237,7 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getAudioTranslationAsResponseObject(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("deploymentId") String deploymentOrModelName,
-            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("content-type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("multipart/form-data") BinaryData audioTranslationOptions, RequestOptions requestOptions,
             Context context);
 
@@ -250,7 +250,7 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getAudioTranslationAsResponseObjectSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("deploymentId") String deploymentOrModelName,
-            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("content-type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("multipart/form-data") BinaryData audioTranslationOptions, RequestOptions requestOptions,
             Context context);
 
@@ -262,8 +262,9 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getCompletions(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("deploymentId") String deploymentOrModelName,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData completionsOptions,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData completionsOptions, RequestOptions requestOptions,
+            Context context);
 
         @Post("/deployments/{deploymentId}/completions")
         @ExpectedResponses({ 200 })
@@ -273,8 +274,9 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getCompletionsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("deploymentId") String deploymentOrModelName,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData completionsOptions,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData completionsOptions, RequestOptions requestOptions,
+            Context context);
 
         @Post("/deployments/{deploymentId}/chat/completions")
         @ExpectedResponses({ 200 })
@@ -284,8 +286,9 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getChatCompletions(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("deploymentId") String deploymentOrModelName,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData chatCompletionsOptions,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData chatCompletionsOptions, RequestOptions requestOptions,
+            Context context);
 
         @Post("/deployments/{deploymentId}/chat/completions")
         @ExpectedResponses({ 200 })
@@ -295,8 +298,9 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getChatCompletionsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("deploymentId") String deploymentOrModelName,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData chatCompletionsOptions,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData chatCompletionsOptions, RequestOptions requestOptions,
+            Context context);
 
         @Post("/deployments/{deploymentId}/images/generations")
         @ExpectedResponses({ 200 })
@@ -306,8 +310,9 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getImageGenerations(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("deploymentId") String deploymentOrModelName,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData imageGenerationOptions,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData imageGenerationOptions, RequestOptions requestOptions,
+            Context context);
 
         @Post("/deployments/{deploymentId}/images/generations")
         @ExpectedResponses({ 200 })
@@ -317,8 +322,9 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getImageGenerationsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("deploymentId") String deploymentOrModelName,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData imageGenerationOptions,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData imageGenerationOptions, RequestOptions requestOptions,
+            Context context);
 
         @Post("/deployments/{deploymentId}/audio/speech")
         @ExpectedResponses({ 200 })
@@ -328,8 +334,9 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> generateSpeechFromText(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("deploymentId") String deploymentOrModelName,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData speechGenerationOptions,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData speechGenerationOptions, RequestOptions requestOptions,
+            Context context);
 
         @Post("/deployments/{deploymentId}/audio/speech")
         @ExpectedResponses({ 200 })
@@ -339,8 +346,9 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> generateSpeechFromTextSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("deploymentId") String deploymentOrModelName,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData speechGenerationOptions,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData speechGenerationOptions, RequestOptions requestOptions,
+            Context context);
 
         @Post("/deployments/{deploymentId}/embeddings")
         @ExpectedResponses({ 200 })
@@ -350,8 +358,9 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getEmbeddings(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("deploymentId") String deploymentOrModelName,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData embeddingsOptions,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData embeddingsOptions, RequestOptions requestOptions,
+            Context context);
 
         @Post("/deployments/{deploymentId}/embeddings")
         @ExpectedResponses({ 200 })
@@ -361,8 +370,9 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getEmbeddingsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("deploymentId") String deploymentOrModelName,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData embeddingsOptions,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData embeddingsOptions, RequestOptions requestOptions,
+            Context context);
     }
 
     /**
@@ -389,7 +399,7 @@ public final class OpenAIClientImpl {
     public Mono<Response<BinaryData>> getAudioTranscriptionAsPlainTextWithResponseAsync(String deploymentOrModelName,
         BinaryData audioTranscriptionOptions, RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
-        final String accept = "text/plain, application/json";
+        final String accept = "text/plain";
         return FluxUtil.withContext(context -> service.getAudioTranscriptionAsPlainText(this.getEndpoint(),
             this.getServiceVersion().getVersion(), deploymentOrModelName, contentType, accept,
             audioTranscriptionOptions, requestOptions, context));
@@ -418,7 +428,7 @@ public final class OpenAIClientImpl {
     public Response<BinaryData> getAudioTranscriptionAsPlainTextWithResponse(String deploymentOrModelName,
         BinaryData audioTranscriptionOptions, RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
-        final String accept = "text/plain, application/json";
+        final String accept = "text/plain";
         return service.getAudioTranscriptionAsPlainTextSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
             deploymentOrModelName, contentType, accept, audioTranscriptionOptions, requestOptions, Context.NONE);
     }
@@ -561,7 +571,7 @@ public final class OpenAIClientImpl {
     public Mono<Response<BinaryData>> getAudioTranslationAsPlainTextWithResponseAsync(String deploymentOrModelName,
         BinaryData audioTranslationOptions, RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
-        final String accept = "text/plain, application/json";
+        final String accept = "text/plain";
         return FluxUtil.withContext(
             context -> service.getAudioTranslationAsPlainText(this.getEndpoint(), this.getServiceVersion().getVersion(),
                 deploymentOrModelName, contentType, accept, audioTranslationOptions, requestOptions, context));
@@ -590,7 +600,7 @@ public final class OpenAIClientImpl {
     public Response<BinaryData> getAudioTranslationAsPlainTextWithResponse(String deploymentOrModelName,
         BinaryData audioTranslationOptions, RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
-        final String accept = "text/plain, application/json";
+        final String accept = "text/plain";
         return service.getAudioTranslationAsPlainTextSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
             deploymentOrModelName, contentType, accept, audioTranslationOptions, requestOptions, Context.NONE);
     }
@@ -839,10 +849,11 @@ public final class OpenAIClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getCompletionsWithResponseAsync(String deploymentOrModelName,
         BinaryData completionsOptions, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getCompletions(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                deploymentOrModelName, accept, completionsOptions, requestOptions, context));
+                deploymentOrModelName, contentType, accept, completionsOptions, requestOptions, context));
     }
 
     /**
@@ -989,9 +1000,10 @@ public final class OpenAIClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getCompletionsWithResponse(String deploymentOrModelName, BinaryData completionsOptions,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return service.getCompletionsSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            deploymentOrModelName, accept, completionsOptions, requestOptions, Context.NONE);
+            deploymentOrModelName, contentType, accept, completionsOptions, requestOptions, Context.NONE);
     }
 
     /**
@@ -1242,10 +1254,11 @@ public final class OpenAIClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getChatCompletionsWithResponseAsync(String deploymentOrModelName,
         BinaryData chatCompletionsOptions, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(
             context -> service.getChatCompletions(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                deploymentOrModelName, accept, chatCompletionsOptions, requestOptions, context));
+                deploymentOrModelName, contentType, accept, chatCompletionsOptions, requestOptions, context));
     }
 
     /**
@@ -1496,9 +1509,10 @@ public final class OpenAIClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getChatCompletionsWithResponse(String deploymentOrModelName,
         BinaryData chatCompletionsOptions, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return service.getChatCompletionsSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            deploymentOrModelName, accept, chatCompletionsOptions, requestOptions, Context.NONE);
+            deploymentOrModelName, contentType, accept, chatCompletionsOptions, requestOptions, Context.NONE);
     }
 
     /**
@@ -1576,10 +1590,11 @@ public final class OpenAIClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getImageGenerationsWithResponseAsync(String deploymentOrModelName,
         BinaryData imageGenerationOptions, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(
             context -> service.getImageGenerations(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                deploymentOrModelName, accept, imageGenerationOptions, requestOptions, context));
+                deploymentOrModelName, contentType, accept, imageGenerationOptions, requestOptions, context));
     }
 
     /**
@@ -1656,9 +1671,10 @@ public final class OpenAIClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getImageGenerationsWithResponse(String deploymentOrModelName,
         BinaryData imageGenerationOptions, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return service.getImageGenerationsSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            deploymentOrModelName, accept, imageGenerationOptions, requestOptions, Context.NONE);
+            deploymentOrModelName, contentType, accept, imageGenerationOptions, requestOptions, Context.NONE);
     }
 
     /**
@@ -1695,10 +1711,11 @@ public final class OpenAIClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> generateSpeechFromTextWithResponseAsync(String deploymentOrModelName,
         BinaryData speechGenerationOptions, RequestOptions requestOptions) {
-        final String accept = "application/octet-stream, application/json";
+        final String contentType = "application/json";
+        final String accept = "application/octet-stream";
         return FluxUtil.withContext(
             context -> service.generateSpeechFromText(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                deploymentOrModelName, accept, speechGenerationOptions, requestOptions, context));
+                deploymentOrModelName, contentType, accept, speechGenerationOptions, requestOptions, context));
     }
 
     /**
@@ -1735,9 +1752,10 @@ public final class OpenAIClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> generateSpeechFromTextWithResponse(String deploymentOrModelName,
         BinaryData speechGenerationOptions, RequestOptions requestOptions) {
-        final String accept = "application/octet-stream, application/json";
+        final String contentType = "application/json";
+        final String accept = "application/octet-stream";
         return service.generateSpeechFromTextSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            deploymentOrModelName, accept, speechGenerationOptions, requestOptions, Context.NONE);
+            deploymentOrModelName, contentType, accept, speechGenerationOptions, requestOptions, Context.NONE);
     }
 
     /**
@@ -1794,10 +1812,11 @@ public final class OpenAIClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getEmbeddingsWithResponseAsync(String deploymentOrModelName,
         BinaryData embeddingsOptions, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getEmbeddings(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                deploymentOrModelName, accept, embeddingsOptions, requestOptions, context));
+                deploymentOrModelName, contentType, accept, embeddingsOptions, requestOptions, context));
     }
 
     /**
@@ -1853,8 +1872,9 @@ public final class OpenAIClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getEmbeddingsWithResponse(String deploymentOrModelName, BinaryData embeddingsOptions,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return service.getEmbeddingsSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            deploymentOrModelName, accept, embeddingsOptions, requestOptions, Context.NONE);
+            deploymentOrModelName, contentType, accept, embeddingsOptions, requestOptions, Context.NONE);
     }
 }

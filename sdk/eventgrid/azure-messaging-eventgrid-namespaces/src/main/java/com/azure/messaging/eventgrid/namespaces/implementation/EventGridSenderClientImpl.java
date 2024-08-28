@@ -156,7 +156,7 @@ public final class EventGridSenderClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> send(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("topicName") String topicName,
-            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("content-type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/cloudevents+json; charset=utf-8") BinaryData event, RequestOptions requestOptions,
             Context context);
 
@@ -168,7 +168,7 @@ public final class EventGridSenderClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> sendSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("topicName") String topicName,
-            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("content-type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/cloudevents+json; charset=utf-8") BinaryData event, RequestOptions requestOptions,
             Context context);
 
@@ -180,7 +180,7 @@ public final class EventGridSenderClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> sendEvents(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("topicName") String topicName,
-            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("content-type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/cloudevents-batch+json; charset=utf-8") BinaryData events,
             RequestOptions requestOptions, Context context);
 
@@ -192,7 +192,7 @@ public final class EventGridSenderClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> sendEventsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("topicName") String topicName,
-            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("content-type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/cloudevents-batch+json; charset=utf-8") BinaryData events,
             RequestOptions requestOptions, Context context);
     }

@@ -69,7 +69,7 @@ public final class PrivateLinksClientImpl implements PrivateLinksClient {
         Mono<Response<PrivateLinkResourceListResult>> listByMongoCluster(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("mongoClusterName") String mongoClusterName, @HeaderParam("accept") String accept,
+            @PathParam("mongoClusterName") String mongoClusterName, @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -78,7 +78,7 @@ public final class PrivateLinksClientImpl implements PrivateLinksClient {
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PrivateLinkResourceListResult>> listByMongoClusterNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, Context context);
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -229,6 +229,8 @@ public final class PrivateLinksClientImpl implements PrivateLinksClient {
     }
 
     /**
+     * list private links on the given resource
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -257,6 +259,8 @@ public final class PrivateLinksClientImpl implements PrivateLinksClient {
     }
 
     /**
+     * list private links on the given resource
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.

@@ -779,8 +779,6 @@ public final class FaceAsyncClient {
     Mono<List<FaceDetectionResult>> detectFromUrlImpl(DetectFromUrlImplOptions options) {
         // Generated convenience method for detectFromUrlImplWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        DetectFromUrlImplRequest detectFromUrlRequestObj = new DetectFromUrlImplRequest(options.getUrl());
-        BinaryData detectFromUrlRequest = BinaryData.fromObject(detectFromUrlRequestObj);
         FaceDetectionModel detectionModel = options.getDetectionModel();
         FaceRecognitionModel recognitionModel = options.getRecognitionModel();
         Boolean returnFaceId = options.isReturnFaceId();
@@ -788,6 +786,8 @@ public final class FaceAsyncClient {
         Boolean returnFaceLandmarks = options.isReturnFaceLandmarks();
         Boolean returnRecognitionModel = options.isReturnRecognitionModel();
         Integer faceIdTimeToLive = options.getFaceIdTimeToLive();
+        DetectFromUrlImplRequest detectFromUrlRequestObj = new DetectFromUrlImplRequest(options.getUrl());
+        BinaryData detectFromUrlRequest = BinaryData.fromObject(detectFromUrlRequestObj);
         if (detectionModel != null) {
             requestOptions.addQueryParam("detectionModel", detectionModel.toString(), false);
         }

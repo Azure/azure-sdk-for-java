@@ -159,8 +159,9 @@ public final class FaceSessionClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createLivenessSession(@HostParam("endpoint") String endpoint,
-            @HostParam("apiVersion") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
+            @HostParam("apiVersion") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
+            RequestOptions requestOptions, Context context);
 
         @Post("/detectLiveness/singleModal/sessions")
         @ExpectedResponses({ 200 })
@@ -169,8 +170,9 @@ public final class FaceSessionClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createLivenessSessionSync(@HostParam("endpoint") String endpoint,
-            @HostParam("apiVersion") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
+            @HostParam("apiVersion") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
+            RequestOptions requestOptions, Context context);
 
         @Delete("/detectLiveness/singleModal/sessions/{sessionId}")
         @ExpectedResponses({ 200 })
@@ -180,7 +182,7 @@ public final class FaceSessionClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteLivenessSession(@HostParam("endpoint") String endpoint,
             @HostParam("apiVersion") String apiVersion, @PathParam("sessionId") String sessionId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/detectLiveness/singleModal/sessions/{sessionId}")
         @ExpectedResponses({ 200 })
@@ -190,7 +192,7 @@ public final class FaceSessionClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteLivenessSessionSync(@HostParam("endpoint") String endpoint,
             @HostParam("apiVersion") String apiVersion, @PathParam("sessionId") String sessionId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/detectLiveness/singleModal/sessions/{sessionId}")
         @ExpectedResponses({ 200 })
@@ -200,7 +202,7 @@ public final class FaceSessionClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getLivenessSessionResult(@HostParam("endpoint") String endpoint,
             @HostParam("apiVersion") String apiVersion, @PathParam("sessionId") String sessionId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/detectLiveness/singleModal/sessions/{sessionId}")
         @ExpectedResponses({ 200 })
@@ -210,7 +212,7 @@ public final class FaceSessionClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getLivenessSessionResultSync(@HostParam("endpoint") String endpoint,
             @HostParam("apiVersion") String apiVersion, @PathParam("sessionId") String sessionId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/detectLiveness/singleModal/sessions")
         @ExpectedResponses({ 200 })
@@ -219,7 +221,7 @@ public final class FaceSessionClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getLivenessSessions(@HostParam("endpoint") String endpoint,
-            @HostParam("apiVersion") String apiVersion, @HeaderParam("accept") String accept,
+            @HostParam("apiVersion") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/detectLiveness/singleModal/sessions")
@@ -229,7 +231,7 @@ public final class FaceSessionClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getLivenessSessionsSync(@HostParam("endpoint") String endpoint,
-            @HostParam("apiVersion") String apiVersion, @HeaderParam("accept") String accept,
+            @HostParam("apiVersion") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/detectLiveness/singleModal/sessions/{sessionId}/audit")
@@ -240,7 +242,7 @@ public final class FaceSessionClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getLivenessSessionAuditEntries(@HostParam("endpoint") String endpoint,
             @HostParam("apiVersion") String apiVersion, @PathParam("sessionId") String sessionId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/detectLiveness/singleModal/sessions/{sessionId}/audit")
         @ExpectedResponses({ 200 })
@@ -250,7 +252,7 @@ public final class FaceSessionClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getLivenessSessionAuditEntriesSync(@HostParam("endpoint") String endpoint,
             @HostParam("apiVersion") String apiVersion, @PathParam("sessionId") String sessionId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/detectLivenessWithVerify/singleModal/sessions")
         @ExpectedResponses({ 200 })
@@ -259,8 +261,9 @@ public final class FaceSessionClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createLivenessWithVerifySession(@HostParam("endpoint") String endpoint,
-            @HostParam("apiVersion") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
+            @HostParam("apiVersion") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
+            RequestOptions requestOptions, Context context);
 
         @Post("/detectLivenessWithVerify/singleModal/sessions")
         @ExpectedResponses({ 200 })
@@ -269,8 +272,9 @@ public final class FaceSessionClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createLivenessWithVerifySessionSync(@HostParam("endpoint") String endpoint,
-            @HostParam("apiVersion") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
+            @HostParam("apiVersion") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
+            RequestOptions requestOptions, Context context);
 
         // @Multipart not supported by RestProxy
         @Post("/detectLivenessWithVerify/singleModal/sessions")
@@ -281,7 +285,7 @@ public final class FaceSessionClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createLivenessWithVerifySessionWithVerifyImage(
             @HostParam("endpoint") String endpoint, @HostParam("apiVersion") String apiVersion,
-            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("content-type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("multipart/form-data") BinaryData body, RequestOptions requestOptions, Context context);
 
         // @Multipart not supported by RestProxy
@@ -293,7 +297,7 @@ public final class FaceSessionClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createLivenessWithVerifySessionWithVerifyImageSync(@HostParam("endpoint") String endpoint,
             @HostParam("apiVersion") String apiVersion, @HeaderParam("content-type") String contentType,
-            @HeaderParam("accept") String accept, @BodyParam("multipart/form-data") BinaryData body,
+            @HeaderParam("Accept") String accept, @BodyParam("multipart/form-data") BinaryData body,
             RequestOptions requestOptions, Context context);
 
         @Delete("/detectLivenessWithVerify/singleModal/sessions/{sessionId}")
@@ -304,7 +308,7 @@ public final class FaceSessionClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteLivenessWithVerifySession(@HostParam("endpoint") String endpoint,
             @HostParam("apiVersion") String apiVersion, @PathParam("sessionId") String sessionId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/detectLivenessWithVerify/singleModal/sessions/{sessionId}")
         @ExpectedResponses({ 200 })
@@ -314,7 +318,7 @@ public final class FaceSessionClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteLivenessWithVerifySessionSync(@HostParam("endpoint") String endpoint,
             @HostParam("apiVersion") String apiVersion, @PathParam("sessionId") String sessionId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/detectLivenessWithVerify/singleModal/sessions/{sessionId}")
         @ExpectedResponses({ 200 })
@@ -324,7 +328,7 @@ public final class FaceSessionClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getLivenessWithVerifySessionResult(@HostParam("endpoint") String endpoint,
             @HostParam("apiVersion") String apiVersion, @PathParam("sessionId") String sessionId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/detectLivenessWithVerify/singleModal/sessions/{sessionId}")
         @ExpectedResponses({ 200 })
@@ -334,7 +338,7 @@ public final class FaceSessionClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getLivenessWithVerifySessionResultSync(@HostParam("endpoint") String endpoint,
             @HostParam("apiVersion") String apiVersion, @PathParam("sessionId") String sessionId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/detectLivenessWithVerify/singleModal/sessions")
         @ExpectedResponses({ 200 })
@@ -343,7 +347,7 @@ public final class FaceSessionClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getLivenessWithVerifySessions(@HostParam("endpoint") String endpoint,
-            @HostParam("apiVersion") String apiVersion, @HeaderParam("accept") String accept,
+            @HostParam("apiVersion") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/detectLivenessWithVerify/singleModal/sessions")
@@ -353,7 +357,7 @@ public final class FaceSessionClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getLivenessWithVerifySessionsSync(@HostParam("endpoint") String endpoint,
-            @HostParam("apiVersion") String apiVersion, @HeaderParam("accept") String accept,
+            @HostParam("apiVersion") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/detectLivenessWithVerify/singleModal/sessions/{sessionId}/audit")
@@ -364,7 +368,7 @@ public final class FaceSessionClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getLivenessWithVerifySessionAuditEntries(@HostParam("endpoint") String endpoint,
             @HostParam("apiVersion") String apiVersion, @PathParam("sessionId") String sessionId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/detectLivenessWithVerify/singleModal/sessions/{sessionId}/audit")
         @ExpectedResponses({ 200 })
@@ -374,7 +378,7 @@ public final class FaceSessionClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getLivenessWithVerifySessionAuditEntriesSync(@HostParam("endpoint") String endpoint,
             @HostParam("apiVersion") String apiVersion, @PathParam("sessionId") String sessionId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -429,9 +433,10 @@ public final class FaceSessionClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createLivenessSessionWithResponseAsync(BinaryData body,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.createLivenessSession(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, body, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, accept, body, requestOptions, context));
     }
 
     /**
@@ -484,9 +489,10 @@ public final class FaceSessionClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createLivenessSessionWithResponse(BinaryData body, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return service.createLivenessSessionSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
-            body, requestOptions, Context.NONE);
+        return service.createLivenessSessionSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
+            accept, body, requestOptions, Context.NONE);
     }
 
     /**
@@ -1023,9 +1029,10 @@ public final class FaceSessionClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createLivenessWithVerifySessionWithResponseAsync(BinaryData body,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.createLivenessWithVerifySession(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, body, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, accept, body, requestOptions, context));
     }
 
     /**
@@ -1099,9 +1106,10 @@ public final class FaceSessionClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createLivenessWithVerifySessionWithResponse(BinaryData body,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return service.createLivenessWithVerifySessionSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            accept, body, requestOptions, Context.NONE);
+            contentType, accept, body, requestOptions, Context.NONE);
     }
 
     /**

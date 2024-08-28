@@ -80,9 +80,8 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("assetEndpointProfileName") String assetEndpointProfileName,
-            @HeaderParam("accept") String accept, Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/assetEndpointProfiles/{assetEndpointProfileName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -90,10 +89,9 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("assetEndpointProfileName") String assetEndpointProfileName,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") AssetEndpointProfileInner resource,
-            Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") AssetEndpointProfileInner resource, Context context);
 
-        @Headers({ "Content-Type: application/json" })
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/assetEndpointProfiles/{assetEndpointProfileName}")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -101,8 +99,8 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("assetEndpointProfileName") String assetEndpointProfileName,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") AssetEndpointProfileUpdate properties,
-            Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") AssetEndpointProfileUpdate properties, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/assetEndpointProfiles/{assetEndpointProfileName}")
@@ -112,7 +110,7 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("assetEndpointProfileName") String assetEndpointProfileName,
-            @HeaderParam("accept") String accept, Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/assetEndpointProfiles")
@@ -120,7 +118,7 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AssetEndpointProfileListResult>> listByResourceGroup(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -129,7 +127,7 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AssetEndpointProfileListResult>> list(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("accept") String accept, Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -137,7 +135,7 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AssetEndpointProfileListResult>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -145,7 +143,7 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AssetEndpointProfileListResult>> listBySubscriptionNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, Context context);
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -304,11 +302,12 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
         } else {
             resource.validate();
         }
+        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrReplace(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, assetEndpointProfileName, accept, resource,
-                context))
+                this.client.getSubscriptionId(), resourceGroupName, assetEndpointProfileName, contentType, accept,
+                resource, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -348,10 +347,12 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
         } else {
             resource.validate();
         }
+        final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrReplace(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, assetEndpointProfileName, accept, resource, context);
+            this.client.getSubscriptionId(), resourceGroupName, assetEndpointProfileName, contentType, accept, resource,
+            context);
     }
 
     /**
@@ -542,9 +543,12 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
         } else {
             properties.validate();
         }
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, assetEndpointProfileName, accept, properties, context))
+        return FluxUtil
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, assetEndpointProfileName, contentType, accept,
+                properties, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -584,10 +588,11 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
         } else {
             properties.validate();
         }
+        final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.update(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, assetEndpointProfileName, accept, properties, context);
+            resourceGroupName, assetEndpointProfileName, contentType, accept, properties, context);
     }
 
     /**
@@ -1187,6 +1192,8 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
     }
 
     /**
+     * List AssetEndpointProfile resources by resource group
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1215,6 +1222,8 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
     }
 
     /**
+     * List AssetEndpointProfile resources by resource group
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1243,6 +1252,8 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
     }
 
     /**
+     * List AssetEndpointProfile resources by subscription ID
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1271,6 +1282,8 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
     }
 
     /**
+     * List AssetEndpointProfile resources by subscription ID
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.

@@ -167,7 +167,9 @@ public final class BlocklistClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return text Blocklist along with {@link Response}.
+     * @return text Blocklist By blocklistName
+     *
+     * Returns text blocklist details along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -196,7 +198,9 @@ public final class BlocklistClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return blocklistItem by blocklistName and blocklistItemId from a text blocklist along with {@link Response}.
+     * @return blocklistItem By blocklistName And blocklistItemId
+     *
+     * Get blocklistItem by blocklistName and blocklistItemId from a text blocklist along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -234,7 +238,9 @@ public final class BlocklistClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return all blocklistItems in a text blocklist as paginated response with {@link PagedIterable}.
+     * @return all BlocklistItems By blocklistName
+     *
+     * Get all blocklistItems in a text blocklist as paginated response with {@link PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -260,7 +266,9 @@ public final class BlocklistClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return all text blocklists details as paginated response with {@link PagedIterable}.
+     * @return all Text Blocklists
+     *
+     * Get all text blocklists details as paginated response with {@link PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -357,7 +365,9 @@ public final class BlocklistClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return text Blocklist.
+     * @return text Blocklist By blocklistName
+     *
+     * Returns text blocklist details.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -380,7 +390,9 @@ public final class BlocklistClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return blocklistItem by blocklistName and blocklistItemId from a text blocklist.
+     * @return blocklistItem By blocklistName And blocklistItemId
+     *
+     * Get blocklistItem by blocklistName and blocklistItemId from a text blocklist.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -405,7 +417,9 @@ public final class BlocklistClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all blocklistItems in a text blocklist as paginated response with {@link PagedIterable}.
+     * @return all BlocklistItems By blocklistName
+     *
+     * Get all blocklistItems in a text blocklist as paginated response with {@link PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -434,7 +448,9 @@ public final class BlocklistClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all blocklistItems in a text blocklist as paginated response with {@link PagedIterable}.
+     * @return all BlocklistItems By blocklistName
+     *
+     * Get all blocklistItems in a text blocklist as paginated response with {@link PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -455,7 +471,9 @@ public final class BlocklistClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all text blocklists details as paginated response with {@link PagedIterable}.
+     * @return all Text Blocklists
+     *
+     * Get all text blocklists details as paginated response with {@link PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)

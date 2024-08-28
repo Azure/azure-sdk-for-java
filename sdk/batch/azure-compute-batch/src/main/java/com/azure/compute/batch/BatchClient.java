@@ -3233,7 +3233,10 @@ public final class BatchClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return contains information about an application in an Azure Batch Account along with {@link Response}.
+     * @return information about the specified Application.
+     *
+     * This operation returns only Applications and versions that are available for
+     * use on Compute Nodes; that is, that can be used in an Package reference along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -6364,7 +6367,10 @@ public final class BatchClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the results and errors from an execution of a Pool autoscale formula along with {@link Response}.
+     * @return the result of evaluating an automatic scaling formula on the Pool.
+     *
+     * This API is primarily for validating an autoscale formula, as it simply returns
+     * the result without applying the formula to the Pool along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -13234,7 +13240,10 @@ public final class BatchClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the Task and TaskSlot counts for a Job along with {@link Response}.
+     * @return the Task counts for the specified Job.
+     *
+     * Task counts provide a count of the Tasks by active, running or completed Task
+     * state, and a count of Tasks which succeeded or failed along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -20038,11 +20047,10 @@ public final class BatchClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return batch will retry Tasks when a recovery operation is triggered on a Node.
-     * Examples of recovery operations include (but are not limited to) when an
-     * unhealthy Node is rebooted or a Compute Node disappeared due to host failure.
-     * Retries due to recovery operations are independent of and are not counted
-     * against the maxTaskRetryCount along with {@link Response}.
+     * @return information about the specified Task.
+     *
+     * For multi-instance Tasks, information such as affinityId, executionInfo and
+     * nodeInfo refer to the primary Task along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -22351,7 +22359,10 @@ public final class BatchClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the remote login settings for a Compute Node along with {@link Response}.
+     * @return the settings required for remote login to a Compute Node.
+     *
+     * Before you can remotely login to a Compute Node using the remote login
+     * settings, you must create a user Account on the Compute Node along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -23753,7 +23764,10 @@ public final class BatchClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains information about an application in an Azure Batch Account.
+     * @return information about the specified Application.
+     *
+     * This operation returns only Applications and versions that are available for
+     * use on Compute Nodes; that is, that can be used in an Package reference.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -23783,7 +23797,10 @@ public final class BatchClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains information about an application in an Azure Batch Account.
+     * @return information about the specified Application.
+     *
+     * This operation returns only Applications and versions that are available for
+     * use on Compute Nodes; that is, that can be used in an Package reference.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -24632,7 +24649,10 @@ public final class BatchClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Task and TaskSlot counts for a Job.
+     * @return the Task counts for the specified Job.
+     *
+     * Task counts provide a count of the Tasks by active, running or completed Task
+     * state, and a count of Tasks which succeeded or failed.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -24661,7 +24681,10 @@ public final class BatchClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Task and TaskSlot counts for a Job.
+     * @return the Task counts for the specified Job.
+     *
+     * Task counts provide a count of the Tasks by active, running or completed Task
+     * state, and a count of Tasks which succeeded or failed.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -25306,11 +25329,10 @@ public final class BatchClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return batch will retry Tasks when a recovery operation is triggered on a Node.
-     * Examples of recovery operations include (but are not limited to) when an
-     * unhealthy Node is rebooted or a Compute Node disappeared due to host failure.
-     * Retries due to recovery operations are independent of and are not counted
-     * against the maxTaskRetryCount.
+     * @return information about the specified Task.
+     *
+     * For multi-instance Tasks, information such as affinityId, executionInfo and
+     * nodeInfo refer to the primary Task.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -25371,11 +25393,10 @@ public final class BatchClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return batch will retry Tasks when a recovery operation is triggered on a Node.
-     * Examples of recovery operations include (but are not limited to) when an
-     * unhealthy Node is rebooted or a Compute Node disappeared due to host failure.
-     * Retries due to recovery operations are independent of and are not counted
-     * against the maxTaskRetryCount.
+     * @return information about the specified Task.
+     *
+     * For multi-instance Tasks, information such as affinityId, executionInfo and
+     * nodeInfo refer to the primary Task.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -26057,7 +26078,10 @@ public final class BatchClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the remote login settings for a Compute Node.
+     * @return the settings required for remote login to a Compute Node.
+     *
+     * Before you can remotely login to a Compute Node using the remote login
+     * settings, you must create a user Account on the Compute Node.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -26087,7 +26111,10 @@ public final class BatchClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the remote login settings for a Compute Node.
+     * @return the settings required for remote login to a Compute Node.
+     *
+     * Before you can remotely login to a Compute Node using the remote login
+     * settings, you must create a user Account on the Compute Node.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -26433,6 +26460,8 @@ public final class BatchClient {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values: "application/json;
+     * odata=minimalmetadata".</td></tr>
      * <tr><td>If-Modified-Since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time
      * of the resource known to the
      * client. The operation will be performed only if the resource on the service has
@@ -26587,6 +26616,14 @@ public final class BatchClient {
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values: "application/json;
+     * odata=minimalmetadata".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>{@code
@@ -26675,6 +26712,14 @@ public final class BatchClient {
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values: "application/json;
+     * odata=minimalmetadata".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>{@code
@@ -27792,7 +27837,10 @@ public final class BatchClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the results and errors from an execution of a Pool autoscale formula.
+     * @return the result of evaluating an automatic scaling formula on the Pool.
+     *
+     * This API is primarily for validating an autoscale formula, as it simply returns
+     * the result without applying the formula to the Pool.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -27823,7 +27871,10 @@ public final class BatchClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the results and errors from an execution of a Pool autoscale formula.
+     * @return the result of evaluating an automatic scaling formula on the Pool.
+     *
+     * This API is primarily for validating an autoscale formula, as it simply returns
+     * the result without applying the formula to the Pool.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)

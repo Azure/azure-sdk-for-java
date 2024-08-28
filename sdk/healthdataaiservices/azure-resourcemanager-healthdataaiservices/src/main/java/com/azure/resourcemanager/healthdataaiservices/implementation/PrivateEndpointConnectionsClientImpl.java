@@ -79,9 +79,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("deidServiceName") String deidServiceName,
             @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
-            @HeaderParam("accept") String accept, Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthDataAIServices/deidServices/{deidServiceName}/privateEndpointConnections/{privateEndpointConnectionName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -90,7 +89,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("deidServiceName") String deidServiceName,
             @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
-            @HeaderParam("accept") String accept,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") PrivateEndpointConnectionResourceInner resource, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -102,7 +101,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("deidServiceName") String deidServiceName,
             @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
-            @HeaderParam("accept") String accept, Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthDataAIServices/deidServices/{deidServiceName}/privateEndpointConnections")
@@ -112,7 +111,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("deidServiceName") String deidServiceName, @HeaderParam("accept") String accept,
+            @PathParam("deidServiceName") String deidServiceName, @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -121,7 +120,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PrivateEndpointConnectionResourceListResult>> listByDeidServiceNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, Context context);
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -308,11 +307,12 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         } else {
             resource.validate();
         }
+        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.create(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, deidServiceName, privateEndpointConnectionName,
-                accept, resource, context))
+                contentType, accept, resource, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -359,10 +359,11 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         } else {
             resource.validate();
         }
+        final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.create(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, deidServiceName, privateEndpointConnectionName, accept, resource, context);
+            resourceGroupName, deidServiceName, privateEndpointConnectionName, contentType, accept, resource, context);
     }
 
     /**
@@ -933,6 +934,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     }
 
     /**
+     * List private endpoint connections on the given resource
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -961,6 +964,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     }
 
     /**
+     * List private endpoint connections on the given resource
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
