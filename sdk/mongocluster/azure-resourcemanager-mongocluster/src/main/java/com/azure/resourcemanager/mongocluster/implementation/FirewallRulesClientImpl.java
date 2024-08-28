@@ -78,10 +78,9 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("mongoClusterName") String mongoClusterName,
-            @PathParam("firewallRuleName") String firewallRuleName, @HeaderParam("accept") String accept,
+            @PathParam("firewallRuleName") String firewallRuleName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{mongoClusterName}/firewallRules/{firewallRuleName}")
         @ExpectedResponses({ 200, 201, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -89,8 +88,9 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("mongoClusterName") String mongoClusterName,
-            @PathParam("firewallRuleName") String firewallRuleName, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") FirewallRuleInner resource, Context context);
+            @PathParam("firewallRuleName") String firewallRuleName, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") FirewallRuleInner resource,
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{mongoClusterName}/firewallRules/{firewallRuleName}")
@@ -100,7 +100,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("mongoClusterName") String mongoClusterName,
-            @PathParam("firewallRuleName") String firewallRuleName, @HeaderParam("accept") String accept,
+            @PathParam("firewallRuleName") String firewallRuleName, @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -110,7 +110,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
         Mono<Response<FirewallRuleListResult>> listByMongoCluster(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("mongoClusterName") String mongoClusterName, @HeaderParam("accept") String accept,
+            @PathParam("mongoClusterName") String mongoClusterName, @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -119,7 +119,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<FirewallRuleListResult>> listByMongoClusterNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, Context context);
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -298,11 +298,12 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
         } else {
             resource.validate();
         }
+        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, mongoClusterName, firewallRuleName, accept,
-                resource, context))
+                this.client.getSubscriptionId(), resourceGroupName, mongoClusterName, firewallRuleName, contentType,
+                accept, resource, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -348,11 +349,12 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
         } else {
             resource.validate();
         }
+        final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, mongoClusterName, firewallRuleName, accept, resource,
-            context);
+            this.client.getSubscriptionId(), resourceGroupName, mongoClusterName, firewallRuleName, contentType, accept,
+            resource, context);
     }
 
     /**
@@ -886,6 +888,8 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     }
 
     /**
+     * List all the firewall rules in a given mongo cluster.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -914,6 +918,8 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     }
 
     /**
+     * List all the firewall rules in a given mongo cluster.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.

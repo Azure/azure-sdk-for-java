@@ -1,0 +1,68 @@
+[
+    {
+        "FeatureFlagName": "DefaultRequirementTypeFirstFilterPassed",
+        "Inputs": {},
+        "IsEnabled": {
+            "Result": "true"
+        },
+        "Variant": {
+            "Result": null
+        },
+        "Description": "Feature Flag with two feature filters, first returns true, so it's enabled."
+    },
+    {
+        "FeatureFlagName": "DefaultRequirementTypeLastFilterPassed",
+        "Inputs": {},
+        "IsEnabled": {
+            "Result": "true"
+        },
+        "Variant": {
+            "Result": null
+        },
+        "Description": "Feature Flag with two feature filters, second returns true, so it's enabled."
+    },
+    {
+        "FeatureFlagName": "RequirementTypeAnyFirstFilterPassed",
+        "Inputs": {},
+        "IsEnabled": {
+            "Result": "true"
+        },
+        "Variant": {
+            "Result": null
+        },
+        "Description": "Feature Flag with two feature filters and requirement type specified as Any. Second filter returns true."
+    },
+    {
+        "FeatureFlagName": "RequirementTypeAnyLastFilterPassed",
+        "Inputs": {},
+        "IsEnabled": {
+            "Result": "true"
+        },
+        "Variant": {
+            "Result": null
+        },
+        "Description": "Feature Flag with two feature filters and requirement type specified as Any. Neither filter returns true."
+    },
+    {
+        "FeatureFlagName": "RequirementTypeAllPassed",
+        "Inputs": {"user":"Adam"},
+        "IsEnabled": {
+            "Result": "true"
+        },
+        "Variant": {
+            "Result": null
+        },
+        "Description": "Feature Flag with two feature filters and requirement type specified as All. Both filters return true."
+    },
+    {
+        "FeatureFlagName": "RequirementTypeAllLastFilterFailed",
+        "Inputs": {"user":"Adam"},
+        "IsEnabled": {
+            "Result": "false"
+        },
+        "Variant": {
+            "Result": null
+        },
+        "Description": "Feature Flag with two feature filters and requirement type specified as All. Only the first filter returns true."
+    }
+]

@@ -21,7 +21,7 @@ public final class IntegrationRuntimeObjectMetadatasRefreshMockTests {
     @Test
     public void testRefresh() throws Exception {
         String responseStr
-            = "{\"status\":\"gtbslagtmkiilcg\",\"name\":\"mjpvgvbzlmz\",\"properties\":\"zgrfaq\",\"error\":\"qmcszdptoyt\"}";
+            = "{\"status\":\"reuhssrdugaxky\",\"name\":\"ljbiupj\",\"properties\":\"ygh\",\"error\":\"cqqvlxnyaeckzc\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,11 @@ public final class IntegrationRuntimeObjectMetadatasRefreshMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         SsisObjectMetadataStatusResponse response = manager.integrationRuntimeObjectMetadatas()
-            .refresh("xcahfoemcajj", "zoykw", "gnjhxydxicou", com.azure.core.util.Context.NONE);
+            .refresh("wdpnaohher", "yrkbsrpruoyjbzyl", "u", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("gtbslagtmkiilcg", response.status());
-        Assertions.assertEquals("mjpvgvbzlmz", response.name());
-        Assertions.assertEquals("zgrfaq", response.properties());
-        Assertions.assertEquals("qmcszdptoyt", response.error());
+        Assertions.assertEquals("reuhssrdugaxky", response.status());
+        Assertions.assertEquals("ljbiupj", response.name());
+        Assertions.assertEquals("ygh", response.properties());
+        Assertions.assertEquals("cqqvlxnyaeckzc", response.error());
     }
 }

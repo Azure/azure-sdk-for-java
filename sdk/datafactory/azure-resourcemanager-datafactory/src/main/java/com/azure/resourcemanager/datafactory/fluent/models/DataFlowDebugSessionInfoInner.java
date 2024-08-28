@@ -5,10 +5,11 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -16,65 +17,55 @@ import java.util.Map;
  * Data flow debug session info.
  */
 @Fluent
-public final class DataFlowDebugSessionInfoInner {
+public final class DataFlowDebugSessionInfoInner implements JsonSerializable<DataFlowDebugSessionInfoInner> {
     /*
      * The name of the data flow.
      */
-    @JsonProperty(value = "dataFlowName")
     private String dataFlowName;
 
     /*
      * Compute type of the cluster.
      */
-    @JsonProperty(value = "computeType")
     private String computeType;
 
     /*
      * Core count of the cluster.
      */
-    @JsonProperty(value = "coreCount")
     private Integer coreCount;
 
     /*
      * Node count of the cluster. (deprecated property)
      */
-    @JsonProperty(value = "nodeCount")
     private Integer nodeCount;
 
     /*
      * Attached integration runtime name of data flow debug session.
      */
-    @JsonProperty(value = "integrationRuntimeName")
     private String integrationRuntimeName;
 
     /*
      * The ID of data flow debug session.
      */
-    @JsonProperty(value = "sessionId")
     private String sessionId;
 
     /*
      * Start time of data flow debug session.
      */
-    @JsonProperty(value = "startTime")
     private String startTime;
 
     /*
      * Compute type of the cluster.
      */
-    @JsonProperty(value = "timeToLiveInMinutes")
     private Integer timeToLiveInMinutes;
 
     /*
      * Last activity time of data flow debug session.
      */
-    @JsonProperty(value = "lastActivityTime")
     private String lastActivityTime;
 
     /*
      * Data flow debug session info.
      */
-    @JsonIgnore
     private Map<String, Object> additionalProperties;
 
     /**
@@ -268,7 +259,6 @@ public final class DataFlowDebugSessionInfoInner {
      * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
@@ -284,19 +274,84 @@ public final class DataFlowDebugSessionInfoInner {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new LinkedHashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("dataFlowName", this.dataFlowName);
+        jsonWriter.writeStringField("computeType", this.computeType);
+        jsonWriter.writeNumberField("coreCount", this.coreCount);
+        jsonWriter.writeNumberField("nodeCount", this.nodeCount);
+        jsonWriter.writeStringField("integrationRuntimeName", this.integrationRuntimeName);
+        jsonWriter.writeStringField("sessionId", this.sessionId);
+        jsonWriter.writeStringField("startTime", this.startTime);
+        jsonWriter.writeNumberField("timeToLiveInMinutes", this.timeToLiveInMinutes);
+        jsonWriter.writeStringField("lastActivityTime", this.lastActivityTime);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataFlowDebugSessionInfoInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataFlowDebugSessionInfoInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DataFlowDebugSessionInfoInner.
+     */
+    public static DataFlowDebugSessionInfoInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataFlowDebugSessionInfoInner deserializedDataFlowDebugSessionInfoInner
+                = new DataFlowDebugSessionInfoInner();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dataFlowName".equals(fieldName)) {
+                    deserializedDataFlowDebugSessionInfoInner.dataFlowName = reader.getString();
+                } else if ("computeType".equals(fieldName)) {
+                    deserializedDataFlowDebugSessionInfoInner.computeType = reader.getString();
+                } else if ("coreCount".equals(fieldName)) {
+                    deserializedDataFlowDebugSessionInfoInner.coreCount = reader.getNullable(JsonReader::getInt);
+                } else if ("nodeCount".equals(fieldName)) {
+                    deserializedDataFlowDebugSessionInfoInner.nodeCount = reader.getNullable(JsonReader::getInt);
+                } else if ("integrationRuntimeName".equals(fieldName)) {
+                    deserializedDataFlowDebugSessionInfoInner.integrationRuntimeName = reader.getString();
+                } else if ("sessionId".equals(fieldName)) {
+                    deserializedDataFlowDebugSessionInfoInner.sessionId = reader.getString();
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedDataFlowDebugSessionInfoInner.startTime = reader.getString();
+                } else if ("timeToLiveInMinutes".equals(fieldName)) {
+                    deserializedDataFlowDebugSessionInfoInner.timeToLiveInMinutes
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("lastActivityTime".equals(fieldName)) {
+                    deserializedDataFlowDebugSessionInfoInner.lastActivityTime = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedDataFlowDebugSessionInfoInner.additionalProperties = additionalProperties;
+
+            return deserializedDataFlowDebugSessionInfoInner;
+        });
     }
 }

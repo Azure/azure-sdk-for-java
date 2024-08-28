@@ -8,12 +8,11 @@
       artifacts:
         - artifactId: spring-cloud-azure-dependencies
           groupId: com.azure.spring
-          versionGA: 4.19.0
-          versionPreview: 5.14.0
+          versionGA: 5.15.0
           description: Bill of Materials (BOM) for Spring Cloud Azure support.
           type: spring
           links:
-            github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_4.19.0/sdk/boms/spring-cloud-azure-dependencies
+            github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_5.15.0/sdk/boms/spring-cloud-azure-dependencies
             msdocs: https://docs.microsoft.com/azure/developer/java/spring-framework/spring-cloud-azure#bill-of-material-bom
             repopath: https://search.maven.org/artifact/com.azure.spring/spring-cloud-azure-dependencies
           dependencyPattern:
@@ -37,7 +36,7 @@
                 </dependencyManagement>
           springProperties:
             starter: false
-            compatibilityRange: "[2.5.0,3.3.1]"
+            compatibilityRange: "[2.5.0,3.3.2]"
             mappings:
               - compatibilityRange: "[2.5.0,2.5.15]"
                 groupId: com.azure.spring
@@ -54,19 +53,19 @@
               - compatibilityRange: "[3.0.0,3.0.13]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-dependencies
-                version: 5.14.0
+                version: 5.15.0
               - compatibilityRange: "[3.1.0,3.1.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-dependencies
-                version: 5.14.0
+                version: 5.15.0
               - compatibilityRange: "[3.2.0,3.2.7]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-dependencies
-                version: 5.14.0
-              - compatibilityRange: "[3.3.0,3.3.1]"
+                version: 5.15.0
+              - compatibilityRange: "[3.3.0,3.3.2]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-dependencies
-                version: 5.14.0
+                version: 5.15.0
 - name: Active Directory
   content:
     - name: Active Directory
@@ -77,8 +76,7 @@
       artifacts:
         - artifactId: spring-cloud-azure-starter-active-directory
           groupId: com.azure.spring
-          versionGA: 4.19.0
-          versionPreview: 5.14.0
+          versionGA: 5.15.0
           description: |-
             Microsoft's Spring Boot Starter provides the most optimal way to connect your Web
             application to an Azure Active Directory (AAD for short) tenant and protect resource
@@ -86,14 +84,14 @@
             servers.
           type: spring
           links:
-            github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_4.19.0/sdk/spring/spring-cloud-azure-starter-active-directory
+            github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_5.15.0/sdk/spring/spring-cloud-azure-starter-active-directory
             msdocs: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-boot-starter-java-app-with-azure-active-directory
             repopath: https://search.maven.org/artifact/com.azure.spring/spring-cloud-azure-starter-active-directory
-            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_4.19.0/aad/spring-cloud-azure-starter-active-directory/
+            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_5.15.0/aad/spring-cloud-azure-starter-active-directory/
           springProperties:
             starter: true
             bom: spring-cloud-azure-dependencies
-            compatibilityRange: "[2.5.0,3.3.1]"
+            compatibilityRange: "[2.5.0,3.3.2]"
             mappings:
               - compatibilityRange: "[2.5.0,2.5.15]"
                 groupId: com.azure.spring
@@ -110,19 +108,19 @@
               - compatibilityRange: "[3.0.0,3.0.13]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-active-directory
-                version: 5.14.0
+                version: 5.15.0
               - compatibilityRange: "[3.1.0,3.1.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-active-directory
-                version: 5.14.0
+                version: 5.15.0
               - compatibilityRange: "[3.2.0,3.2.7]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-active-directory
-                version: 5.14.0
-              - compatibilityRange: "[3.3.0,3.3.1]"
+                version: 5.15.0
+              - compatibilityRange: "[3.3.0,3.3.2]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-active-directory
-                version: 5.14.0
+                version: 5.15.0
 - name: Active Directory B2C
   content:
     - name: Active Directory B2C
@@ -134,18 +132,17 @@
       artifacts:
         - artifactId: spring-cloud-azure-starter-active-directory-b2c
           groupId: com.azure.spring
-          versionGA: 4.19.0
-          versionPreview: 5.14.0
+          versionGA: 5.15.0
           type: spring
           links:
-            github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_4.19.0/sdk/spring/spring-cloud-azure-starter-active-directory-b2c
+            github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_5.15.0/sdk/spring/spring-cloud-azure-starter-active-directory-b2c
             msdocs: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-boot-starter-java-app-with-azure-active-directory-b2c-oidc
             repopath: https://search.maven.org/artifact/com.azure.spring/spring-cloud-azure-starter-active-directory-b2c
-            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_4.19.0/aad/spring-cloud-azure-starter-active-directory-b2c/
+            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_5.15.0/aad/spring-cloud-azure-starter-active-directory-b2c/
           springProperties:
             starter: true
             bom: spring-cloud-azure-dependencies
-            compatibilityRange: "[2.5.0,3.3.1]"
+            compatibilityRange: "[2.5.0,3.3.2]"
             mappings:
               - compatibilityRange: "[2.5.0,2.5.15]"
                 groupId: com.azure.spring
@@ -162,19 +159,19 @@
               - compatibilityRange: "[3.0.0,3.0.13]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-active-directory-b2c
-                version: 5.14.0
+                version: 5.15.0
               - compatibilityRange: "[3.1.0,3.1.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-active-directory-b2c
-                version: 5.14.0
+                version: 5.15.0
               - compatibilityRange: "[3.2.0,3.2.7]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-active-directory-b2c
-                version: 5.14.0
-              - compatibilityRange: "[3.3.0,3.3.1]"
+                version: 5.15.0
+              - compatibilityRange: "[3.3.0,3.3.2]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-active-directory-b2c
-                version: 5.14.0
+                version: 5.15.0
 - name: App Configuration
   content:
     - name: App Configuration
@@ -189,21 +186,20 @@
       artifacts:
         - artifactId: spring-cloud-azure-starter-appconfiguration
           groupId: com.azure.spring
-          versionGA: 4.19.0
-          versionPreview: 5.14.0
+          versionGA: 5.15.0
           description: |-
             Microsoft's Spring Boot Starter helps developers to finish the auto-configuration of
             Azure App Configuration.
           type: spring
           links:
-            github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_4.19.0/sdk/spring/spring-cloud-azure-starter-appconfiguration
+            github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_5.15.0/sdk/spring/spring-cloud-azure-starter-appconfiguration
             msdocs: https://docs.microsoft.com/azure/developer/java/spring-framework/spring-cloud-azure#auto-configure-azure-sdk-clients
             repopath: https://search.maven.org/artifact/com.azure.spring/spring-cloud-azure-starter-appconfiguration
-            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_4.19.0/appconfiguration/spring-cloud-azure-starter-appconfiguration/
+            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_5.15.0/appconfiguration/spring-cloud-azure-starter-appconfiguration/
           springProperties:
             starter: true
             bom: spring-cloud-azure-dependencies
-            compatibilityRange: "[2.5.0,3.3.1]"
+            compatibilityRange: "[2.5.0,3.3.2]"
             mappings:
               - compatibilityRange: "[2.5.0,2.5.15]"
                 groupId: com.azure.spring
@@ -220,34 +216,33 @@
               - compatibilityRange: "[3.0.0,3.0.13]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-appconfiguration
-                version: 5.14.0
+                version: 5.15.0
               - compatibilityRange: "[3.1.0,3.1.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-appconfiguration
-                version: 5.14.0
+                version: 5.15.0
               - compatibilityRange: "[3.2.0,3.2.7]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-appconfiguration
-                version: 5.14.0
-              - compatibilityRange: "[3.3.0,3.3.1]"
+                version: 5.15.0
+              - compatibilityRange: "[3.3.0,3.3.2]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-appconfiguration
-                version: 5.14.0
+                version: 5.15.0
         - artifactId: spring-cloud-azure-starter-appconfiguration-config
           groupId: com.azure.spring
-          versionGA: 4.19.0
-          versionPreview: 5.14.0
+          versionGA: 5.15.0
           description: Microsoft's Spring Boot Starter helps developers to load properties
             and manage features from Azure App Configuration service for Spring Application.
           type: spring
           links:
-            github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_4.19.0/sdk/spring/spring-cloud-azure-starter-appconfiguration-config
+            github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_5.15.0/sdk/spring/spring-cloud-azure-starter-appconfiguration-config
             repopath: https://search.maven.org/artifact/com.azure.spring/spring-cloud-azure-starter-appconfiguration-config
-            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_4.19.0/appconfiguration/spring-cloud-azure-starter-appconfiguration-config/
+            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_5.15.0/appconfiguration/spring-cloud-azure-starter-appconfiguration-config/
           springProperties:
             starter: true
             bom: spring-cloud-azure-dependencies
-            compatibilityRange: "[2.5.0,3.3.1]"
+            compatibilityRange: "[2.5.0,3.3.2]"
             mappings:
               - compatibilityRange: "[2.5.0,2.5.15]"
                 groupId: com.azure.spring
@@ -264,19 +259,19 @@
               - compatibilityRange: "[3.0.0,3.0.13]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-appconfiguration-config
-                version: 5.14.0
+                version: 5.15.0
               - compatibilityRange: "[3.1.0,3.1.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-appconfiguration-config
-                version: 5.14.0
+                version: 5.15.0
               - compatibilityRange: "[3.2.0,3.2.7]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-appconfiguration-config
-                version: 5.14.0
-              - compatibilityRange: "[3.3.0,3.3.1]"
+                version: 5.15.0
+              - compatibilityRange: "[3.3.0,3.3.2]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-appconfiguration-config
-                version: 5.14.0
+                version: 5.15.0
 - name: Cosmos DB
   content:
     - name: Spring Data Cosmos
@@ -292,22 +287,21 @@
       artifacts:
         - artifactId: spring-cloud-azure-starter-data-cosmos
           groupId: com.azure.spring
-          versionGA: 4.19.0
-          versionPreview: 5.14.0
+          versionGA: 5.15.0
           description: |-
             Microsoft's Spring Boot Starter helps developers to finish the auto-configuration of
             Spring Data Azure Cosmos DB, which enables developers to easily integrate with Azure Cosmos
             DB SQL API using Spring Data.
           type: spring
           links:
-            github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_4.19.0/sdk/spring/spring-cloud-azure-starter-data-cosmos
+            github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_5.15.0/sdk/spring/spring-cloud-azure-starter-data-cosmos
             msdocs: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-boot-starter-java-app-with-cosmos-db
             repopath: https://search.maven.org/artifact/com.azure.spring/spring-cloud-azure-starter-data-cosmos
-            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_4.19.0/cosmos/spring-cloud-azure-starter-data-cosmos/
+            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_5.15.0/cosmos/spring-cloud-azure-starter-data-cosmos/
           springProperties:
             starter: true
             bom: spring-cloud-azure-dependencies
-            compatibilityRange: "[2.5.0,3.3.1]"
+            compatibilityRange: "[2.5.0,3.3.2]"
             mappings:
               - compatibilityRange: "[2.5.0,2.5.15]"
                 groupId: com.azure.spring
@@ -324,19 +318,19 @@
               - compatibilityRange: "[3.0.0,3.0.13]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-data-cosmos
-                version: 5.14.0
+                version: 5.15.0
               - compatibilityRange: "[3.1.0,3.1.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-data-cosmos
-                version: 5.14.0
+                version: 5.15.0
               - compatibilityRange: "[3.2.0,3.2.7]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-data-cosmos
-                version: 5.14.0
-              - compatibilityRange: "[3.3.0,3.3.1]"
+                version: 5.15.0
+              - compatibilityRange: "[3.3.0,3.3.2]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-data-cosmos
-                version: 5.14.0
+                version: 5.15.0
     - name: Cosmos DB
       description: |-
         Azure Cosmos DB is a fully managed NoSQL database for modern app development.
@@ -347,21 +341,20 @@
       artifacts:
         - artifactId: spring-cloud-azure-starter-cosmos
           groupId: com.azure.spring
-          versionGA: 4.19.0
-          versionPreview: 5.14.0
+          versionGA: 5.15.0
           description: |-
             Microsoft's Spring Boot Starter helps developers to finish the auto-configuration of
             Azure Cosmos DB, which enables developers to easily integrate with Azure Cosmos DB SQL API.
           type: spring
           links:
-            github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_4.19.0/sdk/spring/spring-cloud-azure-starter-cosmos
+            github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_5.15.0/sdk/spring/spring-cloud-azure-starter-cosmos
             msdocs: https://docs.microsoft.com/azure/developer/java/spring-framework/spring-cloud-azure#auto-configure-azure-sdk-clients
             repopath: https://search.maven.org/artifact/com.azure.spring/spring-cloud-azure-starter-cosmos
-            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_4.19.0/cosmos/spring-cloud-azure-starter-cosmos/
+            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_5.15.0/cosmos/spring-cloud-azure-starter-cosmos/
           springProperties:
             starter: true
             bom: spring-cloud-azure-dependencies
-            compatibilityRange: "[2.5.0,3.3.1]"
+            compatibilityRange: "[2.5.0,3.3.2]"
             mappings:
               - compatibilityRange: "[2.5.0,2.5.15]"
                 groupId: com.azure.spring
@@ -378,19 +371,19 @@
               - compatibilityRange: "[3.0.0,3.0.13]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-cosmos
-                version: 5.14.0
+                version: 5.15.0
               - compatibilityRange: "[3.1.0,3.1.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-cosmos
-                version: 5.14.0
+                version: 5.15.0
               - compatibilityRange: "[3.2.0,3.2.7]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-cosmos
-                version: 5.14.0
-              - compatibilityRange: "[3.3.0,3.3.1]"
+                version: 5.15.0
+              - compatibilityRange: "[3.3.0,3.3.2]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-cosmos
-                version: 5.14.0
+                version: 5.15.0
 - name: Key Vault
   content:
     - name: Key Vault
@@ -400,21 +393,20 @@
       artifacts:
         - artifactId: spring-cloud-azure-starter-keyvault
           groupId: com.azure.spring
-          versionGA: 4.19.0
-          versionPreview: 5.14.0
+          versionGA: 5.15.0
           description: |-
             Microsoft's Spring Boot Starter helps developers to finish the auto-configuration of
             Azure Key Vault.
           type: spring
           links:
-            github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_4.19.0/sdk/spring/spring-cloud-azure-starter-keyvault
+            github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_5.15.0/sdk/spring/spring-cloud-azure-starter-keyvault
             msdocs: https://learn.microsoft.com/azure/key-vault/
             repopath: https://search.maven.org/artifact/com.azure.spring/spring-cloud-azure-starter-keyvault
-            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_4.19.0/keyvault/spring-cloud-azure-starter-keyvault/
+            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_5.15.0/keyvault/spring-cloud-azure-starter-keyvault/
           springProperties:
             starter: true
             bom: spring-cloud-azure-dependencies
-            compatibilityRange: "[2.5.0,3.3.1]"
+            compatibilityRange: "[2.5.0,3.3.2]"
             mappings:
               - compatibilityRange: "[2.5.0,2.5.15]"
                 groupId: com.azure.spring
@@ -431,19 +423,19 @@
               - compatibilityRange: "[3.0.0,3.0.13]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-keyvault
-                version: 5.14.0
+                version: 5.15.0
               - compatibilityRange: "[3.1.0,3.1.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-keyvault
-                version: 5.14.0
+                version: 5.15.0
               - compatibilityRange: "[3.2.0,3.2.7]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-keyvault
-                version: 5.14.0
-              - compatibilityRange: "[3.3.0,3.3.1]"
+                version: 5.15.0
+              - compatibilityRange: "[3.3.0,3.3.2]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-keyvault
-                version: 5.14.0
+                version: 5.15.0
     - name: Key Vault - Certificates
       description: |-
         Azure Key Vault enables Microsoft Azure applications and users to store and use certificates, which are
@@ -455,20 +447,19 @@
       artifacts:
         - artifactId: spring-cloud-azure-starter-keyvault-certificates
           groupId: com.azure.spring
-          versionGA: 4.19.0
-          versionPreview: 5.14.0
+          versionGA: 5.15.0
           description: |-
             Microsoft's Spring Boot Starter helps developers to finish the auto-configuration of
             Azure Key Vault Certificates.
           type: spring
           links:
-            github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_4.19.0/sdk/spring/spring-cloud-azure-starter-keyvault-certificates
+            github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_5.15.0/sdk/spring/spring-cloud-azure-starter-keyvault-certificates
             msdocs: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-boot-starter-java-app-with-azure-key-vault-certificates
             repopath: https://search.maven.org/artifact/com.azure.spring/spring-cloud-azure-starter-keyvault-certificates
           springProperties:
             starter: true
             bom: spring-cloud-azure-dependencies
-            compatibilityRange: "[2.5.0,3.3.1]"
+            compatibilityRange: "[2.5.0,3.3.2]"
             mappings:
               - compatibilityRange: "[2.5.0,2.5.15]"
                 groupId: com.azure.spring
@@ -485,25 +476,25 @@
               - compatibilityRange: "[3.0.0,3.0.13]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-keyvault-certificates
-                version: 5.14.0
+                version: 5.15.0
               - compatibilityRange: "[3.1.0,3.1.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-keyvault-certificates
-                version: 5.14.0
+                version: 5.15.0
               - compatibilityRange: "[3.2.0,3.2.7]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-keyvault-certificates
-                version: 5.14.0
-              - compatibilityRange: "[3.3.0,3.3.1]"
+                version: 5.15.0
+              - compatibilityRange: "[3.3.0,3.3.2]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-keyvault-certificates
-                version: 5.14.0
+                version: 5.15.0
         - artifactId: azure-security-keyvault-jca
           groupId: com.azure
-          versionGA: 2.8.1
+          versionGA: 2.8.2
           type: client
           links:
-            javadoc: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-security-keyvault-jca/2.8.1/index.html
+            javadoc: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-security-keyvault-jca/2.8.2/index.html
             github: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault/azure-security-keyvault-jca
             msdocs: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault/azure-security-keyvault-jca/README.md
             repopath: https://search.maven.org/artifact/com.azure/azure-security-keyvault-jca
@@ -521,8 +512,7 @@
       artifacts:
         - artifactId: spring-cloud-azure-starter-keyvault-secrets
           groupId: com.azure.spring
-          versionGA: 4.19.0
-          versionPreview: 5.14.0
+          versionGA: 5.15.0
           description: |-
             Microsoft's Spring Boot Starter helps developers to finish the auto-configuration of
             Azure Key Vault Secrets, and adds Azure Key Vault as one of Spring PropertySource.
@@ -530,14 +520,14 @@
             externalized configuration property.
           type: spring
           links:
-            github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_4.19.0/sdk/spring/spring-cloud-azure-starter-keyvault-secrets
+            github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_5.15.0/sdk/spring/spring-cloud-azure-starter-keyvault-secrets
             msdocs: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-boot-starter-java-app-with-azure-key-vault
             repopath: https://search.maven.org/artifact/com.azure.spring/spring-cloud-azure-starter-keyvault-secrets
-            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_4.19.0/keyvault/spring-cloud-azure-starter-keyvault-secrets/
+            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_5.15.0/keyvault/spring-cloud-azure-starter-keyvault-secrets/
           springProperties:
             starter: true
             bom: spring-cloud-azure-dependencies
-            compatibilityRange: "[2.5.0,3.3.1]"
+            compatibilityRange: "[2.5.0,3.3.2]"
             mappings:
               - compatibilityRange: "[2.5.0,2.5.15]"
                 groupId: com.azure.spring
@@ -554,19 +544,19 @@
               - compatibilityRange: "[3.0.0,3.0.13]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-keyvault-secrets
-                version: 5.14.0
+                version: 5.15.0
               - compatibilityRange: "[3.1.0,3.1.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-keyvault-secrets
-                version: 5.14.0
+                version: 5.15.0
               - compatibilityRange: "[3.2.0,3.2.7]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-keyvault-secrets
-                version: 5.14.0
-              - compatibilityRange: "[3.3.0,3.3.1]"
+                version: 5.15.0
+              - compatibilityRange: "[3.3.0,3.3.2]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-keyvault-secrets
-                version: 5.14.0
+                version: 5.15.0
 - name: Storage
   content:
     - name: Storage
@@ -575,22 +565,21 @@
       artifacts:
         - artifactId: spring-cloud-azure-starter-storage
           groupId: com.azure.spring
-          versionGA: 4.19.0
-          versionPreview: 5.14.0
+          versionGA: 5.15.0
           description: |-
             Microsoft's Spring Boot Starter helps developers to finish the auto-configuration of
             Azure Storage, and implements Spring Resource abstraction for Azure Storage
             service which allows you to interact with Storage Account using Spring programming model.
           type: spring
           links:
-            github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_4.19.0/sdk/spring/spring-cloud-azure-starter-storage
+            github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_5.15.0/sdk/spring/spring-cloud-azure-starter-storage
             msdocs: https://docs.microsoft.com/azure/storage/
             repopath: https://search.maven.org/artifact/com.azure.spring/spring-cloud-azure-starter-storage
-            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_4.19.0/storage/spring-cloud-azure-starter-storage/
+            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_5.15.0/storage/spring-cloud-azure-starter-storage/
           springProperties:
             starter: true
             bom: spring-cloud-azure-dependencies
-            compatibilityRange: "[2.5.0,3.3.1]"
+            compatibilityRange: "[2.5.0,3.3.2]"
             mappings:
               - compatibilityRange: "[2.5.0,2.5.15]"
                 groupId: com.azure.spring
@@ -607,19 +596,19 @@
               - compatibilityRange: "[3.0.0,3.0.13]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-storage
-                version: 5.14.0
+                version: 5.15.0
               - compatibilityRange: "[3.1.0,3.1.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-storage
-                version: 5.14.0
+                version: 5.15.0
               - compatibilityRange: "[3.2.0,3.2.7]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-storage
-                version: 5.14.0
-              - compatibilityRange: "[3.3.0,3.3.1]"
+                version: 5.15.0
+              - compatibilityRange: "[3.3.0,3.3.2]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-storage
-                version: 5.14.0
+                version: 5.15.0
     - name: Storage - Blobs
       description: |-
         Azure Blob Storage is Microsoft's object storage solution for the cloud. Blob Storage
@@ -633,22 +622,21 @@
       artifacts:
         - artifactId: spring-cloud-azure-starter-storage-blob
           groupId: com.azure.spring
-          versionGA: 4.19.0
-          versionPreview: 5.14.0
+          versionGA: 5.15.0
           description: |-
             Microsoft's Spring Boot Starter helps developers to finish the auto-configuration of
             Azure Storage Blob, and implements Spring Resource abstraction for Azure Storage
             service which allows you to interact with Storage Blob using Spring programming model.
           type: spring
           links:
-            github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_4.19.0/sdk/spring/spring-cloud-azure-starter-storage-blob
+            github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_5.15.0/sdk/spring/spring-cloud-azure-starter-storage-blob
             msdocs: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-boot-starter-java-app-with-azure-storage
             repopath: https://search.maven.org/artifact/com.azure.spring/spring-cloud-azure-starter-storage-blob
-            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_4.19.0/storage/spring-cloud-azure-starter-storage-blob/
+            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_5.15.0/storage/spring-cloud-azure-starter-storage-blob/
           springProperties:
             starter: true
             bom: spring-cloud-azure-dependencies
-            compatibilityRange: "[2.5.0,3.3.1]"
+            compatibilityRange: "[2.5.0,3.3.2]"
             mappings:
               - compatibilityRange: "[2.5.0,2.5.15]"
                 groupId: com.azure.spring
@@ -665,19 +653,19 @@
               - compatibilityRange: "[3.0.0,3.0.13]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-storage-blob
-                version: 5.14.0
+                version: 5.15.0
               - compatibilityRange: "[3.1.0,3.1.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-storage-blob
-                version: 5.14.0
+                version: 5.15.0
               - compatibilityRange: "[3.2.0,3.2.7]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-storage-blob
-                version: 5.14.0
-              - compatibilityRange: "[3.3.0,3.3.1]"
+                version: 5.15.0
+              - compatibilityRange: "[3.3.0,3.3.2]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-storage-blob
-                version: 5.14.0
+                version: 5.15.0
     - name: Storage - Files Shares
       description: |-
         Azure File Share storage offers fully managed file shares in the cloud that are
@@ -692,22 +680,21 @@
       artifacts:
         - artifactId: spring-cloud-azure-starter-storage-file-share
           groupId: com.azure.spring
-          versionGA: 4.19.0
-          versionPreview: 5.14.0
+          versionGA: 5.15.0
           description: |-
             Microsoft's Spring Boot Starter helps developers to finish the auto-configuration of
             Azure Storage File Share, and implements Spring Resource abstraction for Azure Storage
             service which allows you to interact with Storage File Share using Spring programming model.
           type: spring
           links:
-            github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_4.19.0/sdk/spring/spring-cloud-azure-starter-storage-file-share
+            github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_5.15.0/sdk/spring/spring-cloud-azure-starter-storage-file-share
             msdocs: https://docs.microsoft.com/azure/developer/java/spring-framework/spring-cloud-azure#resource-handling
             repopath: https://search.maven.org/artifact/com.azure.spring/spring-cloud-azure-starter-storage-file-share
-            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_4.19.0/storage/spring-cloud-azure-starter-storage-file-share/
+            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_5.15.0/storage/spring-cloud-azure-starter-storage-file-share/
           springProperties:
             starter: true
             bom: spring-cloud-azure-dependencies
-            compatibilityRange: "[2.5.0,3.3.1]"
+            compatibilityRange: "[2.5.0,3.3.2]"
             mappings:
               - compatibilityRange: "[2.5.0,2.5.15]"
                 groupId: com.azure.spring
@@ -724,19 +711,19 @@
               - compatibilityRange: "[3.0.0,3.0.13]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-storage-file-share
-                version: 5.14.0
+                version: 5.15.0
               - compatibilityRange: "[3.1.0,3.1.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-storage-file-share
-                version: 5.14.0
+                version: 5.15.0
               - compatibilityRange: "[3.2.0,3.2.7]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-storage-file-share
-                version: 5.14.0
-              - compatibilityRange: "[3.3.0,3.3.1]"
+                version: 5.15.0
+              - compatibilityRange: "[3.3.0,3.3.2]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-storage-file-share
-                version: 5.14.0
+                version: 5.15.0
     - name: Storage - Queues
       description: |-
         Azure Queue Storage is a service for storing large numbers of messages. You access
@@ -751,21 +738,20 @@
       artifacts:
         - artifactId: spring-cloud-azure-starter-storage-queue
           groupId: com.azure.spring
-          versionGA: 4.19.0
-          versionPreview: 5.14.0
+          versionGA: 5.15.0
           description: |-
             Microsoft's Spring Boot Starter helps developers to finish the auto-configuration of
             Azure Storage Queue.
           type: spring
           links:
-            github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_4.19.0/sdk/spring/spring-cloud-azure-starter-storage-queue
+            github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_5.15.0/sdk/spring/spring-cloud-azure-starter-storage-queue
             msdocs: https://docs.microsoft.com/azure/developer/java/spring-framework/spring-cloud-azure#auto-configure-azure-sdk-clients
             repopath: https://search.maven.org/artifact/com.azure.spring/spring-cloud-azure-starter-storage-queue
-            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_4.19.0/storage/spring-cloud-azure-starter-storage-queue/
+            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_5.15.0/storage/spring-cloud-azure-starter-storage-queue/
           springProperties:
             starter: true
             bom: spring-cloud-azure-dependencies
-            compatibilityRange: "[2.5.0,3.3.1]"
+            compatibilityRange: "[2.5.0,3.3.2]"
             mappings:
               - compatibilityRange: "[2.5.0,2.5.15]"
                 groupId: com.azure.spring
@@ -782,36 +768,35 @@
               - compatibilityRange: "[3.0.0,3.0.13]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-storage-queue
-                version: 5.14.0
+                version: 5.15.0
               - compatibilityRange: "[3.1.0,3.1.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-storage-queue
-                version: 5.14.0
+                version: 5.15.0
               - compatibilityRange: "[3.2.0,3.2.7]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-storage-queue
-                version: 5.14.0
-              - compatibilityRange: "[3.3.0,3.3.1]"
+                version: 5.15.0
+              - compatibilityRange: "[3.3.0,3.3.2]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-storage-queue
-                version: 5.14.0
+                version: 5.15.0
         - artifactId: spring-cloud-azure-starter-integration-storage-queue
           groupId: com.azure.spring
-          versionGA: 4.19.0
-          versionPreview: 5.14.0
+          versionGA: 5.15.0
           description: |-
             Microsoft's Spring Boot Starter helps developers to finish the auto-configuration of
             Spring Integration Azure Storage Queue.
           type: spring
           links:
-            github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_4.19.0/sdk/spring/spring-cloud-azure-starter-integration-storage-queue
+            github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_5.15.0/sdk/spring/spring-cloud-azure-starter-integration-storage-queue
             msdocs: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-boot-starter-java-app-with-azure-service-bus
             repopath: https://search.maven.org/artifact/com.azure.spring/spring-cloud-azure-starter-integration-storage-queue
-            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_4.19.0/storage/spring-cloud-azure-starter-integration-storage-queue/
+            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_5.15.0/storage/spring-cloud-azure-starter-integration-storage-queue/
           springProperties:
             starter: true
             bom: spring-cloud-azure-dependencies
-            compatibilityRange: "[2.5.0,3.3.1]"
+            compatibilityRange: "[2.5.0,3.3.2]"
             mappings:
               - compatibilityRange: "[2.5.0,2.5.15]"
                 groupId: com.azure.spring
@@ -828,37 +813,36 @@
               - compatibilityRange: "[3.0.0,3.0.13]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-integration-storage-queue
-                version: 5.14.0
+                version: 5.15.0
               - compatibilityRange: "[3.1.0,3.1.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-integration-storage-queue
-                version: 5.14.0
+                version: 5.15.0
               - compatibilityRange: "[3.2.0,3.2.7]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-integration-storage-queue
-                version: 5.14.0
-              - compatibilityRange: "[3.3.0,3.3.1]"
+                version: 5.15.0
+              - compatibilityRange: "[3.3.0,3.3.2]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-integration-storage-queue
-                version: 5.14.0
+                version: 5.15.0
         - artifactId: spring-integration-azure-storage-queue
           groupId: com.azure.spring
-          versionGA: 4.19.0
-          versionPreview: 5.14.0
+          versionGA: 5.15.0
           description: |-
             Microsoft's Spring Integration extension for Azure Storage Queue. Spring Integration extends
             the Spring programming modoel to support well-known Enterprise Integration Patterns.
           type: spring
           links:
-            javadoc: https://azuresdkdocs.blob.core.windows.net/$web/java/spring-integration-azure-storage-queue/4.19.0/index.html
-            github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_4.19.0/sdk/spring/spring-integration-azure-storage-queue
+            javadoc: https://azuresdkdocs.blob.core.windows.net/$web/java/spring-integration-azure-storage-queue/5.15.0/index.html
+            github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_5.15.0/sdk/spring/spring-integration-azure-storage-queue
             msdocs: https://docs.microsoft.com/azure/developer/java/spring-framework/spring-cloud-azure#spring-integration-support
             repopath: https://search.maven.org/artifact/com.azure.spring/spring-integration-azure-storage-queue
-            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_4.19.0/storage/spring-integration-azure-storage-queue/
+            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_5.15.0/storage/spring-integration-azure-storage-queue/
           springProperties:
             starter: true
             bom: spring-cloud-azure-dependencies
-            compatibilityRange: "[2.5.0,3.3.1]"
+            compatibilityRange: "[2.5.0,3.3.2]"
             mappings:
               - compatibilityRange: "[2.5.0,2.5.15]"
                 groupId: com.azure.spring
@@ -875,19 +859,19 @@
               - compatibilityRange: "[3.0.0,3.0.13]"
                 groupId: com.azure.spring
                 artifactId: spring-integration-azure-storage-queue
-                version: 5.14.0
+                version: 5.15.0
               - compatibilityRange: "[3.1.0,3.1.12]"
                 groupId: com.azure.spring
                 artifactId: spring-integration-azure-storage-queue
-                version: 5.14.0
+                version: 5.15.0
               - compatibilityRange: "[3.2.0,3.2.7]"
                 groupId: com.azure.spring
                 artifactId: spring-integration-azure-storage-queue
-                version: 5.14.0
-              - compatibilityRange: "[3.3.0,3.3.1]"
+                version: 5.15.0
+              - compatibilityRange: "[3.3.0,3.3.2]"
                 groupId: com.azure.spring
                 artifactId: spring-integration-azure-storage-queue
-                version: 5.14.0
+                version: 5.15.0
 - name: Service Bus
   content:
     - name: Service Bus
@@ -903,21 +887,20 @@
       artifacts:
         - artifactId: spring-cloud-azure-starter-servicebus
           groupId: com.azure.spring
-          versionGA: 4.19.0
-          versionPreview: 5.14.0
+          versionGA: 5.15.0
           description: |-
             Microsoft's Spring Boot Starter helps developers to finish the auto-configuration of
             Azure Service Bus.
           type: spring
           links:
-            github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_4.19.0/sdk/spring/spring-cloud-azure-starter-servicebus
+            github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_5.15.0/sdk/spring/spring-cloud-azure-starter-servicebus
             msdocs: https://docs.microsoft.com/azure/developer/java/spring-framework/spring-cloud-azure#auto-configure-azure-sdk-clients
             repopath: https://search.maven.org/artifact/com.azure.spring/spring-cloud-azure-starter-servicebus
-            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_4.19.0/servicebus/spring-cloud-azure-starter-servicebus/
+            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_5.15.0/servicebus/spring-cloud-azure-starter-servicebus/
           springProperties:
             starter: true
             bom: spring-cloud-azure-dependencies
-            compatibilityRange: "[2.5.0,3.3.1]"
+            compatibilityRange: "[2.5.0,3.3.2]"
             mappings:
               - compatibilityRange: "[2.5.0,2.5.15]"
                 groupId: com.azure.spring
@@ -934,36 +917,35 @@
               - compatibilityRange: "[3.0.0,3.0.13]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-servicebus
-                version: 5.14.0
+                version: 5.15.0
               - compatibilityRange: "[3.1.0,3.1.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-servicebus
-                version: 5.14.0
+                version: 5.15.0
               - compatibilityRange: "[3.2.0,3.2.7]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-servicebus
-                version: 5.14.0
-              - compatibilityRange: "[3.3.0,3.3.1]"
+                version: 5.15.0
+              - compatibilityRange: "[3.3.0,3.3.2]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-servicebus
-                version: 5.14.0
+                version: 5.15.0
         - artifactId: spring-cloud-azure-starter-integration-servicebus
           groupId: com.azure.spring
-          versionGA: 4.19.0
-          versionPreview: 5.14.0
+          versionGA: 5.15.0
           description: |-
             Microsoft's Spring Boot Starter helps developers to finish the auto-configuration of
             Spring Integration Azure Service Bus.
           type: spring
           links:
-            github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_4.19.0/sdk/spring/spring-cloud-azure-starter-integration-servicebus
+            github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_5.15.0/sdk/spring/spring-cloud-azure-starter-integration-servicebus
             msdocs: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-boot-starter-java-app-with-azure-service-bus
             repopath: https://search.maven.org/artifact/com.azure.spring/spring-cloud-azure-starter-integration-servicebus
-            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_4.19.0/servicebus/spring-cloud-azure-starter-integration-servicebus/
+            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_5.15.0/servicebus/spring-cloud-azure-starter-integration-servicebus/
           springProperties:
             starter: true
             bom: spring-cloud-azure-dependencies
-            compatibilityRange: "[2.5.0,3.3.1]"
+            compatibilityRange: "[2.5.0,3.3.2]"
             mappings:
               - compatibilityRange: "[2.5.0,2.5.15]"
                 groupId: com.azure.spring
@@ -980,37 +962,36 @@
               - compatibilityRange: "[3.0.0,3.0.13]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-integration-servicebus
-                version: 5.14.0
+                version: 5.15.0
               - compatibilityRange: "[3.1.0,3.1.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-integration-servicebus
-                version: 5.14.0
+                version: 5.15.0
               - compatibilityRange: "[3.2.0,3.2.7]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-integration-servicebus
-                version: 5.14.0
-              - compatibilityRange: "[3.3.0,3.3.1]"
+                version: 5.15.0
+              - compatibilityRange: "[3.3.0,3.3.2]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-integration-servicebus
-                version: 5.14.0
+                version: 5.15.0
         - artifactId: spring-integration-azure-servicebus
           groupId: com.azure.spring
-          versionGA: 4.19.0
-          versionPreview: 5.14.0
+          versionGA: 5.15.0
           description: |-
             Microsoft's Spring Integration extension for Azure Service Bus. Spring Integration extends
             the Spring programming modoel to support well-known Enterprise Integration Patterns.
           type: spring
           links:
-            javadoc: https://azuresdkdocs.blob.core.windows.net/$web/java/spring-integration-azure-servicebus/4.19.0/index.html
-            github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_4.19.0/sdk/spring/spring-integration-azure-servicebus
+            javadoc: https://azuresdkdocs.blob.core.windows.net/$web/java/spring-integration-azure-servicebus/5.15.0/index.html
+            github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_5.15.0/sdk/spring/spring-integration-azure-servicebus
             msdocs: https://docs.microsoft.com/azure/developer/java/spring-framework/spring-cloud-azure#spring-integration-support
             repopath: https://search.maven.org/artifact/com.azure.spring/spring-integration-azure-servicebus
-            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_4.19.0/servicebus/spring-integration-azure-servicebus/
+            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_5.15.0/servicebus/spring-integration-azure-servicebus/
           springProperties:
             starter: true
             bom: spring-cloud-azure-dependencies
-            compatibilityRange: "[2.5.0,3.3.1]"
+            compatibilityRange: "[2.5.0,3.3.2]"
             mappings:
               - compatibilityRange: "[2.5.0,2.5.15]"
                 groupId: com.azure.spring
@@ -1027,38 +1008,37 @@
               - compatibilityRange: "[3.0.0,3.0.13]"
                 groupId: com.azure.spring
                 artifactId: spring-integration-azure-servicebus
-                version: 5.14.0
+                version: 5.15.0
               - compatibilityRange: "[3.1.0,3.1.12]"
                 groupId: com.azure.spring
                 artifactId: spring-integration-azure-servicebus
-                version: 5.14.0
+                version: 5.15.0
               - compatibilityRange: "[3.2.0,3.2.7]"
                 groupId: com.azure.spring
                 artifactId: spring-integration-azure-servicebus
-                version: 5.14.0
-              - compatibilityRange: "[3.3.0,3.3.1]"
+                version: 5.15.0
+              - compatibilityRange: "[3.3.0,3.3.2]"
                 groupId: com.azure.spring
                 artifactId: spring-integration-azure-servicebus
-                version: 5.14.0
+                version: 5.15.0
         - artifactId: spring-cloud-azure-stream-binder-servicebus
           groupId: com.azure.spring
-          versionGA: 4.19.0
-          versionPreview: 5.14.0
+          versionGA: 5.15.0
           description: |-
             Microsoft's Spring Cloud Stream Binder provides Spring Cloud Stream Binder for Azure
             Service Bus which allows you to build message-driven microservice using Spring Cloud
             Stream based on Azure Service Bus.
           type: spring
           links:
-            javadoc: https://azuresdkdocs.blob.core.windows.net/$web/java/spring-cloud-azure-stream-binder-servicebus/4.19.0/index.html
-            github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_4.19.0/sdk/spring/spring-cloud-azure-stream-binder-servicebus
+            javadoc: https://azuresdkdocs.blob.core.windows.net/$web/java/spring-cloud-azure-stream-binder-servicebus/5.15.0/index.html
+            github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_5.15.0/sdk/spring/spring-cloud-azure-stream-binder-servicebus
             msdocs: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-cloud-stream-binder-java-app-with-service-bus
             repopath: https://search.maven.org/artifact/com.azure.spring/spring-cloud-azure-stream-binder-servicebus
-            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_4.19.0/servicebus/spring-cloud-azure-stream-binder-servicebus/
+            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_5.15.0/servicebus/spring-cloud-azure-stream-binder-servicebus/
           springProperties:
             starter: true
             bom: spring-cloud-azure-dependencies
-            compatibilityRange: "[2.5.0,3.3.1]"
+            compatibilityRange: "[2.5.0,3.3.2]"
             mappings:
               - compatibilityRange: "[2.5.0,2.5.15]"
                 groupId: com.azure.spring
@@ -1075,19 +1055,19 @@
               - compatibilityRange: "[3.0.0,3.0.13]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-stream-binder-servicebus
-                version: 5.14.0
+                version: 5.15.0
               - compatibilityRange: "[3.1.0,3.1.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-stream-binder-servicebus
-                version: 5.14.0
+                version: 5.15.0
               - compatibilityRange: "[3.2.0,3.2.7]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-stream-binder-servicebus
-                version: 5.14.0
-              - compatibilityRange: "[3.3.0,3.3.1]"
+                version: 5.15.0
+              - compatibilityRange: "[3.3.0,3.3.2]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-stream-binder-servicebus
-                version: 5.14.0
+                version: 5.15.0
     - name: Service Bus JMS
       description: |-
         Microsoft Azure Service Bus is a fully managed enterprise integration message broker.
@@ -1098,21 +1078,20 @@
       artifacts:
         - artifactId: spring-cloud-azure-starter-servicebus-jms
           groupId: com.azure.spring
-          versionGA: 4.19.0
-          versionPreview: 5.14.0
+          versionGA: 5.15.0
           description: |-
             Microsoft's Spring Boot Starter helps developers to finish the auto-configuration of
             Spring JMS with Azure Service Bus Queue and Topic.
           type: spring
           links:
-            github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_4.19.0/sdk/spring/spring-cloud-azure-starter-servicebus-jms
+            github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_5.15.0/sdk/spring/spring-cloud-azure-starter-servicebus-jms
             msdocs: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-boot-starter-java-app-with-azure-service-bus
             repopath: https://search.maven.org/artifact/com.azure.spring/spring-cloud-azure-starter-servicebus-jms
-            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_4.19.0/servicebus/spring-cloud-azure-starter-servicebus-jms/
+            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_5.15.0/servicebus/spring-cloud-azure-starter-servicebus-jms/
           springProperties:
             starter: true
             bom: spring-cloud-azure-dependencies
-            compatibilityRange: "[2.5.0,3.3.1]"
+            compatibilityRange: "[2.5.0,3.3.2]"
             mappings:
               - compatibilityRange: "[2.5.0,2.5.15]"
                 groupId: com.azure.spring
@@ -1129,19 +1108,19 @@
               - compatibilityRange: "[3.0.0,3.0.13]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-servicebus-jms
-                version: 5.14.0
+                version: 5.15.0
               - compatibilityRange: "[3.1.0,3.1.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-servicebus-jms
-                version: 5.14.0
+                version: 5.15.0
               - compatibilityRange: "[3.2.0,3.2.7]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-servicebus-jms
-                version: 5.14.0
-              - compatibilityRange: "[3.3.0,3.3.1]"
+                version: 5.15.0
+              - compatibilityRange: "[3.3.0,3.3.2]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-servicebus-jms
-                version: 5.14.0
+                version: 5.15.0
 - name: Event Grid
   content:
     - name: Event Grid
@@ -1163,21 +1142,20 @@
       artifacts:
         - artifactId: spring-cloud-azure-starter-eventgrid
           groupId: com.azure.spring
-          versionGA: 4.19.0
-          versionPreview: 5.14.0
+          versionGA: 5.15.0
           description: |-
             Microsoft's Spring Boot Starter helps developers to finish the auto-configuration of
             Azure Event Grid.
           type: spring
           links:
-            github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_4.19.0/sdk/spring/spring-cloud-azure-starter-eventgrid
+            github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_5.15.0/sdk/spring/spring-cloud-azure-starter-eventgrid
             msdocs: https://learn.microsoft.com/azure/developer/java/spring-framework/configure-spring-boot-initializer-java-app-with-event-grid
             repopath: https://search.maven.org/artifact/com.azure.spring/spring-cloud-azure-starter-eventgrid
-            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_4.19.0/eventgrid/spring-cloud-azure-starter-eventgrid/
+            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_5.15.0/eventgrid/spring-cloud-azure-starter-eventgrid/
           springProperties:
             starter: true
             bom: spring-cloud-azure-dependencies
-            compatibilityRange: "[2.5.0,3.3.1]"
+            compatibilityRange: "[2.5.0,3.3.2]"
             mappings:
               - compatibilityRange: "[2.5.0,2.5.15]"
                 groupId: com.azure.spring
@@ -1194,19 +1172,19 @@
               - compatibilityRange: "[3.0.0,3.0.13]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-eventgrid
-                version: 5.14.0
+                version: 5.15.0
               - compatibilityRange: "[3.1.0,3.1.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-eventgrid
-                version: 5.14.0
+                version: 5.15.0
               - compatibilityRange: "[3.2.0,3.2.7]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-eventgrid
-                version: 5.14.0
-              - compatibilityRange: "[3.3.0,3.3.1]"
+                version: 5.15.0
+              - compatibilityRange: "[3.3.0,3.3.2]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-eventgrid
-                version: 5.14.0
+                version: 5.15.0
 - name: Event Hubs
   content:
     - name: Event Hubs
@@ -1222,21 +1200,20 @@
       artifacts:
         - artifactId: spring-cloud-azure-starter-eventhubs
           groupId: com.azure.spring
-          versionGA: 4.19.0
-          versionPreview: 5.14.0
+          versionGA: 5.15.0
           description: |-
             Microsoft's Spring Boot Starter helps developers to finish the auto-configuration of
             Azure Event Hubs.
           type: spring
           links:
-            github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_4.19.0/sdk/spring/spring-cloud-azure-starter-eventhubs
+            github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_5.15.0/sdk/spring/spring-cloud-azure-starter-eventhubs
             msdocs: https://docs.microsoft.com/azure/developer/java/spring-framework/spring-cloud-azure#auto-configure-azure-sdk-clients
             repopath: https://search.maven.org/artifact/com.azure.spring/spring-cloud-azure-starter-eventhubs
-            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_4.19.0/eventhubs/spring-cloud-azure-starter-eventhubs/
+            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_5.15.0/eventhubs/spring-cloud-azure-starter-eventhubs/
           springProperties:
             starter: true
             bom: spring-cloud-azure-dependencies
-            compatibilityRange: "[2.5.0,3.3.1]"
+            compatibilityRange: "[2.5.0,3.3.2]"
             mappings:
               - compatibilityRange: "[2.5.0,2.5.15]"
                 groupId: com.azure.spring
@@ -1253,36 +1230,35 @@
               - compatibilityRange: "[3.0.0,3.0.13]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-eventhubs
-                version: 5.14.0
+                version: 5.15.0
               - compatibilityRange: "[3.1.0,3.1.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-eventhubs
-                version: 5.14.0
+                version: 5.15.0
               - compatibilityRange: "[3.2.0,3.2.7]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-eventhubs
-                version: 5.14.0
-              - compatibilityRange: "[3.3.0,3.3.1]"
+                version: 5.15.0
+              - compatibilityRange: "[3.3.0,3.3.2]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-eventhubs
-                version: 5.14.0
+                version: 5.15.0
         - artifactId: spring-cloud-azure-starter-integration-eventhubs
           groupId: com.azure.spring
-          versionGA: 4.19.0
-          versionPreview: 5.14.0
+          versionGA: 5.15.0
           description: |-
             Microsoft's Spring Boot Starter helps developers to finish the auto-configuration of
             Spring Integration Azure Event Hubs.
           type: spring
           links:
-            github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_4.19.0/sdk/spring/spring-cloud-azure-starter-integration-eventhubs
+            github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_5.15.0/sdk/spring/spring-cloud-azure-starter-integration-eventhubs
             msdocs: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-boot-starter-java-app-with-azure-service-bus
             repopath: https://search.maven.org/artifact/com.azure.spring/spring-cloud-azure-starter-integration-eventhubs
-            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_4.19.0/eventhubs/spring-cloud-azure-starter-integration-eventhubs/
+            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_5.15.0/eventhubs/spring-cloud-azure-starter-integration-eventhubs/
           springProperties:
             starter: true
             bom: spring-cloud-azure-dependencies
-            compatibilityRange: "[2.5.0,3.3.1]"
+            compatibilityRange: "[2.5.0,3.3.2]"
             mappings:
               - compatibilityRange: "[2.5.0,2.5.15]"
                 groupId: com.azure.spring
@@ -1299,37 +1275,36 @@
               - compatibilityRange: "[3.0.0,3.0.13]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-integration-eventhubs
-                version: 5.14.0
+                version: 5.15.0
               - compatibilityRange: "[3.1.0,3.1.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-integration-eventhubs
-                version: 5.14.0
+                version: 5.15.0
               - compatibilityRange: "[3.2.0,3.2.7]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-integration-eventhubs
-                version: 5.14.0
-              - compatibilityRange: "[3.3.0,3.3.1]"
+                version: 5.15.0
+              - compatibilityRange: "[3.3.0,3.3.2]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-integration-eventhubs
-                version: 5.14.0
+                version: 5.15.0
         - artifactId: spring-integration-azure-eventhubs
           groupId: com.azure.spring
-          versionGA: 4.19.0
-          versionPreview: 5.14.0
+          versionGA: 5.15.0
           description: |-
             Microsoft's Spring Integration extension for Azure Event Hubs. Spring Integration extends
             the Spring programming modoel to support well-known Enterprise Integration Patterns.
           type: spring
           links:
-            javadoc: https://azuresdkdocs.blob.core.windows.net/$web/java/spring-integration-azure-eventhubs/4.19.0/index.html
-            github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_4.19.0/sdk/spring/spring-integration-azure-eventhubs
+            javadoc: https://azuresdkdocs.blob.core.windows.net/$web/java/spring-integration-azure-eventhubs/5.15.0/index.html
+            github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_5.15.0/sdk/spring/spring-integration-azure-eventhubs
             msdocs: https://docs.microsoft.com/azure/developer/java/spring-framework/spring-cloud-azure#spring-integration-support
             repopath: https://search.maven.org/artifact/com.azure.spring/spring-integration-azure-eventhubs
-            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_4.19.0/eventhubs/spring-integration-azure-eventhubs/
+            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_5.15.0/eventhubs/spring-integration-azure-eventhubs/
           springProperties:
             starter: true
             bom: spring-cloud-azure-dependencies
-            compatibilityRange: "[2.5.0,3.3.1]"
+            compatibilityRange: "[2.5.0,3.3.2]"
             mappings:
               - compatibilityRange: "[2.5.0,2.5.15]"
                 groupId: com.azure.spring
@@ -1346,38 +1321,37 @@
               - compatibilityRange: "[3.0.0,3.0.13]"
                 groupId: com.azure.spring
                 artifactId: spring-integration-azure-eventhubs
-                version: 5.14.0
+                version: 5.15.0
               - compatibilityRange: "[3.1.0,3.1.12]"
                 groupId: com.azure.spring
                 artifactId: spring-integration-azure-eventhubs
-                version: 5.14.0
+                version: 5.15.0
               - compatibilityRange: "[3.2.0,3.2.7]"
                 groupId: com.azure.spring
                 artifactId: spring-integration-azure-eventhubs
-                version: 5.14.0
-              - compatibilityRange: "[3.3.0,3.3.1]"
+                version: 5.15.0
+              - compatibilityRange: "[3.3.0,3.3.2]"
                 groupId: com.azure.spring
                 artifactId: spring-integration-azure-eventhubs
-                version: 5.14.0
+                version: 5.15.0
         - artifactId: spring-cloud-azure-stream-binder-eventhubs
           groupId: com.azure.spring
-          versionGA: 4.19.0
-          versionPreview: 5.14.0
+          versionGA: 5.15.0
           description: |-
             Microsoft's Spring Cloud Stream Binder provides Spring Cloud Stream Binder for Azure
             Event Hubs which allows you to build message-driven microservice using Spring Cloud
             Stream based on Azure Event Hubs.
           type: spring
           links:
-            javadoc: https://azuresdkdocs.blob.core.windows.net/$web/java/spring-cloud-azure-stream-binder-eventhubs/4.19.0/index.html
-            github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_4.19.0/sdk/spring/spring-cloud-azure-stream-binder-eventhubs
+            javadoc: https://azuresdkdocs.blob.core.windows.net/$web/java/spring-cloud-azure-stream-binder-eventhubs/5.15.0/index.html
+            github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_5.15.0/sdk/spring/spring-cloud-azure-stream-binder-eventhubs
             msdocs: https://docs.microsoft.com/azure/developer/java/spring-framework/spring-cloud-azure#spring-cloud-stream-binder-for-azure-event-hubs
             repopath: https://search.maven.org/artifact/com.azure.spring/spring-cloud-azure-stream-binder-eventhubs
-            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_4.19.0/eventhubs/spring-cloud-azure-stream-binder-eventhubs/
+            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_5.15.0/eventhubs/spring-cloud-azure-stream-binder-eventhubs/
           springProperties:
             starter: true
             bom: spring-cloud-azure-dependencies
-            compatibilityRange: "[2.5.0,3.3.1]"
+            compatibilityRange: "[2.5.0,3.3.2]"
             mappings:
               - compatibilityRange: "[2.5.0,2.5.15]"
                 groupId: com.azure.spring
@@ -1394,19 +1368,19 @@
               - compatibilityRange: "[3.0.0,3.0.13]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-stream-binder-eventhubs
-                version: 5.14.0
+                version: 5.15.0
               - compatibilityRange: "[3.1.0,3.1.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-stream-binder-eventhubs
-                version: 5.14.0
+                version: 5.15.0
               - compatibilityRange: "[3.2.0,3.2.7]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-stream-binder-eventhubs
-                version: 5.14.0
-              - compatibilityRange: "[3.3.0,3.3.1]"
+                version: 5.15.0
+              - compatibilityRange: "[3.3.0,3.3.2]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-stream-binder-eventhubs
-                version: 5.14.0
+                version: 5.15.0
 - name: MySQL
   content:
     - name: Database for MySQL
@@ -1418,21 +1392,20 @@
       artifacts:
         - artifactId: spring-cloud-azure-starter-jdbc-mysql
           groupId: com.azure.spring
-          versionGA: 4.19.0
-          versionPreview: 5.14.0
+          versionGA: 5.15.0
           description: |-
             Microsoft's Spring Boot Starter helps developers to finish the auto-configuration of
             Azure Database for MySQL.
           type: spring
           links:
-            github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_4.19.0/sdk/spring/spring-cloud-azure-starter-jdbc-mysql
+            github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_5.15.0/sdk/spring/spring-cloud-azure-starter-jdbc-mysql
             msdocs: https://docs.microsoft.com/azure/developer/java/spring-framework/spring-cloud-azure#auto-configure-azure-sdk-clients
             repopath: https://search.maven.org/artifact/com.azure.spring/spring-cloud-azure-starter-jdbc-mysql
-            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_4.19.0/mysql/spring-cloud-azure-starter-jdbc-mysql/
+            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_5.15.0/mysql/spring-cloud-azure-starter-jdbc-mysql/
           springProperties:
             starter: true
             bom: spring-cloud-azure-dependencies
-            compatibilityRange: "[2.5.0,3.3.1]"
+            compatibilityRange: "[2.5.0,3.3.2]"
             mappings:
               - compatibilityRange: "[2.5.0,2.5.15]"
                 groupId: com.azure.spring
@@ -1449,19 +1422,19 @@
               - compatibilityRange: "[3.0.0,3.0.13]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-jdbc-mysql
-                version: 5.14.0
+                version: 5.15.0
               - compatibilityRange: "[3.1.0,3.1.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-jdbc-mysql
-                version: 5.14.0
+                version: 5.15.0
               - compatibilityRange: "[3.2.0,3.2.7]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-jdbc-mysql
-                version: 5.14.0
-              - compatibilityRange: "[3.3.0,3.3.1]"
+                version: 5.15.0
+              - compatibilityRange: "[3.3.0,3.3.2]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-jdbc-mysql
-                version: 5.14.0
+                version: 5.15.0
 - name: PostgreSQL
   content:
     - name: Database for PostgreSQL
@@ -1473,21 +1446,20 @@
       artifacts:
         - artifactId: spring-cloud-azure-starter-jdbc-postgresql
           groupId: com.azure.spring
-          versionGA: 4.19.0
-          versionPreview: 5.14.0
+          versionGA: 5.15.0
           description: |-
             Microsoft's Spring Boot Starter helps developers to finish the auto-configuration of
             Azure Database for PostgreSQL.
           type: spring
           links:
-            github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_4.19.0/sdk/spring/spring-cloud-azure-starter-jdbc-postgresql
+            github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_5.15.0/sdk/spring/spring-cloud-azure-starter-jdbc-postgresql
             msdocs: https://docs.microsoft.com/azure/developer/java/spring-framework/spring-cloud-azure#auto-configure-azure-sdk-clients
             repopath: https://search.maven.org/artifact/com.azure.spring/spring-cloud-azure-starter-jdbc-postgresql
-            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_4.19.0/postgresql/spring-cloud-azure-starter-jdbc-postgresql/
+            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_5.15.0/postgresql/spring-cloud-azure-starter-jdbc-postgresql/
           springProperties:
             starter: true
             bom: spring-cloud-azure-dependencies
-            compatibilityRange: "[2.5.0,3.3.1]"
+            compatibilityRange: "[2.5.0,3.3.2]"
             mappings:
               - compatibilityRange: "[2.5.0,2.5.15]"
                 groupId: com.azure.spring
@@ -1504,16 +1476,103 @@
               - compatibilityRange: "[3.0.0,3.0.13]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-jdbc-postgresql
-                version: 5.14.0
+                version: 5.15.0
               - compatibilityRange: "[3.1.0,3.1.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-jdbc-postgresql
-                version: 5.14.0
+                version: 5.15.0
               - compatibilityRange: "[3.2.0,3.2.7]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-jdbc-postgresql
-                version: 5.14.0
-              - compatibilityRange: "[3.3.0,3.3.1]"
+                version: 5.15.0
+              - compatibilityRange: "[3.3.0,3.3.2]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-jdbc-postgresql
-                version: 5.14.0
+                version: 5.15.0
+- name: Redis
+  content:
+    - name: Azure Cache for Redis
+      description: |-
+        Azure Cache for Redis provides an in-memory data store based on the Redis software.
+        Redis improves the performance and scalability of an application that uses backend
+        data stores heavily. It's able to process large volumes of application requests by
+        keeping frequently accessed data in the server memory, which can be written to and
+        read from quickly. Redis brings a critical low-latency and high-throughput data
+        storage solution to modern applications.
+      msDocs: https://docs.microsoft.com/azure/azure-cache-for-redis/
+      artifacts:
+        - artifactId: spring-cloud-azure-starter-data-redis-lettuce
+          groupId: com.azure.spring
+          versionGA: 5.15.0
+          description: |-
+            Microsoft's Spring Boot Starter helps developers to finish the auto-configuration of
+            Azure Cache for Redis.
+          type: spring
+          links:
+            github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_5.15.0/sdk/spring/spring-cloud-azure-starter-data-redis-lettuce
+            msdocs: https://learn.microsoft.com/azure/developer/java/spring-framework/configure-spring-boot-initializer-java-app-with-redis-cache
+            repopath: https://search.maven.org/artifact/com.azure.spring/spring-cloud-azure-starter-data-redis-lettuce
+            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_5.15.0/redis/spring-cloud-azure-starter-data-redis-lettuce/
+          springProperties:
+            starter: true
+            bom: spring-cloud-azure-dependencies
+            compatibilityRange: "[3.0.0,3.3.2]"
+            mappings:
+              - compatibilityRange: "[3.0.0,3.0.13]"
+                groupId: com.azure.spring
+                artifactId: spring-cloud-azure-starter-data-redis-lettuce
+                version: 5.15.0
+              - compatibilityRange: "[3.1.0,3.1.12]"
+                groupId: com.azure.spring
+                artifactId: spring-cloud-azure-starter-data-redis-lettuce
+                version: 5.15.0
+              - compatibilityRange: "[3.2.0,3.2.7]"
+                groupId: com.azure.spring
+                artifactId: spring-cloud-azure-starter-data-redis-lettuce
+                version: 5.15.0
+              - compatibilityRange: "[3.3.0,3.3.2]"
+                groupId: com.azure.spring
+                artifactId: spring-cloud-azure-starter-data-redis-lettuce
+                version: 5.15.0
+- name: Testcontainers
+  content:
+    - name: Testcontainers
+      description: |-
+        The Testcontainers library provides a way to manage services running inside Docker
+        containers. It integrates with JUnit, allowing you to write a test class that can
+        start up a container before any of the tests run. Testcontainers is especially
+        useful for writing integration tests that talk to a real backend service.
+      artifacts:
+        - artifactId: spring-cloud-azure-testcontainers
+          groupId: com.azure.spring
+          versionGA: 5.15.0
+          description: |-
+            Microsoft's Spring Cloud Azure lib helps developers to use testcontainers to test Cosmos,
+            Storage Blob, Storage Queue.
+          type: spring
+          links:
+            javadoc: https://azuresdkdocs.blob.core.windows.net/$web/java/spring-cloud-azure-testcontainers/5.15.0/index.html
+            github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_5.15.0/sdk/spring/spring-cloud-azure-testcontainers
+            repopath: https://search.maven.org/artifact/com.azure.spring/spring-cloud-azure-testcontainers
+            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_5.15.0/testcontainers/spring-cloud-azure-testcontainers/
+          springProperties:
+            starter: true
+            bom: spring-cloud-azure-dependencies
+            compatibilityRange: "[3.0.0,3.3.2]"
+            mappings:
+              - compatibilityRange: "[3.0.0,3.0.13]"
+                groupId: com.azure.spring
+                artifactId: spring-cloud-azure-testcontainers
+                version: 5.15.0
+              - compatibilityRange: "[3.1.0,3.1.12]"
+                groupId: com.azure.spring
+                artifactId: spring-cloud-azure-testcontainers
+                version: 5.15.0
+              - compatibilityRange: "[3.2.0,3.2.7]"
+                groupId: com.azure.spring
+                artifactId: spring-cloud-azure-testcontainers
+                version: 5.15.0
+              - compatibilityRange: "[3.3.0,3.3.2]"
+                groupId: com.azure.spring
+                artifactId: spring-cloud-azure-testcontainers
+                version: 5.15.0

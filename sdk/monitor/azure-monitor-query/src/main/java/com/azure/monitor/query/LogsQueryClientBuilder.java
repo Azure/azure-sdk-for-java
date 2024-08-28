@@ -66,9 +66,10 @@ import com.azure.monitor.query.implementation.logs.AzureLogAnalyticsImplBuilder;
  * @see LogsQueryClient
  * @see LogsQueryAsyncClient
  */
-@ServiceClientBuilder(serviceClients = {LogsQueryClient.class, LogsQueryAsyncClient.class})
-public final class LogsQueryClientBuilder implements EndpointTrait<LogsQueryClientBuilder>,
-        HttpTrait<LogsQueryClientBuilder>, ConfigurationTrait<LogsQueryClientBuilder>, TokenCredentialTrait<LogsQueryClientBuilder> {
+@ServiceClientBuilder(serviceClients = { LogsQueryClient.class, LogsQueryAsyncClient.class })
+public final class LogsQueryClientBuilder
+    implements EndpointTrait<LogsQueryClientBuilder>, HttpTrait<LogsQueryClientBuilder>,
+    ConfigurationTrait<LogsQueryClientBuilder>, TokenCredentialTrait<LogsQueryClientBuilder> {
     private final ClientLogger logger = new ClientLogger(LogsQueryClientBuilder.class);
     private final AzureLogAnalyticsImplBuilder innerLogBuilder = new AzureLogAnalyticsImplBuilder();
     private LogsQueryServiceVersion serviceVersion;
@@ -76,7 +77,8 @@ public final class LogsQueryClientBuilder implements EndpointTrait<LogsQueryClie
     /**
      * Creates an instance of LogsQueryClientBuilder.
      */
-    public LogsQueryClientBuilder() { }
+    public LogsQueryClientBuilder() {
+    }
 
     /**
      * Sets the log query endpoint.

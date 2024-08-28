@@ -5,27 +5,21 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * The location of azure data lake store dataset.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "type",
-    defaultImpl = AzureDataLakeStoreLocation.class,
-    visible = true)
-@JsonTypeName("AzureDataLakeStoreLocation")
 @Fluent
 public final class AzureDataLakeStoreLocation extends DatasetLocation {
     /*
      * Type of dataset storage location.
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private String type = "AzureDataLakeStoreLocation";
 
     /**
@@ -70,5 +64,58 @@ public final class AzureDataLakeStoreLocation extends DatasetLocation {
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("folderPath", folderPath());
+        jsonWriter.writeUntypedField("fileName", fileName());
+        jsonWriter.writeStringField("type", this.type);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureDataLakeStoreLocation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureDataLakeStoreLocation if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureDataLakeStoreLocation.
+     */
+    public static AzureDataLakeStoreLocation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureDataLakeStoreLocation deserializedAzureDataLakeStoreLocation = new AzureDataLakeStoreLocation();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("folderPath".equals(fieldName)) {
+                    deserializedAzureDataLakeStoreLocation.withFolderPath(reader.readUntyped());
+                } else if ("fileName".equals(fieldName)) {
+                    deserializedAzureDataLakeStoreLocation.withFileName(reader.readUntyped());
+                } else if ("type".equals(fieldName)) {
+                    deserializedAzureDataLakeStoreLocation.type = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedAzureDataLakeStoreLocation.withAdditionalProperties(additionalProperties);
+
+            return deserializedAzureDataLakeStoreLocation;
+        });
     }
 }

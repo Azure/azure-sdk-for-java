@@ -5,27 +5,29 @@
 package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Properties of upgrading cluster pool's AKS patch version.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "upgradeType")
-@JsonTypeName("AKSPatchUpgrade")
 @Fluent
 public final class ClusterPoolAksPatchVersionUpgradeProperties extends ClusterPoolUpgradeProperties {
     /*
+     * Type of upgrade.
+     */
+    private ClusterPoolUpgradeType upgradeType = ClusterPoolUpgradeType.AKSPATCH_UPGRADE;
+
+    /*
      * whether upgrade cluster pool or not. If it's true, upgradeAllClusterNodes should be false.
      */
-    @JsonProperty(value = "upgradeClusterPool")
     private Boolean upgradeClusterPool;
 
     /*
      * whether upgrade all clusters' nodes. If it's true, upgradeClusterPool should be false.
      */
-    @JsonProperty(value = "upgradeAllClusterNodes")
     private Boolean upgradeAllClusterNodes;
 
     /*
@@ -34,13 +36,22 @@ public final class ClusterPoolAksPatchVersionUpgradeProperties extends ClusterPo
      * upgradeClusterPool is false and upgradeAllClusterNodes is true, target version should be equal to AKS version of
      * cluster pool.
      */
-    @JsonProperty(value = "targetAksVersion")
     private String targetAksVersion;
 
     /**
      * Creates an instance of ClusterPoolAksPatchVersionUpgradeProperties class.
      */
     public ClusterPoolAksPatchVersionUpgradeProperties() {
+    }
+
+    /**
+     * Get the upgradeType property: Type of upgrade.
+     * 
+     * @return the upgradeType value.
+     */
+    @Override
+    public ClusterPoolUpgradeType upgradeType() {
+        return this.upgradeType;
     }
 
     /**
@@ -121,5 +132,54 @@ public final class ClusterPoolAksPatchVersionUpgradeProperties extends ClusterPo
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("upgradeType", this.upgradeType == null ? null : this.upgradeType.toString());
+        jsonWriter.writeBooleanField("upgradeClusterPool", this.upgradeClusterPool);
+        jsonWriter.writeBooleanField("upgradeAllClusterNodes", this.upgradeAllClusterNodes);
+        jsonWriter.writeStringField("targetAksVersion", this.targetAksVersion);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterPoolAksPatchVersionUpgradeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterPoolAksPatchVersionUpgradeProperties if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ClusterPoolAksPatchVersionUpgradeProperties.
+     */
+    public static ClusterPoolAksPatchVersionUpgradeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterPoolAksPatchVersionUpgradeProperties deserializedClusterPoolAksPatchVersionUpgradeProperties
+                = new ClusterPoolAksPatchVersionUpgradeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("upgradeType".equals(fieldName)) {
+                    deserializedClusterPoolAksPatchVersionUpgradeProperties.upgradeType
+                        = ClusterPoolUpgradeType.fromString(reader.getString());
+                } else if ("upgradeClusterPool".equals(fieldName)) {
+                    deserializedClusterPoolAksPatchVersionUpgradeProperties.upgradeClusterPool
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("upgradeAllClusterNodes".equals(fieldName)) {
+                    deserializedClusterPoolAksPatchVersionUpgradeProperties.upgradeAllClusterNodes
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("targetAksVersion".equals(fieldName)) {
+                    deserializedClusterPoolAksPatchVersionUpgradeProperties.targetAksVersion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterPoolAksPatchVersionUpgradeProperties;
+        });
     }
 }

@@ -5,52 +5,53 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** The CreateCluster request parameters. */
+/**
+ * The CreateCluster request parameters.
+ */
 @Fluent
-public class ClusterCreateParametersExtended {
+public class ClusterCreateParametersExtended implements JsonSerializable<ClusterCreateParametersExtended> {
     /*
      * The location of the cluster.
      */
-    @JsonProperty(value = "location")
     private String location;
 
     /*
      * The resource tags.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * The availability zones.
      */
-    @JsonProperty(value = "zones")
     private List<String> zones;
 
     /*
      * The cluster create parameters.
      */
-    @JsonProperty(value = "properties")
     private ClusterCreateProperties properties;
 
     /*
      * The identity of the cluster, if configured.
      */
-    @JsonProperty(value = "identity")
     private ClusterIdentity identity;
 
-    /** Creates an instance of ClusterCreateParametersExtended class. */
+    /**
+     * Creates an instance of ClusterCreateParametersExtended class.
+     */
     public ClusterCreateParametersExtended() {
     }
 
     /**
      * Get the location property: The location of the cluster.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -59,7 +60,7 @@ public class ClusterCreateParametersExtended {
 
     /**
      * Set the location property: The location of the cluster.
-     *
+     * 
      * @param location the location value to set.
      * @return the ClusterCreateParametersExtended object itself.
      */
@@ -70,7 +71,7 @@ public class ClusterCreateParametersExtended {
 
     /**
      * Get the tags property: The resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -79,7 +80,7 @@ public class ClusterCreateParametersExtended {
 
     /**
      * Set the tags property: The resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the ClusterCreateParametersExtended object itself.
      */
@@ -90,7 +91,7 @@ public class ClusterCreateParametersExtended {
 
     /**
      * Get the zones property: The availability zones.
-     *
+     * 
      * @return the zones value.
      */
     public List<String> zones() {
@@ -99,7 +100,7 @@ public class ClusterCreateParametersExtended {
 
     /**
      * Set the zones property: The availability zones.
-     *
+     * 
      * @param zones the zones value to set.
      * @return the ClusterCreateParametersExtended object itself.
      */
@@ -110,7 +111,7 @@ public class ClusterCreateParametersExtended {
 
     /**
      * Get the properties property: The cluster create parameters.
-     *
+     * 
      * @return the properties value.
      */
     public ClusterCreateProperties properties() {
@@ -119,7 +120,7 @@ public class ClusterCreateParametersExtended {
 
     /**
      * Set the properties property: The cluster create parameters.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the ClusterCreateParametersExtended object itself.
      */
@@ -130,7 +131,7 @@ public class ClusterCreateParametersExtended {
 
     /**
      * Get the identity property: The identity of the cluster, if configured.
-     *
+     * 
      * @return the identity value.
      */
     public ClusterIdentity identity() {
@@ -139,7 +140,7 @@ public class ClusterCreateParametersExtended {
 
     /**
      * Set the identity property: The identity of the cluster, if configured.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the ClusterCreateParametersExtended object itself.
      */
@@ -150,7 +151,7 @@ public class ClusterCreateParametersExtended {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -160,5 +161,56 @@ public class ClusterCreateParametersExtended {
         if (identity() != null) {
             identity().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("zones", this.zones, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeJsonField("identity", this.identity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterCreateParametersExtended from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterCreateParametersExtended if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ClusterCreateParametersExtended.
+     */
+    public static ClusterCreateParametersExtended fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterCreateParametersExtended deserializedClusterCreateParametersExtended
+                = new ClusterCreateParametersExtended();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("location".equals(fieldName)) {
+                    deserializedClusterCreateParametersExtended.location = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedClusterCreateParametersExtended.tags = tags;
+                } else if ("zones".equals(fieldName)) {
+                    List<String> zones = reader.readArray(reader1 -> reader1.getString());
+                    deserializedClusterCreateParametersExtended.zones = zones;
+                } else if ("properties".equals(fieldName)) {
+                    deserializedClusterCreateParametersExtended.properties = ClusterCreateProperties.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedClusterCreateParametersExtended.identity = ClusterIdentity.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterCreateParametersExtended;
+        });
     }
 }

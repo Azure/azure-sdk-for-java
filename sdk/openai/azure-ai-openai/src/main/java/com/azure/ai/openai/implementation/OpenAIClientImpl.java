@@ -161,7 +161,7 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getAudioTranscriptionAsPlainText(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("deploymentId") String deploymentOrModelName,
-            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("content-type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("multipart/form-data") BinaryData audioTranscriptionOptions, RequestOptions requestOptions,
             Context context);
 
@@ -174,7 +174,7 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getAudioTranscriptionAsPlainTextSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("deploymentId") String deploymentOrModelName,
-            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("content-type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("multipart/form-data") BinaryData audioTranscriptionOptions, RequestOptions requestOptions,
             Context context);
 
@@ -187,7 +187,7 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getAudioTranscriptionAsResponseObject(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("deploymentId") String deploymentOrModelName,
-            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("content-type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("multipart/form-data") BinaryData audioTranscriptionOptions, RequestOptions requestOptions,
             Context context);
 
@@ -200,7 +200,7 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getAudioTranscriptionAsResponseObjectSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("deploymentId") String deploymentOrModelName,
-            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("content-type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("multipart/form-data") BinaryData audioTranscriptionOptions, RequestOptions requestOptions,
             Context context);
 
@@ -213,7 +213,7 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getAudioTranslationAsPlainText(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("deploymentId") String deploymentOrModelName,
-            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("content-type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("multipart/form-data") BinaryData audioTranslationOptions, RequestOptions requestOptions,
             Context context);
 
@@ -226,7 +226,7 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getAudioTranslationAsPlainTextSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("deploymentId") String deploymentOrModelName,
-            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("content-type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("multipart/form-data") BinaryData audioTranslationOptions, RequestOptions requestOptions,
             Context context);
 
@@ -239,7 +239,7 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getAudioTranslationAsResponseObject(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("deploymentId") String deploymentOrModelName,
-            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("content-type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("multipart/form-data") BinaryData audioTranslationOptions, RequestOptions requestOptions,
             Context context);
 
@@ -252,7 +252,7 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getAudioTranslationAsResponseObjectSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("deploymentId") String deploymentOrModelName,
-            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("content-type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("multipart/form-data") BinaryData audioTranslationOptions, RequestOptions requestOptions,
             Context context);
 
@@ -264,8 +264,9 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getCompletions(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("deploymentId") String deploymentOrModelName,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData completionsOptions,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData completionsOptions, RequestOptions requestOptions,
+            Context context);
 
         @Post("/deployments/{deploymentId}/completions")
         @ExpectedResponses({ 200 })
@@ -275,8 +276,9 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getCompletionsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("deploymentId") String deploymentOrModelName,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData completionsOptions,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData completionsOptions, RequestOptions requestOptions,
+            Context context);
 
         @Post("/deployments/{deploymentId}/chat/completions")
         @ExpectedResponses({ 200 })
@@ -286,8 +288,9 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getChatCompletions(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("deploymentId") String deploymentOrModelName,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData chatCompletionsOptions,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData chatCompletionsOptions, RequestOptions requestOptions,
+            Context context);
 
         @Post("/deployments/{deploymentId}/chat/completions")
         @ExpectedResponses({ 200 })
@@ -297,8 +300,9 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getChatCompletionsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("deploymentId") String deploymentOrModelName,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData chatCompletionsOptions,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData chatCompletionsOptions, RequestOptions requestOptions,
+            Context context);
 
         @Post("/deployments/{deploymentId}/images/generations")
         @ExpectedResponses({ 200 })
@@ -308,8 +312,9 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getImageGenerations(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("deploymentId") String deploymentOrModelName,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData imageGenerationOptions,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData imageGenerationOptions, RequestOptions requestOptions,
+            Context context);
 
         @Post("/deployments/{deploymentId}/images/generations")
         @ExpectedResponses({ 200 })
@@ -319,8 +324,9 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getImageGenerationsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("deploymentId") String deploymentOrModelName,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData imageGenerationOptions,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData imageGenerationOptions, RequestOptions requestOptions,
+            Context context);
 
         @Post("/deployments/{deploymentId}/audio/speech")
         @ExpectedResponses({ 200 })
@@ -330,8 +336,9 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> generateSpeechFromText(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("deploymentId") String deploymentOrModelName,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData speechGenerationOptions,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData speechGenerationOptions, RequestOptions requestOptions,
+            Context context);
 
         @Post("/deployments/{deploymentId}/audio/speech")
         @ExpectedResponses({ 200 })
@@ -341,8 +348,9 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> generateSpeechFromTextSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("deploymentId") String deploymentOrModelName,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData speechGenerationOptions,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData speechGenerationOptions, RequestOptions requestOptions,
+            Context context);
 
         @Post("/deployments/{deploymentId}/embeddings")
         @ExpectedResponses({ 200 })
@@ -352,8 +360,9 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getEmbeddings(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("deploymentId") String deploymentOrModelName,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData embeddingsOptions,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData embeddingsOptions, RequestOptions requestOptions,
+            Context context);
 
         @Post("/deployments/{deploymentId}/embeddings")
         @ExpectedResponses({ 200 })
@@ -363,8 +372,9 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getEmbeddingsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("deploymentId") String deploymentOrModelName,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData embeddingsOptions,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData embeddingsOptions, RequestOptions requestOptions,
+            Context context);
 
         @Get("/files")
         @ExpectedResponses({ 200 })
@@ -373,7 +383,7 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listFiles(@HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+                                             @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/files")
         @ExpectedResponses({ 200 })
@@ -382,7 +392,7 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listFilesSync(@HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept,
-            RequestOptions requestOptions, Context context);
+                                           RequestOptions requestOptions, Context context);
 
         // @Multipart not supported by RestProxy
         @Post("/files")
@@ -392,9 +402,9 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> uploadFile(@HostParam("endpoint") String endpoint,
-            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
-            @BodyParam("multipart/form-data") BinaryData uploadFileRequest, RequestOptions requestOptions,
-            Context context);
+                                              @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
+                                              @BodyParam("multipart/form-data") BinaryData uploadFileRequest, RequestOptions requestOptions,
+                                              Context context);
 
         // @Multipart not supported by RestProxy
         @Post("/files")
@@ -404,9 +414,9 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> uploadFileSync(@HostParam("endpoint") String endpoint,
-            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
-            @BodyParam("multipart/form-data") BinaryData uploadFileRequest, RequestOptions requestOptions,
-            Context context);
+                                            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
+                                            @BodyParam("multipart/form-data") BinaryData uploadFileRequest, RequestOptions requestOptions,
+                                            Context context);
 
         @Delete("/files/{fileId}")
         @ExpectedResponses({ 200 })
@@ -415,8 +425,8 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> deleteFile(@HostParam("endpoint") String endpoint,
-            @PathParam("fileId") String fileId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
-            Context context);
+                                              @PathParam("fileId") String fileId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+                                              Context context);
 
         @Delete("/files/{fileId}")
         @ExpectedResponses({ 200 })
@@ -425,7 +435,7 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> deleteFileSync(@HostParam("endpoint") String endpoint, @PathParam("fileId") String fileId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+                                            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/files/{fileId}")
         @ExpectedResponses({ 200 })
@@ -434,7 +444,7 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getFile(@HostParam("endpoint") String endpoint, @PathParam("fileId") String fileId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+                                           @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/files/{fileId}")
         @ExpectedResponses({ 200 })
@@ -443,7 +453,7 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getFileSync(@HostParam("endpoint") String endpoint, @PathParam("fileId") String fileId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+                                         @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/files/{fileId}/content")
         @ExpectedResponses({ 200 })
@@ -452,8 +462,8 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getFileContent(@HostParam("endpoint") String endpoint,
-            @PathParam("fileId") String fileId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
-            Context context);
+                                                  @PathParam("fileId") String fileId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+                                                  Context context);
 
         @Get("/files/{fileId}/content")
         @ExpectedResponses({ 200 })
@@ -462,8 +472,8 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getFileContentSync(@HostParam("endpoint") String endpoint,
-            @PathParam("fileId") String fileId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
-            Context context);
+                                                @PathParam("fileId") String fileId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+                                                Context context);
 
         @Get("/batches")
         @ExpectedResponses({ 200 })
@@ -472,7 +482,7 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listBatches(@HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+                                               @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/batches")
         @ExpectedResponses({ 200 })
@@ -481,7 +491,7 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listBatchesSync(@HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+                                             @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/batches")
         @ExpectedResponses({ 201 })
@@ -490,8 +500,8 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createBatch(@HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData createBatchRequest,
-            RequestOptions requestOptions, Context context);
+                                               @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData createBatchRequest,
+                                               RequestOptions requestOptions, Context context);
 
         @Post("/batches")
         @ExpectedResponses({ 201 })
@@ -500,8 +510,8 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createBatchSync(@HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData createBatchRequest,
-            RequestOptions requestOptions, Context context);
+                                             @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData createBatchRequest,
+                                             RequestOptions requestOptions, Context context);
 
         @Get("/batches/{batchId}")
         @ExpectedResponses({ 200 })
@@ -510,8 +520,8 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getBatch(@HostParam("endpoint") String endpoint,
-            @PathParam("batchId") String batchId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
-            Context context);
+                                            @PathParam("batchId") String batchId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+                                            Context context);
 
         @Get("/batches/{batchId}")
         @ExpectedResponses({ 200 })
@@ -520,7 +530,7 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getBatchSync(@HostParam("endpoint") String endpoint, @PathParam("batchId") String batchId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+                                          @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/batches/{batchId}/cancel")
         @ExpectedResponses({ 200 })
@@ -529,8 +539,8 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> cancelBatch(@HostParam("endpoint") String endpoint,
-            @PathParam("batchId") String batchId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
-            Context context);
+                                               @PathParam("batchId") String batchId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+                                               Context context);
 
         @Post("/batches/{batchId}/cancel")
         @ExpectedResponses({ 200 })
@@ -539,8 +549,8 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> cancelBatchSync(@HostParam("endpoint") String endpoint,
-            @PathParam("batchId") String batchId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
-            Context context);
+                                             @PathParam("batchId") String batchId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+                                             Context context);
     }
 
     /**
@@ -567,7 +577,7 @@ public final class OpenAIClientImpl {
     public Mono<Response<BinaryData>> getAudioTranscriptionAsPlainTextWithResponseAsync(String deploymentOrModelName,
         BinaryData audioTranscriptionOptions, RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
-        final String accept = "text/plain, application/json";
+        final String accept = "text/plain";
         return FluxUtil.withContext(context -> service.getAudioTranscriptionAsPlainText(this.getEndpoint(),
             this.getServiceVersion().getVersion(), deploymentOrModelName, contentType, accept,
             audioTranscriptionOptions, requestOptions, context));
@@ -596,7 +606,7 @@ public final class OpenAIClientImpl {
     public Response<BinaryData> getAudioTranscriptionAsPlainTextWithResponse(String deploymentOrModelName,
         BinaryData audioTranscriptionOptions, RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
-        final String accept = "text/plain, application/json";
+        final String accept = "text/plain";
         return service.getAudioTranscriptionAsPlainTextSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
             deploymentOrModelName, contentType, accept, audioTranscriptionOptions, requestOptions, Context.NONE);
     }
@@ -739,7 +749,7 @@ public final class OpenAIClientImpl {
     public Mono<Response<BinaryData>> getAudioTranslationAsPlainTextWithResponseAsync(String deploymentOrModelName,
         BinaryData audioTranslationOptions, RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
-        final String accept = "text/plain, application/json";
+        final String accept = "text/plain";
         return FluxUtil.withContext(
             context -> service.getAudioTranslationAsPlainText(this.getEndpoint(), this.getServiceVersion().getVersion(),
                 deploymentOrModelName, contentType, accept, audioTranslationOptions, requestOptions, context));
@@ -768,7 +778,7 @@ public final class OpenAIClientImpl {
     public Response<BinaryData> getAudioTranslationAsPlainTextWithResponse(String deploymentOrModelName,
         BinaryData audioTranslationOptions, RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
-        final String accept = "text/plain, application/json";
+        final String accept = "text/plain";
         return service.getAudioTranslationAsPlainTextSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
             deploymentOrModelName, contentType, accept, audioTranslationOptions, requestOptions, Context.NONE);
     }
@@ -1017,10 +1027,11 @@ public final class OpenAIClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getCompletionsWithResponseAsync(String deploymentOrModelName,
         BinaryData completionsOptions, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getCompletions(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                deploymentOrModelName, accept, completionsOptions, requestOptions, context));
+                deploymentOrModelName, contentType, accept, completionsOptions, requestOptions, context));
     }
 
     /**
@@ -1167,9 +1178,10 @@ public final class OpenAIClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getCompletionsWithResponse(String deploymentOrModelName, BinaryData completionsOptions,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return service.getCompletionsSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            deploymentOrModelName, accept, completionsOptions, requestOptions, Context.NONE);
+            deploymentOrModelName, contentType, accept, completionsOptions, requestOptions, Context.NONE);
     }
 
     /**
@@ -1417,10 +1429,11 @@ public final class OpenAIClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getChatCompletionsWithResponseAsync(String deploymentOrModelName,
         BinaryData chatCompletionsOptions, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(
             context -> service.getChatCompletions(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                deploymentOrModelName, accept, chatCompletionsOptions, requestOptions, context));
+                deploymentOrModelName, contentType, accept, chatCompletionsOptions, requestOptions, context));
     }
 
     /**
@@ -1668,9 +1681,10 @@ public final class OpenAIClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getChatCompletionsWithResponse(String deploymentOrModelName,
         BinaryData chatCompletionsOptions, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return service.getChatCompletionsSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            deploymentOrModelName, accept, chatCompletionsOptions, requestOptions, Context.NONE);
+            deploymentOrModelName, contentType, accept, chatCompletionsOptions, requestOptions, Context.NONE);
     }
 
     /**
@@ -1748,10 +1762,11 @@ public final class OpenAIClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getImageGenerationsWithResponseAsync(String deploymentOrModelName,
         BinaryData imageGenerationOptions, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(
             context -> service.getImageGenerations(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                deploymentOrModelName, accept, imageGenerationOptions, requestOptions, context));
+                deploymentOrModelName, contentType, accept, imageGenerationOptions, requestOptions, context));
     }
 
     /**
@@ -1828,9 +1843,10 @@ public final class OpenAIClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getImageGenerationsWithResponse(String deploymentOrModelName,
         BinaryData imageGenerationOptions, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return service.getImageGenerationsSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            deploymentOrModelName, accept, imageGenerationOptions, requestOptions, Context.NONE);
+            deploymentOrModelName, contentType, accept, imageGenerationOptions, requestOptions, Context.NONE);
     }
 
     /**
@@ -1867,10 +1883,11 @@ public final class OpenAIClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> generateSpeechFromTextWithResponseAsync(String deploymentOrModelName,
         BinaryData speechGenerationOptions, RequestOptions requestOptions) {
-        final String accept = "application/octet-stream, application/json";
+        final String contentType = "application/json";
+        final String accept = "application/octet-stream";
         return FluxUtil.withContext(
             context -> service.generateSpeechFromText(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                deploymentOrModelName, accept, speechGenerationOptions, requestOptions, context));
+                deploymentOrModelName, contentType, accept, speechGenerationOptions, requestOptions, context));
     }
 
     /**
@@ -1907,9 +1924,10 @@ public final class OpenAIClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> generateSpeechFromTextWithResponse(String deploymentOrModelName,
         BinaryData speechGenerationOptions, RequestOptions requestOptions) {
-        final String accept = "application/octet-stream, application/json";
+        final String contentType = "application/json";
+        final String accept = "application/octet-stream";
         return service.generateSpeechFromTextSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            deploymentOrModelName, accept, speechGenerationOptions, requestOptions, Context.NONE);
+            deploymentOrModelName, contentType, accept, speechGenerationOptions, requestOptions, Context.NONE);
     }
 
     /**
@@ -1966,10 +1984,11 @@ public final class OpenAIClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getEmbeddingsWithResponseAsync(String deploymentOrModelName,
         BinaryData embeddingsOptions, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getEmbeddings(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                deploymentOrModelName, accept, embeddingsOptions, requestOptions, context));
+                deploymentOrModelName, contentType, accept, embeddingsOptions, requestOptions, context));
     }
 
     /**
@@ -2025,9 +2044,10 @@ public final class OpenAIClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getEmbeddingsWithResponse(String deploymentOrModelName, BinaryData embeddingsOptions,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return service.getEmbeddingsSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            deploymentOrModelName, accept, embeddingsOptions, requestOptions, Context.NONE);
+            deploymentOrModelName, contentType, accept, embeddingsOptions, requestOptions, Context.NONE);
     }
 
     /**
@@ -2042,7 +2062,7 @@ public final class OpenAIClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -2060,7 +2080,7 @@ public final class OpenAIClientImpl {
      *     ]
      * }
      * }</pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2086,7 +2106,7 @@ public final class OpenAIClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -2104,7 +2124,7 @@ public final class OpenAIClientImpl {
      *     ]
      * }
      * }</pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2121,7 +2141,7 @@ public final class OpenAIClientImpl {
     /**
      * Uploads a file for use by other operations.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -2134,7 +2154,7 @@ public final class OpenAIClientImpl {
      *     status_details: String (Optional)
      * }
      * }</pre>
-     * 
+     *
      * @param uploadFileRequest The uploadFileRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2156,7 +2176,7 @@ public final class OpenAIClientImpl {
     /**
      * Uploads a file for use by other operations.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -2169,7 +2189,7 @@ public final class OpenAIClientImpl {
      *     status_details: String (Optional)
      * }
      * }</pre>
-     * 
+     *
      * @param uploadFileRequest The uploadFileRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2189,7 +2209,7 @@ public final class OpenAIClientImpl {
     /**
      * Delete a previously uploaded file.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -2197,7 +2217,7 @@ public final class OpenAIClientImpl {
      *     object: String (Required)
      * }
      * }</pre>
-     * 
+     *
      * @param fileId The ID of the file to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2217,7 +2237,7 @@ public final class OpenAIClientImpl {
     /**
      * Delete a previously uploaded file.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -2225,7 +2245,7 @@ public final class OpenAIClientImpl {
      *     object: String (Required)
      * }
      * }</pre>
-     * 
+     *
      * @param fileId The ID of the file to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2243,7 +2263,7 @@ public final class OpenAIClientImpl {
     /**
      * Returns information about a specific file. Does not retrieve file content.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -2256,7 +2276,7 @@ public final class OpenAIClientImpl {
      *     status_details: String (Optional)
      * }
      * }</pre>
-     * 
+     *
      * @param fileId The ID of the file to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2276,7 +2296,7 @@ public final class OpenAIClientImpl {
     /**
      * Returns information about a specific file. Does not retrieve file content.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -2289,7 +2309,7 @@ public final class OpenAIClientImpl {
      *     status_details: String (Optional)
      * }
      * }</pre>
-     * 
+     *
      * @param fileId The ID of the file to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2307,11 +2327,11 @@ public final class OpenAIClientImpl {
     /**
      * Returns information about a specific file. Does not retrieve file content.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * byte[]
      * }</pre>
-     * 
+     *
      * @param fileId The ID of the file to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2330,11 +2350,11 @@ public final class OpenAIClientImpl {
     /**
      * Returns information about a specific file. Does not retrieve file content.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * byte[]
      * }</pre>
-     * 
+     *
      * @param fileId The ID of the file to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2361,7 +2381,7 @@ public final class OpenAIClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -2410,7 +2430,7 @@ public final class OpenAIClientImpl {
      *     has_more: Boolean (Optional)
      * }
      * }</pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2438,7 +2458,7 @@ public final class OpenAIClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -2487,7 +2507,7 @@ public final class OpenAIClientImpl {
      *     has_more: Boolean (Optional)
      * }
      * }</pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2506,7 +2526,7 @@ public final class OpenAIClientImpl {
      * Response includes details of the enqueued job including job status.
      * The ID of the result file is added to the response once complete.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     endpoint: String (Required)
@@ -2517,9 +2537,9 @@ public final class OpenAIClientImpl {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -2560,7 +2580,7 @@ public final class OpenAIClientImpl {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param createBatchRequest The specification of the batch to create and execute.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2582,7 +2602,7 @@ public final class OpenAIClientImpl {
      * Response includes details of the enqueued job including job status.
      * The ID of the result file is added to the response once complete.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     endpoint: String (Required)
@@ -2593,9 +2613,9 @@ public final class OpenAIClientImpl {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -2636,7 +2656,7 @@ public final class OpenAIClientImpl {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param createBatchRequest The specification of the batch to create and execute.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2654,7 +2674,7 @@ public final class OpenAIClientImpl {
     /**
      * Gets details for a single batch specified by the given batchID.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -2695,7 +2715,7 @@ public final class OpenAIClientImpl {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param batchId The identifier of the batch.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2715,7 +2735,7 @@ public final class OpenAIClientImpl {
     /**
      * Gets details for a single batch specified by the given batchID.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -2756,7 +2776,7 @@ public final class OpenAIClientImpl {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param batchId The identifier of the batch.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2774,7 +2794,7 @@ public final class OpenAIClientImpl {
     /**
      * Gets details for a single batch specified by the given batchID.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -2815,7 +2835,7 @@ public final class OpenAIClientImpl {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param batchId The identifier of the batch.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2835,7 +2855,7 @@ public final class OpenAIClientImpl {
     /**
      * Gets details for a single batch specified by the given batchID.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -2876,7 +2896,7 @@ public final class OpenAIClientImpl {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param batchId The identifier of the batch.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.

@@ -12,29 +12,25 @@ import org.junit.jupiter.api.Assertions;
 public final class SkuCapacityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SkuCapacity model =
-            BinaryData
-                .fromString(
-                    "{\"default\":179999920,\"maximum\":2087309055,\"minimum\":498585791,\"scaleType\":\"Automatic\"}")
-                .toObject(SkuCapacity.class);
-        Assertions.assertEquals(179999920, model.defaultProperty());
-        Assertions.assertEquals(2087309055, model.maximum());
-        Assertions.assertEquals(498585791, model.minimum());
-        Assertions.assertEquals(SkuScaleType.AUTOMATIC, model.scaleType());
+        SkuCapacity model = BinaryData
+            .fromString("{\"minimum\":114097957,\"maximum\":1718972803,\"default\":133055758,\"scaleType\":\"Manual\"}")
+            .toObject(SkuCapacity.class);
+        Assertions.assertEquals(114097957, model.minimum());
+        Assertions.assertEquals(1718972803, model.maximum());
+        Assertions.assertEquals(133055758, model.defaultProperty());
+        Assertions.assertEquals(SkuScaleType.MANUAL, model.scaleType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SkuCapacity model =
-            new SkuCapacity()
-                .withDefaultProperty(179999920)
-                .withMaximum(2087309055)
-                .withMinimum(498585791)
-                .withScaleType(SkuScaleType.AUTOMATIC);
+        SkuCapacity model = new SkuCapacity().withMinimum(114097957)
+            .withMaximum(1718972803)
+            .withDefaultProperty(133055758)
+            .withScaleType(SkuScaleType.MANUAL);
         model = BinaryData.fromObject(model).toObject(SkuCapacity.class);
-        Assertions.assertEquals(179999920, model.defaultProperty());
-        Assertions.assertEquals(2087309055, model.maximum());
-        Assertions.assertEquals(498585791, model.minimum());
-        Assertions.assertEquals(SkuScaleType.AUTOMATIC, model.scaleType());
+        Assertions.assertEquals(114097957, model.minimum());
+        Assertions.assertEquals(1718972803, model.maximum());
+        Assertions.assertEquals(133055758, model.defaultProperty());
+        Assertions.assertEquals(SkuScaleType.MANUAL, model.scaleType());
     }
 }

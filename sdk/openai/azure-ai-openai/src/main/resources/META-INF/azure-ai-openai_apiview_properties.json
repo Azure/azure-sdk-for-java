@@ -1,7 +1,7 @@
 {
   "flavor": "azure", 
   "CrossLanguageDefinitionId": {
-    "com.azure.ai.openai.OpenAIAsyncClient": "Azure.OpenAI.OpenAIClient",
+    "com.azure.ai.openai.OpenAIAsyncClient": "Client.OpenAIClient",
     "com.azure.ai.openai.OpenAIAsyncClient.cancelBatch": "Client.OpenAIClient.cancelBatch",
     "com.azure.ai.openai.OpenAIAsyncClient.cancelBatchWithResponse": "Client.OpenAIClient.cancelBatch",
     "com.azure.ai.openai.OpenAIAsyncClient.createBatch": "Client.OpenAIClient.createBatch",
@@ -38,7 +38,7 @@
     "com.azure.ai.openai.OpenAIAsyncClient.listFilesWithResponse": "Client.OpenAIClient.listFiles",
     "com.azure.ai.openai.OpenAIAsyncClient.uploadFile": "Client.OpenAIClient.uploadFile",
     "com.azure.ai.openai.OpenAIAsyncClient.uploadFileWithResponse": "Client.OpenAIClient.uploadFile",
-    "com.azure.ai.openai.OpenAIClient": "Azure.OpenAI.OpenAIClient",
+    "com.azure.ai.openai.OpenAIClient": "Client.OpenAIClient",
     "com.azure.ai.openai.OpenAIClient.cancelBatch": "Client.OpenAIClient.cancelBatch",
     "com.azure.ai.openai.OpenAIClient.cancelBatchWithResponse": "Client.OpenAIClient.cancelBatch",
     "com.azure.ai.openai.OpenAIClient.createBatch": "Client.OpenAIClient.createBatch",
@@ -75,7 +75,7 @@
     "com.azure.ai.openai.OpenAIClient.listFilesWithResponse": "Client.OpenAIClient.listFiles",
     "com.azure.ai.openai.OpenAIClient.uploadFile": "Client.OpenAIClient.uploadFile",
     "com.azure.ai.openai.OpenAIClient.uploadFileWithResponse": "Client.OpenAIClient.uploadFile",
-    "com.azure.ai.openai.OpenAIClientBuilder": "Azure.OpenAI.OpenAIClient",
+    "com.azure.ai.openai.OpenAIClientBuilder": "Client.OpenAIClient",
     "com.azure.ai.openai.implementation.models.FileListResponse": "Azure.OpenAI.FileListResponse",
     "com.azure.ai.openai.implementation.models.FunctionCallPreset": "Azure.OpenAI.FunctionCallPreset",
     "com.azure.ai.openai.implementation.models.OpenAIPageableListOfBatch": "Azure.OpenAI.OpenAIPageableListOf",

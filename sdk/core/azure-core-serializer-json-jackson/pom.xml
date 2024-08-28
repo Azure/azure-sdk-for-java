@@ -53,6 +53,7 @@
       --add-opens com.azure.core.serializer.json.jackson/com.azure.core.serializer.json.jackson.implementation=com.fasterxml.jackson.databind
       --add-opens com.azure.core.serializer.json.jackson/com.azure.core.serializer.json.jackson.implementation=com.azure.core
       --add-opens com.azure.core.serializer.json.jackson/com.azure.core.serializer.json.jackson.implementation=ALL-UNNAMED
+      --add-opens com.azure.core.serializer.json.jackson/com.azure.core.serializer.json.jackson.implementation.nojackson=com.azure.core
     </javaModulesSurefireArgLine>
 
     <!-- Enables fail on deprecated API usage. -->

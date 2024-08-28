@@ -4,19 +4,23 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-/** Samples for ModelContainers Get. */
+/**
+ * Samples for ModelContainers Get.
+ */
 public final class ModelContainersGetSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/ModelContainer/get.json
+     * x-ms-original-file:
+     * specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/
+     * examples/Workspace/ModelContainer/get.json
      */
     /**
-     * Sample code: Get Model Container.
-     *
+     * Sample code: Get Workspace Model Container.
+     * 
      * @param manager Entry point to MachineLearningManager.
      */
-    public static void getModelContainer(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager
-            .modelContainers()
+    public static void
+        getWorkspaceModelContainer(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
+        manager.modelContainers()
             .getWithResponse("testrg123", "workspace123", "testContainer", com.azure.core.util.Context.NONE);
     }
 }

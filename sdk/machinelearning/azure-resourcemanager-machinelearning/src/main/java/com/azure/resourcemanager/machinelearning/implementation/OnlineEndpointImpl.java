@@ -51,16 +51,16 @@ public final class OnlineEndpointImpl implements OnlineEndpoint, OnlineEndpoint.
         }
     }
 
-    public ManagedServiceIdentity identity() {
-        return this.innerModel().identity();
+    public OnlineEndpointProperties properties() {
+        return this.innerModel().properties();
     }
 
     public String kind() {
         return this.innerModel().kind();
     }
 
-    public OnlineEndpointProperties properties() {
-        return this.innerModel().properties();
+    public ManagedServiceIdentity identity() {
+        return this.innerModel().identity();
     }
 
     public Sku sku() {
@@ -106,20 +106,16 @@ public final class OnlineEndpointImpl implements OnlineEndpoint, OnlineEndpoint.
     }
 
     public OnlineEndpoint create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getOnlineEndpoints()
-                .createOrUpdate(resourceGroupName, workspaceName, endpointName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getOnlineEndpoints()
+            .createOrUpdate(resourceGroupName, workspaceName, endpointName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public OnlineEndpoint create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getOnlineEndpoints()
-                .createOrUpdate(resourceGroupName, workspaceName, endpointName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getOnlineEndpoints()
+            .createOrUpdate(resourceGroupName, workspaceName, endpointName, this.innerModel(), context);
         return this;
     }
 
@@ -135,56 +131,46 @@ public final class OnlineEndpointImpl implements OnlineEndpoint, OnlineEndpoint.
     }
 
     public OnlineEndpoint apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getOnlineEndpoints()
-                .update(resourceGroupName, workspaceName, endpointName, updateBody, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getOnlineEndpoints()
+            .update(resourceGroupName, workspaceName, endpointName, updateBody, Context.NONE);
         return this;
     }
 
     public OnlineEndpoint apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getOnlineEndpoints()
-                .update(resourceGroupName, workspaceName, endpointName, updateBody, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getOnlineEndpoints()
+            .update(resourceGroupName, workspaceName, endpointName, updateBody, context);
         return this;
     }
 
-    OnlineEndpointImpl(
-        OnlineEndpointInner innerObject,
+    OnlineEndpointImpl(OnlineEndpointInner innerObject,
         com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = Utils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.endpointName = Utils.getValueFromIdByName(innerObject.id(), "onlineEndpoints");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
+        this.endpointName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "onlineEndpoints");
     }
 
     public OnlineEndpoint refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getOnlineEndpoints()
-                .getWithResponse(resourceGroupName, workspaceName, endpointName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getOnlineEndpoints()
+            .getWithResponse(resourceGroupName, workspaceName, endpointName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public OnlineEndpoint refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getOnlineEndpoints()
-                .getWithResponse(resourceGroupName, workspaceName, endpointName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getOnlineEndpoints()
+            .getWithResponse(resourceGroupName, workspaceName, endpointName, context)
+            .getValue();
         return this;
     }
 
     public Response<EndpointAuthKeys> listKeysWithResponse(Context context) {
-        return serviceManager
-            .onlineEndpoints()
+        return serviceManager.onlineEndpoints()
             .listKeysWithResponse(resourceGroupName, workspaceName, endpointName, context);
     }
 
@@ -201,8 +187,7 @@ public final class OnlineEndpointImpl implements OnlineEndpoint, OnlineEndpoint.
     }
 
     public Response<EndpointAuthToken> getTokenWithResponse(Context context) {
-        return serviceManager
-            .onlineEndpoints()
+        return serviceManager.onlineEndpoints()
             .getTokenWithResponse(resourceGroupName, workspaceName, endpointName, context);
     }
 
@@ -235,13 +220,13 @@ public final class OnlineEndpointImpl implements OnlineEndpoint, OnlineEndpoint.
         }
     }
 
-    public OnlineEndpointImpl withIdentity(ManagedServiceIdentity identity) {
-        this.innerModel().withIdentity(identity);
+    public OnlineEndpointImpl withKind(String kind) {
+        this.innerModel().withKind(kind);
         return this;
     }
 
-    public OnlineEndpointImpl withKind(String kind) {
-        this.innerModel().withKind(kind);
+    public OnlineEndpointImpl withIdentity(ManagedServiceIdentity identity) {
+        this.innerModel().withIdentity(identity);
         return this;
     }
 

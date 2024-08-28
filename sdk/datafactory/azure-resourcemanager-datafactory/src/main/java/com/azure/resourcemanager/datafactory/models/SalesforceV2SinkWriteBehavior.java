@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class SalesforceV2SinkWriteBehavior extends ExpandableStringEnum<Sa
      * @param name a name to look for.
      * @return the corresponding SalesforceV2SinkWriteBehavior.
      */
-    @JsonCreator
     public static SalesforceV2SinkWriteBehavior fromString(String name) {
         return fromString(name, SalesforceV2SinkWriteBehavior.class);
     }

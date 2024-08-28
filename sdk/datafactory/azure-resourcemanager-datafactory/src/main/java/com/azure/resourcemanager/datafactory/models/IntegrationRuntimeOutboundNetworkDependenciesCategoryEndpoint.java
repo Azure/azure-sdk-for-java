@@ -5,24 +5,27 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Azure-SSIS integration runtime outbound network dependency endpoints for one category.
  */
 @Fluent
-public final class IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint {
+public final class IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint
+    implements JsonSerializable<IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint> {
     /*
      * The category of outbound network dependency.
      */
-    @JsonProperty(value = "category")
     private String category;
 
     /*
      * The endpoints for outbound network dependency.
      */
-    @JsonProperty(value = "endpoints")
     private List<IntegrationRuntimeOutboundNetworkDependenciesEndpoint> endpoints;
 
     /**
@@ -81,5 +84,50 @@ public final class IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint
         if (endpoints() != null) {
             endpoints().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("category", this.category);
+        jsonWriter.writeArrayField("endpoints", this.endpoints, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint if the JsonReader was
+     * pointing to an instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the
+     * IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint.
+     */
+    public static IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint deserializedIntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint
+                = new IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("category".equals(fieldName)) {
+                    deserializedIntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint.category
+                        = reader.getString();
+                } else if ("endpoints".equals(fieldName)) {
+                    List<IntegrationRuntimeOutboundNetworkDependenciesEndpoint> endpoints = reader
+                        .readArray(reader1 -> IntegrationRuntimeOutboundNetworkDependenciesEndpoint.fromJson(reader1));
+                    deserializedIntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint.endpoints = endpoints;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint;
+        });
     }
 }
