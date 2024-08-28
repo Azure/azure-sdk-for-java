@@ -5,35 +5,112 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Base definition for datastore credentials. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "credentialsType",
-    defaultImpl = DatastoreCredentials.class)
-@JsonTypeName("DatastoreCredentials")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "AccountKey", value = AccountKeyDatastoreCredentials.class),
-    @JsonSubTypes.Type(name = "Certificate", value = CertificateDatastoreCredentials.class),
-    @JsonSubTypes.Type(name = "None", value = NoneDatastoreCredentials.class),
-    @JsonSubTypes.Type(name = "Sas", value = SasDatastoreCredentials.class),
-    @JsonSubTypes.Type(name = "ServicePrincipal", value = ServicePrincipalDatastoreCredentials.class)
-})
+/**
+ * Base definition for datastore credentials.
+ */
 @Immutable
-public class DatastoreCredentials {
-    /** Creates an instance of DatastoreCredentials class. */
+public class DatastoreCredentials implements JsonSerializable<DatastoreCredentials> {
+    /*
+     * [Required] Credential type used to authentication with storage.
+     */
+    private CredentialsType credentialsType = CredentialsType.fromString("DatastoreCredentials");
+
+    /**
+     * Creates an instance of DatastoreCredentials class.
+     */
     public DatastoreCredentials() {
     }
 
     /**
+     * Get the credentialsType property: [Required] Credential type used to authentication with storage.
+     * 
+     * @return the credentialsType value.
+     */
+    public CredentialsType credentialsType() {
+        return this.credentialsType;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("credentialsType",
+            this.credentialsType == null ? null : this.credentialsType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DatastoreCredentials from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DatastoreCredentials if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DatastoreCredentials.
+     */
+    public static DatastoreCredentials fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("credentialsType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("AccountKey".equals(discriminatorValue)) {
+                    return AccountKeyDatastoreCredentials.fromJson(readerToUse.reset());
+                } else if ("Certificate".equals(discriminatorValue)) {
+                    return CertificateDatastoreCredentials.fromJson(readerToUse.reset());
+                } else if ("None".equals(discriminatorValue)) {
+                    return NoneDatastoreCredentials.fromJson(readerToUse.reset());
+                } else if ("Sas".equals(discriminatorValue)) {
+                    return SasDatastoreCredentials.fromJson(readerToUse.reset());
+                } else if ("ServicePrincipal".equals(discriminatorValue)) {
+                    return ServicePrincipalDatastoreCredentials.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static DatastoreCredentials fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DatastoreCredentials deserializedDatastoreCredentials = new DatastoreCredentials();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("credentialsType".equals(fieldName)) {
+                    deserializedDatastoreCredentials.credentialsType = CredentialsType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDatastoreCredentials;
+        });
     }
 }

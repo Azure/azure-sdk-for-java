@@ -16,60 +16,48 @@ import org.junit.jupiter.api.Assertions;
 public final class ForecastingTrainingSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ForecastingTrainingSettings model =
-            BinaryData
-                .fromString(
-                    "{\"allowedTrainingAlgorithms\":[\"RandomForest\",\"TCNForecaster\",\"LightGBM\"],\"blockedTrainingAlgorithms\":[\"RandomForest\",\"Prophet\"],\"enableDnnTraining\":false,\"enableModelExplainability\":false,\"enableOnnxCompatibleModels\":false,\"enableStackEnsemble\":false,\"enableVoteEnsemble\":true,\"ensembleModelDownloadTimeout\":\"PT217H25M43S\",\"stackEnsembleSettings\":{\"stackMetaLearnerKWargs\":\"datadyedmzrgjfo\",\"stackMetaLearnerTrainPercentage\":17.660910285057906,\"stackMetaLearnerType\":\"LightGBMRegressor\"}}")
-                .toObject(ForecastingTrainingSettings.class);
-        Assertions.assertEquals(false, model.enableDnnTraining());
-        Assertions.assertEquals(false, model.enableModelExplainability());
+        ForecastingTrainingSettings model = BinaryData.fromString(
+            "{\"allowedTrainingAlgorithms\":[\"SeasonalNaive\",\"SeasonalAverage\",\"SeasonalAverage\"],\"blockedTrainingAlgorithms\":[\"ExponentialSmoothing\"],\"enableOnnxCompatibleModels\":false,\"stackEnsembleSettings\":{\"stackMetaLearnerType\":\"LightGBMClassifier\",\"stackMetaLearnerTrainPercentage\":13.408561162477984,\"stackMetaLearnerKWargs\":\"datakvbos\"},\"enableStackEnsemble\":false,\"enableVoteEnsemble\":false,\"ensembleModelDownloadTimeout\":\"PT27H40M3S\",\"enableModelExplainability\":true,\"enableDnnTraining\":true}")
+            .toObject(ForecastingTrainingSettings.class);
         Assertions.assertEquals(false, model.enableOnnxCompatibleModels());
+        Assertions.assertEquals(StackMetaLearnerType.LIGHT_GBMCLASSIFIER,
+            model.stackEnsembleSettings().stackMetaLearnerType());
+        Assertions.assertEquals(13.408561162477984D, model.stackEnsembleSettings().stackMetaLearnerTrainPercentage());
         Assertions.assertEquals(false, model.enableStackEnsemble());
-        Assertions.assertEquals(true, model.enableVoteEnsemble());
-        Assertions.assertEquals(Duration.parse("PT217H25M43S"), model.ensembleModelDownloadTimeout());
-        Assertions.assertEquals(17.660910285057906D, model.stackEnsembleSettings().stackMetaLearnerTrainPercentage());
-        Assertions
-            .assertEquals(
-                StackMetaLearnerType.LIGHT_GBMREGRESSOR, model.stackEnsembleSettings().stackMetaLearnerType());
-        Assertions.assertEquals(ForecastingModels.RANDOM_FOREST, model.allowedTrainingAlgorithms().get(0));
-        Assertions.assertEquals(ForecastingModels.RANDOM_FOREST, model.blockedTrainingAlgorithms().get(0));
+        Assertions.assertEquals(false, model.enableVoteEnsemble());
+        Assertions.assertEquals(Duration.parse("PT27H40M3S"), model.ensembleModelDownloadTimeout());
+        Assertions.assertEquals(true, model.enableModelExplainability());
+        Assertions.assertEquals(true, model.enableDnnTraining());
+        Assertions.assertEquals(ForecastingModels.SEASONAL_NAIVE, model.allowedTrainingAlgorithms().get(0));
+        Assertions.assertEquals(ForecastingModels.EXPONENTIAL_SMOOTHING, model.blockedTrainingAlgorithms().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ForecastingTrainingSettings model =
-            new ForecastingTrainingSettings()
-                .withEnableDnnTraining(false)
-                .withEnableModelExplainability(false)
-                .withEnableOnnxCompatibleModels(false)
-                .withEnableStackEnsemble(false)
-                .withEnableVoteEnsemble(true)
-                .withEnsembleModelDownloadTimeout(Duration.parse("PT217H25M43S"))
-                .withStackEnsembleSettings(
-                    new StackEnsembleSettings()
-                        .withStackMetaLearnerKWargs("datadyedmzrgjfo")
-                        .withStackMetaLearnerTrainPercentage(17.660910285057906D)
-                        .withStackMetaLearnerType(StackMetaLearnerType.LIGHT_GBMREGRESSOR))
-                .withAllowedTrainingAlgorithms(
-                    Arrays
-                        .asList(
-                            ForecastingModels.RANDOM_FOREST,
-                            ForecastingModels.TCNFORECASTER,
-                            ForecastingModels.LIGHT_GBM))
-                .withBlockedTrainingAlgorithms(
-                    Arrays.asList(ForecastingModels.RANDOM_FOREST, ForecastingModels.PROPHET));
+        ForecastingTrainingSettings model = new ForecastingTrainingSettings().withEnableOnnxCompatibleModels(false)
+            .withStackEnsembleSettings(
+                new StackEnsembleSettings().withStackMetaLearnerType(StackMetaLearnerType.LIGHT_GBMCLASSIFIER)
+                    .withStackMetaLearnerTrainPercentage(13.408561162477984D)
+                    .withStackMetaLearnerKWargs("datakvbos"))
+            .withEnableStackEnsemble(false)
+            .withEnableVoteEnsemble(false)
+            .withEnsembleModelDownloadTimeout(Duration.parse("PT27H40M3S"))
+            .withEnableModelExplainability(true)
+            .withEnableDnnTraining(true)
+            .withAllowedTrainingAlgorithms(Arrays.asList(ForecastingModels.SEASONAL_NAIVE,
+                ForecastingModels.SEASONAL_AVERAGE, ForecastingModels.SEASONAL_AVERAGE))
+            .withBlockedTrainingAlgorithms(Arrays.asList(ForecastingModels.EXPONENTIAL_SMOOTHING));
         model = BinaryData.fromObject(model).toObject(ForecastingTrainingSettings.class);
-        Assertions.assertEquals(false, model.enableDnnTraining());
-        Assertions.assertEquals(false, model.enableModelExplainability());
         Assertions.assertEquals(false, model.enableOnnxCompatibleModels());
+        Assertions.assertEquals(StackMetaLearnerType.LIGHT_GBMCLASSIFIER,
+            model.stackEnsembleSettings().stackMetaLearnerType());
+        Assertions.assertEquals(13.408561162477984D, model.stackEnsembleSettings().stackMetaLearnerTrainPercentage());
         Assertions.assertEquals(false, model.enableStackEnsemble());
-        Assertions.assertEquals(true, model.enableVoteEnsemble());
-        Assertions.assertEquals(Duration.parse("PT217H25M43S"), model.ensembleModelDownloadTimeout());
-        Assertions.assertEquals(17.660910285057906D, model.stackEnsembleSettings().stackMetaLearnerTrainPercentage());
-        Assertions
-            .assertEquals(
-                StackMetaLearnerType.LIGHT_GBMREGRESSOR, model.stackEnsembleSettings().stackMetaLearnerType());
-        Assertions.assertEquals(ForecastingModels.RANDOM_FOREST, model.allowedTrainingAlgorithms().get(0));
-        Assertions.assertEquals(ForecastingModels.RANDOM_FOREST, model.blockedTrainingAlgorithms().get(0));
+        Assertions.assertEquals(false, model.enableVoteEnsemble());
+        Assertions.assertEquals(Duration.parse("PT27H40M3S"), model.ensembleModelDownloadTimeout());
+        Assertions.assertEquals(true, model.enableModelExplainability());
+        Assertions.assertEquals(true, model.enableDnnTraining());
+        Assertions.assertEquals(ForecastingModels.SEASONAL_NAIVE, model.allowedTrainingAlgorithms().get(0));
+        Assertions.assertEquals(ForecastingModels.EXPONENTIAL_SMOOTHING, model.blockedTrainingAlgorithms().get(0));
     }
 }

@@ -15,16 +15,17 @@ public final class PrivateLinkResourcesWrapperInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateLinkResourcesWrapperInner model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"groupId\":\"mmuc\",\"requiredMembers\":[\"i\",\"kflrmymy\",\"nc\"],\"requiredZoneNames\":[\"riswslmiiio\"]},\"name\":\"qcgxuug\",\"type\":\"ctotiowlx\",\"etag\":\"qd\",\"id\":\"jgwdtgukranbl\"}]}")
+            "{\"value\":[{\"properties\":{\"groupId\":\"woyxqvapcohhou\",\"requiredMembers\":[\"q\",\"jxcx\"],\"requiredZoneNames\":[\"dcgdzbenribca\",\"etzqd\",\"tjwfljhznamtua\"]},\"name\":\"zwcjjncqtj\",\"type\":\"izvg\",\"etag\":\"atzuuv\",\"id\":\"ngrebwg\"},{\"properties\":{\"groupId\":\"ttzlswvajqfutlx\",\"requiredMembers\":[\"zasunwqrjzfrgq\",\"aohcmbuocn\",\"r\",\"hmbpyryxamebly\"],\"requiredZoneNames\":[\"kfkmrocxnehvsmt\",\"dlfp\"]},\"name\":\"pucygvoavyunss\",\"type\":\"ghiee\",\"etag\":\"lgvvpaseksgbu\",\"id\":\"ntuygdhgaqipir\"}]}")
             .toObject(PrivateLinkResourcesWrapperInner.class);
-        Assertions.assertEquals("jgwdtgukranbl", model.value().get(0).id());
+        Assertions.assertEquals("ngrebwg", model.value().get(0).id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PrivateLinkResourcesWrapperInner model = new PrivateLinkResourcesWrapperInner().withValue(Arrays.asList(
-            new PrivateLinkResource().withId("jgwdtgukranbl").withProperties(new PrivateLinkResourceProperties())));
+            new PrivateLinkResource().withId("ngrebwg").withProperties(new PrivateLinkResourceProperties()),
+            new PrivateLinkResource().withId("ntuygdhgaqipir").withProperties(new PrivateLinkResourceProperties())));
         model = BinaryData.fromObject(model).toObject(PrivateLinkResourcesWrapperInner.class);
-        Assertions.assertEquals("jgwdtgukranbl", model.value().get(0).id());
+        Assertions.assertEquals("ngrebwg", model.value().get(0).id());
     }
 }

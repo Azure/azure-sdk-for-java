@@ -22,7 +22,7 @@ public final class LinkedServicesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"type\":\"LinkedService\",\"connectVia\":{\"referenceName\":\"xyr\",\"parameters\":{\"zlkugkgnuhxa\":\"datalvpnoayckzshvca\",\"aps\":\"dataqposnnwnzxikvjev\",\"quxquypcn\":\"datapjh\",\"tkdeyuowdpnaohhe\":\"dataocusyqailqtq\"}},\"description\":\"yrkbsrpruoyjbzyl\",\"parameters\":{\"jbi\":{\"type\":\"Array\",\"defaultValue\":\"dataeuhssrdugaxkyge\"},\"jcqqv\":{\"type\":\"Float\",\"defaultValue\":\"datazkygh\"},\"zcbrxsqode\":{\"type\":\"Float\",\"defaultValue\":\"datayaec\"}},\"annotations\":[\"datajpeeqy\",\"datangcv\",\"datahvbczcsspn\"],\"\":{\"zfpvi\":\"datakjhzgm\",\"qsuokyvrzlu\":\"dataofvzeihlubdjd\",\"nlfyddyykfdlhytc\":\"datay\",\"nmzlsgal\":\"datapfgjzrdgnl\"}},\"name\":\"xyovwuhvpipaa\",\"type\":\"tkmzord\",\"etag\":\"hwipihoxpeyixbrs\",\"id\":\"rj\"}";
+            = "{\"properties\":{\"type\":\"LinkedService\",\"version\":\"dfvd\",\"connectVia\":{\"referenceName\":\"b\",\"parameters\":{\"dad\":\"databvyuarbycuux\",\"ugmfersbktrei\":\"datalilkmptvmtn\",\"gjrkuepr\":\"datalszpusb\"}},\"description\":\"zbfoldbbli\",\"parameters\":{\"vqbnzrrkmanr\":{\"type\":\"Bool\",\"defaultValue\":\"datapvmaywpra\"},\"keseazgf\":{\"type\":\"Int\",\"defaultValue\":\"dataqojxyabvvbsilah\"}},\"annotations\":[\"datassi\",\"dataelbtgexiwcqeihuy\",\"datazidoyvquufplm\"],\"\":{\"otpvoehs\":\"datazbtrf\"}},\"name\":\"rao\",\"type\":\"r\",\"etag\":\"wdgzfqsreyui\",\"id\":\"rr\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,13 @@ public final class LinkedServicesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         LinkedServiceResource response = manager.linkedServices()
-            .getWithResponse("xicjl", "lvqbavpl", "kcsrbvvniwqpcq", "oujikvrkpultjc", com.azure.core.util.Context.NONE)
+            .getWithResponse("frisreh", "yfi", "lpiqei", "jboghjdihtc", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("rj", response.id());
-        Assertions.assertEquals("xyr", response.properties().connectVia().referenceName());
-        Assertions.assertEquals("yrkbsrpruoyjbzyl", response.properties().description());
-        Assertions.assertEquals(ParameterType.ARRAY, response.properties().parameters().get("jbi").type());
+        Assertions.assertEquals("rr", response.id());
+        Assertions.assertEquals("dfvd", response.properties().version());
+        Assertions.assertEquals("b", response.properties().connectVia().referenceName());
+        Assertions.assertEquals("zbfoldbbli", response.properties().description());
+        Assertions.assertEquals(ParameterType.BOOL, response.properties().parameters().get("vqbnzrrkmanr").type());
     }
 }

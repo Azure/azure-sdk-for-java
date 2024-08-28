@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for OrderString. */
+/**
+ * Defines values for OrderString.
+ */
 public final class OrderString extends ExpandableStringEnum<OrderString> {
-    /** Static value CreatedAtDesc for OrderString. */
+    /**
+     * Static value CreatedAtDesc for OrderString.
+     */
     public static final OrderString CREATED_AT_DESC = fromString("CreatedAtDesc");
 
-    /** Static value CreatedAtAsc for OrderString. */
+    /**
+     * Static value CreatedAtAsc for OrderString.
+     */
     public static final OrderString CREATED_AT_ASC = fromString("CreatedAtAsc");
 
-    /** Static value UpdatedAtDesc for OrderString. */
+    /**
+     * Static value UpdatedAtDesc for OrderString.
+     */
     public static final OrderString UPDATED_AT_DESC = fromString("UpdatedAtDesc");
 
-    /** Static value UpdatedAtAsc for OrderString. */
+    /**
+     * Static value UpdatedAtAsc for OrderString.
+     */
     public static final OrderString UPDATED_AT_ASC = fromString("UpdatedAtAsc");
 
     /**
      * Creates a new instance of OrderString value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +42,17 @@ public final class OrderString extends ExpandableStringEnum<OrderString> {
 
     /**
      * Creates or finds a OrderString from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding OrderString.
      */
-    @JsonCreator
     public static OrderString fromString(String name) {
         return fromString(name, OrderString.class);
     }
 
     /**
      * Gets known OrderString values.
-     *
+     * 
      * @return known OrderString values.
      */
     public static Collection<OrderString> values() {

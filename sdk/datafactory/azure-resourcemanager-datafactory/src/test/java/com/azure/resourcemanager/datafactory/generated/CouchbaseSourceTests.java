@@ -11,19 +11,19 @@ public final class CouchbaseSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CouchbaseSource model = BinaryData.fromString(
-            "{\"type\":\"CouchbaseSource\",\"query\":\"dataxlkcw\",\"queryTimeout\":\"dataejssksgxykdepqcy\",\"additionalColumns\":\"datahwsxpzkmotgmd\",\"sourceRetryCount\":\"datawwqevbiuntp\",\"sourceRetryWait\":\"datamwjxlyce\",\"maxConcurrentConnections\":\"dataeqgywrauur\",\"disableMetricsCollection\":\"datad\",\"\":{\"rmiecfmqcxm\":\"datacnk\"}}")
+            "{\"type\":\"CouchbaseSource\",\"query\":\"datadhismwjkq\",\"queryTimeout\":\"datayuygybshch\",\"additionalColumns\":\"dataeaitzgewwqwibt\",\"sourceRetryCount\":\"datahcgbzrlf\",\"sourceRetryWait\":\"datawusqupk\",\"maxConcurrentConnections\":\"datappmwozwjinxyrtec\",\"disableMetricsCollection\":\"datazslttk\",\"\":{\"mahuw\":\"datakujceeczhsdpfoa\",\"ewrryt\":\"dataodddq\",\"s\":\"datasocqkdclbzqnao\",\"cbhezau\":\"datamp\"}}")
             .toObject(CouchbaseSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CouchbaseSource model = new CouchbaseSource().withSourceRetryCount("datawwqevbiuntp")
-            .withSourceRetryWait("datamwjxlyce")
-            .withMaxConcurrentConnections("dataeqgywrauur")
-            .withDisableMetricsCollection("datad")
-            .withQueryTimeout("dataejssksgxykdepqcy")
-            .withAdditionalColumns("datahwsxpzkmotgmd")
-            .withQuery("dataxlkcw");
+        CouchbaseSource model = new CouchbaseSource().withSourceRetryCount("datahcgbzrlf")
+            .withSourceRetryWait("datawusqupk")
+            .withMaxConcurrentConnections("datappmwozwjinxyrtec")
+            .withDisableMetricsCollection("datazslttk")
+            .withQueryTimeout("datayuygybshch")
+            .withAdditionalColumns("dataeaitzgewwqwibt")
+            .withQuery("datadhismwjkq");
         model = BinaryData.fromObject(model).toObject(CouchbaseSource.class);
     }
 }

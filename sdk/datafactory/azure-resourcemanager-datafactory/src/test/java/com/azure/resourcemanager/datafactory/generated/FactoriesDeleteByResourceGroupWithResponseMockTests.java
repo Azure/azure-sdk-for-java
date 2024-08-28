@@ -27,8 +27,7 @@ public final class FactoriesDeleteByResourceGroupWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.factories()
-            .deleteByResourceGroupWithResponse("lrumvixbyedcavv", "pjnnhaf", com.azure.core.util.Context.NONE);
+        manager.factories().deleteByResourceGroupWithResponse("csda", "pnhpovrt", com.azure.core.util.Context.NONE);
 
     }
 }

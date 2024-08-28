@@ -21,7 +21,7 @@ import reactor.core.scheduler.{Scheduler, Schedulers}
 
 import java.io.ByteArrayInputStream
 import java.time.{Duration, Instant}
-import java.util.{Base64, ConcurrentModificationException, ServiceLoader}
+import java.util.{Base64, ConcurrentModificationException}
 import java.util.concurrent.atomic.AtomicLong
 import java.util.concurrent.{Executors, ScheduledExecutorService, TimeUnit}
 import scala.collection.concurrent.TrieMap
@@ -108,6 +108,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
         .mkString(", ")
     }
   }
+
 
   def purge(cosmosClientConfiguration: CosmosClientConfiguration): Unit = {
     purgeImpl(ClientConfigurationWrapper(cosmosClientConfiguration), forceClosure = false)
@@ -335,7 +336,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
           builder = builder.directMode(directConfig)
 
           if (cosmosClientConfiguration.proactiveConnectionInitialization.isDefined &&
-            !cosmosClientConfiguration.proactiveConnectionInitialization.get.isEmpty) {
+            cosmosClientConfiguration.proactiveConnectionInitialization.get.nonEmpty) {
             val containerIdentities = CosmosAccountConfig.parseProactiveConnectionInitConfigs(
               cosmosClientConfiguration.proactiveConnectionInitialization.get)
 
@@ -394,32 +395,22 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
       }
 
       if (cosmosClientConfiguration.clientBuilderInterceptors.isDefined) {
-        logInfo(s"CosmosClientBuilder interceptors specified: ${cosmosClientConfiguration.clientBuilderInterceptors.get}")
-        val interceptorsBuilder = scala.collection.immutable.HashMap.newBuilder[String, CosmosClientBuilderInterceptor]
-        val serviceLoader = ServiceLoader.load(classOf[CosmosClientBuilderInterceptor])
-        val services = serviceLoader.iterator()
-        while (services.hasNext) {
-          val interceptor = services.next()
-          interceptorsBuilder += (interceptor.getClass.getName.toLowerCase() -> interceptor)
-        }
-        val interceptorsFromClassPath = interceptorsBuilder.result()
-
-        val requestedInterceptors = cosmosClientConfiguration.clientBuilderInterceptors.get.split(',')
-        for (requestedInterceptorName <- requestedInterceptors) {
-          val interceptorFromClassPathOpt = interceptorsFromClassPath.get(requestedInterceptorName.toLowerCase())
-          if (interceptorFromClassPathOpt.isDefined) {
-            logInfo(s"Applying CosmosClientBuilderInterceptor `${requestedInterceptorName}`.")
-            builder = interceptorFromClassPathOpt.get.process(builder)
-          } else {
-            throw new IllegalStateException(
-              s"The requested `CosmosClientBuilderInterceptor` `$requestedInterceptorName` is not available on the classpath."
-                + s"Interceptors available on the class path are: ${interceptorsFromClassPath.keySet.mkString(",")}"
-            )
-          }
+        logInfo(s"Applying CosmosClientBuilder interceptors")
+        for (interceptorFunction <- cosmosClientConfiguration.clientBuilderInterceptors.get) {
+          builder = interceptorFunction.apply(builder)
         }
       }
 
-      builder.buildAsyncClient()
+      var client = builder.buildAsyncClient()
+
+    if (cosmosClientConfiguration.clientInterceptors.isDefined) {
+      logInfo(s"Applying CosmosClient interceptors")
+      for (interceptorFunction <- cosmosClientConfiguration.clientInterceptors.get) {
+        client = interceptorFunction.apply(client)
+      }
+    }
+
+    client
   }
   // scalastyle:on method.length
   // scalastyle:on cyclomatic.complexity
@@ -466,7 +457,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
   }
 
   private[this] def createTokenCredential(authConfig: CosmosManagedIdentityAuthConfig): CosmosAccessTokenCredential = {
-    val tokenProvider: (List[String] => CosmosAccessToken) = {
+    val tokenProvider: List[String] => CosmosAccessToken = {
         val tokenCredentialBuilder = new ManagedIdentityCredentialBuilder()
         if (authConfig.clientId.isDefined) {
           tokenCredentialBuilder.clientId(authConfig.clientId.get)
@@ -603,7 +594,8 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
                                                         httpConnectionPoolSize: Int,
                                                         useEventualConsistency: Boolean,
                                                         preferredRegionsList: String,
-                                                        clientBuilderInterceptor: Option[String])
+                                                        clientBuilderInterceptors: Option[List[CosmosClientBuilder => CosmosClientBuilder]],
+                                                        clientInterceptors: Option[List[CosmosAsyncClient => CosmosAsyncClient]])
 
   private[this] object ClientConfigurationWrapper {
     def apply(clientConfig: CosmosClientConfiguration): ClientConfigurationWrapper = {
@@ -618,7 +610,8 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
           case Some(regionListArray) => s"[${regionListArray.mkString(", ")}]"
           case None => ""
         },
-        clientConfig.clientBuilderInterceptors
+        clientConfig.clientBuilderInterceptors,
+        clientConfig.clientInterceptors
       )
     }
   }
@@ -662,7 +655,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
     extends SparkListener
       with BasicLoggingTrait {
 
-    override def onApplicationEnd(applicationEnd: SparkListenerApplicationEnd) {
+    override def onApplicationEnd(applicationEnd: SparkListenerApplicationEnd): Unit = {
         monitoredSparkApplications.remove(ctx) match {
           case Some(_) =>
             logInfo(
@@ -671,11 +664,10 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
           case None =>
             logWarning(s"ApplicationEndListener:onApplicationEnd (${ctx.hashCode}) - not monitored anymore")
         }
-
     }
   }
 
-  private[this] class CosmosAccessTokenCredential(val tokenProvider: (List[String]) =>CosmosAccessToken) extends TokenCredential {
+  private[this] class CosmosAccessTokenCredential(val tokenProvider: List[String] =>CosmosAccessToken) extends TokenCredential {
     override def getToken(tokenRequestContext: TokenRequestContext): Mono[AccessToken] = {
       val returnValue: Mono[AccessToken] = Mono.fromCallable(() => {
         val token = tokenProvider

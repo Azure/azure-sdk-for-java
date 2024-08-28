@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class BatchEndpointDefaultsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BatchEndpointDefaults model =
-            BinaryData.fromString("{\"deploymentName\":\"wsbpfvm\"}").toObject(BatchEndpointDefaults.class);
-        Assertions.assertEquals("wsbpfvm", model.deploymentName());
+        BatchEndpointDefaults model
+            = BinaryData.fromString("{\"deploymentName\":\"winhehfqpo\"}").toObject(BatchEndpointDefaults.class);
+        Assertions.assertEquals("winhehfqpo", model.deploymentName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BatchEndpointDefaults model = new BatchEndpointDefaults().withDeploymentName("wsbpfvm");
+        BatchEndpointDefaults model = new BatchEndpointDefaults().withDeploymentName("winhehfqpo");
         model = BinaryData.fromObject(model).toObject(BatchEndpointDefaults.class);
-        Assertions.assertEquals("wsbpfvm", model.deploymentName());
+        Assertions.assertEquals("winhehfqpo", model.deploymentName());
     }
 }

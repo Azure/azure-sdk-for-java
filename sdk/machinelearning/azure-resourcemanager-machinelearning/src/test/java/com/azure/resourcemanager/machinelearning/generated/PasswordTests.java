@@ -10,8 +10,7 @@ import com.azure.resourcemanager.machinelearning.models.Password;
 public final class PasswordTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Password model =
-            BinaryData.fromString("{\"name\":\"pgvdf\",\"value\":\"otkftutqxlngx\"}").toObject(Password.class);
+        Password model = BinaryData.fromString("{\"name\":\"yocf\",\"value\":\"ksymd\"}").toObject(Password.class);
     }
 
     @org.junit.jupiter.api.Test

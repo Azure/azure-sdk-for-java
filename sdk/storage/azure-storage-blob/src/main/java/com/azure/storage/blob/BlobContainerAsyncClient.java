@@ -1562,6 +1562,7 @@ public final class BlobContainerAsyncClient {
 //        return this.azureBlobStorage.getContainers().renameWithResponseAsync(containerName,
 //            sourceContainerName, null, null, requestConditions.getLeaseId(),
 //            context)
+//            .onErrorMap(ModelHelper::mapToBlobStorageException)
 //            .map(response -> new SimpleResponse<>(response, this));
 //    }
 

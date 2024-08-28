@@ -1,5 +1,9 @@
 # Release History
+
 ## 5.16.0-beta.1 (unreleased)
+
+#### Dependency Updates
+Upgrade Spring Boot dependencies version to 3.3.3 and Spring Cloud dependencies version to 2023.0.3
 
 ### Spring Cloud Azure Autoconfigure
 This section includes changes in `spring-cloud-azure-autoconfigure` module.

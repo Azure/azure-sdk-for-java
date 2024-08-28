@@ -343,9 +343,8 @@ public final class QueueServiceAsyncClient {
 
         BiFunction<String, Integer, Mono<PagedResponse<QueueItem>>> retriever =
             (nextMarker, pageSize) -> StorageImplUtils.applyOptionalTimeout(this.client.getServices()
-                .listQueuesSegmentSinglePageAsync(prefix, nextMarker,
-                    pageSize == null ? maxResultsPerPage : pageSize, include,
-                    null, null, context), timeout);
+                .listQueuesSegmentSinglePageAsync(prefix, nextMarker, pageSize == null ? maxResultsPerPage : pageSize,
+                    include, null, null, context), timeout);
 
         return new PagedFlux<>(pageSize -> retriever.apply(marker, pageSize), retriever);
     }
