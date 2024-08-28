@@ -147,7 +147,7 @@ public final class ImageEmbeddingsAsyncClient {
      *
      * @param input Input image to embed. To embed multiple inputs in a single request, pass an array.
      * The input must not exceed the max input tokens for the model.
-     * @tException thrown if parameters fail the validation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
