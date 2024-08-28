@@ -11,6 +11,7 @@ import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.parallel.Isolated;
+import org.springframework.boot.logging.DeferredLogs;
 import org.springframework.boot.test.system.CapturedOutput;
 import org.springframework.boot.test.system.OutputCaptureExtension;
 
@@ -32,7 +33,7 @@ class KeyVaultSecretPropertySourceUserAgentTests {
         properties.getRetry().getFixed().setDelay(Duration.ofSeconds(1));
         properties.getRetry().getFixed().setMaxRetries(0);
 
-        KeyVaultEnvironmentPostProcessor environmentPostProcessor = new KeyVaultEnvironmentPostProcessor();
+        KeyVaultEnvironmentPostProcessor environmentPostProcessor = new KeyVaultEnvironmentPostProcessor(new DeferredLogs(), null);
         SecretClient secretClient = environmentPostProcessor.buildSecretClient(properties);
         try {
             secretClient.getSecret("property-source-name1");
