@@ -87,7 +87,7 @@ public final class OkHttpAsyncResponse extends OkHttpAsyncResponseBase {
             return Mono.empty();
         }
 
-        return Mono.just(responseBody.byteStream());
+        return Mono.fromSupplier(responseBody::byteStream);
     }
 
     @Override
