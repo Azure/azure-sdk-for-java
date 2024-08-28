@@ -4,16 +4,13 @@
 package com.azure.spring.cloud.autoconfigure.implementation.eventhubs;
 
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
-import com.azure.spring.cloud.autoconfigure.implementation.AzureServiceConfigurationBase;
-import com.azure.spring.cloud.autoconfigure.implementation.condition.ConditionalOnAnyProperty;
-import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties.AzureEventHubsProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties.AzureEventHubsPropertiesConfiguration;
 import com.azure.spring.cloud.core.provider.connectionstring.StaticConnectionStringProvider;
 import com.azure.spring.cloud.core.service.AzureServiceType;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 
@@ -23,26 +20,15 @@ import org.springframework.context.annotation.Import;
  * @since 4.0.0
  */
 @ConditionalOnClass(EventHubClientBuilder.class)
-@ConditionalOnProperty(value = "spring.cloud.azure.eventhubs.enabled", havingValue = "true", matchIfMissing = true)
-@ConditionalOnAnyProperty(prefix = "spring.cloud.azure.eventhubs", name = { "connection-string", "namespace" })
 @Import({
+    AzureEventHubsPropertiesConfiguration.class,
     AzureEventHubsClientBuilderConfiguration.class,
     AzureEventHubsConsumerClientConfiguration.class,
     AzureEventHubsProducerClientConfiguration.class,
     AzureBlobCheckpointStoreConfiguration.class,
     AzureEventHubsProcessorClientConfiguration.class
 })
-public class AzureEventHubsAutoConfiguration extends AzureServiceConfigurationBase {
-
-    AzureEventHubsAutoConfiguration(AzureGlobalProperties azureGlobalProperties) {
-        super(azureGlobalProperties);
-    }
-
-    @Bean
-    @ConfigurationProperties(AzureEventHubsProperties.PREFIX)
-    AzureEventHubsProperties azureEventHubsProperties() {
-        return loadProperties(getAzureGlobalProperties(), new AzureEventHubsProperties());
-    }
+public class AzureEventHubsAutoConfiguration {
 
     @Bean
     @ConditionalOnProperty("spring.cloud.azure.eventhubs.connection-string")

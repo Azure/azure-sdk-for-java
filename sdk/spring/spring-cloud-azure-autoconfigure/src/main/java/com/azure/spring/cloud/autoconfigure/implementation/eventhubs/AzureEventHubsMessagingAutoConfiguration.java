@@ -46,7 +46,6 @@ import static com.azure.spring.cloud.core.implementation.util.AzurePropertiesUti
 @ConditionalOnClass(EventHubsTemplate.class)
 @AutoConfigureAfter(AzureEventHubsAutoConfiguration.class)
 @ConditionalOnProperty(value = "spring.cloud.azure.eventhubs.enabled", havingValue = "true", matchIfMissing = true)
-@ConditionalOnAnyProperty(prefix = "spring.cloud.azure.eventhubs", name = {"connection-string", "namespace"})
 @ConditionalOnBean(AzureEventHubsProperties.class)
 @Import({
     AzureEventHubsMessagingAutoConfiguration.EventHubsTemplateConfiguration.class,
