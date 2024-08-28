@@ -3,6 +3,7 @@
 
 package com.azure.messaging.eventhubs.stress.util;
 
+import com.azure.core.amqp.AmqpTransportType;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
@@ -40,6 +41,12 @@ public class ScenarioOptions {
     @Value("${DELAY_START_MINUTES:0}")
     private int delayTestStartInMinutes;
 
+    @Value("${AMQP_TRANSPORT_TYPE:AMQP}")
+    private AmqpTransportType amqpTransportType;
+
+    @Value("${IDLE_DURATION_MINUTES:0}")
+    private int idleDurationInMinutes;
+
     public String getTestClass() {
         return testClass;
     }
@@ -67,10 +74,28 @@ public class ScenarioOptions {
     public Duration getTestDuration() {
         return Duration.ofMinutes(durationInMinutes);
     }
+
     public Duration getStartDelay() {
         return Duration.ofMinutes(delayTestStartInMinutes);
     }
+
+    public Duration getIdleDuration() {
+        if  (idleDurationInMinutes == 0) {
+            return Duration.ZERO;
+        }
+
+        if (idleDurationInMinutes < 0) {
+            throw new IllegalArgumentException("idleDurationInMinutes must be >= 0");
+        }
+
+        return Duration.ofMinutes(idleDurationInMinutes);
+    }
+
     public int getMessageSize() {
         return messageSize;
+    }
+
+    public AmqpTransportType getAmqpTransportType() {
+        return amqpTransportType;
     }
 }
