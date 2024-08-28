@@ -6,10 +6,13 @@
 package com.azure.search.documents.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.search.documents.models.QueryDebugMode;
+import com.azure.search.documents.models.QueryLanguage;
 import com.azure.search.documents.models.QueryType;
 import com.azure.search.documents.models.ScoringStatistics;
 import com.azure.search.documents.models.SearchMode;
 import com.azure.search.documents.models.SemanticErrorMode;
+import com.azure.search.documents.models.Speller;
 import java.util.List;
 import java.util.Arrays;
 
@@ -173,6 +176,26 @@ public final class SearchOptions {
      * retrieval and ranking phase, and the L2 semantic phase.
      */
     private String semanticQuery;
+
+    /*
+     * Enables a debugging tool that can be used to further explore your search results.
+     */
+    private QueryDebugMode debug;
+
+    /*
+     * The language of the query.
+     */
+    private QueryLanguage queryLanguage;
+
+    /*
+     * Improve search recall by spell-correcting individual search query terms.
+     */
+    private Speller speller;
+
+    /*
+     * The list of field names used for semantic ranking.
+     */
+    private List<String> semanticFields;
 
     /**
      * Creates an instance of SearchOptions class.
@@ -741,6 +764,86 @@ public final class SearchOptions {
      */
     public SearchOptions setSemanticQuery(String semanticQuery) {
         this.semanticQuery = semanticQuery;
+        return this;
+    }
+
+    /**
+     * Get the debug property: Enables a debugging tool that can be used to further explore your search results.
+     *
+     * @return the debug value.
+     */
+    public QueryDebugMode getDebug() {
+        return this.debug;
+    }
+
+    /**
+     * Set the debug property: Enables a debugging tool that can be used to further explore your search results.
+     *
+     * @param debug the debug value to set.
+     * @return the SearchOptions object itself.
+     */
+    public SearchOptions setDebug(QueryDebugMode debug) {
+        this.debug = debug;
+        return this;
+    }
+
+    /**
+     * Get the queryLanguage property: The language of the query.
+     *
+     * @return the queryLanguage value.
+     */
+    public QueryLanguage getQueryLanguage() {
+        return this.queryLanguage;
+    }
+
+    /**
+     * Set the queryLanguage property: The language of the query.
+     *
+     * @param queryLanguage the queryLanguage value to set.
+     * @return the SearchOptions object itself.
+     */
+    public SearchOptions setQueryLanguage(QueryLanguage queryLanguage) {
+        this.queryLanguage = queryLanguage;
+        return this;
+    }
+
+    /**
+     * Get the speller property: Improve search recall by spell-correcting individual search query terms.
+     *
+     * @return the speller value.
+     */
+    public Speller getSpeller() {
+        return this.speller;
+    }
+
+    /**
+     * Set the speller property: Improve search recall by spell-correcting individual search query terms.
+     *
+     * @param speller the speller value to set.
+     * @return the SearchOptions object itself.
+     */
+    public SearchOptions setSpeller(Speller speller) {
+        this.speller = speller;
+        return this;
+    }
+
+    /**
+     * Get the semanticFields property: The list of field names used for semantic ranking.
+     *
+     * @return the semanticFields value.
+     */
+    public List<String> getSemanticFields() {
+        return this.semanticFields;
+    }
+
+    /**
+     * Set the semanticFields property: The list of field names used for semantic ranking.
+     *
+     * @param semanticFields the semanticFields value to set.
+     * @return the SearchOptions object itself.
+     */
+    public SearchOptions setSemanticFields(List<String> semanticFields) {
+        this.semanticFields = semanticFields;
         return this;
     }
 
