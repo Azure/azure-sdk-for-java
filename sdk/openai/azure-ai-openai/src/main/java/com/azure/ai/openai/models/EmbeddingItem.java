@@ -54,7 +54,8 @@ public final class EmbeddingItem implements JsonSerializable<EmbeddingItem> {
         if (embedding != null) {
             return embedding.stream().map(Double::floatValue).collect(Collectors.toList());
         }
-        return convertBase64ToFloatList(embeddingBase64);
+        embedding = convertBase64ToFloatList(embeddingBase64);
+        return embedding;
     }
 
     /**
