@@ -20,7 +20,6 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.azure.ai.inference.models.ExtraParameters;
 import com.azure.ai.inference.implementation.InferenceServerSentEvents;
 import com.azure.ai.inference.models.ChatCompletionsOptions;
 import com.azure.ai.inference.implementation.ChatCompletionsUtils;
@@ -64,7 +63,7 @@ public final class ChatCompletionsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     messages (Required): [
@@ -102,9 +101,9 @@ public final class ChatCompletionsClient {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -158,7 +157,7 @@ public final class ChatCompletionsClient {
      * Returns information about the AI model.
      * The method makes a REST API call to the `/info` route on the given endpoint.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     model_name: String (Required)

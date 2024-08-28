@@ -24,7 +24,6 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import java.util.List;
-import com.azure.ai.inference.models.ExtraParameters;
 
 /**
  * Initializes a new instance of the synchronous ImageEmbeddingsClient type.
@@ -59,7 +58,7 @@ public final class ImageEmbeddingsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     input (Required): [
@@ -77,9 +76,9 @@ public final class ImageEmbeddingsClient {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     data (Required): [
@@ -116,7 +115,7 @@ public final class ImageEmbeddingsClient {
      * Returns information about the AI model.
      * The method makes a REST API call to the `/info` route on the given endpoint.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     model_name: String (Required)

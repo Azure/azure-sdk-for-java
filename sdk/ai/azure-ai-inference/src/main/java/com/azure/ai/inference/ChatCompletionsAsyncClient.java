@@ -23,7 +23,6 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import com.azure.ai.inference.models.ExtraParameters;
 import com.azure.ai.inference.implementation.InferenceServerSentEvents;
 import com.azure.ai.inference.implementation.ChatCompletionsUtils;
 import com.azure.ai.inference.models.ChatCompletionsOptions;
@@ -65,7 +64,7 @@ public final class ChatCompletionsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     messages (Required): [
@@ -103,9 +102,9 @@ public final class ChatCompletionsAsyncClient {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -159,7 +158,7 @@ public final class ChatCompletionsAsyncClient {
      * Returns information about the AI model.
      * The method makes a REST API call to the `/info` route on the given endpoint.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     model_name: String (Required)
