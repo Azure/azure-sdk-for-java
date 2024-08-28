@@ -9,7 +9,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
 
 import static com.azure.ai.inference.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -18,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class ChatCompletionsAsyncClientTest extends ChatCompletionsClientTestBase {
     private ChatCompletionsAsyncClient client;
 
-    private ChatCompletionsAsyncClient getChatCompletionsAsyncClient (HttpClient httpClient) {
+    private ChatCompletionsAsyncClient getChatCompletionsAsyncClient(HttpClient httpClient) {
         return getChatCompletionsClientBuilder(
             interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
             .buildAsyncClient();
