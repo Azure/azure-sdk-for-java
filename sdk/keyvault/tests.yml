@@ -15,24 +15,26 @@ extends:
         ServiceConnection: azure-sdk-tests
         SubscriptionConfigurationFilePaths:
           - eng/common/TestResources/sub-config/AzurePublicMsft.json
-        SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
         ${{ if not(contains(variables['Build.DefinitionName'], 'tests-weekly')) }}:
           MatrixFilters:
             - ArmTemplateParameters=^(?!.*enableHsm.*true)
       UsGov:
-        SubscriptionConfiguration: $(sub-config-gov-test-resources)
         ServiceConnection: usgov_azure-sdk-tests
+        SubscriptionConfigurationFilePaths:
+          - eng/common/TestResources/sub-config/AzureUsGovMsft.json
         MatrixFilters:
           - ArmTemplateParameters=^(?!.*enableHsm.*true)
       China:
-        SubscriptionConfiguration: $(sub-config-cn-test-resources)
         ServiceConnection: china_azure-sdk-tests
+        SubscriptionConfigurationFilePaths:
+          - eng/common/TestResources/sub-config/AzureChinaMsft.json
         MatrixFilters:
           - ArmTemplateParameters=^(?!.*enableHsm.*true)
       Canary:
-        SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
-        Location: 'centraluseuap'
         ServiceConnection: azure-sdk-tests
+        SubscriptionConfigurationFilePaths:
+          - eng/common/TestResources/sub-config/AzurePublicMsft.json
+        Location: 'centraluseuap'
         # Managed HSM test resources are expensive and provisioning has not been reliable.
         # Given test coverage of non-canary regions we probably don't need to test in canary.
         MatrixFilters:

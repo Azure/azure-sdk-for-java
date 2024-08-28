@@ -12,7 +12,6 @@ extends:
         ServiceConnection: azure-sdk-tests
         SubscriptionConfigurationFilePaths:
           - eng/common/TestResources/sub-config/AzurePublicMsft.json
-        SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
     EnvVars:
       AZURE_LOG_LEVEL: 1
     AdditionalMatrixConfigs:
