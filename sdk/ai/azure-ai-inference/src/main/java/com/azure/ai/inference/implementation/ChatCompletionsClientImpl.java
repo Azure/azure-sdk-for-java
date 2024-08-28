@@ -230,9 +230,7 @@ public final class ChatCompletionsClientImpl {
      *             function (Required): {
      *                 name: String (Required)
      *                 description: String (Optional)
-     *                 parameters (Optional): {
-     *                     String: Object (Required)
-     *                 }
+     *                 parameters: Object (Optional)
      *             }
      *         }
      *     ]
@@ -340,9 +338,7 @@ public final class ChatCompletionsClientImpl {
      *             function (Required): {
      *                 name: String (Required)
      *                 description: String (Optional)
-     *                 parameters (Optional): {
-     *                     String: Object (Required)
-     *                 }
+     *                 parameters: Object (Optional)
      *             }
      *         }
      *     ]
