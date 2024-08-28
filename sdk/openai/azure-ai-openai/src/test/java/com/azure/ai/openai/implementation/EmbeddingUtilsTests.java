@@ -83,7 +83,7 @@ public class EmbeddingUtilsTests {
     public void testEmbeddingItemSerializationAndDeserialization() throws IOException {
         // Test EmbeddingItem deserialization
         // Arrange
-        String embeddingItemJson = "{\"object\":\"embedding\",\"index\":1,\"embedding\":[0.014820415,-0.010995179,0.0050360323,-0.009382891]}";
+        String embeddingItemJson = "{\"index\":1,\"embedding\":[0.014820415,-0.010995179,0.0050360323,-0.009382891]}";
         JsonReader reader = JsonProviders.createReader(embeddingItemJson);
         // Act
         EmbeddingItem embeddingItem = EmbeddingItem.fromJson(reader);
@@ -112,7 +112,7 @@ public class EmbeddingUtilsTests {
     public void testEmbeddingItemsInEmbeddings() throws IOException {
         // Test Embeddings deserialization
         // Arrange
-        String embeddingsJson = "{\"data\":[{\"object\":\"embedding\",\"index\":0,\"embedding\":[0.014820415,-0.010995179,0.0050360323,-0.009382891]}],\"usage\":{\"prompt_tokens\":9,\"total_tokens\":9}}";
+        String embeddingsJson = "{\"data\":[{\"index\":0,\"embedding\":[0.014820415,-0.010995179,0.0050360323,-0.009382891]}],\"usage\":{\"prompt_tokens\":9,\"total_tokens\":9}}";
         JsonReader reader = JsonProviders.createReader(embeddingsJson);
         // Act
         Embeddings embeddings = Embeddings.fromJson(reader);

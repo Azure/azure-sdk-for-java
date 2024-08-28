@@ -9,11 +9,8 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-
 import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
-
 import static com.azure.ai.openai.implementation.EmbeddingsUtils.convertBase64ToFloatList;
 import static com.azure.ai.openai.implementation.EmbeddingsUtils.convertFloatListToBase64;
 
@@ -23,27 +20,6 @@ import static com.azure.ai.openai.implementation.EmbeddingsUtils.convertFloatLis
 @Immutable
 public final class EmbeddingItem implements JsonSerializable<EmbeddingItem> {
 
-    /*
-     * List of embeddings value for the input prompt. These represent a measurement of the
-     * vector-based relatedness of the provided input.
-     */
-    @Generated
-    private final List<Double> embedding;
-
-    private final String embeddingBase64;
-
-    /**
-     * Creates an instance of EmbeddingItem class.
-     *
-     * @param embeddingBase64 the embedding value to set.
-     * @param promptIndex the promptIndex value to set.
-     */
-    private EmbeddingItem(String embeddingBase64, List<Double> embedding, int promptIndex) {
-        this.embeddingBase64 = embeddingBase64;
-        this.promptIndex = promptIndex;
-        this.embedding = embedding;
-    }
-
     /**
      * Get the embedding property: List of embeddings value for the input prompt. These represent a measurement of the
      * vector-based relatedness of the provided input.
@@ -51,11 +27,10 @@ public final class EmbeddingItem implements JsonSerializable<EmbeddingItem> {
      * @return the embedding value.
      */
     public List<Float> getEmbedding() {
-        if (embedding != null) {
-            return embedding.stream().map(Double::floatValue).collect(Collectors.toList());
+        if (embeddingInFloat == null && embeddingBase64 != null) {
+            embeddingInFloat = convertBase64ToFloatList(embeddingBase64);
         }
-        embedding = convertBase64ToFloatList(embeddingBase64);
-        return embedding;
+        return embeddingInFloat;
     }
 
     /**
@@ -64,10 +39,9 @@ public final class EmbeddingItem implements JsonSerializable<EmbeddingItem> {
      * @return the embedding base64 encoded string.
      */
     public String getEmbeddingAsString() {
-        if (embeddingBase64 != null) {
-            return embeddingBase64;
+        if (embeddingBase64 == null && embeddingInFloat != null) {
+            embeddingBase64 = convertFloatListToBase64(embeddingInFloat);
         }
-        embeddingBase64 = convertFloatListToBase64(embedding.stream().map(Double::floatValue).collect(Collectors.toList()));
         return embeddingBase64;
     }
 
@@ -93,12 +67,11 @@ public final class EmbeddingItem implements JsonSerializable<EmbeddingItem> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("object", "embedding");
         jsonWriter.writeIntField("index", promptIndex);
         if (embeddingBase64 != null) {
             jsonWriter.writeStringField("embedding", embeddingBase64);
-        } else if (embedding != null) {
-            jsonWriter.writeArrayField("embedding", embedding, JsonWriter::writeDouble);
+        } else if (embeddingInFloat != null) {
+            jsonWriter.writeArrayField("embedding", embeddingInFloat, JsonWriter::writeFloat);
         }
         return jsonWriter.writeEndObject();
     }
@@ -115,7 +88,7 @@ public final class EmbeddingItem implements JsonSerializable<EmbeddingItem> {
     public static EmbeddingItem fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String embedding = null;
-            List<Double> embeddingInDouble = null;
+            List<Float> embeddingInFloat = null;
             int promptIndex = 0;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -125,7 +98,7 @@ public final class EmbeddingItem implements JsonSerializable<EmbeddingItem> {
                     if (jsonToken == JsonToken.STRING) {
                         embedding = reader.getString();
                     } else if (jsonToken == JsonToken.START_ARRAY) {
-                        embeddingInDouble = reader.readArray(JsonReader::getDouble);
+                        embeddingInFloat = reader.readArray(JsonReader::getFloat);
                     } else {
                         throw new IllegalStateException("Unexpected 'embedding' type found when deserializing"
                             + " EmbeddingItem JSON object: " + jsonToken);
@@ -136,7 +109,34 @@ public final class EmbeddingItem implements JsonSerializable<EmbeddingItem> {
                     reader.skipChildren();
                 }
             }
-            return new EmbeddingItem(embedding, embeddingInDouble, promptIndex);
+            EmbeddingItem embeddingItem = new EmbeddingItem(embedding, promptIndex);
+            embeddingItem.embeddingInFloat = embeddingInFloat;
+            return embeddingItem;
         });
     }
+
+    /**
+     * Creates an instance of EmbeddingItem class.
+     *
+     * @param embeddingBase64 the embedding value to set.
+     * @param promptIndex the promptIndex value to set.
+     */
+    private EmbeddingItem(String embeddingBase64, int promptIndex) {
+        this.embeddingBase64 = embeddingBase64;
+        this.promptIndex = promptIndex;
+    }
+
+    // Generated field, keep it to pass TypeSpec validation
+    private List<Double> embedding;
+
+    /*
+     * List of embeddings value for the input prompt. These represent a measurement of the
+     * vector-based relatedness of the provided input.
+     */
+    private List<Float> embeddingInFloat;
+
+    /*
+     * List of embeddings value in base64 format for the input prompt.
+     */
+    private String embeddingBase64;
 }
