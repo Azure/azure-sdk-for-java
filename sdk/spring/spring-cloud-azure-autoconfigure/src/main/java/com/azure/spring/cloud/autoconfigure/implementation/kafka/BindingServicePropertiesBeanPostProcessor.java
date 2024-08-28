@@ -39,6 +39,7 @@ class BindingServicePropertiesBeanPostProcessor implements BeanPostProcessor {
 
                 BinderProperties defaultKafkaBinder = new BinderProperties();
                 defaultKafkaBinder.setEnvironment(environment);
+                defaultKafkaBinder.setDefaultCandidate(!StringUtils.hasText(bindingServiceProperties.getDefaultBinder()));
 
                 Map<String, BinderProperties> binders = new HashMap<>();
                 binders.put(DEFAULT_KAFKA_BINDER_NAME, defaultKafkaBinder);
