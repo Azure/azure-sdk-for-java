@@ -54,14 +54,6 @@ public final class EmbeddingsUtils {
         byte[] byteArray = byteBuffer.array();
 
         // Encode byte array to Base64
-        String base64String = Base64.getEncoder().withoutPadding().encodeToString(byteArray);
-
-        // TODO: Remove this workaround once you find the encoding schema can do it
-        // Ensure the encoded string ends with "/8S8"
-        if (!base64String.endsWith("/8S8")) {
-            base64String = base64String.substring(0, base64String.length() - 4) + "/8S8";
-        }
-
-        return base64String;
+        return Base64.getEncoder().withoutPadding().encodeToString(byteArray);
     }
 }
