@@ -40,10 +40,13 @@ public class EmbeddingUtilsTests {
         String embedding = "Cw/juyfdrrsak0I8vdDMvGBIyrys\u002BCI9CYElvFANGrwVDFi8fNwivJphP7wT8gA8fs1mvHWW/jvumiY8FvSku7n3uzxcNca6Y610PJYlKLxqVp87mSdMPBLhoDvyEDE8pmDYu8Zqu7nPyrY7jLRMvPwehjykb5Q7YA7XOwKv57taTXm85O/Xuyxkmbw6roU7mYpSO/eXm7yPGfc8mNz4u1DkBjzhYRo8x7WOus651rkxsRC88YvqvJnERTtHShg8c42HPHEx1Ds5Op88UidxPFv70ry5ayK8A\u002B/8S8";
         // Act
         List<Float> floats = EmbeddingsUtils.convertBase64ToFloatList(embedding);
+        String convertFloatListToBase64 = EmbeddingsUtils.convertFloatListToBase64(expectedFloatList);
+
         // Assert
         for (int i = 0; i < expectedFloatList.size(); i++) {
             assertEquals(expectedFloatList.get(i).floatValue(), floats.get(i).floatValue());
         }
+        assertEquals(embedding, convertFloatListToBase64);
     }
 
     @Test

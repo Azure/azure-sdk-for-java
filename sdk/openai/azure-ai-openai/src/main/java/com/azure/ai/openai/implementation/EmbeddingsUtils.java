@@ -10,6 +10,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 
@@ -40,5 +41,27 @@ public final class EmbeddingsUtils {
             floatList.add(floatBuffer.get());
         }
         return floatList;
+    }
+
+    // This method converts a list of floats to a base64 string
+    public static String convertFloatListToBase64(List<Float> floatList) {
+        // Convert List<Float> to byte array
+        ByteBuffer byteBuffer = ByteBuffer.allocate(floatList.size() * 4);
+        byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
+        for (Float f : floatList) {
+            byteBuffer.putFloat(f);
+        }
+        byte[] byteArray = byteBuffer.array();
+
+        // Encode byte array to Base64
+        String base64String = Base64.getEncoder().withoutPadding().encodeToString(byteArray);
+
+        // TODO: Remove this workaround once you find the encoding schema can do it
+        // Ensure the encoded string ends with "/8S8"
+        if (!base64String.endsWith("/8S8")) {
+            base64String = base64String.substring(0, base64String.length() - 4) + "/8S8";
+        }
+
+        return base64String;
     }
 }

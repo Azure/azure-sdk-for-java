@@ -9,10 +9,13 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
+
 import static com.azure.ai.openai.implementation.EmbeddingsUtils.convertBase64ToFloatList;
+import static com.azure.ai.openai.implementation.EmbeddingsUtils.convertFloatListToBase64;
 
 /**
  * Representation of a single embeddings relatedness comparison.
@@ -60,7 +63,10 @@ public final class EmbeddingItem implements JsonSerializable<EmbeddingItem> {
      * @return the embedding base64 encoded string.
      */
     public String getEmbeddingAsString() {
-        return embeddingBase64;
+        if (embeddingBase64 != null) {
+            return embeddingBase64;
+        }
+        return convertFloatListToBase64(embedding.stream().map(Double::floatValue).collect(Collectors.toList()));
     }
 
     /*
