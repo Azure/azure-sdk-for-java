@@ -3,20 +3,23 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.keyvault.environment;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.keyvault.secrets.properties.AzureKeyVaultPropertySourceProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.keyvault.secrets.properties.AzureKeyVaultSecretProperties;
+import com.azure.spring.cloud.core.implementation.credential.resolver.AzureTokenCredentialResolver;
 import com.azure.spring.cloud.core.implementation.util.AzurePropertiesUtils;
 import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
 import com.azure.spring.cloud.service.implementation.keyvault.secrets.SecretClientBuilderFactory;
 import org.apache.commons.logging.Log;
+import org.springframework.boot.ConfigurableBootstrapContext;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.context.config.ConfigDataEnvironmentPostProcessor;
 import org.springframework.boot.context.properties.bind.Bindable;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.boot.env.EnvironmentPostProcessor;
-import org.springframework.boot.logging.DeferredLog;
+import org.springframework.boot.logging.DeferredLogFactory;
 import org.springframework.core.Ordered;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MutablePropertySources;
@@ -44,21 +47,17 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
     private static final String SKIP_CONFIGURE_REASON_FORMAT = "Skip configuring Key Vault PropertySource because %s.";
 
     private final Log logger;
+    private final ConfigurableBootstrapContext bootstrapContext;
 
 
     /**
      * Creates a new instance of {@link KeyVaultEnvironmentPostProcessor}.
-     * @param logger The logger used in this class.
+     * @param loggerFactory The logger factory to get the logger.
+     * @param bootstrapContext The bootstrap context.
      */
-    public KeyVaultEnvironmentPostProcessor(Log logger) {
-        this.logger = logger;
-    }
-
-    /**
-     * Construct a {@link KeyVaultEnvironmentPostProcessor} instance with a new {@link DeferredLog}.
-     */
-    public KeyVaultEnvironmentPostProcessor() {
-        this.logger = new DeferredLog();
+    public KeyVaultEnvironmentPostProcessor(DeferredLogFactory loggerFactory, ConfigurableBootstrapContext bootstrapContext) {
+        this.logger = loggerFactory.getLog(getClass());
+        this.bootstrapContext = bootstrapContext;
     }
 
     /**
@@ -155,6 +154,17 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
     SecretClient buildSecretClient(AzureKeyVaultSecretProperties secretProperties) {
         SecretClientBuilderFactory factory = new SecretClientBuilderFactory(secretProperties);
         factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_KEY_VAULT_SECRETS);
+
+        if (bootstrapContext != null && bootstrapContext.isRegistered(TokenCredential.class)) {
+            // If TokenCredential is registered in bootstrap context, use it to build SecretClient.
+            // This will ignore the credential properties configured
+            TokenCredential registerCredential = bootstrapContext.get(TokenCredential.class);
+            logger.debug(registerCredential.getClass().getSimpleName() + " is registered in bootstrap context, use it to build SecretClient.");
+            factory.setTokenCredentialResolver(
+                new AzureTokenCredentialResolver(ignored -> registerCredential)
+            );
+        }
+
         return factory.build().buildClient();
     }
 
