@@ -164,7 +164,6 @@ public final class EmbeddingsAsyncClient {
      * Embeddings measure the relatedness of text strings and are commonly used for search, clustering,
      * recommendations, and other similar scenarios on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<EmbeddingsResult> embed(List<String> input, Integer dimensions, EmbeddingEncodingFormat encodingFormat,
         EmbeddingInputType inputType, String model, ExtraParameters extraParams) {

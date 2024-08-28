@@ -143,51 +143,6 @@ public final class ImageEmbeddingsClient {
      *
      * @param input Input image to embed. To embed multiple inputs in a single request, pass an array.
      * The input must not exceed the max input tokens for the model.
-     * @param dimensions Optional. The number of dimensions the resulting output embeddings should have.
-     * Passing null causes the model to use its default value.
-     * Returns a 422 error if the model doesn't support the value or parameter.
-     * @param encodingFormat Optional. The number of dimensions the resulting output embeddings should have.
-     * Passing null causes the model to use its default value.
-     * Returns a 422 error if the model doesn't support the value or parameter.
-     * @param inputType Optional. The type of the input.
-     * Returns a 422 error if the model doesn't support the value or parameter.
-     * @param model ID of the specific AI model to use, if more than one model is available on the endpoint.
-     * @param extraParams Controls what happens if extra parameters, undefined by the REST API,
-     * are passed in the JSON request payload.
-     * This sets the HTTP request header `extra-parameters`.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return representation of the response data from an embeddings request.
-     * Embeddings measure the relatedness of text strings and are commonly used for search, clustering,
-     * recommendations, and other similar scenarios.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    EmbeddingsResult embed(List<EmbeddingInput> input, Integer dimensions, EmbeddingEncodingFormat encodingFormat,
-        EmbeddingInputType inputType, String model, ExtraParameters extraParams) {
-        // Generated convenience method for embedWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        EmbedRequest1 embedRequest1Obj = new EmbedRequest1(input).setDimensions(dimensions)
-            .setEncodingFormat(encodingFormat)
-            .setInputType(inputType)
-            .setModel(model);
-        BinaryData embedRequest1 = BinaryData.fromObject(embedRequest1Obj);
-        if (extraParams != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("extra-parameters"), extraParams.toString());
-        }
-        return embedWithResponse(embedRequest1, requestOptions).getValue().toObject(EmbeddingsResult.class);
-    }
-
-    /**
-     * Return the embedding vectors for given images.
-     * The method makes a REST API call to the `/images/embeddings` route on the given endpoint.
-     *
-     * @param input Input image to embed. To embed multiple inputs in a single request, pass an array.
-     * The input must not exceed the max input tokens for the model.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -225,5 +180,50 @@ public final class ImageEmbeddingsClient {
         // Generated convenience method for getModelInfoWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getModelInfoWithResponse(requestOptions).getValue().toObject(ModelInfo.class);
+    }
+
+    /**
+     * Return the embedding vectors for given images.
+     * The method makes a REST API call to the `/images/embeddings` route on the given endpoint.
+     *
+     * @param input Input image to embed. To embed multiple inputs in a single request, pass an array.
+     * The input must not exceed the max input tokens for the model.
+     * @param extraParams Controls what happens if extra parameters, undefined by the REST API,
+     * are passed in the JSON request payload.
+     * This sets the HTTP request header `extra-parameters`.
+     * @param dimensions Optional. The number of dimensions the resulting output embeddings should have.
+     * Passing null causes the model to use its default value.
+     * Returns a 422 error if the model doesn't support the value or parameter.
+     * @param encodingFormat Optional. The number of dimensions the resulting output embeddings should have.
+     * Passing null causes the model to use its default value.
+     * Returns a 422 error if the model doesn't support the value or parameter.
+     * @param inputType Optional. The type of the input.
+     * Returns a 422 error if the model doesn't support the value or parameter.
+     * @param model ID of the specific AI model to use, if more than one model is available on the endpoint.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return representation of the response data from an embeddings request.
+     * Embeddings measure the relatedness of text strings and are commonly used for search, clustering,
+     * recommendations, and other similar scenarios.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    EmbeddingsResult embed(List<EmbeddingInput> input, ExtraParameters extraParams, Integer dimensions,
+        EmbeddingEncodingFormat encodingFormat, EmbeddingInputType inputType, String model) {
+        // Generated convenience method for embedWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        EmbedRequest1 embedRequest1Obj = new EmbedRequest1(input).setDimensions(dimensions)
+            .setEncodingFormat(encodingFormat)
+            .setInputType(inputType)
+            .setModel(model);
+        BinaryData embedRequest1 = BinaryData.fromObject(embedRequest1Obj);
+        if (extraParams != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("extra-parameters"), extraParams.toString());
+        }
+        return embedWithResponse(embedRequest1, requestOptions).getValue().toObject(EmbeddingsResult.class);
     }
 }

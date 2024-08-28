@@ -45,12 +45,12 @@ public final class ImageEmbeddingsClientImpl {
     private final ImageEmbeddingsClientService service;
 
     /**
-     * Server parameter.
+     * Service host.
      */
     private final String endpoint;
 
     /**
-     * Gets Server parameter.
+     * Gets Service host.
      * 
      * @return the endpoint value.
      */
@@ -103,7 +103,7 @@ public final class ImageEmbeddingsClientImpl {
     /**
      * Initializes an instance of ImageEmbeddingsClient client.
      * 
-     * @param endpoint Server parameter.
+     * @param endpoint Service host.
      * @param serviceVersion Service version.
      */
     public ImageEmbeddingsClientImpl(String endpoint, ModelServiceVersion serviceVersion) {
@@ -115,7 +115,7 @@ public final class ImageEmbeddingsClientImpl {
      * Initializes an instance of ImageEmbeddingsClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
-     * @param endpoint Server parameter.
+     * @param endpoint Service host.
      * @param serviceVersion Service version.
      */
     public ImageEmbeddingsClientImpl(HttpPipeline httpPipeline, String endpoint, ModelServiceVersion serviceVersion) {
@@ -127,7 +127,7 @@ public final class ImageEmbeddingsClientImpl {
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
-     * @param endpoint Server parameter.
+     * @param endpoint Service host.
      * @param serviceVersion Service version.
      */
     public ImageEmbeddingsClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint,
@@ -154,8 +154,9 @@ public final class ImageEmbeddingsClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> embed(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData embedRequest1, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData embedRequest1,
+            RequestOptions requestOptions, Context context);
 
         @Post("/images/embeddings")
         @ExpectedResponses({ 200 })
@@ -164,8 +165,9 @@ public final class ImageEmbeddingsClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> embedSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData embedRequest1, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData embedRequest1,
+            RequestOptions requestOptions, Context context);
 
         @Get("/info")
         @ExpectedResponses({ 200 })
@@ -174,7 +176,7 @@ public final class ImageEmbeddingsClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getModelInfo(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/info")
@@ -184,7 +186,7 @@ public final class ImageEmbeddingsClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getModelInfoSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
     }
 
@@ -252,9 +254,10 @@ public final class ImageEmbeddingsClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> embedWithResponseAsync(BinaryData embedRequest1, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.embed(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            accept, embedRequest1, requestOptions, context));
+            contentType, accept, embedRequest1, requestOptions, context));
     }
 
     /**
@@ -320,9 +323,10 @@ public final class ImageEmbeddingsClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> embedWithResponse(BinaryData embedRequest1, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return service.embedSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, embedRequest1,
-            requestOptions, Context.NONE);
+        return service.embedSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, accept,
+            embedRequest1, requestOptions, Context.NONE);
     }
 
     /**

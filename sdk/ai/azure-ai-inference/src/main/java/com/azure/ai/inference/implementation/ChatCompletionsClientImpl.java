@@ -45,12 +45,12 @@ public final class ChatCompletionsClientImpl {
     private final ChatCompletionsClientService service;
 
     /**
-     * Server parameter.
+     * Service host.
      */
     private final String endpoint;
 
     /**
-     * Gets Server parameter.
+     * Gets Service host.
      * 
      * @return the endpoint value.
      */
@@ -103,7 +103,7 @@ public final class ChatCompletionsClientImpl {
     /**
      * Initializes an instance of ChatCompletionsClient client.
      * 
-     * @param endpoint Server parameter.
+     * @param endpoint Service host.
      * @param serviceVersion Service version.
      */
     public ChatCompletionsClientImpl(String endpoint, ModelServiceVersion serviceVersion) {
@@ -115,7 +115,7 @@ public final class ChatCompletionsClientImpl {
      * Initializes an instance of ChatCompletionsClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
-     * @param endpoint Server parameter.
+     * @param endpoint Service host.
      * @param serviceVersion Service version.
      */
     public ChatCompletionsClientImpl(HttpPipeline httpPipeline, String endpoint, ModelServiceVersion serviceVersion) {
@@ -127,7 +127,7 @@ public final class ChatCompletionsClientImpl {
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
-     * @param endpoint Server parameter.
+     * @param endpoint Service host.
      * @param serviceVersion Service version.
      */
     public ChatCompletionsClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint,
@@ -154,8 +154,9 @@ public final class ChatCompletionsClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> complete(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData completeRequest, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData completeRequest,
+            RequestOptions requestOptions, Context context);
 
         @Post("/chat/completions")
         @ExpectedResponses({ 200 })
@@ -164,8 +165,9 @@ public final class ChatCompletionsClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> completeSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData completeRequest, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData completeRequest,
+            RequestOptions requestOptions, Context context);
 
         @Get("/info")
         @ExpectedResponses({ 200 })
@@ -174,7 +176,7 @@ public final class ChatCompletionsClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getModelInfo(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/info")
@@ -184,7 +186,7 @@ public final class ChatCompletionsClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getModelInfoSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
     }
 
@@ -291,9 +293,10 @@ public final class ChatCompletionsClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> completeWithResponseAsync(BinaryData completeRequest,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.complete(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, completeRequest, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, accept, completeRequest, requestOptions, context));
     }
 
     /**
@@ -398,9 +401,10 @@ public final class ChatCompletionsClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> completeWithResponse(BinaryData completeRequest, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return service.completeSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, completeRequest,
-            requestOptions, Context.NONE);
+        return service.completeSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, accept,
+            completeRequest, requestOptions, Context.NONE);
     }
 
     /**

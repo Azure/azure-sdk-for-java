@@ -160,7 +160,6 @@ public final class EmbeddingsClient {
      * Embeddings measure the relatedness of text strings and are commonly used for search, clustering,
      * recommendations, and other similar scenarios.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     EmbeddingsResult embed(List<String> input, Integer dimensions, EmbeddingEncodingFormat encodingFormat,
         EmbeddingInputType inputType, String model, ExtraParameters extraParams) {
