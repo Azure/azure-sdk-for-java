@@ -4,6 +4,22 @@
 
 ### Features Added
 
+- `file_search` tool definitions now have the ability to configure `max_num_results` via the matching, named inner options object
+   Previously, only a stubbed `{ "type": "file_search" }` was valid. Now, e.g.: `{ "type": "file_search", "file_search": { "max_num_results": 20 } }`
+  - Added a new property `FileSearchToolDefinitionDetails fileSearch` to `FileSearchToolDefinition` model.
+  - Added new class `FileSearchToolDefinitionDetails` to represent the details of a file search tool.
+
+- `chunking_strategy` is added as a new optional property when creating a vector store (either via the vector store creation operation
+  or the helper when creating an assistant) -- this allows customization of the chunk size and overlap used when ingesting data.
+  See the OpenAI reference for full details.
+  - Added a new property `VectorStoreChunkingStrategyRequest chunkingStrategy` to `VectorStoreOptions` model.
+  - Added a new property `VectorStoreChunkingStrategyResponse chunkingStrategy` to `VectorStoreFile` model.
+  - Added new enum `VectorStoreChunkingStrategyRequestType` and `VectorStoreChunkingStrategyResponseType` to represent the chunking strategy `type` for vector stores.
+  - Added new class `VectorStoreChunkingStrategyRequest` and `VectorStoreChunkingStrategyResponse` to represent the chunking strategy for vector stores.
+  - Added new class `VectorStoreAutoChunkingStrategyRequest` and `VectorStoreAutoChunkingStrategyResponse` to represent the `auto` chunking strategy for vector stores.
+  - Added new class `VectorStoreStaticChunkingStrategyOptions`, `VectorStoreStaticChunkingStrategyRequest` and `VectorStoreStaticChunkingStrategyResponse` 
+    to represent the `static` chunking strategy for vector stores.
+
 ### Breaking Changes
 
 ### Bugs Fixed
