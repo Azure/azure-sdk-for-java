@@ -1280,8 +1280,9 @@ public class ShareFileClient {
                         getRangeContentMd5, requestConditions, context);
                     currentETag = ModelHelper.getETag(response.getHeaders());
                     if (initialETag != null && !initialETag.equals(currentETag)) {
-                        throw new ConcurrentModificationException("File has been modified concurrently. Expected eTag: "
-                            + initialETag + ", Received eTag: " + currentETag);
+                        throw LOGGER.logExceptionAsError(new ConcurrentModificationException(
+                            "File has been modified concurrently. Expected eTag: " + initialETag + ", Received eTag: "
+                                + currentETag));
                     }
                     initialETag = currentETag; // Update eTag for subsequent retries
 
@@ -1308,8 +1309,8 @@ public class ShareFileClient {
                         }
                         LOGGER.info("Retrying download due to IOException. Attempt: " + retryCount);
                     } else if (t instanceof ConcurrentModificationException) {
-                        throw new ConcurrentModificationException("File has been modified concurrently. Expected eTag: "
-                        + initialETag + ", Received eTag: " + currentETag);
+                        throw LOGGER.logExceptionAsError(new ConcurrentModificationException("File has been modified concurrently. Expected eTag: "
+                        + initialETag + ", Received eTag: " + currentETag));
                     } else {
                         throw LOGGER.logExceptionAsError(new RuntimeException(e));
                     }
