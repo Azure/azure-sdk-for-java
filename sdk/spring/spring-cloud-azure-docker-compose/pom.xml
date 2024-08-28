@@ -12,7 +12,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-cloud-azure-docker-compose</artifactId>
-  <version>5.15.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-docker-compose;current} -->
+  <version>5.16.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-docker-compose;current} -->
 
   <name>Spring Cloud Azure Docker Compose</name>
   <description>Spring Cloud Azure Docker Compose</description>
@@ -41,23 +41,23 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-autoconfigure</artifactId>
-      <version>5.15.0-beta.1</version>  <!-- {x-version-update;com.azure.spring:spring-cloud-azure-autoconfigure;current} -->
+      <version>5.16.0-beta.1</version>  <!-- {x-version-update;com.azure.spring:spring-cloud-azure-autoconfigure;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-spring-data-cosmos</artifactId>
-      <version>5.15.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;current} -->
+      <version>5.16.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;current} -->
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.26.1</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+      <version>12.27.1</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-queue</artifactId>
-      <version>12.21.1</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
+      <version>12.22.1</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
     </dependency>
 
     <dependency>
@@ -78,13 +78,13 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-test</artifactId>
-      <version>3.3.2</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-test;external_dependency} -->
+      <version>3.3.3</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
-      <version>6.1.11</version> <!-- {x-version-update;springboot3_org.springframework:spring-test;external_dependency} -->
+      <version>6.1.12</version> <!-- {x-version-update;springboot3_org.springframework:spring-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
