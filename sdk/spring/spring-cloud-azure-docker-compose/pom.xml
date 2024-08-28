@@ -63,7 +63,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-docker-compose</artifactId>
-      <version>3.3.2</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-docker-compose;external_dependency} -->
+      <version>3.3.3</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-docker-compose;external_dependency} -->
     </dependency>
     <!-- Added this dependency to include necessary annotations used by reactor core.
         Without this dependency, javadoc throws a warning as it cannot find enum When.MAYBE
@@ -174,7 +174,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.springframework.boot:spring-boot-docker-compose:[3.3.2]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-docker-compose;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-docker-compose:[3.3.3]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-docker-compose;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
