@@ -946,18 +946,15 @@ public final class OpenAIAsyncClient {
             .serializeTextField("prompt", audioTranscriptionOptions.getPrompt())
             .serializeTextField("language", audioTranscriptionOptions.getLanguage())
             .serializeTextField("temperature", temperature);
-
         List<AudioTranscriptionTimestampGranularity> timestampGranularities
             = audioTranscriptionOptions.getTimestampGranularities();
-
-        if(timestampGranularities != null && !timestampGranularities.isEmpty()) {
+        if (timestampGranularities != null && !timestampGranularities.isEmpty()) {
             for (AudioTranscriptionTimestampGranularity timestampGranularity : timestampGranularities) {
                 // somehow we don't need to send the index in OAI
                 multipartRequest.serializeTextField("timestamp_granularities[]", timestampGranularity.toString());
             }
         }
-        BinaryData uploadFileRequest = multipartRequest.end()
-            .getRequestBody();
+        BinaryData uploadFileRequest = multipartRequest.end().getRequestBody();
         Mono<Response<BinaryData>> response = openAIServiceClient != null
             ? this.openAIServiceClient.getAudioTranscriptionAsResponseObjectWithResponseAsync(deploymentOrModelName,
                 uploadFileRequest, multipartRequestOptions)
