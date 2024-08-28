@@ -788,10 +788,10 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
                         ChatCompletionsFunctionToolCall functionToolCall = (ChatCompletionsFunctionToolCall) responseMessage.getToolCalls().get(0);
                         assertNotNull(functionToolCall);
                         assertFalse(functionToolCall.getFunction().getArguments() == null
-                                || functionToolCall.getFunction().getArguments().isEmpty());
+                            || functionToolCall.getFunction().getArguments().isEmpty());
                         return client.getChatCompletions(modelId, getChatCompletionsOptionWithToolCallFollowUp(
-                                functionToolCall, responseMessage.getContent()));
-                        })).assertNext(followUpChatCompletions -> {
+                            functionToolCall, responseMessage.getContent()));
+                    })).assertNext(followUpChatCompletions -> {
                         assertNotNull(followUpChatCompletions);
                         assertNotNull(followUpChatCompletions.getChoices());
                         ChatChoice followUpChatChoice = followUpChatCompletions.getChoices().get(0);
@@ -801,7 +801,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
                         assertFalse(content == null || content.isEmpty());
                         assertEquals(followUpChatChoice.getMessage().getRole(), ChatRole.ASSISTANT);
                         assertEquals(followUpChatChoice.getFinishReason(), CompletionsFinishReason.STOPPED);
-            }).verifyComplete();
+                    }).verifyComplete();
         });
     }
 
@@ -871,7 +871,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetChatCompletionToolCallChoiceRequired(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        client =getNonAzureOpenAIAsyncClient(httpClient);
+        client = getNonAzureOpenAIAsyncClient(httpClient);
         getChatWithToolCallRunnerForNonAzure((modelId, chatCompletionsOptions) -> {
             chatCompletionsOptions.setToolChoice(new ChatCompletionsToolSelection(ChatCompletionsToolSelectionPreset.REQUIRED));
             StepVerifier.create(client.getChatCompletionsWithResponse(modelId, chatCompletionsOptions, new RequestOptions())).assertNext(response -> {
@@ -905,51 +905,51 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
         client = getNonAzureOpenAIAsyncClient(httpClient);
         getChatWithToolCallRunnerForNonAzure((modelId, chatCompletionsOptions) -> {
             StepVerifier.create(client.getChatCompletionsStream(modelId, chatCompletionsOptions)
-                    .collectList()
-                    .flatMapMany(chatCompletionsStream -> {
-                        StringBuilder argumentsBuilder = new StringBuilder();
-                        long totalStreamMessages = chatCompletionsStream.size();
-                        String functionName = null;
-                        String toolCallId = null;
-                        String content = null;
-                        assertTrue(totalStreamMessages > 0);
+                .collectList()
+                .flatMapMany(chatCompletionsStream -> {
+                    StringBuilder argumentsBuilder = new StringBuilder();
+                    long totalStreamMessages = chatCompletionsStream.size();
+                    String functionName = null;
+                    String toolCallId = null;
+                    String content = null;
+                    assertTrue(totalStreamMessages > 0);
 
-                        int i = 0;
-                        for (ChatCompletions chatCompletions : chatCompletionsStream) {
-                            List<ChatChoice> chatChoices = chatCompletions.getChoices();
-                            if (!chatChoices.isEmpty() && chatChoices.get(0) != null) {
-                                assertEquals(1, chatChoices.size());
-                                ChatChoice chatChoice = chatChoices.get(0);
-                                List<ChatCompletionsToolCall> toolCalls = chatChoice.getDelta().getToolCalls();
-                                if (toolCalls != null && !toolCalls.isEmpty()) {
-                                    assertEquals(1, toolCalls.size());
-                                    ChatCompletionsFunctionToolCall toolCall = (ChatCompletionsFunctionToolCall) toolCalls.get(0);
-                                    FunctionCall functionCall = toolCall.getFunction();
-                                    if (i == 0) {
-                                        content = chatChoice.getDelta().getContent();
-                                        functionName = functionCall.getName();
-                                        toolCallId = toolCall.getId();
-                                    }
-                                    argumentsBuilder.append(functionCall.getArguments());
+                    int i = 0;
+                    for (ChatCompletions chatCompletions : chatCompletionsStream) {
+                        List<ChatChoice> chatChoices = chatCompletions.getChoices();
+                        if (!chatChoices.isEmpty() && chatChoices.get(0) != null) {
+                            assertEquals(1, chatChoices.size());
+                            ChatChoice chatChoice = chatChoices.get(0);
+                            List<ChatCompletionsToolCall> toolCalls = chatChoice.getDelta().getToolCalls();
+                            if (toolCalls != null && !toolCalls.isEmpty()) {
+                                assertEquals(1, toolCalls.size());
+                                ChatCompletionsFunctionToolCall toolCall = (ChatCompletionsFunctionToolCall) toolCalls.get(0);
+                                FunctionCall functionCall = toolCall.getFunction();
+                                if (i == 0) {
+                                    content = chatChoice.getDelta().getContent();
+                                    functionName = functionCall.getName();
+                                    toolCallId = toolCall.getId();
                                 }
-                                if (i < totalStreamMessages - 1) {
-                                    assertNull(chatChoice.getFinishReason());
-                                } else {
-                                    assertEquals(CompletionsFinishReason.TOOL_CALLS, chatChoice.getFinishReason());
-                                }
+                                argumentsBuilder.append(functionCall.getArguments());
                             }
-                            i++;
+                            if (i < totalStreamMessages - 1) {
+                                assertNull(chatChoice.getFinishReason());
+                            } else {
+                                assertEquals(CompletionsFinishReason.TOOL_CALLS, chatChoice.getFinishReason());
+                            }
                         }
-                        assertFunctionToolCallArgs(argumentsBuilder.toString());
-                        FunctionCall functionCall = new FunctionCall(functionName, argumentsBuilder.toString());
-                        ChatCompletionsFunctionToolCall functionToolCall = new ChatCompletionsFunctionToolCall(toolCallId, functionCall);
+                        i++;
+                    }
+                    assertFunctionToolCallArgs(argumentsBuilder.toString());
+                    FunctionCall functionCall = new FunctionCall(functionName, argumentsBuilder.toString());
+                    ChatCompletionsFunctionToolCall functionToolCall = new ChatCompletionsFunctionToolCall(toolCallId, functionCall);
 
-                        ChatCompletionsOptions followUpChatCompletionsOptions = getChatCompletionsOptionWithToolCallFollowUp(
-                                functionToolCall, content);
+                    ChatCompletionsOptions followUpChatCompletionsOptions = getChatCompletionsOptionWithToolCallFollowUp(
+                            functionToolCall, content);
 
-                        return client.getChatCompletionsStream(modelId, followUpChatCompletionsOptions);
-                    })
-                    .collectList()
+                    return client.getChatCompletionsStream(modelId, followUpChatCompletionsOptions);
+                })
+                .collectList()
             ).assertNext(followupChatCompletionsStream -> {
                 StringBuilder contentBuilder = new StringBuilder();
                 long totalStreamFollowUpMessages = followupChatCompletionsStream.size();
@@ -980,12 +980,12 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
         client = getNonAzureOpenAIAsyncClient(httpClient);
         textToSpeechRunnerForNonAzure(((modelId, speechGenerationOptions) -> {
             StepVerifier.create(client.generateSpeechFromText(modelId, speechGenerationOptions))
-                    .assertNext(speech -> {
-                        assertNotNull(speech);
-                        byte[] bytes = speech.toBytes();
-                        assertNotNull(bytes);
-                        assertTrue(bytes.length > 0);
-                    }).verifyComplete();
+                .assertNext(speech -> {
+                    assertNotNull(speech);
+                    byte[] bytes = speech.toBytes();
+                    assertNotNull(bytes);
+                    assertTrue(bytes.length > 0);
+                }).verifyComplete();
         }));
     }
 
@@ -993,19 +993,18 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testTextToSpeechWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAIAsyncClient(httpClient);
-        textToSpeechRunnerForNonAzure(((modelId, speechGenerationOptions) -> {
+        textToSpeechRunnerForNonAzure(((modelId, speechGenerationOptions) ->
             StepVerifier.create(client.generateSpeechFromTextWithResponse(modelId,
-                            BinaryData.fromObject(speechGenerationOptions), new RequestOptions()))
-                    .assertNext(response -> {
-                        assertTrue(response.getStatusCode() > 0);
-                        assertNotNull(response.getHeaders());
-                        BinaryData speech = response.getValue();
-                        assertNotNull(speech);
-                        byte[] bytes = speech.toBytes();
-                        assertNotNull(bytes);
-                        assertTrue(bytes.length > 0);
-                    }).verifyComplete();
-        }));
+                BinaryData.fromObject(speechGenerationOptions), new RequestOptions()))
+            .assertNext(response -> {
+                assertTrue(response.getStatusCode() > 0);
+                assertNotNull(response.getHeaders());
+                BinaryData speech = response.getValue();
+                assertNotNull(speech);
+                byte[] bytes = speech.toBytes();
+                assertNotNull(bytes);
+                assertTrue(bytes.length > 0);
+            }).verifyComplete()));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)

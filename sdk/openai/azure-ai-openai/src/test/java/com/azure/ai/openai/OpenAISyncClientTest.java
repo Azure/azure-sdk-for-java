@@ -37,7 +37,6 @@ import com.azure.ai.openai.models.FilePurpose;
 import com.azure.ai.openai.models.FileState;
 import com.azure.ai.openai.models.FunctionCall;
 import com.azure.ai.openai.models.FunctionCallConfig;
-import com.azure.ai.openai.models.FunctionName;
 import com.azure.ai.openai.models.ImageGenerations;
 import com.azure.ai.openai.models.OnYourDataApiKeyAuthenticationOptions;
 import com.azure.ai.openai.models.OnYourDataContextProperty;
