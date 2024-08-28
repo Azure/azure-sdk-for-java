@@ -1081,7 +1081,8 @@ public class ShareFileClient {
                         } catch (IOException e) {
                             retries++;
                             if (retries > 3) {
-                                throw e; // Rethrow after max retries
+                                //throw e;
+                                throw LOGGER.logExceptionAsError(new UncheckedIOException(e)); // Rethrow after max retries
                             }
                             LOGGER.info("Retrying download due to " + e.getClass().getSimpleName() + ". Attempt: " + retries);
                         }
