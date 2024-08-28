@@ -29,7 +29,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
@@ -43,6 +42,7 @@ import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInfer
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsResult;
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.UUID;
 import reactor.core.publisher.Mono;
 
 /**
@@ -170,9 +170,8 @@ public final class RadiologyInsightsClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> inferRadiologyInsights(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData inferRadiologyInsightsRequest, RequestOptions requestOptions,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData radiologyInsightsData, RequestOptions requestOptions,
             Context context);
 
         @Post("/radiology-insights/jobs")
@@ -182,9 +181,8 @@ public final class RadiologyInsightsClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> inferRadiologyInsightsSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData inferRadiologyInsightsRequest, RequestOptions requestOptions,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData radiologyInsightsData, RequestOptions requestOptions,
             Context context);
     }
 
@@ -540,7 +538,7 @@ public final class RadiologyInsightsClientImpl {
      * }
      * }</pre>
      * 
-     * @param inferRadiologyInsightsRequest The inferRadiologyInsightsRequest parameter.
+     * @param radiologyInsightsData Contains the list of patients, and configuration data.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -550,27 +548,26 @@ public final class RadiologyInsightsClientImpl {
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BinaryData>> inferRadiologyInsightsWithResponseAsync(BinaryData inferRadiologyInsightsRequest,
+    private Mono<Response<BinaryData>> inferRadiologyInsightsWithResponseAsync(BinaryData radiologyInsightsData,
         RequestOptions requestOptions) {
-        final String contentType = "application/json";
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+        String repeatabilityRequestId = UUID.randomUUID().toString();
+        String repeatabilityFirstSent = DateTimeRfc1123.toRfc1123String(OffsetDateTime.now());
         requestOptionsLocal.addRequestCallback(requestLocal -> {
             if (requestLocal.getHeaders().get(HttpHeaderName.fromString("repeatability-request-id")) == null) {
                 requestLocal.getHeaders()
-                    .set(HttpHeaderName.fromString("repeatability-request-id"), CoreUtils.randomUuid().toString());
+                    .set(HttpHeaderName.fromString("repeatability-request-id"), repeatabilityRequestId);
             }
         });
         requestOptionsLocal.addRequestCallback(requestLocal -> {
             if (requestLocal.getHeaders().get(HttpHeaderName.fromString("repeatability-first-sent")) == null) {
                 requestLocal.getHeaders()
-                    .set(HttpHeaderName.fromString("repeatability-first-sent"),
-                        DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()));
+                    .set(HttpHeaderName.fromString("repeatability-first-sent"), repeatabilityFirstSent);
             }
         });
-        return FluxUtil.withContext(
-            context -> service.inferRadiologyInsights(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                contentType, accept, inferRadiologyInsightsRequest, requestOptionsLocal, context));
+        return FluxUtil.withContext(context -> service.inferRadiologyInsights(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), accept, radiologyInsightsData, requestOptionsLocal, context));
     }
 
     /**
@@ -925,7 +922,7 @@ public final class RadiologyInsightsClientImpl {
      * }
      * }</pre>
      * 
-     * @param inferRadiologyInsightsRequest The inferRadiologyInsightsRequest parameter.
+     * @param radiologyInsightsData Contains the list of patients, and configuration data.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -934,26 +931,26 @@ public final class RadiologyInsightsClientImpl {
      * @return provides status details for long running operations along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Response<BinaryData> inferRadiologyInsightsWithResponse(BinaryData inferRadiologyInsightsRequest,
+    private Response<BinaryData> inferRadiologyInsightsWithResponse(BinaryData radiologyInsightsData,
         RequestOptions requestOptions) {
-        final String contentType = "application/json";
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+        String repeatabilityRequestId = UUID.randomUUID().toString();
+        String repeatabilityFirstSent = DateTimeRfc1123.toRfc1123String(OffsetDateTime.now());
         requestOptionsLocal.addRequestCallback(requestLocal -> {
             if (requestLocal.getHeaders().get(HttpHeaderName.fromString("repeatability-request-id")) == null) {
                 requestLocal.getHeaders()
-                    .set(HttpHeaderName.fromString("repeatability-request-id"), CoreUtils.randomUuid().toString());
+                    .set(HttpHeaderName.fromString("repeatability-request-id"), repeatabilityRequestId);
             }
         });
         requestOptionsLocal.addRequestCallback(requestLocal -> {
             if (requestLocal.getHeaders().get(HttpHeaderName.fromString("repeatability-first-sent")) == null) {
                 requestLocal.getHeaders()
-                    .set(HttpHeaderName.fromString("repeatability-first-sent"),
-                        DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()));
+                    .set(HttpHeaderName.fromString("repeatability-first-sent"), repeatabilityFirstSent);
             }
         });
-        return service.inferRadiologyInsightsSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            contentType, accept, inferRadiologyInsightsRequest, requestOptionsLocal, Context.NONE);
+        return service.inferRadiologyInsightsSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
+            radiologyInsightsData, requestOptionsLocal, Context.NONE);
     }
 
     /**
@@ -1308,7 +1305,7 @@ public final class RadiologyInsightsClientImpl {
      * }
      * }</pre>
      * 
-     * @param inferRadiologyInsightsRequest The inferRadiologyInsightsRequest parameter.
+     * @param radiologyInsightsData Contains the list of patients, and configuration data.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1317,10 +1314,10 @@ public final class RadiologyInsightsClientImpl {
      * @return the {@link PollerFlux} for polling of provides status details for long running operations.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginInferRadiologyInsightsAsync(BinaryData inferRadiologyInsightsRequest,
+    public PollerFlux<BinaryData, BinaryData> beginInferRadiologyInsightsAsync(BinaryData radiologyInsightsData,
         RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.inferRadiologyInsightsWithResponseAsync(inferRadiologyInsightsRequest, requestOptions),
+            () -> this.inferRadiologyInsightsWithResponseAsync(radiologyInsightsData, requestOptions),
             new com.azure.health.insights.radiologyinsights.implementation.OperationLocationPollingStrategy<>(
                 new PollingStrategyOptions(this.getHttpPipeline())
                     .setEndpoint("{endpoint}/health-insights".replace("{endpoint}", this.getEndpoint()))
@@ -1684,7 +1681,7 @@ public final class RadiologyInsightsClientImpl {
      * }
      * }</pre>
      * 
-     * @param inferRadiologyInsightsRequest The inferRadiologyInsightsRequest parameter.
+     * @param radiologyInsightsData Contains the list of patients, and configuration data.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1693,10 +1690,10 @@ public final class RadiologyInsightsClientImpl {
      * @return the {@link SyncPoller} for polling of provides status details for long running operations.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginInferRadiologyInsights(BinaryData inferRadiologyInsightsRequest,
+    public SyncPoller<BinaryData, BinaryData> beginInferRadiologyInsights(BinaryData radiologyInsightsData,
         RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.inferRadiologyInsightsWithResponse(inferRadiologyInsightsRequest, requestOptions),
+            () -> this.inferRadiologyInsightsWithResponse(radiologyInsightsData, requestOptions),
             new com.azure.health.insights.radiologyinsights.implementation.SyncOperationLocationPollingStrategy<>(
                 new PollingStrategyOptions(this.getHttpPipeline())
                     .setEndpoint("{endpoint}/health-insights".replace("{endpoint}", this.getEndpoint()))
@@ -2060,7 +2057,7 @@ public final class RadiologyInsightsClientImpl {
      * }
      * }</pre>
      * 
-     * @param inferRadiologyInsightsRequest The inferRadiologyInsightsRequest parameter.
+     * @param radiologyInsightsData Contains the list of patients, and configuration data.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2070,10 +2067,9 @@ public final class RadiologyInsightsClientImpl {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<RadiologyInsightsResult, RadiologyInsightsInferenceResult>
-        beginInferRadiologyInsightsWithModelAsync(BinaryData inferRadiologyInsightsRequest,
-            RequestOptions requestOptions) {
+        beginInferRadiologyInsightsWithModelAsync(BinaryData radiologyInsightsData, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.inferRadiologyInsightsWithResponseAsync(inferRadiologyInsightsRequest, requestOptions),
+            () -> this.inferRadiologyInsightsWithResponseAsync(radiologyInsightsData, requestOptions),
             new com.azure.health.insights.radiologyinsights.implementation.OperationLocationPollingStrategy<>(
                 new PollingStrategyOptions(this.getHttpPipeline())
                     .setEndpoint("{endpoint}/health-insights".replace("{endpoint}", this.getEndpoint()))
@@ -2438,7 +2434,7 @@ public final class RadiologyInsightsClientImpl {
      * }
      * }</pre>
      * 
-     * @param inferRadiologyInsightsRequest The inferRadiologyInsightsRequest parameter.
+     * @param radiologyInsightsData Contains the list of patients, and configuration data.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2448,9 +2444,9 @@ public final class RadiologyInsightsClientImpl {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<RadiologyInsightsResult, RadiologyInsightsInferenceResult>
-        beginInferRadiologyInsightsWithModel(BinaryData inferRadiologyInsightsRequest, RequestOptions requestOptions) {
+        beginInferRadiologyInsightsWithModel(BinaryData radiologyInsightsData, RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.inferRadiologyInsightsWithResponse(inferRadiologyInsightsRequest, requestOptions),
+            () -> this.inferRadiologyInsightsWithResponse(radiologyInsightsData, requestOptions),
             new com.azure.health.insights.radiologyinsights.implementation.SyncOperationLocationPollingStrategy<>(
                 new PollingStrategyOptions(this.getHttpPipeline())
                     .setEndpoint("{endpoint}/health-insights".replace("{endpoint}", this.getEndpoint()))
