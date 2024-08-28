@@ -64,7 +64,7 @@ public final class OperationStatusClientImpl implements OperationStatusClient {
         Mono<Response<OperationStatusResultInner>> get(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("location") String location, @PathParam("operationId") String operationId,
-            @HeaderParam("accept") String accept, Context context);
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
