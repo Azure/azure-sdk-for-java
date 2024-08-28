@@ -51,6 +51,8 @@ extends:
       # TODO: migrate analyze spot bugs configuration here from steps/run-and-validate-linting.yml
       spotBugs:
         enabled: false
+      # Turn off the build warnings caused by disabling some sdl checks
+      createAdoIssuesForJustificationsForDisablement: false
       binskim:
         # Exclude imported azure-sdk-build-tools gpg/azcopy binaries
         # See https://dev.azure.com/securitytools/SecurityIntegration/_wiki/wikis/Guardian/1378/Glob-Format
