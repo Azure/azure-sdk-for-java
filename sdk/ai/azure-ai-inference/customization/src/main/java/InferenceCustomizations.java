@@ -6,7 +6,7 @@ import com.github.javaparser.ast.body.FieldDeclaration;
 import org.slf4j.Logger;
 
 /**
- * This class contains the customization code to customize the AutoRest generated code for OpenAI.
+ * This class contains the customization code to customize the AutoRest generated code for Azure AI Inference.
  */
 public class InferenceCustomizations extends Customization {
 
@@ -32,10 +32,10 @@ public class InferenceCustomizations extends Customization {
         embeddingsOptionsClass.getMethod("getEncodingFormat").setModifier(0);
         embeddingsOptionsClass.getMethod("setEncodingFormat").setModifier(0);
     }
+     */
 
     private static String joinWithNewline(String... lines) {
         return String.join("\n", lines);
     }
 
-     */
 }
