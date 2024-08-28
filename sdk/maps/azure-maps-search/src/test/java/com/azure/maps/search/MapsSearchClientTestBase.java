@@ -14,9 +14,7 @@ import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxyRequestMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
-import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -72,13 +70,11 @@ public class MapsSearchClientTestBase extends TestProxyTestBase {
 
         if (interceptorManager.isRecordMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
-                .credential(new DefaultAzureCredentialBuilder().build())
-                .mapsClientId(Configuration.getGlobalConfiguration().get("MAPS_CLIENT_ID"));
+                .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("SUBSCRIPTION_KEY")));
         } else if (interceptorManager.isPlaybackMode()) {
-            builder.credential(new MockTokenCredential())
-                .mapsClientId("testSearchClient");
+            builder.credential(new AzureKeyCredential("REDACTED"));
         } else {
-            builder.credential(new AzureKeyCredential("0y5lxeFiXRuVKIgMJXiPe93iQK6_VO-1vJB3NuZTI8U"));
+            builder.credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("SUBSCRIPTION_KEY")));
         }
 
         return builder.httpClient(
