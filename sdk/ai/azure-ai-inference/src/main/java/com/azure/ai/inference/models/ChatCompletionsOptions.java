@@ -505,6 +505,7 @@ public final class ChatCompletionsOptions implements JsonSerializable<ChatComple
 
     /**
      * {@inheritDoc}
+     * @throws IOException If an error occurs while writing fields to the ChatCompletionsOptions instance.
      */
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

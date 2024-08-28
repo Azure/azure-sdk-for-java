@@ -5,11 +5,11 @@ package com.azure.ai.inference;
 
 import com.azure.ai.inference.implementation.ImageEmbeddingsClientImpl;
 import com.azure.ai.inference.implementation.models.EmbedRequest1;
-import com.azure.ai.inference.implementation.models.ExtraParameters;
 import com.azure.ai.inference.models.EmbeddingEncodingFormat;
 import com.azure.ai.inference.models.EmbeddingInput;
 import com.azure.ai.inference.models.EmbeddingInputType;
 import com.azure.ai.inference.models.EmbeddingsResult;
+import com.azure.ai.inference.models.ExtraParameters;
 import com.azure.ai.inference.models.ModelInfo;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
@@ -24,6 +24,7 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import java.util.List;
+import com.azure.ai.inference.implementation.models.ExtraParameters;
 
 /**
  * Initializes a new instance of the synchronous ImageEmbeddingsClient type.

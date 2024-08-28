@@ -5,8 +5,8 @@ package com.azure.ai.inference;
 
 import com.azure.ai.inference.implementation.ChatCompletionsClientImpl;
 import com.azure.ai.inference.implementation.models.CompleteRequest;
-import com.azure.ai.inference.implementation.models.ExtraParameters;
 import com.azure.ai.inference.models.ChatCompletions;
+import com.azure.ai.inference.models.ExtraParameters;
 import com.azure.ai.inference.models.ModelInfo;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
@@ -23,6 +23,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import com.azure.ai.inference.implementation.models.ExtraParameters;
 import com.azure.ai.inference.implementation.InferenceServerSentEvents;
 import com.azure.ai.inference.implementation.ChatCompletionsUtils;
 import com.azure.ai.inference.models.ChatCompletionsOptions;

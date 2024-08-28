@@ -5,10 +5,10 @@ package com.azure.ai.inference;
 
 import com.azure.ai.inference.implementation.EmbeddingsClientImpl;
 import com.azure.ai.inference.implementation.models.EmbedRequest;
-import com.azure.ai.inference.implementation.models.ExtraParameters;
 import com.azure.ai.inference.models.EmbeddingEncodingFormat;
 import com.azure.ai.inference.models.EmbeddingInputType;
 import com.azure.ai.inference.models.EmbeddingsResult;
+import com.azure.ai.inference.models.ExtraParameters;
 import com.azure.ai.inference.models.ModelInfo;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
@@ -25,6 +25,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import java.util.List;
 import reactor.core.publisher.Mono;
+import com.azure.ai.inference.implementation.models.ExtraParameters;
 
 /**
  * Initializes a new instance of the asynchronous EmbeddingsClient type.
