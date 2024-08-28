@@ -43,6 +43,15 @@ public class VectorSearchCompression implements JsonSerializable<VectorSearchCom
      */
     private Double defaultOversampling;
 
+    /*
+     * The number of dimensions to truncate the vectors to. Truncating the vectors reduces the size of the vectors and
+     * the amount of data that needs to be transferred during search. This can save storage cost and improve search
+     * performance at the expense of recall. It should be only used for embeddings trained with Matryoshka
+     * Representation Learning (MRL) such as OpenAI text-embedding-3-large (small). The default value is null, which
+     * means no truncation.
+     */
+    private Integer truncationDimension;
+
     /**
      * Creates an instance of VectorSearchCompression class.
      * 
@@ -123,6 +132,34 @@ public class VectorSearchCompression implements JsonSerializable<VectorSearchCom
     }
 
     /**
+     * Get the truncationDimension property: The number of dimensions to truncate the vectors to. Truncating the vectors
+     * reduces the size of the vectors and the amount of data that needs to be transferred during search. This can save
+     * storage cost and improve search performance at the expense of recall. It should be only used for embeddings
+     * trained with Matryoshka Representation Learning (MRL) such as OpenAI text-embedding-3-large (small). The default
+     * value is null, which means no truncation.
+     * 
+     * @return the truncationDimension value.
+     */
+    public Integer getTruncationDimension() {
+        return this.truncationDimension;
+    }
+
+    /**
+     * Set the truncationDimension property: The number of dimensions to truncate the vectors to. Truncating the vectors
+     * reduces the size of the vectors and the amount of data that needs to be transferred during search. This can save
+     * storage cost and improve search performance at the expense of recall. It should be only used for embeddings
+     * trained with Matryoshka Representation Learning (MRL) such as OpenAI text-embedding-3-large (small). The default
+     * value is null, which means no truncation.
+     * 
+     * @param truncationDimension the truncationDimension value to set.
+     * @return the VectorSearchCompression object itself.
+     */
+    public VectorSearchCompression setTruncationDimension(Integer truncationDimension) {
+        this.truncationDimension = truncationDimension;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -132,6 +169,7 @@ public class VectorSearchCompression implements JsonSerializable<VectorSearchCom
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         jsonWriter.writeBooleanField("rerankWithOriginalVectors", this.rerankWithOriginalVectors);
         jsonWriter.writeNumberField("defaultOversampling", this.defaultOversampling);
+        jsonWriter.writeNumberField("truncationDimension", this.truncationDimension);
         return jsonWriter.writeEndObject();
     }
 
@@ -178,6 +216,7 @@ public class VectorSearchCompression implements JsonSerializable<VectorSearchCom
             VectorSearchCompressionKind kind = null;
             Boolean rerankWithOriginalVectors = null;
             Double defaultOversampling = null;
+            Integer truncationDimension = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -191,6 +230,8 @@ public class VectorSearchCompression implements JsonSerializable<VectorSearchCom
                     rerankWithOriginalVectors = reader.getNullable(JsonReader::getBoolean);
                 } else if ("defaultOversampling".equals(fieldName)) {
                     defaultOversampling = reader.getNullable(JsonReader::getDouble);
+                } else if ("truncationDimension".equals(fieldName)) {
+                    truncationDimension = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }
@@ -201,6 +242,7 @@ public class VectorSearchCompression implements JsonSerializable<VectorSearchCom
                 deserializedVectorSearchCompression.kind = kind;
                 deserializedVectorSearchCompression.rerankWithOriginalVectors = rerankWithOriginalVectors;
                 deserializedVectorSearchCompression.defaultOversampling = defaultOversampling;
+                deserializedVectorSearchCompression.truncationDimension = truncationDimension;
 
                 return deserializedVectorSearchCompression;
             }

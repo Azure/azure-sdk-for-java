@@ -25,6 +25,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.search.documents.indexes.implementation.models.DocumentKeysOrIds;
 import com.azure.search.documents.indexes.implementation.models.ErrorResponseException;
 import com.azure.search.documents.indexes.implementation.models.ListIndexersResult;
 import com.azure.search.documents.indexes.implementation.models.RequestOptions;
@@ -78,6 +79,24 @@ public final class IndexersImpl {
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
+        @Post("/indexers('{indexerName}')/search.resetdocs")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<Response<Void>> resetDocs(@HostParam("endpoint") String endpoint,
+            @PathParam("indexerName") String indexerName, @QueryParam("overwrite") Boolean overwrite,
+            @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") DocumentKeysOrIds keysOrIds, Context context);
+
+        @Post("/indexers('{indexerName}')/search.resetdocs")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Response<Void> resetDocsSync(@HostParam("endpoint") String endpoint,
+            @PathParam("indexerName") String indexerName, @QueryParam("overwrite") Boolean overwrite,
+            @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") DocumentKeysOrIds keysOrIds, Context context);
+
         @Post("/indexers('{indexerName}')/search.run")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
@@ -99,8 +118,11 @@ public final class IndexersImpl {
             @PathParam("indexerName") String indexerName,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, @HeaderParam("If-Match") String ifMatch,
             @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("Prefer") String prefer,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") SearchIndexer indexer, Context context);
+            @QueryParam("api-version") String apiVersion,
+            @QueryParam("ignoreResetRequirements") Boolean skipIndexerResetRequirementForCache,
+            @QueryParam("disableCacheReprocessingChangeDetection") Boolean disableCacheReprocessingChangeDetection,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") SearchIndexer indexer,
+            Context context);
 
         @Put("/indexers('{indexerName}')")
         @ExpectedResponses({ 200, 201 })
@@ -109,8 +131,11 @@ public final class IndexersImpl {
             @PathParam("indexerName") String indexerName,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, @HeaderParam("If-Match") String ifMatch,
             @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("Prefer") String prefer,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") SearchIndexer indexer, Context context);
+            @QueryParam("api-version") String apiVersion,
+            @QueryParam("ignoreResetRequirements") Boolean skipIndexerResetRequirementForCache,
+            @QueryParam("disableCacheReprocessingChangeDetection") Boolean disableCacheReprocessingChangeDetection,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") SearchIndexer indexer,
+            Context context);
 
         @Delete("/indexers('{indexerName}')")
         @ExpectedResponses({ 204, 404 })
@@ -307,6 +332,145 @@ public final class IndexersImpl {
     }
 
     /**
+     * Resets specific documents in the datasource to be selectively re-ingested by the indexer.
+     * 
+     * @param indexerName The name of the indexer to reset documents for.
+     * @param overwrite If false, keys or ids will be appended to existing ones. If true, only the keys or ids in this
+     * payload will be queued to be re-ingested.
+     * @param keysOrIds The keysOrIds parameter.
+     * @param requestOptions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> resetDocsWithResponseAsync(String indexerName, Boolean overwrite,
+        DocumentKeysOrIds keysOrIds, RequestOptions requestOptions) {
+        final String accept = "application/json; odata.metadata=minimal";
+        UUID xMsClientRequestIdInternal = null;
+        if (requestOptions != null) {
+            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
+        }
+        UUID xMsClientRequestId = xMsClientRequestIdInternal;
+        return FluxUtil.withContext(context -> service.resetDocs(this.client.getEndpoint(), indexerName, overwrite,
+            xMsClientRequestId, this.client.getApiVersion(), accept, keysOrIds, context));
+    }
+
+    /**
+     * Resets specific documents in the datasource to be selectively re-ingested by the indexer.
+     * 
+     * @param indexerName The name of the indexer to reset documents for.
+     * @param overwrite If false, keys or ids will be appended to existing ones. If true, only the keys or ids in this
+     * payload will be queued to be re-ingested.
+     * @param keysOrIds The keysOrIds parameter.
+     * @param requestOptions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> resetDocsWithResponseAsync(String indexerName, Boolean overwrite,
+        DocumentKeysOrIds keysOrIds, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json; odata.metadata=minimal";
+        UUID xMsClientRequestIdInternal = null;
+        if (requestOptions != null) {
+            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
+        }
+        UUID xMsClientRequestId = xMsClientRequestIdInternal;
+        return service.resetDocs(this.client.getEndpoint(), indexerName, overwrite, xMsClientRequestId,
+            this.client.getApiVersion(), accept, keysOrIds, context);
+    }
+
+    /**
+     * Resets specific documents in the datasource to be selectively re-ingested by the indexer.
+     * 
+     * @param indexerName The name of the indexer to reset documents for.
+     * @param overwrite If false, keys or ids will be appended to existing ones. If true, only the keys or ids in this
+     * payload will be queued to be re-ingested.
+     * @param keysOrIds The keysOrIds parameter.
+     * @param requestOptions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> resetDocsAsync(String indexerName, Boolean overwrite, DocumentKeysOrIds keysOrIds,
+        RequestOptions requestOptions) {
+        return resetDocsWithResponseAsync(indexerName, overwrite, keysOrIds, requestOptions)
+            .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Resets specific documents in the datasource to be selectively re-ingested by the indexer.
+     * 
+     * @param indexerName The name of the indexer to reset documents for.
+     * @param overwrite If false, keys or ids will be appended to existing ones. If true, only the keys or ids in this
+     * payload will be queued to be re-ingested.
+     * @param keysOrIds The keysOrIds parameter.
+     * @param requestOptions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> resetDocsAsync(String indexerName, Boolean overwrite, DocumentKeysOrIds keysOrIds,
+        RequestOptions requestOptions, Context context) {
+        return resetDocsWithResponseAsync(indexerName, overwrite, keysOrIds, requestOptions, context)
+            .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Resets specific documents in the datasource to be selectively re-ingested by the indexer.
+     * 
+     * @param indexerName The name of the indexer to reset documents for.
+     * @param overwrite If false, keys or ids will be appended to existing ones. If true, only the keys or ids in this
+     * payload will be queued to be re-ingested.
+     * @param keysOrIds The keysOrIds parameter.
+     * @param requestOptions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> resetDocsWithResponse(String indexerName, Boolean overwrite, DocumentKeysOrIds keysOrIds,
+        RequestOptions requestOptions, Context context) {
+        final String accept = "application/json; odata.metadata=minimal";
+        UUID xMsClientRequestIdInternal = null;
+        if (requestOptions != null) {
+            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
+        }
+        UUID xMsClientRequestId = xMsClientRequestIdInternal;
+        return service.resetDocsSync(this.client.getEndpoint(), indexerName, overwrite, xMsClientRequestId,
+            this.client.getApiVersion(), accept, keysOrIds, context);
+    }
+
+    /**
+     * Resets specific documents in the datasource to be selectively re-ingested by the indexer.
+     * 
+     * @param indexerName The name of the indexer to reset documents for.
+     * @param overwrite If false, keys or ids will be appended to existing ones. If true, only the keys or ids in this
+     * payload will be queued to be re-ingested.
+     * @param keysOrIds The keysOrIds parameter.
+     * @param requestOptions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void resetDocs(String indexerName, Boolean overwrite, DocumentKeysOrIds keysOrIds,
+        RequestOptions requestOptions) {
+        resetDocsWithResponse(indexerName, overwrite, keysOrIds, requestOptions, Context.NONE);
+    }
+
+    /**
      * Runs an indexer on-demand.
      * 
      * @param indexerName The name of the indexer to run.
@@ -429,6 +593,8 @@ public final class IndexersImpl {
      * matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
      * server does not match this value.
+     * @param skipIndexerResetRequirementForCache Ignores cache reset requirements.
+     * @param disableCacheReprocessingChangeDetection Disables cache reprocessing change detection.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -437,7 +603,8 @@ public final class IndexersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchIndexer>> createOrUpdateWithResponseAsync(String indexerName, SearchIndexer indexer,
-        String ifMatch, String ifNoneMatch, RequestOptions requestOptions) {
+        String ifMatch, String ifNoneMatch, Boolean skipIndexerResetRequirementForCache,
+        Boolean disableCacheReprocessingChangeDetection, RequestOptions requestOptions) {
         final String prefer = "return=representation";
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
@@ -446,7 +613,8 @@ public final class IndexersImpl {
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
         return FluxUtil.withContext(context -> service.createOrUpdate(this.client.getEndpoint(), indexerName,
-            xMsClientRequestId, ifMatch, ifNoneMatch, prefer, this.client.getApiVersion(), accept, indexer, context));
+            xMsClientRequestId, ifMatch, ifNoneMatch, prefer, this.client.getApiVersion(),
+            skipIndexerResetRequirementForCache, disableCacheReprocessingChangeDetection, accept, indexer, context));
     }
 
     /**
@@ -458,6 +626,8 @@ public final class IndexersImpl {
      * matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
      * server does not match this value.
+     * @param skipIndexerResetRequirementForCache Ignores cache reset requirements.
+     * @param disableCacheReprocessingChangeDetection Disables cache reprocessing change detection.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -467,7 +637,8 @@ public final class IndexersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchIndexer>> createOrUpdateWithResponseAsync(String indexerName, SearchIndexer indexer,
-        String ifMatch, String ifNoneMatch, RequestOptions requestOptions, Context context) {
+        String ifMatch, String ifNoneMatch, Boolean skipIndexerResetRequirementForCache,
+        Boolean disableCacheReprocessingChangeDetection, RequestOptions requestOptions, Context context) {
         final String prefer = "return=representation";
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
@@ -476,7 +647,8 @@ public final class IndexersImpl {
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
         return service.createOrUpdate(this.client.getEndpoint(), indexerName, xMsClientRequestId, ifMatch, ifNoneMatch,
-            prefer, this.client.getApiVersion(), accept, indexer, context);
+            prefer, this.client.getApiVersion(), skipIndexerResetRequirementForCache,
+            disableCacheReprocessingChangeDetection, accept, indexer, context);
     }
 
     /**
@@ -488,6 +660,8 @@ public final class IndexersImpl {
      * matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
      * server does not match this value.
+     * @param skipIndexerResetRequirementForCache Ignores cache reset requirements.
+     * @param disableCacheReprocessingChangeDetection Disables cache reprocessing change detection.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -496,8 +670,10 @@ public final class IndexersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchIndexer> createOrUpdateAsync(String indexerName, SearchIndexer indexer, String ifMatch,
-        String ifNoneMatch, RequestOptions requestOptions) {
-        return createOrUpdateWithResponseAsync(indexerName, indexer, ifMatch, ifNoneMatch, requestOptions)
+        String ifNoneMatch, Boolean skipIndexerResetRequirementForCache,
+        Boolean disableCacheReprocessingChangeDetection, RequestOptions requestOptions) {
+        return createOrUpdateWithResponseAsync(indexerName, indexer, ifMatch, ifNoneMatch,
+            skipIndexerResetRequirementForCache, disableCacheReprocessingChangeDetection, requestOptions)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -510,6 +686,8 @@ public final class IndexersImpl {
      * matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
      * server does not match this value.
+     * @param skipIndexerResetRequirementForCache Ignores cache reset requirements.
+     * @param disableCacheReprocessingChangeDetection Disables cache reprocessing change detection.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -519,8 +697,10 @@ public final class IndexersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchIndexer> createOrUpdateAsync(String indexerName, SearchIndexer indexer, String ifMatch,
-        String ifNoneMatch, RequestOptions requestOptions, Context context) {
-        return createOrUpdateWithResponseAsync(indexerName, indexer, ifMatch, ifNoneMatch, requestOptions, context)
+        String ifNoneMatch, Boolean skipIndexerResetRequirementForCache,
+        Boolean disableCacheReprocessingChangeDetection, RequestOptions requestOptions, Context context) {
+        return createOrUpdateWithResponseAsync(indexerName, indexer, ifMatch, ifNoneMatch,
+            skipIndexerResetRequirementForCache, disableCacheReprocessingChangeDetection, requestOptions, context)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -533,6 +713,8 @@ public final class IndexersImpl {
      * matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
      * server does not match this value.
+     * @param skipIndexerResetRequirementForCache Ignores cache reset requirements.
+     * @param disableCacheReprocessingChangeDetection Disables cache reprocessing change detection.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -542,7 +724,8 @@ public final class IndexersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchIndexer> createOrUpdateWithResponse(String indexerName, SearchIndexer indexer, String ifMatch,
-        String ifNoneMatch, RequestOptions requestOptions, Context context) {
+        String ifNoneMatch, Boolean skipIndexerResetRequirementForCache,
+        Boolean disableCacheReprocessingChangeDetection, RequestOptions requestOptions, Context context) {
         final String prefer = "return=representation";
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
@@ -551,7 +734,8 @@ public final class IndexersImpl {
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
         return service.createOrUpdateSync(this.client.getEndpoint(), indexerName, xMsClientRequestId, ifMatch,
-            ifNoneMatch, prefer, this.client.getApiVersion(), accept, indexer, context);
+            ifNoneMatch, prefer, this.client.getApiVersion(), skipIndexerResetRequirementForCache,
+            disableCacheReprocessingChangeDetection, accept, indexer, context);
     }
 
     /**
@@ -563,6 +747,8 @@ public final class IndexersImpl {
      * matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
      * server does not match this value.
+     * @param skipIndexerResetRequirementForCache Ignores cache reset requirements.
+     * @param disableCacheReprocessingChangeDetection Disables cache reprocessing change detection.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -571,8 +757,10 @@ public final class IndexersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SearchIndexer createOrUpdate(String indexerName, SearchIndexer indexer, String ifMatch, String ifNoneMatch,
+        Boolean skipIndexerResetRequirementForCache, Boolean disableCacheReprocessingChangeDetection,
         RequestOptions requestOptions) {
-        return createOrUpdateWithResponse(indexerName, indexer, ifMatch, ifNoneMatch, requestOptions, Context.NONE)
+        return createOrUpdateWithResponse(indexerName, indexer, ifMatch, ifNoneMatch,
+            skipIndexerResetRequirementForCache, disableCacheReprocessingChangeDetection, requestOptions, Context.NONE)
             .getValue();
     }
 

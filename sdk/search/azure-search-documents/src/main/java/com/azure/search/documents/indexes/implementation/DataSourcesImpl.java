@@ -71,7 +71,9 @@ public final class DataSourcesImpl {
             @PathParam("dataSourceName") String dataSourceName,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, @HeaderParam("If-Match") String ifMatch,
             @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("Prefer") String prefer,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            @QueryParam("api-version") String apiVersion,
+            @QueryParam("ignoreResetRequirements") Boolean skipIndexerResetRequirementForCache,
+            @HeaderParam("Accept") String accept,
             @BodyParam("application/json") SearchIndexerDataSourceConnection dataSource, Context context);
 
         @Put("/datasources('{dataSourceName}')")
@@ -81,7 +83,9 @@ public final class DataSourcesImpl {
             @PathParam("dataSourceName") String dataSourceName,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, @HeaderParam("If-Match") String ifMatch,
             @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("Prefer") String prefer,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            @QueryParam("api-version") String apiVersion,
+            @QueryParam("ignoreResetRequirements") Boolean skipIndexerResetRequirementForCache,
+            @HeaderParam("Accept") String accept,
             @BodyParam("application/json") SearchIndexerDataSourceConnection dataSource, Context context);
 
         @Delete("/datasources('{dataSourceName}')")
@@ -158,6 +162,7 @@ public final class DataSourcesImpl {
      * matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
      * server does not match this value.
+     * @param skipIndexerResetRequirementForCache Ignores cache reset requirements.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -168,7 +173,7 @@ public final class DataSourcesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchIndexerDataSourceConnection>> createOrUpdateWithResponseAsync(String dataSourceName,
         SearchIndexerDataSourceConnection dataSource, String ifMatch, String ifNoneMatch,
-        RequestOptions requestOptions) {
+        Boolean skipIndexerResetRequirementForCache, RequestOptions requestOptions) {
         final String prefer = "return=representation";
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
@@ -176,9 +181,9 @@ public final class DataSourcesImpl {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return FluxUtil.withContext(
-            context -> service.createOrUpdate(this.client.getEndpoint(), dataSourceName, xMsClientRequestId, ifMatch,
-                ifNoneMatch, prefer, this.client.getApiVersion(), accept, dataSource, context));
+        return FluxUtil.withContext(context -> service.createOrUpdate(this.client.getEndpoint(), dataSourceName,
+            xMsClientRequestId, ifMatch, ifNoneMatch, prefer, this.client.getApiVersion(),
+            skipIndexerResetRequirementForCache, accept, dataSource, context));
     }
 
     /**
@@ -190,6 +195,7 @@ public final class DataSourcesImpl {
      * matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
      * server does not match this value.
+     * @param skipIndexerResetRequirementForCache Ignores cache reset requirements.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -200,8 +206,8 @@ public final class DataSourcesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchIndexerDataSourceConnection>> createOrUpdateWithResponseAsync(String dataSourceName,
-        SearchIndexerDataSourceConnection dataSource, String ifMatch, String ifNoneMatch, RequestOptions requestOptions,
-        Context context) {
+        SearchIndexerDataSourceConnection dataSource, String ifMatch, String ifNoneMatch,
+        Boolean skipIndexerResetRequirementForCache, RequestOptions requestOptions, Context context) {
         final String prefer = "return=representation";
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
@@ -210,7 +216,8 @@ public final class DataSourcesImpl {
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
         return service.createOrUpdate(this.client.getEndpoint(), dataSourceName, xMsClientRequestId, ifMatch,
-            ifNoneMatch, prefer, this.client.getApiVersion(), accept, dataSource, context);
+            ifNoneMatch, prefer, this.client.getApiVersion(), skipIndexerResetRequirementForCache, accept, dataSource,
+            context);
     }
 
     /**
@@ -222,6 +229,7 @@ public final class DataSourcesImpl {
      * matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
      * server does not match this value.
+     * @param skipIndexerResetRequirementForCache Ignores cache reset requirements.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -232,8 +240,35 @@ public final class DataSourcesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchIndexerDataSourceConnection> createOrUpdateAsync(String dataSourceName,
         SearchIndexerDataSourceConnection dataSource, String ifMatch, String ifNoneMatch,
-        RequestOptions requestOptions) {
-        return createOrUpdateWithResponseAsync(dataSourceName, dataSource, ifMatch, ifNoneMatch, requestOptions)
+        Boolean skipIndexerResetRequirementForCache, RequestOptions requestOptions) {
+        return createOrUpdateWithResponseAsync(dataSourceName, dataSource, ifMatch, ifNoneMatch,
+            skipIndexerResetRequirementForCache, requestOptions).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Creates a new datasource or updates a datasource if it already exists.
+     * 
+     * @param dataSourceName The name of the datasource to create or update.
+     * @param dataSource The definition of the datasource to create or update.
+     * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
+     * matches this value.
+     * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
+     * server does not match this value.
+     * @param skipIndexerResetRequirementForCache Ignores cache reset requirements.
+     * @param requestOptions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a datasource definition, which can be used to configure an indexer on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SearchIndexerDataSourceConnection> createOrUpdateAsync(String dataSourceName,
+        SearchIndexerDataSourceConnection dataSource, String ifMatch, String ifNoneMatch,
+        Boolean skipIndexerResetRequirementForCache, RequestOptions requestOptions, Context context) {
+        return createOrUpdateWithResponseAsync(dataSourceName, dataSource, ifMatch, ifNoneMatch,
+            skipIndexerResetRequirementForCache, requestOptions, context)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -246,31 +281,7 @@ public final class DataSourcesImpl {
      * matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
      * server does not match this value.
-     * @param requestOptions Parameter group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a datasource definition, which can be used to configure an indexer on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SearchIndexerDataSourceConnection> createOrUpdateAsync(String dataSourceName,
-        SearchIndexerDataSourceConnection dataSource, String ifMatch, String ifNoneMatch, RequestOptions requestOptions,
-        Context context) {
-        return createOrUpdateWithResponseAsync(dataSourceName, dataSource, ifMatch, ifNoneMatch, requestOptions,
-            context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Creates a new datasource or updates a datasource if it already exists.
-     * 
-     * @param dataSourceName The name of the datasource to create or update.
-     * @param dataSource The definition of the datasource to create or update.
-     * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
-     * matches this value.
-     * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
-     * server does not match this value.
+     * @param skipIndexerResetRequirementForCache Ignores cache reset requirements.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -281,8 +292,8 @@ public final class DataSourcesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchIndexerDataSourceConnection> createOrUpdateWithResponse(String dataSourceName,
-        SearchIndexerDataSourceConnection dataSource, String ifMatch, String ifNoneMatch, RequestOptions requestOptions,
-        Context context) {
+        SearchIndexerDataSourceConnection dataSource, String ifMatch, String ifNoneMatch,
+        Boolean skipIndexerResetRequirementForCache, RequestOptions requestOptions, Context context) {
         final String prefer = "return=representation";
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
@@ -291,7 +302,8 @@ public final class DataSourcesImpl {
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
         return service.createOrUpdateSync(this.client.getEndpoint(), dataSourceName, xMsClientRequestId, ifMatch,
-            ifNoneMatch, prefer, this.client.getApiVersion(), accept, dataSource, context);
+            ifNoneMatch, prefer, this.client.getApiVersion(), skipIndexerResetRequirementForCache, accept, dataSource,
+            context);
     }
 
     /**
@@ -303,6 +315,7 @@ public final class DataSourcesImpl {
      * matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
      * server does not match this value.
+     * @param skipIndexerResetRequirementForCache Ignores cache reset requirements.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -312,9 +325,9 @@ public final class DataSourcesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SearchIndexerDataSourceConnection createOrUpdate(String dataSourceName,
         SearchIndexerDataSourceConnection dataSource, String ifMatch, String ifNoneMatch,
-        RequestOptions requestOptions) {
-        return createOrUpdateWithResponse(dataSourceName, dataSource, ifMatch, ifNoneMatch, requestOptions,
-            Context.NONE).getValue();
+        Boolean skipIndexerResetRequirementForCache, RequestOptions requestOptions) {
+        return createOrUpdateWithResponse(dataSourceName, dataSource, ifMatch, ifNoneMatch,
+            skipIndexerResetRequirementForCache, requestOptions, Context.NONE).getValue();
     }
 
     /**
