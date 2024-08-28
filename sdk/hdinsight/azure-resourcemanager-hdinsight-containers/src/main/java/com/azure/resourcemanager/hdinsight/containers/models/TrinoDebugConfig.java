@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Trino debug configuration.
  */
 @Fluent
-public final class TrinoDebugConfig {
+public final class TrinoDebugConfig implements JsonSerializable<TrinoDebugConfig> {
     /*
      * The flag that if enable debug or not.
      */
-    @JsonProperty(value = "enable")
     private Boolean enable;
 
     /*
      * The debug port.
      */
-    @JsonProperty(value = "port")
     private Integer port;
 
     /*
      * The flag that if suspend debug or not.
      */
-    @JsonProperty(value = "suspend")
     private Boolean suspend;
 
     /**
@@ -102,5 +103,47 @@ public final class TrinoDebugConfig {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("enable", this.enable);
+        jsonWriter.writeNumberField("port", this.port);
+        jsonWriter.writeBooleanField("suspend", this.suspend);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TrinoDebugConfig from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TrinoDebugConfig if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TrinoDebugConfig.
+     */
+    public static TrinoDebugConfig fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TrinoDebugConfig deserializedTrinoDebugConfig = new TrinoDebugConfig();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enable".equals(fieldName)) {
+                    deserializedTrinoDebugConfig.enable = reader.getNullable(JsonReader::getBoolean);
+                } else if ("port".equals(fieldName)) {
+                    deserializedTrinoDebugConfig.port = reader.getNullable(JsonReader::getInt);
+                } else if ("suspend".equals(fieldName)) {
+                    deserializedTrinoDebugConfig.suspend = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTrinoDebugConfig;
+        });
     }
 }

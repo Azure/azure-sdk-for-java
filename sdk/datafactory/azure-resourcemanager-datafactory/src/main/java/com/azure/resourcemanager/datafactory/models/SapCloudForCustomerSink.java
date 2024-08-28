@@ -5,33 +5,26 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * A copy activity SAP Cloud for Customer sink.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "type",
-    defaultImpl = SapCloudForCustomerSink.class,
-    visible = true)
-@JsonTypeName("SapCloudForCustomerSink")
 @Fluent
 public final class SapCloudForCustomerSink extends CopySink {
     /*
      * Copy sink type.
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private String type = "SapCloudForCustomerSink";
 
     /*
      * The write behavior for the operation. Default is 'Insert'.
      */
-    @JsonProperty(value = "writeBehavior")
     private SapCloudForCustomerSinkWriteBehavior writeBehavior;
 
     /*
@@ -39,7 +32,6 @@ public final class SapCloudForCustomerSink extends CopySink {
      * response data. Default value: 00:05:00. Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
-    @JsonProperty(value = "httpRequestTimeout")
     private Object httpRequestTimeout;
 
     /**
@@ -164,5 +156,77 @@ public final class SapCloudForCustomerSink extends CopySink {
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("writeBatchSize", writeBatchSize());
+        jsonWriter.writeUntypedField("writeBatchTimeout", writeBatchTimeout());
+        jsonWriter.writeUntypedField("sinkRetryCount", sinkRetryCount());
+        jsonWriter.writeUntypedField("sinkRetryWait", sinkRetryWait());
+        jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
+        jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("writeBehavior", this.writeBehavior == null ? null : this.writeBehavior.toString());
+        jsonWriter.writeUntypedField("httpRequestTimeout", this.httpRequestTimeout);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SapCloudForCustomerSink from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SapCloudForCustomerSink if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SapCloudForCustomerSink.
+     */
+    public static SapCloudForCustomerSink fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SapCloudForCustomerSink deserializedSapCloudForCustomerSink = new SapCloudForCustomerSink();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("writeBatchSize".equals(fieldName)) {
+                    deserializedSapCloudForCustomerSink.withWriteBatchSize(reader.readUntyped());
+                } else if ("writeBatchTimeout".equals(fieldName)) {
+                    deserializedSapCloudForCustomerSink.withWriteBatchTimeout(reader.readUntyped());
+                } else if ("sinkRetryCount".equals(fieldName)) {
+                    deserializedSapCloudForCustomerSink.withSinkRetryCount(reader.readUntyped());
+                } else if ("sinkRetryWait".equals(fieldName)) {
+                    deserializedSapCloudForCustomerSink.withSinkRetryWait(reader.readUntyped());
+                } else if ("maxConcurrentConnections".equals(fieldName)) {
+                    deserializedSapCloudForCustomerSink.withMaxConcurrentConnections(reader.readUntyped());
+                } else if ("disableMetricsCollection".equals(fieldName)) {
+                    deserializedSapCloudForCustomerSink.withDisableMetricsCollection(reader.readUntyped());
+                } else if ("type".equals(fieldName)) {
+                    deserializedSapCloudForCustomerSink.type = reader.getString();
+                } else if ("writeBehavior".equals(fieldName)) {
+                    deserializedSapCloudForCustomerSink.writeBehavior
+                        = SapCloudForCustomerSinkWriteBehavior.fromString(reader.getString());
+                } else if ("httpRequestTimeout".equals(fieldName)) {
+                    deserializedSapCloudForCustomerSink.httpRequestTimeout = reader.readUntyped();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedSapCloudForCustomerSink.withAdditionalProperties(additionalProperties);
+
+            return deserializedSapCloudForCustomerSink;
+        });
     }
 }

@@ -6,67 +6,50 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Factory's git repo information.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "type",
-    defaultImpl = FactoryRepoConfiguration.class,
-    visible = true)
-@JsonTypeName("FactoryRepoConfiguration")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "FactoryVSTSConfiguration", value = FactoryVstsConfiguration.class),
-    @JsonSubTypes.Type(name = "FactoryGitHubConfiguration", value = FactoryGitHubConfiguration.class) })
 @Fluent
-public class FactoryRepoConfiguration {
+public class FactoryRepoConfiguration implements JsonSerializable<FactoryRepoConfiguration> {
     /*
      * Type of repo configuration.
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private String type = "FactoryRepoConfiguration";
 
     /*
      * Account name.
      */
-    @JsonProperty(value = "accountName", required = true)
     private String accountName;
 
     /*
      * Repository name.
      */
-    @JsonProperty(value = "repositoryName", required = true)
     private String repositoryName;
 
     /*
      * Collaboration branch.
      */
-    @JsonProperty(value = "collaborationBranch", required = true)
     private String collaborationBranch;
 
     /*
      * Root folder.
      */
-    @JsonProperty(value = "rootFolder", required = true)
     private String rootFolder;
 
     /*
      * Last commit id.
      */
-    @JsonProperty(value = "lastCommitId")
     private String lastCommitId;
 
     /*
      * Disable manual publish operation in ADF studio to favor automated publish.
      */
-    @JsonProperty(value = "disablePublish")
     private Boolean disablePublish;
 
     /**
@@ -233,4 +216,86 @@ public class FactoryRepoConfiguration {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(FactoryRepoConfiguration.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("accountName", this.accountName);
+        jsonWriter.writeStringField("repositoryName", this.repositoryName);
+        jsonWriter.writeStringField("collaborationBranch", this.collaborationBranch);
+        jsonWriter.writeStringField("rootFolder", this.rootFolder);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("lastCommitId", this.lastCommitId);
+        jsonWriter.writeBooleanField("disablePublish", this.disablePublish);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FactoryRepoConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FactoryRepoConfiguration if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FactoryRepoConfiguration.
+     */
+    public static FactoryRepoConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("type".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("FactoryVSTSConfiguration".equals(discriminatorValue)) {
+                    return FactoryVstsConfiguration.fromJson(readerToUse.reset());
+                } else if ("FactoryGitHubConfiguration".equals(discriminatorValue)) {
+                    return FactoryGitHubConfiguration.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static FactoryRepoConfiguration fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FactoryRepoConfiguration deserializedFactoryRepoConfiguration = new FactoryRepoConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("accountName".equals(fieldName)) {
+                    deserializedFactoryRepoConfiguration.accountName = reader.getString();
+                } else if ("repositoryName".equals(fieldName)) {
+                    deserializedFactoryRepoConfiguration.repositoryName = reader.getString();
+                } else if ("collaborationBranch".equals(fieldName)) {
+                    deserializedFactoryRepoConfiguration.collaborationBranch = reader.getString();
+                } else if ("rootFolder".equals(fieldName)) {
+                    deserializedFactoryRepoConfiguration.rootFolder = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedFactoryRepoConfiguration.type = reader.getString();
+                } else if ("lastCommitId".equals(fieldName)) {
+                    deserializedFactoryRepoConfiguration.lastCommitId = reader.getString();
+                } else if ("disablePublish".equals(fieldName)) {
+                    deserializedFactoryRepoConfiguration.disablePublish = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFactoryRepoConfiguration;
+        });
+    }
 }

@@ -10,11 +10,9 @@ import com.azure.resourcemanager.machinelearning.models.AmlComputeNodeInformatio
 public final class AmlComputeNodeInformationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AmlComputeNodeInformation model =
-            BinaryData
-                .fromString(
-                    "{\"nodeId\":\"hsmtxpsiebtfhvp\",\"privateIpAddress\":\"apskrdqm\",\"publicIpAddress\":\"jdhtldwkyzxu\",\"port\":379697539,\"nodeState\":\"unusable\",\"runId\":\"scwsv\"}")
-                .toObject(AmlComputeNodeInformation.class);
+        AmlComputeNodeInformation model = BinaryData.fromString(
+            "{\"nodeId\":\"nxipeil\",\"privateIpAddress\":\"zuaejxd\",\"publicIpAddress\":\"tskzbbtdzumveek\",\"port\":1792717087,\"nodeState\":\"preparing\",\"runId\":\"hkfpbs\"}")
+            .toObject(AmlComputeNodeInformation.class);
     }
 
     @org.junit.jupiter.api.Test

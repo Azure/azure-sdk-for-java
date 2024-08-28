@@ -6,23 +6,25 @@ package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The metastore specification for Spark cluster.
  */
 @Fluent
-public final class SparkMetastoreSpec {
+public final class SparkMetastoreSpec implements JsonSerializable<SparkMetastoreSpec> {
     /*
      * The database server host.
      */
-    @JsonProperty(value = "dbServerHost", required = true)
     private String dbServerHost;
 
     /*
      * The database name.
      */
-    @JsonProperty(value = "dbName", required = true)
     private String dbName;
 
     /*
@@ -30,31 +32,26 @@ public final class SparkMetastoreSpec {
      * https://learn.microsoft.com/en-us/azure/azure-sql/database/logins-create-manage?view=azuresql#authentication-and-
      * authorization
      */
-    @JsonProperty(value = "dbConnectionAuthenticationMode")
     private DbConnectionAuthenticationMode dbConnectionAuthenticationMode;
 
     /*
      * The database user name.
      */
-    @JsonProperty(value = "dbUserName")
     private String dbUsername;
 
     /*
      * The secret name which contains the database user password.
      */
-    @JsonProperty(value = "dbPasswordSecretName")
     private String dbPasswordSecretName;
 
     /*
      * The key vault resource id.
      */
-    @JsonProperty(value = "keyVaultId")
     private String keyVaultId;
 
     /*
      * The thrift url.
      */
-    @JsonProperty(value = "thriftUrl")
     private String thriftUrl;
 
     /**
@@ -215,14 +212,72 @@ public final class SparkMetastoreSpec {
      */
     public void validate() {
         if (dbServerHost() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property dbServerHost in model SparkMetastoreSpec"));
+            throw LOGGER.atError()
+                .log(
+                    new IllegalArgumentException("Missing required property dbServerHost in model SparkMetastoreSpec"));
         }
         if (dbName() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property dbName in model SparkMetastoreSpec"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property dbName in model SparkMetastoreSpec"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SparkMetastoreSpec.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("dbServerHost", this.dbServerHost);
+        jsonWriter.writeStringField("dbName", this.dbName);
+        jsonWriter.writeStringField("dbConnectionAuthenticationMode",
+            this.dbConnectionAuthenticationMode == null ? null : this.dbConnectionAuthenticationMode.toString());
+        jsonWriter.writeStringField("dbUserName", this.dbUsername);
+        jsonWriter.writeStringField("dbPasswordSecretName", this.dbPasswordSecretName);
+        jsonWriter.writeStringField("keyVaultId", this.keyVaultId);
+        jsonWriter.writeStringField("thriftUrl", this.thriftUrl);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SparkMetastoreSpec from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SparkMetastoreSpec if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SparkMetastoreSpec.
+     */
+    public static SparkMetastoreSpec fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SparkMetastoreSpec deserializedSparkMetastoreSpec = new SparkMetastoreSpec();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dbServerHost".equals(fieldName)) {
+                    deserializedSparkMetastoreSpec.dbServerHost = reader.getString();
+                } else if ("dbName".equals(fieldName)) {
+                    deserializedSparkMetastoreSpec.dbName = reader.getString();
+                } else if ("dbConnectionAuthenticationMode".equals(fieldName)) {
+                    deserializedSparkMetastoreSpec.dbConnectionAuthenticationMode
+                        = DbConnectionAuthenticationMode.fromString(reader.getString());
+                } else if ("dbUserName".equals(fieldName)) {
+                    deserializedSparkMetastoreSpec.dbUsername = reader.getString();
+                } else if ("dbPasswordSecretName".equals(fieldName)) {
+                    deserializedSparkMetastoreSpec.dbPasswordSecretName = reader.getString();
+                } else if ("keyVaultId".equals(fieldName)) {
+                    deserializedSparkMetastoreSpec.keyVaultId = reader.getString();
+                } else if ("thriftUrl".equals(fieldName)) {
+                    deserializedSparkMetastoreSpec.thriftUrl = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSparkMetastoreSpec;
+        });
+    }
 }

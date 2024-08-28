@@ -53,6 +53,8 @@ public class CosmosBulkExecutionOptionsImpl implements OverridableRequestOptions
     private Set<String> keywordIdentifiers;
     private Scheduler schedulerOverride = null;
 
+    private CosmosEndToEndOperationLatencyPolicyConfig e2ePolicy = null;
+
     public CosmosBulkExecutionOptionsImpl(CosmosBulkExecutionOptionsImpl toBeCloned) {
         this.schedulerOverride = toBeCloned.schedulerOverride;
         this.initialMicroBatchSize = toBeCloned.initialMicroBatchSize;
@@ -69,6 +71,7 @@ public class CosmosBulkExecutionOptionsImpl implements OverridableRequestOptions
         this.diagnosticsTracker = toBeCloned.diagnosticsTracker;
         this.customSerializer = toBeCloned.customSerializer;
         this.customOptions = toBeCloned.customOptions;
+        this.e2ePolicy = toBeCloned.e2ePolicy;
 
         if (toBeCloned.excludeRegions != null) {
             this.excludeRegions = new ArrayList<>(toBeCloned.excludeRegions);
@@ -278,7 +281,11 @@ public class CosmosBulkExecutionOptionsImpl implements OverridableRequestOptions
 
     @Override
     public CosmosEndToEndOperationLatencyPolicyConfig getCosmosEndToEndLatencyPolicyConfig() {
-        return null;
+        return this.e2ePolicy;
+    }
+
+    public void setCosmosEndToEndLatencyPolicyConfig(CosmosEndToEndOperationLatencyPolicyConfig cfg) {
+        this.e2ePolicy = cfg;
     }
 
     @Override

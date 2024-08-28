@@ -24,9 +24,10 @@ import com.azure.storage.queue.models.QueueItem;
 import com.azure.storage.queue.models.QueueMessageDecodingError;
 import com.azure.storage.queue.models.QueueServiceProperties;
 import com.azure.storage.queue.models.QueueServiceStatistics;
-import com.azure.storage.queue.models.QueuesSegmentOptions;
 import com.azure.storage.queue.models.QueueStorageException;
+import com.azure.storage.queue.models.QueuesSegmentOptions;
 import reactor.core.publisher.Mono;
+
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -324,9 +325,9 @@ public final class QueueServiceClient {
             }
         }
         BiFunction<String, Integer, PagedResponse<QueueItem>> retriever = (nextMarker, pageSize) -> {
-            Supplier<PagedResponse<QueueItem>> operation = () ->
-                this.azureQueueStorage.getServices().listQueuesSegmentSinglePage(prefix, nextMarker,
-                    pageSize == null ? maxResultsPerPage : pageSize, include, null, null, finalContext);
+            Supplier<PagedResponse<QueueItem>> operation = () -> this.azureQueueStorage.getServices()
+                .listQueuesSegmentSinglePage(prefix, nextMarker, pageSize == null ? maxResultsPerPage : pageSize,
+                    include, null, null, finalContext);
 
             return submitThreadPool(operation, LOGGER, timeout);
 
@@ -392,8 +393,8 @@ public final class QueueServiceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QueueServiceProperties> getPropertiesWithResponse(Duration timeout, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
-        Supplier<Response<QueueServiceProperties>> operation =
-            () -> this.azureQueueStorage.getServices().getPropertiesWithResponse(null, null, finalContext);
+        Supplier<Response<QueueServiceProperties>> operation = () -> this.azureQueueStorage.getServices()
+            .getPropertiesWithResponse(null, null, finalContext);
 
         return submitThreadPool(operation, LOGGER, timeout);
     }
@@ -585,8 +586,8 @@ public final class QueueServiceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QueueServiceStatistics> getStatisticsWithResponse(Duration timeout, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
-        Supplier<ResponseBase<ServicesGetStatisticsHeaders, QueueServiceStatistics>> operation = () ->
-            this.azureQueueStorage.getServices().getStatisticsWithResponse(null, null, finalContext);
+        Supplier<ResponseBase<ServicesGetStatisticsHeaders, QueueServiceStatistics>> operation
+            = () -> this.azureQueueStorage.getServices().getStatisticsWithResponse(null, null, finalContext);
         return submitThreadPool(operation, LOGGER, timeout);
     }
 

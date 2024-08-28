@@ -38,7 +38,7 @@
     },
     "searchSku": {
       "type": "string",
-      "defaultValue": "standard",
+      "defaultValue": "basic",
       "allowedValues": [
         "free",
         "basic",
@@ -85,7 +85,7 @@
         "name": "[parameters('searchSku')]"
       },
       "properties": {
-        "replicaCount": 3,
+        "replicaCount": 1,
         "partitionCount": 1,
         "hostingMode": "Default",
         "roleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', variables('searchIndexDataContributorRoleId'))]",

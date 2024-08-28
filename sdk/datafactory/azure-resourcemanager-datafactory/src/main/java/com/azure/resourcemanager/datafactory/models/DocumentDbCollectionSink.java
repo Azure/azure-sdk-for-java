@@ -5,40 +5,32 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * A copy activity Document Database Collection sink.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "type",
-    defaultImpl = DocumentDbCollectionSink.class,
-    visible = true)
-@JsonTypeName("DocumentDbCollectionSink")
 @Fluent
 public final class DocumentDbCollectionSink extends CopySink {
     /*
      * Copy sink type.
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private String type = "DocumentDbCollectionSink";
 
     /*
      * Nested properties separator. Default is . (dot). Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "nestingSeparator")
     private Object nestingSeparator;
 
     /*
      * Describes how to write data to Azure Cosmos DB. Type: string (or Expression with resultType string). Allowed
      * values: insert and upsert.
      */
-    @JsonProperty(value = "writeBehavior")
     private Object writeBehavior;
 
     /**
@@ -163,5 +155,76 @@ public final class DocumentDbCollectionSink extends CopySink {
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("writeBatchSize", writeBatchSize());
+        jsonWriter.writeUntypedField("writeBatchTimeout", writeBatchTimeout());
+        jsonWriter.writeUntypedField("sinkRetryCount", sinkRetryCount());
+        jsonWriter.writeUntypedField("sinkRetryWait", sinkRetryWait());
+        jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
+        jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeUntypedField("nestingSeparator", this.nestingSeparator);
+        jsonWriter.writeUntypedField("writeBehavior", this.writeBehavior);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DocumentDbCollectionSink from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DocumentDbCollectionSink if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DocumentDbCollectionSink.
+     */
+    public static DocumentDbCollectionSink fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DocumentDbCollectionSink deserializedDocumentDbCollectionSink = new DocumentDbCollectionSink();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("writeBatchSize".equals(fieldName)) {
+                    deserializedDocumentDbCollectionSink.withWriteBatchSize(reader.readUntyped());
+                } else if ("writeBatchTimeout".equals(fieldName)) {
+                    deserializedDocumentDbCollectionSink.withWriteBatchTimeout(reader.readUntyped());
+                } else if ("sinkRetryCount".equals(fieldName)) {
+                    deserializedDocumentDbCollectionSink.withSinkRetryCount(reader.readUntyped());
+                } else if ("sinkRetryWait".equals(fieldName)) {
+                    deserializedDocumentDbCollectionSink.withSinkRetryWait(reader.readUntyped());
+                } else if ("maxConcurrentConnections".equals(fieldName)) {
+                    deserializedDocumentDbCollectionSink.withMaxConcurrentConnections(reader.readUntyped());
+                } else if ("disableMetricsCollection".equals(fieldName)) {
+                    deserializedDocumentDbCollectionSink.withDisableMetricsCollection(reader.readUntyped());
+                } else if ("type".equals(fieldName)) {
+                    deserializedDocumentDbCollectionSink.type = reader.getString();
+                } else if ("nestingSeparator".equals(fieldName)) {
+                    deserializedDocumentDbCollectionSink.nestingSeparator = reader.readUntyped();
+                } else if ("writeBehavior".equals(fieldName)) {
+                    deserializedDocumentDbCollectionSink.writeBehavior = reader.readUntyped();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedDocumentDbCollectionSink.withAdditionalProperties(additionalProperties);
+
+            return deserializedDocumentDbCollectionSink;
+        });
     }
 }

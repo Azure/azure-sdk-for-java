@@ -5,29 +5,26 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * A copy activity QuickBooks server source.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = QuickBooksSource.class, visible = true)
-@JsonTypeName("QuickBooksSource")
 @Fluent
 public final class QuickBooksSource extends TabularSource {
     /*
      * Copy source type.
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private String type = "QuickBooksSource";
 
     /*
      * A query to retrieve data from source. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "query")
     private Object query;
 
     /**
@@ -130,5 +127,73 @@ public final class QuickBooksSource extends TabularSource {
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("sourceRetryCount", sourceRetryCount());
+        jsonWriter.writeUntypedField("sourceRetryWait", sourceRetryWait());
+        jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
+        jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
+        jsonWriter.writeUntypedField("queryTimeout", queryTimeout());
+        jsonWriter.writeUntypedField("additionalColumns", additionalColumns());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeUntypedField("query", this.query);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of QuickBooksSource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of QuickBooksSource if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the QuickBooksSource.
+     */
+    public static QuickBooksSource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            QuickBooksSource deserializedQuickBooksSource = new QuickBooksSource();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceRetryCount".equals(fieldName)) {
+                    deserializedQuickBooksSource.withSourceRetryCount(reader.readUntyped());
+                } else if ("sourceRetryWait".equals(fieldName)) {
+                    deserializedQuickBooksSource.withSourceRetryWait(reader.readUntyped());
+                } else if ("maxConcurrentConnections".equals(fieldName)) {
+                    deserializedQuickBooksSource.withMaxConcurrentConnections(reader.readUntyped());
+                } else if ("disableMetricsCollection".equals(fieldName)) {
+                    deserializedQuickBooksSource.withDisableMetricsCollection(reader.readUntyped());
+                } else if ("queryTimeout".equals(fieldName)) {
+                    deserializedQuickBooksSource.withQueryTimeout(reader.readUntyped());
+                } else if ("additionalColumns".equals(fieldName)) {
+                    deserializedQuickBooksSource.withAdditionalColumns(reader.readUntyped());
+                } else if ("type".equals(fieldName)) {
+                    deserializedQuickBooksSource.type = reader.getString();
+                } else if ("query".equals(fieldName)) {
+                    deserializedQuickBooksSource.query = reader.readUntyped();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedQuickBooksSource.withAdditionalProperties(additionalProperties);
+
+            return deserializedQuickBooksSource;
+        });
     }
 }

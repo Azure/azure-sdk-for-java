@@ -45,22 +45,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in OnlineDeploymentsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in OnlineDeploymentsClient.
+ */
 public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final OnlineDeploymentsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureMachineLearningWorkspacesImpl client;
 
     /**
      * Initializes an instance of OnlineDeploymentsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     OnlineDeploymentsClientImpl(AzureMachineLearningWorkspacesImpl client) {
-        this.service =
-            RestProxy.create(OnlineDeploymentsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(OnlineDeploymentsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -71,163 +77,102 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
     @Host("{$host}")
     @ServiceInterface(name = "AzureMachineLearning")
     public interface OnlineDeploymentsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/onlineEndpoints/{endpointName}"
-                + "/deployments")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/onlineEndpoints/{endpointName}/deployments")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<OnlineDeploymentTrackedResourceArmPaginatedResult>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<OnlineDeploymentTrackedResourceArmPaginatedResult>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("endpointName") String endpointName,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$orderBy") String orderBy,
-            @QueryParam("$top") Integer top,
-            @QueryParam("$skip") String skip,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("endpointName") String endpointName, @QueryParam("api-version") String apiVersion,
+            @QueryParam("$orderBy") String orderBy, @QueryParam("$top") Integer top, @QueryParam("$skip") String skip,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/onlineEndpoints/{endpointName}"
-                + "/deployments/{deploymentName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/onlineEndpoints/{endpointName}/deployments/{deploymentName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("endpointName") String endpointName,
-            @PathParam("deploymentName") String deploymentName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("endpointName") String endpointName, @PathParam("deploymentName") String deploymentName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/onlineEndpoints/{endpointName}"
-                + "/deployments/{deploymentName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/onlineEndpoints/{endpointName}/deployments/{deploymentName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<OnlineDeploymentInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<OnlineDeploymentInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("endpointName") String endpointName,
-            @PathParam("deploymentName") String deploymentName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("endpointName") String endpointName, @PathParam("deploymentName") String deploymentName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/onlineEndpoints/{endpointName}"
-                + "/deployments/{deploymentName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/onlineEndpoints/{endpointName}/deployments/{deploymentName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("endpointName") String endpointName,
-            @PathParam("deploymentName") String deploymentName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("endpointName") String endpointName, @PathParam("deploymentName") String deploymentName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") PartialMinimalTrackedResourceWithSku body,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/onlineEndpoints/{endpointName}"
-                + "/deployments/{deploymentName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/onlineEndpoints/{endpointName}/deployments/{deploymentName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("endpointName") String endpointName,
-            @PathParam("deploymentName") String deploymentName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") OnlineDeploymentInner body,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("endpointName") String endpointName, @PathParam("deploymentName") String deploymentName,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") OnlineDeploymentInner body,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/onlineEndpoints/{endpointName}"
-                + "/deployments/{deploymentName}/getLogs")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/onlineEndpoints/{endpointName}/deployments/{deploymentName}/getLogs")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeploymentLogsInner>> getLogs(
-            @HostParam("$host") String endpoint,
+        Mono<Response<DeploymentLogsInner>> getLogs(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("endpointName") String endpointName,
-            @PathParam("deploymentName") String deploymentName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") DeploymentLogsRequest body,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("endpointName") String endpointName, @PathParam("deploymentName") String deploymentName,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") DeploymentLogsRequest body,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/onlineEndpoints/{endpointName}"
-                + "/deployments/{deploymentName}/skus")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/onlineEndpoints/{endpointName}/deployments/{deploymentName}/skus")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SkuResourceArmPaginatedResult>> listSkus(
-            @HostParam("$host") String endpoint,
+        Mono<Response<SkuResourceArmPaginatedResult>> listSkus(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("endpointName") String endpointName,
-            @PathParam("deploymentName") String deploymentName,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("count") Integer count,
-            @QueryParam("$skip") String skip,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("endpointName") String endpointName, @PathParam("deploymentName") String deploymentName,
+            @QueryParam("api-version") String apiVersion, @QueryParam("count") Integer count,
+            @QueryParam("$skip") String skip, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<OnlineDeploymentTrackedResourceArmPaginatedResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SkuResourceArmPaginatedResult>> listSkusNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * List Inference Endpoint Deployments.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -238,22 +183,18 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of OnlineDeployment entities along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<OnlineDeploymentInner>> listSinglePageAsync(
-        String resourceGroupName, String workspaceName, String endpointName, String orderBy, Integer top, String skip) {
+    private Mono<PagedResponse<OnlineDeploymentInner>> listSinglePageAsync(String resourceGroupName,
+        String workspaceName, String endpointName, String orderBy, Integer top, String skip) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -268,35 +209,16 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            endpointName,
-                            this.client.getApiVersion(),
-                            orderBy,
-                            top,
-                            skip,
-                            accept,
-                            context))
-            .<PagedResponse<OnlineDeploymentInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    workspaceName, endpointName, this.client.getApiVersion(), orderBy, top, skip, accept, context))
+            .<PagedResponse<OnlineDeploymentInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List Inference Endpoint Deployments.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -308,28 +230,18 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of OnlineDeployment entities along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<OnlineDeploymentInner>> listSinglePageAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String orderBy,
-        Integer top,
-        String skip,
-        Context context) {
+    private Mono<PagedResponse<OnlineDeploymentInner>> listSinglePageAsync(String resourceGroupName,
+        String workspaceName, String endpointName, String orderBy, Integer top, String skip, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -344,32 +256,15 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                endpointName,
-                this.client.getApiVersion(),
-                orderBy,
-                top,
-                skip,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, workspaceName,
+                endpointName, this.client.getApiVersion(), orderBy, top, skip, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List Inference Endpoint Deployments.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -382,8 +277,8 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @return a paginated list of OnlineDeployment entities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<OnlineDeploymentInner> listAsync(
-        String resourceGroupName, String workspaceName, String endpointName, String orderBy, Integer top, String skip) {
+    private PagedFlux<OnlineDeploymentInner> listAsync(String resourceGroupName, String workspaceName,
+        String endpointName, String orderBy, Integer top, String skip) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, workspaceName, endpointName, orderBy, top, skip),
             nextLink -> listNextSinglePageAsync(nextLink));
@@ -391,7 +286,7 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
 
     /**
      * List Inference Endpoint Deployments.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -401,8 +296,8 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @return a paginated list of OnlineDeployment entities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<OnlineDeploymentInner> listAsync(
-        String resourceGroupName, String workspaceName, String endpointName) {
+    private PagedFlux<OnlineDeploymentInner> listAsync(String resourceGroupName, String workspaceName,
+        String endpointName) {
         final String orderBy = null;
         final Integer top = null;
         final String skip = null;
@@ -413,7 +308,7 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
 
     /**
      * List Inference Endpoint Deployments.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -427,14 +322,8 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @return a paginated list of OnlineDeployment entities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<OnlineDeploymentInner> listAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String orderBy,
-        Integer top,
-        String skip,
-        Context context) {
+    private PagedFlux<OnlineDeploymentInner> listAsync(String resourceGroupName, String workspaceName,
+        String endpointName, String orderBy, Integer top, String skip, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, workspaceName, endpointName, orderBy, top, skip, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
@@ -442,7 +331,7 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
 
     /**
      * List Inference Endpoint Deployments.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -452,8 +341,8 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @return a paginated list of OnlineDeployment entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<OnlineDeploymentInner> list(
-        String resourceGroupName, String workspaceName, String endpointName) {
+    public PagedIterable<OnlineDeploymentInner> list(String resourceGroupName, String workspaceName,
+        String endpointName) {
         final String orderBy = null;
         final Integer top = null;
         final String skip = null;
@@ -462,7 +351,7 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
 
     /**
      * List Inference Endpoint Deployments.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -476,21 +365,15 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @return a paginated list of OnlineDeployment entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<OnlineDeploymentInner> list(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String orderBy,
-        Integer top,
-        String skip,
-        Context context) {
+    public PagedIterable<OnlineDeploymentInner> list(String resourceGroupName, String workspaceName,
+        String endpointName, String orderBy, Integer top, String skip, Context context) {
         return new PagedIterable<>(
             listAsync(resourceGroupName, workspaceName, endpointName, orderBy, top, skip, context));
     }
 
     /**
      * Delete Inference Endpoint Deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -501,19 +384,15 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String workspaceName, String endpointName, String deploymentName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String workspaceName,
+        String endpointName, String deploymentName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -531,24 +410,14 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            endpointName,
-                            deploymentName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    workspaceName, endpointName, deploymentName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete Inference Endpoint Deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -560,19 +429,15 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String workspaceName, String endpointName, String deploymentName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String workspaceName,
+        String endpointName, String deploymentName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -589,22 +454,13 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                endpointName,
-                deploymentName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, endpointName, deploymentName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Delete Inference Endpoint Deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -615,19 +471,17 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String workspaceName, String endpointName, String deploymentName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, workspaceName, endpointName, deploymentName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String workspaceName,
+        String endpointName, String deploymentName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, workspaceName, endpointName, deploymentName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Delete Inference Endpoint Deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -639,19 +493,18 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String workspaceName, String endpointName, String deploymentName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String workspaceName,
+        String endpointName, String deploymentName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, workspaceName, endpointName, deploymentName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, workspaceName, endpointName, deploymentName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Delete Inference Endpoint Deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -662,14 +515,14 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String workspaceName, String endpointName, String deploymentName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
+        String endpointName, String deploymentName) {
         return this.beginDeleteAsync(resourceGroupName, workspaceName, endpointName, deploymentName).getSyncPoller();
     }
 
     /**
      * Delete Inference Endpoint Deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -681,16 +534,15 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String workspaceName, String endpointName, String deploymentName, Context context) {
-        return this
-            .beginDeleteAsync(resourceGroupName, workspaceName, endpointName, deploymentName, context)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
+        String endpointName, String deploymentName, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, workspaceName, endpointName, deploymentName, context)
             .getSyncPoller();
     }
 
     /**
      * Delete Inference Endpoint Deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -701,16 +553,15 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String workspaceName, String endpointName, String deploymentName) {
-        return beginDeleteAsync(resourceGroupName, workspaceName, endpointName, deploymentName)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String workspaceName, String endpointName,
+        String deploymentName) {
+        return beginDeleteAsync(resourceGroupName, workspaceName, endpointName, deploymentName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete Inference Endpoint Deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -722,16 +573,15 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String workspaceName, String endpointName, String deploymentName, Context context) {
-        return beginDeleteAsync(resourceGroupName, workspaceName, endpointName, deploymentName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String workspaceName, String endpointName,
+        String deploymentName, Context context) {
+        return beginDeleteAsync(resourceGroupName, workspaceName, endpointName, deploymentName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete Inference Endpoint Deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -747,7 +597,7 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
 
     /**
      * Delete Inference Endpoint Deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -758,14 +608,14 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName, String workspaceName, String endpointName, String deploymentName, Context context) {
+    public void delete(String resourceGroupName, String workspaceName, String endpointName, String deploymentName,
+        Context context) {
         deleteAsync(resourceGroupName, workspaceName, endpointName, deploymentName, context).block();
     }
 
     /**
      * Get Inference Deployment Deployment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -776,19 +626,15 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @return inference Deployment Deployment along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<OnlineDeploymentInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, String endpointName, String deploymentName) {
+    private Mono<Response<OnlineDeploymentInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
+        String endpointName, String deploymentName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -806,24 +652,14 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            endpointName,
-                            deploymentName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    workspaceName, endpointName, deploymentName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get Inference Deployment Deployment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -835,19 +671,15 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @return inference Deployment Deployment along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<OnlineDeploymentInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, String endpointName, String deploymentName, Context context) {
+    private Mono<Response<OnlineDeploymentInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
+        String endpointName, String deploymentName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -864,22 +696,13 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                endpointName,
-                deploymentName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, workspaceName,
+            endpointName, deploymentName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Get Inference Deployment Deployment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -890,15 +713,15 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @return inference Deployment Deployment on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OnlineDeploymentInner> getAsync(
-        String resourceGroupName, String workspaceName, String endpointName, String deploymentName) {
+    private Mono<OnlineDeploymentInner> getAsync(String resourceGroupName, String workspaceName, String endpointName,
+        String deploymentName) {
         return getWithResponseAsync(resourceGroupName, workspaceName, endpointName, deploymentName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get Inference Deployment Deployment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -910,14 +733,14 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @return inference Deployment Deployment along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<OnlineDeploymentInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String endpointName, String deploymentName, Context context) {
+    public Response<OnlineDeploymentInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String endpointName, String deploymentName, Context context) {
         return getWithResponseAsync(resourceGroupName, workspaceName, endpointName, deploymentName, context).block();
     }
 
     /**
      * Get Inference Deployment Deployment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -928,14 +751,14 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @return inference Deployment Deployment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OnlineDeploymentInner get(
-        String resourceGroupName, String workspaceName, String endpointName, String deploymentName) {
+    public OnlineDeploymentInner get(String resourceGroupName, String workspaceName, String endpointName,
+        String deploymentName) {
         return getWithResponse(resourceGroupName, workspaceName, endpointName, deploymentName, Context.NONE).getValue();
     }
 
     /**
      * Update Online Deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Online Endpoint name.
@@ -947,23 +770,15 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String deploymentName,
-        PartialMinimalTrackedResourceWithSku body) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String workspaceName,
+        String endpointName, String deploymentName, PartialMinimalTrackedResourceWithSku body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -986,25 +801,14 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            endpointName,
-                            deploymentName,
-                            this.client.getApiVersion(),
-                            body,
-                            accept,
-                            context))
+                context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    workspaceName, endpointName, deploymentName, this.client.getApiVersion(), body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Update Online Deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Online Endpoint name.
@@ -1017,24 +821,15 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String deploymentName,
-        PartialMinimalTrackedResourceWithSku body,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String workspaceName,
+        String endpointName, String deploymentName, PartialMinimalTrackedResourceWithSku body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1056,23 +851,13 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                endpointName,
-                deploymentName,
-                this.client.getApiVersion(),
-                body,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, endpointName, deploymentName, this.client.getApiVersion(), body, accept, context);
     }
 
     /**
      * Update Online Deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Online Endpoint name.
@@ -1085,26 +870,18 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OnlineDeploymentInner>, OnlineDeploymentInner> beginUpdateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String deploymentName,
+        String resourceGroupName, String workspaceName, String endpointName, String deploymentName,
         PartialMinimalTrackedResourceWithSku body) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body);
-        return this
-            .client
-            .<OnlineDeploymentInner, OnlineDeploymentInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                OnlineDeploymentInner.class,
-                OnlineDeploymentInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body);
+        return this.client.<OnlineDeploymentInner, OnlineDeploymentInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OnlineDeploymentInner.class, OnlineDeploymentInner.class,
+            this.client.getContext());
     }
 
     /**
      * Update Online Deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Online Endpoint name.
@@ -1118,24 +895,18 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OnlineDeploymentInner>, OnlineDeploymentInner> beginUpdateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String deploymentName,
-        PartialMinimalTrackedResourceWithSku body,
-        Context context) {
+        String resourceGroupName, String workspaceName, String endpointName, String deploymentName,
+        PartialMinimalTrackedResourceWithSku body, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body, context);
-        return this
-            .client
-            .<OnlineDeploymentInner, OnlineDeploymentInner>getLroResult(
-                mono, this.client.getHttpPipeline(), OnlineDeploymentInner.class, OnlineDeploymentInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body, context);
+        return this.client.<OnlineDeploymentInner, OnlineDeploymentInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OnlineDeploymentInner.class, OnlineDeploymentInner.class, context);
     }
 
     /**
      * Update Online Deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Online Endpoint name.
@@ -1147,20 +918,15 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OnlineDeploymentInner>, OnlineDeploymentInner> beginUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String deploymentName,
-        PartialMinimalTrackedResourceWithSku body) {
-        return this
-            .beginUpdateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body)
+    public SyncPoller<PollResult<OnlineDeploymentInner>, OnlineDeploymentInner> beginUpdate(String resourceGroupName,
+        String workspaceName, String endpointName, String deploymentName, PartialMinimalTrackedResourceWithSku body) {
+        return this.beginUpdateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body)
             .getSyncPoller();
     }
 
     /**
      * Update Online Deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Online Endpoint name.
@@ -1173,21 +939,16 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OnlineDeploymentInner>, OnlineDeploymentInner> beginUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String deploymentName,
-        PartialMinimalTrackedResourceWithSku body,
+    public SyncPoller<PollResult<OnlineDeploymentInner>, OnlineDeploymentInner> beginUpdate(String resourceGroupName,
+        String workspaceName, String endpointName, String deploymentName, PartialMinimalTrackedResourceWithSku body,
         Context context) {
-        return this
-            .beginUpdateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body, context)
+        return this.beginUpdateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body, context)
             .getSyncPoller();
     }
 
     /**
      * Update Online Deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Online Endpoint name.
@@ -1199,20 +960,15 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OnlineDeploymentInner> updateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String deploymentName,
-        PartialMinimalTrackedResourceWithSku body) {
-        return beginUpdateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body)
-            .last()
+    private Mono<OnlineDeploymentInner> updateAsync(String resourceGroupName, String workspaceName, String endpointName,
+        String deploymentName, PartialMinimalTrackedResourceWithSku body) {
+        return beginUpdateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Update Online Deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Online Endpoint name.
@@ -1225,21 +981,15 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OnlineDeploymentInner> updateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String deploymentName,
-        PartialMinimalTrackedResourceWithSku body,
-        Context context) {
-        return beginUpdateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body, context)
-            .last()
+    private Mono<OnlineDeploymentInner> updateAsync(String resourceGroupName, String workspaceName, String endpointName,
+        String deploymentName, PartialMinimalTrackedResourceWithSku body, Context context) {
+        return beginUpdateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Update Online Deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Online Endpoint name.
@@ -1251,18 +1001,14 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OnlineDeploymentInner update(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String deploymentName,
-        PartialMinimalTrackedResourceWithSku body) {
+    public OnlineDeploymentInner update(String resourceGroupName, String workspaceName, String endpointName,
+        String deploymentName, PartialMinimalTrackedResourceWithSku body) {
         return updateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body).block();
     }
 
     /**
      * Update Online Deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Online Endpoint name.
@@ -1275,19 +1021,14 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OnlineDeploymentInner update(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String deploymentName,
-        PartialMinimalTrackedResourceWithSku body,
-        Context context) {
+    public OnlineDeploymentInner update(String resourceGroupName, String workspaceName, String endpointName,
+        String deploymentName, PartialMinimalTrackedResourceWithSku body, Context context) {
         return updateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body, context).block();
     }
 
     /**
      * Create or update Inference Endpoint Deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -1299,23 +1040,15 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String deploymentName,
-        OnlineDeploymentInner body) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String workspaceName, String endpointName, String deploymentName, OnlineDeploymentInner body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1337,26 +1070,15 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            endpointName,
-                            deploymentName,
-                            this.client.getApiVersion(),
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, endpointName, deploymentName, this.client.getApiVersion(), body,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create or update Inference Endpoint Deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -1369,24 +1091,15 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String deploymentName,
-        OnlineDeploymentInner body,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String workspaceName, String endpointName, String deploymentName, OnlineDeploymentInner body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1408,23 +1121,13 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                endpointName,
-                deploymentName,
-                this.client.getApiVersion(),
-                body,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, endpointName, deploymentName, this.client.getApiVersion(), body, accept, context);
     }
 
     /**
      * Create or update Inference Endpoint Deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -1437,26 +1140,18 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OnlineDeploymentInner>, OnlineDeploymentInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String deploymentName,
+        String resourceGroupName, String workspaceName, String endpointName, String deploymentName,
         OnlineDeploymentInner body) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body);
-        return this
-            .client
-            .<OnlineDeploymentInner, OnlineDeploymentInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                OnlineDeploymentInner.class,
-                OnlineDeploymentInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body);
+        return this.client.<OnlineDeploymentInner, OnlineDeploymentInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OnlineDeploymentInner.class, OnlineDeploymentInner.class,
+            this.client.getContext());
     }
 
     /**
      * Create or update Inference Endpoint Deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -1470,25 +1165,18 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OnlineDeploymentInner>, OnlineDeploymentInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String deploymentName,
-        OnlineDeploymentInner body,
-        Context context) {
+        String resourceGroupName, String workspaceName, String endpointName, String deploymentName,
+        OnlineDeploymentInner body, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, workspaceName, endpointName, deploymentName, body, context);
-        return this
-            .client
-            .<OnlineDeploymentInner, OnlineDeploymentInner>getLroResult(
-                mono, this.client.getHttpPipeline(), OnlineDeploymentInner.class, OnlineDeploymentInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, workspaceName,
+            endpointName, deploymentName, body, context);
+        return this.client.<OnlineDeploymentInner, OnlineDeploymentInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OnlineDeploymentInner.class, OnlineDeploymentInner.class, context);
     }
 
     /**
      * Create or update Inference Endpoint Deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -1501,19 +1189,15 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OnlineDeploymentInner>, OnlineDeploymentInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String deploymentName,
+        String resourceGroupName, String workspaceName, String endpointName, String deploymentName,
         OnlineDeploymentInner body) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body)
+        return this.beginCreateOrUpdateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body)
             .getSyncPoller();
     }
 
     /**
      * Create or update Inference Endpoint Deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -1527,12 +1211,8 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OnlineDeploymentInner>, OnlineDeploymentInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String deploymentName,
-        OnlineDeploymentInner body,
-        Context context) {
+        String resourceGroupName, String workspaceName, String endpointName, String deploymentName,
+        OnlineDeploymentInner body, Context context) {
         return this
             .beginCreateOrUpdateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body, context)
             .getSyncPoller();
@@ -1540,7 +1220,7 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
 
     /**
      * Create or update Inference Endpoint Deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -1552,20 +1232,15 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OnlineDeploymentInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String deploymentName,
-        OnlineDeploymentInner body) {
-        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body)
-            .last()
+    private Mono<OnlineDeploymentInner> createOrUpdateAsync(String resourceGroupName, String workspaceName,
+        String endpointName, String deploymentName, OnlineDeploymentInner body) {
+        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or update Inference Endpoint Deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -1578,13 +1253,8 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OnlineDeploymentInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String deploymentName,
-        OnlineDeploymentInner body,
-        Context context) {
+    private Mono<OnlineDeploymentInner> createOrUpdateAsync(String resourceGroupName, String workspaceName,
+        String endpointName, String deploymentName, OnlineDeploymentInner body, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1592,7 +1262,7 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
 
     /**
      * Create or update Inference Endpoint Deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -1604,18 +1274,14 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OnlineDeploymentInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String deploymentName,
-        OnlineDeploymentInner body) {
+    public OnlineDeploymentInner createOrUpdate(String resourceGroupName, String workspaceName, String endpointName,
+        String deploymentName, OnlineDeploymentInner body) {
         return createOrUpdateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body).block();
     }
 
     /**
      * Create or update Inference Endpoint Deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -1628,20 +1294,15 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OnlineDeploymentInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String deploymentName,
-        OnlineDeploymentInner body,
-        Context context) {
+    public OnlineDeploymentInner createOrUpdate(String resourceGroupName, String workspaceName, String endpointName,
+        String deploymentName, OnlineDeploymentInner body, Context context) {
         return createOrUpdateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body, context)
             .block();
     }
 
     /**
      * Polls an Endpoint operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -1653,23 +1314,15 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DeploymentLogsInner>> getLogsWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String deploymentName,
-        DeploymentLogsRequest body) {
+    private Mono<Response<DeploymentLogsInner>> getLogsWithResponseAsync(String resourceGroupName, String workspaceName,
+        String endpointName, String deploymentName, DeploymentLogsRequest body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1691,26 +1344,15 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getLogs(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            endpointName,
-                            deploymentName,
-                            this.client.getApiVersion(),
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.getLogs(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, endpointName, deploymentName, this.client.getApiVersion(), body,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Polls an Endpoint operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -1723,24 +1365,15 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DeploymentLogsInner>> getLogsWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String deploymentName,
-        DeploymentLogsRequest body,
-        Context context) {
+    private Mono<Response<DeploymentLogsInner>> getLogsWithResponseAsync(String resourceGroupName, String workspaceName,
+        String endpointName, String deploymentName, DeploymentLogsRequest body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1762,23 +1395,13 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getLogs(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                endpointName,
-                deploymentName,
-                this.client.getApiVersion(),
-                body,
-                accept,
-                context);
+        return service.getLogs(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, endpointName, deploymentName, this.client.getApiVersion(), body, accept, context);
     }
 
     /**
      * Polls an Endpoint operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -1790,19 +1413,15 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DeploymentLogsInner> getLogsAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String deploymentName,
-        DeploymentLogsRequest body) {
+    private Mono<DeploymentLogsInner> getLogsAsync(String resourceGroupName, String workspaceName, String endpointName,
+        String deploymentName, DeploymentLogsRequest body) {
         return getLogsWithResponseAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Polls an Endpoint operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -1815,20 +1434,15 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DeploymentLogsInner> getLogsWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String deploymentName,
-        DeploymentLogsRequest body,
-        Context context) {
+    public Response<DeploymentLogsInner> getLogsWithResponse(String resourceGroupName, String workspaceName,
+        String endpointName, String deploymentName, DeploymentLogsRequest body, Context context) {
         return getLogsWithResponseAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body, context)
             .block();
     }
 
     /**
      * Polls an Endpoint operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -1840,19 +1454,15 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeploymentLogsInner getLogs(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String deploymentName,
-        DeploymentLogsRequest body) {
+    public DeploymentLogsInner getLogs(String resourceGroupName, String workspaceName, String endpointName,
+        String deploymentName, DeploymentLogsRequest body) {
         return getLogsWithResponse(resourceGroupName, workspaceName, endpointName, deploymentName, body, Context.NONE)
             .getValue();
     }
 
     /**
      * List Inference Endpoint Deployment Skus.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -1863,27 +1473,18 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of SkuResource entities along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SkuResourceInner>> listSkusSinglePageAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String deploymentName,
-        Integer count,
-        String skip) {
+    private Mono<PagedResponse<SkuResourceInner>> listSkusSinglePageAsync(String resourceGroupName,
+        String workspaceName, String endpointName, String deploymentName, Integer count, String skip) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1900,36 +1501,17 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listSkus(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            endpointName,
-                            deploymentName,
-                            this.client.getApiVersion(),
-                            count,
-                            skip,
-                            accept,
-                            context))
-            .<PagedResponse<SkuResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listSkus(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, endpointName, deploymentName, this.client.getApiVersion(), count,
+                skip, accept, context))
+            .<PagedResponse<SkuResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List Inference Endpoint Deployment Skus.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -1941,28 +1523,18 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of SkuResource entities along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SkuResourceInner>> listSkusSinglePageAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String deploymentName,
-        Integer count,
-        String skip,
-        Context context) {
+    private Mono<PagedResponse<SkuResourceInner>> listSkusSinglePageAsync(String resourceGroupName,
+        String workspaceName, String endpointName, String deploymentName, Integer count, String skip, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1980,32 +1552,15 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listSkus(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                endpointName,
-                deploymentName,
-                this.client.getApiVersion(),
-                count,
-                skip,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listSkus(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, workspaceName,
+                endpointName, deploymentName, this.client.getApiVersion(), count, skip, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List Inference Endpoint Deployment Skus.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -2018,13 +1573,8 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @return a paginated list of SkuResource entities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SkuResourceInner> listSkusAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String deploymentName,
-        Integer count,
-        String skip) {
+    private PagedFlux<SkuResourceInner> listSkusAsync(String resourceGroupName, String workspaceName,
+        String endpointName, String deploymentName, Integer count, String skip) {
         return new PagedFlux<>(
             () -> listSkusSinglePageAsync(resourceGroupName, workspaceName, endpointName, deploymentName, count, skip),
             nextLink -> listSkusNextSinglePageAsync(nextLink));
@@ -2032,7 +1582,7 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
 
     /**
      * List Inference Endpoint Deployment Skus.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -2043,8 +1593,8 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @return a paginated list of SkuResource entities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SkuResourceInner> listSkusAsync(
-        String resourceGroupName, String workspaceName, String endpointName, String deploymentName) {
+    private PagedFlux<SkuResourceInner> listSkusAsync(String resourceGroupName, String workspaceName,
+        String endpointName, String deploymentName) {
         final Integer count = null;
         final String skip = null;
         return new PagedFlux<>(
@@ -2054,7 +1604,7 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
 
     /**
      * List Inference Endpoint Deployment Skus.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -2068,24 +1618,15 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @return a paginated list of SkuResource entities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SkuResourceInner> listSkusAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String deploymentName,
-        Integer count,
-        String skip,
-        Context context) {
-        return new PagedFlux<>(
-            () ->
-                listSkusSinglePageAsync(
-                    resourceGroupName, workspaceName, endpointName, deploymentName, count, skip, context),
-            nextLink -> listSkusNextSinglePageAsync(nextLink, context));
+    private PagedFlux<SkuResourceInner> listSkusAsync(String resourceGroupName, String workspaceName,
+        String endpointName, String deploymentName, Integer count, String skip, Context context) {
+        return new PagedFlux<>(() -> listSkusSinglePageAsync(resourceGroupName, workspaceName, endpointName,
+            deploymentName, count, skip, context), nextLink -> listSkusNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List Inference Endpoint Deployment Skus.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -2096,8 +1637,8 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @return a paginated list of SkuResource entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SkuResourceInner> listSkus(
-        String resourceGroupName, String workspaceName, String endpointName, String deploymentName) {
+    public PagedIterable<SkuResourceInner> listSkus(String resourceGroupName, String workspaceName, String endpointName,
+        String deploymentName) {
         final Integer count = null;
         final String skip = null;
         return new PagedIterable<>(
@@ -2106,7 +1647,7 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
 
     /**
      * List Inference Endpoint Deployment Skus.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -2120,28 +1661,21 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      * @return a paginated list of SkuResource entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SkuResourceInner> listSkus(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String deploymentName,
-        Integer count,
-        String skip,
-        Context context) {
+    public PagedIterable<SkuResourceInner> listSkus(String resourceGroupName, String workspaceName, String endpointName,
+        String deploymentName, Integer count, String skip, Context context) {
         return new PagedIterable<>(
             listSkusAsync(resourceGroupName, workspaceName, endpointName, deploymentName, count, skip, context));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of OnlineDeployment entities along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OnlineDeploymentInner>> listNextSinglePageAsync(String nextLink) {
@@ -2149,37 +1683,26 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<OnlineDeploymentInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<OnlineDeploymentInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of OnlineDeployment entities along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OnlineDeploymentInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -2187,36 +1710,25 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of SkuResource entities along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SkuResourceInner>> listSkusNextSinglePageAsync(String nextLink) {
@@ -2224,37 +1736,27 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listSkusNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<SkuResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<SkuResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of SkuResource entities along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SkuResourceInner>> listSkusNextSinglePageAsync(String nextLink, Context context) {
@@ -2262,23 +1764,13 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listSkusNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listSkusNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

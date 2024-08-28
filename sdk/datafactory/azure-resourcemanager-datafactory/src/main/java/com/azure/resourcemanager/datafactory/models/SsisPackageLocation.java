@@ -5,31 +5,32 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.fluent.models.SsisPackageLocationTypeProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * SSIS package location.
  */
 @Fluent
-public final class SsisPackageLocation {
+public final class SsisPackageLocation implements JsonSerializable<SsisPackageLocation> {
     /*
      * The SSIS package path. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "packagePath")
     private Object packagePath;
 
     /*
      * The type of SSIS package location.
      */
-    @JsonProperty(value = "type")
     private SsisPackageLocationType type;
 
     /*
      * SSIS package location properties.
      */
-    @JsonProperty(value = "typeProperties")
     private SsisPackageLocationTypeProperties innerTypeProperties;
 
     /**
@@ -284,5 +285,48 @@ public final class SsisPackageLocation {
         if (innerTypeProperties() != null) {
             innerTypeProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("packagePath", this.packagePath);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeJsonField("typeProperties", this.innerTypeProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SsisPackageLocation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SsisPackageLocation if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SsisPackageLocation.
+     */
+    public static SsisPackageLocation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SsisPackageLocation deserializedSsisPackageLocation = new SsisPackageLocation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("packagePath".equals(fieldName)) {
+                    deserializedSsisPackageLocation.packagePath = reader.readUntyped();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSsisPackageLocation.type = SsisPackageLocationType.fromString(reader.getString());
+                } else if ("typeProperties".equals(fieldName)) {
+                    deserializedSsisPackageLocation.innerTypeProperties
+                        = SsisPackageLocationTypeProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSsisPackageLocation;
+        });
     }
 }

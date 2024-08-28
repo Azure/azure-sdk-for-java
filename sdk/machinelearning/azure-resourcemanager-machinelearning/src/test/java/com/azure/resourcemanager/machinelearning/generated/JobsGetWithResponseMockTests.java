@@ -6,72 +6,52 @@ package com.azure.resourcemanager.machinelearning.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.machinelearning.MachineLearningManager;
+import com.azure.resourcemanager.machinelearning.models.EmailNotificationEnableType;
 import com.azure.resourcemanager.machinelearning.models.JobBase;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class JobsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"jobType\":\"JobBaseProperties\",\"displayName\":\"ladohniz\",\"status\":\"Unknown\",\"experimentName\":\"pqiyqvmhtyafcvto\",\"services\":{\"emzvqm\":{\"jobServiceType\":\"m\",\"port\":983563156,\"endpoint\":\"e\",\"status\":\"xqrzsngltlbs\",\"errorMessage\":\"fpl\",\"properties\":{\"jvko\":\"hkwhiorhwuujym\",\"hzng\":\"jgtourrqmch\"},\"nodes\":{\"nodesValueType\":\"Nodes\"}},\"fszxnzjxvdn\":{\"jobServiceType\":\"svxbagccvhnoq\",\"port\":81272000,\"endpoint\":\"pcntqoszrwkkxd\",\"status\":\"uyygdoi\",\"errorMessage\":\"fcnxrbyvbd\",\"properties\":{\"dqxff\":\"tjtzsgen\",\"pnfvzbvtxgsn\":\"jcngjcdyk\",\"hsfgaxuvaej\":\"sqjjcwggjimlcb\"},\"nodes\":{\"nodesValueType\":\"Nodes\"}},\"jckm\":{\"jobServiceType\":\"dlptulwgpdzlfx\",\"port\":1065400664,\"endpoint\":\"gmxynwaofnoiphwa\",\"status\":\"pugxjtuhid\",\"errorMessage\":\"szxmcqenyjwadvf\",\"properties\":{\"mjdphtfpjrbnzb\":\"tymncwj\",\"ima\":\"mrqb\",\"neprhxs\":\"eiq\",\"kto\":\"tusrpjmevszbjn\"},\"nodes\":{\"nodesValueType\":\"Nodes\"}}},\"computeId\":\"hxxd\",\"isArchived\":true,\"identity\":{\"identityType\":\"IdentityConfiguration\"},\"componentId\":\"nk\",\"notificationSetting\":{\"emails\":[\"tozxlt\",\"sfxxkgxw\"],\"emailOn\":[\"JobCancelled\",\"JobFailed\",\"JobFailed\"],\"webhooks\":{\"pfhhtfmhmaknp\":{\"webhookType\":\"Webhook\",\"eventType\":\"z\"},\"cnvd\":{\"webhookType\":\"Webhook\",\"eventType\":\"cfvxqrmxcrhz\"},\"rntphyjuedd\":{\"webhookType\":\"Webhook\",\"eventType\":\"iuxx\"},\"axmkuthooaicms\":{\"webhookType\":\"Webhook\",\"eventType\":\"pysmalpjabzssbu\"}}},\"description\":\"wwvb\",\"tags\":{\"i\":\"bivhjryppmmtqx\",\"gqfcoraj\":\"aef\",\"hjseceuvynh\":\"bglkffgyf\",\"xmlsudtbiycepjkl\":\"bzcufxfyzqrs\"},\"properties\":{\"xeyumwlbpyidecff\":\"dsormbvir\",\"sqwjypiosz\":\"hizwqz\",\"dglxppewtlfsw\":\"zsw\",\"vvb\":\"lwnffczwzr\"}},\"id\":\"npriyttiqdcjg\",\"name\":\"mcwmqpcwoe\",\"type\":\"jrfrucpefwdxbp\"}";
 
-        String responseStr =
-            "{\"properties\":{\"jobType\":\"JobBaseProperties\",\"componentId\":\"yedzfzq\",\"computeId\":\"uqhtdereuno\",\"displayName\":\"kzwhpj\",\"experimentName\":\"yxedznmx\",\"identity\":{\"identityType\":\"IdentityConfiguration\"},\"isArchived\":true,\"services\":{},\"status\":\"Queued\",\"description\":\"my\",\"properties\":{\"jjtpdyzoutxfptof\":\"px\",\"gaaqw\":\"gnuywezygva\",\"lufbortb\":\"kgjpytpmpvdnoge\"},\"tags\":{\"axzs\":\"k\"}},\"id\":\"xxyjisskobqoclfl\",\"name\":\"oewyhxessmvrkd\",\"type\":\"sqeq\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        MachineLearningManager manager = MachineLearningManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        JobBase response = manager.jobs()
+            .getWithResponse("up", "krqeqjtzaw", "nrvgitzdjixk", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        MachineLearningManager manager =
-            MachineLearningManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        JobBase response =
-            manager
-                .jobs()
-                .getWithResponse("vktjhffecqkoq", "ouergaghp", "zxkpyehhfdyld", com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals("my", response.properties().description());
-        Assertions.assertEquals("px", response.properties().properties().get("jjtpdyzoutxfptof"));
-        Assertions.assertEquals("k", response.properties().tags().get("axzs"));
-        Assertions.assertEquals("yedzfzq", response.properties().componentId());
-        Assertions.assertEquals("uqhtdereuno", response.properties().computeId());
-        Assertions.assertEquals("kzwhpj", response.properties().displayName());
-        Assertions.assertEquals("yxedznmx", response.properties().experimentName());
+        Assertions.assertEquals("wwvb", response.properties().description());
+        Assertions.assertEquals("bivhjryppmmtqx", response.properties().tags().get("i"));
+        Assertions.assertEquals("dsormbvir", response.properties().properties().get("xeyumwlbpyidecff"));
+        Assertions.assertEquals("ladohniz", response.properties().displayName());
+        Assertions.assertEquals("pqiyqvmhtyafcvto", response.properties().experimentName());
+        Assertions.assertEquals("m", response.properties().services().get("emzvqm").jobServiceType());
+        Assertions.assertEquals(983563156, response.properties().services().get("emzvqm").port());
+        Assertions.assertEquals("e", response.properties().services().get("emzvqm").endpoint());
+        Assertions.assertEquals("hkwhiorhwuujym",
+            response.properties().services().get("emzvqm").properties().get("jvko"));
+        Assertions.assertEquals("hxxd", response.properties().computeId());
         Assertions.assertEquals(true, response.properties().isArchived());
+        Assertions.assertEquals("nk", response.properties().componentId());
+        Assertions.assertEquals("tozxlt", response.properties().notificationSetting().emails().get(0));
+        Assertions.assertEquals(EmailNotificationEnableType.JOB_CANCELLED,
+            response.properties().notificationSetting().emailOn().get(0));
+        Assertions.assertEquals("z",
+            response.properties().notificationSetting().webhooks().get("pfhhtfmhmaknp").eventType());
     }
 }
