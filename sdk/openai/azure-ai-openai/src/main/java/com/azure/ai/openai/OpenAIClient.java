@@ -877,7 +877,7 @@ public final class OpenAIClient {
             .serializeTextField("temperature", temperature);
         List<AudioTranscriptionTimestampGranularity> timestampGranularities
             = audioTranscriptionOptions.getTimestampGranularities();
-        if (timestampGranularities != null && !timestampGranularities.isEmpty()) {
+        if (!CoreUtils.isNullOrEmpty(timestampGranularities)) {
             for (AudioTranscriptionTimestampGranularity timestampGranularity : timestampGranularities) {
                 // somehow we don't need to send the index in OAI
                 multipartRequest.serializeTextField("timestamp_granularities[]", timestampGranularity.toString());
@@ -1612,12 +1612,17 @@ public final class OpenAIClient {
      * @return a list of previously uploaded files along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listFilesWithResponse(RequestOptions requestOptions) {
+    public Response<List<OpenAIFile>> listFilesWithResponse(RequestOptions requestOptions) {
+        Response<BinaryData> listedFilesWithResponse;
         if (openAIServiceClient != null) {
-            return this.openAIServiceClient.listFilesWithResponse(requestOptions);
+            listedFilesWithResponse = this.openAIServiceClient.listFilesWithResponse(requestOptions);
+        } else {
+            addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions,
+                serviceClient.getServiceVersion());
+            listedFilesWithResponse = this.serviceClient.listFilesWithResponse(requestOptions);
         }
-        addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
-        return this.serviceClient.listFilesWithResponse(requestOptions);
+        return new SimpleResponse<>(listedFilesWithResponse,
+            listedFilesWithResponse.getValue().toObject(FileListResponse.class).getData());
     }
 
     /**
@@ -1646,23 +1651,30 @@ public final class OpenAIClient {
      * @return represents an assistant that can call the model and use tools along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> uploadFileWithResponse(BinaryData uploadFileRequest, RequestOptions requestOptions) {
+    Response<OpenAIFile> uploadFileWithResponse(BinaryData uploadFileRequest, RequestOptions requestOptions) {
         // Protocol API requires serialization of parts with content-disposition and data, as operation 'uploadFile' is
         // 'multipart/form-data'
+        Response<BinaryData> uploadedFileWithResponse;
         if (openAIServiceClient != null) {
-            return this.openAIServiceClient.uploadFileWithResponse(uploadFileRequest, requestOptions);
-        }
-        addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
-        try {
-            return this.serviceClient.uploadFileWithResponse(uploadFileRequest, requestOptions);
-        } catch (HttpResponseException ex) {
-            final HttpResponse httpResponse = ex.getResponse();
-            if (httpResponse.getStatusCode() == 201) {
-                return new ResponseBase<Void, BinaryData>(httpResponse.getRequest(), httpResponse.getStatusCode(),
-                    httpResponse.getHeaders(), BinaryData.fromObject(ex.getValue()), null);
+            uploadedFileWithResponse
+                = this.openAIServiceClient.uploadFileWithResponse(uploadFileRequest, requestOptions);
+        } else {
+            addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions,
+                serviceClient.getServiceVersion());
+            try {
+                uploadedFileWithResponse = this.serviceClient.uploadFileWithResponse(uploadFileRequest, requestOptions);
+            } catch (HttpResponseException ex) {
+                final HttpResponse httpResponse = ex.getResponse();
+                if (httpResponse.getStatusCode() == 201) {
+                    return new ResponseBase<Void, OpenAIFile>(httpResponse.getRequest(), httpResponse.getStatusCode(),
+                        httpResponse.getHeaders(), BinaryData.fromObject(ex.getValue()).toObject(OpenAIFile.class),
+                        null);
+                }
+                throw LOGGER.logExceptionAsError(ex);
             }
-            throw LOGGER.logExceptionAsError(ex);
         }
+        return new SimpleResponse<>(uploadedFileWithResponse,
+            uploadedFileWithResponse.getValue().toObject(OpenAIFile.class));
     }
 
     /**
@@ -1686,21 +1698,27 @@ public final class OpenAIClient {
      * @return a status response from a file deletion operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> deleteFileWithResponse(String fileId, RequestOptions requestOptions) {
+    public Response<FileDeletionStatus> deleteFileWithResponse(String fileId, RequestOptions requestOptions) {
+        Response<BinaryData> deletedFileWithResponse;
         if (openAIServiceClient != null) {
-            return this.openAIServiceClient.deleteFileWithResponse(fileId, requestOptions);
-        }
-        addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
-        try {
-            return this.serviceClient.deleteFileWithResponse(fileId, requestOptions);
-        } catch (HttpResponseException ex) {
-            final HttpResponse httpResponse = ex.getResponse();
-            if (httpResponse.getStatusCode() == 204) {
-                return new ResponseBase<Void, BinaryData>(httpResponse.getRequest(), httpResponse.getStatusCode(),
-                    httpResponse.getHeaders(), BinaryData.fromObject(ex.getValue()), null);
+            deletedFileWithResponse = this.openAIServiceClient.deleteFileWithResponse(fileId, requestOptions);
+        } else {
+            addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions,
+                serviceClient.getServiceVersion());
+            try {
+                deletedFileWithResponse = this.serviceClient.deleteFileWithResponse(fileId, requestOptions);
+            } catch (HttpResponseException ex) {
+                final HttpResponse httpResponse = ex.getResponse();
+                if (httpResponse.getStatusCode() == 204) {
+                    return new ResponseBase<Void, FileDeletionStatus>(httpResponse.getRequest(),
+                        httpResponse.getStatusCode(), httpResponse.getHeaders(),
+                        BinaryData.fromObject(ex.getValue()).toObject(FileDeletionStatus.class), null);
+                }
+                throw LOGGER.logExceptionAsError(ex);
             }
-            throw LOGGER.logExceptionAsError(ex);
         }
+        return new SimpleResponse<>(deletedFileWithResponse,
+            deletedFileWithResponse.getValue().toObject(FileDeletionStatus.class));
     }
 
     /**
@@ -1729,12 +1747,17 @@ public final class OpenAIClient {
      * @return represents an assistant that can call the model and use tools along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getFileWithResponse(String fileId, RequestOptions requestOptions) {
+    public Response<OpenAIFile> getFileWithResponse(String fileId, RequestOptions requestOptions) {
+        Response<BinaryData> retrievedFileWithResponse;
         if (openAIServiceClient != null) {
-            return this.openAIServiceClient.getFileWithResponse(fileId, requestOptions);
+            retrievedFileWithResponse = this.openAIServiceClient.getFileWithResponse(fileId, requestOptions);
+        } else {
+            addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions,
+                serviceClient.getServiceVersion());
+            retrievedFileWithResponse = this.serviceClient.getFileWithResponse(fileId, requestOptions);
         }
-        addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
-        return this.serviceClient.getFileWithResponse(fileId, requestOptions);
+        return new SimpleResponse<>(retrievedFileWithResponse,
+            retrievedFileWithResponse.getValue().toObject(OpenAIFile.class));
     }
 
     /**
@@ -1754,12 +1777,16 @@ public final class OpenAIClient {
      * @return represent a byte array along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getFileContentWithResponse(String fileId, RequestOptions requestOptions) {
+    public Response<byte[]> getFileContentWithResponse(String fileId, RequestOptions requestOptions) {
+        Response<BinaryData> fileContentWithResponse;
         if (openAIServiceClient != null) {
-            return this.openAIServiceClient.getFileContentWithResponse(fileId, requestOptions);
+            fileContentWithResponse = this.openAIServiceClient.getFileContentWithResponse(fileId, requestOptions);
+        } else {
+            addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions,
+                serviceClient.getServiceVersion());
+            fileContentWithResponse = this.serviceClient.getFileContentWithResponse(fileId, requestOptions);
         }
-        addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
-        return this.serviceClient.getFileContentWithResponse(fileId, requestOptions);
+        return new SimpleResponse<>(fileContentWithResponse, fileContentWithResponse.getValue().toBytes());
     }
 
     /**
@@ -1832,12 +1859,19 @@ public final class OpenAIClient {
      * @return a list of all batches owned by the Azure OpenAI resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listBatchesWithResponse(RequestOptions requestOptions) {
+    public Response<PageableList<Batch>> listBatchesWithResponse(RequestOptions requestOptions) {
+        Response<BinaryData> listedBatchesWithResponse;
         if (openAIServiceClient != null) {
-            return this.openAIServiceClient.listBatchesWithResponse(requestOptions);
+            listedBatchesWithResponse = this.openAIServiceClient.listBatchesWithResponse(requestOptions);
+        } else {
+            addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions,
+                serviceClient.getServiceVersion());
+            listedBatchesWithResponse = this.serviceClient.listBatchesWithResponse(requestOptions);
         }
-        addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
-        return this.serviceClient.listBatchesWithResponse(requestOptions);
+        OpenAIPageableListOfBatch batchList
+            = listedBatchesWithResponse.getValue().toObject(OpenAIPageableListOfBatch.class);
+        return new SimpleResponse<>(listedBatchesWithResponse, PageableListAccessHelper.create(batchList.getData(),
+            batchList.getFirstId(), batchList.getLastId(), batchList.isHasMore()));
     }
 
     /**
@@ -1909,21 +1943,28 @@ public final class OpenAIClient {
      * @return the Batch object along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createBatchWithResponse(BinaryData createBatchRequest, RequestOptions requestOptions) {
+    public Response<Batch> createBatchWithResponse(BinaryData createBatchRequest, RequestOptions requestOptions) {
+        Response<BinaryData> createdBatchWithResponse;
         if (openAIServiceClient != null) {
-            return this.openAIServiceClient.createBatchWithResponse(createBatchRequest, requestOptions);
-        }
-        addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
-        try {
-            return this.serviceClient.createBatchWithResponse(createBatchRequest, requestOptions);
-        } catch (HttpResponseException ex) {
-            final HttpResponse httpResponse = ex.getResponse();
-            if (httpResponse.getStatusCode() == 200) {
-                return new ResponseBase<Void, BinaryData>(httpResponse.getRequest(), httpResponse.getStatusCode(),
-                    httpResponse.getHeaders(), BinaryData.fromObject(ex.getValue()), null);
+            createdBatchWithResponse
+                = this.openAIServiceClient.createBatchWithResponse(createBatchRequest, requestOptions);
+        } else {
+            addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions,
+                serviceClient.getServiceVersion());
+            try {
+                createdBatchWithResponse
+                    = this.serviceClient.createBatchWithResponse(createBatchRequest, requestOptions);
+            } catch (HttpResponseException ex) {
+                final HttpResponse httpResponse = ex.getResponse();
+                if (httpResponse.getStatusCode() == 200) {
+                    return new ResponseBase<Void, Batch>(httpResponse.getRequest(), httpResponse.getStatusCode(),
+                        httpResponse.getHeaders(), BinaryData.fromObject(ex.getValue()).toObject(Batch.class), null);
+                }
+                throw LOGGER.logExceptionAsError(ex);
             }
-            throw LOGGER.logExceptionAsError(ex);
         }
+        return new SimpleResponse<>(createdBatchWithResponse,
+            createdBatchWithResponse.getValue().toObject(Batch.class));
     }
 
     /**
@@ -1980,12 +2021,17 @@ public final class OpenAIClient {
      * @return details for a single batch specified by the given batchID along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getBatchWithResponse(String batchId, RequestOptions requestOptions) {
+    public Response<Batch> getBatchWithResponse(String batchId, RequestOptions requestOptions) {
+        Response<BinaryData> retrievedBatchWithResponse;
         if (openAIServiceClient != null) {
-            return this.openAIServiceClient.getBatchWithResponse(batchId, requestOptions);
+            retrievedBatchWithResponse = this.openAIServiceClient.getBatchWithResponse(batchId, requestOptions);
+        } else {
+            addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions,
+                serviceClient.getServiceVersion());
+            retrievedBatchWithResponse = this.serviceClient.getBatchWithResponse(batchId, requestOptions);
         }
-        addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
-        return this.serviceClient.getBatchWithResponse(batchId, requestOptions);
+        return new SimpleResponse<>(retrievedBatchWithResponse,
+            retrievedBatchWithResponse.getValue().toObject(Batch.class));
     }
 
     /**
@@ -2042,12 +2088,17 @@ public final class OpenAIClient {
      * @return details for a single batch specified by the given batchID along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> cancelBatchWithResponse(String batchId, RequestOptions requestOptions) {
+    public Response<Batch> cancelBatchWithResponse(String batchId, RequestOptions requestOptions) {
+        Response<BinaryData> cancelledBatchWithResponse;
         if (openAIServiceClient != null) {
-            return this.openAIServiceClient.cancelBatchWithResponse(batchId, requestOptions);
+            cancelledBatchWithResponse = this.openAIServiceClient.cancelBatchWithResponse(batchId, requestOptions);
+        } else {
+            addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions,
+                serviceClient.getServiceVersion());
+            cancelledBatchWithResponse = this.serviceClient.cancelBatchWithResponse(batchId, requestOptions);
         }
-        addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
-        return this.serviceClient.cancelBatchWithResponse(batchId, requestOptions);
+        return new SimpleResponse<>(cancelledBatchWithResponse,
+            cancelledBatchWithResponse.getValue().toObject(Batch.class));
     }
 
     /**
@@ -2069,7 +2120,7 @@ public final class OpenAIClient {
         if (purpose != null) {
             requestOptions.addQueryParam("purpose", purpose.toString(), false);
         }
-        return listFilesWithResponse(requestOptions).getValue().toObject(FileListResponse.class).getData();
+        return listFilesWithResponse(requestOptions).getValue();
     }
 
     /**
@@ -2113,7 +2164,7 @@ public final class OpenAIClient {
             .serializeTextField("filename", uploadFileRequestObj.getFilename())
             .end()
             .getRequestBody();
-        return uploadFileWithResponse(uploadFileRequest, requestOptions).getValue().toObject(OpenAIFile.class);
+        return uploadFileWithResponse(uploadFileRequest, requestOptions).getValue();
     }
 
     /**
@@ -2129,7 +2180,6 @@ public final class OpenAIClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents an assistant that can call the model and use tools.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OpenAIFile uploadFile(FileDetails file, FilePurpose purpose) {
         // Generated convenience method for uploadFileWithResponse
@@ -2142,7 +2192,7 @@ public final class OpenAIClient {
             .serializeTextField("filename", uploadFileRequestObj.getFilename())
             .end()
             .getRequestBody();
-        return uploadFileWithResponse(uploadFileRequest, requestOptions).getValue().toObject(OpenAIFile.class);
+        return uploadFileWithResponse(uploadFileRequest, requestOptions).getValue();
     }
 
     /**
@@ -2157,12 +2207,11 @@ public final class OpenAIClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a status response from a file deletion operation.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FileDeletionStatus deleteFile(String fileId) {
         // Generated convenience method for deleteFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return deleteFileWithResponse(fileId, requestOptions).getValue().toObject(FileDeletionStatus.class);
+        return deleteFileWithResponse(fileId, requestOptions).getValue();
     }
 
     /**
@@ -2177,12 +2226,11 @@ public final class OpenAIClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents an assistant that can call the model and use tools.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OpenAIFile getFile(String fileId) {
         // Generated convenience method for getFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getFileWithResponse(fileId, requestOptions).getValue().toObject(OpenAIFile.class);
+        return getFileWithResponse(fileId, requestOptions).getValue();
     }
 
     /**
@@ -2201,7 +2249,7 @@ public final class OpenAIClient {
     public byte[] getFileContent(String fileId) {
         // Generated convenience method for getFileContentWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getFileContentWithResponse(fileId, requestOptions).getValue().toBytes();
+        return getFileContentWithResponse(fileId, requestOptions).getValue();
     }
 
     /**
@@ -2227,10 +2275,7 @@ public final class OpenAIClient {
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
         }
-        OpenAIPageableListOfBatch batchList
-            = listBatchesWithResponse(requestOptions).getValue().toObject(OpenAIPageableListOfBatch.class);
-        return PageableListAccessHelper.create(batchList.getData(), batchList.getFirstId(), batchList.getLastId(),
-            batchList.isHasMore());
+        return listBatchesWithResponse(requestOptions).getValue();
     }
 
     /**
@@ -2245,12 +2290,7 @@ public final class OpenAIClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PageableList<Batch> listBatches() {
-        // Generated convenience method for listBatchesWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        OpenAIPageableListOfBatch batchList
-            = listBatchesWithResponse(requestOptions).getValue().toObject(OpenAIPageableListOfBatch.class);
-        return PageableListAccessHelper.create(batchList.getData(), batchList.getFirstId(), batchList.getLastId(),
-            batchList.isHasMore());
+        return listBatches(null, null);
     }
 
     /**
@@ -2265,12 +2305,11 @@ public final class OpenAIClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return details for a single batch specified by the given batchID.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Batch getBatch(String batchId) {
         // Generated convenience method for getBatchWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getBatchWithResponse(batchId, requestOptions).getValue().toObject(Batch.class);
+        return getBatchWithResponse(batchId, requestOptions).getValue();
     }
 
     /**
@@ -2285,12 +2324,11 @@ public final class OpenAIClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return details for a single batch specified by the given batchID.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Batch cancelBatch(String batchId) {
         // Generated convenience method for cancelBatchWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return cancelBatchWithResponse(batchId, requestOptions).getValue().toObject(Batch.class);
+        return cancelBatchWithResponse(batchId, requestOptions).getValue();
     }
 
     /**
@@ -2307,12 +2345,10 @@ public final class OpenAIClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Batch object.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Batch createBatch(BatchCreateRequest createBatchRequest) {
         // Generated convenience method for createBatchWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createBatchWithResponse(BinaryData.fromObject(createBatchRequest), requestOptions).getValue()
-            .toObject(Batch.class);
+        return createBatchWithResponse(BinaryData.fromObject(createBatchRequest), requestOptions).getValue();
     }
 }

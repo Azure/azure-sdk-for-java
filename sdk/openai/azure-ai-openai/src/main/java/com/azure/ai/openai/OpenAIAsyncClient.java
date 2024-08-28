@@ -948,7 +948,7 @@ public final class OpenAIAsyncClient {
             .serializeTextField("temperature", temperature);
         List<AudioTranscriptionTimestampGranularity> timestampGranularities
             = audioTranscriptionOptions.getTimestampGranularities();
-        if (timestampGranularities != null && !timestampGranularities.isEmpty()) {
+        if (!CoreUtils.isNullOrEmpty(timestampGranularities)) {
             for (AudioTranscriptionTimestampGranularity timestampGranularity : timestampGranularities) {
                 // somehow we don't need to send the index in OAI
                 multipartRequest.serializeTextField("timestamp_granularities[]", timestampGranularity.toString());
@@ -1655,12 +1655,17 @@ public final class OpenAIAsyncClient {
      * @return a list of previously uploaded files along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listFilesWithResponse(RequestOptions requestOptions) {
+    public Mono<Response<List<OpenAIFile>>> listFilesWithResponse(RequestOptions requestOptions) {
+        Mono<Response<BinaryData>> listedFilesWithResponse;
         if (openAIServiceClient != null) {
-            return this.openAIServiceClient.listFilesWithResponseAsync(requestOptions);
+            listedFilesWithResponse = this.openAIServiceClient.listFilesWithResponseAsync(requestOptions);
+        } else {
+            addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions,
+                serviceClient.getServiceVersion());
+            listedFilesWithResponse = this.serviceClient.listFilesWithResponseAsync(requestOptions);
         }
-        addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
-        return this.serviceClient.listFilesWithResponseAsync(requestOptions);
+        return listedFilesWithResponse.map(
+            response -> new SimpleResponse<>(response, response.getValue().toObject(FileListResponse.class).getData()));
     }
 
     /**
@@ -1690,25 +1695,31 @@ public final class OpenAIAsyncClient {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> uploadFileWithResponse(BinaryData uploadFileRequest, RequestOptions requestOptions) {
+    Mono<Response<OpenAIFile>> uploadFileWithResponse(BinaryData uploadFileRequest, RequestOptions requestOptions) {
         // Protocol API requires serialization of parts with content-disposition and data, as operation 'uploadFile' is
         // 'multipart/form-data'
+        Mono<Response<BinaryData>> uploadedFileWithResponse;
         if (openAIServiceClient != null) {
-            return this.openAIServiceClient.uploadFileWithResponseAsync(uploadFileRequest, requestOptions);
+            uploadedFileWithResponse
+                = this.openAIServiceClient.uploadFileWithResponseAsync(uploadFileRequest, requestOptions);
+        } else {
+            addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions,
+                serviceClient.getServiceVersion());
+            uploadedFileWithResponse = this.serviceClient.uploadFileWithResponseAsync(uploadFileRequest, requestOptions)
+                .onErrorResume(HttpResponseException.class,
+                    (Function<Throwable, Mono<ResponseBase<HttpHeaders, BinaryData>>>) throwable -> {
+                        HttpResponseException ex = (HttpResponseException) throwable;
+                        HttpResponse httpResponse = ex.getResponse();
+                        if (httpResponse.getStatusCode() == 201) {
+                            return Mono.just(new ResponseBase<HttpHeaders, BinaryData>(httpResponse.getRequest(),
+                                httpResponse.getStatusCode(), httpResponse.getHeaders(),
+                                BinaryData.fromObject(ex.getValue()), null));
+                        }
+                        return Mono.error(throwable);
+                    });
         }
-        addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
-        return this.serviceClient.uploadFileWithResponseAsync(uploadFileRequest, requestOptions)
-            .onErrorResume(HttpResponseException.class,
-                (Function<Throwable, Mono<ResponseBase<HttpHeaders, BinaryData>>>) throwable -> {
-                    HttpResponseException ex = (HttpResponseException) throwable;
-                    HttpResponse httpResponse = ex.getResponse();
-                    if (httpResponse.getStatusCode() == 201) {
-                        return Mono.just(new ResponseBase<HttpHeaders, BinaryData>(httpResponse.getRequest(),
-                            httpResponse.getStatusCode(), httpResponse.getHeaders(),
-                            BinaryData.fromObject(ex.getValue()), null));
-                    }
-                    return Mono.error(throwable);
-                });
+        return uploadedFileWithResponse
+            .map(response -> new SimpleResponse<>(response, response.getValue().toObject(OpenAIFile.class)));
     }
 
     /**
@@ -1733,22 +1744,28 @@ public final class OpenAIAsyncClient {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> deleteFileWithResponse(String fileId, RequestOptions requestOptions) {
+    public Mono<Response<FileDeletionStatus>> deleteFileWithResponse(String fileId, RequestOptions requestOptions) {
+        Mono<Response<BinaryData>> deletedFileWithResponse;
         if (openAIServiceClient != null) {
-            return this.openAIServiceClient.deleteFileWithResponseAsync(fileId, requestOptions);
+            deletedFileWithResponse = this.openAIServiceClient.deleteFileWithResponseAsync(fileId, requestOptions);
+        } else {
+            addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions,
+                serviceClient.getServiceVersion());
+            deletedFileWithResponse = this.serviceClient.deleteFileWithResponseAsync(fileId, requestOptions)
+                .onErrorResume(HttpResponseException.class,
+                    (Function<Throwable, Mono<ResponseBase<HttpHeaders, BinaryData>>>) throwable -> {
+                        HttpResponseException ex = (HttpResponseException) throwable;
+                        HttpResponse httpResponse = ex.getResponse();
+                        if (httpResponse.getStatusCode() == 204) {
+                            return Mono.just(new ResponseBase<HttpHeaders, BinaryData>(httpResponse.getRequest(),
+                                httpResponse.getStatusCode(), httpResponse.getHeaders(),
+                                BinaryData.fromObject(ex.getValue()), null));
+                        }
+                        return Mono.error(throwable);
+                    });
         }
-        addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
-        return this.serviceClient.deleteFileWithResponseAsync(fileId, requestOptions)
-            .onErrorResume(HttpResponseException.class,
-                (Function<Throwable, Mono<ResponseBase<HttpHeaders, BinaryData>>>) throwable -> {
-                    HttpResponseException ex = (HttpResponseException) throwable;
-                    HttpResponse httpResponse = ex.getResponse();
-                    if (httpResponse.getStatusCode() == 204) {
-                        return Mono.just(new ResponseBase<HttpHeaders, BinaryData>(httpResponse.getRequest(),
-                            httpResponse.getStatusCode(), httpResponse.getHeaders(), null, null));
-                    }
-                    return Mono.error(throwable);
-                });
+        return deletedFileWithResponse
+            .map(response -> new SimpleResponse<>(response, response.getValue().toObject(FileDeletionStatus.class)));
     }
 
     /**
@@ -1778,12 +1795,17 @@ public final class OpenAIAsyncClient {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getFileWithResponse(String fileId, RequestOptions requestOptions) {
+    public Mono<Response<OpenAIFile>> getFileWithResponse(String fileId, RequestOptions requestOptions) {
+        Mono<Response<BinaryData>> retrievedFileWithResponse;
         if (openAIServiceClient != null) {
-            return this.openAIServiceClient.getFileWithResponseAsync(fileId, requestOptions);
+            retrievedFileWithResponse = this.openAIServiceClient.getFileWithResponseAsync(fileId, requestOptions);
+        } else {
+            addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions,
+                serviceClient.getServiceVersion());
+            retrievedFileWithResponse = this.serviceClient.getFileWithResponseAsync(fileId, requestOptions);
         }
-        addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
-        return this.serviceClient.getFileWithResponseAsync(fileId, requestOptions);
+        return retrievedFileWithResponse
+            .map(response -> new SimpleResponse<>(response, response.getValue().toObject(OpenAIFile.class)));
     }
 
     /**
@@ -1803,12 +1825,16 @@ public final class OpenAIAsyncClient {
      * @return represent a byte array along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getFileContentWithResponse(String fileId, RequestOptions requestOptions) {
+    public Mono<Response<byte[]>> getFileContentWithResponse(String fileId, RequestOptions requestOptions) {
+        Mono<Response<BinaryData>> fileContentWithResponse;
         if (openAIServiceClient != null) {
-            return this.openAIServiceClient.getFileContentWithResponseAsync(fileId, requestOptions);
+            fileContentWithResponse = this.openAIServiceClient.getFileContentWithResponseAsync(fileId, requestOptions);
+        } else {
+            addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions,
+                serviceClient.getServiceVersion());
+            fileContentWithResponse = this.serviceClient.getFileContentWithResponseAsync(fileId, requestOptions);
         }
-        addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
-        return this.serviceClient.getFileContentWithResponseAsync(fileId, requestOptions);
+        return fileContentWithResponse.map(response -> new SimpleResponse<>(response, response.getValue().toBytes()));
     }
 
     /**
@@ -1882,12 +1908,20 @@ public final class OpenAIAsyncClient {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listBatchesWithResponse(RequestOptions requestOptions) {
+    public Mono<Response<PageableList<Batch>>> listBatchesWithResponse(RequestOptions requestOptions) {
+        Mono<Response<BinaryData>> listedBatchesWithResponse;
         if (openAIServiceClient != null) {
-            return this.openAIServiceClient.listBatchesWithResponseAsync(requestOptions);
+            listedBatchesWithResponse = this.openAIServiceClient.listBatchesWithResponseAsync(requestOptions);
+        } else {
+            addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions,
+                serviceClient.getServiceVersion());
+            listedBatchesWithResponse = this.serviceClient.listBatchesWithResponseAsync(requestOptions);
         }
-        addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
-        return this.serviceClient.listBatchesWithResponseAsync(requestOptions);
+        return listedBatchesWithResponse.map(response -> {
+            OpenAIPageableListOfBatch batchList = response.getValue().toObject(OpenAIPageableListOfBatch.class);
+            return new SimpleResponse<>(response, PageableListAccessHelper.create(batchList.getData(),
+                batchList.getFirstId(), batchList.getLastId(), batchList.isHasMore()));
+        });
     }
 
     /**
@@ -1959,24 +1993,30 @@ public final class OpenAIAsyncClient {
      * @return the Batch object along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createBatchWithResponse(BinaryData createBatchRequest,
-        RequestOptions requestOptions) {
+    public Mono<Response<Batch>> createBatchWithResponse(BinaryData createBatchRequest, RequestOptions requestOptions) {
+        Mono<Response<BinaryData>> createdBatchWithResponse;
         if (openAIServiceClient != null) {
-            return this.openAIServiceClient.createBatchWithResponseAsync(createBatchRequest, requestOptions);
+            createdBatchWithResponse
+                = this.openAIServiceClient.createBatchWithResponseAsync(createBatchRequest, requestOptions);
+        } else {
+            addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions,
+                serviceClient.getServiceVersion());
+            createdBatchWithResponse
+                = this.serviceClient.createBatchWithResponseAsync(createBatchRequest, requestOptions)
+                    .onErrorResume(HttpResponseException.class,
+                        (Function<Throwable, Mono<ResponseBase<HttpHeaders, BinaryData>>>) throwable -> {
+                            HttpResponseException ex = (HttpResponseException) throwable;
+                            HttpResponse httpResponse = ex.getResponse();
+                            if (httpResponse.getStatusCode() == 200) {
+                                return Mono.just(new ResponseBase<HttpHeaders, BinaryData>(httpResponse.getRequest(),
+                                    httpResponse.getStatusCode(), httpResponse.getHeaders(),
+                                    BinaryData.fromObject(ex.getValue()), null));
+                            }
+                            return Mono.error(throwable);
+                        });
         }
-        addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
-        return this.serviceClient.createBatchWithResponseAsync(createBatchRequest, requestOptions)
-            .onErrorResume(HttpResponseException.class,
-                (Function<Throwable, Mono<ResponseBase<HttpHeaders, BinaryData>>>) throwable -> {
-                    HttpResponseException ex = (HttpResponseException) throwable;
-                    HttpResponse httpResponse = ex.getResponse();
-                    if (httpResponse.getStatusCode() == 200) {
-                        return Mono.just(new ResponseBase<HttpHeaders, BinaryData>(httpResponse.getRequest(),
-                            httpResponse.getStatusCode(), httpResponse.getHeaders(),
-                            BinaryData.fromObject(ex.getValue()), null));
-                    }
-                    return Mono.error(throwable);
-                });
+        return createdBatchWithResponse
+            .map(response -> new SimpleResponse<>(response, response.getValue().toObject(Batch.class)));
     }
 
     /**
@@ -2034,12 +2074,17 @@ public final class OpenAIAsyncClient {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getBatchWithResponse(String batchId, RequestOptions requestOptions) {
+    public Mono<Response<Batch>> getBatchWithResponse(String batchId, RequestOptions requestOptions) {
+        Mono<Response<BinaryData>> retrievedBatchWithResponse;
         if (openAIServiceClient != null) {
-            return this.openAIServiceClient.getBatchWithResponseAsync(batchId, requestOptions);
+            retrievedBatchWithResponse = this.openAIServiceClient.getBatchWithResponseAsync(batchId, requestOptions);
+        } else {
+            addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions,
+                serviceClient.getServiceVersion());
+            retrievedBatchWithResponse = this.serviceClient.getBatchWithResponseAsync(batchId, requestOptions);
         }
-        addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
-        return this.serviceClient.getBatchWithResponseAsync(batchId, requestOptions);
+        return retrievedBatchWithResponse
+            .map(response -> new SimpleResponse<>(response, response.getValue().toObject(Batch.class)));
     }
 
     /**
@@ -2097,12 +2142,17 @@ public final class OpenAIAsyncClient {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> cancelBatchWithResponse(String batchId, RequestOptions requestOptions) {
+    public Mono<Response<Batch>> cancelBatchWithResponse(String batchId, RequestOptions requestOptions) {
+        Mono<Response<BinaryData>> cancelledBatchWithResponse;
         if (openAIServiceClient != null) {
-            return this.openAIServiceClient.cancelBatchWithResponseAsync(batchId, requestOptions);
+            cancelledBatchWithResponse = this.openAIServiceClient.cancelBatchWithResponseAsync(batchId, requestOptions);
+        } else {
+            addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions,
+                serviceClient.getServiceVersion());
+            cancelledBatchWithResponse = this.serviceClient.cancelBatchWithResponseAsync(batchId, requestOptions);
         }
-        addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
-        return this.serviceClient.cancelBatchWithResponseAsync(batchId, requestOptions);
+        return cancelledBatchWithResponse
+            .map(response -> new SimpleResponse<>(response, response.getValue().toObject(Batch.class)));
     }
 
     /**
@@ -2124,8 +2174,7 @@ public final class OpenAIAsyncClient {
         if (purpose != null) {
             requestOptions.addQueryParam("purpose", purpose.toString(), false);
         }
-        return listFilesWithResponse(requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(FileListResponse.class).getData());
+        return listFilesWithResponse(requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -2169,8 +2218,7 @@ public final class OpenAIAsyncClient {
             .serializeTextField("filename", uploadFileRequestObj.getFilename())
             .end()
             .getRequestBody();
-        return uploadFileWithResponse(uploadFileRequest, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(OpenAIFile.class));
+        return uploadFileWithResponse(uploadFileRequest, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -2186,7 +2234,6 @@ public final class OpenAIAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents an assistant that can call the model and use tools on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<OpenAIFile> uploadFile(FileDetails file, FilePurpose purpose) {
         // Generated convenience method for uploadFileWithResponse
@@ -2199,8 +2246,7 @@ public final class OpenAIAsyncClient {
             .serializeTextField("filename", uploadFileRequestObj.getFilename())
             .end()
             .getRequestBody();
-        return uploadFileWithResponse(uploadFileRequest, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(OpenAIFile.class));
+        return uploadFileWithResponse(uploadFileRequest, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -2215,13 +2261,11 @@ public final class OpenAIAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a status response from a file deletion operation on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FileDeletionStatus> deleteFile(String fileId) {
         // Generated convenience method for deleteFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return deleteFileWithResponse(fileId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(FileDeletionStatus.class));
+        return deleteFileWithResponse(fileId, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -2236,13 +2280,11 @@ public final class OpenAIAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents an assistant that can call the model and use tools on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<OpenAIFile> getFile(String fileId) {
         // Generated convenience method for getFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getFileWithResponse(fileId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(OpenAIFile.class));
+        return getFileWithResponse(fileId, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -2261,7 +2303,7 @@ public final class OpenAIAsyncClient {
     public Mono<byte[]> getFileContent(String fileId) {
         // Generated convenience method for getFileContentWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getFileContentWithResponse(fileId, requestOptions).flatMap(FluxUtil::toMono).map(BinaryData::toBytes);
+        return getFileContentWithResponse(fileId, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -2287,11 +2329,7 @@ public final class OpenAIAsyncClient {
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
         }
-        return listBatchesWithResponse(requestOptions).flatMap(FluxUtil::toMono).map(protocolMethodData -> {
-            OpenAIPageableListOfBatch batchList = protocolMethodData.toObject(OpenAIPageableListOfBatch.class);
-            return PageableListAccessHelper.create(batchList.getData(), batchList.getFirstId(), batchList.getLastId(),
-                batchList.isHasMore());
-        });
+        return listBatchesWithResponse(requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -2321,13 +2359,11 @@ public final class OpenAIAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return details for a single batch specified by the given batchID on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Batch> getBatch(String batchId) {
         // Generated convenience method for getBatchWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getBatchWithResponse(batchId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(Batch.class));
+        return getBatchWithResponse(batchId, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -2342,13 +2378,11 @@ public final class OpenAIAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return details for a single batch specified by the given batchID on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Batch> cancelBatch(String batchId) {
         // Generated convenience method for cancelBatchWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return cancelBatchWithResponse(batchId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(Batch.class));
+        return cancelBatchWithResponse(batchId, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -2365,13 +2399,11 @@ public final class OpenAIAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Batch object on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Batch> createBatch(BatchCreateRequest createBatchRequest) {
         // Generated convenience method for createBatchWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return createBatchWithResponse(BinaryData.fromObject(createBatchRequest), requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(Batch.class));
+            .flatMap(FluxUtil::toMono);
     }
 }

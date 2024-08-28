@@ -3,7 +3,6 @@
 
 package com.azure.ai.openai;
 
-import com.azure.ai.openai.implementation.models.FileListResponse;
 import com.azure.ai.openai.models.AudioTaskLabel;
 import com.azure.ai.openai.models.AudioTranscription;
 import com.azure.ai.openai.models.AudioTranscriptionFormat;
@@ -1039,24 +1038,23 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
             assertNotNull(file.getId());
 
             // Get single file
-            Response<BinaryData> getFileResponse = client.getFileWithResponse(file.getId(), new RequestOptions());
+            Response<OpenAIFile> getFileResponse = client.getFileWithResponse(file.getId(), new RequestOptions());
             assertEquals(200, getFileResponse.getStatusCode());
-            OpenAIFile fileFromBackend = getFileResponse.getValue().toObject(OpenAIFile.class);
+            OpenAIFile fileFromBackend = getFileResponse.getValue();
             assertFileEquals(file, fileFromBackend);
 
             // Get file by purpose
             RequestOptions requestOptions = new RequestOptions();
             requestOptions.addQueryParam("purpose", FilePurpose.ASSISTANTS.toString());
-            Response<BinaryData> listFilesResponse = client.listFilesWithResponse(requestOptions);
+            Response<List<OpenAIFile>> listFilesResponse = client.listFilesWithResponse(requestOptions);
             assertEquals(200, listFilesResponse.getStatusCode());
-            List<OpenAIFile> files = listFilesResponse.getValue()
-                .toObject(FileListResponse.class).getData();
+            List<OpenAIFile> files = listFilesResponse.getValue();
             assertTrue(files.stream().anyMatch(f -> f.getId().equals(file.getId())));
 
             // Delete file
-            Response<BinaryData> deleteResponse = client.deleteFileWithResponse(file.getId(), new RequestOptions());
+            Response<FileDeletionStatus> deleteResponse = client.deleteFileWithResponse(file.getId(), new RequestOptions());
             assertEquals(200, deleteResponse.getStatusCode());
-            FileDeletionStatus deletionStatus = deleteResponse.getValue().toObject(FileDeletionStatus.class);
+            FileDeletionStatus deletionStatus = deleteResponse.getValue();
             assertTrue(deletionStatus.isDeleted());
             assertEquals(deletionStatus.getId(), file.getId());
         });
@@ -1073,24 +1071,23 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
             assertNotNull(file.getId());
 
             // Get single file
-            Response<BinaryData> getFileResponse = client.getFileWithResponse(file.getId(), new RequestOptions());
+            Response<OpenAIFile> getFileResponse = client.getFileWithResponse(file.getId(), new RequestOptions());
             assertEquals(200, getFileResponse.getStatusCode());
-            OpenAIFile fileFromBackend = getFileResponse.getValue().toObject(OpenAIFile.class);
+            OpenAIFile fileFromBackend = getFileResponse.getValue();
             assertFileEquals(file, fileFromBackend);
 
             // Get file by purpose
             RequestOptions requestOptions = new RequestOptions();
             requestOptions.addQueryParam("purpose", FilePurpose.ASSISTANTS.toString());
-            Response<BinaryData> listFilesResponse = client.listFilesWithResponse(requestOptions);
+            Response<List<OpenAIFile>> listFilesResponse = client.listFilesWithResponse(requestOptions);
             assertEquals(200, listFilesResponse.getStatusCode());
-            List<OpenAIFile> files = listFilesResponse.getValue()
-                .toObject(FileListResponse.class).getData();
+            List<OpenAIFile> files = listFilesResponse.getValue();
             assertTrue(files.stream().anyMatch(f -> f.getId().equals(file.getId())));
 
             // Delete file
-            Response<BinaryData> deleteResponse = client.deleteFileWithResponse(file.getId(), new RequestOptions());
+            Response<FileDeletionStatus> deleteResponse = client.deleteFileWithResponse(file.getId(), new RequestOptions());
             assertEquals(200, deleteResponse.getStatusCode());
-            FileDeletionStatus deletionStatus = deleteResponse.getValue().toObject(FileDeletionStatus.class);
+            FileDeletionStatus deletionStatus = deleteResponse.getValue();
             assertTrue(deletionStatus.isDeleted());
             assertEquals(deletionStatus.getId(), file.getId());
         });
@@ -1107,24 +1104,23 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
             assertNotNull(file.getId());
 
             // Get single file
-            Response<BinaryData> getFileResponse = client.getFileWithResponse(file.getId(), new RequestOptions());
+            Response<OpenAIFile> getFileResponse = client.getFileWithResponse(file.getId(), new RequestOptions());
             assertEquals(200, getFileResponse.getStatusCode());
-            OpenAIFile fileFromBackend = getFileResponse.getValue().toObject(OpenAIFile.class);
+            OpenAIFile fileFromBackend = getFileResponse.getValue();
             assertFileEquals(file, fileFromBackend);
 
             // Get file by purpose
             RequestOptions requestOptions = new RequestOptions();
             requestOptions.addQueryParam("purpose", FilePurpose.FINE_TUNE.toString());
-            Response<BinaryData> listFilesResponse = client.listFilesWithResponse(requestOptions);
+            Response<List<OpenAIFile>> listFilesResponse = client.listFilesWithResponse(requestOptions);
             assertEquals(200, listFilesResponse.getStatusCode());
-            List<OpenAIFile> files = listFilesResponse.getValue()
-                .toObject(FileListResponse.class).getData();
+            List<OpenAIFile> files = listFilesResponse.getValue();
             assertTrue(files.stream().anyMatch(f -> f.getId().equals(file.getId())));
 
             // Delete file
-            Response<BinaryData> deleteResponse = client.deleteFileWithResponse(file.getId(), new RequestOptions());
+            Response<FileDeletionStatus> deleteResponse = client.deleteFileWithResponse(file.getId(), new RequestOptions());
             assertEquals(200, deleteResponse.getStatusCode());
-            FileDeletionStatus deletionStatus = deleteResponse.getValue().toObject(FileDeletionStatus.class);
+            FileDeletionStatus deletionStatus = deleteResponse.getValue();
             assertTrue(deletionStatus.isDeleted());
             assertEquals(deletionStatus.getId(), file.getId());
         });

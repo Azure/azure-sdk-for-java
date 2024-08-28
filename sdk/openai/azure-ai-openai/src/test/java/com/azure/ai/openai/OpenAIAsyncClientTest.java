@@ -3,7 +3,6 @@
 
 package com.azure.ai.openai;
 
-import com.azure.ai.openai.implementation.models.FileListResponse;
 import com.azure.ai.openai.models.AudioTaskLabel;
 import com.azure.ai.openai.models.AudioTranscriptionFormat;
 import com.azure.ai.openai.models.AudioTranscriptionTimestampGranularity;
@@ -1368,13 +1367,13 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
                         })
                         // Compare uploaded file with file from backend
                         .flatMap(tuple -> {
-                            Response<BinaryData> response = tuple.getT1();
+                            Response<OpenAIFile> response = tuple.getT1();
                             OpenAIFile uploadedFile = tuple.getT2();
 
                             assertNotNull(uploadedFile);
                             assertNotNull(response);
                             assertEquals(200, response.getStatusCode());
-                            OpenAIFile fileFromBackend = response.getValue().toObject(OpenAIFile.class);
+                            OpenAIFile fileFromBackend = response.getValue();
                             assertFileEquals(uploadedFile, fileFromBackend);
 
                             RequestOptions requestOptions = new RequestOptions();
@@ -1383,22 +1382,21 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
                         })
                         // Check for existence of file when fetched by purpose
                         .flatMap(tuple -> {
-                            Response<BinaryData> response = tuple.getT1();
+                            Response<List<OpenAIFile>> response = tuple.getT1();
                             OpenAIFile uploadedFile = tuple.getT2();
 
                             assertEquals(200, response.getStatusCode());
-                            List<OpenAIFile> files = response.getValue()
-                                .toObject(FileListResponse.class).getData();
+                            List<OpenAIFile> files = response.getValue();
                             assertTrue(files.stream().anyMatch(f -> f.getId().equals(uploadedFile.getId())));
                             return client.deleteFileWithResponse(uploadedFile.getId(), new RequestOptions()).zipWith(Mono.just(uploadedFile));
                         }))
                 // File deletion
                 .assertNext(tuple -> {
-                    Response<BinaryData> response = tuple.getT1();
+                    Response<FileDeletionStatus> response = tuple.getT1();
                     OpenAIFile file = tuple.getT2();
 
                     assertEquals(200, response.getStatusCode());
-                    FileDeletionStatus deletionStatus = response.getValue().toObject(FileDeletionStatus.class);
+                    FileDeletionStatus deletionStatus = response.getValue();
 
                     assertNotNull(deletionStatus);
                     assertNotNull(deletionStatus.getId());
@@ -1424,13 +1422,13 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
                         })
                         // Compare uploaded file with file from backend
                         .flatMap(tuple -> {
-                            Response<BinaryData> response = tuple.getT1();
+                            Response<OpenAIFile> response = tuple.getT1();
                             OpenAIFile uploadedFile = tuple.getT2();
 
                             assertNotNull(uploadedFile);
                             assertNotNull(response);
                             assertEquals(200, response.getStatusCode());
-                            OpenAIFile fileFromBackend = response.getValue().toObject(OpenAIFile.class);
+                            OpenAIFile fileFromBackend = response.getValue();
                             assertFileEquals(uploadedFile, fileFromBackend);
 
                             RequestOptions requestOptions = new RequestOptions();
@@ -1439,22 +1437,21 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
                         })
                         // Check for existence of file when fetched by purpose
                         .flatMap(tuple -> {
-                            Response<BinaryData> response = tuple.getT1();
+                            Response<List<OpenAIFile>> response = tuple.getT1();
                             OpenAIFile uploadedFile = tuple.getT2();
 
                             assertEquals(200, response.getStatusCode());
-                            List<OpenAIFile> files = response.getValue()
-                                .toObject(FileListResponse.class).getData();
+                            List<OpenAIFile> files = response.getValue();
                             assertTrue(files.stream().anyMatch(f -> f.getId().equals(uploadedFile.getId())));
                             return client.deleteFileWithResponse(uploadedFile.getId(), new RequestOptions()).zipWith(Mono.just(uploadedFile));
                         }))
                 // File deletion
                 .assertNext(tuple -> {
-                    Response<BinaryData> response = tuple.getT1();
+                    Response<FileDeletionStatus> response = tuple.getT1();
                     OpenAIFile file = tuple.getT2();
 
                     assertEquals(200, response.getStatusCode());
-                    FileDeletionStatus deletionStatus = response.getValue().toObject(FileDeletionStatus.class);
+                    FileDeletionStatus deletionStatus = response.getValue();
 
                     assertNotNull(deletionStatus);
                     assertNotNull(deletionStatus.getId());
@@ -1481,13 +1478,13 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
                         })
                         // Compare uploaded file with file from backend
                         .flatMap(tuple -> {
-                            Response<BinaryData> response = tuple.getT1();
+                            Response<OpenAIFile> response = tuple.getT1();
                             OpenAIFile uploadedFile = tuple.getT2();
 
                             assertNotNull(uploadedFile);
                             assertNotNull(response);
                             assertEquals(200, response.getStatusCode());
-                            OpenAIFile fileFromBackend = response.getValue().toObject(OpenAIFile.class);
+                            OpenAIFile fileFromBackend = response.getValue();
                             assertFileEquals(uploadedFile, fileFromBackend);
 
                             RequestOptions requestOptions = new RequestOptions();
@@ -1496,22 +1493,21 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
                         })
                         // Check for existence of file when fetched by purpose
                         .flatMap(tuple -> {
-                            Response<BinaryData> response = tuple.getT1();
+                            Response<List<OpenAIFile>> response = tuple.getT1();
                             OpenAIFile uploadedFile = tuple.getT2();
 
                             assertEquals(200, response.getStatusCode());
-                            List<OpenAIFile> files = response.getValue()
-                                .toObject(FileListResponse.class).getData();
+                            List<OpenAIFile> files = response.getValue();
                             assertTrue(files.stream().anyMatch(f -> f.getId().equals(uploadedFile.getId())));
                             return client.deleteFileWithResponse(uploadedFile.getId(), new RequestOptions()).zipWith(Mono.just(uploadedFile));
                         }))
                 // File deletion
                 .assertNext(tuple -> {
-                    Response<BinaryData> response = tuple.getT1();
+                    Response<FileDeletionStatus> response = tuple.getT1();
                     OpenAIFile file = tuple.getT2();
 
                     assertEquals(200, response.getStatusCode());
-                    FileDeletionStatus deletionStatus = response.getValue().toObject(FileDeletionStatus.class);
+                    FileDeletionStatus deletionStatus = response.getValue();
 
                     assertNotNull(deletionStatus);
                     assertNotNull(deletionStatus.getId());
