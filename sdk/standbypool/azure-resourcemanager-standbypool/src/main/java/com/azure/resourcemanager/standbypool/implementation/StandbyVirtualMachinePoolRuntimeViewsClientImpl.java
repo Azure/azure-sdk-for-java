@@ -72,7 +72,7 @@ public final class StandbyVirtualMachinePoolRuntimeViewsClientImpl
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("standbyVirtualMachinePoolName") String standbyVirtualMachinePoolName,
-            @PathParam("runtimeView") String runtimeView, @HeaderParam("accept") String accept, Context context);
+            @PathParam("runtimeView") String runtimeView, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StandbyPool/standbyVirtualMachinePools/{standbyVirtualMachinePoolName}/runtimeViews")
@@ -83,7 +83,7 @@ public final class StandbyVirtualMachinePoolRuntimeViewsClientImpl
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("standbyVirtualMachinePoolName") String standbyVirtualMachinePoolName,
-            @HeaderParam("accept") String accept, Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -91,7 +91,7 @@ public final class StandbyVirtualMachinePoolRuntimeViewsClientImpl
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<StandbyVirtualMachinePoolRuntimeViewResourceListResult>> listByStandbyPoolNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, Context context);
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -389,6 +389,8 @@ public final class StandbyVirtualMachinePoolRuntimeViewsClientImpl
     }
 
     /**
+     * List StandbyVirtualMachinePoolRuntimeViewResource resources by StandbyVirtualMachinePoolResource
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -418,6 +420,8 @@ public final class StandbyVirtualMachinePoolRuntimeViewsClientImpl
     }
 
     /**
+     * List StandbyVirtualMachinePoolRuntimeViewResource resources by StandbyVirtualMachinePoolResource
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
