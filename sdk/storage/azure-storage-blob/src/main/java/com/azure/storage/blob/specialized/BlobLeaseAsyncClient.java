@@ -205,15 +205,12 @@ public final class BlobLeaseAsyncClient {
             response = this.client.getBlobs().acquireLeaseWithResponseAsync(containerName, blobName, null,
                 options.getDuration(), this.leaseId, requestConditions.getIfModifiedSince(),
                 requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-                requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null,
-                context)
-                .onErrorMap(ModelHelper::mapToBlobStorageException)
+                requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null, context)
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getXMsLeaseId()));
         } else {
             response = this.client.getContainers().acquireLeaseWithResponseAsync(containerName, null,
                 options.getDuration(), this.leaseId, requestConditions.getIfModifiedSince(),
                 requestConditions.getIfUnmodifiedSince(), null, context)
-                .onErrorMap(ModelHelper::mapToBlobStorageException)
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getXMsLeaseId()));
         }
 
@@ -306,15 +303,11 @@ public final class BlobLeaseAsyncClient {
             response = this.client.getBlobs().renewLeaseWithResponseAsync(containerName, blobName, this.leaseId, null,
                 requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
                 requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(),
-                requestConditions.getTagsConditions(), null,
-                context)
-                .onErrorMap(ModelHelper::mapToBlobStorageException)
+                requestConditions.getTagsConditions(), null, context)
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getXMsLeaseId()));
         } else {
             response = this.client.getContainers().renewLeaseWithResponseAsync(containerName, this.leaseId, null,
-                requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
-                null, context)
-                .onErrorMap(ModelHelper::mapToBlobStorageException)
+                requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(), null, context)
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getXMsLeaseId()));
         }
 
@@ -406,12 +399,10 @@ public final class BlobLeaseAsyncClient {
             return this.client.getBlobs().releaseLeaseNoCustomHeadersWithResponseAsync(containerName, blobName,
                 this.leaseId, null, requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
                 requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(),
-                requestConditions.getTagsConditions(), null, context)
-                .onErrorMap(ModelHelper::mapToBlobStorageException);
+                requestConditions.getTagsConditions(), null, context);
         } else {
             return this.client.getContainers().releaseLeaseNoCustomHeadersWithResponseAsync(containerName, this.leaseId,
-                null, requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(), null, context)
-                .onErrorMap(ModelHelper::mapToBlobStorageException);
+                null, requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(), null, context);
         }
     }
 
@@ -517,15 +508,12 @@ public final class BlobLeaseAsyncClient {
             return this.client.getBlobs().breakLeaseWithResponseAsync(containerName, blobName, null,
                 breakPeriod, requestConditions.getIfModifiedSince(),
                 requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-                requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null,
-                context)
-                .onErrorMap(ModelHelper::mapToBlobStorageException)
+                requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null, context)
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getXMsLeaseTime()));
         } else {
             return this.client.getContainers().breakLeaseWithResponseAsync(containerName, null,
                 breakPeriod, requestConditions.getIfModifiedSince(),
                 requestConditions.getIfUnmodifiedSince(), null, context)
-                .onErrorMap(ModelHelper::mapToBlobStorageException)
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getXMsLeaseTime()));
         }
     }
@@ -618,16 +606,12 @@ public final class BlobLeaseAsyncClient {
             response = this.client.getBlobs().changeLeaseWithResponseAsync(containerName, blobName, this.leaseId,
                 options.getProposedId(), null, requestConditions.getIfModifiedSince(),
                 requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-                requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null,
-                context)
-                .onErrorMap(ModelHelper::mapToBlobStorageException)
+                requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null, context)
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getXMsLeaseId()));
         } else {
             response = this.client.getContainers().changeLeaseWithResponseAsync(containerName, this.leaseId,
                 options.getProposedId(), null, requestConditions.getIfModifiedSince(),
-                requestConditions.getIfUnmodifiedSince(), null,
-                context)
-                .onErrorMap(ModelHelper::mapToBlobStorageException)
+                requestConditions.getIfUnmodifiedSince(), null, context)
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getXMsLeaseId()));
         }
 

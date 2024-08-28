@@ -37,7 +37,6 @@ import com.azure.storage.common.implementation.UploadUtils;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.implementation.models.CopyFileSmbInfo;
 import com.azure.storage.file.share.implementation.models.DestinationLeaseAccessConditions;
-import com.azure.storage.file.share.models.FilePermissionFormat;
 import com.azure.storage.file.share.implementation.models.FilesDownloadHeaders;
 import com.azure.storage.file.share.implementation.models.FilesStartCopyHeaders;
 import com.azure.storage.file.share.implementation.models.ShareFileRangeWriteType;
@@ -48,6 +47,7 @@ import com.azure.storage.file.share.models.CloseHandlesInfo;
 import com.azure.storage.file.share.models.CopyStatusType;
 import com.azure.storage.file.share.models.CopyableFileSmbPropertiesList;
 import com.azure.storage.file.share.models.DownloadRetryOptions;
+import com.azure.storage.file.share.models.FilePermissionFormat;
 import com.azure.storage.file.share.models.HandleItem;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.PermissionCopyModeType;
@@ -487,7 +487,6 @@ public class ShareFileAsyncClient {
             .createWithResponseAsync(shareName, filePath, maxSize, fileAttributes, null, metadata, filePermission,
                 filePermissionFormat, filePermissionKey, fileCreationTime, fileLastWriteTime, fileChangeTime,
                 requestConditions.getLeaseId(), httpHeaders, context)
-            .onErrorMap(ModelHelper::mapToShareStorageException)
             .map(ModelHelper::createFileInfoResponse);
     }
 
@@ -710,7 +709,6 @@ public class ShareFileAsyncClient {
                         .startCopyWithResponseAsync(shareName, filePath, copySource, null,
                             options.getMetadata(), options.getFilePermission(), tempSmbProperties.getFilePermissionKey(),
                             finalRequestConditions.getLeaseId(), copyFileSmbInfo, context))
-                        .onErrorMap(ModelHelper::mapToShareStorageException)
                         .map(response -> {
                             final FilesStartCopyHeaders headers = response.getDeserializedHeaders();
                             copyId.set(headers.getXMsCopyId());
@@ -861,8 +859,7 @@ public class ShareFileAsyncClient {
         Context context) {
         requestConditions = requestConditions == null ? new ShareRequestConditions() : requestConditions;
         return azureFileStorageClient.getFiles().abortCopyNoCustomHeadersWithResponseAsync(shareName, filePath, copyId,
-            null, requestConditions.getLeaseId(), context)
-            .onErrorMap(ModelHelper::mapToShareStorageException);
+            null, requestConditions.getLeaseId(), context);
     }
 
     /**
@@ -1237,8 +1234,7 @@ public class ShareFileAsyncClient {
         Boolean rangeGetContentMD5, ShareRequestConditions requestConditions, Context context) {
         String rangeString = range == null ? null : range.toHeaderValue();
         return azureFileStorageClient.getFiles().downloadWithResponseAsync(shareName, filePath, null,
-            rangeString, rangeGetContentMD5, requestConditions.getLeaseId(), context)
-            .onErrorMap(ModelHelper::mapToShareStorageException);
+            rangeString, rangeGetContentMD5, requestConditions.getLeaseId(), context);
     }
 
     /**
@@ -1332,8 +1328,7 @@ public class ShareFileAsyncClient {
     Mono<Response<Void>> deleteWithResponse(ShareRequestConditions requestConditions, Context context) {
         requestConditions = requestConditions == null ? new ShareRequestConditions() : requestConditions;
         return azureFileStorageClient.getFiles()
-            .deleteNoCustomHeadersWithResponseAsync(shareName, filePath, null, requestConditions.getLeaseId(), context)
-            .onErrorMap(ModelHelper::mapToShareStorageException);
+            .deleteNoCustomHeadersWithResponseAsync(shareName, filePath, null, requestConditions.getLeaseId(), context);
     }
 
     /**
@@ -1512,8 +1507,8 @@ public class ShareFileAsyncClient {
         requestConditions = requestConditions == null ? new ShareRequestConditions() : requestConditions;
         context = context == null ? Context.NONE : context;
         return azureFileStorageClient.getFiles()
-            .getPropertiesWithResponseAsync(shareName, filePath, snapshot, null, requestConditions.getLeaseId(), context)
-            .onErrorMap(ModelHelper::mapToShareStorageException)
+            .getPropertiesWithResponseAsync(shareName, filePath, snapshot, null, requestConditions.getLeaseId(),
+                context)
             .map(ModelHelper::getPropertiesResponse);
     }
 
@@ -1779,7 +1774,6 @@ public class ShareFileAsyncClient {
             .setHttpHeadersWithResponseAsync(shareName, filePath, fileAttributes, null, newFileSize, filePermission,
                 filePermissionFormat, filePermissionKey, fileCreationTime, fileLastWriteTime, fileChangeTime,
                 requestConditions.getLeaseId(), httpHeaders, context)
-            .onErrorMap(ModelHelper::mapToShareStorageException)
             .map(ModelHelper::setPropertiesResponse);
     }
 
@@ -1913,9 +1907,8 @@ public class ShareFileAsyncClient {
         context = context == null ? Context.NONE : context;
         try {
             return azureFileStorageClient.getFiles()
-                .setMetadataWithResponseAsync(shareName, filePath, null, metadata,
-                    requestConditions.getLeaseId(), context)
-                .onErrorMap(ModelHelper::mapToShareStorageException)
+                .setMetadataWithResponseAsync(shareName, filePath, null, metadata, requestConditions.getLeaseId(),
+                    context)
                 .map(ModelHelper::setMetadataResponse);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -2296,8 +2289,8 @@ public class ShareFileAsyncClient {
 
         return azureFileStorageClient.getFiles()
             .uploadRangeWithResponseAsync(shareName, filePath, range.toString(), ShareFileRangeWriteType.UPDATE,
-                options.getLength(), null, null, requestConditions.getLeaseId(), options.getLastWrittenMode(), data, context)
-            .onErrorMap(ModelHelper::mapToShareStorageException)
+                options.getLength(), null, null, requestConditions.getLeaseId(), options.getLastWrittenMode(), data,
+                context)
             .map(ModelHelper::uploadRangeHeadersToShareFileInfo);
     }
 
@@ -2463,7 +2456,6 @@ public class ShareFileAsyncClient {
             .uploadRangeFromURLWithResponseAsync(shareName, filePath, destinationRange.toString(), copySource, 0,
                 null, sourceRange.toString(), null, modifiedRequestConditions.getLeaseId(), sourceAuth,
                 options.getLastWrittenMode(), null, context)
-            .onErrorMap(ModelHelper::mapToShareStorageException)
             .map(ModelHelper::mapUploadRangeFromUrlResponse);
     }
 
@@ -2575,7 +2567,6 @@ public class ShareFileAsyncClient {
         return azureFileStorageClient.getFiles()
             .uploadRangeWithResponseAsync(shareName, filePath, range.toString(), ShareFileRangeWriteType.CLEAR,
                 0L, null, null, requestConditions.getLeaseId(), null, (Flux<ByteBuffer>) null, context)
-            .onErrorMap(ModelHelper::mapToShareStorageException)
             .map(ModelHelper::transformUploadResponse);
     }
 
@@ -2850,7 +2841,6 @@ public class ShareFileAsyncClient {
 
         return this.azureFileStorageClient.getFiles().getRangeListWithResponseAsync(shareName, filePath, snapshot,
             previousSnapshot, null, rangeString, finalRequestConditions.getLeaseId(), supportRename, context)
-            .onErrorMap(ModelHelper::mapToShareStorageException)
             .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 
@@ -2912,7 +2902,6 @@ public class ShareFileAsyncClient {
             marker -> StorageImplUtils.applyOptionalTimeout(this.azureFileStorageClient.getFiles()
                 .listHandlesWithResponseAsync(shareName, filePath, marker, maxResultsPerPage, null, snapshot,
                     context), timeout)
-                .onErrorMap(ModelHelper::mapToShareStorageException)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.getStatusCode(),
                     response.getHeaders(),
@@ -2986,7 +2975,6 @@ public class ShareFileAsyncClient {
         context = context == null ? Context.NONE : context;
         return azureFileStorageClient.getFiles()
             .forceCloseHandlesWithResponseAsync(shareName, filePath, handleId, null, null, snapshot, context)
-            .onErrorMap(ModelHelper::mapToShareStorageException)
             .map(response -> new SimpleResponse<>(response,
                 new CloseHandlesInfo(response.getDeserializedHeaders().getXMsNumberOfHandlesClosed(),
                     response.getDeserializedHeaders().getXMsNumberOfHandlesFailed())));
@@ -3027,9 +3015,7 @@ public class ShareFileAsyncClient {
     PagedFlux<CloseHandlesInfo> forceCloseAllHandlesWithOptionalTimeout(Duration timeout, Context context) {
         Function<String, Mono<PagedResponse<CloseHandlesInfo>>> retriever =
             marker -> StorageImplUtils.applyOptionalTimeout(this.azureFileStorageClient.getFiles()
-                .forceCloseHandlesWithResponseAsync(shareName, filePath, "*", null, marker,
-                    snapshot, context), timeout)
-                .onErrorMap(ModelHelper::mapToShareStorageException)
+                .forceCloseHandlesWithResponseAsync(shareName, filePath, "*", null, marker, snapshot, context), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.getStatusCode(),
                     response.getHeaders(),
@@ -3158,7 +3144,6 @@ public class ShareFileAsyncClient {
             null /* timeout */, options.getReplaceIfExists(), options.isIgnoreReadOnly(),
             options.getFilePermission(), options.getFilePermissionFormat(), filePermissionKey, options.getMetadata(),
             sourceConditions, destinationConditions, smbInfo, headers, context)
-            .onErrorMap(ModelHelper::mapToShareStorageException)
             .map(response -> new SimpleResponse<>(response, destinationFileClient));
     }
 

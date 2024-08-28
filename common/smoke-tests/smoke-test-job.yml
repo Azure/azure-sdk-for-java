@@ -34,7 +34,7 @@ jobs:
         parameters:
           AgentImage: $(OSVmImage)
 
-      - task: Maven@3
+      - task: Maven@4
         displayName: Use the latest package version from the dev feed
         inputs:
           mavenPomFile: $(PomFile)
@@ -46,9 +46,9 @@ jobs:
           publishJUnitResults: false
 
       - task: UsePythonVersion@0
-        displayName: 'Use Python 3.6'
+        displayName: 'Use Python 3.9'
         inputs:
-          versionSpec: '3.6'
+          versionSpec: '3.9'
 
       - task: PythonScript@0
         inputs:
@@ -60,7 +60,7 @@ jobs:
       - pwsh: Get-Content $(PomFile)
         displayName: Show pom.xml
 
-      - task: Maven@3
+      - task: Maven@4
         displayName: Show dependency tree
         inputs:
           mavenPomFile: $(PomFile)
@@ -71,7 +71,7 @@ jobs:
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
 
-      - task: Maven@3
+      - task: Maven@4
         displayName: 'Build and Package'
         inputs:
           mavenPomFile: $(PomFile)

@@ -62,7 +62,7 @@ mvn clean install -DskipTests "-Drevapi.skip=true" "-Dcheckstyle.skip=true" "-Dc
 
 
 mvn clean install -DskipTests -f $webappRootPom | Write-Host
-az webapp deploy --resource-group $(getVariable('IDENTITY_RESOURCE_GROUP')) --name $(getVariable('IDENTITY_WEBAPP_NAME')) --src-path "$webappRoot/target/identity-test-webapp-0.0.1-SNAPSHOT.jar" --type jar
+az webapp deploy --resource-group $(getVariable('IDENTITY_RESOURCE_GROUP')) --name $(getVariable('IDENTITY_WEBAPP_NAME')) --src-path "$webappRoot/target/identity-test-webapp-1.0.0-beta.1.jar" --type jar
 
 Write-Host "Building Function App"
 
@@ -88,7 +88,7 @@ Write-Host "Creating storage container"
 az storage container create --name "vmcontainer" --account-name $DeploymentOutputs['IDENTITY_STORAGE_NAME_1'] --account-key $key | Write-Host
 
 Write-Host "Uploading file to storage"
-az storage blob upload --container-name "vmcontainer" --file "$vmRoot/target/identity-test-vm-1.0-SNAPSHOT-jar-with-dependencies.jar" --name "testfile.jar" --account-name $DeploymentOutputs['IDENTITY_STORAGE_NAME_1'] --account-key $key | Write-Host
+az storage blob upload --container-name "vmcontainer" --file "$vmRoot/target/identity-test-vm-1.0.0-beta.1-jar-with-dependencies.jar" --name "testfile.jar" --account-name $DeploymentOutputs['IDENTITY_STORAGE_NAME_1'] --account-key $key | Write-Host
 
 if ($IsMacOS -eq $false) {
 

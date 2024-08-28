@@ -16,7 +16,6 @@ import com.azure.spring.cloud.appconfiguration.config.AppConfigurationRefresh;
 import com.azure.spring.cloud.appconfiguration.config.AppConfigurationStoreHealth;
 import com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationRefreshUtil.RefreshEventData;
 import com.azure.spring.cloud.appconfiguration.config.implementation.autofailover.ReplicaLookUp;
-import com.azure.spring.cloud.appconfiguration.config.implementation.http.policy.BaseAppConfigurationPolicy;
 
 import reactor.core.publisher.Mono;
 
@@ -110,7 +109,6 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh {
      */
     private boolean refreshStores() {
         if (running.compareAndSet(false, true)) {
-            BaseAppConfigurationPolicy.setWatchRequests(true);
             try {
                 RefreshEventData eventData = refreshUtils.refreshStoresCheck(clientFactory,
                     refreshInterval, defaultMinBackoff, replicaLookUp);

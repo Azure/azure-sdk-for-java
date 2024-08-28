@@ -70,7 +70,7 @@ public final class BlobStorageError implements JsonSerializable<BlobStorageError
      */
     public static BlobStorageError fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            // Buffer the next JSON object as ResponseError can take two forms:
+            // Buffer the next JSON object as BlobStorageError can take two forms:
             //
             // - A BlobStorageError object
             // - A BlobStorageError object wrapped in an "error" node.

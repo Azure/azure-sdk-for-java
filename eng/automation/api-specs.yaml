@@ -13,6 +13,8 @@ azure-kusto:
   service: kusto
 azurelargeinstance:
   service: largeinstance
+azurestackhci/Microsoft.AzureStackHCI/StackHCI:
+  service: azurestackhci
 cdn:
   suffix: generated
 compute:
