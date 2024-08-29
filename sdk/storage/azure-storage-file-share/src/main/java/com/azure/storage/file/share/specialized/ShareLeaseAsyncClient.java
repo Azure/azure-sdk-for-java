@@ -177,11 +177,11 @@ public final class ShareLeaseAsyncClient {
         Mono<Response<String>> response;
         if (this.isShareFile) {
             response = this.client.getFiles().acquireLeaseWithResponseAsync(shareName, resourcePath, null,
-                options.getDuration(), this.leaseId, null, context)
+                    options.getDuration(), this.leaseId, null, context)
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getXMsLeaseId()));
         } else {
-            response = this.client.getShares().acquireLeaseWithResponseAsync(shareName, null,
-                options.getDuration(), this.leaseId, shareSnapshot, null, context)
+            response = this.client.getShares().acquireLeaseWithResponseAsync(shareName, null, options.getDuration(),
+                    this.leaseId, shareSnapshot, null, context)
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getXMsLeaseId()));
         }
 
@@ -369,12 +369,12 @@ public final class ShareLeaseAsyncClient {
 
         Mono<Response<String>> response;
         if (this.isShareFile) {
-            response = this.client.getFiles().changeLeaseWithResponseAsync(shareName, resourcePath, this.leaseId, null, proposedId,
-                null, context)
+            response = this.client.getFiles().changeLeaseWithResponseAsync(shareName, resourcePath, this.leaseId, null,
+                    proposedId, null, context)
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getXMsLeaseId()));
         } else {
-            response = this.client.getShares().changeLeaseWithResponseAsync(shareName, this.leaseId, null, proposedId, shareSnapshot,
-                null, context)
+            response = this.client.getShares().changeLeaseWithResponseAsync(shareName, this.leaseId, null, proposedId,
+                    shareSnapshot, null, context)
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getXMsLeaseId()));
         }
 

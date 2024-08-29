@@ -13,38 +13,35 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for BatchEndpoints Update. */
+/**
+ * Samples for BatchEndpoints Update.
+ */
 public final class BatchEndpointsUpdateSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/BatchEndpoint/update.json
+     * x-ms-original-file:
+     * specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/
+     * examples/Workspace/BatchEndpoint/update.json
      */
     /**
-     * Sample code: Update Batch Endpoint.
-     *
+     * Sample code: Update Workspace Batch Endpoint.
+     * 
      * @param manager Entry point to MachineLearningManager.
      */
-    public static void updateBatchEndpoint(com.azure.resourcemanager.machinelearning.MachineLearningManager manager)
-        throws IOException {
-        BatchEndpoint resource =
-            manager
-                .batchEndpoints()
-                .getWithResponse("test-rg", "my-aml-workspace", "testEndpointName", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource
-            .update()
+    public static void updateWorkspaceBatchEndpoint(
+        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) throws IOException {
+        BatchEndpoint resource = manager.batchEndpoints()
+            .getWithResponse("test-rg", "my-aml-workspace", "testEndpointName", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
             .withTags(mapOf())
-            .withIdentity(
-                new PartialManagedServiceIdentity()
-                    .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
-                    .withUserAssignedIdentities(
-                        mapOf(
-                            "string",
-                            SerializerFactory
-                                .createDefaultManagementSerializerAdapter()
-                                .deserialize("{}", Object.class, SerializerEncoding.JSON))))
+            .withIdentity(new PartialManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
+                .withUserAssignedIdentities(mapOf("string",
+                    SerializerFactory.createDefaultManagementSerializerAdapter()
+                        .deserialize("{}", Object.class, SerializerEncoding.JSON))))
             .apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -10,14 +10,14 @@ import com.azure.resourcemanager.datafactory.models.WebLinkedServiceTypeProperti
 public final class WebLinkedServiceTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WebLinkedServiceTypeProperties model = BinaryData
-            .fromString("{\"authenticationType\":\"WebLinkedServiceTypeProperties\",\"url\":\"dataimqaxtmvmycvjpa\"}")
-            .toObject(WebLinkedServiceTypeProperties.class);
+        WebLinkedServiceTypeProperties model
+            = BinaryData.fromString("{\"authenticationType\":\"WebLinkedServiceTypeProperties\",\"url\":\"datafd\"}")
+                .toObject(WebLinkedServiceTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WebLinkedServiceTypeProperties model = new WebLinkedServiceTypeProperties().withUrl("dataimqaxtmvmycvjpa");
+        WebLinkedServiceTypeProperties model = new WebLinkedServiceTypeProperties().withUrl("datafd");
         model = BinaryData.fromObject(model).toObject(WebLinkedServiceTypeProperties.class);
     }
 }

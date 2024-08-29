@@ -57,34 +57,34 @@ public abstract class LogsIngestionTestBase extends TestProxyTestBase {
 
     @Override
     public void beforeTest() {
-        dataCollectionEndpoint = Configuration.getGlobalConfiguration().get("AZURE_MONITOR_DCE", "https://dce.monitor.azure.com");
-        dataCollectionRuleId = Configuration.getGlobalConfiguration().get("AZURE_MONITOR_DCR_ID", "dcr-01584ffffeac4f7abbd4fbc24aa64130");
+        dataCollectionEndpoint
+            = Configuration.getGlobalConfiguration().get("AZURE_MONITOR_DCE", "https://dce.monitor.azure.com");
+        dataCollectionRuleId = Configuration.getGlobalConfiguration()
+            .get("AZURE_MONITOR_DCR_ID", "dcr-01584ffffeac4f7abbd4fbc24aa64130");
         streamName = "Custom-MyTableRawData";
 
-        LogsIngestionClientBuilder clientBuilder = new LogsIngestionClientBuilder()
-            .credential(getTestTokenCredential(interceptorManager))
-            .retryPolicy(new RetryPolicy(new RetryStrategy() {
-                @Override
-                public int getMaxRetries() {
-                    return 0;
-                }
+        LogsIngestionClientBuilder clientBuilder
+            = new LogsIngestionClientBuilder().credential(getTestTokenCredential(interceptorManager))
+                .retryPolicy(new RetryPolicy(new RetryStrategy() {
+                    @Override
+                    public int getMaxRetries() {
+                        return 0;
+                    }
 
-                @Override
-                public Duration calculateRetryDelay(int i) {
-                    return null;
-                }
-            }));
+                    @Override
+                    public Duration calculateRetryDelay(int i) {
+                        return null;
+                    }
+                }));
         if (getTestMode() == TestMode.PLAYBACK) {
             interceptorManager.addMatchers(Arrays.asList(new BodilessMatcher()));
-            clientBuilder
-                .httpClient(interceptorManager.getPlaybackClient());
+            clientBuilder.httpClient(interceptorManager.getPlaybackClient());
         } else if (getTestMode() == TestMode.RECORD) {
-            clientBuilder
-                .addPolicy(interceptorManager.getRecordPolicy());
+            clientBuilder.addPolicy(interceptorManager.getRecordPolicy());
         }
-        this.clientBuilder = clientBuilder
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .endpoint(dataCollectionEndpoint);
+        this.clientBuilder
+            = clientBuilder.httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+                .endpoint(dataCollectionEndpoint);
     }
 
     public class BatchCountPolicy implements HttpPipelinePolicy {
@@ -135,8 +135,7 @@ public abstract class LogsIngestionTestBase extends TestProxyTestBase {
         private void process(HttpPipelineCallContext context) {
             counter.incrementAndGet();
             if (changeDcrId.get()) {
-                String url = context.getHttpRequest().getUrl().toString()
-                    .replace(dataCollectionRuleId, "dcr-id");
+                String url = context.getHttpRequest().getUrl().toString().replace(dataCollectionRuleId, "dcr-id");
                 context.getHttpRequest().setUrl(url);
                 changeDcrId.set(false);
             } else {
@@ -154,8 +153,7 @@ public abstract class LogsIngestionTestBase extends TestProxyTestBase {
         List<Object> logs = new ArrayList<>();
 
         for (int i = 0; i < logsCount; i++) {
-            LogData logData = new LogData()
-                .setTime(OffsetDateTime.parse("2022-01-01T00:00:00+07:00"))
+            LogData logData = new LogData().setTime(OffsetDateTime.parse("2022-01-01T00:00:00+07:00"))
                 .setExtendedColumn("test" + i)
                 .setAdditionalContext("additional logs context");
             logs.add(logData);
@@ -168,12 +166,14 @@ public abstract class LogsIngestionTestBase extends TestProxyTestBase {
         private AtomicLong totalLogsCount = new AtomicLong();
 
         @Override
-        public Mono<HttpResponse> process(HttpPipelineCallContext httpPipelineCallContext, HttpPipelineNextPolicy httpPipelineNextPolicy) {
+        public Mono<HttpResponse> process(HttpPipelineCallContext httpPipelineCallContext,
+            HttpPipelineNextPolicy httpPipelineNextPolicy) {
             BinaryData bodyAsBinaryData = httpPipelineCallContext.getHttpRequest().getBodyAsBinaryData();
             byte[] requestBytes = unzipRequestBody(bodyAsBinaryData);
 
             List<Object> logs = JsonSerializerProviders.createInstance(true)
-                .deserializeFromBytes(requestBytes, new TypeReference<List<Object>>() { });
+                .deserializeFromBytes(requestBytes, new TypeReference<List<Object>>() {
+                });
             totalLogsCount.addAndGet(logs.size());
             return httpPipelineNextPolicy.process();
         }
@@ -193,7 +193,8 @@ public abstract class LogsIngestionTestBase extends TestProxyTestBase {
         }
 
         @Override
-        public Mono<HttpResponse> process(HttpPipelineCallContext httpPipelineCallContext, HttpPipelineNextPolicy httpPipelineNextPolicy) {
+        public Mono<HttpResponse> process(HttpPipelineCallContext httpPipelineCallContext,
+            HttpPipelineNextPolicy httpPipelineNextPolicy) {
             BinaryData bodyAsBinaryData = httpPipelineCallContext.getHttpRequest().getBodyAsBinaryData();
             String actualJson = new String(unzipRequestBody(bodyAsBinaryData));
             assertEquals(expectedJson, actualJson);
@@ -222,13 +223,12 @@ public abstract class LogsIngestionTestBase extends TestProxyTestBase {
     public static TokenCredential getTestTokenCredential(InterceptorManager interceptorManager) {
         if (interceptorManager.isLiveMode()) {
             Configuration config = Configuration.getGlobalConfiguration();
-            String serviceConnectionId  = config.get("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
+            String serviceConnectionId = config.get("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
             String clientId = config.get("AZURESUBSCRIPTION_CLIENT_ID");
             String tenantId = config.get("AZURESUBSCRIPTION_TENANT_ID");
             String systemAccessToken = config.get("SYSTEM_ACCESSTOKEN");
 
-            return new AzurePipelinesCredentialBuilder()
-                .systemAccessToken(systemAccessToken)
+            return new AzurePipelinesCredentialBuilder().systemAccessToken(systemAccessToken)
                 .clientId(clientId)
                 .tenantId(tenantId)
                 .serviceConnectionId(serviceConnectionId)

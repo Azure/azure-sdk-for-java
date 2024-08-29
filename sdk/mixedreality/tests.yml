@@ -9,4 +9,3 @@ extends:
       - name: azure-mixedreality-authentication
         groupId: com.azure
         safeName: azuremixedrealityauthentication
-    UseFederatedAuth: true

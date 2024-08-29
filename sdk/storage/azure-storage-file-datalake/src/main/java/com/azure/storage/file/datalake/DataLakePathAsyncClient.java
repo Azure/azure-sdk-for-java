@@ -28,6 +28,7 @@ import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.datalake.implementation.AzureDataLakeStorageRestAPIImpl;
 import com.azure.storage.file.datalake.implementation.AzureDataLakeStorageRestAPIImplBuilder;
+import com.azure.storage.file.datalake.implementation.models.CpkInfo;
 import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.PathExpiryOptions;
@@ -47,7 +48,6 @@ import com.azure.storage.file.datalake.models.AccessControlChangeCounters;
 import com.azure.storage.file.datalake.models.AccessControlChangeFailure;
 import com.azure.storage.file.datalake.models.AccessControlChangeResult;
 import com.azure.storage.file.datalake.models.AccessControlChanges;
-import com.azure.storage.file.datalake.implementation.models.CpkInfo;
 import com.azure.storage.file.datalake.models.CustomerProvidedKey;
 import com.azure.storage.file.datalake.models.DataLakeAclChangeFailedException;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
@@ -1395,8 +1395,8 @@ public class DataLakePathAsyncClient {
         AtomicInteger failureCount = new AtomicInteger(0);
         AtomicInteger batchesCount = new AtomicInteger(0);
 
-        return this.dataLakeStorage.getPaths().setAccessControlRecursiveWithResponseAsync(mode, null,
-            continuationToken, continueOnFailure, batchSize, accessControlList, null, contextFinal)
+        return this.dataLakeStorage.getPaths().setAccessControlRecursiveWithResponseAsync(mode, null, continuationToken,
+                continueOnFailure, batchSize, accessControlList, null, contextFinal)
             .onErrorMap(e -> {
                 if (e instanceof DataLakeStorageException) {
                     return LOGGER.logExceptionAsError(ModelHelper.changeAclRequestFailed((DataLakeStorageException) e,
@@ -1509,7 +1509,7 @@ public class DataLakePathAsyncClient {
 
         // If we're not finished, issue another request
         return this.dataLakeStorage.getPaths().setAccessControlRecursiveWithResponseAsync(mode, null,
-            effectiveNextToken, continueOnFailure, batchSize, accessControlStr, null, context)
+                effectiveNextToken, continueOnFailure, batchSize, accessControlStr, null, context)
             .onErrorMap(e -> {
                 if (e instanceof DataLakeStorageException) {
                     return LOGGER.logExceptionAsError(ModelHelper.changeAclRequestFailed((DataLakeStorageException) e,
@@ -1663,8 +1663,7 @@ public class DataLakePathAsyncClient {
                 null /* properties */, null /* permissions */, null /* umask */, null /* owner */,
                 null /* group */, null /* acl */, null /* proposedLeaseId */, null /* leaseDuration */,
                 null /* expiryOptions */, null /* expiresOn */, null /* encryptionContext */,
-                null /* pathHttpHeaders */, destLac, destMac, sourceConditions, null /* cpkInfo */,
-                context)
+                null /* pathHttpHeaders */, destLac, destMac, sourceConditions, null /* cpkInfo */, context)
             .map(response -> new SimpleResponse<>(response, dataLakePathAsyncClient));
     }
 

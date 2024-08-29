@@ -5,36 +5,36 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Nested representation of a complex expression.
  */
 @Fluent
-public final class ExpressionV2 {
+public final class ExpressionV2 implements JsonSerializable<ExpressionV2> {
     /*
      * Type of expressions supported by the system. Type: string.
      */
-    @JsonProperty(value = "type")
     private ExpressionV2Type type;
 
     /*
      * Value for Constant/Field Type: string.
      */
-    @JsonProperty(value = "value")
     private String value;
 
     /*
      * Expression operator value Type: list of strings.
      */
-    @JsonProperty(value = "operators")
     private List<String> operators;
 
     /*
      * List of nested expressions.
      */
-    @JsonProperty(value = "operands")
     private List<ExpressionV2> operands;
 
     /**
@@ -132,5 +132,52 @@ public final class ExpressionV2 {
         if (operands() != null) {
             operands().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("value", this.value);
+        jsonWriter.writeArrayField("operators", this.operators, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("operands", this.operands, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExpressionV2 from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExpressionV2 if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExpressionV2.
+     */
+    public static ExpressionV2 fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExpressionV2 deserializedExpressionV2 = new ExpressionV2();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedExpressionV2.type = ExpressionV2Type.fromString(reader.getString());
+                } else if ("value".equals(fieldName)) {
+                    deserializedExpressionV2.value = reader.getString();
+                } else if ("operators".equals(fieldName)) {
+                    List<String> operators = reader.readArray(reader1 -> reader1.getString());
+                    deserializedExpressionV2.operators = operators;
+                } else if ("operands".equals(fieldName)) {
+                    List<ExpressionV2> operands = reader.readArray(reader1 -> ExpressionV2.fromJson(reader1));
+                    deserializedExpressionV2.operands = operands;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExpressionV2;
+        });
     }
 }

@@ -18,8 +18,8 @@ public final class CapabilitiesResultImpl implements CapabilitiesResult {
 
     private final com.azure.resourcemanager.hdinsight.HDInsightManager serviceManager;
 
-    CapabilitiesResultImpl(
-        CapabilitiesResultInner innerObject, com.azure.resourcemanager.hdinsight.HDInsightManager serviceManager) {
+    CapabilitiesResultImpl(CapabilitiesResultInner innerObject,
+        com.azure.resourcemanager.hdinsight.HDInsightManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

@@ -19,36 +19,37 @@ public final class GreenplumTableDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GreenplumTableDataset model = BinaryData.fromString(
-            "{\"type\":\"GreenplumTable\",\"typeProperties\":{\"tableName\":\"dataihsujtg\",\"table\":\"databszam\",\"schema\":\"dataxejpd\"},\"description\":\"iqwzutiyelrn\",\"structure\":\"datajt\",\"schema\":\"dataqsznsyovqm\",\"linkedServiceName\":{\"referenceName\":\"cudptoqwrnf\",\"parameters\":{\"kngejjxumowy\":\"datathlokmxwawfu\",\"drsjtmn\":\"datajmoozmxuk\"}},\"parameters\":{\"zcfdtstiaxtyrnu\":{\"type\":\"Bool\",\"defaultValue\":\"dataw\"},\"cmlroiommemso\":{\"type\":\"SecureString\",\"defaultValue\":\"datahepisq\"},\"ckcesrsi\":{\"type\":\"Bool\",\"defaultValue\":\"datalcyeqdobobaqcabe\"}},\"annotations\":[\"datalpjcxbjgfmyqyyfr\"],\"folder\":{\"name\":\"zfpsf\"},\"\":{\"qafz\":\"dataidfhmlxrqkeknum\",\"p\":\"dataptriysjrgtruwpu\",\"vvoydwedggwg\":\"datarcek\",\"oarsrdr\":\"datalvbwatzadrjbjn\"}}")
+            "{\"type\":\"GreenplumTable\",\"typeProperties\":{\"tableName\":\"dataeisvvvgyp\",\"table\":\"dataeovej\",\"schema\":\"dataaleczt\"},\"description\":\"h\",\"structure\":\"datazpuvfs\",\"schema\":\"datagrqefnq\",\"linkedServiceName\":{\"referenceName\":\"oll\",\"parameters\":{\"qieh\":\"datarmuzemb\",\"wnaxoxl\":\"datahjofy\",\"slqcxuthv\":\"datarx\"}},\"parameters\":{\"yju\":{\"type\":\"SecureString\",\"defaultValue\":\"datayhrgmabspmlu\"},\"rbfgqi\":{\"type\":\"Object\",\"defaultValue\":\"datadputo\"},\"r\":{\"type\":\"Bool\",\"defaultValue\":\"datargcuzjmvkr\"},\"ybqjvfio\":{\"type\":\"SecureString\",\"defaultValue\":\"datahgcmljzksqi\"}},\"annotations\":[\"dataaqpvhszopeuku\",\"datadswbsskgq\",\"dataemosq\",\"datafsjbpwjwz\"],\"folder\":{\"name\":\"pdzy\"},\"\":{\"udqhad\":\"datahxfpzc\",\"vl\":\"dataj\"}}")
             .toObject(GreenplumTableDataset.class);
-        Assertions.assertEquals("iqwzutiyelrn", model.description());
-        Assertions.assertEquals("cudptoqwrnf", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.BOOL, model.parameters().get("zcfdtstiaxtyrnu").type());
-        Assertions.assertEquals("zfpsf", model.folder().name());
+        Assertions.assertEquals("h", model.description());
+        Assertions.assertEquals("oll", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.SECURE_STRING, model.parameters().get("yju").type());
+        Assertions.assertEquals("pdzy", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GreenplumTableDataset model = new GreenplumTableDataset().withDescription("iqwzutiyelrn")
-            .withStructure("datajt")
-            .withSchema("dataqsznsyovqm")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("cudptoqwrnf")
-                .withParameters(mapOf("kngejjxumowy", "datathlokmxwawfu", "drsjtmn", "datajmoozmxuk")))
-            .withParameters(mapOf("zcfdtstiaxtyrnu",
-                new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("dataw"), "cmlroiommemso",
-                new ParameterSpecification().withType(ParameterType.SECURE_STRING).withDefaultValue("datahepisq"),
-                "ckcesrsi",
-                new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("datalcyeqdobobaqcabe")))
-            .withAnnotations(Arrays.asList("datalpjcxbjgfmyqyyfr"))
-            .withFolder(new DatasetFolder().withName("zfpsf"))
-            .withTableName("dataihsujtg")
-            .withTable("databszam")
-            .withSchemaTypePropertiesSchema("dataxejpd");
+        GreenplumTableDataset model = new GreenplumTableDataset().withDescription("h")
+            .withStructure("datazpuvfs")
+            .withSchema("datagrqefnq")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("oll")
+                .withParameters(mapOf("qieh", "datarmuzemb", "wnaxoxl", "datahjofy", "slqcxuthv", "datarx")))
+            .withParameters(mapOf("yju",
+                new ParameterSpecification().withType(ParameterType.SECURE_STRING).withDefaultValue("datayhrgmabspmlu"),
+                "rbfgqi", new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("datadputo"),
+                "r", new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("datargcuzjmvkr"),
+                "ybqjvfio",
+                new ParameterSpecification().withType(ParameterType.SECURE_STRING).withDefaultValue("datahgcmljzksqi")))
+            .withAnnotations(Arrays.asList("dataaqpvhszopeuku", "datadswbsskgq", "dataemosq", "datafsjbpwjwz"))
+            .withFolder(new DatasetFolder().withName("pdzy"))
+            .withTableName("dataeisvvvgyp")
+            .withTable("dataeovej")
+            .withSchemaTypePropertiesSchema("dataaleczt");
         model = BinaryData.fromObject(model).toObject(GreenplumTableDataset.class);
-        Assertions.assertEquals("iqwzutiyelrn", model.description());
-        Assertions.assertEquals("cudptoqwrnf", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.BOOL, model.parameters().get("zcfdtstiaxtyrnu").type());
-        Assertions.assertEquals("zfpsf", model.folder().name());
+        Assertions.assertEquals("h", model.description());
+        Assertions.assertEquals("oll", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.SECURE_STRING, model.parameters().get("yju").type());
+        Assertions.assertEquals("pdzy", model.folder().name());
     }
 
     // Use "Map.of" if available

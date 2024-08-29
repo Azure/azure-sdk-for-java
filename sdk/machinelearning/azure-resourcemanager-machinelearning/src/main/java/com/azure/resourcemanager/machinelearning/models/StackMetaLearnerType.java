@@ -5,44 +5,59 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * The meta-learner is a model trained on the output of the individual heterogeneous models. Default meta-learners are
- * LogisticRegression for classification tasks (or LogisticRegressionCV if cross-validation is enabled) and ElasticNet
- * for regression/forecasting tasks (or ElasticNetCV if cross-validation is enabled). This parameter can be one of the
- * following strings: LogisticRegression, LogisticRegressionCV, LightGBMClassifier, ElasticNet, ElasticNetCV,
- * LightGBMRegressor, or LinearRegression.
+ * The meta-learner is a model trained on the output of the individual heterogeneous models.
+ * Default meta-learners are LogisticRegression for classification tasks (or LogisticRegressionCV if cross-validation is
+ * enabled) and ElasticNet for regression/forecasting tasks (or ElasticNetCV if cross-validation is enabled).
+ * This parameter can be one of the following strings: LogisticRegression, LogisticRegressionCV, LightGBMClassifier,
+ * ElasticNet, ElasticNetCV, LightGBMRegressor, or LinearRegression.
  */
 public final class StackMetaLearnerType extends ExpandableStringEnum<StackMetaLearnerType> {
-    /** Static value None for StackMetaLearnerType. */
+    /**
+     * Static value None for StackMetaLearnerType.
+     */
     public static final StackMetaLearnerType NONE = fromString("None");
 
-    /** Static value LogisticRegression for StackMetaLearnerType. */
+    /**
+     * Static value LogisticRegression for StackMetaLearnerType.
+     */
     public static final StackMetaLearnerType LOGISTIC_REGRESSION = fromString("LogisticRegression");
 
-    /** Static value LogisticRegressionCV for StackMetaLearnerType. */
+    /**
+     * Static value LogisticRegressionCV for StackMetaLearnerType.
+     */
     public static final StackMetaLearnerType LOGISTIC_REGRESSION_CV = fromString("LogisticRegressionCV");
 
-    /** Static value LightGBMClassifier for StackMetaLearnerType. */
+    /**
+     * Static value LightGBMClassifier for StackMetaLearnerType.
+     */
     public static final StackMetaLearnerType LIGHT_GBMCLASSIFIER = fromString("LightGBMClassifier");
 
-    /** Static value ElasticNet for StackMetaLearnerType. */
+    /**
+     * Static value ElasticNet for StackMetaLearnerType.
+     */
     public static final StackMetaLearnerType ELASTIC_NET = fromString("ElasticNet");
 
-    /** Static value ElasticNetCV for StackMetaLearnerType. */
+    /**
+     * Static value ElasticNetCV for StackMetaLearnerType.
+     */
     public static final StackMetaLearnerType ELASTIC_NET_CV = fromString("ElasticNetCV");
 
-    /** Static value LightGBMRegressor for StackMetaLearnerType. */
+    /**
+     * Static value LightGBMRegressor for StackMetaLearnerType.
+     */
     public static final StackMetaLearnerType LIGHT_GBMREGRESSOR = fromString("LightGBMRegressor");
 
-    /** Static value LinearRegression for StackMetaLearnerType. */
+    /**
+     * Static value LinearRegression for StackMetaLearnerType.
+     */
     public static final StackMetaLearnerType LINEAR_REGRESSION = fromString("LinearRegression");
 
     /**
      * Creates a new instance of StackMetaLearnerType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -51,18 +66,17 @@ public final class StackMetaLearnerType extends ExpandableStringEnum<StackMetaLe
 
     /**
      * Creates or finds a StackMetaLearnerType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding StackMetaLearnerType.
      */
-    @JsonCreator
     public static StackMetaLearnerType fromString(String name) {
         return fromString(name, StackMetaLearnerType.class);
     }
 
     /**
      * Gets known StackMetaLearnerType values.
-     *
+     * 
      * @return known StackMetaLearnerType values.
      */
     public static Collection<StackMetaLearnerType> values() {
