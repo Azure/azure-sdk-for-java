@@ -259,12 +259,6 @@ steps:
       ${{ if ne(parameters.TestResultsFiles, '') }}:
         testResultsFiles: ${{ parameters.TestResultsFiles }}
 
-  # Dotnet core sdk task 7.0.x. This is a prerequisite for PublishCodeCoverageResults@2
-  - task: UseDotNet@2
-    displayName: 'Use .NET Core sdk 7.0.x'
-    inputs:
-      version: 7.0.x
-
   # Azure DevOps only seems to respect the last code coverage result published, so only do this for Windows + Java LTS.
   # Code coverage reporting is set up only for Track 2 modules.
   - task: PublishCodeCoverageResults@2
