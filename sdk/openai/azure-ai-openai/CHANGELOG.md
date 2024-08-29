@@ -11,6 +11,7 @@
 - New response models: `Batch`, `BatchErrors`, etc.
 - Added `/files` operation from the Azure OpenAI Assistants SDK
 - New `batch` and `batch_output` files purposes
+- In `ChatCompletionsOptions` the `setToolChoice` method uses `ChatCompletionsToolSelection` to pass either a preset enum or a named tool.
 
 ### Breaking Changes
 
