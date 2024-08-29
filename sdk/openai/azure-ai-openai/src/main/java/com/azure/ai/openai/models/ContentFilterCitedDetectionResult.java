@@ -39,21 +39,7 @@ public final class ContentFilterCitedDetectionResult implements JsonSerializable
      * The license description associated with the detection.
      */
     @Generated
-    private final String license;
-
-    /**
-     * Creates an instance of ContentFilterCitedDetectionResult class.
-     *
-     * @param filtered the filtered value to set.
-     * @param detected the detected value to set.
-     * @param license the license value to set.
-     */
-    @Generated
-    private ContentFilterCitedDetectionResult(boolean filtered, boolean detected, String license) {
-        this.filtered = filtered;
-        this.detected = detected;
-        this.license = license;
-    }
+    private String license;
 
     /**
      * Get the filtered property: A value indicating whether or not the content has been filtered.
@@ -105,8 +91,8 @@ public final class ContentFilterCitedDetectionResult implements JsonSerializable
         jsonWriter.writeStartObject();
         jsonWriter.writeBooleanField("filtered", this.filtered);
         jsonWriter.writeBooleanField("detected", this.detected);
-        jsonWriter.writeStringField("license", this.license);
         jsonWriter.writeStringField("URL", this.url);
+        jsonWriter.writeStringField("license", this.license);
         return jsonWriter.writeEndObject();
     }
 
@@ -124,8 +110,8 @@ public final class ContentFilterCitedDetectionResult implements JsonSerializable
         return jsonReader.readObject(reader -> {
             boolean filtered = false;
             boolean detected = false;
-            String license = null;
             String url = null;
+            String license = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -133,18 +119,31 @@ public final class ContentFilterCitedDetectionResult implements JsonSerializable
                     filtered = reader.getBoolean();
                 } else if ("detected".equals(fieldName)) {
                     detected = reader.getBoolean();
-                } else if ("license".equals(fieldName)) {
-                    license = reader.getString();
                 } else if ("URL".equals(fieldName)) {
                     url = reader.getString();
+                } else if ("license".equals(fieldName)) {
+                    license = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
             ContentFilterCitedDetectionResult deserializedContentFilterCitedDetectionResult
-                = new ContentFilterCitedDetectionResult(filtered, detected, license);
+                = new ContentFilterCitedDetectionResult(filtered, detected);
             deserializedContentFilterCitedDetectionResult.url = url;
+            deserializedContentFilterCitedDetectionResult.license = license;
             return deserializedContentFilterCitedDetectionResult;
         });
+    }
+
+    /**
+     * Creates an instance of ContentFilterCitedDetectionResult class.
+     *
+     * @param filtered the filtered value to set.
+     * @param detected the detected value to set.
+     */
+    @Generated
+    private ContentFilterCitedDetectionResult(boolean filtered, boolean detected) {
+        this.filtered = filtered;
+        this.detected = detected;
     }
 }
