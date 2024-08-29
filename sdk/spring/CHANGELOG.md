@@ -20,6 +20,7 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 #### Dependency Updates
 - Upgrade `azure-sdk-bom` to 1.2.26.
 - Added a new dependency: `spring-cloud-azure-testcontainers`.
+- Added a new dependency: `spring-cloud-azure-docker-compose`.
 
 ### Spring Cloud Azure Autoconfigure
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
