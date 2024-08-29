@@ -14,6 +14,8 @@
 
 ### Breaking Changes
 
+- Removed `finish_details` field from `ChatChoice` class since service API version, `2024-07-01-preview`, does not return this field. 
+
 ### Bugs Fixed
 
 ### Other Changes
