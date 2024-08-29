@@ -12,14 +12,13 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
 import static com.azure.ai.openai.implementation.EmbeddingsUtils.convertBase64ToFloatList;
+import static com.azure.ai.openai.implementation.EmbeddingsUtils.convertFloatListToBase64;
 
 /**
  * Representation of a single embeddings relatedness comparison.
  */
 @Immutable
 public final class EmbeddingItem implements JsonSerializable<EmbeddingItem> {
-
-    private final String embeddingBase64;
 
     /**
      * Get the embedding property: List of embeddings value for the input prompt. These represent a measurement of the
@@ -28,7 +27,10 @@ public final class EmbeddingItem implements JsonSerializable<EmbeddingItem> {
      * @return the embedding value.
      */
     public List<Float> getEmbedding() {
-        return convertBase64ToFloatList(embeddingBase64);
+        if (embeddingInFloat == null && embeddingBase64 != null) {
+            embeddingInFloat = convertBase64ToFloatList(embeddingBase64);
+        }
+        return embeddingInFloat;
     }
 
     /**
@@ -37,6 +39,9 @@ public final class EmbeddingItem implements JsonSerializable<EmbeddingItem> {
      * @return the embedding base64 encoded string.
      */
     public String getEmbeddingAsString() {
+        if (embeddingBase64 == null && embeddingInFloat != null) {
+            embeddingBase64 = convertFloatListToBase64(embeddingInFloat);
+        }
         return embeddingBase64;
     }
 
@@ -62,8 +67,12 @@ public final class EmbeddingItem implements JsonSerializable<EmbeddingItem> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("embedding", this.embeddingBase64);
-        jsonWriter.writeIntField("index", this.promptIndex);
+        jsonWriter.writeIntField("index", promptIndex);
+        if (embeddingBase64 != null) {
+            jsonWriter.writeStringField("embedding", embeddingBase64);
+        } else if (embeddingInFloat != null) {
+            jsonWriter.writeArrayField("embedding", embeddingInFloat, JsonWriter::writeFloat);
+        }
         return jsonWriter.writeEndObject();
     }
 
@@ -79,19 +88,30 @@ public final class EmbeddingItem implements JsonSerializable<EmbeddingItem> {
     public static EmbeddingItem fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String embedding = null;
+            List<Float> embeddingInFloat = null;
             int promptIndex = 0;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("embedding".equals(fieldName)) {
-                    embedding = reader.getString();
+                    JsonToken jsonToken = reader.currentToken();
+                    if (jsonToken == JsonToken.STRING) {
+                        embedding = reader.getString();
+                    } else if (jsonToken == JsonToken.START_ARRAY) {
+                        embeddingInFloat = reader.readArray(JsonReader::getFloat);
+                    } else {
+                        throw new IllegalStateException("Unexpected 'embedding' type found when deserializing"
+                            + " EmbeddingItem JSON object: " + jsonToken);
+                    }
                 } else if ("index".equals(fieldName)) {
                     promptIndex = reader.getInt();
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new EmbeddingItem(embedding, promptIndex);
+            EmbeddingItem embeddingItem = new EmbeddingItem(embedding, promptIndex);
+            embeddingItem.embeddingInFloat = embeddingInFloat;
+            return embeddingItem;
         });
     }
 
@@ -106,9 +126,17 @@ public final class EmbeddingItem implements JsonSerializable<EmbeddingItem> {
         this.promptIndex = promptIndex;
     }
 
+    // Generated field, keep it to pass TypeSpec validation
+    private List<Double> embedding;
+
     /*
      * List of embeddings value for the input prompt. These represent a measurement of the
      * vector-based relatedness of the provided input.
      */
-    private List<Double> embedding;
+    private List<Float> embeddingInFloat;
+
+    /*
+     * List of embeddings value in base64 format for the input prompt.
+     */
+    private String embeddingBase64;
 }
