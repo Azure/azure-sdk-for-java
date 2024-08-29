@@ -105,11 +105,24 @@ public class ManagedIdentityCredentialTest {
     public void testInvalidIdCombination() {
         // setup
         String resourceId = "/subscriptions/" + UUID.randomUUID() + "/resourcegroups/aresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/ident";
+        String objectId = "2323-sd2323s-32323-32334-34343";
 
         // test
         Assertions.assertThrows(IllegalStateException.class,
             () -> new ManagedIdentityCredentialBuilder()
                 .clientId(CLIENT_ID).resourceId(resourceId).build());
+
+        Assertions.assertThrows(IllegalStateException.class,
+            () -> new ManagedIdentityCredentialBuilder()
+                .clientId(CLIENT_ID).resourceId(resourceId).objectId(objectId).build());
+
+        Assertions.assertThrows(IllegalStateException.class,
+            () -> new ManagedIdentityCredentialBuilder()
+                .clientId(CLIENT_ID).objectId(objectId).build());
+
+        Assertions.assertThrows(IllegalStateException.class,
+            () -> new ManagedIdentityCredentialBuilder()
+                .resourceId(resourceId).objectId(objectId).build());
     }
 
     @Test

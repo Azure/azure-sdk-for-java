@@ -4,6 +4,7 @@
 package com.azure.identity;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.identity.implementation.util.ValidationUtil;
 
 /**
  * <p>Fluent credential builder for instantiating a {@link ManagedIdentityCredential}.</p>
@@ -113,10 +114,7 @@ public class ManagedIdentityCredentialBuilder extends CredentialBuilderBase<Mana
      * @throws IllegalStateException if clientId and resourceId are both set.
      */
     public ManagedIdentityCredential build() {
-        if (clientId != null && resourceId != null && objectId != null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalStateException("Only one of clientId,  resourceId and objectId can be specified."));
-        }
+        ValidationUtil.validateManagedIdentityIdParams(clientId, resourceId, objectId, LOGGER);
 
         return new ManagedIdentityCredential(clientId, resourceId, objectId, identityClientOptions);
     }

@@ -6,6 +6,7 @@ package com.azure.identity;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.identity.implementation.util.ValidationUtil;
 
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
@@ -111,22 +112,8 @@ class AzureApplicationCredentialBuilder extends CredentialBuilderBase<AzureAppli
      * @throws IllegalStateException if clientId and resourceId are both set.
      */
     public AzureApplicationCredential build() {
-        int nonNullIdCount = 0;
-
-        if (managedIdentityClientId != null) {
-            nonNullIdCount++;
-        }
-        if (managedIdentityResourceId != null) {
-            nonNullIdCount++;
-        }
-        if (managedIdentityObjectId != null) {
-            nonNullIdCount++;
-        }
-
-        if (nonNullIdCount > 1) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalStateException("Only one of managedIdentityClientId, managedIdentityResourceId, or managedIdentityObjectId can be specified."));
-        }
+        ValidationUtil.validateManagedIdentityIdParams(managedIdentityClientId, managedIdentityResourceId,
+            managedIdentityObjectId, LOGGER);
 
         return new AzureApplicationCredential(getCredentialsChain());
     }

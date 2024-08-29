@@ -10,6 +10,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.IdentityLogOptionsImpl;
 import com.azure.identity.implementation.util.IdentityConstants;
 import com.azure.identity.implementation.util.IdentityUtil;
+import com.azure.identity.implementation.util.ValidationUtil;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -272,22 +273,8 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
     public DefaultAzureCredential build() {
         loadFallbackValuesFromEnvironment();
 
-        int nonNullIdCount = 0;
-
-        if (managedIdentityClientId != null) {
-            nonNullIdCount++;
-        }
-        if (managedIdentityResourceId != null) {
-            nonNullIdCount++;
-        }
-        if (managedIdentityObjectId != null) {
-            nonNullIdCount++;
-        }
-
-        if (nonNullIdCount > 1) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalStateException("Only one of managedIdentityClientId, managedIdentityResourceId, or managedIdentityObjectId can be specified."));
-        }
+        ValidationUtil.validateManagedIdentityIdParams(managedIdentityClientId, managedIdentityResourceId,
+            managedIdentityObjectId, LOGGER);
 
         if (!CoreUtils.isNullOrEmpty(additionallyAllowedTenants)) {
             identityClientOptions.setAdditionallyAllowedTenants(additionallyAllowedTenants);

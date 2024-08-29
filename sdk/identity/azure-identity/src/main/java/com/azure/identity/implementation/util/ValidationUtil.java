@@ -156,4 +156,22 @@ public final class ValidationUtil {
 
         return path;
     }
+
+    public static void validateManagedIdentityIdParams(String clientId, String resourceId, String objectId, ClientLogger logger) {
+        int nonNullIdCount = 0;
+
+        if (clientId != null) {
+            nonNullIdCount++;
+        }
+        if (resourceId != null) {
+            nonNullIdCount++;
+        }
+        if (objectId != null) {
+            nonNullIdCount++;
+        }
+
+        if (nonNullIdCount > 1) {
+            throw logger.logExceptionAsError(new IllegalStateException("Only one of clientId, resourceId and objectId can be specified."));
+        }
+    }
 }
