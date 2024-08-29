@@ -176,7 +176,7 @@ public class ServiceAsyncApiTests extends BlobTestBase {
                 return primaryBlobServiceAsyncClient.listBlobContainers(new ListBlobContainersOptions()
                     .setDetails(new BlobContainerListDetails().setRetrieveMetadata(true))
                     .setPrefix(containerName));
-        });
+            });
 
         StepVerifier.create(response)
             .assertNext(r -> assertEquals(metadata, r.getMetadata()))

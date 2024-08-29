@@ -53,7 +53,6 @@ import com.azure.storage.blob.sas.BlobSasPermission;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.policy.RequestRetryOptions;
-import com.azure.storage.common.policy.RetryPolicyType;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.common.test.shared.http.WireTapHttpClient;
@@ -75,7 +74,6 @@ import reactor.util.function.Tuple2;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -264,25 +262,23 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
     public void stageBlockIllegalArgumentsWithBinaryData() {
         //This is done without a parameterized test as the toString call updates the internal length being stored,
         //resulting in incorrect test behavior.
-        try{
+        try {
             StepVerifier.create(blockBlobAsyncClient.stageBlock(getBlockID(), null))
                 .verifyComplete();
-        }
-        catch (NullPointerException e) {
+        } catch (NullPointerException e) {
             //StepVerifier cant handle the error in the creation of BlockBlobStageBlockOptions
-            assertEquals("The argument must not be null or an empty string. Argument name:" +
-                " data must not be null.", e.getMessage());
+            assertEquals("The argument must not be null or an empty string. Argument name:"
+                + " data must not be null.", e.getMessage());
         }
 
-        try{
+        try {
             BinaryData data = BinaryData.fromStream(DATA.getDefaultInputStream(), null);
             StepVerifier.create(blockBlobAsyncClient.stageBlock(getBlockID(), data))
                 .verifyComplete();
-        }
-        catch (NullPointerException e) {
+        } catch (NullPointerException e) {
             //StepVerifier cant handle the error in the creation of BlockBlobStageBlockOptions
-            assertEquals("The argument must not be null or an empty string. Argument name: data must have" +
-                " defined length.", e.getMessage());
+            assertEquals("The argument must not be null or an empty string. Argument name: data must have"
+                + " defined length.", e.getMessage());
         }
 
         BinaryData binaryData = BinaryData.fromStream(DATA.getDefaultInputStream(),

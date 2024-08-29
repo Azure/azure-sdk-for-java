@@ -275,8 +275,7 @@ public class BlobAsyncApiTests extends BlobTestBase {
         try {
             StepVerifier.create(bc.uploadWithResponse(new BlobParallelUploadOptions(DATA.getDefaultInputStream(), badLength)))
                 .verifyError(exception);
-        }
-        catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             //StepVerifier cant handle the error in the creation of BlobParallelUploadOptions
             assertEquals(e.getMessage(), "The value of the parameter 'length' should be between 0 and 9223372036854775807.");
         }
