@@ -5,42 +5,41 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.OSFamilyProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Describes a cloud service OS family.
  */
 @Fluent
-public final class OSFamilyInner {
+public final class OSFamilyInner implements JsonSerializable<OSFamilyInner> {
     /*
      * Resource Id.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * Resource name.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Resource type.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
      * Resource location.
      */
-    @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
 
     /*
      * OS family properties.
      */
-    @JsonProperty(value = "properties")
     private OSFamilyProperties properties;
 
     /**
@@ -114,5 +113,49 @@ public final class OSFamilyInner {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OSFamilyInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OSFamilyInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OSFamilyInner.
+     */
+    public static OSFamilyInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OSFamilyInner deserializedOSFamilyInner = new OSFamilyInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedOSFamilyInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedOSFamilyInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedOSFamilyInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedOSFamilyInner.location = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedOSFamilyInner.properties = OSFamilyProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOSFamilyInner;
+        });
     }
 }

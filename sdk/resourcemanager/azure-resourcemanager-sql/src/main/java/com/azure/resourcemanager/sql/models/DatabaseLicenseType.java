@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -13,26 +12,38 @@ import java.util.Collection;
  * license and are eligible for the Azure Hybrid Benefit.
  */
 public final class DatabaseLicenseType extends ExpandableStringEnum<DatabaseLicenseType> {
-    /** Static value LicenseIncluded for DatabaseLicenseType. */
+    /**
+     * Static value LicenseIncluded for DatabaseLicenseType.
+     */
     public static final DatabaseLicenseType LICENSE_INCLUDED = fromString("LicenseIncluded");
 
-    /** Static value BasePrice for DatabaseLicenseType. */
+    /**
+     * Static value BasePrice for DatabaseLicenseType.
+     */
     public static final DatabaseLicenseType BASE_PRICE = fromString("BasePrice");
 
     /**
+     * Creates a new instance of DatabaseLicenseType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DatabaseLicenseType() {
+    }
+
+    /**
      * Creates or finds a DatabaseLicenseType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DatabaseLicenseType.
      */
-    @JsonCreator
     public static DatabaseLicenseType fromString(String name) {
         return fromString(name, DatabaseLicenseType.class);
     }
 
     /**
      * Gets known DatabaseLicenseType values.
-     *
+     * 
      * @return known DatabaseLicenseType values.
      */
     public static Collection<DatabaseLicenseType> values() {

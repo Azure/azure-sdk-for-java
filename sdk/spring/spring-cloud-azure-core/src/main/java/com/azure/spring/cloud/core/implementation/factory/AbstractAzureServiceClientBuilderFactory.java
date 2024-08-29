@@ -200,6 +200,8 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
                                                  () -> new IllegalArgumentException("Consumer should not be null"));
 
 
+        LOGGER.debug("Will configure the credential of type {} for {}.", azureCredential.getClass().getSimpleName(),
+            builder.getClass().getSimpleName());
         consumer.accept(azureCredential);
         credentialConfigured = true;
     }
@@ -244,8 +246,8 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
      */
     protected void configureDefaultCredential(T builder) {
         if (!credentialConfigured) {
-            LOGGER.info("Will configure the default credential of type {} for {}.",
-                this.defaultTokenCredential.getClass().getSimpleName(), builder.getClass());
+            LOGGER.debug("Will configure the default credential of type {} for {}.",
+                this.defaultTokenCredential.getClass().getSimpleName(), builder.getClass().getSimpleName());
             consumeDefaultTokenCredential().accept(builder, this.defaultTokenCredential);
         }
     }

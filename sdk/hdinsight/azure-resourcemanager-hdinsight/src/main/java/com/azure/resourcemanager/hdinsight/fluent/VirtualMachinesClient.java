@@ -14,11 +14,13 @@ import com.azure.resourcemanager.hdinsight.fluent.models.AsyncOperationResultInn
 import com.azure.resourcemanager.hdinsight.fluent.models.HostInfoInner;
 import java.util.List;
 
-/** An instance of this class provides access to all the operations defined in VirtualMachinesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in VirtualMachinesClient.
+ */
 public interface VirtualMachinesClient {
     /**
      * Lists the HDInsight clusters hosts.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
@@ -32,7 +34,7 @@ public interface VirtualMachinesClient {
 
     /**
      * Lists the HDInsight clusters hosts.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -45,7 +47,7 @@ public interface VirtualMachinesClient {
 
     /**
      * Restarts the specified HDInsight cluster hosts.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param hosts The list of hosts to restart.
@@ -55,12 +57,12 @@ public interface VirtualMachinesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginRestartHosts(
-        String resourceGroupName, String clusterName, List<String> hosts);
+    SyncPoller<PollResult<Void>, Void> beginRestartHosts(String resourceGroupName, String clusterName,
+        List<String> hosts);
 
     /**
      * Restarts the specified HDInsight cluster hosts.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param hosts The list of hosts to restart.
@@ -71,12 +73,12 @@ public interface VirtualMachinesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginRestartHosts(
-        String resourceGroupName, String clusterName, List<String> hosts, Context context);
+    SyncPoller<PollResult<Void>, Void> beginRestartHosts(String resourceGroupName, String clusterName,
+        List<String> hosts, Context context);
 
     /**
      * Restarts the specified HDInsight cluster hosts.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param hosts The list of hosts to restart.
@@ -89,7 +91,7 @@ public interface VirtualMachinesClient {
 
     /**
      * Restarts the specified HDInsight cluster hosts.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param hosts The list of hosts to restart.
@@ -103,7 +105,7 @@ public interface VirtualMachinesClient {
 
     /**
      * Gets the async operation status.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param operationId The long running operation id.
@@ -114,12 +116,12 @@ public interface VirtualMachinesClient {
      * @return the async operation status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AsyncOperationResultInner> getAsyncOperationStatusWithResponse(
-        String resourceGroupName, String clusterName, String operationId, Context context);
+    Response<AsyncOperationResultInner> getAsyncOperationStatusWithResponse(String resourceGroupName,
+        String clusterName, String operationId, Context context);
 
     /**
      * Gets the async operation status.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param operationId The long running operation id.

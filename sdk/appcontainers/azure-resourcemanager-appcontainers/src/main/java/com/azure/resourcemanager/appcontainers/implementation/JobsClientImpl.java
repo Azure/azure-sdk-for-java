@@ -520,12 +520,11 @@ public final class JobsClientImpl implements JobsClient {
     }
 
     /**
-     * Get the properties for a given Container App Job.
-     * 
      * Get the properties of a Container App Job.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName Job Name.
+     * @param apiName Proxy API Name for Container App Job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -533,7 +532,8 @@ public final class JobsClientImpl implements JobsClient {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<JobInner>> proxyGetWithResponseAsync(String resourceGroupName, String jobName) {
+    private Mono<Response<JobInner>> proxyGetWithResponseAsync(String resourceGroupName, String jobName,
+        String apiName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -549,7 +549,9 @@ public final class JobsClientImpl implements JobsClient {
         if (jobName == null) {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
-        final String apiName = "rootApi";
+        if (apiName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter apiName is required and cannot be null."));
+        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.proxyGet(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -558,12 +560,11 @@ public final class JobsClientImpl implements JobsClient {
     }
 
     /**
-     * Get the properties for a given Container App Job.
-     * 
      * Get the properties of a Container App Job.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName Job Name.
+     * @param apiName Proxy API Name for Container App Job.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -572,7 +573,7 @@ public final class JobsClientImpl implements JobsClient {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<JobInner>> proxyGetWithResponseAsync(String resourceGroupName, String jobName,
+    private Mono<Response<JobInner>> proxyGetWithResponseAsync(String resourceGroupName, String jobName, String apiName,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -589,7 +590,9 @@ public final class JobsClientImpl implements JobsClient {
         if (jobName == null) {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
-        final String apiName = "rootApi";
+        if (apiName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter apiName is required and cannot be null."));
+        }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.proxyGet(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, jobName,
@@ -597,29 +600,28 @@ public final class JobsClientImpl implements JobsClient {
     }
 
     /**
-     * Get the properties for a given Container App Job.
-     * 
      * Get the properties of a Container App Job.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName Job Name.
+     * @param apiName Proxy API Name for Container App Job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a Container App Job on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<JobInner> proxyGetAsync(String resourceGroupName, String jobName) {
-        return proxyGetWithResponseAsync(resourceGroupName, jobName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    private Mono<JobInner> proxyGetAsync(String resourceGroupName, String jobName, String apiName) {
+        return proxyGetWithResponseAsync(resourceGroupName, jobName, apiName)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Get the properties for a given Container App Job.
-     * 
      * Get the properties of a Container App Job.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName Job Name.
+     * @param apiName Proxy API Name for Container App Job.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -627,25 +629,25 @@ public final class JobsClientImpl implements JobsClient {
      * @return the properties of a Container App Job along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<JobInner> proxyGetWithResponse(String resourceGroupName, String jobName, Context context) {
-        return proxyGetWithResponseAsync(resourceGroupName, jobName, context).block();
+    public Response<JobInner> proxyGetWithResponse(String resourceGroupName, String jobName, String apiName,
+        Context context) {
+        return proxyGetWithResponseAsync(resourceGroupName, jobName, apiName, context).block();
     }
 
     /**
-     * Get the properties for a given Container App Job.
-     * 
      * Get the properties of a Container App Job.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName Job Name.
+     * @param apiName Proxy API Name for Container App Job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a Container App Job.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public JobInner proxyGet(String resourceGroupName, String jobName) {
-        return proxyGetWithResponse(resourceGroupName, jobName, Context.NONE).getValue();
+    public JobInner proxyGet(String resourceGroupName, String jobName, String apiName) {
+        return proxyGetWithResponse(resourceGroupName, jobName, apiName, Context.NONE).getValue();
     }
 
     /**

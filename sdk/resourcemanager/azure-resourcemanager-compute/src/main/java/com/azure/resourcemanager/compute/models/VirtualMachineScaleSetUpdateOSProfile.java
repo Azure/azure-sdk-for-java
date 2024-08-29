@@ -5,36 +5,37 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Describes a virtual machine scale set OS profile.
  */
 @Fluent
-public final class VirtualMachineScaleSetUpdateOSProfile {
+public final class VirtualMachineScaleSetUpdateOSProfile
+    implements JsonSerializable<VirtualMachineScaleSetUpdateOSProfile> {
     /*
      * A base-64 encoded string of custom data.
      */
-    @JsonProperty(value = "customData")
     private String customData;
 
     /*
      * The Windows Configuration of the OS profile.
      */
-    @JsonProperty(value = "windowsConfiguration")
     private WindowsConfiguration windowsConfiguration;
 
     /*
      * The Linux Configuration of the OS profile.
      */
-    @JsonProperty(value = "linuxConfiguration")
     private LinuxConfiguration linuxConfiguration;
 
     /*
      * The List of certificates for addition to the VM.
      */
-    @JsonProperty(value = "secrets")
     private List<VaultSecretGroup> secrets;
 
     /**
@@ -138,5 +139,54 @@ public final class VirtualMachineScaleSetUpdateOSProfile {
         if (secrets() != null) {
             secrets().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("customData", this.customData);
+        jsonWriter.writeJsonField("windowsConfiguration", this.windowsConfiguration);
+        jsonWriter.writeJsonField("linuxConfiguration", this.linuxConfiguration);
+        jsonWriter.writeArrayField("secrets", this.secrets, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineScaleSetUpdateOSProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineScaleSetUpdateOSProfile if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualMachineScaleSetUpdateOSProfile.
+     */
+    public static VirtualMachineScaleSetUpdateOSProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineScaleSetUpdateOSProfile deserializedVirtualMachineScaleSetUpdateOSProfile
+                = new VirtualMachineScaleSetUpdateOSProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("customData".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetUpdateOSProfile.customData = reader.getString();
+                } else if ("windowsConfiguration".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetUpdateOSProfile.windowsConfiguration
+                        = WindowsConfiguration.fromJson(reader);
+                } else if ("linuxConfiguration".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetUpdateOSProfile.linuxConfiguration
+                        = LinuxConfiguration.fromJson(reader);
+                } else if ("secrets".equals(fieldName)) {
+                    List<VaultSecretGroup> secrets = reader.readArray(reader1 -> VaultSecretGroup.fromJson(reader1));
+                    deserializedVirtualMachineScaleSetUpdateOSProfile.secrets = secrets;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineScaleSetUpdateOSProfile;
+        });
     }
 }

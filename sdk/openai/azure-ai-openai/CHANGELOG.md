@@ -1,16 +1,31 @@
 # Release History
 
-## 1.0.0-beta.11 (Unreleased)
+## 1.0.0-beta.11 (2024-08-29)
 
 ### Features Added
+
 - Added a new overload `getImageGenerationsWithResponse` that takes `RequestOptions` to provide the flexibility to
   modify the HTTP request.
+- Added the capability to handle the float[] `embedding` type when serializing to `toJson()` and deserializing from `fromJson()` in the `EmbeddingItem` class. ([#41159](https://github.com/Azure/azure-sdk-for-java/issues/41159))
+- A new `required` keyword is added to `tool_choice` in the request options, which specifies that at least one tool must be called. This adds to the existing `auto` (default), `none`, and ability to specify a specific (function) tool by name
+- New operation paths: `/batches`, `/batches/{batch-id}` and `/batches/{batch-id}/cancel`
+- New request model: `BatchCreateRequest`
+- New response models: `Batch`, `BatchErrors`, etc.
+- Added `/files` operation from the Azure OpenAI Assistants SDK
+- New `batch` and `batch_output` files purposes
+- In `ChatCompletionsOptions` the `setToolChoice` method uses `ChatCompletionsToolSelection` to pass either a preset enum or a named tool.
 
 ### Breaking Changes
 
-### Bugs Fixed
+- Removed `finish_details` field from `ChatChoice` class since service API version, `2024-07-01-preview`, does not return this field. 
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` to version `1.51.0`.
+- Upgraded `azure-core-http-netty` to version `1.15.3`.
+
 
 ## 1.0.0-beta.10 (2024-07-02)
 

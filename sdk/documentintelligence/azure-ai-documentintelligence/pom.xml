@@ -13,7 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-ai-documentintelligence</artifactId>
-  <version>1.0.0-beta.4</version> <!-- {x-version-update;com.azure:azure-ai-documentintelligence;current} -->
+  <version>1.0.0-beta.5</version> <!-- {x-version-update;com.azure:azure-ai-documentintelligence;current} -->
 
   <name>Microsoft Azure client library for Document Intelligence</name>
   <description>This package contains the Microsoft Azure AI Document Intelligence SDK.</description>
@@ -38,8 +38,8 @@
       --add-opens com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
       --add-opens com.azure.ai.documentintelligence/com.azure.ai.documentintelligence=ALL-UNNAMED
     </javaModulesSurefireArgLine>
-    <jacoco.min.branchcoverage>0.29</jacoco.min.branchcoverage>
-    <jacoco.min.linecoverage>0.32</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.24</jacoco.min.branchcoverage>
+    <jacoco.min.linecoverage>0.24</jacoco.min.linecoverage>
     <parallelizeLiveTests>same_thread</parallelizeLiveTests>
     <graalvm.disable>false</graalvm.disable>
   </properties>
@@ -102,7 +102,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.13.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.13.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

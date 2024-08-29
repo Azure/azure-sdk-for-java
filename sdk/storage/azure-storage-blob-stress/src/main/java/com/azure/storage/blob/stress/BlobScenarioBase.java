@@ -6,6 +6,8 @@ package com.azure.storage.blob.stress;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.util.Context;
+import com.azure.identity.DefaultAzureCredential;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.perf.test.core.PerfStressTest;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClient;
@@ -34,21 +36,21 @@ public abstract class BlobScenarioBase<TOptions extends StorageStressOptions> ex
     public BlobScenarioBase(TOptions options) {
         super(options);
 
-        String connectionString = options.getConnectionString();
-
-        Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");
+        DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilder().build();
+        String endpoint = options.getEndpointString();
 
         BlobServiceClientBuilder clientBuilder = new BlobServiceClientBuilder()
-            .connectionString(connectionString)
+            .credential(defaultAzureCredential)
+            .endpoint(endpoint)
             .httpLogOptions(getLogOptions());
 
         BlobServiceAsyncClient asyncNoFaultClient = clientBuilder.buildAsyncClient();
         BlobServiceClient syncNoFaultClient = clientBuilder.buildClient();
 
         if (options.isFaultInjectionEnabledForDownloads()) {
-            clientBuilder.addPolicy(new FaultInjectingHttpPolicy(false, getFaultProbabilities(), false));
+            clientBuilder.addPolicy(new FaultInjectingHttpPolicy(true, getFaultProbabilities(), false));
         } else if (options.isFaultInjectionEnabledForUploads()) {
-            clientBuilder.addPolicy(new FaultInjectingHttpPolicy(false, getFaultProbabilities(), true));
+            clientBuilder.addPolicy(new FaultInjectingHttpPolicy(true, getFaultProbabilities(), true));
         }
 
         BlobServiceClient syncClient = clientBuilder.buildClient();

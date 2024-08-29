@@ -14,23 +14,23 @@ public final class TrinoCoordinatorTests {
     public void testDeserialize() throws Exception {
         TrinoCoordinator model = BinaryData
             .fromString(
-                "{\"debug\":{\"enable\":true,\"port\":1650881541,\"suspend\":true},\"highAvailabilityEnabled\":true}")
+                "{\"debug\":{\"enable\":true,\"port\":353281330,\"suspend\":false},\"highAvailabilityEnabled\":false}")
             .toObject(TrinoCoordinator.class);
         Assertions.assertEquals(true, model.debug().enable());
-        Assertions.assertEquals(1650881541, model.debug().port());
-        Assertions.assertEquals(true, model.debug().suspend());
-        Assertions.assertEquals(true, model.highAvailabilityEnabled());
+        Assertions.assertEquals(353281330, model.debug().port());
+        Assertions.assertEquals(false, model.debug().suspend());
+        Assertions.assertEquals(false, model.highAvailabilityEnabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         TrinoCoordinator model = new TrinoCoordinator()
-            .withDebug(new TrinoDebugConfig().withEnable(true).withPort(1650881541).withSuspend(true))
-            .withHighAvailabilityEnabled(true);
+            .withDebug(new TrinoDebugConfig().withEnable(true).withPort(353281330).withSuspend(false))
+            .withHighAvailabilityEnabled(false);
         model = BinaryData.fromObject(model).toObject(TrinoCoordinator.class);
         Assertions.assertEquals(true, model.debug().enable());
-        Assertions.assertEquals(1650881541, model.debug().port());
-        Assertions.assertEquals(true, model.debug().suspend());
-        Assertions.assertEquals(true, model.highAvailabilityEnabled());
+        Assertions.assertEquals(353281330, model.debug().port());
+        Assertions.assertEquals(false, model.debug().suspend());
+        Assertions.assertEquals(false, model.highAvailabilityEnabled());
     }
 }

@@ -6,63 +6,56 @@ package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * Service config response.
  */
 @Fluent
-public class ServiceConfigListResultProperties {
+public class ServiceConfigListResultProperties implements JsonSerializable<ServiceConfigListResultProperties> {
     /*
      * Service Config Name.
      */
-    @JsonProperty(value = "serviceName", required = true)
     private String serviceName;
 
     /*
      * File Name.
      */
-    @JsonProperty(value = "fileName", required = true)
     private String fileName;
 
     /*
      * Content in the service config file.
      */
-    @JsonProperty(value = "content")
     private String content;
 
     /*
      * Component Name.
      */
-    @JsonProperty(value = "componentName", required = true)
     private String componentName;
 
     /*
      * Config type.
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /*
      * Config file path.
      */
-    @JsonProperty(value = "path")
     private String path;
 
     /*
      * The custom keys.
      */
-    @JsonProperty(value = "customKeys")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> customKeys;
 
     /*
      * The default keys.
      */
-    @JsonProperty(value = "defaultKeys")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, ServiceConfigListResultValueEntity> defaultKeys;
 
     /**
@@ -239,16 +232,19 @@ public class ServiceConfigListResultProperties {
      */
     public void validate() {
         if (serviceName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property serviceName in model ServiceConfigListResultProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property serviceName in model ServiceConfigListResultProperties"));
         }
         if (fileName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property fileName in model ServiceConfigListResultProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property fileName in model ServiceConfigListResultProperties"));
         }
         if (componentName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property componentName in model ServiceConfigListResultProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property componentName in model ServiceConfigListResultProperties"));
         }
         if (defaultKeys() != null) {
             defaultKeys().values().forEach(e -> {
@@ -260,4 +256,66 @@ public class ServiceConfigListResultProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ServiceConfigListResultProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("serviceName", this.serviceName);
+        jsonWriter.writeStringField("fileName", this.fileName);
+        jsonWriter.writeStringField("componentName", this.componentName);
+        jsonWriter.writeStringField("content", this.content);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("path", this.path);
+        jsonWriter.writeMapField("customKeys", this.customKeys, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("defaultKeys", this.defaultKeys, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServiceConfigListResultProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServiceConfigListResultProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ServiceConfigListResultProperties.
+     */
+    public static ServiceConfigListResultProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServiceConfigListResultProperties deserializedServiceConfigListResultProperties
+                = new ServiceConfigListResultProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("serviceName".equals(fieldName)) {
+                    deserializedServiceConfigListResultProperties.serviceName = reader.getString();
+                } else if ("fileName".equals(fieldName)) {
+                    deserializedServiceConfigListResultProperties.fileName = reader.getString();
+                } else if ("componentName".equals(fieldName)) {
+                    deserializedServiceConfigListResultProperties.componentName = reader.getString();
+                } else if ("content".equals(fieldName)) {
+                    deserializedServiceConfigListResultProperties.content = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedServiceConfigListResultProperties.type = reader.getString();
+                } else if ("path".equals(fieldName)) {
+                    deserializedServiceConfigListResultProperties.path = reader.getString();
+                } else if ("customKeys".equals(fieldName)) {
+                    Map<String, String> customKeys = reader.readMap(reader1 -> reader1.getString());
+                    deserializedServiceConfigListResultProperties.customKeys = customKeys;
+                } else if ("defaultKeys".equals(fieldName)) {
+                    Map<String, ServiceConfigListResultValueEntity> defaultKeys
+                        = reader.readMap(reader1 -> ServiceConfigListResultValueEntity.fromJson(reader1));
+                    deserializedServiceConfigListResultProperties.defaultKeys = defaultKeys;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServiceConfigListResultProperties;
+        });
+    }
 }

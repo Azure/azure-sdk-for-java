@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class ConfigurationType extends ExpandableStringEnum<ConfigurationT
      * @param name a name to look for.
      * @return the corresponding ConfigurationType.
      */
-    @JsonCreator
     public static ConfigurationType fromString(String name) {
         return fromString(name, ConfigurationType.class);
     }

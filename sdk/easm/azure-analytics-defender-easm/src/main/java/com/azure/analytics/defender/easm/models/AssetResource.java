@@ -5,123 +5,104 @@ package com.azure.analytics.defender.easm.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
  * The items in the current page of results.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "kind",
-    defaultImpl = AssetResource.class)
-@JsonTypeName("AssetResource")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "as", value = AsAssetResource.class),
-    @JsonSubTypes.Type(name = "contact", value = ContactAssetResource.class),
-    @JsonSubTypes.Type(name = "domain", value = DomainAssetResource.class),
-    @JsonSubTypes.Type(name = "host", value = HostAssetResource.class),
-    @JsonSubTypes.Type(name = "ipAddress", value = IpAddressAssetResource.class),
-    @JsonSubTypes.Type(name = "ipBlock", value = IpBlockAssetResource.class),
-    @JsonSubTypes.Type(name = "page", value = PageAssetResource.class),
-    @JsonSubTypes.Type(name = "sslCert", value = SslCertAssetResource.class) })
 @Immutable
-public class AssetResource {
+public class AssetResource implements JsonSerializable<AssetResource> {
+
+    /*
+     * Discriminator property for AssetResource.
+     */
+    @Generated
+    private String kind = "AssetResource";
 
     /*
      * The system generated unique id for the resource.
      */
     @Generated
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * The caller provided unique name for the resource.
      */
     @Generated
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The name that can be used for display purposes.
      */
     @Generated
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * Global UUID for the asset.
      */
     @Generated
-    @JsonProperty(value = "uuid")
     private String uuid;
 
     /*
      * The date this asset was first added to this workspace.
      */
     @Generated
-    @JsonProperty(value = "createdDate")
     private OffsetDateTime createdDate;
 
     /*
      * The date this asset was last updated for this workspace.
      */
     @Generated
-    @JsonProperty(value = "updatedDate")
     private OffsetDateTime updatedDate;
 
     /*
      * The state property.
      */
     @Generated
-    @JsonProperty(value = "state")
     private AssetState state;
 
     /*
      * An optional customer provided identifier for this asset.
      */
     @Generated
-    @JsonProperty(value = "externalId")
     private String externalId;
 
     /*
      * Customer labels assigned to this asset.
      */
     @Generated
-    @JsonProperty(value = "labels")
     private List<String> labels;
 
     /*
      * An indicator of whether this asset represents a wildcard rollup of assets on this domain.
      */
     @Generated
-    @JsonProperty(value = "wildcard")
     private Boolean wildcard;
 
     /*
      * The name of the DiscoGroup that brought added this asset to the workspace.
      */
     @Generated
-    @JsonProperty(value = "discoGroupName")
     private String discoGroupName;
 
     /*
      * The history of how this asset was pulled into the workspace through the discovery process.
      */
     @Generated
-    @JsonProperty(value = "auditTrail")
     private List<AuditTrailItem> auditTrail;
 
     /*
      * The reason property.
      */
     @Generated
-    @JsonProperty(value = "reason")
     private String reason;
 
     /**
@@ -129,6 +110,16 @@ public class AssetResource {
      */
     @Generated
     protected AssetResource() {
+    }
+
+    /**
+     * Get the kind property: Discriminator property for AssetResource.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    public String getKind() {
+        return this.kind;
     }
 
     /**
@@ -142,6 +133,18 @@ public class AssetResource {
     }
 
     /**
+     * Set the id property: The system generated unique id for the resource.
+     *
+     * @param id the id value to set.
+     * @return the AssetResource object itself.
+     */
+    @Generated
+    AssetResource setId(String id) {
+        this.id = id;
+        return this;
+    }
+
+    /**
      * Get the name property: The caller provided unique name for the resource.
      *
      * @return the name value.
@@ -149,6 +152,18 @@ public class AssetResource {
     @Generated
     public String getName() {
         return this.name;
+    }
+
+    /**
+     * Set the name property: The caller provided unique name for the resource.
+     *
+     * @param name the name value to set.
+     * @return the AssetResource object itself.
+     */
+    @Generated
+    AssetResource setName(String name) {
+        this.name = name;
+        return this;
     }
 
     /**
@@ -162,6 +177,18 @@ public class AssetResource {
     }
 
     /**
+     * Set the displayName property: The name that can be used for display purposes.
+     *
+     * @param displayName the displayName value to set.
+     * @return the AssetResource object itself.
+     */
+    @Generated
+    AssetResource setDisplayName(String displayName) {
+        this.displayName = displayName;
+        return this;
+    }
+
+    /**
      * Get the uuid property: Global UUID for the asset.
      *
      * @return the uuid value.
@@ -169,6 +196,18 @@ public class AssetResource {
     @Generated
     public String getUuid() {
         return this.uuid;
+    }
+
+    /**
+     * Set the uuid property: Global UUID for the asset.
+     *
+     * @param uuid the uuid value to set.
+     * @return the AssetResource object itself.
+     */
+    @Generated
+    AssetResource setUuid(String uuid) {
+        this.uuid = uuid;
+        return this;
     }
 
     /**
@@ -182,6 +221,18 @@ public class AssetResource {
     }
 
     /**
+     * Set the createdDate property: The date this asset was first added to this workspace.
+     *
+     * @param createdDate the createdDate value to set.
+     * @return the AssetResource object itself.
+     */
+    @Generated
+    AssetResource setCreatedDate(OffsetDateTime createdDate) {
+        this.createdDate = createdDate;
+        return this;
+    }
+
+    /**
      * Get the updatedDate property: The date this asset was last updated for this workspace.
      *
      * @return the updatedDate value.
@@ -189,6 +240,18 @@ public class AssetResource {
     @Generated
     public OffsetDateTime getUpdatedDate() {
         return this.updatedDate;
+    }
+
+    /**
+     * Set the updatedDate property: The date this asset was last updated for this workspace.
+     *
+     * @param updatedDate the updatedDate value to set.
+     * @return the AssetResource object itself.
+     */
+    @Generated
+    AssetResource setUpdatedDate(OffsetDateTime updatedDate) {
+        this.updatedDate = updatedDate;
+        return this;
     }
 
     /**
@@ -202,6 +265,18 @@ public class AssetResource {
     }
 
     /**
+     * Set the state property: The state property.
+     *
+     * @param state the state value to set.
+     * @return the AssetResource object itself.
+     */
+    @Generated
+    AssetResource setState(AssetState state) {
+        this.state = state;
+        return this;
+    }
+
+    /**
      * Get the externalId property: An optional customer provided identifier for this asset.
      *
      * @return the externalId value.
@@ -212,6 +287,18 @@ public class AssetResource {
     }
 
     /**
+     * Set the externalId property: An optional customer provided identifier for this asset.
+     *
+     * @param externalId the externalId value to set.
+     * @return the AssetResource object itself.
+     */
+    @Generated
+    AssetResource setExternalId(String externalId) {
+        this.externalId = externalId;
+        return this;
+    }
+
+    /**
      * Get the labels property: Customer labels assigned to this asset.
      *
      * @return the labels value.
@@ -219,6 +306,18 @@ public class AssetResource {
     @Generated
     public List<String> getLabels() {
         return this.labels;
+    }
+
+    /**
+     * Set the labels property: Customer labels assigned to this asset.
+     *
+     * @param labels the labels value to set.
+     * @return the AssetResource object itself.
+     */
+    @Generated
+    AssetResource setLabels(List<String> labels) {
+        this.labels = labels;
+        return this;
     }
 
     /**
@@ -233,6 +332,19 @@ public class AssetResource {
     }
 
     /**
+     * Set the wildcard property: An indicator of whether this asset represents a wildcard rollup of assets on this
+     * domain.
+     *
+     * @param wildcard the wildcard value to set.
+     * @return the AssetResource object itself.
+     */
+    @Generated
+    AssetResource setWildcard(Boolean wildcard) {
+        this.wildcard = wildcard;
+        return this;
+    }
+
+    /**
      * Get the discoGroupName property: The name of the DiscoGroup that brought added this asset to the workspace.
      *
      * @return the discoGroupName value.
@@ -240,6 +352,18 @@ public class AssetResource {
     @Generated
     public String getDiscoGroupName() {
         return this.discoGroupName;
+    }
+
+    /**
+     * Set the discoGroupName property: The name of the DiscoGroup that brought added this asset to the workspace.
+     *
+     * @param discoGroupName the discoGroupName value to set.
+     * @return the AssetResource object itself.
+     */
+    @Generated
+    AssetResource setDiscoGroupName(String discoGroupName) {
+        this.discoGroupName = discoGroupName;
+        return this;
     }
 
     /**
@@ -254,6 +378,19 @@ public class AssetResource {
     }
 
     /**
+     * Set the auditTrail property: The history of how this asset was pulled into the workspace through the discovery
+     * process.
+     *
+     * @param auditTrail the auditTrail value to set.
+     * @return the AssetResource object itself.
+     */
+    @Generated
+    AssetResource setAuditTrail(List<AuditTrailItem> auditTrail) {
+        this.auditTrail = auditTrail;
+        return this;
+    }
+
+    /**
      * Get the reason property: The reason property.
      *
      * @return the reason value.
@@ -261,5 +398,139 @@ public class AssetResource {
     @Generated
     public String getReason() {
         return this.reason;
+    }
+
+    /**
+     * Set the reason property: The reason property.
+     *
+     * @param reason the reason value to set.
+     * @return the AssetResource object itself.
+     */
+    @Generated
+    AssetResource setReason(String reason) {
+        this.reason = reason;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", this.kind);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("uuid", this.uuid);
+        jsonWriter.writeStringField("createdDate",
+            this.createdDate == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdDate));
+        jsonWriter.writeStringField("updatedDate",
+            this.updatedDate == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.updatedDate));
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        jsonWriter.writeStringField("externalId", this.externalId);
+        jsonWriter.writeArrayField("labels", this.labels, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("wildcard", this.wildcard);
+        jsonWriter.writeStringField("discoGroupName", this.discoGroupName);
+        jsonWriter.writeArrayField("auditTrail", this.auditTrail, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("reason", this.reason);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AssetResource from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AssetResource if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AssetResource.
+     */
+    @Generated
+    public static AssetResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                // Prepare for reading
+                readerToUse.nextToken();
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("kind".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("as".equals(discriminatorValue)) {
+                    return AsAssetResource.fromJson(readerToUse.reset());
+                } else if ("contact".equals(discriminatorValue)) {
+                    return ContactAssetResource.fromJson(readerToUse.reset());
+                } else if ("domain".equals(discriminatorValue)) {
+                    return DomainAssetResource.fromJson(readerToUse.reset());
+                } else if ("host".equals(discriminatorValue)) {
+                    return HostAssetResource.fromJson(readerToUse.reset());
+                } else if ("ipAddress".equals(discriminatorValue)) {
+                    return IpAddressAssetResource.fromJson(readerToUse.reset());
+                } else if ("ipBlock".equals(discriminatorValue)) {
+                    return IpBlockAssetResource.fromJson(readerToUse.reset());
+                } else if ("page".equals(discriminatorValue)) {
+                    return PageAssetResource.fromJson(readerToUse.reset());
+                } else if ("sslCert".equals(discriminatorValue)) {
+                    return SslCertAssetResource.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    @Generated
+    static AssetResource fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AssetResource deserializedAssetResource = new AssetResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("id".equals(fieldName)) {
+                    deserializedAssetResource.id = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedAssetResource.kind = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedAssetResource.name = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedAssetResource.displayName = reader.getString();
+                } else if ("uuid".equals(fieldName)) {
+                    deserializedAssetResource.uuid = reader.getString();
+                } else if ("createdDate".equals(fieldName)) {
+                    deserializedAssetResource.createdDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("updatedDate".equals(fieldName)) {
+                    deserializedAssetResource.updatedDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("state".equals(fieldName)) {
+                    deserializedAssetResource.state = AssetState.fromString(reader.getString());
+                } else if ("externalId".equals(fieldName)) {
+                    deserializedAssetResource.externalId = reader.getString();
+                } else if ("labels".equals(fieldName)) {
+                    List<String> labels = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAssetResource.labels = labels;
+                } else if ("wildcard".equals(fieldName)) {
+                    deserializedAssetResource.wildcard = reader.getNullable(JsonReader::getBoolean);
+                } else if ("discoGroupName".equals(fieldName)) {
+                    deserializedAssetResource.discoGroupName = reader.getString();
+                } else if ("auditTrail".equals(fieldName)) {
+                    List<AuditTrailItem> auditTrail = reader.readArray(reader1 -> AuditTrailItem.fromJson(reader1));
+                    deserializedAssetResource.auditTrail = auditTrail;
+                } else if ("reason".equals(fieldName)) {
+                    deserializedAssetResource.reason = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedAssetResource;
+        });
     }
 }

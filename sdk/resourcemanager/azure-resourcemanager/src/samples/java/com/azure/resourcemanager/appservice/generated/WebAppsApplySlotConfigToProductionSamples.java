@@ -11,7 +11,8 @@ import com.azure.resourcemanager.appservice.models.CsmSlotEntity;
  */
 public final class WebAppsApplySlotConfigToProductionSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/ApplySlotConfig.json
+     * x-ms-original-file:
+     * specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/ApplySlotConfig.json
      */
     /**
      * Sample code: Apply web app slot config.

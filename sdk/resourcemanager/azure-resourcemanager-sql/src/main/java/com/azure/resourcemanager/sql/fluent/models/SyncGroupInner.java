@@ -6,35 +6,55 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.Sku;
 import com.azure.resourcemanager.sql.models.SyncConflictResolutionPolicy;
 import com.azure.resourcemanager.sql.models.SyncGroupSchema;
 import com.azure.resourcemanager.sql.models.SyncGroupState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** An Azure SQL Database sync group. */
+/**
+ * An Azure SQL Database sync group.
+ */
 @Fluent
 public final class SyncGroupInner extends ProxyResource {
     /*
      * The name and capacity of the SKU.
      */
-    @JsonProperty(value = "sku")
     private Sku sku;
 
     /*
      * Resource properties.
      */
-    @JsonProperty(value = "properties")
     private SyncGroupProperties innerProperties;
 
-    /** Creates an instance of SyncGroupInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of SyncGroupInner class.
+     */
     public SyncGroupInner() {
     }
 
     /**
      * Get the sku property: The name and capacity of the SKU.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -43,7 +63,7 @@ public final class SyncGroupInner extends ProxyResource {
 
     /**
      * Set the sku property: The name and capacity of the SKU.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the SyncGroupInner object itself.
      */
@@ -54,7 +74,7 @@ public final class SyncGroupInner extends ProxyResource {
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SyncGroupProperties innerProperties() {
@@ -62,8 +82,38 @@ public final class SyncGroupInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the interval property: Sync interval of the sync group.
-     *
+     * 
      * @return the interval value.
      */
     public Integer interval() {
@@ -72,7 +122,7 @@ public final class SyncGroupInner extends ProxyResource {
 
     /**
      * Set the interval property: Sync interval of the sync group.
-     *
+     * 
      * @param interval the interval value to set.
      * @return the SyncGroupInner object itself.
      */
@@ -86,7 +136,7 @@ public final class SyncGroupInner extends ProxyResource {
 
     /**
      * Get the lastSyncTime property: Last sync time of the sync group.
-     *
+     * 
      * @return the lastSyncTime value.
      */
     public OffsetDateTime lastSyncTime() {
@@ -95,7 +145,7 @@ public final class SyncGroupInner extends ProxyResource {
 
     /**
      * Get the conflictResolutionPolicy property: Conflict resolution policy of the sync group.
-     *
+     * 
      * @return the conflictResolutionPolicy value.
      */
     public SyncConflictResolutionPolicy conflictResolutionPolicy() {
@@ -104,7 +154,7 @@ public final class SyncGroupInner extends ProxyResource {
 
     /**
      * Set the conflictResolutionPolicy property: Conflict resolution policy of the sync group.
-     *
+     * 
      * @param conflictResolutionPolicy the conflictResolutionPolicy value to set.
      * @return the SyncGroupInner object itself.
      */
@@ -118,7 +168,7 @@ public final class SyncGroupInner extends ProxyResource {
 
     /**
      * Get the syncDatabaseId property: ARM resource id of the sync database in the sync group.
-     *
+     * 
      * @return the syncDatabaseId value.
      */
     public String syncDatabaseId() {
@@ -127,7 +177,7 @@ public final class SyncGroupInner extends ProxyResource {
 
     /**
      * Set the syncDatabaseId property: ARM resource id of the sync database in the sync group.
-     *
+     * 
      * @param syncDatabaseId the syncDatabaseId value to set.
      * @return the SyncGroupInner object itself.
      */
@@ -141,7 +191,7 @@ public final class SyncGroupInner extends ProxyResource {
 
     /**
      * Get the hubDatabaseUsername property: User name for the sync group hub database credential.
-     *
+     * 
      * @return the hubDatabaseUsername value.
      */
     public String hubDatabaseUsername() {
@@ -150,7 +200,7 @@ public final class SyncGroupInner extends ProxyResource {
 
     /**
      * Set the hubDatabaseUsername property: User name for the sync group hub database credential.
-     *
+     * 
      * @param hubDatabaseUsername the hubDatabaseUsername value to set.
      * @return the SyncGroupInner object itself.
      */
@@ -164,7 +214,7 @@ public final class SyncGroupInner extends ProxyResource {
 
     /**
      * Get the hubDatabasePassword property: Password for the sync group hub database credential.
-     *
+     * 
      * @return the hubDatabasePassword value.
      */
     public String hubDatabasePassword() {
@@ -173,7 +223,7 @@ public final class SyncGroupInner extends ProxyResource {
 
     /**
      * Set the hubDatabasePassword property: Password for the sync group hub database credential.
-     *
+     * 
      * @param hubDatabasePassword the hubDatabasePassword value to set.
      * @return the SyncGroupInner object itself.
      */
@@ -187,7 +237,7 @@ public final class SyncGroupInner extends ProxyResource {
 
     /**
      * Get the syncState property: Sync state of the sync group.
-     *
+     * 
      * @return the syncState value.
      */
     public SyncGroupState syncState() {
@@ -196,7 +246,7 @@ public final class SyncGroupInner extends ProxyResource {
 
     /**
      * Get the schema property: Sync schema of the sync group.
-     *
+     * 
      * @return the schema value.
      */
     public SyncGroupSchema schema() {
@@ -205,7 +255,7 @@ public final class SyncGroupInner extends ProxyResource {
 
     /**
      * Set the schema property: Sync schema of the sync group.
-     *
+     * 
      * @param schema the schema value to set.
      * @return the SyncGroupInner object itself.
      */
@@ -219,7 +269,7 @@ public final class SyncGroupInner extends ProxyResource {
 
     /**
      * Get the enableConflictLogging property: If conflict logging is enabled.
-     *
+     * 
      * @return the enableConflictLogging value.
      */
     public Boolean enableConflictLogging() {
@@ -228,7 +278,7 @@ public final class SyncGroupInner extends ProxyResource {
 
     /**
      * Set the enableConflictLogging property: If conflict logging is enabled.
-     *
+     * 
      * @param enableConflictLogging the enableConflictLogging value to set.
      * @return the SyncGroupInner object itself.
      */
@@ -242,7 +292,7 @@ public final class SyncGroupInner extends ProxyResource {
 
     /**
      * Get the conflictLoggingRetentionInDays property: Conflict logging retention period.
-     *
+     * 
      * @return the conflictLoggingRetentionInDays value.
      */
     public Integer conflictLoggingRetentionInDays() {
@@ -251,7 +301,7 @@ public final class SyncGroupInner extends ProxyResource {
 
     /**
      * Set the conflictLoggingRetentionInDays property: Conflict logging retention period.
-     *
+     * 
      * @param conflictLoggingRetentionInDays the conflictLoggingRetentionInDays value to set.
      * @return the SyncGroupInner object itself.
      */
@@ -265,7 +315,7 @@ public final class SyncGroupInner extends ProxyResource {
 
     /**
      * Get the usePrivateLinkConnection property: If use private link connection is enabled.
-     *
+     * 
      * @return the usePrivateLinkConnection value.
      */
     public Boolean usePrivateLinkConnection() {
@@ -274,7 +324,7 @@ public final class SyncGroupInner extends ProxyResource {
 
     /**
      * Set the usePrivateLinkConnection property: If use private link connection is enabled.
-     *
+     * 
      * @param usePrivateLinkConnection the usePrivateLinkConnection value to set.
      * @return the SyncGroupInner object itself.
      */
@@ -289,7 +339,7 @@ public final class SyncGroupInner extends ProxyResource {
     /**
      * Get the privateEndpointName property: Private endpoint name of the sync group if use private link connection is
      * enabled.
-     *
+     * 
      * @return the privateEndpointName value.
      */
     public String privateEndpointName() {
@@ -298,7 +348,7 @@ public final class SyncGroupInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -308,5 +358,51 @@ public final class SyncGroupInner extends ProxyResource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SyncGroupInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SyncGroupInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SyncGroupInner.
+     */
+    public static SyncGroupInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SyncGroupInner deserializedSyncGroupInner = new SyncGroupInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSyncGroupInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSyncGroupInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSyncGroupInner.type = reader.getString();
+                } else if ("sku".equals(fieldName)) {
+                    deserializedSyncGroupInner.sku = Sku.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSyncGroupInner.innerProperties = SyncGroupProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSyncGroupInner;
+        });
     }
 }

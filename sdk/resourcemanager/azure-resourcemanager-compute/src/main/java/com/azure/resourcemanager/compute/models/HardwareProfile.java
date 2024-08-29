@@ -5,13 +5,17 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Specifies the hardware settings for the virtual machine.
  */
 @Fluent
-public final class HardwareProfile {
+public final class HardwareProfile implements JsonSerializable<HardwareProfile> {
     /*
      * Specifies the size of the virtual machine. The enum data type is currently deprecated and will be removed by
      * December 23rd 2023. The recommended way to get the list of available sizes is using these APIs: [List all
@@ -24,7 +28,6 @@ public final class HardwareProfile {
      * machines](https://docs.microsoft.com/azure/virtual-machines/sizes). The available VM sizes depend on region and
      * availability set.
      */
-    @JsonProperty(value = "vmSize")
     private VirtualMachineSizeTypes vmSize;
 
     /*
@@ -32,7 +35,6 @@ public final class HardwareProfile {
      * feature is still in preview mode and is not supported for VirtualMachineScaleSet. Please follow the instructions
      * in [VM Customization](https://aka.ms/vmcustomization) for more details.
      */
-    @JsonProperty(value = "vmSizeProperties")
     private VMSizeProperties vmSizeProperties;
 
     /**
@@ -114,5 +116,44 @@ public final class HardwareProfile {
         if (vmSizeProperties() != null) {
             vmSizeProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("vmSize", this.vmSize == null ? null : this.vmSize.toString());
+        jsonWriter.writeJsonField("vmSizeProperties", this.vmSizeProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HardwareProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HardwareProfile if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HardwareProfile.
+     */
+    public static HardwareProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HardwareProfile deserializedHardwareProfile = new HardwareProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("vmSize".equals(fieldName)) {
+                    deserializedHardwareProfile.vmSize = VirtualMachineSizeTypes.fromString(reader.getString());
+                } else if ("vmSizeProperties".equals(fieldName)) {
+                    deserializedHardwareProfile.vmSizeProperties = VMSizeProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHardwareProfile;
+        });
     }
 }

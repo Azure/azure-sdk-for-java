@@ -15,6 +15,7 @@ import com.azure.core.annotation.Put;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RestProxy;
@@ -23,6 +24,12 @@ import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.AppServiceManager;
 import com.azure.resourcemanager.appservice.fluent.models.ConnectionStringDictionaryInner;
 import com.azure.resourcemanager.appservice.fluent.models.HostKeysInner;
@@ -34,11 +41,15 @@ import com.azure.resourcemanager.appservice.fluent.models.SitePatchResourceInner
 import com.azure.resourcemanager.appservice.fluent.models.StringDictionaryInner;
 import com.azure.resourcemanager.appservice.models.AppServicePlan;
 import com.azure.resourcemanager.appservice.models.AppSetting;
+import com.azure.resourcemanager.appservice.models.CsmDeploymentStatus;
+import com.azure.resourcemanager.appservice.models.DeployOptions;
+import com.azure.resourcemanager.appservice.models.DeployType;
 import com.azure.resourcemanager.appservice.models.FunctionApp;
 import com.azure.resourcemanager.appservice.models.FunctionAuthenticationPolicy;
 import com.azure.resourcemanager.appservice.models.FunctionDeploymentSlots;
 import com.azure.resourcemanager.appservice.models.FunctionEnvelope;
 import com.azure.resourcemanager.appservice.models.FunctionRuntimeStack;
+import com.azure.resourcemanager.appservice.models.KuduDeploymentResult;
 import com.azure.resourcemanager.appservice.models.NameValuePair;
 import com.azure.resourcemanager.appservice.models.OperatingSystem;
 import com.azure.resourcemanager.appservice.models.PricingTier;
@@ -53,7 +64,6 @@ import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.models.StorageAccountKey;
 import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -79,7 +89,7 @@ class FunctionAppImpl
         FunctionApp.DefinitionStages.ExistingLinuxPlanWithGroup,
         FunctionApp.Update {
 
-    private final ClientLogger logger = new ClientLogger(getClass());
+    private static final ClientLogger LOGGER = new ClientLogger(FunctionAppImpl.class);
 
     private static final String SETTING_WEBSITE_CONTENTAZUREFILECONNECTIONSTRING =
         "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING";
@@ -94,6 +104,8 @@ class FunctionAppImpl
     private FunctionDeploymentSlots deploymentSlots;
 
     private String functionServiceHost;
+
+    private Boolean appServicePlanIsFlexConsumption;
 
     FunctionAppImpl(
         final String name,
@@ -117,7 +129,7 @@ class FunctionAppImpl
             try {
                 baseUrl = urlBuilder.toUrl().toString();
             } catch (MalformedURLException e) {
-                throw logger.logExceptionAsError(new IllegalStateException(e));
+                throw LOGGER.logExceptionAsError(new IllegalStateException(e));
             }
 
             List<HttpPipelinePolicy> policies = new ArrayList<>();
@@ -804,6 +816,137 @@ class FunctionAppImpl
         }
     }
 
+    @Override
+    public void deploy(DeployType type, File file) {
+        deployAsync(type, file).block();
+    }
+
+    @Override
+    public Mono<Void> deployAsync(DeployType type, File file) {
+        return deployAsync(type, file, null);
+    }
+
+    @Override
+    public void deploy(DeployType type, File file, DeployOptions deployOptions) {
+        deployAsync(type, file, null).block();
+    }
+
+    @Override
+    public Mono<Void> deployAsync(DeployType type, File file, DeployOptions deployOptions) {
+        return this.pushDeployAsync(type, file, null)
+            .flatMap(result -> kuduClient.pollDeploymentStatus(result, manager().serviceClient().getDefaultPollInterval()));
+    }
+
+    @Override
+    public void deploy(DeployType type, InputStream file, long length) {
+        deployAsync(type, file, length).block();
+    }
+
+    @Override
+    public Mono<Void> deployAsync(DeployType type, InputStream file, long length) {
+        return deployAsync(type, file, length, null);
+    }
+
+    @Override
+    public void deploy(DeployType type, InputStream file, long length, DeployOptions deployOptions) {
+        deployAsync(type, file, length, null).block();
+    }
+
+    @Override
+    public Mono<Void> deployAsync(DeployType type, InputStream file, long length, DeployOptions deployOptions) {
+        return this.pushDeployAsync(type, file, length, null)
+            .flatMap(result -> kuduClient.pollDeploymentStatus(result, manager().serviceClient().getDefaultPollInterval()));
+    }
+
+    @Override
+    public KuduDeploymentResult pushDeploy(DeployType type, File file, DeployOptions deployOptions) {
+        return pushDeployAsync(type, file, deployOptions).block();
+    }
+
+    @Override
+    public Mono<KuduDeploymentResult> pushDeployAsync(DeployType type, File file, DeployOptions deployOptions) {
+        // If tier of the AppServicePlan is "FlexConsumption", use /api/publish; else, use /api/zipdeploy
+
+        // deployOptions is ignored
+        if (type != DeployType.ZIP) {
+            return Mono.error(new IllegalArgumentException("Deployment to Function App supports ZIP package."));
+        }
+        return getAppServicePlanIsFlexConsumptionMono().flatMap(appServiceIsFlexConsumptionPlan -> {
+            try {
+                if (appServiceIsFlexConsumptionPlan) {
+                    return kuduClient.pushDeployFlexConsumptionAsync(file);
+                } else {
+                    return kuduClient.pushZipDeployAsync(file)
+                        // it appears that "getDeploymentStatus" must first be called with deploymentId="latest"
+                        // this "latest" also works, if polling is done via kudu "api/deployments/{deploymentId}" API
+                        .then(Mono.just(new KuduDeploymentResult("latest")));
+                }
+            } catch (IOException e) {
+                return Mono.error(e);
+            }
+        });
+    }
+
+    private Mono<KuduDeploymentResult> pushDeployAsync(DeployType type, InputStream file, long length,
+                                                       DeployOptions deployOptions) {
+        // deployOptions is ignored
+        if (type != DeployType.ZIP) {
+            return Mono.error(new IllegalArgumentException("Deployment to Function App supports ZIP package."));
+        }
+        return getAppServicePlanIsFlexConsumptionMono().flatMap(appServiceIsFlexConsumptionPlan -> {
+            try {
+                if (appServiceIsFlexConsumptionPlan) {
+                    return kuduClient.pushDeployFlexConsumptionAsync(file, length);
+                } else {
+                    return kuduClient.pushZipDeployAsync(file, length)
+                        .then(Mono.just(new KuduDeploymentResult("latest")));
+                }
+            } catch (IOException e) {
+                return Mono.error(e);
+            }
+        });
+    }
+
+    private Mono<Boolean> getAppServicePlanIsFlexConsumptionMono() {
+        Mono<Boolean> updateAppServicePlan = Mono.justOrEmpty(appServicePlanIsFlexConsumption);
+        if (appServicePlanIsFlexConsumption == null) {
+            updateAppServicePlan = Mono.defer(
+                () -> manager().appServicePlans()
+                    .getByIdAsync(this.appServicePlanId())
+                    .map(appServicePlan -> {
+                        appServicePlanIsFlexConsumption = "FlexConsumption".equals(appServicePlan.pricingTier().toSkuDescription().tier());
+                        return appServicePlanIsFlexConsumption;
+                    }));
+        }
+        return updateAppServicePlan;
+    }
+
+    @Override
+    public CsmDeploymentStatus getDeploymentStatus(String deploymentId) {
+        return getDeploymentStatusAsync(deploymentId).block();
+    }
+
+    @Override
+    public Mono<CsmDeploymentStatus> getDeploymentStatusAsync(String deploymentId) {
+        // "GET" LRO is not supported in azure-core
+        SerializerAdapter serializerAdapter = SerializerFactory.createDefaultManagementSerializerAdapter();
+        return this.manager().serviceClient().getWebApps()
+            .getProductionSiteDeploymentStatusWithResponseAsync(this.resourceGroupName(), this.name(), deploymentId)
+            .flatMap(fluxResponse -> {
+                HttpResponse response = new HttpFluxBBResponse(fluxResponse);
+                return response.getBodyAsString()
+                    .flatMap(bodyString -> {
+                        CsmDeploymentStatus status;
+                        try {
+                            status = serializerAdapter.deserialize(bodyString, CsmDeploymentStatus.class, SerializerEncoding.JSON);
+                        } catch (IOException e) {
+                            return Mono.error(new ManagementException("Deserialize failed for response body.", response));
+                        }
+                        return Mono.justOrEmpty(status);
+                    }).doFinally(ignored -> response.close());
+            });
+    }
+
     @Host("{$host}")
     @ServiceInterface(name = "FunctionService")
     private interface FunctionService {
@@ -867,37 +1010,38 @@ class FunctionAppImpl
             @BodyParam("application/json") Object payload);
     }
 
-    private static class FunctionKeyListResult {
-        @JsonProperty("keys")
+    private static class FunctionKeyListResult implements JsonSerializable<FunctionKeyListResult> {
         private List<NameValuePair> keys;
+
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            return jsonWriter
+                .writeStartObject()
+                .writeArrayField("keys", keys, JsonWriter::writeJson)
+                .writeEndObject();
+        }
+
+        public static FunctionKeyListResult fromJson(JsonReader jsonReader) throws IOException {
+            return jsonReader.readObject(reader -> {
+                FunctionKeyListResult result = new FunctionKeyListResult();
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
+
+                    if ("keys".equals(fieldName)) {
+                        List<NameValuePair> keys = reader.readArray(reader1 ->
+                            reader1.readObject(NameValuePair::fromJson));
+                        result.keys = keys;
+                    } else {
+                        reader.skipChildren();
+                    }
+                }
+                return result;
+            });
+        }
     }
 
     private String getStorageAccountName() {
         return name().replaceAll("[^a-zA-Z0-9]", "");
     }
-
-    /*
-    private static final class FunctionCredential implements TokenCredential {
-        private final FunctionAppImpl functionApp;
-
-        private FunctionCredential(FunctionAppImpl functionApp) {
-            this.functionApp = functionApp;
-        }
-
-        @Override
-        public Mono<AccessToken> getToken(TokenRequestContext request) {
-            return functionApp.manager().inner().getWebApps()
-                    .getFunctionsAdminTokenAsync(functionApp.resourceGroupName(), functionApp.name())
-                    .map(token -> {
-                        String jwt = new String(Base64.getUrlDecoder().decode(token.split("\\.")[1]));
-                        Pattern pattern = Pattern.compile("\"exp\": *([0-9]+),");
-                        Matcher matcher = pattern.matcher(jwt);
-                        matcher.find();
-                        long expire = Long.parseLong(matcher.group(1));
-                        return new AccessToken(token, OffsetDateTime.ofInstant(
-                            Instant.ofEpochMilli(expire), ZoneOffset.UTC));
-                    });
-        }
-    }
-    */
 }

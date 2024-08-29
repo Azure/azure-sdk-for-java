@@ -5,19 +5,22 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cosmos.fluent.models.GremlinGraphGetResultsInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The List operation response, that contains the graphs and their properties.
  */
 @Immutable
-public final class GremlinGraphListResult {
+public final class GremlinGraphListResult implements JsonSerializable<GremlinGraphListResult> {
     /*
      * List of graphs and their properties.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<GremlinGraphGetResultsInner> value;
 
     /**
@@ -44,5 +47,42 @@ public final class GremlinGraphListResult {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GremlinGraphListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GremlinGraphListResult if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GremlinGraphListResult.
+     */
+    public static GremlinGraphListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GremlinGraphListResult deserializedGremlinGraphListResult = new GremlinGraphListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<GremlinGraphGetResultsInner> value
+                        = reader.readArray(reader1 -> GremlinGraphGetResultsInner.fromJson(reader1));
+                    deserializedGremlinGraphListResult.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGremlinGraphListResult;
+        });
     }
 }

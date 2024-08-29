@@ -6,20 +6,27 @@ package com.azure.resourcemanager.hdinsight.containers.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hdinsight.containers.models.ClusterPoolProfile;
+import com.azure.resourcemanager.hdinsight.containers.models.IpTag;
 import org.junit.jupiter.api.Assertions;
 
 public final class ClusterPoolProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClusterPoolProfile model
-            = BinaryData.fromString("{\"clusterPoolVersion\":\"nhsjcnyej\"}").toObject(ClusterPoolProfile.class);
-        Assertions.assertEquals("nhsjcnyej", model.clusterPoolVersion());
+        ClusterPoolProfile model = BinaryData.fromString(
+            "{\"clusterPoolVersion\":\"vdphlxaolthqtr\",\"publicIpTag\":{\"ipTagType\":\"jbp\",\"tag\":\"zfsinzgvf\"}}")
+            .toObject(ClusterPoolProfile.class);
+        Assertions.assertEquals("vdphlxaolthqtr", model.clusterPoolVersion());
+        Assertions.assertEquals("jbp", model.publicIpTag().ipTagType());
+        Assertions.assertEquals("zfsinzgvf", model.publicIpTag().tag());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterPoolProfile model = new ClusterPoolProfile().withClusterPoolVersion("nhsjcnyej");
+        ClusterPoolProfile model = new ClusterPoolProfile().withClusterPoolVersion("vdphlxaolthqtr")
+            .withPublicIpTag(new IpTag().withIpTagType("jbp").withTag("zfsinzgvf"));
         model = BinaryData.fromObject(model).toObject(ClusterPoolProfile.class);
-        Assertions.assertEquals("nhsjcnyej", model.clusterPoolVersion());
+        Assertions.assertEquals("vdphlxaolthqtr", model.clusterPoolVersion());
+        Assertions.assertEquals("jbp", model.publicIpTag().ipTagType());
+        Assertions.assertEquals("zfsinzgvf", model.publicIpTag().tag());
     }
 }

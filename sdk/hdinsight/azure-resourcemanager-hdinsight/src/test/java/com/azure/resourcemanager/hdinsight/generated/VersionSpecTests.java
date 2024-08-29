@@ -13,32 +13,29 @@ import org.junit.jupiter.api.Assertions;
 public final class VersionSpecTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VersionSpec model =
-            BinaryData
-                .fromString(
-                    "{\"friendlyName\":\"ncwsob\",\"displayName\":\"csdbnwdcfhuc\",\"isDefault\":true,\"componentVersions\":{\"vxb\":\"vglsbjjca\",\"udutnco\":\"t\",\"xqtvcofu\":\"mr\",\"vkg\":\"f\"}}")
-                .toObject(VersionSpec.class);
-        Assertions.assertEquals("ncwsob", model.friendlyName());
-        Assertions.assertEquals("csdbnwdcfhuc", model.displayName());
-        Assertions.assertEquals(true, model.isDefault());
-        Assertions.assertEquals("vglsbjjca", model.componentVersions().get("vxb"));
+        VersionSpec model = BinaryData.fromString(
+            "{\"friendlyName\":\"lvkgju\",\"displayName\":\"dknnqvsazn\",\"isDefault\":false,\"componentVersions\":{\"hmk\":\"udsgs\",\"rauwjuetaebu\":\"c\"}}")
+            .toObject(VersionSpec.class);
+        Assertions.assertEquals("lvkgju", model.friendlyName());
+        Assertions.assertEquals("dknnqvsazn", model.displayName());
+        Assertions.assertEquals(false, model.isDefault());
+        Assertions.assertEquals("udsgs", model.componentVersions().get("hmk"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VersionSpec model =
-            new VersionSpec()
-                .withFriendlyName("ncwsob")
-                .withDisplayName("csdbnwdcfhuc")
-                .withIsDefault(true)
-                .withComponentVersions(mapOf("vxb", "vglsbjjca", "udutnco", "t", "xqtvcofu", "mr", "vkg", "f"));
+        VersionSpec model = new VersionSpec().withFriendlyName("lvkgju")
+            .withDisplayName("dknnqvsazn")
+            .withIsDefault(false)
+            .withComponentVersions(mapOf("hmk", "udsgs", "rauwjuetaebu", "c"));
         model = BinaryData.fromObject(model).toObject(VersionSpec.class);
-        Assertions.assertEquals("ncwsob", model.friendlyName());
-        Assertions.assertEquals("csdbnwdcfhuc", model.displayName());
-        Assertions.assertEquals(true, model.isDefault());
-        Assertions.assertEquals("vglsbjjca", model.componentVersions().get("vxb"));
+        Assertions.assertEquals("lvkgju", model.friendlyName());
+        Assertions.assertEquals("dknnqvsazn", model.displayName());
+        Assertions.assertEquals(false, model.isDefault());
+        Assertions.assertEquals("udsgs", model.componentVersions().get("hmk"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

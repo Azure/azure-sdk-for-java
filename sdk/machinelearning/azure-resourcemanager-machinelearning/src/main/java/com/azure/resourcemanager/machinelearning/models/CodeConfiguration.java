@@ -6,30 +6,36 @@ package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Configuration for a scoring code asset. */
+/**
+ * Configuration for a scoring code asset.
+ */
 @Fluent
-public final class CodeConfiguration {
+public final class CodeConfiguration implements JsonSerializable<CodeConfiguration> {
     /*
      * ARM resource ID of the code asset.
      */
-    @JsonProperty(value = "codeId")
     private String codeId;
 
     /*
      * [Required] The script to execute on startup. eg. "score.py"
      */
-    @JsonProperty(value = "scoringScript", required = true)
     private String scoringScript;
 
-    /** Creates an instance of CodeConfiguration class. */
+    /**
+     * Creates an instance of CodeConfiguration class.
+     */
     public CodeConfiguration() {
     }
 
     /**
      * Get the codeId property: ARM resource ID of the code asset.
-     *
+     * 
      * @return the codeId value.
      */
     public String codeId() {
@@ -38,7 +44,7 @@ public final class CodeConfiguration {
 
     /**
      * Set the codeId property: ARM resource ID of the code asset.
-     *
+     * 
      * @param codeId the codeId value to set.
      * @return the CodeConfiguration object itself.
      */
@@ -49,7 +55,7 @@ public final class CodeConfiguration {
 
     /**
      * Get the scoringScript property: [Required] The script to execute on startup. eg. "score.py".
-     *
+     * 
      * @return the scoringScript value.
      */
     public String scoringScript() {
@@ -58,7 +64,7 @@ public final class CodeConfiguration {
 
     /**
      * Set the scoringScript property: [Required] The script to execute on startup. eg. "score.py".
-     *
+     * 
      * @param scoringScript the scoringScript value to set.
      * @return the CodeConfiguration object itself.
      */
@@ -69,16 +75,56 @@ public final class CodeConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (scoringScript() == null) {
-            throw LOGGER
-                .logExceptionAsError(
+            throw LOGGER.atError()
+                .log(
                     new IllegalArgumentException("Missing required property scoringScript in model CodeConfiguration"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CodeConfiguration.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("scoringScript", this.scoringScript);
+        jsonWriter.writeStringField("codeId", this.codeId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CodeConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CodeConfiguration if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CodeConfiguration.
+     */
+    public static CodeConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CodeConfiguration deserializedCodeConfiguration = new CodeConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("scoringScript".equals(fieldName)) {
+                    deserializedCodeConfiguration.scoringScript = reader.getString();
+                } else if ("codeId".equals(fieldName)) {
+                    deserializedCodeConfiguration.codeId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCodeConfiguration;
+        });
+    }
 }

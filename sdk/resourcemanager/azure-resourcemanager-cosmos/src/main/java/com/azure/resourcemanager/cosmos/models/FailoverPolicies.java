@@ -6,19 +6,21 @@ package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The list of new failover policies for the failover priority change.
  */
 @Fluent
-public final class FailoverPolicies {
+public final class FailoverPolicies implements JsonSerializable<FailoverPolicies> {
     /*
      * List of failover policies.
      */
-    @JsonProperty(value = "failoverPolicies", required = true)
     private List<FailoverPolicy> failoverPolicies;
 
     /**
@@ -29,7 +31,7 @@ public final class FailoverPolicies {
 
     /**
      * Get the failoverPolicies property: List of failover policies.
-     *
+     * 
      * @return the failoverPolicies value.
      */
     public List<FailoverPolicy> failoverPolicies() {
@@ -38,7 +40,7 @@ public final class FailoverPolicies {
 
     /**
      * Set the failoverPolicies property: List of failover policies.
-     *
+     * 
      * @param failoverPolicies the failoverPolicies value to set.
      * @return the FailoverPolicies object itself.
      */
@@ -49,7 +51,7 @@ public final class FailoverPolicies {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -63,4 +65,44 @@ public final class FailoverPolicies {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(FailoverPolicies.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("failoverPolicies", this.failoverPolicies,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FailoverPolicies from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FailoverPolicies if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FailoverPolicies.
+     */
+    public static FailoverPolicies fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FailoverPolicies deserializedFailoverPolicies = new FailoverPolicies();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("failoverPolicies".equals(fieldName)) {
+                    List<FailoverPolicy> failoverPolicies
+                        = reader.readArray(reader1 -> FailoverPolicy.fromJson(reader1));
+                    deserializedFailoverPolicies.failoverPolicies = failoverPolicies;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFailoverPolicies;
+        });
+    }
 }

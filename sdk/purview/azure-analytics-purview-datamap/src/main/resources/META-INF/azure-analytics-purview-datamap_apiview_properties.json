@@ -1,7 +1,7 @@
 {
   "flavor": "azure", 
   "CrossLanguageDefinitionId": {
-    "com.azure.analytics.purview.datamap.DataMapClientBuilder": "PurviewDataMap.DataMapClient",
+    "com.azure.analytics.purview.datamap.DataMapClientBuilder": "Customizations",
     "com.azure.analytics.purview.datamap.DiscoveryAsyncClient": "null",
     "com.azure.analytics.purview.datamap.DiscoveryAsyncClient.autoComplete": "Customizations.Discovery.autoComplete",
     "com.azure.analytics.purview.datamap.DiscoveryAsyncClient.autoCompleteWithResponse": "Customizations.Discovery.autoComplete",

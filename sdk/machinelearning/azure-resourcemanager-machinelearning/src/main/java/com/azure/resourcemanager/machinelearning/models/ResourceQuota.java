@@ -6,55 +6,55 @@ package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.resourcemanager.machinelearning.fluent.models.ResourceQuotaInner;
 
-/** An immutable client-side representation of ResourceQuota. */
+/**
+ * An immutable client-side representation of ResourceQuota.
+ */
 public interface ResourceQuota {
     /**
      * Gets the id property: Specifies the resource ID.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the amlWorkspaceLocation property: Region of the AML workspace in the id.
-     *
+     * 
      * @return the amlWorkspaceLocation value.
      */
     String amlWorkspaceLocation();
 
     /**
      * Gets the type property: Specifies the resource type.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the name property: Name of the resource.
-     *
+     * 
      * @return the name value.
      */
     ResourceName name();
 
     /**
-     * Gets the limit property: Limit.
-     *
-     * <p>The maximum permitted quota of the resource.
-     *
+     * Gets the limit property: The maximum permitted quota of the resource.
+     * 
      * @return the limit value.
      */
     Long limit();
 
     /**
      * Gets the unit property: An enum describing the unit of quota measurement.
-     *
+     * 
      * @return the unit value.
      */
     QuotaUnit unit();
 
     /**
      * Gets the inner com.azure.resourcemanager.machinelearning.fluent.models.ResourceQuotaInner object.
-     *
+     * 
      * @return the inner object.
      */
     ResourceQuotaInner innerModel();

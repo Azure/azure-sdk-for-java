@@ -28,7 +28,7 @@ public final class DatasetsDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.datasets()
-            .deleteWithResponse("tfsciayclvaivsa", "rfjhcrqnwoahfaq", "cqj", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("ypouvpdclajujsov", "freyrgrgf", "zehxddmaevcjtrw", com.azure.core.util.Context.NONE);
 
     }
 }

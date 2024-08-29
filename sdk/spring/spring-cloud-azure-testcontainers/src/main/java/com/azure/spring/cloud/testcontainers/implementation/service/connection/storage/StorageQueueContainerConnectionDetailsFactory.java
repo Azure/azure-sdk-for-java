@@ -12,7 +12,7 @@ import org.testcontainers.containers.Container;
 class StorageQueueContainerConnectionDetailsFactory
     extends ContainerConnectionDetailsFactory<Container<?>, AzureStorageQueueConnectionDetails> {
 
-    private static final int STORAGE_QUEUE_PORT = 10001;
+    private static final int STORAGE_QUEUE_PORT = 10_001;
 
     StorageQueueContainerConnectionDetailsFactory() {
         super("azure-storage/azurite");

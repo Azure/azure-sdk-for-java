@@ -6,45 +6,53 @@ package com.azure.resourcemanager.servicebus.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Properties required to the Create Migration Configuration. */
+/**
+ * Properties required to the Create Migration Configuration.
+ */
 @Fluent
-public final class MigrationConfigPropertiesProperties {
+public final class MigrationConfigPropertiesProperties
+    implements JsonSerializable<MigrationConfigPropertiesProperties> {
     /*
      * Provisioning state of Migration Configuration
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * Number of entities pending to be replicated.
      */
-    @JsonProperty(value = "pendingReplicationOperationsCount", access = JsonProperty.Access.WRITE_ONLY)
     private Long pendingReplicationOperationsCount;
 
     /*
      * Existing premium Namespace ARM Id name which has no entities, will be used for migration
      */
-    @JsonProperty(value = "targetNamespace", required = true)
     private String targetNamespace;
 
     /*
      * Name to access Standard Namespace after migration
      */
-    @JsonProperty(value = "postMigrationName", required = true)
     private String postMigrationName;
 
     /*
      * State in which Standard to Premium Migration is, possible values : Unknown, Reverting, Completing, Initiating,
      * Syncing, Active
      */
-    @JsonProperty(value = "migrationState", access = JsonProperty.Access.WRITE_ONLY)
     private String migrationState;
 
     /**
+     * Creates an instance of MigrationConfigPropertiesProperties class.
+     */
+    public MigrationConfigPropertiesProperties() {
+    }
+
+    /**
      * Get the provisioningState property: Provisioning state of Migration Configuration.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -53,7 +61,7 @@ public final class MigrationConfigPropertiesProperties {
 
     /**
      * Get the pendingReplicationOperationsCount property: Number of entities pending to be replicated.
-     *
+     * 
      * @return the pendingReplicationOperationsCount value.
      */
     public Long pendingReplicationOperationsCount() {
@@ -63,7 +71,7 @@ public final class MigrationConfigPropertiesProperties {
     /**
      * Get the targetNamespace property: Existing premium Namespace ARM Id name which has no entities, will be used for
      * migration.
-     *
+     * 
      * @return the targetNamespace value.
      */
     public String targetNamespace() {
@@ -73,7 +81,7 @@ public final class MigrationConfigPropertiesProperties {
     /**
      * Set the targetNamespace property: Existing premium Namespace ARM Id name which has no entities, will be used for
      * migration.
-     *
+     * 
      * @param targetNamespace the targetNamespace value to set.
      * @return the MigrationConfigPropertiesProperties object itself.
      */
@@ -84,7 +92,7 @@ public final class MigrationConfigPropertiesProperties {
 
     /**
      * Get the postMigrationName property: Name to access Standard Namespace after migration.
-     *
+     * 
      * @return the postMigrationName value.
      */
     public String postMigrationName() {
@@ -93,7 +101,7 @@ public final class MigrationConfigPropertiesProperties {
 
     /**
      * Set the postMigrationName property: Name to access Standard Namespace after migration.
-     *
+     * 
      * @param postMigrationName the postMigrationName value to set.
      * @return the MigrationConfigPropertiesProperties object itself.
      */
@@ -105,7 +113,7 @@ public final class MigrationConfigPropertiesProperties {
     /**
      * Get the migrationState property: State in which Standard to Premium Migration is, possible values : Unknown,
      * Reverting, Completing, Initiating, Syncing, Active.
-     *
+     * 
      * @return the migrationState value.
      */
     public String migrationState() {
@@ -114,23 +122,69 @@ public final class MigrationConfigPropertiesProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (targetNamespace() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property targetNamespace in model MigrationConfigPropertiesProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property targetNamespace in model MigrationConfigPropertiesProperties"));
         }
         if (postMigrationName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property postMigrationName in model MigrationConfigPropertiesProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property postMigrationName in model MigrationConfigPropertiesProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(MigrationConfigPropertiesProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("targetNamespace", this.targetNamespace);
+        jsonWriter.writeStringField("postMigrationName", this.postMigrationName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MigrationConfigPropertiesProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MigrationConfigPropertiesProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MigrationConfigPropertiesProperties.
+     */
+    public static MigrationConfigPropertiesProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MigrationConfigPropertiesProperties deserializedMigrationConfigPropertiesProperties
+                = new MigrationConfigPropertiesProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("targetNamespace".equals(fieldName)) {
+                    deserializedMigrationConfigPropertiesProperties.targetNamespace = reader.getString();
+                } else if ("postMigrationName".equals(fieldName)) {
+                    deserializedMigrationConfigPropertiesProperties.postMigrationName = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedMigrationConfigPropertiesProperties.provisioningState = reader.getString();
+                } else if ("pendingReplicationOperationsCount".equals(fieldName)) {
+                    deserializedMigrationConfigPropertiesProperties.pendingReplicationOperationsCount
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("migrationState".equals(fieldName)) {
+                    deserializedMigrationConfigPropertiesProperties.migrationState = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMigrationConfigPropertiesProperties;
+        });
+    }
 }

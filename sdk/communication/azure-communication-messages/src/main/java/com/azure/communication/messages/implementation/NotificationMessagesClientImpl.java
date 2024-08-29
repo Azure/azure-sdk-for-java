@@ -160,9 +160,9 @@ public final class NotificationMessagesClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> send(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData notificationContent, RequestOptions requestOptions,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData notificationContent,
+            RequestOptions requestOptions, Context context);
 
         @Post("/messages/notifications:send")
         @ExpectedResponses({ 202 })
@@ -171,9 +171,9 @@ public final class NotificationMessagesClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> sendSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData notificationContent, RequestOptions requestOptions,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData notificationContent,
+            RequestOptions requestOptions, Context context);
 
         @Get("/messages/streams/{id}")
         @ExpectedResponses({ 200 })
@@ -183,7 +183,7 @@ public final class NotificationMessagesClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> downloadMedia(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("id") String mediaId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/messages/streams/{id}")
         @ExpectedResponses({ 200 })
@@ -193,7 +193,7 @@ public final class NotificationMessagesClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> downloadMediaSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("id") String mediaId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -244,6 +244,7 @@ public final class NotificationMessagesClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> sendWithResponseAsync(BinaryData notificationContent,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
@@ -260,7 +261,7 @@ public final class NotificationMessagesClientImpl {
             }
         });
         return FluxUtil.withContext(context -> service.send(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            accept, notificationContent, requestOptionsLocal, context));
+            contentType, accept, notificationContent, requestOptionsLocal, context));
     }
 
     /**
@@ -309,6 +310,7 @@ public final class NotificationMessagesClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> sendWithResponse(BinaryData notificationContent, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
@@ -324,8 +326,8 @@ public final class NotificationMessagesClientImpl {
                         DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()));
             }
         });
-        return service.sendSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, notificationContent,
-            requestOptionsLocal, Context.NONE);
+        return service.sendSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, accept,
+            notificationContent, requestOptionsLocal, Context.NONE);
     }
 
     /**
@@ -346,7 +348,7 @@ public final class NotificationMessagesClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> downloadMediaWithResponseAsync(String mediaId, RequestOptions requestOptions) {
-        final String accept = "application/octet-stream, application/json";
+        final String accept = "application/octet-stream";
         return FluxUtil.withContext(context -> service.downloadMedia(this.getEndpoint(),
             this.getServiceVersion().getVersion(), mediaId, accept, requestOptions, context));
     }
@@ -369,7 +371,7 @@ public final class NotificationMessagesClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> downloadMediaWithResponse(String mediaId, RequestOptions requestOptions) {
-        final String accept = "application/octet-stream, application/json";
+        final String accept = "application/octet-stream";
         return service.downloadMediaSync(this.getEndpoint(), this.getServiceVersion().getVersion(), mediaId, accept,
             requestOptions, Context.NONE);
     }

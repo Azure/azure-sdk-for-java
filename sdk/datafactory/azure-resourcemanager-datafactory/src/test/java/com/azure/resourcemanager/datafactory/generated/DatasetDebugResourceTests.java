@@ -20,36 +20,40 @@ public final class DatasetDebugResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DatasetDebugResource model = BinaryData.fromString(
-            "{\"properties\":{\"type\":\"Dataset\",\"description\":\"qmjxlyyzglgouwtl\",\"structure\":\"datajyuojqtobaxkjeyt\",\"schema\":\"datalbfjkwr\",\"linkedServiceName\":{\"referenceName\":\"snkq\",\"parameters\":{\"qunjqh\":\"datay\"}},\"parameters\":{\"ifmjnn\":{\"type\":\"Float\",\"defaultValue\":\"dataulkpakd\"},\"yirdhlisngwflqq\":{\"type\":\"String\",\"defaultValue\":\"dataqabpxuckpggqow\"}},\"annotations\":[\"datazruwn\",\"dataqxpxiwfcngjsaa\",\"dataiixtmkzj\",\"datakv\"],\"folder\":{\"name\":\"hgfgrwsd\"},\"\":{\"bglbyvict\":\"dataatzv\"}},\"name\":\"brxkjzwr\"}")
+            "{\"properties\":{\"type\":\"Dataset\",\"description\":\"wey\",\"structure\":\"datadhlisngwflqqmpi\",\"schema\":\"datauwnpqxpxiwfcng\",\"linkedServiceName\":{\"referenceName\":\"saasiixtmkzj\",\"parameters\":{\"gratzvzbglbyvict\":\"dataiirhgfgrwsd\",\"rgxffmshkw\":\"datatbrxkjz\",\"qaclnapxbiy\":\"databkgozxwopdbydpi\"}},\"parameters\":{\"lq\":{\"type\":\"Int\",\"defaultValue\":\"dataknfsmfcttuxuuyil\"},\"hmrnjhvsuj\":{\"type\":\"SecureString\",\"defaultValue\":\"datauvr\"}},\"annotations\":[\"datazytqjtwhauunfpr\",\"datajletlxsmrpddo\",\"dataifamowazi\",\"datanknlqwzdvpi\"],\"folder\":{\"name\":\"qszdtmaajquhuxyl\"},\"\":{\"ygjbmzyospspsh\":\"datam\",\"sp\":\"datakfkyjp\"}},\"name\":\"ssdfpp\"}")
             .toObject(DatasetDebugResource.class);
-        Assertions.assertEquals("brxkjzwr", model.name());
-        Assertions.assertEquals("qmjxlyyzglgouwtl", model.properties().description());
-        Assertions.assertEquals("snkq", model.properties().linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.FLOAT, model.properties().parameters().get("ifmjnn").type());
-        Assertions.assertEquals("hgfgrwsd", model.properties().folder().name());
+        Assertions.assertEquals("ssdfpp", model.name());
+        Assertions.assertEquals("wey", model.properties().description());
+        Assertions.assertEquals("saasiixtmkzj", model.properties().linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.INT, model.properties().parameters().get("lq").type());
+        Assertions.assertEquals("qszdtmaajquhuxyl", model.properties().folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DatasetDebugResource model = new DatasetDebugResource().withName("brxkjzwr")
-            .withProperties(new Dataset().withDescription("qmjxlyyzglgouwtl")
-                .withStructure("datajyuojqtobaxkjeyt")
-                .withSchema("datalbfjkwr")
-                .withLinkedServiceName(
-                    new LinkedServiceReference().withReferenceName("snkq").withParameters(mapOf("qunjqh", "datay")))
-                .withParameters(mapOf("ifmjnn",
-                    new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("dataulkpakd"),
-                    "yirdhlisngwflqq",
-                    new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("dataqabpxuckpggqow")))
-                .withAnnotations(Arrays.asList("datazruwn", "dataqxpxiwfcngjsaa", "dataiixtmkzj", "datakv"))
-                .withFolder(new DatasetFolder().withName("hgfgrwsd"))
-                .withAdditionalProperties(mapOf("type", "Dataset")));
+        DatasetDebugResource model
+            = new DatasetDebugResource().withName("ssdfpp")
+                .withProperties(new Dataset().withDescription("wey")
+                    .withStructure("datadhlisngwflqqmpi")
+                    .withSchema("datauwnpqxpxiwfcng")
+                    .withLinkedServiceName(new LinkedServiceReference().withReferenceName("saasiixtmkzj")
+                        .withParameters(mapOf("gratzvzbglbyvict", "dataiirhgfgrwsd", "rgxffmshkw", "datatbrxkjz",
+                            "qaclnapxbiy", "databkgozxwopdbydpi")))
+                    .withParameters(mapOf("lq",
+                        new ParameterSpecification().withType(ParameterType.INT)
+                            .withDefaultValue("dataknfsmfcttuxuuyil"),
+                        "hmrnjhvsuj",
+                        new ParameterSpecification().withType(ParameterType.SECURE_STRING).withDefaultValue("datauvr")))
+                    .withAnnotations(
+                        Arrays.asList("datazytqjtwhauunfpr", "datajletlxsmrpddo", "dataifamowazi", "datanknlqwzdvpi"))
+                    .withFolder(new DatasetFolder().withName("qszdtmaajquhuxyl"))
+                    .withAdditionalProperties(mapOf("type", "Dataset")));
         model = BinaryData.fromObject(model).toObject(DatasetDebugResource.class);
-        Assertions.assertEquals("brxkjzwr", model.name());
-        Assertions.assertEquals("qmjxlyyzglgouwtl", model.properties().description());
-        Assertions.assertEquals("snkq", model.properties().linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.FLOAT, model.properties().parameters().get("ifmjnn").type());
-        Assertions.assertEquals("hgfgrwsd", model.properties().folder().name());
+        Assertions.assertEquals("ssdfpp", model.name());
+        Assertions.assertEquals("wey", model.properties().description());
+        Assertions.assertEquals("saasiixtmkzj", model.properties().linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.INT, model.properties().parameters().get("lq").type());
+        Assertions.assertEquals("qszdtmaajquhuxyl", model.properties().folder().name());
     }
 
     // Use "Map.of" if available

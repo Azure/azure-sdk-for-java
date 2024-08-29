@@ -5,17 +5,22 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The object that represents all properties related to capacity enforcement on an account.
  */
 @Fluent
-public final class Capacity {
+public final class Capacity implements JsonSerializable<Capacity> {
     /*
-     * The total throughput limit imposed on the account. A totalThroughputLimit of 2000 imposes a strict limit of max throughput that can be provisioned on that account to be 2000. A totalThroughputLimit of -1 indicates no limits on provisioning of throughput.
+     * The total throughput limit imposed on the account. A totalThroughputLimit of 2000 imposes a strict limit of max
+     * throughput that can be provisioned on that account to be 2000. A totalThroughputLimit of -1 indicates no limits
+     * on provisioning of throughput.
      */
-    @JsonProperty(value = "totalThroughputLimit")
     private Integer totalThroughputLimit;
 
     /**
@@ -54,5 +59,41 @@ public final class Capacity {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("totalThroughputLimit", this.totalThroughputLimit);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Capacity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Capacity if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the Capacity.
+     */
+    public static Capacity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Capacity deserializedCapacity = new Capacity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("totalThroughputLimit".equals(fieldName)) {
+                    deserializedCapacity.totalThroughputLimit = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCapacity;
+        });
     }
 }

@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class SshPublicKeyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SshPublicKey model =
-            BinaryData.fromString("{\"certificateData\":\"imoryocfsfksym\"}").toObject(SshPublicKey.class);
+        SshPublicKey model
+            = BinaryData.fromString("{\"certificateData\":\"imoryocfsfksym\"}").toObject(SshPublicKey.class);
         Assertions.assertEquals("imoryocfsfksym", model.certificateData());
     }
 

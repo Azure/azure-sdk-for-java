@@ -14,41 +14,41 @@ public final class DataFlowDebugSessionInfoInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataFlowDebugSessionInfoInner model = BinaryData.fromString(
-            "{\"dataFlowName\":\"bwefqsfapaqtfer\",\"computeType\":\"wexjkmfxapjwogq\",\"coreCount\":211935178,\"nodeCount\":775989398,\"integrationRuntimeName\":\"dcdab\",\"sessionId\":\"wpwyawbz\",\"startTime\":\"qbucljgkyexaoguy\",\"timeToLiveInMinutes\":166467616,\"lastActivityTime\":\"dsdaultxijjumf\",\"\":{\"nqnm\":\"dataz\",\"qdqx\":\"datajng\",\"zsvtuikzhajqgl\":\"databjwgnyfus\",\"l\":\"datafh\"}}")
+            "{\"dataFlowName\":\"itdfuxtyasiib\",\"computeType\":\"ybnnustg\",\"coreCount\":453653118,\"nodeCount\":1541221410,\"integrationRuntimeName\":\"g\",\"sessionId\":\"hcmavmqfo\",\"startTime\":\"or\",\"timeToLiveInMinutes\":199814192,\"lastActivityTime\":\"yprotwyp\",\"\":{\"gorbmftpm\":\"datambxhugcmjkav\"}}")
             .toObject(DataFlowDebugSessionInfoInner.class);
-        Assertions.assertEquals("bwefqsfapaqtfer", model.dataFlowName());
-        Assertions.assertEquals("wexjkmfxapjwogq", model.computeType());
-        Assertions.assertEquals(211935178, model.coreCount());
-        Assertions.assertEquals(775989398, model.nodeCount());
-        Assertions.assertEquals("dcdab", model.integrationRuntimeName());
-        Assertions.assertEquals("wpwyawbz", model.sessionId());
-        Assertions.assertEquals("qbucljgkyexaoguy", model.startTime());
-        Assertions.assertEquals(166467616, model.timeToLiveInMinutes());
-        Assertions.assertEquals("dsdaultxijjumf", model.lastActivityTime());
+        Assertions.assertEquals("itdfuxtyasiib", model.dataFlowName());
+        Assertions.assertEquals("ybnnustg", model.computeType());
+        Assertions.assertEquals(453653118, model.coreCount());
+        Assertions.assertEquals(1541221410, model.nodeCount());
+        Assertions.assertEquals("g", model.integrationRuntimeName());
+        Assertions.assertEquals("hcmavmqfo", model.sessionId());
+        Assertions.assertEquals("or", model.startTime());
+        Assertions.assertEquals(199814192, model.timeToLiveInMinutes());
+        Assertions.assertEquals("yprotwyp", model.lastActivityTime());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataFlowDebugSessionInfoInner model = new DataFlowDebugSessionInfoInner().withDataFlowName("bwefqsfapaqtfer")
-            .withComputeType("wexjkmfxapjwogq")
-            .withCoreCount(211935178)
-            .withNodeCount(775989398)
-            .withIntegrationRuntimeName("dcdab")
-            .withSessionId("wpwyawbz")
-            .withStartTime("qbucljgkyexaoguy")
-            .withTimeToLiveInMinutes(166467616)
-            .withLastActivityTime("dsdaultxijjumf")
+        DataFlowDebugSessionInfoInner model = new DataFlowDebugSessionInfoInner().withDataFlowName("itdfuxtyasiib")
+            .withComputeType("ybnnustg")
+            .withCoreCount(453653118)
+            .withNodeCount(1541221410)
+            .withIntegrationRuntimeName("g")
+            .withSessionId("hcmavmqfo")
+            .withStartTime("or")
+            .withTimeToLiveInMinutes(199814192)
+            .withLastActivityTime("yprotwyp")
             .withAdditionalProperties(mapOf());
         model = BinaryData.fromObject(model).toObject(DataFlowDebugSessionInfoInner.class);
-        Assertions.assertEquals("bwefqsfapaqtfer", model.dataFlowName());
-        Assertions.assertEquals("wexjkmfxapjwogq", model.computeType());
-        Assertions.assertEquals(211935178, model.coreCount());
-        Assertions.assertEquals(775989398, model.nodeCount());
-        Assertions.assertEquals("dcdab", model.integrationRuntimeName());
-        Assertions.assertEquals("wpwyawbz", model.sessionId());
-        Assertions.assertEquals("qbucljgkyexaoguy", model.startTime());
-        Assertions.assertEquals(166467616, model.timeToLiveInMinutes());
-        Assertions.assertEquals("dsdaultxijjumf", model.lastActivityTime());
+        Assertions.assertEquals("itdfuxtyasiib", model.dataFlowName());
+        Assertions.assertEquals("ybnnustg", model.computeType());
+        Assertions.assertEquals(453653118, model.coreCount());
+        Assertions.assertEquals(1541221410, model.nodeCount());
+        Assertions.assertEquals("g", model.integrationRuntimeName());
+        Assertions.assertEquals("hcmavmqfo", model.sessionId());
+        Assertions.assertEquals("or", model.startTime());
+        Assertions.assertEquals(199814192, model.timeToLiveInMinutes());
+        Assertions.assertEquals("yprotwyp", model.lastActivityTime());
     }
 
     // Use "Map.of" if available

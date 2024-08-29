@@ -6,29 +6,30 @@ package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Identity Profile with details of an MSI.
  */
 @Fluent
-public class IdentityProfile {
+public class IdentityProfile implements JsonSerializable<IdentityProfile> {
     /*
      * ResourceId of the MSI.
      */
-    @JsonProperty(value = "msiResourceId", required = true)
     private String msiResourceId;
 
     /*
      * ClientId of the MSI.
      */
-    @JsonProperty(value = "msiClientId", required = true)
     private String msiClientId;
 
     /*
      * ObjectId of the MSI.
      */
-    @JsonProperty(value = "msiObjectId", required = true)
     private String msiObjectId;
 
     /**
@@ -104,18 +105,61 @@ public class IdentityProfile {
      */
     public void validate() {
         if (msiResourceId() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property msiResourceId in model IdentityProfile"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property msiResourceId in model IdentityProfile"));
         }
         if (msiClientId() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property msiClientId in model IdentityProfile"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property msiClientId in model IdentityProfile"));
         }
         if (msiObjectId() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property msiObjectId in model IdentityProfile"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property msiObjectId in model IdentityProfile"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(IdentityProfile.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("msiResourceId", this.msiResourceId);
+        jsonWriter.writeStringField("msiClientId", this.msiClientId);
+        jsonWriter.writeStringField("msiObjectId", this.msiObjectId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IdentityProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IdentityProfile if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IdentityProfile.
+     */
+    public static IdentityProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IdentityProfile deserializedIdentityProfile = new IdentityProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("msiResourceId".equals(fieldName)) {
+                    deserializedIdentityProfile.msiResourceId = reader.getString();
+                } else if ("msiClientId".equals(fieldName)) {
+                    deserializedIdentityProfile.msiClientId = reader.getString();
+                } else if ("msiObjectId".equals(fieldName)) {
+                    deserializedIdentityProfile.msiObjectId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIdentityProfile;
+        });
+    }
 }

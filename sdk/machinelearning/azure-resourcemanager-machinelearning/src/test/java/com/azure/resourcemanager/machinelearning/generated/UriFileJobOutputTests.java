@@ -12,23 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class UriFileJobOutputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UriFileJobOutput model =
-            BinaryData
-                .fromString(
-                    "{\"jobOutputType\":\"uri_file\",\"mode\":\"Upload\",\"uri\":\"dfj\",\"description\":\"esocwiqbuou\"}")
-                .toObject(UriFileJobOutput.class);
-        Assertions.assertEquals("esocwiqbuou", model.description());
-        Assertions.assertEquals(OutputDeliveryMode.UPLOAD, model.mode());
-        Assertions.assertEquals("dfj", model.uri());
+        UriFileJobOutput model = BinaryData.fromString(
+            "{\"jobOutputType\":\"uri_file\",\"uri\":\"yovqmqcudptoqwr\",\"mode\":\"ReadWriteMount\",\"description\":\"jthlokmx\"}")
+            .toObject(UriFileJobOutput.class);
+        Assertions.assertEquals("jthlokmx", model.description());
+        Assertions.assertEquals("yovqmqcudptoqwr", model.uri());
+        Assertions.assertEquals(OutputDeliveryMode.READ_WRITE_MOUNT, model.mode());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UriFileJobOutput model =
-            new UriFileJobOutput().withDescription("esocwiqbuou").withMode(OutputDeliveryMode.UPLOAD).withUri("dfj");
+        UriFileJobOutput model = new UriFileJobOutput().withDescription("jthlokmx")
+            .withUri("yovqmqcudptoqwr")
+            .withMode(OutputDeliveryMode.READ_WRITE_MOUNT);
         model = BinaryData.fromObject(model).toObject(UriFileJobOutput.class);
-        Assertions.assertEquals("esocwiqbuou", model.description());
-        Assertions.assertEquals(OutputDeliveryMode.UPLOAD, model.mode());
-        Assertions.assertEquals("dfj", model.uri());
+        Assertions.assertEquals("jthlokmx", model.description());
+        Assertions.assertEquals("yovqmqcudptoqwr", model.uri());
+        Assertions.assertEquals(OutputDeliveryMode.READ_WRITE_MOUNT, model.mode());
     }
 }

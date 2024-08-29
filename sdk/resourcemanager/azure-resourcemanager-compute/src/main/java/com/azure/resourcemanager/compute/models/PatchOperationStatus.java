@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -53,7 +52,6 @@ public final class PatchOperationStatus extends ExpandableStringEnum<PatchOperat
      * @param name a name to look for.
      * @return the corresponding PatchOperationStatus.
      */
-    @JsonCreator
     public static PatchOperationStatus fromString(String name) {
         return fromString(name, PatchOperationStatus.class);
     }

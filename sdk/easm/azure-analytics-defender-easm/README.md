@@ -57,16 +57,10 @@ Custom discoveries are organized into Discovery Groups. They are independent see
 ## Examples
 
 ```java readme-sample-createDefenderEasmClient
-String subscriptionId = Configuration.getGlobalConfiguration().get("SUBSCRIPTION_ID");
-String workspaceName = Configuration.getGlobalConfiguration().get("WORKSPACENAME");
-String resourceGroupName = Configuration.getGlobalConfiguration().get("RESOURCEGROUPNAME");
 String endpoint = Configuration.getGlobalConfiguration().get("ENDPOINT");
 
 EasmClient easmClient = new EasmClientBuilder()
     .endpoint(endpoint)
-    .subscriptionId(subscriptionId)
-    .workspaceName(workspaceName)
-    .resourceGroupName(resourceGroupName)
     .credential(new DefaultAzureCredentialBuilder().build())
     .buildClient();
 ```

@@ -5,28 +5,33 @@
 package com.azure.resourcemanager.hdinsight.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** The configuration object for the specified cluster. */
+/**
+ * The configuration object for the specified cluster.
+ */
 @Fluent
-public final class ClusterConfigurationsInner {
+public final class ClusterConfigurationsInner implements JsonSerializable<ClusterConfigurationsInner> {
     /*
      * The configuration object for the specified configuration for the specified cluster.
      */
-    @JsonProperty(value = "configurations")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Map<String, String>> configurations;
 
-    /** Creates an instance of ClusterConfigurationsInner class. */
+    /**
+     * Creates an instance of ClusterConfigurationsInner class.
+     */
     public ClusterConfigurationsInner() {
     }
 
     /**
      * Get the configurations property: The configuration object for the specified configuration for the specified
      * cluster.
-     *
+     * 
      * @return the configurations value.
      */
     public Map<String, Map<String, String>> configurations() {
@@ -36,7 +41,7 @@ public final class ClusterConfigurationsInner {
     /**
      * Set the configurations property: The configuration object for the specified configuration for the specified
      * cluster.
-     *
+     * 
      * @param configurations the configurations value to set.
      * @return the ClusterConfigurationsInner object itself.
      */
@@ -47,9 +52,48 @@ public final class ClusterConfigurationsInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("configurations", this.configurations,
+            (writer, element) -> writer.writeMap(element, (writer1, element1) -> writer1.writeString(element1)));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterConfigurationsInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterConfigurationsInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ClusterConfigurationsInner.
+     */
+    public static ClusterConfigurationsInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterConfigurationsInner deserializedClusterConfigurationsInner = new ClusterConfigurationsInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("configurations".equals(fieldName)) {
+                    Map<String, Map<String, String>> configurations
+                        = reader.readMap(reader1 -> reader1.readMap(reader2 -> reader2.getString()));
+                    deserializedClusterConfigurationsInner.configurations = configurations;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterConfigurationsInner;
+        });
     }
 }
