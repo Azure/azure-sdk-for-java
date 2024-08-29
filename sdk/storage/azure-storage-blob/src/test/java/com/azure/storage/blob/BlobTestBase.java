@@ -315,14 +315,6 @@ public class BlobTestBase extends TestProxyTestBase {
         }
     }
 
-    protected String setupContainerAsyncLeaseCondition(BlobContainerAsyncClient cu, String leaseID) {
-        if (Objects.equals(leaseID, RECEIVED_LEASE_ID)) {
-            return createLeaseAsyncClient(cu).acquireLease(-1).block();
-        } else {
-            return leaseID;
-        }
-    }
-
     protected Mono<String> setupContainerLeaseConditionAsync(BlobContainerAsyncClient cu, String leaseID) {
         if (Objects.equals(leaseID, RECEIVED_LEASE_ID)) {
             return createLeaseAsyncClient(cu).acquireLease(-1);

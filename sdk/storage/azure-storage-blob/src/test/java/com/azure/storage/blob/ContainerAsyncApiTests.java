@@ -6,37 +6,20 @@ package com.azure.storage.blob;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.Response;
+import com.azure.core.test.TestMode;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.storage.blob.models.AccessTier;
-import com.azure.storage.blob.models.BlobAccessPolicy;
-import com.azure.storage.blob.models.BlobAudience;
-import com.azure.storage.blob.models.BlobCopyInfo;
-import com.azure.storage.blob.models.BlobErrorCode;
-import com.azure.storage.blob.models.BlobItem;
-import com.azure.storage.blob.models.BlobListDetails;
-import com.azure.storage.blob.models.BlobRequestConditions;
-import com.azure.storage.blob.models.BlobSignedIdentifier;
-import com.azure.storage.blob.models.BlobStorageException;
-import com.azure.storage.blob.models.BlobType;
-import com.azure.storage.blob.models.CopyStatusType;
-import com.azure.storage.blob.models.CustomerProvidedKey;
-import com.azure.storage.blob.models.LeaseStateType;
-import com.azure.storage.blob.models.LeaseStatusType;
-import com.azure.storage.blob.models.ListBlobsOptions;
-import com.azure.storage.blob.models.ObjectReplicationPolicy;
-import com.azure.storage.blob.models.ObjectReplicationStatus;
-import com.azure.storage.blob.models.PublicAccessType;
-import com.azure.storage.blob.models.RehydratePriority;
-import com.azure.storage.blob.models.TaggedBlobItem;
+import com.azure.storage.blob.models.*;
 import com.azure.storage.blob.options.BlobContainerCreateOptions;
 import com.azure.storage.blob.options.BlobParallelUploadOptions;
 import com.azure.storage.blob.options.BlobSetAccessTierOptions;
 import com.azure.storage.blob.options.FindBlobsOptions;
 import com.azure.storage.blob.options.PageBlobCreateOptions;
 import com.azure.storage.blob.specialized.AppendBlobAsyncClient;
+import com.azure.storage.blob.specialized.BlobAsyncClientBase;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.blob.specialized.PageBlobAsyncClient;
 import com.azure.storage.common.test.shared.TestHttpClientType;
@@ -51,19 +34,15 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
+import reactor.util.function.Tuple2;
 
 import java.net.URL;
 import java.time.Duration;
 import java.time.OffsetDateTime;
-import java.util.Arrays;
-import java.util.Base64;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -105,8 +84,8 @@ public class ContainerAsyncApiTests extends BlobTestBase {
 
     @Test
     public void createMin() {
-        BlobContainerAsyncClient cc = primaryBlobServiceAsyncClient.createBlobContainer(generateContainerName()).block();
-        StepVerifier.create(cc.exists())
+        StepVerifier.create(primaryBlobServiceAsyncClient.createBlobContainer(generateContainerName())
+            .flatMap(BlobContainerAsyncClient::exists))
             .expectNext(true)
             .verifyComplete();
     }
@@ -123,8 +102,8 @@ public class ContainerAsyncApiTests extends BlobTestBase {
             metadata.put(key2, value2);
         }
 
-        ccAsync.createWithResponse(metadata, null).block();
-        StepVerifier.create(ccAsync.getPropertiesWithResponse(null))
+        StepVerifier.create(ccAsync.createWithResponse(metadata, null)
+            .then(ccAsync.getPropertiesWithResponse(null)))
             .assertNext(r -> {
                 if (ENVIRONMENT.getHttpClientType() == TestHttpClientType.JDK_HTTP) {
                     // JDK HttpClient returns headers with names lowercased.
@@ -151,8 +130,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     @PlaybackOnly
     public void createPublicAccess(PublicAccessType publicAccess) {
         ccAsync = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName());
-        ccAsync.createWithResponse(null, publicAccess).block();
-        StepVerifier.create(ccAsync.getProperties())
+        StepVerifier.create(ccAsync.createWithResponse(null, publicAccess).then(ccAsync.getProperties()))
             .assertNext(r ->  assertEquals(r.getBlobPublicAccess(), publicAccess))
             .verifyComplete();
     }
@@ -189,9 +167,8 @@ public class ContainerAsyncApiTests extends BlobTestBase {
 
     @Test
     public void createIfNotExistsMin() {
-        BlobContainerAsyncClient cc = primaryBlobServiceAsyncClient.createBlobContainerIfNotExists(generateContainerName()).block();
-
-        StepVerifier.create(cc.exists())
+        StepVerifier.create(primaryBlobServiceAsyncClient.createBlobContainerIfNotExists(generateContainerName())
+            .flatMap(BlobContainerAsyncClient::exists))
             .expectNext(true)
             .verifyComplete();
     }
@@ -321,9 +298,10 @@ public class ContainerAsyncApiTests extends BlobTestBase {
 
     @Test
     public void getPropertiesLease() {
-        String leaseID = setupContainerAsyncLeaseCondition(ccAsync, RECEIVED_LEASE_ID);
+        Mono<Response<BlobContainerProperties>> response = setupContainerLeaseConditionAsync(ccAsync, RECEIVED_LEASE_ID)
+            .flatMap(r -> ccAsync.getPropertiesWithResponse(r));
 
-        assertAsyncResponseStatusCode(ccAsync.getPropertiesWithResponse(leaseID), 200);
+        assertAsyncResponseStatusCode(response, 200);
     }
 
     @Test
@@ -344,9 +322,9 @@ public class ContainerAsyncApiTests extends BlobTestBase {
         ccAsync = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName());
         Map<String, String> metadata = new HashMap<>();
         metadata.put("key", "value");
-        ccAsync.createWithResponse(metadata, null).block();
 
-        StepVerifier.create(ccAsync.setMetadataWithResponse(null, null))
+        StepVerifier.create(ccAsync.createWithResponse(metadata, null)
+            .then(ccAsync.setMetadataWithResponse(null, null)))
             .assertNext(r -> {
                 assertEquals(r.getStatusCode(), 200);
                 assertTrue(validateBasicHeaders(r.getHeaders()));
@@ -363,9 +341,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
         Map<String, String> metadata = new HashMap<>();
         metadata.put("foo", "bar");
 
-        ccAsync.setMetadata(metadata).block();
-
-        StepVerifier.create(ccAsync.getPropertiesWithResponse(null))
+        StepVerifier.create(ccAsync.setMetadata(metadata).then(ccAsync.getPropertiesWithResponse(null)))
             .assertNext(r -> assertEquals(r.getValue().getMetadata(), metadata))
             .verifyComplete();
     }
@@ -397,12 +373,19 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     @ParameterizedTest
     @MethodSource("setMetadataACSupplier")
     public void setMetadataAC(OffsetDateTime modified, String leaseID) {
-        leaseID = setupContainerAsyncLeaseCondition(ccAsync, leaseID);
-        BlobRequestConditions cac = new BlobRequestConditions()
-            .setLeaseId(leaseID)
-            .setIfModifiedSince(modified);
+        Mono<Response<Void>> response = setupContainerLeaseConditionAsync(ccAsync, leaseID)
+            .flatMap(r -> {
+                if ("null".equals(r)) {
+                    r = null;
+                }
+                BlobRequestConditions cac = new BlobRequestConditions()
+                    .setLeaseId(r)
+                    .setIfModifiedSince(modified);
 
-        assertAsyncResponseStatusCode(ccAsync.setMetadataWithResponse(null, cac), 200);
+                return ccAsync.setMetadataWithResponse(null, cac);
+            });
+
+        assertAsyncResponseStatusCode(response, 200);
     }
 
     private static Stream<Arguments> setMetadataACSupplier() {
@@ -513,14 +496,20 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     @ParameterizedTest
     @MethodSource("setAccessPolicyACSupplier")
     public void setAccessPolicyAC(OffsetDateTime modified, OffsetDateTime unmodified, String leaseID) {
-        leaseID = setupContainerAsyncLeaseCondition(ccAsync, leaseID);
-        BlobRequestConditions cac = new BlobRequestConditions()
-            .setLeaseId(leaseID)
-            .setIfModifiedSince(modified)
-            .setIfUnmodifiedSince(unmodified);
+        Mono<Response<Void>> response = setupContainerLeaseConditionAsync(ccAsync, leaseID)
+            .flatMap(r -> {
+                if ("null".equals(r)) {
+                    r = null;
+                }
+                BlobRequestConditions cac = new BlobRequestConditions()
+                    .setLeaseId(r)
+                    .setIfModifiedSince(modified)
+                    .setIfUnmodifiedSince(unmodified);
 
-        assertAsyncResponseStatusCode(ccAsync.setAccessPolicyWithResponse(null, null, cac),
-            200);
+                return ccAsync.setAccessPolicyWithResponse(null, null, cac);
+            });
+
+        assertAsyncResponseStatusCode(response, 200);
     }
 
     private static Stream<Arguments> setAccessPolicyACSupplier() {
@@ -567,8 +556,10 @@ public class ContainerAsyncApiTests extends BlobTestBase {
 
     @Test
     public void getAccessPolicyLease() {
-        String leaseID = setupContainerAsyncLeaseCondition(ccAsync, RECEIVED_LEASE_ID);
-        assertAsyncResponseStatusCode(ccAsync.getAccessPolicyWithResponse(leaseID), 200);
+        Mono<Response<BlobContainerAccessPolicies>> response = setupContainerLeaseConditionAsync(ccAsync, RECEIVED_LEASE_ID)
+            .flatMap(r -> ccAsync.getAccessPolicyWithResponse(r));
+
+        assertAsyncResponseStatusCode(response, 200);
     }
 
     @Test
@@ -598,8 +589,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
 
     @Test
     public void deleteMin() {
-        ccAsync.delete().block();
-        StepVerifier.create(ccAsync.exists())
+        StepVerifier.create(ccAsync.delete().then(ccAsync.exists()))
             .expectNext(false)
             .verifyComplete();
     }
@@ -607,13 +597,20 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     @ParameterizedTest
     @MethodSource("setAccessPolicyACSupplier")
     public void deleteAC(OffsetDateTime modified, OffsetDateTime unmodified, String leaseID) {
-        leaseID = setupContainerAsyncLeaseCondition(ccAsync, leaseID);
-        BlobRequestConditions cac = new BlobRequestConditions()
-            .setLeaseId(leaseID)
-            .setIfModifiedSince(modified)
-            .setIfUnmodifiedSince(unmodified);
+        Mono<Response<Void>> response = setupContainerLeaseConditionAsync(ccAsync, leaseID)
+            .flatMap(r -> {
+                if ("null".equals(r)) {
+                    r = null;
+                }
+                BlobRequestConditions cac = new BlobRequestConditions()
+                    .setLeaseId(r)
+                    .setIfModifiedSince(modified)
+                    .setIfUnmodifiedSince(unmodified);
 
-        assertAsyncResponseStatusCode(ccAsync.deleteWithResponse(cac), 202);
+                return ccAsync.deleteWithResponse(cac);
+            });
+
+        assertAsyncResponseStatusCode(response, 202);
     }
 
     @ParameterizedTest
@@ -671,13 +668,20 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     @ParameterizedTest
     @MethodSource("setAccessPolicyACSupplier")
     public void deleteIfExistsAC(OffsetDateTime modified, OffsetDateTime unmodified, String leaseID) {
-        leaseID = setupContainerAsyncLeaseCondition(ccAsync, leaseID);
-        BlobRequestConditions cac = new BlobRequestConditions()
-            .setLeaseId(leaseID)
-            .setIfModifiedSince(modified)
-            .setIfUnmodifiedSince(unmodified);
+        Mono<Response<Boolean>> response = setupContainerLeaseConditionAsync(ccAsync, leaseID)
+            .flatMap(r -> {
+                if ("null".equals(r)) {
+                    r = null;
+                }
+                BlobRequestConditions cac = new BlobRequestConditions()
+                    .setLeaseId(r)
+                    .setIfModifiedSince(modified)
+                    .setIfUnmodifiedSince(unmodified);
 
-        assertAsyncResponseStatusCode(ccAsync.deleteIfExistsWithResponse(cac), 202);
+                return ccAsync.deleteIfExistsWithResponse(cac);
+            });
+
+        assertAsyncResponseStatusCode(response, 202);
     }
 
     @ParameterizedTest
@@ -736,9 +740,9 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     public void listBlockBlobsFlat() {
         String name = generateBlobName();
         BlockBlobAsyncClient bu = ccAsync.getBlobAsyncClient(name).getBlockBlobAsyncClient();
-        bu.upload(DATA.getDefaultFlux(), 7).block();
 
-        StepVerifier.create(ccAsync.listBlobs(new ListBlobsOptions().setPrefix(prefix)))
+        StepVerifier.create(bu.upload(DATA.getDefaultFlux(), 7)
+            .thenMany(ccAsync.listBlobs(new ListBlobsOptions().setPrefix(prefix))))
             .assertNext(r -> {
                 assertEquals(name, r.getName());
                 assertEquals(BlobType.BLOCK_BLOB, r.getProperties().getBlobType());
@@ -775,10 +779,8 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     public void listAppendBlobsFlat() {
         String name = generateBlobName();
         AppendBlobAsyncClient bu = ccAsync.getBlobAsyncClient(name).getAppendBlobAsyncClient();
-        bu.create().block();
-        bu.seal().block();
 
-        StepVerifier.create(ccAsync.listBlobs(new ListBlobsOptions().setPrefix(prefix)))
+        StepVerifier.create(bu.create().then(bu.seal()).thenMany(ccAsync.listBlobs(new ListBlobsOptions().setPrefix(prefix))))
             .assertNext(r -> {
                 assertEquals(name, r.getName());
                 assertEquals(BlobType.APPEND_BLOB, r.getProperties().getBlobType());
@@ -814,12 +816,17 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     @Test
     public void listPageBlobsFlat() {
         ccAsync = premiumBlobServiceAsyncClient.getBlobContainerAsyncClient(containerName);
-        ccAsync.createIfNotExists().block();
         String name = generateBlobName();
         PageBlobAsyncClient bu = ccAsync.getBlobAsyncClient(name).getPageBlobAsyncClient();
-        bu.create(512).block();
 
-        StepVerifier.create(ccAsync.listBlobs(new ListBlobsOptions().setPrefix(prefix), null))
+        Flux<BlobItem> response = ccAsync.createIfNotExists().then(bu.create(512))
+            .thenMany(ccAsync.listBlobs(new ListBlobsOptions().setPrefix(prefix), null))
+            .doFinally(signalType -> {
+                // cleanup:
+                ccAsync.delete().subscribe();
+            });
+
+        StepVerifier.create(response)
             .assertNext(r -> {
                 assertEquals(name, r.getName());
                 assertEquals(BlobType.PAGE_BLOB, r.getProperties().getBlobType());
@@ -849,9 +856,6 @@ public class ContainerAsyncApiTests extends BlobTestBase {
                 assertNotNull(r.getProperties().getCreationTime());
             })
             .verifyComplete();
-
-        // cleanup:
-        ccAsync.delete().block();
     }
 
     @Test
@@ -860,30 +864,30 @@ public class ContainerAsyncApiTests extends BlobTestBase {
             .verifyComplete();
     }
 
-    private String setupListBlobsTest(String normalName, String copyName, String metadataName, String tagsName,
-                                      String uncommittedName) {
+    private Mono<BlobAsyncClientBase> setupListBlobsTest(String normalName, String copyName, String metadataName,
+                                                         String tagsName, String uncommittedName) {
         PageBlobAsyncClient normal = ccAsync.getBlobAsyncClient(normalName).getPageBlobAsyncClient();
-        normal.create(512).block();
 
         PageBlobAsyncClient copyBlob = ccAsync.getBlobAsyncClient(copyName).getPageBlobAsyncClient();
         PollerFlux<BlobCopyInfo, Void> poller = setPlaybackPollerFluxPollInterval(copyBlob.beginCopy(normal.getBlobUrl(),
             null));
-        poller.blockLast();
 
         PageBlobAsyncClient metadataBlob = ccAsync.getBlobAsyncClient(metadataName).getPageBlobAsyncClient();
         Map<String, String> metadata = new HashMap<>();
         metadata.put("foo", "bar");
-        metadataBlob.createWithResponse(512, null, null, metadata, null).block();
 
         PageBlobAsyncClient tagsBlob = ccAsync.getBlobAsyncClient(tagsName).getPageBlobAsyncClient();
         Map<String, String> tags = new HashMap<>();
         tags.put(tagKey, tagValue);
-        tagsBlob.createWithResponse(new PageBlobCreateOptions(512).setTags(tags)).block();
 
         BlockBlobAsyncClient uncommittedBlob = ccAsync.getBlobAsyncClient(uncommittedName).getBlockBlobAsyncClient();
-        uncommittedBlob.stageBlock(getBlockID(), DATA.getDefaultFlux(), DATA.getDefaultData().remaining()).block();
 
-        return normal.createSnapshot().block().getSnapshotId();
+        return normal.create(512)
+            .then(poller.last())
+            .then(metadataBlob.createWithResponse(512, null, null, metadata, null))
+            .then(tagsBlob.createWithResponse(new PageBlobCreateOptions(512).setTags(tags)))
+            .then(uncommittedBlob.stageBlock(getBlockID(), DATA.getDefaultFlux(), DATA.getDefaultData().remaining()))
+            .then(normal.createSnapshot());
     }
 
     @Test
@@ -894,9 +898,9 @@ public class ContainerAsyncApiTests extends BlobTestBase {
         String metadataName = "m" + generateBlobName();
         String tagsName = "t" + generateBlobName();
         String uncommittedName = "u" + generateBlobName();
-        setupListBlobsTest(normalName, copyName, metadataName, tagsName, uncommittedName);
 
-        StepVerifier.create(ccAsync.listBlobs(options))
+        StepVerifier.create(setupListBlobsTest(normalName, copyName, metadataName, tagsName, uncommittedName)
+            .thenMany(ccAsync.listBlobs(options)))
             .assertNext(r -> assertEquals(normalName, r.getName()))
             .assertNext(r -> {
                 assertEquals(copyName, r.getName());
@@ -920,10 +924,10 @@ public class ContainerAsyncApiTests extends BlobTestBase {
         String metadataName = "m" + generateBlobName();
         String tagsName = "t" + generateBlobName();
         String uncommittedName = "u" + generateBlobName();
-        setupListBlobsTest(normalName, copyName, metadataName, tagsName, uncommittedName);
 
 
-        StepVerifier.create(ccAsync.listBlobs(options))
+        StepVerifier.create(setupListBlobsTest(normalName, copyName, metadataName, tagsName, uncommittedName)
+            .thenMany(ccAsync.listBlobs(options)))
             .assertNext(r -> assertEquals(normalName, r.getName()))
             .assertNext(r -> {
                 assertEquals(copyName, r.getName());
@@ -941,9 +945,9 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     @Test
     public void listBlobsFlatOptionsLastAccessTime() {
         BlockBlobAsyncClient b = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
-        b.upload(DATA.getDefaultFlux(), DATA.getDefaultData().remaining()).block();
 
-        StepVerifier.create(ccAsync.listBlobs())
+        StepVerifier.create(b.upload(DATA.getDefaultFlux(), DATA.getDefaultData().remaining())
+            .thenMany(ccAsync.listBlobs()))
             .assertNext(r -> assertNotNull(r.getProperties().getLastAccessedTime()))
             .verifyComplete();
     }
@@ -957,9 +961,9 @@ public class ContainerAsyncApiTests extends BlobTestBase {
         String metadataName = "m" + generateBlobName();
         String tagsName = "t" + generateBlobName();
         String uncommittedName = "u" + generateBlobName();
-        setupListBlobsTest(normalName, copyName, metadataName, tagsName, uncommittedName);
 
-        StepVerifier.create(ccAsync.listBlobs(options))
+        StepVerifier.create(setupListBlobsTest(normalName, copyName, metadataName, tagsName, uncommittedName)
+            .thenMany(ccAsync.listBlobs(options)))
             .assertNext(r -> assertEquals(normalName, r.getName()))
             .assertNext(r -> {
                 assertEquals(copyName, r.getName());
@@ -984,15 +988,19 @@ public class ContainerAsyncApiTests extends BlobTestBase {
         String metadataName = "m" + generateBlobName();
         String tagsName = "t" + generateBlobName();
         String uncommittedName = "u" + generateBlobName();
-        String snapshotTime = setupListBlobsTest(normalName, copyName, metadataName, tagsName, uncommittedName);
 
-        StepVerifier.create(ccAsync.listBlobs(options))
+        Mono<Tuple2<String, List<BlobItem>>> response = setupListBlobsTest(normalName, copyName, metadataName, tagsName, uncommittedName)
+            .flatMap(snapshot -> Mono.zip(Mono.just(snapshot.getSnapshotId()), ccAsync.listBlobs(options).collectList()));
+
+        StepVerifier.create(response)
             .assertNext(r -> {
-                assertEquals(normalName, r.getName());
-                assertEquals(snapshotTime, r.getSnapshot());
+                assertEquals(r.getT1(), r.getT2().get(0).getSnapshot());
+                assertEquals(normalName, r.getT2().get(0).getName());
+                assertEquals(normalName, r.getT2().get(1).getName());
+                assertEquals(copyName, r.getT2().get(2).getName());
+                assertEquals(metadataName, r.getT2().get(3).getName());
+                assertEquals(tagsName, r.getT2().get(4).getName());
             })
-            .assertNext(r -> assertEquals(normalName, r.getName()))
-            .expectNextCount(3) //copy, metadata, tags
             .verifyComplete();
     }
 
@@ -1004,9 +1012,9 @@ public class ContainerAsyncApiTests extends BlobTestBase {
         String metadataName = "m" + generateBlobName();
         String tagsName = "t" + generateBlobName();
         String uncommittedName = "u" + generateBlobName();
-        setupListBlobsTest(normalName, copyName, metadataName, tagsName, uncommittedName);
 
-        StepVerifier.create(ccAsync.listBlobs(options))
+        StepVerifier.create(setupListBlobsTest(normalName, copyName, metadataName, tagsName, uncommittedName)
+            .thenMany(ccAsync.listBlobs(options)))
             .assertNext(r -> assertEquals(normalName, r.getName()))
             .expectNextCount(3)
             .assertNext(r -> assertEquals(uncommittedName, r.getName()))
@@ -1021,10 +1029,9 @@ public class ContainerAsyncApiTests extends BlobTestBase {
         String metadataName = "m" + generateBlobName();
         String tagsName = "t" + generateBlobName();
         String uncommittedName = "u" + generateBlobName();
-        setupListBlobsTest(normalName, copyName, metadataName, tagsName, uncommittedName);
 
-
-        StepVerifier.create(ccAsync.listBlobs(options))
+        StepVerifier.create(setupListBlobsTest(normalName, copyName, metadataName, tagsName, uncommittedName)
+            .thenMany(ccAsync.listBlobs(options)))
             .assertNext(r -> assertEquals(normalName, r.getName()))
             .verifyComplete();
     }
@@ -1040,10 +1047,10 @@ public class ContainerAsyncApiTests extends BlobTestBase {
         String metadataName = "m" + generateBlobName();
         String tagsName = "t" + generateBlobName();
         String uncommittedName = "u" + generateBlobName();
-        setupListBlobsTest(normalName, copyName, metadataName, tagsName, uncommittedName);
 
         // expect: "Get first page of blob listings"
-        StepVerifier.create(ccAsync.listBlobs(options).byPage().limitRequest(1))
+        StepVerifier.create(setupListBlobsTest(normalName, copyName, metadataName, tagsName, uncommittedName)
+            .thenMany(ccAsync.listBlobs(options).byPage().limitRequest(1)))
             .assertNext(it -> assertEquals(pageSize, it.getValue().size()))
             .verifyComplete();
     }
@@ -1059,11 +1066,9 @@ public class ContainerAsyncApiTests extends BlobTestBase {
         String metadataName = "m" + generateBlobName();
         String tagsName = "t" + generateBlobName();
         String uncommittedName = "u" + generateBlobName();
-        setupListBlobsTest(normalName, copyName, metadataName, tagsName, uncommittedName);
 
         // expect: "Get first page of blob listings
-
-        StepVerifier.create(ccAsync.listBlobs(options).byPage(pageSize).limitRequest(1))
+        StepVerifier.create(setupListBlobsTest(normalName, copyName, metadataName, tagsName, uncommittedName).thenMany(ccAsync.listBlobs(options).byPage(pageSize).limitRequest(1)))
             .assertNext(it -> assertEquals(pageSize, it.getValue().size()))
             .verifyComplete();
     }
@@ -1072,36 +1077,39 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     @Test
     public void listBlobsFlatOptionsDeletedWithVersions() {
         BlobContainerAsyncClient versionedCC = versionedBlobServiceAsyncClient.getBlobContainerAsyncClient(containerName);
-        versionedCC.createIfNotExists().block();
         String blobName = generateBlobName();
         AppendBlobAsyncClient blob = versionedCC.getBlobAsyncClient(blobName).getAppendBlobAsyncClient();
-        blob.create().block();
         Map<String, String> metadata = new HashMap<>();
         metadata.put("foo", "bar");
-        blob.setMetadata(metadata).block();
-        blob.delete().block();
         ListBlobsOptions options = new ListBlobsOptions().setPrefix(blobName).setDetails(new BlobListDetails()
             .setRetrieveDeletedBlobsWithVersions(true));
 
-        StepVerifier.create(versionedCC.listBlobs(options))
+        Flux<BlobItem> response = versionedCC.createIfNotExists()
+            .then(blob.create())
+            .then(blob.setMetadata(metadata))
+            .then(blob.delete())
+            .thenMany(versionedCC.listBlobs(options))
+            .doFinally(signalType -> {
+                // cleanup:
+                versionedCC.delete().subscribe();
+            });
+
+        StepVerifier.create(response)
             .assertNext(r -> {
                 assertEquals(blobName, r.getName());
                 assertTrue(r.hasVersionsOnly());
             })
             .verifyComplete();
-
-        // cleanup:
-        versionedCC.delete().block();
     }
 
     @Test
     public void listBlobsPrefixWithComma() {
         String prefix = generateBlobName() + ", " + generateBlobName();
         BlockBlobAsyncClient b = ccAsync.getBlobAsyncClient(prefix).getBlockBlobAsyncClient();
-        b.upload(DATA.getDefaultFlux(), DATA.getDefaultData().remaining()).block();
 
         ListBlobsOptions options = new ListBlobsOptions().setPrefix(prefix);
-        StepVerifier.create(ccAsync.listBlobs(options))
+        StepVerifier.create(b.upload(DATA.getDefaultFlux(), DATA.getDefaultData().remaining())
+            .thenMany(ccAsync.listBlobs(options)))
             .assertNext(r -> assertEquals(prefix, r.getName()))
             .verifyComplete();
     }
@@ -1110,42 +1118,57 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     public void listBlobsFlatMarker() {
         int numBlobs = 10;
         int pageSize = 6;
-        for (int i = 0; i < numBlobs; i++) {
-            PageBlobAsyncClient bc = ccAsync.getBlobAsyncClient(generateBlobName()).getPageBlobAsyncClient();
-            bc.create(512).block();
-        }
-        // when: "listBlobs with async client"
-        PagedFlux<BlobItem> pagedFlux = ccAsync.listBlobs(new ListBlobsOptions().setMaxResultsPerPage(pageSize));
-        PagedResponse<BlobItem> pagedResponse1 = pagedFlux.byPage().blockFirst();
-        assertNotNull(pagedResponse1);
-        PagedResponse<BlobItem> pagedResponse2 = pagedFlux.byPage(pagedResponse1.getContinuationToken()).blockFirst();
 
-        assertEquals(pageSize, pagedResponse1.getValue().size());
-        assertNotNull(pagedResponse2);
-        assertEquals(numBlobs - pageSize, pagedResponse2.getValue().size());
-        assertNull(pagedResponse2.getContinuationToken());
+        Mono<List<PageBlobItem>> createBlob = Flux.range(0, numBlobs)
+            .flatMap(i -> {
+                PageBlobAsyncClient bc = ccAsync.getBlobAsyncClient(generateBlobName()).getPageBlobAsyncClient();
+                return bc.create(512);
+            }).collectList();
+
+        PagedFlux<BlobItem> pagedFlux = ccAsync.listBlobs(new ListBlobsOptions().setMaxResultsPerPage(pageSize));
+
+        Flux<PagedResponse<BlobItem>> response = createBlob.thenMany(pagedFlux.byPage().take(1).flatMap(pagedResponse1 -> {
+            assertNotNull(pagedResponse1);
+            assertEquals(pageSize, pagedResponse1.getValue().size());
+            return pagedFlux.byPage(pagedResponse1.getContinuationToken()).take(1);
+        }));
+
+        StepVerifier.create(response)
+            .assertNext(pagedResponse2 -> {
+                assertNotNull(pagedResponse2);
+                assertEquals(numBlobs - pageSize, pagedResponse2.getValue().size());
+                assertNull(pagedResponse2.getContinuationToken());
+            })
+            .verifyComplete();
     }
 
     @Test
     public void listBlobsFlatMarkerOverload() {
         int numBlobs = 10;
         int pageSize = 6;
-        for (int i = 0; i < numBlobs; i++) {
-            PageBlobAsyncClient bc = ccAsync.getBlobAsyncClient(generateBlobName()).getPageBlobAsyncClient();
-            bc.create(512).block();
-        }
-        // when: "listBlobs with async client"
-        PagedFlux<BlobItem> pagedFlux = ccAsync.listBlobs(new ListBlobsOptions().setMaxResultsPerPage(pageSize));
-        PagedResponse<BlobItem> pagedResponse1 = pagedFlux.byPage().blockFirst();
-        assertNotNull(pagedResponse1);
-        pagedFlux = ccAsync.listBlobs(new ListBlobsOptions().setMaxResultsPerPage(pageSize),
-            pagedResponse1.getContinuationToken());
-        PagedResponse<BlobItem> pagedResponse2 = pagedFlux.byPage().blockFirst();
 
-        assertEquals(pageSize, pagedResponse1.getValue().size());
-        assertNotNull(pagedResponse2);
-        assertEquals(numBlobs - pageSize, pagedResponse2.getValue().size());
-        assertNull(pagedResponse2.getContinuationToken());
+        Mono<List<PageBlobItem>> createBlob = Flux.range(0, numBlobs)
+            .flatMap(i -> {
+                PageBlobAsyncClient bc = ccAsync.getBlobAsyncClient(generateBlobName()).getPageBlobAsyncClient();
+                return bc.create(512);
+            }).collectList();
+
+        PagedFlux<BlobItem> pagedFlux = ccAsync.listBlobs(new ListBlobsOptions().setMaxResultsPerPage(pageSize));
+        Flux<PagedResponse<BlobItem>> response = createBlob.thenMany(pagedFlux.byPage().take(1)
+            .flatMap(pagedResponse1 -> {
+                assertNotNull(pagedResponse1);
+                assertEquals(pageSize, pagedResponse1.getValue().size());
+                return ccAsync.listBlobs(new ListBlobsOptions().setMaxResultsPerPage(pageSize),
+                    pagedResponse1.getContinuationToken()).byPage().take(1);
+            }));
+
+        StepVerifier.create(response)
+            .assertNext(pagedResponse2 -> {
+                assertNotNull(pagedResponse2);
+                assertEquals(numBlobs - pageSize, pagedResponse2.getValue().size());
+                assertNull(pagedResponse2.getContinuationToken());
+            })
+            .verifyComplete();
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
@@ -1154,14 +1177,19 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     public void listBlobsFlatRehydratePriority(RehydratePriority rehydratePriority) {
         String name = generateBlobName();
         BlockBlobAsyncClient bc = ccAsync.getBlobAsyncClient(name).getBlockBlobAsyncClient();
-        bc.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize()).block();
+
+        Mono<Response<Void>> rehydrate = Mono.empty();
 
         if (rehydratePriority != null) {
-            bc.setAccessTier(AccessTier.ARCHIVE).block();
-            bc.setAccessTierWithResponse(new BlobSetAccessTierOptions(AccessTier.HOT)
-                .setPriority(rehydratePriority)).block();
+            rehydrate = bc.setAccessTier(AccessTier.ARCHIVE)
+                .then(bc.setAccessTierWithResponse(new BlobSetAccessTierOptions(AccessTier.HOT)
+                .setPriority(rehydratePriority)));
         }
-        StepVerifier.create(ccAsync.listBlobs())
+
+        Flux<BlobItem> response = bc.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize()).then(rehydrate)
+            .thenMany(ccAsync.listBlobs());
+
+        StepVerifier.create(response)
             .assertNext(r -> assertEquals(rehydratePriority, r.getProperties().getRehydratePriority()))
             .verifyComplete();
     }
@@ -1177,9 +1205,9 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     @Test
     public void listBlobsFlatInvalidXml() {
         String blobName = "dir1/dir2/file\uFFFE.blob";
-        ccAsync.getBlobAsyncClient(blobName).getAppendBlobAsyncClient().create().block();
 
-        StepVerifier.create(ccAsync.listBlobs())
+        StepVerifier.create(ccAsync.getBlobAsyncClient(blobName).getAppendBlobAsyncClient().create()
+            .thenMany(ccAsync.listBlobs()))
             .assertNext(r -> assertEquals(blobName, r.getName()))
             .verifyComplete();
     }
@@ -1196,13 +1224,15 @@ public class ContainerAsyncApiTests extends BlobTestBase {
         int numBlobs = 5;
         int pageResults = 3;
 
-        for (int i = 0; i < numBlobs; i++) {
-            BlockBlobAsyncClient blob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
-            blob.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize()).block();
-        }
+        Mono<List<BlockBlobItem>> createBlob = Flux.range(0, numBlobs)
+            .flatMap(i -> {
+                BlockBlobAsyncClient blob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
+                return blob.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize());
+            }).collectList();
 
         // when: "Consume results by page, then still have paging functionality"
-        StepVerifier.create(ccAsync.listBlobs(new ListBlobsOptions().setMaxResultsPerPage(pageResults)).byPage())
+        StepVerifier.create(createBlob
+            .thenMany(ccAsync.listBlobs(new ListBlobsOptions().setMaxResultsPerPage(pageResults)).byPage()))
             .expectNextCount(2)
             .verifyComplete();
     }
@@ -1212,14 +1242,15 @@ public class ContainerAsyncApiTests extends BlobTestBase {
         int numBlobs = 5;
         int pageResults = 3;
 
-        for (int i = 0; i < numBlobs; i++) {
-            BlockBlobAsyncClient blob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
-            blob.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize()).block();
-        }
+        Mono<List<BlockBlobItem>> createBlob = Flux.range(0, numBlobs)
+            .flatMap(i -> {
+                BlockBlobAsyncClient blob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
+                return blob.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize());
+            }).collectList();
 
         // when: "Consume results by page, then still have paging functionality"
-        StepVerifier.create(ccAsync.listBlobsByHierarchy("/", new ListBlobsOptions()
-            .setMaxResultsPerPage(pageResults)).byPage())
+        StepVerifier.create(createBlob.thenMany(ccAsync.listBlobsByHierarchy("/", new ListBlobsOptions()
+            .setMaxResultsPerPage(pageResults)).byPage()))
             .expectNextCount(2)
             .verifyComplete();
     }
@@ -1237,25 +1268,33 @@ public class ContainerAsyncApiTests extends BlobTestBase {
         BlobContainerAsyncClient destContainer = alternateBlobServiceAsyncClient
             .getBlobContainerAsyncClient("test2");
 
-        List<BlobItem> sourceBlobs = sourceContainer.listBlobs().collect(Collectors.toList()).block();
-        List<BlobItem> destBlobs = destContainer.listBlobs().collect(Collectors.toList()).block();
+        Mono<List<BlobItem>> sourceBlobs = sourceContainer.listBlobs().collect(Collectors.toList());
+        Mono<List<BlobItem>> destBlobs = destContainer.listBlobs().collect(Collectors.toList());
 
-        int i = 0;
-        for (BlobItem blob : sourceBlobs) {
-            if (i == 1) {
-                assertNull(blob.getObjectReplicationSourcePolicies());
-            } else {
-                assertTrue(validateOR(
-                    blob.getObjectReplicationSourcePolicies()
-                ));
-            }
-            i++;
-        }
+        StepVerifier.create(sourceBlobs)
+            .assertNext(r -> {
+                int i = 0;
+                for (BlobItem blob : r) {
+                    if (i == 1) {
+                        assertNull(blob.getObjectReplicationSourcePolicies());
+                    } else {
+                        assertTrue(validateOR(
+                            blob.getObjectReplicationSourcePolicies()
+                        ));
+                    }
+                    i++;
+                }
+            })
+            .verifyComplete();
 
-        /* Service specifies no ors metadata on the dest blobs. */
-        for (BlobItem blob : destBlobs) {
-            assertNull(blob.getObjectReplicationSourcePolicies());
-        }
+        StepVerifier.create(destBlobs)
+            .assertNext(r -> {
+                /* Service specifies no ors metadata on the dest blobs. */
+                for (BlobItem blob : r) {
+                    assertNull(blob.getObjectReplicationSourcePolicies());
+                }
+            })
+            .verifyComplete();
     }
 
     private boolean validateOR(List<ObjectReplicationPolicy> policies) {
@@ -1275,9 +1314,8 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     public void listBlobsHierarchy() {
         String name = generateBlobName();
         PageBlobAsyncClient bu = ccAsync.getBlobAsyncClient(name).getPageBlobAsyncClient();
-        bu.create(512).block();
 
-        StepVerifier.create(ccAsync.listBlobsByHierarchy(null))
+        StepVerifier.create(bu.create(512).thenMany(ccAsync.listBlobsByHierarchy(null)))
             .assertNext(r -> assertEquals(name, r.getName()))
             .verifyComplete();
     }
@@ -1296,9 +1334,9 @@ public class ContainerAsyncApiTests extends BlobTestBase {
         String metadataName = "m" + generateBlobName();
         String tagsName = "t" + generateBlobName();
         String uncommittedName = "u" + generateBlobName();
-        setupListBlobsTest(normalName, copyName, metadataName, tagsName, uncommittedName);
 
-        StepVerifier.create(ccAsync.listBlobsByHierarchy("", options))
+        StepVerifier.create(setupListBlobsTest(normalName, copyName, metadataName, tagsName, uncommittedName)
+            .thenMany(ccAsync.listBlobsByHierarchy("", options)))
             .assertNext(r -> assertEquals(normalName, r.getName()))
             .assertNext(r -> {
                 assertEquals(copyName, r.getName());
@@ -1321,9 +1359,9 @@ public class ContainerAsyncApiTests extends BlobTestBase {
         String metadataName = "m" + generateBlobName();
         String tagsName = "t" + generateBlobName();
         String uncommittedName = "u" + generateBlobName();
-        setupListBlobsTest(normalName, copyName, metadataName, tagsName, uncommittedName);
 
-        StepVerifier.create(ccAsync.listBlobsByHierarchy("", options))
+        StepVerifier.create(setupListBlobsTest(normalName, copyName, metadataName, tagsName, uncommittedName)
+            .thenMany(ccAsync.listBlobsByHierarchy("", options)))
             .assertNext(r -> assertEquals(normalName, r.getName()))
             .assertNext(r -> {
                 assertEquals(copyName, r.getName());
@@ -1346,9 +1384,9 @@ public class ContainerAsyncApiTests extends BlobTestBase {
         String metadataName = "m" + generateBlobName();
         String tagsName = "t" + generateBlobName();
         String uncommittedName = "u" + generateBlobName();
-        setupListBlobsTest(normalName, copyName, metadataName, tagsName, uncommittedName);
 
-        StepVerifier.create(ccAsync.listBlobsByHierarchy("", options))
+        StepVerifier.create(setupListBlobsTest(normalName, copyName, metadataName, tagsName, uncommittedName)
+            .thenMany(ccAsync.listBlobsByHierarchy("", options)))
             .assertNext(r -> assertEquals(normalName, r.getName()))
             .assertNext(r -> {
                 assertEquals(copyName, r.getName());
@@ -1374,9 +1412,9 @@ public class ContainerAsyncApiTests extends BlobTestBase {
         String metadataName = "m" + generateBlobName();
         String tagsName = "t" + generateBlobName();
         String uncommittedName = "u" + generateBlobName();
-        setupListBlobsTest(normalName, copyName, metadataName, tagsName, uncommittedName);
 
-        StepVerifier.create(ccAsync.listBlobsByHierarchy("", options))
+        StepVerifier.create(setupListBlobsTest(normalName, copyName, metadataName, tagsName, uncommittedName)
+            .thenMany(ccAsync.listBlobsByHierarchy("", options)))
             .assertNext(r -> assertEquals(normalName, r.getName()))
             .expectNextCount(3)
             .assertNext(r -> assertEquals(uncommittedName, r.getName()))
@@ -1391,9 +1429,9 @@ public class ContainerAsyncApiTests extends BlobTestBase {
         String metadataName = "m" + generateBlobName();
         String tagsName = "t" + generateBlobName();
         String uncommittedName = "u" + generateBlobName();
-        setupListBlobsTest(normalName, copyName, metadataName, tagsName, uncommittedName);
 
-        StepVerifier.create(ccAsync.listBlobsByHierarchy("", options))
+        StepVerifier.create(setupListBlobsTest(normalName, copyName, metadataName, tagsName, uncommittedName)
+            .thenMany(ccAsync.listBlobsByHierarchy("", options)))
             .assertNext(r -> assertEquals(normalName, r.getName()))
             .verifyComplete();
     }
@@ -1408,9 +1446,9 @@ public class ContainerAsyncApiTests extends BlobTestBase {
         String metadataName = "m" + generateBlobName();
         String tagsName = "t" + generateBlobName();
         String uncommittedName = "u" + generateBlobName();
-        setupListBlobsTest(normalName, copyName, metadataName, tagsName, uncommittedName);
 
-        StepVerifier.create(ccAsync.listBlobsByHierarchy("", options).byPage().limitRequest(1))
+        StepVerifier.create(setupListBlobsTest(normalName, copyName, metadataName, tagsName, uncommittedName)
+            .thenMany(ccAsync.listBlobsByHierarchy("", options).byPage().limitRequest(1)))
             .assertNext(it -> assertEquals(1, it.getValue().size()))
             .verifyComplete();
     }
@@ -1424,9 +1462,9 @@ public class ContainerAsyncApiTests extends BlobTestBase {
         String metadataName = "m" + generateBlobName();
         String tagsName = "t" + generateBlobName();
         String uncommittedName = "u" + generateBlobName();
-        setupListBlobsTest(normalName, copyName, metadataName, tagsName, uncommittedName);
 
-        StepVerifier.create(ccAsync.listBlobsByHierarchy("", options).byPage(1))
+        StepVerifier.create(setupListBlobsTest(normalName, copyName, metadataName, tagsName, uncommittedName)
+            .thenMany(ccAsync.listBlobsByHierarchy("", options).byPage(1)))
             .thenConsumeWhile(r -> {
                 assertEquals(1, r.getValue().size());
                 return true;
@@ -1438,26 +1476,29 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     @Test
     public void listBlobsHierOptionsDeletedWithVersions() {
         BlobContainerAsyncClient versionedCC = versionedBlobServiceAsyncClient.getBlobContainerAsyncClient(containerName);
-        versionedCC.createIfNotExists().block();
         String blobName = generateBlobName();
         AppendBlobAsyncClient blob = versionedCC.getBlobAsyncClient(blobName).getAppendBlobAsyncClient();
-        blob.create().block();
         Map<String, String> metadata = new HashMap<>();
         metadata.put("foo", "bar");
-        blob.setMetadata(metadata).block();
-        blob.delete().block();
         ListBlobsOptions options = new ListBlobsOptions().setPrefix(blobName)
             .setDetails(new BlobListDetails().setRetrieveDeletedBlobsWithVersions(true));
 
-        StepVerifier.create(versionedCC.listBlobsByHierarchy("", options))
+        Flux<BlobItem> response = versionedCC.createIfNotExists()
+            .then(blob.create())
+            .then(blob.setMetadata(metadata))
+            .then(blob.delete())
+            .thenMany(versionedCC.listBlobsByHierarchy("", options))
+            .doFinally(signalType -> {
+                // cleanup:
+                versionedCC.delete().subscribe();
+            });
+
+        StepVerifier.create(response)
             .assertNext(r -> {
                 assertEquals(blobName, r.getName());
                 assertTrue(r.hasVersionsOnly());
             })
             .verifyComplete();
-
-        // cleanup:
-        versionedCC.delete().block();
     }
 
     @Test
@@ -1473,45 +1514,51 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     @Test
     public void listBlobsHierDelim() {
         List<String> blobNames = Arrays.asList("a", "b/a", "c", "d/a", "e", "f", "g/a");
-        for (String blobName : blobNames) {
-            AppendBlobAsyncClient bu = ccAsync.getBlobAsyncClient(blobName).getAppendBlobAsyncClient();
-            bu.create().block();
-        }
-
-        Set<String> foundBlobs = new HashSet<>();
-        Set<String> foundPrefixes = new HashSet<>();
-        ccAsync.listBlobsByHierarchy(null).collect(Collectors.toList()).block()
-            .forEach(blobItem -> {
-                if (blobItem.isPrefix()) {
-                    foundPrefixes.add(blobItem.getName());
-                } else {
-                    foundBlobs.add(blobItem.getName());
-                }
-            });
-
         List<String> expectedBlobs = Arrays.asList("a", "c", "e", "f");
         List<String> expectedPrefixes = Arrays.asList("b/", "d/", "g/");
 
-        for (String blobName : expectedBlobs) {
-            assertTrue(foundBlobs.contains(blobName));
-        }
+        Flux<AppendBlobItem> createBlob = Flux.fromIterable(blobNames)
+            .flatMap(it -> {
+                AppendBlobAsyncClient bu = ccAsync.getBlobAsyncClient(it).getAppendBlobAsyncClient();
+                return bu.create();
+            });
 
-        for (String prefix : expectedPrefixes) {
-            assertTrue(foundPrefixes.contains(prefix));
-        }
+        StepVerifier.create(createBlob.then(ccAsync.listBlobsByHierarchy(null).collect(Collectors.toList())))
+            .assertNext(r -> {
+                Set<String> foundBlobs = new HashSet<>();
+                Set<String> foundPrefixes = new HashSet<>();
+                r.forEach(blobItem -> {
+                    if (blobItem.isPrefix()) {
+                        foundPrefixes.add(blobItem.getName());
+                    } else {
+                        foundBlobs.add(blobItem.getName());
+                    }
+                });
+
+                for (String blobName : expectedBlobs) {
+                    assertTrue(foundBlobs.contains(blobName));
+                }
+
+                for (String prefix : expectedPrefixes) {
+                    assertTrue(foundPrefixes.contains(prefix));
+                }
+            })
+            .verifyComplete();
     }
 
     @Test
     public void listBlobsHierMarker() {
         int numBlobs = 10;
         int pageSize = 6;
-        for (int i = 0; i < numBlobs; i++) {
-            PageBlobAsyncClient bc = ccAsync.getBlobAsyncClient(generateBlobName()).getPageBlobAsyncClient();
-            bc.create(512).block();
-        }
 
-        StepVerifier.create(ccAsync.listBlobsByHierarchy("/", new ListBlobsOptions()
-                .setMaxResultsPerPage(pageSize)).byPage())
+        Mono<List<PageBlobItem>> createBlob = Flux.range(0, numBlobs)
+            .flatMap(i -> {
+                PageBlobAsyncClient bc = ccAsync.getBlobAsyncClient(generateBlobName()).getPageBlobAsyncClient();
+                return bc.create(512);
+            }).collectList();
+
+        StepVerifier.create(createBlob.thenMany(ccAsync.listBlobsByHierarchy("/", new ListBlobsOptions()
+            .setMaxResultsPerPage(pageSize)).byPage()))
             .assertNext(r -> {
                 assertEquals(pageSize, r.getValue().size());
                 assertNotNull(r.getContinuationToken());
@@ -1535,24 +1582,32 @@ public class ContainerAsyncApiTests extends BlobTestBase {
         BlobContainerAsyncClient destContainer = alternateBlobServiceAsyncClient
             .getBlobContainerAsyncClient("test2");
 
-        List<BlobItem> sourceBlobs = sourceContainer.listBlobsByHierarchy("/").collect(Collectors.toList()).block();
-        List<BlobItem> destBlobs = destContainer.listBlobsByHierarchy("/").collect(Collectors.toList()).block();
+        Mono<List<BlobItem>> sourceBlobs = sourceContainer.listBlobsByHierarchy("/").collect(Collectors.toList());
+        Mono<List<BlobItem>> destBlobs = destContainer.listBlobsByHierarchy("/").collect(Collectors.toList());
 
-        int i = 0;
-        for (BlobItem blob : sourceBlobs) {
-            if (i == 1) {
-                assertNull(blob.getObjectReplicationSourcePolicies());
-            } else {
-                assertTrue(validateOR(blob.getObjectReplicationSourcePolicies()
-                ));
-            }
-            i++;
-        }
+        StepVerifier.create(sourceBlobs)
+            .assertNext(r -> {
+                int i = 0;
+                for (BlobItem blob : r) {
+                    if (i == 1) {
+                        assertNull(blob.getObjectReplicationSourcePolicies());
+                    } else {
+                        assertTrue(validateOR(blob.getObjectReplicationSourcePolicies()));
+                    }
+                    i++;
+                }
+            })
+            .verifyComplete();
 
-        /* Service specifies no ors metadata on the dest blobs. */
-        for (BlobItem blob : destBlobs) {
-            assertNull(blob.getObjectReplicationSourcePolicies());
-        }
+        StepVerifier.create(destBlobs)
+            .assertNext(r -> {
+                /* Service specifies no ors metadata on the dest blobs. */
+                for (BlobItem blob : r) {
+                    assertNull(blob.getObjectReplicationSourcePolicies());
+                }
+            })
+            .verifyComplete();
+
     }
 
     @Test
@@ -1560,13 +1615,15 @@ public class ContainerAsyncApiTests extends BlobTestBase {
         // setup: "Create 10 page blobs in the container"
         int numBlobs = 10;
         int pageSize = 3;
-        for (int i = 0; i < numBlobs; i++) {
-            PageBlobAsyncClient bc = ccAsync.getBlobAsyncClient(generateBlobName()).getPageBlobAsyncClient();
-            bc.create(512).block();
-        }
+
+        Mono<List<PageBlobItem>> createBlob = Flux.range(0, numBlobs)
+            .flatMap(i -> {
+                PageBlobAsyncClient bc = ccAsync.getBlobAsyncClient(generateBlobName()).getPageBlobAsyncClient();
+                return bc.create(512);
+            }).collectList();
 
         // expect: "listing operation will fetch all 10 blobs, despite page size being smaller than 10"
-        StepVerifier.create(ccAsync.listBlobs(new ListBlobsOptions().setMaxResultsPerPage(pageSize)))
+        StepVerifier.create(createBlob.thenMany(ccAsync.listBlobs(new ListBlobsOptions().setMaxResultsPerPage(pageSize))))
             .expectNextCount(numBlobs)
             .verifyComplete();
     }
@@ -1577,15 +1634,18 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     public void listBlobsHierRehydratePriority(RehydratePriority rehydratePriority) {
         String name = generateBlobName();
         BlockBlobAsyncClient bc = ccAsync.getBlobAsyncClient(name).getBlockBlobAsyncClient();
-        bc.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize()).block();
+
+        Mono<Response<Void>> rehydrate = Mono.empty();
 
         if (rehydratePriority != null) {
-            bc.setAccessTier(AccessTier.ARCHIVE).block();
-            bc.setAccessTierWithResponse(new BlobSetAccessTierOptions(AccessTier.HOT)
-                .setPriority(rehydratePriority)).block();
+            rehydrate = bc.setAccessTier(AccessTier.ARCHIVE).then(bc.setAccessTierWithResponse(new BlobSetAccessTierOptions(AccessTier.HOT)
+                .setPriority(rehydratePriority)));
         }
 
-        StepVerifier.create(ccAsync.listBlobsByHierarchy(null))
+        Flux<BlobItem> response = bc.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize()).then(rehydrate)
+            .thenMany(ccAsync.listBlobsByHierarchy(null));
+
+        StepVerifier.create(response)
             .assertNext(r -> assertEquals(rehydratePriority, r.getProperties().getRehydratePriority()))
             .verifyComplete();
     }
@@ -1595,10 +1655,11 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     public void listAppendBlobsHier() {
         String name = generateBlobName();
         AppendBlobAsyncClient bu = ccAsync.getBlobAsyncClient(name).getAppendBlobAsyncClient();
-        bu.create().block();
-        bu.seal().block();
 
-        StepVerifier.create(ccAsync.listBlobsByHierarchy(null, new ListBlobsOptions().setPrefix(prefix)))
+        Flux<BlobItem> response = bu.create().then(bu.seal())
+            .thenMany(ccAsync.listBlobsByHierarchy(null, new ListBlobsOptions().setPrefix(prefix)));
+
+        StepVerifier.create(response)
             .assertNext(r -> {
                 assertEquals(name, r.getName());
                 assertEquals(BlobType.APPEND_BLOB, r.getProperties().getBlobType());
@@ -1636,17 +1697,18 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     @ValueSource(booleans = {true, false})
     public void listBlobsHierInvalidXml(boolean delimiter) {
         String blobName = "dir1/dir2/file\uFFFE.blob";
-        ccAsync.getBlobAsyncClient(blobName).getAppendBlobAsyncClient().create().block();
 
         if (!delimiter) {
-            StepVerifier.create(ccAsync.listBlobsByHierarchy("", null))
+            StepVerifier.create(ccAsync.getBlobAsyncClient(blobName).getAppendBlobAsyncClient().create()
+                .thenMany(ccAsync.listBlobsByHierarchy("", null)))
                 .assertNext(r -> {
                     assertEquals(r.getName(), blobName);
                     assertEquals(false, r.isPrefix());
                 })
                 .verifyComplete();
         } else {
-            StepVerifier.create(ccAsync.listBlobsByHierarchy(".b", null))
+            StepVerifier.create(ccAsync.getBlobAsyncClient(blobName).getAppendBlobAsyncClient().create()
+                .thenMany(ccAsync.listBlobsByHierarchy(".b", null)))
                 .assertNext(r -> {
                     assertEquals(r.getName(), "dir1/dir2/file\uFFFE.b");
                     assertEquals(true, r.isPrefix());
@@ -1662,48 +1724,52 @@ public class ContainerAsyncApiTests extends BlobTestBase {
             .verifyError(BlobStorageException.class);
     }
 
-    private void setupContainerForListing(BlobContainerAsyncClient containerClient) {
+    private Flux<BlockBlobItem> setupContainerForListing(BlobContainerAsyncClient containerClient) {
         List<String> blobNames = Arrays.asList("foo", "bar", "baz", "foo/foo", "foo/bar", "baz/foo", "baz/foo/bar",
             "baz/bar/foo");
 
-        for (String blob : blobNames) {
-            BlockBlobAsyncClient blockBlobClient = containerClient.getBlobAsyncClient(blob).getBlockBlobAsyncClient();
-            blockBlobClient.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize()).block();
-        }
+        return Flux.fromIterable(blobNames)
+            .flatMap(it -> {
+                BlockBlobAsyncClient blockBlobClient = containerClient.getBlobAsyncClient(it).getBlockBlobAsyncClient();
+                return blockBlobClient.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize());
+            });
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-12-02")
     @Test
     public void listBlobsHierSegmentWithVersionPrefixAndDelimiter() {
         BlobContainerAsyncClient versionedCC = versionedBlobServiceAsyncClient.getBlobContainerAsyncClient(containerName);
-        versionedCC.createIfNotExists().block();
         ListBlobsOptions options = new ListBlobsOptions()
             .setDetails(new BlobListDetails().setRetrieveVersions(true))
             .setPrefix("baz");
 
-        setupContainerForListing(versionedCC);
-
-        Set<BlobItem> foundBlobs = new HashSet<>();
-        Set<BlobItem> foundPrefixes = new HashSet<>();
-
-        versionedCC.listBlobsByHierarchy("/", options).collect(Collectors.toList()).block()
-            .forEach(blobItem -> {
-                if (blobItem.isPrefix()) {
-                    foundPrefixes.add(blobItem);
-                } else {
-                    foundBlobs.add(blobItem);
-                }
+        Mono<List<BlobItem>> response = versionedCC.createIfNotExists()
+            .thenMany(setupContainerForListing(versionedCC))
+            .then(versionedCC.listBlobsByHierarchy("/", options).collect(Collectors.toList()))
+            .doFinally(signalType -> {
+                // cleanup:
+                versionedCC.delete().subscribe();
             });
 
-        assertEquals(1, foundBlobs.size());
-        assertEquals(1, foundPrefixes.size());
-        BlobItem first = foundBlobs.iterator().next();
-        assertEquals("baz", first.getName());
-        assertNotNull(first.getVersionId());
-        assertEquals("baz/", foundPrefixes.iterator().next().getName());
-
-        // cleanup:
-        versionedCC.delete().block();
+        StepVerifier.create(response)
+            .assertNext(r -> {
+                Set<BlobItem> foundBlobs = new HashSet<>();
+                Set<BlobItem> foundPrefixes = new HashSet<>();
+                r.forEach(blobItem -> {
+                    if (blobItem.isPrefix()) {
+                        foundPrefixes.add(blobItem);
+                    } else {
+                        foundBlobs.add(blobItem);
+                    }
+                });
+                assertEquals(1, foundBlobs.size());
+                assertEquals(1, foundPrefixes.size());
+                BlobItem first = foundBlobs.iterator().next();
+                assertEquals("baz", first.getName());
+                assertNotNull(first.getVersionId());
+                assertEquals("baz/", foundPrefixes.iterator().next().getName());
+            })
+            .verifyComplete();
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-04-10")
@@ -1718,18 +1784,24 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     @Test
     public void findBlobsQuery() {
         BlobAsyncClient blobClient = ccAsync.getBlobAsyncClient(generateBlobName());
-        blobClient.uploadWithResponse(new BlobParallelUploadOptions(DATA.getDefaultInputStream(),
-            DATA.getDefaultDataSize()).setTags(Collections.singletonMap("key", "value"))).block();
-        blobClient = ccAsync.getBlobAsyncClient(generateBlobName());
-        blobClient.uploadWithResponse(new BlobParallelUploadOptions(DATA.getDefaultInputStream(),
-            DATA.getDefaultDataSize()).setTags(Collections.singletonMap("bar", "foo"))).block();
-        blobClient = ccAsync.getBlobAsyncClient(generateBlobName());
-        blobClient.upload(DATA.getDefaultFlux(), null).block();
-
-        sleepIfRunningAgainstService(10 * 1000); // To allow tags to index
-
+        long delay = ENVIRONMENT.getTestMode() == TestMode.PLAYBACK ? 0L : 10000L;
         String query = "\"bar\"='foo'";
-        StepVerifier.create(ccAsync.findBlobsByTags(String.format(query, ccAsync.getBlobContainerName())))
+
+        Flux<TaggedBlobItem> response = blobClient.uploadWithResponse(new BlobParallelUploadOptions(DATA.getDefaultInputStream(),
+            DATA.getDefaultDataSize()).setTags(Collections.singletonMap("key", "value")))
+                .flatMap(r -> {
+                    BlobAsyncClient blobClient2 = ccAsync.getBlobAsyncClient(generateBlobName());
+                    return blobClient2.uploadWithResponse(new BlobParallelUploadOptions(DATA.getDefaultInputStream(),
+                        DATA.getDefaultDataSize()).setTags(Collections.singletonMap("bar", "foo")));
+                })
+                .flatMap(r -> {
+                    BlobAsyncClient blobClient3 = ccAsync.getBlobAsyncClient(generateBlobName());
+                    return blobClient3.upload(DATA.getDefaultFlux(), null);
+                })
+                .then(Mono.delay(Duration.ofMillis(delay)))
+                .thenMany(ccAsync.findBlobsByTags(String.format(query, ccAsync.getBlobContainerName())));
+
+        StepVerifier.create(response)
             .assertNext(r -> {
                 assertEquals(1, r.getTags().size());
                 assertEquals("foo", r.getTags().get("bar"));
@@ -1741,25 +1813,29 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     @Test
     public void findBlobsMarker() {
         Map<String, String> tags = Collections.singletonMap(tagKey, tagValue);
-        for (int i = 0; i < 10; i++) {
-            ccAsync.getBlobAsyncClient(generateBlobName()).uploadWithResponse(
-                new BlobParallelUploadOptions(DATA.getDefaultInputStream()).setTags(tags)).block();
-        }
+        long delay = ENVIRONMENT.getTestMode() == TestMode.PLAYBACK ? 0L : 10000L;
 
-        sleepIfRunningAgainstService(10 * 1000); // To allow tags to index
+        Mono<Long> uploadBlob = Flux.range(0, 10)
+            .flatMap(i -> ccAsync.getBlobAsyncClient(generateBlobName()).uploadWithResponse(
+                new BlobParallelUploadOptions(DATA.getDefaultInputStream()).setTags(tags)))
+            .collectList().then(Mono.delay(Duration.ofMillis(delay)));
 
-        PagedResponse<TaggedBlobItem> firstPage = ccAsync.findBlobsByTags(
+
+        Flux<Tuple2<String, PagedResponse<TaggedBlobItem>>> response = uploadBlob.thenMany(ccAsync.findBlobsByTags(
             new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue)).setMaxResultsPerPage(5), null,
-            Context.NONE).byPage().blockFirst();
-        String marker = firstPage.getContinuationToken();
-        String firstBlobName = firstPage.getValue().iterator().next().getName();
+            Context.NONE).byPage().take(1))
+            .flatMap(firstPage -> {
+                String marker = firstPage.getContinuationToken();
+                String firstBlobName = firstPage.getValue().iterator().next().getName();
+                return Flux.zip(Flux.just(firstBlobName), ccAsync.findBlobsByTags(
+                    new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue)).setMaxResultsPerPage(5), null,
+                    Context.NONE).byPage(marker).takeLast(1));
+            });
 
-        PagedResponse<TaggedBlobItem> secondPage = ccAsync.findBlobsByTags(
-            new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue)).setMaxResultsPerPage(5), null,
-            Context.NONE).byPage(marker).blockLast();
-
-        // Assert that the second segment is indeed after the first alphabetically
-        assertTrue(firstBlobName.compareTo(secondPage.getValue().iterator().next().getName()) < 0);
+        StepVerifier.create(response)
+            .assertNext(secondPage -> assertTrue(secondPage.getT1()
+                .compareTo(secondPage.getT2().getValue().iterator().next().getName()) < 0))
+            .verifyComplete();
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-04-10")
@@ -1769,13 +1845,13 @@ public class ContainerAsyncApiTests extends BlobTestBase {
         int pageResults = 3;
         Map<String, String> tags = Collections.singletonMap(tagKey, tagValue);
 
-        for (int i = 0; i < numBlobs; i++) {
-            ccAsync.getBlobAsyncClient(generateBlobName()).uploadWithResponse(
-                new BlobParallelUploadOptions(DATA.getDefaultInputStream()).setTags(tags)).block();
-        }
+        Mono<List<Response<BlockBlobItem>>> uploadBlob = Flux.range(0, numBlobs)
+            .flatMap(i -> ccAsync.getBlobAsyncClient(generateBlobName()).uploadWithResponse(
+                    new BlobParallelUploadOptions(DATA.getDefaultInputStream()).setTags(tags)))
+            .collectList();
 
-        StepVerifier.create(ccAsync.findBlobsByTags(new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue))
-            .setMaxResultsPerPage(pageResults), null, Context.NONE).byPage())
+        StepVerifier.create(uploadBlob.thenMany(ccAsync.findBlobsByTags(new FindBlobsOptions(String.format(
+            "\"%s\"='%s'", tagKey, tagValue)).setMaxResultsPerPage(pageResults), null, Context.NONE).byPage()))
             .thenConsumeWhile(r -> {
                 assertTrue(r.getValue().size() <= pageResults);
                 return true;
@@ -1790,13 +1866,13 @@ public class ContainerAsyncApiTests extends BlobTestBase {
         int pageResults = 3;
         Map<String, String> tags = Collections.singletonMap(tagKey, tagValue);
 
-        for (int i = 0; i < numBlobs; i++) {
-            ccAsync.getBlobAsyncClient(generateBlobName()).uploadWithResponse(
-                new BlobParallelUploadOptions(DATA.getDefaultInputStream()).setTags(tags)).block();
-        }
+        Mono<List<Response<BlockBlobItem>>> uploadBlob = Flux.range(0, numBlobs)
+            .flatMap(i -> ccAsync.getBlobAsyncClient(generateBlobName()).uploadWithResponse(
+                new BlobParallelUploadOptions(DATA.getDefaultInputStream()).setTags(tags)))
+            .collectList();
 
-        StepVerifier.create(ccAsync.findBlobsByTags(new FindBlobsOptions(String.format("\"%s\"='%s'",
-            tagKey, tagValue))).byPage(pageResults))
+        StepVerifier.create(uploadBlob.thenMany(ccAsync.findBlobsByTags(new FindBlobsOptions(String.format("\"%s\"='%s'",
+            tagKey, tagValue))).byPage(pageResults)))
             .thenConsumeWhile(r -> {
                 assertTrue(r.getValue().size() <= pageResults);
                 return true;
@@ -1818,14 +1894,14 @@ public class ContainerAsyncApiTests extends BlobTestBase {
         int pageResults = 3;
         Map<String, String> tags = Collections.singletonMap(tagKey, tagValue);
 
-        for (int i = 0; i < numBlobs; i++) {
-            ccAsync.getBlobAsyncClient(generateBlobName()).uploadWithResponse(
-                new BlobParallelUploadOptions(DATA.getDefaultInputStream(), DATA.getDefaultDataSize()).setTags(tags)).block();
-        }
+        Mono<List<Response<BlockBlobItem>>> uploadBlob = Flux.range(0, numBlobs)
+            .flatMap(i -> ccAsync.getBlobAsyncClient(generateBlobName()).uploadWithResponse(
+                new BlobParallelUploadOptions(DATA.getDefaultInputStream(), DATA.getDefaultDataSize()).setTags(tags)))
+            .collectList();
 
         // when: "Consume results by page, still have paging functionality"
-        StepVerifier.create(ccAsync.findBlobsByTags(new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue))
-            .setMaxResultsPerPage(pageResults), Duration.ofSeconds(10), Context.NONE).byPage().count())
+        StepVerifier.create(uploadBlob.thenMany(ccAsync.findBlobsByTags(new FindBlobsOptions(String.format("\"%s\"='%s'",
+            tagKey, tagValue)).setMaxResultsPerPage(pageResults), Duration.ofSeconds(10), Context.NONE).byPage().count()))
             .expectNextCount(1)
             .verifyComplete();
     }
@@ -1895,11 +1971,15 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     public void rootExplicit() {
         ccAsync = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(BlobContainerClient.ROOT_CONTAINER_NAME);
         // create root container if not exist.
-        if (!ccAsync.exists().block()) {
-            ccAsync.create().block();
-        }
+        Mono<Void> create = ccAsync.exists().flatMap(r -> {
+            if (!r) {
+                return ccAsync.create();
+            }
+            return Mono.empty();
+        });
+
         AppendBlobAsyncClient bu = ccAsync.getBlobAsyncClient("rootblob").getAppendBlobAsyncClient();
-        assertAsyncResponseStatusCode(bu.createWithResponse(null, null, null),
+        assertAsyncResponseStatusCode(create.then(bu.createWithResponse(null, null, null)),
             201);
     }
 
@@ -1907,12 +1987,15 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     public void rootExplicitInEndpoint() {
         ccAsync = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(BlobContainerClient.ROOT_CONTAINER_NAME);
         // create root container if not exist.
-        if (!ccAsync.exists().block()) {
-            ccAsync.create().block();
-        }
-        AppendBlobAsyncClient bu = ccAsync.getBlobAsyncClient("rootblob").getAppendBlobAsyncClient();
+        Mono<Void> create = ccAsync.exists().flatMap(r -> {
+            if (!r) {
+                return ccAsync.create();
+            }
+            return Mono.empty();
+        });
 
-        assertAsyncResponseStatusCode(bu.createWithResponse(null, null, null),
+        AppendBlobAsyncClient bu = ccAsync.getBlobAsyncClient("rootblob").getAppendBlobAsyncClient();
+        assertAsyncResponseStatusCode(create.then(bu.createWithResponse(null, null, null)),
             201);
         StepVerifier.create(bu.getPropertiesWithResponse(null))
             .assertNext(r -> {
@@ -1926,9 +2009,12 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     public void blobClientBuilderRootImplicit() {
         ccAsync = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(BlobContainerClient.ROOT_CONTAINER_NAME);
         // createroot container if not exist.
-        if (!ccAsync.exists().block()) {
-            ccAsync.create().block();
-        }
+        Mono<Void> create = ccAsync.exists().flatMap(r -> {
+            if (!r) {
+                return ccAsync.create();
+            }
+            return Mono.empty();
+        });
 
         AppendBlobAsyncClient bc = instrument(new BlobClientBuilder()
             .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
@@ -1936,7 +2022,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
             .blobName("rootblob"))
             .buildAsyncClient().getAppendBlobAsyncClient();
 
-        assertAsyncResponseStatusCode(bc.createWithResponse(null, null, null),
+        assertAsyncResponseStatusCode(create.then(bc.createWithResponse(null, null, null)),
             201);
 
         StepVerifier.create(bc.getPropertiesWithResponse(null))
@@ -1951,9 +2037,12 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     public void containerClientBuilderRootImplicit() {
         ccAsync = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(BlobContainerClient.ROOT_CONTAINER_NAME);
         // create root container if not exist.
-        if (!ccAsync.exists().block()) {
-            ccAsync.create().block();
-        }
+        Mono<Void> create = ccAsync.exists().flatMap(r -> {
+            if (!r) {
+                return ccAsync.create();
+            }
+            return Mono.empty();
+        });
 
         ccAsync = instrument(new BlobContainerClientBuilder()
             .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
@@ -1961,16 +2050,15 @@ public class ContainerAsyncApiTests extends BlobTestBase {
             .containerName(null))
             .buildAsyncClient();
 
-        StepVerifier.create(ccAsync.getProperties())
+        StepVerifier.create(create.then(ccAsync.getProperties()))
             .assertNext(Assertions::assertNotNull)
             .verifyComplete();
 
         assertEquals(BlobContainerAsyncClient.ROOT_CONTAINER_NAME, ccAsync.getBlobContainerName());
 
         AppendBlobAsyncClient bc = ccAsync.getBlobAsyncClient("rootblob").getAppendBlobAsyncClient();
-        bc.create(true).block();
 
-        StepVerifier.create(bc.exists())
+        StepVerifier.create(bc.create(true).then(bc.exists()))
             .expectNext(true)
             .verifyComplete();
     }
@@ -1986,20 +2074,19 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     @Test
     public void webContainer() {
         ccAsync = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(BlobContainerClient.STATIC_WEBSITE_CONTAINER_NAME);
-        // createroot container if not exist.
-        try {
-            ccAsync.create().block();
-        } catch (BlobStorageException se) {
-            if (se.getErrorCode() != BlobErrorCode.CONTAINER_ALREADY_EXISTS) {
-                throw se;
+        // create root container if not exist.
+        Mono<Void> create = ccAsync.exists().flatMap(r -> {
+            if (!r) {
+                return ccAsync.create();
             }
-        }
+            return Mono.empty();
+        });
 
         BlobContainerAsyncClient webContainer = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(
             BlobContainerClient.STATIC_WEBSITE_CONTAINER_NAME);
 
         // Validate some basic operation.
-        StepVerifier.create(webContainer.setAccessPolicy(null, null))
+        StepVerifier.create(create.then(webContainer.setAccessPolicy(null, null)))
             .verifyComplete();
     }
 
