@@ -467,10 +467,17 @@ public abstract class IdentityClientBase {
 
     ManagedIdentityApplication getManagedIdentityMsalApplication() {
 
-        ManagedIdentityId managedIdentityId = CoreUtils.isNullOrEmpty(clientId)
-            ? (CoreUtils.isNullOrEmpty(resourceId)
-            ? ManagedIdentityId.systemAssigned() : ManagedIdentityId.userAssignedResourceId(resourceId))
-            : ManagedIdentityId.userAssignedClientId(clientId);
+        ManagedIdentityId managedIdentityId;
+
+        if (!CoreUtils.isNullOrEmpty(clientId)) {
+            managedIdentityId = ManagedIdentityId.userAssignedClientId(clientId);
+        } else if (!CoreUtils.isNullOrEmpty(resourceId)) {
+            managedIdentityId = ManagedIdentityId.userAssignedResourceId(resourceId);
+        } else if (!CoreUtils.isNullOrEmpty(objectId)) {
+            managedIdentityId = ManagedIdentityId.userAssignedObjectId(objectId);
+        } else {
+            managedIdentityId = ManagedIdentityId.systemAssigned();
+        }
 
         ManagedIdentityApplication.Builder miBuilder = ManagedIdentityApplication
             .builder(managedIdentityId)
