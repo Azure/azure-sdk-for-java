@@ -12,7 +12,7 @@ import java.io.UncheckedIOException;
  * or a named tool selection passed in the form of {@link ChatCompletionsNamedToolSelection}.
  */
 @Immutable
-public class ChatCompletionsToolSelection {
+public final class ChatCompletionsToolSelection {
 
     /**
      * The preset tool selection.
