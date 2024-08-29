@@ -12,7 +12,6 @@ import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -110,7 +109,7 @@ class DocumentTranslationClientTestBase extends TestProxyTestBase {
         BlobContainerClientBuilder blobContainerClientBuilder = new BlobContainerClientBuilder()
             .endpoint(endpoint)
             .containerName(containerName)
-            .credential(new DefaultAzureCredentialBuilder().build());
+            .credential(getIdentityTestCredential(interceptorManager));
 
         if (interceptorManager.isPlaybackMode()) {
             blobContainerClientBuilder.httpClient(interceptorManager.getPlaybackClient());
@@ -213,7 +212,7 @@ class DocumentTranslationClientTestBase extends TestProxyTestBase {
         BlobClientBuilder blobClientBuilder = new BlobClientBuilder()
             .endpoint(endpoint)
             .containerName(targetContainerName)
-            .credential(new DefaultAzureCredentialBuilder().build())
+            .credential(getIdentityTestCredential(interceptorManager))
             .blobName(blobName);
 
         if (interceptorManager.isPlaybackMode()) {
@@ -248,5 +247,44 @@ class DocumentTranslationClientTestBase extends TestProxyTestBase {
             }
         }
         return stringBuilder.toString();
+    }
+
+    public TokenCredential getIdentityTestCredential(InterceptorManager interceptorManager) {
+        if (interceptorManager.isPlaybackMode()) {
+            return new MockTokenCredential();
+        }
+
+        Configuration config = Configuration.getGlobalConfiguration();
+
+        ChainedTokenCredentialBuilder builder = new ChainedTokenCredentialBuilder()
+                .addLast(new EnvironmentCredentialBuilder().build())
+                .addLast(new AzureCliCredentialBuilder().build())
+                .addLast(new AzureDeveloperCliCredentialBuilder().build());
+
+
+        String serviceConnectionId = config.get("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
+        String clientId = config.get("AZURESUBSCRIPTION_CLIENT_ID");
+        String tenantId = config.get("AZURESUBSCRIPTION_TENANT_ID");
+        String systemAccessToken = config.get("SYSTEM_ACCESSTOKEN");
+
+        if (!CoreUtils.isNullOrEmpty(serviceConnectionId)
+                && !CoreUtils.isNullOrEmpty(clientId)
+                && !CoreUtils.isNullOrEmpty(tenantId)
+                && !CoreUtils.isNullOrEmpty(systemAccessToken)) {
+
+            AzurePipelinesCredential azurePipelinesCredential = new AzurePipelinesCredentialBuilder()
+                    .systemAccessToken(systemAccessToken)
+                    .clientId(clientId)
+                    .tenantId(tenantId)
+                    .serviceConnectionId(serviceConnectionId)
+                    .build();
+
+            builder.addLast(trc -> azurePipelinesCredential.getToken(trc).subscribeOn(Schedulers.boundedElastic()));
+        }
+
+        builder.addLast(new AzurePowerShellCredentialBuilder().build());
+
+
+        return builder.build();
     }
 }
