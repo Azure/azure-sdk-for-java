@@ -73,6 +73,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static com.azure.storage.blob.implementation.util.BuilderHelper.createTracer;
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.GCM_ENCRYPTION_REGION_LENGTH;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.USER_AGENT_PROPERTIES;
 
 /**
@@ -152,6 +153,7 @@ public final class EncryptedBlobClientBuilder implements
     private BlobServiceVersion version;
     private CpkInfo customerProvidedKey;
     private EncryptionScope encryptionScope;
+    private int gcmEncryptionRegionLength;
 
     /**
      * Creates a new instance of the EncryptedBlobClientBuilder
@@ -248,9 +250,11 @@ public final class EncryptedBlobClientBuilder implements
         }
         BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
 
+        int finalGcmEncryptionRegionLength = this.gcmEncryptionRegionLength == 0 ? GCM_ENCRYPTION_REGION_LENGTH : this.gcmEncryptionRegionLength;
+
         return new EncryptedBlobAsyncClient(addBlobUserAgentModificationPolicy(getHttpPipeline()), endpoint,
             serviceVersion, accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope,
-            keyWrapper, keyWrapAlgorithm, versionId, encryptionVersion, requiresEncryption);
+            keyWrapper, keyWrapAlgorithm, versionId, encryptionVersion, requiresEncryption, finalGcmEncryptionRegionLength);
     }
 
 
@@ -913,6 +917,19 @@ public final class EncryptedBlobClientBuilder implements
      */
     public EncryptedBlobClientBuilder requiresEncryption(boolean requiresEncryption) {
         this.requiresEncryption = requiresEncryption;
+        return this;
+    }
+
+    /**
+     * Sets the partition chunk size
+     * @param gcmEncryptionRegionLength
+     * @return
+     */
+    public EncryptedBlobClientBuilder gcmEncryptionRegionLength(int gcmEncryptionRegionLength) {
+        if (gcmEncryptionRegionLength <= 0) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Region length needs to be greater than 0."));
+        }
+        this.gcmEncryptionRegionLength = gcmEncryptionRegionLength;
         return this;
     }
 }

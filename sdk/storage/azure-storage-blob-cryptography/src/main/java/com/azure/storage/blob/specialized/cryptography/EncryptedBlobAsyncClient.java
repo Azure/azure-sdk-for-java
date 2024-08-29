@@ -111,6 +111,8 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
 
     private final boolean requiresEncryption;
 
+    private final int gcmEncryptionRegionLength;
+
     EncryptionScope getEncryptionScopeInternal() {
         return encryptionScope;
     }
@@ -151,7 +153,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
     EncryptedBlobAsyncClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion, String accountName,
         String containerName, String blobName, String snapshot, CpkInfo customerProvidedKey,
         EncryptionScope encryptionScope, AsyncKeyEncryptionKey key, String keyWrapAlgorithm, String versionId,
-        EncryptionVersion encryptionVersion, boolean requiresEncryption) {
+        EncryptionVersion encryptionVersion, boolean requiresEncryption, int gcmEncryptionRegionLength) {
         super(pipeline, url, serviceVersion, accountName, containerName, blobName, snapshot, customerProvidedKey,
             encryptionScope, versionId);
 
@@ -159,6 +161,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
         this.keyWrapAlgorithm = keyWrapAlgorithm;
         this.encryptionVersion = encryptionVersion;
         this.requiresEncryption = requiresEncryption;
+        this.gcmEncryptionRegionLength = gcmEncryptionRegionLength;
     }
 
     /**
@@ -175,7 +178,8 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
         }
         return new EncryptedBlobAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
             getContainerName(), getBlobName(), getSnapshotId(), getCustomerProvidedKey(), finalEncryptionScope,
-            keyWrapper, keyWrapAlgorithm, getVersionId(), encryptionVersion, requiresEncryption);
+            keyWrapper, keyWrapAlgorithm, getVersionId(), encryptionVersion, requiresEncryption,
+            gcmEncryptionRegionLength);
     }
 
     /**
@@ -196,7 +200,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
         }
         return new EncryptedBlobAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
             getContainerName(), getBlobName(), getSnapshotId(), finalCustomerProvidedKey, encryptionScope, keyWrapper,
-            keyWrapAlgorithm, getVersionId(), encryptionVersion, requiresEncryption);
+            keyWrapAlgorithm, getVersionId(), encryptionVersion, requiresEncryption, gcmEncryptionRegionLength);
     }
 
     boolean isEncryptionRequired() {
@@ -447,6 +451,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
             data = UploadUtils.extractByteBuffer(data, options.getOptionalLength(),
                 parallelTransferOptions.getBlockSizeLong(), options.getDataStream());
 
+            // here is where encryptBlob is called and grabs the GCM_ENCRYPTION_REGION_LENGTH value
             Flux<ByteBuffer> dataFinal = prepareToSendEncryptedRequest(data, metadataFinal);
             return super.uploadWithResponse(new BlobParallelUploadOptions(dataFinal)
                 .setParallelTransferOptions(options.getParallelTransferOptions()).setHeaders(options.getHeaders())
@@ -633,7 +638,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
     Mono<EncryptedBlob> encryptBlob(Flux<ByteBuffer> plainTextFlux) {
         Objects.requireNonNull(this.keyWrapper, "keyWrapper cannot be null");
         try {
-            Encryptor encryptor = Encryptor.getEncryptor(this.encryptionVersion, generateSecretKey());
+            Encryptor encryptor = Encryptor.getEncryptor(this.encryptionVersion, generateSecretKey(), this.gcmEncryptionRegionLength);
 
             Map<String, String> keyWrappingMetadata = new HashMap<>();
             keyWrappingMetadata.put(AGENT_METADATA_KEY, AGENT_METADATA_VALUE);
@@ -647,6 +652,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
                     EncryptionData encryptionData;
                     Flux<ByteBuffer> encryptedTextFlux;
                     try {
+                        // buildEncryptionData based on V1/V2
                         encryptionData = encryptor.buildEncryptionData(keyWrappingMetadata, wrappedKey);
                         encryptedTextFlux = encryptor.encrypt(plainTextFlux);
                     } catch (GeneralSecurityException e) {
@@ -828,5 +834,9 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
         // This is eagerly thrown instead of waiting for the subscription to happen.
         throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
             "Cannot query data encrypted on client side"));
+    }
+
+    public int getGcmEncryptionRegionLength() {
+        return this.gcmEncryptionRegionLength;
     }
 }

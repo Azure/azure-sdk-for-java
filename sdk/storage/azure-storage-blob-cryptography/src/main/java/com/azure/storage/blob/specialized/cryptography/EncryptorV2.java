@@ -31,9 +31,11 @@ import static com.azure.storage.blob.specialized.cryptography.CryptographyConsta
 
 class EncryptorV2 extends Encryptor {
     private static final ClientLogger LOGGER = new ClientLogger(EncryptorV2.class);
+    private final int gcmEncryptionRegionLength;
 
-    protected EncryptorV2(SecretKey aesKey) {
+    protected EncryptorV2(SecretKey aesKey, int gcmEncryptionRegionLength) {
         super(aesKey);
+        this.gcmEncryptionRegionLength = gcmEncryptionRegionLength;
     }
 
     @Override
@@ -62,8 +64,7 @@ class EncryptorV2 extends Encryptor {
         return super.buildEncryptionData(keyWrappingMetadata, wrappedKey)
             .setEncryptionAgent(new EncryptionAgent(ENCRYPTION_PROTOCOL_V2,
                 EncryptionAlgorithm.AES_GCM_256))
-            .setEncryptedRegionInfo(new EncryptedRegionInfo(
-                GCM_ENCRYPTION_REGION_LENGTH, NONCE_LENGTH));
+            .setEncryptedRegionInfo(new EncryptedRegionInfo(this.gcmEncryptionRegionLength, NONCE_LENGTH));
     }
 
     private Cipher getCipher(int index) throws GeneralSecurityException {
@@ -78,12 +79,12 @@ class EncryptorV2 extends Encryptor {
     protected Flux<ByteBuffer> encrypt(Flux<ByteBuffer> plainTextFlux) {
         Flux<ByteBuffer> encryptedTextFlux;
         BufferStagingArea stagingArea =
-            new BufferStagingArea(GCM_ENCRYPTION_REGION_LENGTH, GCM_ENCRYPTION_REGION_LENGTH);
+            new BufferStagingArea(this.gcmEncryptionRegionLength, this.gcmEncryptionRegionLength);
 
         encryptedTextFlux =
             UploadUtils.chunkSource(plainTextFlux,
                     new com.azure.storage.common.ParallelTransferOptions()
-                        .setBlockSizeLong((long) GCM_ENCRYPTION_REGION_LENGTH))
+                        .setBlockSizeLong((long) this.gcmEncryptionRegionLength))
                 .flatMapSequential(stagingArea::write, 1, 1)
                 .concatWith(Flux.defer(stagingArea::flush))
                 .index()
@@ -100,7 +101,7 @@ class EncryptorV2 extends Encryptor {
                     // Expected size of each encryption region after calling doFinal. Last one may
                     // be less, will never be more.
                     ByteBuffer encryptedRegion = ByteBuffer.allocate(
-                        GCM_ENCRYPTION_REGION_LENGTH + TAG_LENGTH);
+                        this.gcmEncryptionRegionLength + TAG_LENGTH);
 
                     // Each flux is at most 1 BufferAggregator of 4mb
                     Flux<ByteBuffer> cipherTextWithTag = tuple.getT2()

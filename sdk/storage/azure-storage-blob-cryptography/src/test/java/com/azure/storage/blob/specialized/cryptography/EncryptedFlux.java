@@ -16,6 +16,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.GCM_ENCRYPTION_REGION_LENGTH;
+
 /**
  * This type generates Fluxes that emit ByteBuffers in specific patterns depending on test case. It is used to
  * exercise the decrypt logic and ensure it always returns only the data requested by appropriately trimming data that
@@ -103,7 +105,7 @@ class EncryptedFlux extends Flux<ByteBuffer> {
 
         EncryptedBlob encryptedBlob = new EncryptedBlobAsyncClient(null, "https://random.blob.core.windows.net",
             BlobServiceVersion.getLatest(), null, null, blobName, null, null, null, key, "keyWrapAlgorithm", null,
-            EncryptionVersion.V1, false)
+            EncryptionVersion.V1, false, GCM_ENCRYPTION_REGION_LENGTH)
             .encryptBlob(just(this.plainText)).block();
         this.cipherText = FluxUtil.collectBytesInByteBufferStream(encryptedBlob.getCiphertextFlux())
             .map(ByteBuffer::wrap).block();

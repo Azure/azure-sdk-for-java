@@ -45,6 +45,7 @@ class DecryptorV2 extends Decryptor {
     Flux<ByteBuffer> decrypt(Flux<ByteBuffer> encryptedFlux, EncryptedBlobRange encryptedBlobRange,
         boolean padding, String requestUri, AtomicLong totalInputBytes, byte[] contentEncryptionKey) {
         // Buffer an exact region with the nonce and tag
+        // this needs to be a configurable value
         final int gcmEncryptionRegionLength = encryptionData.getEncryptedRegionInfo().getDataLength();
         final int nonceLength = encryptionData.getEncryptedRegionInfo().getNonceLength();
         BufferStagingArea stagingArea =
