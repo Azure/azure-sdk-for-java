@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.4 (Unreleased)
+## 1.0.0-beta.4 (2024-08-29)
 
 ### Features Added
 
@@ -20,11 +20,13 @@
   - Added new class `VectorStoreStaticChunkingStrategyOptions`, `VectorStoreStaticChunkingStrategyRequest` and `VectorStoreStaticChunkingStrategyResponse` 
     to represent the `static` chunking strategy for vector stores.
 
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` to version `1.51.0`.
+- Upgraded `azure-core-http-netty` to version `1.15.3`.
+
 
 ## 1.0.0-beta.3 (2024-06-06)
 
