@@ -5,7 +5,7 @@ package com.azure.ai.vision.face;
 
 import com.azure.ai.vision.face.implementation.FaceClientImpl;
 import com.azure.ai.vision.face.implementation.models.DetectFromUrlImplOptions;
-import com.azure.ai.vision.face.implementation.models.DetectFromUrlImplRequest;
+import com.azure.ai.vision.face.implementation.models.DetectFromUrlRequest;
 import com.azure.ai.vision.face.implementation.models.FindSimilarRequest;
 import com.azure.ai.vision.face.implementation.models.GroupRequest;
 import com.azure.ai.vision.face.implementation.models.VerifyFaceToFaceRequest;
@@ -32,6 +32,7 @@ import com.azure.core.util.serializer.TypeReference;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import com.azure.ai.vision.face.implementation.models.DetectFromUrlImplRequest;
 import com.azure.ai.vision.face.models.DetectOptions;
 import static com.azure.ai.vision.face.implementation.ClientUtils.addOptionalQueryParameterForDetection;
 import static com.azure.ai.vision.face.implementation.ClientUtils.addRequiredQueryParameterForDetection;
@@ -780,7 +781,7 @@ public final class FaceClient {
         Boolean returnFaceLandmarks = options.isReturnFaceLandmarks();
         Boolean returnRecognitionModel = options.isReturnRecognitionModel();
         Integer faceIdTimeToLive = options.getFaceIdTimeToLive();
-        DetectFromUrlImplRequest detectFromUrlRequestObj = new DetectFromUrlImplRequest(options.getUrl());
+        DetectFromUrlRequest detectFromUrlRequestObj = new DetectFromUrlRequest(options.getUrl());
         BinaryData detectFromUrlRequest = BinaryData.fromObject(detectFromUrlRequestObj);
         if (detectionModel != null) {
             requestOptions.addQueryParam("detectionModel", detectionModel.toString(), false);
