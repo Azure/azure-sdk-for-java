@@ -536,4 +536,36 @@ public class StorageImplUtils {
             }
         }
     }
+
+    public static <T> T sendRequestFuture(Future<T> future, Duration timeout,
+                                          Class<? extends RuntimeException> exceptionType) {
+        Callable<T> operation = () -> {
+            try {
+                if (timeout == null || timeout.isZero()) {
+                    return future.get();
+                } else {
+                    return future.get(timeout.toMillis(), TimeUnit.MILLISECONDS);
+                }
+            } catch (TimeoutException e) {
+                future.cancel(true); // Ensure the task is cancelled on timeout
+                throw new RuntimeException("Operation timed out", e);
+            } catch (ExecutionException e) {
+                Throwable cause = e.getCause();
+                if (cause instanceof Error) {
+                    throw (Error) cause;
+                } else if (exceptionType.isInstance(cause)) {
+                    throw exceptionType.cast(cause);
+                } else if (cause instanceof RuntimeException) {
+                    throw (RuntimeException) cause;
+                } else {
+                    throw new RuntimeException(cause);
+                }
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt(); // Restore the interrupted status
+                throw new RuntimeException("Thread was interrupted", e);
+            }
+        };
+
+        return sendRequest(operation, timeout, exceptionType);
+    }
 }

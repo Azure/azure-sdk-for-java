@@ -92,12 +92,19 @@ import java.io.UncheckedIOException;
 import java.nio.channels.SeekableByteChannel;
 import java.nio.file.FileAlreadyExistsException;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
@@ -105,7 +112,9 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import static com.azure.storage.common.implementation.StorageImplUtils.getResultWithTimeout;
 import static com.azure.storage.common.implementation.StorageImplUtils.sendRequest;
+import static com.azure.storage.common.implementation.StorageImplUtils.sendRequestFuture;
 
 /**
  * This class provides a client that contains all the operations for interacting files under Azure Storage File Service.
@@ -2062,8 +2071,47 @@ public class ShareFileClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The {@link ShareFileUploadInfo file upload info}
      */
+//    public Response<ShareFileUploadInfo> uploadWithResponse(ShareFileUploadOptions options,
+//        Duration timeout, Context context) {
+//        StorageImplUtils.assertNotNull("options", options);
+//        ShareRequestConditions validatedRequestConditions = options.getRequestConditions() == null
+//            ? new ShareRequestConditions()
+//            : options.getRequestConditions();
+//        final ParallelTransferOptions validatedParallelTransferOptions =
+//            ModelHelper.populateAndApplyDefaults(options.getParallelTransferOptions());
+//        long validatedOffset = options.getOffset() == null ? 0 : options.getOffset();
+//        int chunkSize = (int) Math.min(validatedParallelTransferOptions.getBlockSizeLong(), Integer.MAX_VALUE);
+//
+//        Callable<Response<ShareFileUploadInfo>> operation = () -> {
+//            try (InputStream dataStream = options.getDataStream()) {
+//                long currentOffset = validatedOffset;
+//                byte[] buffer = new byte[chunkSize];
+//                int readBytes;
+//                Response<ShareFileUploadInfo> response = null;
+//                while ((readBytes = dataStream.read(buffer)) != -1) {
+//                    // Since we are using InputStream, we need to handle partial reads
+//                    if (readBytes < buffer.length) {
+//                        buffer = Arrays.copyOf(buffer, readBytes);
+//                    }
+//
+//                    InputStream bufferStream = new ByteArrayInputStream(buffer);
+//                    ShareFileUploadRangeOptions rangeOptions = new ShareFileUploadRangeOptions(bufferStream, readBytes)
+//                        .setOffset(currentOffset)
+//                        .setRequestConditions(validatedRequestConditions);
+//
+//                    response = this.uploadRangeWithResponse(rangeOptions, timeout, context);
+//                    currentOffset += readBytes;
+//                }
+//                return response;
+//            } catch (IOException e) {
+//                throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
+//            }
+//        };
+//        return sendRequest(operation, timeout, ShareStorageException.class);
+//    }
+
     public Response<ShareFileUploadInfo> uploadWithResponse(ShareFileUploadOptions options,
-        Duration timeout, Context context) {
+                                                            Duration timeout, Context context) {
         StorageImplUtils.assertNotNull("options", options);
         ShareRequestConditions validatedRequestConditions = options.getRequestConditions() == null
             ? new ShareRequestConditions()
@@ -2071,34 +2119,63 @@ public class ShareFileClient {
         final ParallelTransferOptions validatedParallelTransferOptions =
             ModelHelper.populateAndApplyDefaults(options.getParallelTransferOptions());
         long validatedOffset = options.getOffset() == null ? 0 : options.getOffset();
-        int chunkSize = (int) Math.min(validatedParallelTransferOptions.getBlockSizeLong(), Integer.MAX_VALUE);
 
-        Callable<Response<ShareFileUploadInfo>> operation = () -> {
+        final long blockSize = Math.min(validatedParallelTransferOptions.getBlockSizeLong(), 4L * 1024L * 1024L); // 4 MB
+        final int maxConcurrency = validatedParallelTransferOptions.getMaxConcurrency();
+
+        ExecutorService executor = Executors.newFixedThreadPool(maxConcurrency);
+        List<Future<Response<ShareFileUploadInfo>>> futures = new ArrayList<>();
+
+        Callable<Response<ShareFileUploadInfo>> uploadOperation = () -> {
             try (InputStream dataStream = options.getDataStream()) {
-                long currentOffset = validatedOffset;
-                byte[] buffer = new byte[chunkSize];
+                byte[] buffer = new byte[(int) blockSize];
                 int readBytes;
-                Response<ShareFileUploadInfo> response = null;
+                long currentOffset = validatedOffset;
                 while ((readBytes = dataStream.read(buffer)) != -1) {
-                    // Since we are using InputStream, we need to handle partial reads
-                    if (readBytes < buffer.length) {
-                        buffer = Arrays.copyOf(buffer, readBytes);
-                    }
-
-                    InputStream bufferStream = new ByteArrayInputStream(buffer);
-                    ShareFileUploadRangeOptions rangeOptions = new ShareFileUploadRangeOptions(bufferStream, readBytes)
-                        .setOffset(currentOffset)
-                        .setRequestConditions(validatedRequestConditions);
-
-                    response = this.uploadRangeWithResponse(rangeOptions, timeout, context);
+                    final long chunkOffset = currentOffset;
+                    final byte[] chunkData = Arrays.copyOf(buffer, readBytes);
+                    final int finalReadBytes = readBytes;
+                    futures.add(executor.submit(() -> {
+                        InputStream chunkStream = new ByteArrayInputStream(chunkData);
+                        ShareFileUploadRangeOptions rangeOptions = new ShareFileUploadRangeOptions(chunkStream, finalReadBytes)
+                            .setOffset(chunkOffset)
+                            .setRequestConditions(validatedRequestConditions);
+                        return uploadRangeWithResponse(rangeOptions, timeout, context);
+                    }));
                     currentOffset += readBytes;
                 }
-                return response;
+
+                Response<ShareFileUploadInfo> lastResponse = null;
+                System.out.println("number of futures: " + futures.size());
+                for (Future<Response<ShareFileUploadInfo>> future : futures) {
+//                    try {
+                        //lastResponse = future.get();
+                        lastResponse = sendRequestFuture(future, null, ShareStorageException.class);
+//                    } catch (InterruptedException | ExecutionException |TimeoutException e) {
+//                        // Handle failed upload or retry logic
+//                        System.out.println("in here");
+//                        throw LOGGER.logExceptionAsError(new RuntimeException(e));
+//                    }
+                }
+                return lastResponse;
+
             } catch (IOException e) {
                 throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
+                // Handle IO Exceptions appropriately
+            } finally {
+                executor.shutdown();
+                try {
+                    if (!executor.awaitTermination(60, TimeUnit.SECONDS)) {
+                        executor.shutdownNow();
+                    }
+                } catch (InterruptedException ie) {
+                    executor.shutdownNow();
+                    Thread.currentThread().interrupt();
+                }
             }
         };
-        return sendRequest(operation, timeout, ShareStorageException.class);
+
+        return sendRequest(uploadOperation, timeout, ShareStorageException.class);
     }
 
     /**
