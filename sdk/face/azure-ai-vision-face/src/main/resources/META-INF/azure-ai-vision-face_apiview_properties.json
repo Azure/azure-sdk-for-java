@@ -73,7 +73,7 @@
     "com.azure.ai.vision.face.FaceSessionClientBuilder": "ClientCustomizations.FaceSessionClient",
     "com.azure.ai.vision.face.implementation.models.CreateLivenessWithVerifySessionMultipartContent": "Face.CreateLivenessWithVerifySessionMultipartContent",
     "com.azure.ai.vision.face.implementation.models.DetectFromUrlImplOptions": "null",
-    "com.azure.ai.vision.face.implementation.models.DetectFromUrlImplRequest": "detectFromUrl.Request.anonymous",
+    "com.azure.ai.vision.face.implementation.models.DetectFromUrlRequest": "detectFromUrl.Request.anonymous",
     "com.azure.ai.vision.face.implementation.models.FindSimilarRequest": "ClientCustomizations.findSimilar.Request.anonymous",
     "com.azure.ai.vision.face.implementation.models.GroupRequest": "ClientCustomizations.group.Request.anonymous",
     "com.azure.ai.vision.face.implementation.models.VerifyFaceToFaceRequest": "ClientCustomizations.verifyFaceToFace.Request.anonymous",
