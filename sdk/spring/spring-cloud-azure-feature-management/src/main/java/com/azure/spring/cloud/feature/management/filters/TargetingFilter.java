@@ -39,12 +39,12 @@ public class TargetingFilter implements FeatureFilter {
     /**
      * users field in the filter
      */
-    protected static final String USERS = "users";
+    protected static final String USERS = "Users";
 
     /**
      * groups field in the filter
      */
-    protected static final String GROUPS = "groups";
+    protected static final String GROUPS = "Groups";
 
     /**
      * Audience in the filter

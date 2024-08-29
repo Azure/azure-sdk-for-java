@@ -23,9 +23,9 @@ import com.azure.spring.cloud.feature.management.targeting.TargetingEvaluationOp
 @SpringBootTest(classes = { TestConfiguration.class, SpringBootTest.class })
 public class TargetingFilterTest {
 
-    private static final String USERS = "users";
+    private static final String USERS = "Users";
 
-    private static final String GROUPS = "groups";
+    private static final String GROUPS = "Groups";
 
     private static final String AUDIENCE = "Audience";
 
