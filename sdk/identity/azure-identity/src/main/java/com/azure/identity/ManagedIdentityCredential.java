@@ -101,10 +101,11 @@ public final class ManagedIdentityCredential implements TokenCredential {
      * @param resourceId the resource id of user assigned identity or registered application
      * @param identityClientOptions the options for configuring the identity client.
      */
-    ManagedIdentityCredential(String clientId, String resourceId, IdentityClientOptions identityClientOptions) {
+    ManagedIdentityCredential(String clientId, String resourceId, String objectId, IdentityClientOptions identityClientOptions) {
         IdentityClientBuilder clientBuilder = new IdentityClientBuilder()
             .clientId(clientId)
             .resourceId(resourceId)
+            .objectId(objectId)
             .identityClientOptions(identityClientOptions);
         this.identityClientOptions = identityClientOptions;
 

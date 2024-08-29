@@ -58,6 +58,7 @@ public class ManagedIdentityCredentialBuilder extends CredentialBuilderBase<Mana
 
     private String clientId;
     private String resourceId;
+    private String objectId;
 
     /**
      * Constructs an instance of ManagedIdentityCredentialBuilder.
@@ -93,17 +94,30 @@ public class ManagedIdentityCredentialBuilder extends CredentialBuilderBase<Mana
     }
 
     /**
+     * Specifies the object ID of a user assigned or system assigned identity.
+     *
+     * Only one of clientId, resourceId and objectId can be specified.
+     *
+     * @param objectId the object ID
+     * @return the ManagedIdentityCredentialBuilder itself
+     */
+    public ManagedIdentityCredentialBuilder objectId(String objectId) {
+        this.resourceId = resourceId;
+        return this;
+    }
+
+    /**
      * Creates a new {@link ManagedIdentityCredential} with the current configurations.
      *
      * @return a {@link ManagedIdentityCredential} with the current configurations.
      * @throws IllegalStateException if clientId and resourceId are both set.
      */
     public ManagedIdentityCredential build() {
-        if (clientId != null && resourceId != null) {
+        if (clientId != null && resourceId != null && objectId != null) {
             throw LOGGER.logExceptionAsError(
-                new IllegalStateException("Only one of clientId and resourceId can be specified."));
+                new IllegalStateException("Only one of clientId,  resourceId and objectId can be specified."));
         }
 
-        return new ManagedIdentityCredential(clientId, resourceId, identityClientOptions);
+        return new ManagedIdentityCredential(clientId, resourceId, objectId, identityClientOptions);
     }
 }

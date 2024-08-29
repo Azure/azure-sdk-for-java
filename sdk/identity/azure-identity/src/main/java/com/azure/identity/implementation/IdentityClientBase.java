@@ -137,6 +137,7 @@ public abstract class IdentityClientBase {
     final String tenantId;
     final String clientId;
     final String resourceId;
+    final String objectId;
     final String clientSecret;
     final String clientAssertionFilePath;
     final byte[] certificate;
@@ -171,6 +172,7 @@ public abstract class IdentityClientBase {
                        String certificatePath,
                        String clientAssertionFilePath,
                        String resourceId,
+                       String objectId,
                        Supplier<String> clientAssertionSupplier,
                        Function<HttpPipeline, String> clientAssertionSupplierWithHttpPipeline,
                        byte[] certificate,
@@ -187,6 +189,7 @@ public abstract class IdentityClientBase {
         }
         this.tenantId = tenantId;
         this.clientId = clientId;
+        this.objectId = objectId;
         this.resourceId = resourceId;
         this.clientSecret = clientSecret;
         this.clientAssertionFilePath = clientAssertionFilePath;

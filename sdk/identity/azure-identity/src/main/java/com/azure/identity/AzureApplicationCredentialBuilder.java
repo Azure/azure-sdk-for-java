@@ -21,6 +21,7 @@ class AzureApplicationCredentialBuilder extends CredentialBuilderBase<AzureAppli
 
     private String managedIdentityClientId;
     private String managedIdentityResourceId;
+    private String managedIdentityObjectId;
 
     /**
      * Creates an instance of a AzureApplicationCredentialBuilder.
@@ -68,6 +69,22 @@ class AzureApplicationCredentialBuilder extends CredentialBuilderBase<AzureAppli
     }
 
     /**
+     * Specifies the object ID of user assigned or system assigned identity, when this credential is running
+     * in an environment with managed identities. If unset, the value in the AZURE_CLIENT_ID environment variable
+     * will be used. If neither is set, the default value is null and will only work with system assigned
+     * managed identities and not user assigned managed identities.
+     *
+     * Only one of managedIdentityResourceId and managedIdentityClientId can be specified.
+     *
+     * @param objectId the object ID
+     * @return the DefaultAzureCredentialBuilder itself
+     */
+    public AzureApplicationCredentialBuilder managedIdentityObjectId(String objectId) {
+        this.managedIdentityObjectId = objectId;
+        return this;
+    }
+
+    /**
      * Specifies the ExecutorService to be used to execute the authentication requests.
      * Developer is responsible for maintaining the lifecycle of the ExecutorService.
      *
@@ -94,9 +111,21 @@ class AzureApplicationCredentialBuilder extends CredentialBuilderBase<AzureAppli
      * @throws IllegalStateException if clientId and resourceId are both set.
      */
     public AzureApplicationCredential build() {
-        if (managedIdentityClientId != null && managedIdentityResourceId != null) {
+        int nonNullIdCount = 0;
+
+        if (managedIdentityClientId != null) {
+            nonNullIdCount++;
+        }
+        if (managedIdentityResourceId != null) {
+            nonNullIdCount++;
+        }
+        if (managedIdentityObjectId != null) {
+            nonNullIdCount++;
+        }
+
+        if (nonNullIdCount > 1) {
             throw LOGGER.logExceptionAsError(
-                new IllegalStateException("Only one of managedIdentityClientId and managedIdentityResourceId can be specified."));
+                new IllegalStateException("Only one of managedIdentityClientId, managedIdentityResourceId, or managedIdentityObjectId can be specified."));
         }
 
         return new AzureApplicationCredential(getCredentialsChain());
@@ -105,7 +134,7 @@ class AzureApplicationCredentialBuilder extends CredentialBuilderBase<AzureAppli
     private ArrayList<TokenCredential> getCredentialsChain() {
         ArrayList<TokenCredential> output = new ArrayList<TokenCredential>(2);
         output.add(new EnvironmentCredential(identityClientOptions));
-        output.add(new ManagedIdentityCredential(managedIdentityClientId, managedIdentityResourceId, identityClientOptions));
+        output.add(new ManagedIdentityCredential(managedIdentityClientId, managedIdentityResourceId, managedIdentityObjectId, identityClientOptions));
         return output;
     }
 }
