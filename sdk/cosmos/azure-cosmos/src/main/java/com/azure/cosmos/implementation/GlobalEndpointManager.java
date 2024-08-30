@@ -344,8 +344,13 @@ public class GlobalEndpointManager implements AutoCloseable {
     }
 
     private List<String> getEffectivePreferredRegions(boolean isWriteOperation) {
+
         if (this.connectionPolicy.getPreferredRegions() != null && !this.connectionPolicy.getPreferredRegions().isEmpty()) {
             return this.connectionPolicy.getPreferredRegions();
+        }
+
+        if (this.latestDatabaseAccount == null) {
+            return Collections.emptyList();
         }
 
         if (isWriteOperation) {
