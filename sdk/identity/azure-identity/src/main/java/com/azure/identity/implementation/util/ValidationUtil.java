@@ -171,7 +171,7 @@ public final class ValidationUtil {
         }
 
         if (nonNullIdCount > 1) {
-            throw logger.logExceptionAsError(new IllegalStateException("Only one of clientId, resourceId and objectId can be specified."));
+            throw logger.logExceptionAsError(new IllegalStateException("Only one of clientId, resourceId, or objectId can be specified."));
         }
     }
 }
