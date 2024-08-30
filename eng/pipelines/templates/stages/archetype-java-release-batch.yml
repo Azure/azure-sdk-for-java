@@ -330,8 +330,6 @@ stages:
                   - template: /eng/pipelines/templates/steps/mvn-linux-repository-settings.yml
 
                   - template: /eng/pipelines/templates/steps/install-rex-validation-tool.yml
-                    parameters:
-                      LanguageVersion: $(Java2docfxJavaVersion)
 
                   - template: /eng/common/pipelines/templates/steps/update-docsms-metadata.yml
                     parameters:
@@ -470,8 +468,6 @@ stages:
           - template: /eng/pipelines/templates/steps/mvn-linux-repository-settings.yml
 
           - template: /eng/pipelines/templates/steps/install-rex-validation-tool.yml
-            parameters:
-              LanguageVersion: $(Java2docfxJavaVersion)
 
           - template: /eng/common/pipelines/templates/steps/update-docsms-metadata.yml
             parameters:

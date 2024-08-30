@@ -1,15 +1,10 @@
-parameters:
-  - name: LanguageVersion
-    type: string
-    default: '17'
-
 steps:
   - task: JavaToolInstaller@0
     inputs:
-      versionSpec: ${{ parameters.LanguageVersion }}
+      versionSpec: $(Java2docfxJavaVersion)
       jdkArchitectureOption: 'x64'
       jdkSourceOption: 'PreInstalled'
-    displayName: Install Java ${{ parameters.LanguageVersion }}
+    displayName: Install Java $(Java2docfxJavaVersion)
   - script: |
       java -version
     displayName: Print Java Version
