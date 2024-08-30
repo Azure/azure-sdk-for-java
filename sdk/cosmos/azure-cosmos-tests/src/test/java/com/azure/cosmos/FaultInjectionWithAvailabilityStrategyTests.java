@@ -436,6 +436,20 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 validateDiagnosticsContextHasDiagnosticsForAllRegions
             },
 
+            // Only injects 404/1002 into secondary region - just ensure that no cross regional execution
+            // is even happening
+            new Object[] {
+                "404-1002_AllExceptFirstRegion_RemotePreferred",
+                ONE_SECOND_DURATION,
+                defaultAvailabilityStrategy,
+                CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED,
+                ConnectionMode.DIRECT,
+                sameDocumentIdJustCreated,
+                injectReadSessionNotAvailableIntoAllExceptFirstRegion,
+                validateStatusCodeIs200Ok,
+                validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
+            },
+
             // This test simulates 404/1002 across all regions for the read operation after the initial creation
             // The region switch hint for 404/1002 is local - meaning many local retries are happening which leads
             // to the operations triggered by the availability strategy against each region will all timeout because
@@ -670,6 +684,22 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegionButWithRegionalFailover
             },
 
+            // This test injects 503 (Service Unavailable) into the local region only.
+            // Expected outcome is a successful retry either by the cross-regional retry triggered in the
+            // ClientRetryPolicy of the initial execution or the one triggered by the availability strategy
+            // whatever happens first
+            new Object[] {
+                "503_FirstRegionOnly",
+                ONE_SECOND_DURATION,
+                eagerThresholdAvailabilityStrategy,
+                noRegionSwitchHint,
+                ConnectionMode.DIRECT,
+                sameDocumentIdJustCreated,
+                injectServiceUnavailableIntoFirstRegionOnly,
+                validateStatusCodeIs200Ok,
+                validateDiagnosticsContextHasDiagnosticsForOneOrTwoRegionsButAlwaysContactedSecondRegion
+            },
+
             // This test injects 503 (Service Unavailable) into all regions.
             // Expected outcome is a timeout due to ongoing retries in both operations triggered by
             // availability strategy. Diagnostics should contain two operations.
@@ -683,6 +713,23 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 injectServiceUnavailableIntoAllRegions,
                 validateStatusCodeIsServiceUnavailable,
                 validateDiagnosticsContextHasDiagnosticsForAllRegions
+            },
+
+            // This test injects 500 (Internal Server Error) into all regions.
+            //
+            // Currently, 500 (Internal Server error) is not ever retried. Neither in the Consistency Reader
+            // nor ClientRetryPolicy - so, a 500 will immediately fail the Mono and there will only
+            // be diagnostics for the first region
+            new Object[] {
+               "500_FirstRegionOnly_NoAvailabilityStrategy",
+               Duration.ofSeconds(90),
+               noAvailabilityStrategy,
+               noRegionSwitchHint,
+                ConnectionMode.DIRECT,
+               sameDocumentIdJustCreated,
+               injectInternalServerErrorIntoFirstRegionOnly,
+               validateStatusCodeIsInternalServerError,
+               validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
             },
 
             // This test injects 500 (Internal Server Error) into all regions.
