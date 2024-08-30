@@ -780,22 +780,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             },
         };
 
-        List<List<Object>> intermediateTestConfigList = new ArrayList<>();
-        boolean[] shouldInjectPreferredRegionsFlags = new boolean[]{true, false};
-
-        for (boolean shouldInjectPreferredRegionsFlag : shouldInjectPreferredRegionsFlags) {
-            for (Object[] testConfigForSingleTest : testConfigs_readAfterCreation) {
-                List<Object> testConfigForSingleTestAsMutableList = new ArrayList<>(Arrays.asList(testConfigForSingleTest));
-                testConfigForSingleTestAsMutableList.add(shouldInjectPreferredRegionsFlag);
-                intermediateTestConfigList.add(testConfigForSingleTestAsMutableList);
-            }
-        }
-
-        testConfigs_readAfterCreation = intermediateTestConfigList.stream()
-            .map(l -> l.stream().toArray(Object[]::new))
-            .toArray(Object[][]::new);
-
-        return testConfigs_readAfterCreation;
+        return addBooleanFlagsToAllTestConfigs(testConfigs_readAfterCreation);
     }
 
     @Test(groups = {"multi-master"}, dataProvider = "testConfigs_readAfterCreation")
@@ -2218,22 +2203,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             },
         };
 
-        List<List<Object>> intermediateTestConfigList = new ArrayList<>();
-        boolean[] shouldInjectPreferredRegionsFlags = new boolean[]{true, false};
-
-        for (boolean shouldInjectPreferredRegionsFlag : shouldInjectPreferredRegionsFlags) {
-            for (Object[] testConfigForSingleTest : testConfigs_writeAfterCreation) {
-                List<Object> testConfigForSingleTestAsMutableList = new ArrayList<>(Arrays.asList(testConfigForSingleTest));
-                testConfigForSingleTestAsMutableList.add(shouldInjectPreferredRegionsFlag);
-                intermediateTestConfigList.add(testConfigForSingleTestAsMutableList);
-            }
-        }
-
-        testConfigs_writeAfterCreation = intermediateTestConfigList.stream()
-            .map(l -> l.stream().toArray(Object[]::new))
-            .toArray(Object[][]::new);
-
-        return testConfigs_writeAfterCreation;
+        return addBooleanFlagsToAllTestConfigs(testConfigs_writeAfterCreation);
     }
 
     @Test(groups = {"multi-master"}, dataProvider = "testConfigs_writeAfterCreation")
@@ -3396,22 +3366,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             }
         };
 
-        List<List<Object>> intermediateTestConfigList = new ArrayList<>();
-        boolean[] shouldInjectPreferredRegionsFlags = new boolean[]{true, false};
-
-        for (boolean shouldInjectPreferredRegionsFlag : shouldInjectPreferredRegionsFlags) {
-            for (Object[] testConfigForSingleTest : testConfigs_queryAfterCreation) {
-                List<Object> testConfigForSingleTestAsMutableList = new ArrayList<>(Arrays.asList(testConfigForSingleTest));
-                testConfigForSingleTestAsMutableList.add(shouldInjectPreferredRegionsFlag);
-                intermediateTestConfigList.add(testConfigForSingleTestAsMutableList);
-            }
-        }
-
-        testConfigs_queryAfterCreation = intermediateTestConfigList.stream()
-            .map(l -> l.stream().toArray(Object[]::new))
-            .toArray(Object[][]::new);
-
-        return testConfigs_queryAfterCreation;
+        return addBooleanFlagsToAllTestConfigs(testConfigs_queryAfterCreation);
     }
 
     @Test(groups = {"multi-master"}, dataProvider = "testConfigs_queryAfterCreation")
@@ -3987,22 +3942,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             },
         };
 
-        List<List<Object>> intermediateTestConfigList = new ArrayList<>();
-        boolean[] shouldInjectPreferredRegionsFlags = new boolean[]{true, false};
-
-        for (boolean shouldInjectPreferredRegionsFlag : shouldInjectPreferredRegionsFlags) {
-            for (Object[] testConfigForSingleTest : testConfigs_readManyAfterCreation) {
-                List<Object> testConfigForSingleTestAsMutableList = new ArrayList<>(Arrays.asList(testConfigForSingleTest));
-                testConfigForSingleTestAsMutableList.add(shouldInjectPreferredRegionsFlag);
-                intermediateTestConfigList.add(testConfigForSingleTestAsMutableList);
-            }
-        }
-
-        testConfigs_readManyAfterCreation = intermediateTestConfigList.stream()
-            .map(l -> l.stream().toArray(Object[]::new))
-            .toArray(Object[][]::new);
-
-        return testConfigs_readManyAfterCreation;
+        return addBooleanFlagsToAllTestConfigs(testConfigs_readManyAfterCreation);
     }
 
     @Test(groups = {"multi-master"}, dataProvider = "testConfigs_readManyAfterCreation")
@@ -4784,22 +4724,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             },
         };
 
-        List<List<Object>> intermediateTestConfigList = new ArrayList<>();
-        boolean[] shouldInjectPreferredRegionsFlags = new boolean[]{true, false};
-
-        for (boolean shouldInjectPreferredRegionsFlag : shouldInjectPreferredRegionsFlags) {
-            for (Object[] testConfigForSingleTest : testConfigs_readAllAfterCreation()) {
-                List<Object> testConfigForSingleTestAsMutableList = new ArrayList<>(Arrays.asList(testConfigForSingleTest));
-                testConfigForSingleTestAsMutableList.add(shouldInjectPreferredRegionsFlag);
-                intermediateTestConfigList.add(testConfigForSingleTestAsMutableList);
-            }
-        }
-
-        testConfigs_readAllAfterCreation = intermediateTestConfigList.stream()
-            .map(l -> l.stream().toArray(Object[]::new))
-            .toArray(Object[][]::new);
-
-        return testConfigs_readAllAfterCreation;
+        return addBooleanFlagsToAllTestConfigs(testConfigs_readAllAfterCreation);
     }
 
     @Test(groups = {"multi-master"}, dataProvider = "testConfigs_readAllAfterCreation")
@@ -5351,6 +5276,25 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         }
 
         return regionMap;
+    }
+
+    private Object[][] addBooleanFlagsToAllTestConfigs(Object[][] testConfigs) {
+        List<List<Object>> intermediateTestConfigList = new ArrayList<>();
+        boolean[] shouldInjectPreferredRegionsFlags = new boolean[]{true, false};
+
+        for (boolean shouldInjectPreferredRegionsFlag : shouldInjectPreferredRegionsFlags) {
+            for (Object[] testConfigForSingleTest : testConfigs) {
+                List<Object> testConfigForSingleTestAsMutableList = new ArrayList<>(Arrays.asList(testConfigForSingleTest));
+                testConfigForSingleTestAsMutableList.add(shouldInjectPreferredRegionsFlag);
+                intermediateTestConfigList.add(testConfigForSingleTestAsMutableList);
+            }
+        }
+
+        testConfigs = intermediateTestConfigList.stream()
+            .map(l -> l.stream().toArray(Object[]::new))
+            .toArray(Object[][]::new);
+
+        return testConfigs;
     }
 
     private static class CosmosResponseWrapper {

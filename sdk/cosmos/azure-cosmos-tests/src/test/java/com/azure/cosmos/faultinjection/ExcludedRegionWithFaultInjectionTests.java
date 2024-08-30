@@ -52,15 +52,7 @@ import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
@@ -176,8 +168,10 @@ public class ExcludedRegionWithFaultInjectionTests extends FaultInjectionTestBas
                 return null;
             };
 
+        Object[][] testConfigs_readAfterCreate = null;
+
         if (this.preferredRegions.size() == 2) {
-            return new Object[][] {
+            testConfigs_readAfterCreate = new Object[][] {
                 {
                     "404/1002_firstRegion_beforeMutation_excludeFirstRegion_afterMutation_excludeLastRegion",
                     new MutationTestConfig()
@@ -359,8 +353,11 @@ public class ExcludedRegionWithFaultInjectionTests extends FaultInjectionTestBas
                     ))
                 }
             };
+
+            return addBooleanFlagsToAllTestConfigs(testConfigs_readAfterCreate);
+
         } else if (this.preferredRegions.size() == 3) {
-            return new Object[][] {
+            testConfigs_readAfterCreate = new Object[][] {
                 {
                     "404/1002_firstTwoRegions_beforeMutation_excludeFirstRegion_afterMutation_excludeLastRegion",
                     new MutationTestConfig()
@@ -464,6 +461,8 @@ public class ExcludedRegionWithFaultInjectionTests extends FaultInjectionTestBas
                     ))
                 }
             };
+
+            return addBooleanFlagsToAllTestConfigs(testConfigs_readAfterCreate);
         }
 
         throw new IllegalStateException("This test suite is tested for 2 or 3 preferred regions");
@@ -502,8 +501,10 @@ public class ExcludedRegionWithFaultInjectionTests extends FaultInjectionTestBas
                 return null;
             };
 
+        Object[][] testConfig_queryAfterCreate = null;
+
         if (this.preferredRegions.size() == 2) {
-            return new Object[][] {
+            testConfig_queryAfterCreate = new Object[][] {
                 {
                     "404/1002_firstRegion_beforeMutation_excludeFirstRegion_afterMutation_excludeLastRegion",
                     new MutationTestConfig()
@@ -627,8 +628,11 @@ public class ExcludedRegionWithFaultInjectionTests extends FaultInjectionTestBas
                     ))
                 }
             };
+
+            return addBooleanFlagsToAllTestConfigs(testConfig_queryAfterCreate);
+
         } else if (this.preferredRegions.size() == 3) {
-            return new Object[][] {
+            testConfig_queryAfterCreate = new Object[][] {
                 {
                     "404/1002_firstTwoRegions_beforeMutation_excludeSecondRegion_afterMutation_excludeLastRegion",
                     new MutationTestConfig()
@@ -733,7 +737,10 @@ public class ExcludedRegionWithFaultInjectionTests extends FaultInjectionTestBas
                     ))
                 }
             };
+
+            return addBooleanFlagsToAllTestConfigs(testConfig_queryAfterCreate);
         }
+
         throw new IllegalStateException("This test suite is tested for 2 or 3 preferred regions");
     }
 
@@ -941,8 +948,10 @@ public class ExcludedRegionWithFaultInjectionTests extends FaultInjectionTestBas
                 return null;
             };
 
+        Object[][] testConfigs_writeAfterCreate = null;
+
         if (this.preferredRegions.size() == 2) {
-            return new Object[][] {
+            testConfigs_writeAfterCreate = new Object[][] {
                 {
                     "create_404/1002_firstRegion_beforeMutation_excludeNoRegions_afterMutation_excludeLastRegion",
                     new MutationTestConfig()
@@ -1399,8 +1408,10 @@ public class ExcludedRegionWithFaultInjectionTests extends FaultInjectionTestBas
                     )),
                 }
             };
+
+            addBooleanFlagsToAllTestConfigs(testConfigs_writeAfterCreate);
         } else if (this.preferredRegions.size() == 3) {
-            return new Object[][] {
+            testConfigs_writeAfterCreate = new Object[][] {
                 {
                     "create_404/1002_firstRegion_beforeMutation_excludeNoRegions_afterMutation_excludeSecondRegion",
                     new MutationTestConfig()
@@ -1526,6 +1537,8 @@ public class ExcludedRegionWithFaultInjectionTests extends FaultInjectionTestBas
                     )),
                 }
             };
+
+            addBooleanFlagsToAllTestConfigs(testConfigs_writeAfterCreate);
         }
 
         throw new IllegalStateException("This test suite is tested for 2 or 3 preferred regions");
@@ -1566,8 +1579,10 @@ public class ExcludedRegionWithFaultInjectionTests extends FaultInjectionTestBas
             return null;
         };
 
+        Object[][] testConfigs_batch = null;
+
         if (this.preferredRegions.size() == 2) {
-            return new Object[][] {
+            testConfigs_batch =  new Object[][] {
                 {
                     "batchCreateAndRead_404/1002_firstRegion_beforeMutation_excludeFirstRegion_afterMutation_excludeLastRegion",
                     new MutationTestConfig()
@@ -1759,8 +1774,10 @@ public class ExcludedRegionWithFaultInjectionTests extends FaultInjectionTestBas
                     ))
                 }
             };
+
+            addBooleanFlagsToAllTestConfigs(testConfigs_batch);
         } else if (this.preferredRegions.size() == 3) {
-            return new Object[][] {
+            testConfigs_batch =  new Object[][] {
                 {
                     "batchCreateAndRead_404/1002_firstTwoRegions_beforeMutation_excludeFirstRegion_afterMutation_excludeLastRegion",
                     new MutationTestConfig()
@@ -1891,6 +1908,8 @@ public class ExcludedRegionWithFaultInjectionTests extends FaultInjectionTestBas
                     ))
                 }
             };
+
+            addBooleanFlagsToAllTestConfigs(testConfigs_batch);
         }
 
         return null;
@@ -1940,8 +1959,10 @@ public class ExcludedRegionWithFaultInjectionTests extends FaultInjectionTestBas
             return null;
         };
 
+        Object[][] testConfigs_bulk = null;
+
         if (this.preferredRegions.size() == 2) {
-            return new Object[][] {
+            testConfigs_bulk = new Object[][] {
                 {
                     "bulkCreate_404/1002_firstRegion_beforeMutation_excludeFirstRegion_afterMutation_excludeLastRegion",
                     new MutationTestConfig()
@@ -2125,8 +2146,11 @@ public class ExcludedRegionWithFaultInjectionTests extends FaultInjectionTestBas
                     ))
                 }
             };
+
+            addBooleanFlagsToAllTestConfigs(testConfigs_bulk);
+
         } else if (this.preferredRegions.size() == 3) {
-            return new Object[][] {
+            testConfigs_bulk = new Object[][] {
                 {
                     "bulkCreate_404/1002_firstTwoRegions_beforeMutation_excludeFirstRegion_afterMutation_excludeLastRegion",
                     new MutationTestConfig()
@@ -2252,42 +2276,44 @@ public class ExcludedRegionWithFaultInjectionTests extends FaultInjectionTestBas
                     ))
                 }
             };
+
+            addBooleanFlagsToAllTestConfigs(testConfigs_bulk);
         }
 
         return null;
     }
 
     @Test(groups = { "multi-master" }, dataProvider = "regionExclusionReadAfterCreateTestConfigs")
-    public void regionExclusionMutationOnClient_readAfterCreate_test(String testTitle, MutationTestConfig mutationTestConfig) throws InterruptedException {
+    public void regionExclusionMutationOnClient_readAfterCreate_test(String testTitle, MutationTestConfig mutationTestConfig, boolean shouldInjectPreferredRegions) throws InterruptedException {
         logger.info("Test started with title : {}", testTitle);
-        execute(mutationTestConfig);
+        execute(mutationTestConfig, shouldInjectPreferredRegions);
     }
 
     @Test(groups = { "multi-master" }, dataProvider = "regionExclusionQueryAfterCreateTestConfigs")
-    public void regionExclusionMutationOnClient_queryAfterCreate_test(String testTitle, MutationTestConfig mutationTestConfig) throws InterruptedException {
+    public void regionExclusionMutationOnClient_queryAfterCreate_test(String testTitle, MutationTestConfig mutationTestConfig, boolean shouldInjectPreferredRegions) throws InterruptedException {
         logger.info("Test started with title : {}", testTitle);
-        execute(mutationTestConfig);
+        execute(mutationTestConfig, shouldInjectPreferredRegions);
     }
 
     @Test(groups = { "multi-master" }, dataProvider = "regionExclusionWriteAfterCreateTestConfigs")
-    public void regionExclusionMutationOnClient_writeAfterCreate_test(String testTitle, MutationTestConfig mutationTestConfig) throws InterruptedException {
+    public void regionExclusionMutationOnClient_writeAfterCreate_test(String testTitle, MutationTestConfig mutationTestConfig, boolean shouldInjectPreferredRegions) throws InterruptedException {
         logger.info("Test started with title : {}", testTitle);
-        execute(mutationTestConfig);
+        execute(mutationTestConfig, shouldInjectPreferredRegions);
     }
 
     @Test(groups = {"multi-master"}, dataProvider = "regionExclusionBatchTestConfigs")
-    public void regionExclusionMutationOnClient_batch_test(String testTitle, MutationTestConfig mutationTestConfig) throws InterruptedException {
+    public void regionExclusionMutationOnClient_batch_test(String testTitle, MutationTestConfig mutationTestConfig, boolean shouldInjectPreferredRegions) throws InterruptedException {
         logger.info("Test started with title : {}", testTitle);
-        execute(mutationTestConfig);
+        execute(mutationTestConfig, shouldInjectPreferredRegions);
     }
 
     @Test(groups = {"multi-master"}, dataProvider = "regionExclusionBulkTestConfigs")
-    public void regionExclusionMutationOnClient_bulk_test(String testTitle, MutationTestConfig mutationTestConfig) throws InterruptedException {
+    public void regionExclusionMutationOnClient_bulk_test(String testTitle, MutationTestConfig mutationTestConfig, boolean shouldInjectPreferredRegions) throws InterruptedException {
         logger.info("Test started with title : {}", testTitle);
-        execute(mutationTestConfig);
+        execute(mutationTestConfig, shouldInjectPreferredRegions);
     }
 
-    private void execute(MutationTestConfig mutationTestConfig) throws InterruptedException {
+    private void execute(MutationTestConfig mutationTestConfig, boolean shouldInjectPreferredRegions) throws InterruptedException {
         System.setProperty("COSMOS.MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED", String.valueOf(2));
 
         CosmosAsyncClient clientWithPreferredRegions = null;
@@ -2320,7 +2346,7 @@ public class ExcludedRegionWithFaultInjectionTests extends FaultInjectionTestBas
                 .key(TestConfigurations.MASTER_KEY)
                 .endpointDiscoveryEnabled(true)
                 .consistencyLevel(BridgeInternal.getContextClient(this.cosmosAsyncClient).getConsistencyLevel())
-                .preferredRegions(this.preferredRegions)
+                .preferredRegions(shouldInjectPreferredRegions ? this.preferredRegions : Collections.emptyList())
                 .sessionRetryOptions(new SessionRetryOptionsBuilder().regionSwitchHint(CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED).build())
                 .excludedRegionsSupplier(cosmosExcludedRegionsAtomicReference::get)
                 .directMode()
@@ -2719,6 +2745,25 @@ public class ExcludedRegionWithFaultInjectionTests extends FaultInjectionTestBas
             this.expectedResultCountInBatch = expectedResultCountInBatch;
             this.expectedContactedRegionNames = expectedContactedRegionNames;
         }
+    }
+
+    private Object[][] addBooleanFlagsToAllTestConfigs(Object[][] testConfigs) {
+        List<List<Object>> intermediateTestConfigList = new ArrayList<>();
+        boolean[] shouldInjectPreferredRegionsFlags = new boolean[]{true, false};
+
+        for (boolean shouldInjectPreferredRegionsFlag : shouldInjectPreferredRegionsFlags) {
+            for (Object[] testConfigForSingleTest : testConfigs) {
+                List<Object> testConfigForSingleTestAsMutableList = new ArrayList<>(Arrays.asList(testConfigForSingleTest));
+                testConfigForSingleTestAsMutableList.add(shouldInjectPreferredRegionsFlag);
+                intermediateTestConfigList.add(testConfigForSingleTestAsMutableList);
+            }
+        }
+
+        testConfigs = intermediateTestConfigList.stream()
+            .map(l -> l.stream().toArray(Object[]::new))
+            .toArray(Object[][]::new);
+
+        return testConfigs;
     }
 
     private static class MutationTestConfig {
