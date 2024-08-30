@@ -31,7 +31,7 @@ public interface AppConfigurationRefresh extends ApplicationEventPublisherAware 
      * trigger has been updated configuration are reloaded.
      */
     default void refreshAsync() {
-        LOGGER.info("AppConfiguration.refreshAsync needs to be implimented to trigger a refresh.");
+        LOGGER.info("AppConfiguration.refreshAsync needs to be implemented to trigger a refresh.");
     }
 
     /**
