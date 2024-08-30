@@ -88,7 +88,7 @@ public final class MapsRenderAsyncClient {
 
     /**
      * Get Map Tile
-     *
+     * <p>
      * <!-- src_embed com.azure.maps.render.async.get_map_tile -->
      * <pre>
      * System.out.println&#40;&quot;Get Map Tile&quot;&#41;;
@@ -98,7 +98,7 @@ public final class MapsRenderAsyncClient {
      * asyncClient.getMapTile&#40;mapTileOptions2&#41;.block&#40;&#41;.toStream&#40;&#41;;
      * </pre>
      * <!-- end com.azure.maps.render.async.get_map_tile -->
-     *
+     * <p>
      * The Get Map Tiles API allows users to request map tiles in vector or raster formats typically to be integrated
      * into a map control or SDK.
      * @param options the {@code MapTileOptions} to control the API behavior.
@@ -117,7 +117,7 @@ public final class MapsRenderAsyncClient {
 
     /**
      * Get Map Tile
-     *
+     * <p>
      * <!-- src_embed com.azure.maps.render.async.get_map_tile -->
      * <pre>
      * System.out.println&#40;&quot;Get Map Tile&quot;&#41;;
@@ -127,7 +127,7 @@ public final class MapsRenderAsyncClient {
      * asyncClient.getMapTile&#40;mapTileOptions2&#41;.block&#40;&#41;.toStream&#40;&#41;;
      * </pre>
      * <!-- end com.azure.maps.render.async.get_map_tile -->
-     *
+     * <p>
      * The Get Map Tiles API allows users to request map tiles in vector or raster formats typically to be integrated
      * into a map control or SDK.
      * @param options the {@code MapTileOptions} to control the API behavior.
@@ -147,7 +147,7 @@ public final class MapsRenderAsyncClient {
 
     /**
      * Get Map Tile
-     *
+     * <p>
      * <!-- src_embed com.azure.maps.render.async.get_map_tile -->
      * <pre>
      * System.out.println&#40;&quot;Get Map Tile&quot;&#41;;
@@ -157,7 +157,7 @@ public final class MapsRenderAsyncClient {
      * asyncClient.getMapTile&#40;mapTileOptions2&#41;.block&#40;&#41;.toStream&#40;&#41;;
      * </pre>
      * <!-- end com.azure.maps.render.async.get_map_tile -->
-     *
+     * <p>
      * The Get Map Tiles API allows users to request map tiles in vector or raster formats typically to be integrated
      * into a map control or SDK.
      * @param options the {@code MapTileOptions} to control the API behavior.
@@ -176,10 +176,9 @@ public final class MapsRenderAsyncClient {
                 options.getTileIndex(), options.getTimestamp(), options.getMapTileSize(), options.getLanguage(),
                 options.getLocalizedMapView(), context)
             .onErrorMap(throwable -> {
-                if (!(throwable instanceof ErrorResponseException)) {
+                if (!(throwable instanceof ErrorResponseException exception)) {
                     return throwable;
                 }
-                ErrorResponseException exception = (ErrorResponseException) throwable;
                 return new HttpResponseException(exception.getMessage(), exception.getResponse());
             });
     }
@@ -188,7 +187,7 @@ public final class MapsRenderAsyncClient {
      * Get Map Tileset
      * <p>
      * The Get Map Tileset API allows users to request metadata for a tileset.
-     *
+     * <p>
      * <!-- src_embed com.azure.maps.render.async.get_map_tileset -->
      * <pre>
      * System.out.println&#40;&quot;Get Map Tileset&quot;&#41;;
@@ -212,7 +211,7 @@ public final class MapsRenderAsyncClient {
      * Get Map Tileset
      * <p>
      * The Get Map Tileset API allows users to request metadata for a tileset.
-     *
+     * <p>
      * <!-- src_embed com.azure.maps.render.async.get_map_tileset -->
      * <pre>
      * System.out.println&#40;&quot;Get Map Tileset&quot;&#41;;
@@ -236,7 +235,7 @@ public final class MapsRenderAsyncClient {
      * Get Map Tileset
      * <p>
      * The Get Map Tileset API allows users to request metadata for a tileset.
-     *
+     * <p>
      * <!-- src_embed com.azure.maps.render.async.get_map_tileset -->
      * <pre>
      * System.out.println&#40;&quot;Get Map Tileset&quot;&#41;;
@@ -266,7 +265,7 @@ public final class MapsRenderAsyncClient {
 
     /**
      * Get Map Attribution
-     *
+     * <p>
      * <!-- src_embed com.azure.maps.render.async.get_map_attribution -->
      * <pre>
      * System.out.println&#40;&quot;Get Map Attribution&quot;&#41;;
@@ -291,7 +290,7 @@ public final class MapsRenderAsyncClient {
 
     /**
      * Get Map Attribution
-     *
+     * <p>
      * <!-- src_embed com.azure.maps.render.async.get_map_attribution -->
      * <pre>
      * System.out.println&#40;&quot;Get Map Attribution&quot;&#41;;
@@ -320,7 +319,7 @@ public final class MapsRenderAsyncClient {
      * <p>
      * The Get Map Attribution With Response API allows users to request map copyright attribution information for a
      * section of a tileset with response
-     *
+     * <p>
      * <!-- src_embed com.azure.maps.render.async.get_map_attribution -->
      * <pre>
      * System.out.println&#40;&quot;Get Map Attribution&quot;&#41;;
@@ -400,23 +399,22 @@ public final class MapsRenderAsyncClient {
         Context context) {
         return this.serviceClient.getMapStateTileNoCustomHeadersWithResponseAsync(statesetId, tileIndex, context)
             .onErrorMap(throwable -> {
-                if (!(throwable instanceof ErrorResponseException)) {
+                if (!(throwable instanceof ErrorResponseException exception)) {
                     return throwable;
                 }
-                ErrorResponseException exception = (ErrorResponseException) throwable;
                 return new HttpResponseException(exception.getMessage(), exception.getResponse());
             });
     }
 
     /**
      * Get Copyright Caption
-     *
+     * <p>
      * Copyrights API is designed to serve copyright information for Render Tile service. In addition to basic
      * copyright for the whole map, API is serving specific groups of copyrights for some countries.
-     *
+     * <p>
      * As an alternative to copyrights for map request, one can receive captions for displaying the map provider
      * information on the map.
-     *
+     * <p>
      * <!-- src_embed com.azure.maps.render.async.get_copyright_caption -->
      * <pre>
      * System.out.println&#40;&quot;Get Copyright Caption&quot;&#41;;
@@ -442,7 +440,7 @@ public final class MapsRenderAsyncClient {
      * <p>
      * As an alternative to copyrights for map request, one can receive captions for displaying the map provider
      * information on the map.
-     *
+     * <p>
      * <!-- src_embed com.azure.maps.render.async.get_copyright_caption -->
      * <pre>
      * System.out.println&#40;&quot;Get Copyright Caption&quot;&#41;;
@@ -468,7 +466,7 @@ public final class MapsRenderAsyncClient {
      * <p>
      * As an alternative to copyrights for map request, one can receive captions for displaying the map provider
      * information on the map.
-     *
+     * <p>
      * <!-- src_embed com.azure.maps.render.async.get_copyright_caption -->
      * <pre>
      * System.out.println&#40;&quot;Get Copyright Caption&quot;&#41;;
@@ -485,10 +483,9 @@ public final class MapsRenderAsyncClient {
     Mono<Response<CopyrightCaption>> getCopyrightCaptionWithResponse(Context context) {
         return this.serviceClient.getCopyrightCaptionWithResponseAsync(ResponseFormat.JSON, context)
             .onErrorMap(throwable -> {
-                if (!(throwable instanceof ErrorResponseException)) {
+                if (!(throwable instanceof ErrorResponseException exception)) {
                     return throwable;
                 }
-                ErrorResponseException exception = (ErrorResponseException) throwable;
                 return new HttpResponseException(exception.getMessage(), exception.getResponse());
             });
     }
@@ -503,7 +500,7 @@ public final class MapsRenderAsyncClient {
      * like to interact with the rendered map. If the map contents will be relatively unchanging, a static map is a good
      * choice. If you want to support a lot of zooming, panning and changing of the map content, the map tile service
      * would be a better choice.
-     *
+     * <p>
      * <!-- src_embed com.azure.maps.render.async.get_map_static_image -->
      * <pre>
      * System.out.println&#40;&quot;Get Map Static Image&quot;&#41;;
@@ -538,7 +535,7 @@ public final class MapsRenderAsyncClient {
      * like to interact with the rendered map. If the map contents will be relatively unchanging, a static map is a good
      * choice. If you want to support a lot of zooming, panning and changing of the map content, the map tile service
      * would be a better choice.
-     *
+     * <p>
      * <!-- src_embed com.azure.maps.render.async.get_map_static_image -->
      * <pre>
      * System.out.println&#40;&quot;Get Map Static Image&quot;&#41;;
@@ -573,7 +570,7 @@ public final class MapsRenderAsyncClient {
      * like to interact with the rendered map. If the map contents will be relatively unchanging, a static map is a good
      * choice. If you want to support a lot of zooming, panning and changing of the map content, the map tile service
      * would be a better choice.
-     *
+     * <p>
      * <!-- src_embed com.azure.maps.render.async.get_map_static_image -->
      * <pre>
      * System.out.println&#40;&quot;Get Map Static Image&quot;&#41;;
@@ -605,10 +602,9 @@ public final class MapsRenderAsyncClient {
             options.getHeight(), options.getWidth(), options.getLanguage(), options.getLocalizedMapView(),
             options.getPins(), options.getPath(), context)
             .onErrorMap(throwable -> {
-                if (!(throwable instanceof ErrorResponseException)) {
+                if (!(throwable instanceof ErrorResponseException exception)) {
                     return throwable;
                 }
-                ErrorResponseException exception = (ErrorResponseException) throwable;
                 return new HttpResponseException(exception.getMessage(), exception.getResponse());
             });
     }
@@ -620,7 +616,7 @@ public final class MapsRenderAsyncClient {
      * <p>
      * Returns copyright information for a given bounding box. Bounding-box requests should specify the minimum and
      * maximum longitude and latitude (EPSG-3857) coordinates.
-     *
+     * <p>
      * <!-- src_embed com.azure.maps.render.async.get_copyright_from_bounding_box -->
      * <pre>
      * GeoBoundingBox boundingBox2 = new GeoBoundingBox&#40;52.41064, 4.84228, 52.41072, 4.84239&#41;;
@@ -648,7 +644,7 @@ public final class MapsRenderAsyncClient {
      * <p>
      * Returns copyright information for a given bounding box. Bounding-box requests should specify the minimum and
      * maximum longitude and latitude (EPSG-3857) coordinates.
-     *
+     * <p>
      * <!-- src_embed com.azure.maps.render.async.get_copyright_from_bounding_box -->
      * <pre>
      * GeoBoundingBox boundingBox2 = new GeoBoundingBox&#40;52.41064, 4.84228, 52.41072, 4.84239&#41;;
@@ -675,7 +671,7 @@ public final class MapsRenderAsyncClient {
      * <p>
      * Returns copyright information for a given bounding box with response. Bounding-box requests should specify the
      * minimum and maximum longitude and latitude (EPSG-3857) coordinates.
-     *
+     * <p>
      * <!-- src_embed com.azure.maps.render.async.get_copyright_from_bounding_box -->
      * <pre>
      * GeoBoundingBox boundingBox2 = new GeoBoundingBox&#40;52.41064, 4.84228, 52.41072, 4.84239&#41;;
@@ -697,10 +693,9 @@ public final class MapsRenderAsyncClient {
         return this.serviceClient.getCopyrightFromBoundingBoxWithResponseAsync(ResponseFormat.JSON, bbox,
             includeTextValue, context)
             .onErrorMap(throwable -> {
-                if (!(throwable instanceof ErrorResponseException)) {
+                if (!(throwable instanceof ErrorResponseException exception)) {
                     return throwable;
                 }
-                ErrorResponseException exception = (ErrorResponseException) throwable;
                 return new HttpResponseException(exception.getMessage(), exception.getResponse());
             });
     }
@@ -714,7 +709,7 @@ public final class MapsRenderAsyncClient {
      * copyright for the whole map, API is serving specific groups of copyrights for some countries. Returns the
      * copyright information for a given tile. To obtain the copyright information for a particular tile, the request
      * should specify the tile's zoom level and x and y coordinates (see: Zoom Levels and Tile Grid).
-     *
+     * <p>
      * <!-- src_embed com.azure.maps.render.async.get_copyright_for_tile -->
      * <pre>
      * asyncClient.getCopyrightForTile&#40;new TileIndex&#40;&#41;.setX&#40;9&#41;.setY&#40;22&#41;.setZ&#40;6&#41;, true&#41;.block&#40;&#41;;
@@ -743,7 +738,7 @@ public final class MapsRenderAsyncClient {
      * copyright for the whole map, API is serving specific groups of copyrights for some countries. Returns the
      * copyright information for a given tile. To obtain the copyright information for a particular tile, the request
      * should specify the tile's zoom level and x and y coordinates (see: Zoom Levels and Tile Grid).
-     *
+     * <p>
      * <!-- src_embed com.azure.maps.render.async.get_copyright_for_tile -->
      * <pre>
      * asyncClient.getCopyrightForTile&#40;new TileIndex&#40;&#41;.setX&#40;9&#41;.setY&#40;22&#41;.setZ&#40;6&#41;, true&#41;.block&#40;&#41;;
@@ -770,7 +765,7 @@ public final class MapsRenderAsyncClient {
      * addition to basic copyright for the whole map, API is serving specific groups of copyrights for some countries.
      * Returns the copyright information for a given tile. To obtain the copyright information for a particular tile,
      * the request should specify the tile's zoom level and x and y coordinates (see: Zoom Levels and Tile Grid)
-     *
+     * <p>
      * <!-- src_embed com.azure.maps.render.async.get_copyright_for_tile -->
      * <pre>
      * asyncClient.getCopyrightForTile&#40;new TileIndex&#40;&#41;.setX&#40;9&#41;.setY&#40;22&#41;.setZ&#40;6&#41;, true&#41;.block&#40;&#41;;
@@ -789,10 +784,9 @@ public final class MapsRenderAsyncClient {
         return this.serviceClient.getCopyrightForTileWithResponseAsync(ResponseFormat.JSON, tileIndex, includeTextValue,
             context)
             .onErrorMap(throwable -> {
-                if (!(throwable instanceof ErrorResponseException)) {
+                if (!(throwable instanceof ErrorResponseException exception)) {
                     return throwable;
                 }
-                ErrorResponseException exception = (ErrorResponseException) throwable;
                 return new HttpResponseException(exception.getMessage(), exception.getResponse());
             });
     }
@@ -806,7 +800,7 @@ public final class MapsRenderAsyncClient {
      * copyright for the whole map, API is serving specific groups of copyrights for some countries. Returns the
      * copyright information for the world. To obtain the default copyright information for the whole world, do not
      * specify a tile or bounding box.
-     *
+     * <p>
      * <!-- src_embed com.azure.maps.render.async.get_copyright_for_world -->
      * <pre>
      * asyncClient.getCopyrightForWorld&#40;true&#41;.block&#40;&#41;;
@@ -834,7 +828,7 @@ public final class MapsRenderAsyncClient {
      * copyright for the whole map, API is serving specific groups of copyrights for some countries. Returns the
      * copyright information for the world. To obtain the default copyright information for the whole world, do not
      * specify a tile or bounding box.
-     *
+     * <p>
      * <!-- src_embed com.azure.maps.render.async.get_copyright_for_world -->
      * <pre>
      * asyncClient.getCopyrightForWorld&#40;true&#41;.block&#40;&#41;;
@@ -860,7 +854,7 @@ public final class MapsRenderAsyncClient {
      * addition to basic copyright for the whole map, API is serving specific groups of copyrights for some countries.
      * Returns the copyright information for the world. To obtain the default copyright information for the whole world,
      * do not specify a tile or bounding box.
-     *
+     * <p>
      * <!-- src_embed com.azure.maps.render.async.get_copyright_for_world -->
      * <pre>
      * asyncClient.getCopyrightForWorld&#40;true&#41;.block&#40;&#41;;
@@ -876,10 +870,9 @@ public final class MapsRenderAsyncClient {
         IncludeText includeTextValue = includeText ? IncludeText.YES : IncludeText.NO;
         return this.serviceClient.getCopyrightForWorldWithResponseAsync(ResponseFormat.JSON, includeTextValue, context)
             .onErrorMap(throwable -> {
-                if (!(throwable instanceof ErrorResponseException)) {
+                if (!(throwable instanceof ErrorResponseException exception)) {
                     return throwable;
                 }
-                ErrorResponseException exception = (ErrorResponseException) throwable;
                 return new HttpResponseException(exception.getMessage(), exception.getResponse());
             });
     }

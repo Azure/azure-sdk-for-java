@@ -64,7 +64,7 @@ public final class MapsRenderClient {
 
     /**
      * Get Map Tile
-     *
+     * <p>
      * <!-- src_embed com.azure.maps.render.sync.get_map_tile -->
      * <pre>
      * System.out.println&#40;&quot;Get Map Tile&quot;&#41;;
@@ -74,7 +74,7 @@ public final class MapsRenderClient {
      * client.getMapTile&#40;mapTileOptions&#41;;
      * </pre>
      * <!-- end com.azure.maps.render.sync.get_map_tile -->
-     *
+     * <p>
      * The Get Map Tiles API allows users to request map tiles in vector or raster formats typically to be integrated
      * into a map control or SDK.
      * @param options the {@code MapTileOptions} to control the API behavior.
@@ -90,7 +90,7 @@ public final class MapsRenderClient {
 
     /**
      * Get Map Tile
-     *
+     * <p>
      * <!-- src_embed com.azure.maps.render.sync.get_map_tile -->
      * <pre>
      * System.out.println&#40;&quot;Get Map Tile&quot;&#41;;
@@ -100,7 +100,7 @@ public final class MapsRenderClient {
      * client.getMapTile&#40;mapTileOptions&#41;;
      * </pre>
      * <!-- end com.azure.maps.render.sync.get_map_tile -->
-     *
+     * <p>
      * The Get Map Tiles API allows users to request map tiles in vector or raster formats typically to be integrated
      * into a map control or SDK.
      * @param options the {@code MapTileOptions} to control the API behavior.
@@ -117,7 +117,7 @@ public final class MapsRenderClient {
 
     /**
      * Get Map Tileset
-     *
+     * <p>
      * <!-- src_embed com.azure.maps.render.sync.get_map_tileset -->
      * <pre>
      * System.out.println&#40;&quot;Get Map Tileset&quot;&#41;;
@@ -125,7 +125,7 @@ public final class MapsRenderClient {
      * client.getMapTileset&#40;TilesetId.MICROSOFT_BASE&#41;;
      * </pre>
      * <!-- end com.azure.maps.render.sync.get_map_tileset -->
-     *
+     * <p>
      * The Get Map Tileset API allows users to request metadata for a tileset.
      *
      * @param tilesetId the tileset id.
@@ -143,7 +143,7 @@ public final class MapsRenderClient {
      * Get Map Tileset
      * <p>
      * The Get Map Tileset API allows users to request metadata for a tileset.
-     *
+     * <p>
      * <!-- src_embed com.azure.maps.render.sync.get_map_tileset -->
      * <pre>
      * System.out.println&#40;&quot;Get Map Tileset&quot;&#41;;
@@ -166,7 +166,7 @@ public final class MapsRenderClient {
 
     /**
      * Get Map Attribution
-     *
+     * <p>
      * <!-- src_embed com.azure.maps.render.sync.get_map_attribution -->
      * <pre>
      * System.out.println&#40;&quot;Get Map Attribution&quot;&#41;;
@@ -194,7 +194,7 @@ public final class MapsRenderClient {
      * <p>
      * The Get Map Attribution With Response API allows users to request map copyright attribution information for a
      * section of a tileset with response
-     *
+     * <p>
      * <!-- src_embed com.azure.maps.render.sync.get_map_attribution -->
      * <pre>
      * System.out.println&#40;&quot;Get Map Attribution&quot;&#41;;
@@ -224,7 +224,7 @@ public final class MapsRenderClient {
      * <p>
      * Fetches state tiles in vector format typically to be integrated into indoor maps module of map control or SDK.
      * The map control will call this API after user turns on dynamic styling (see [Zoom Levels and Tile
-     * Grid](https://docs.microsoft.com/azure/location-based-services/zoom-levels-and-tile-grid)).
+     * Grid](<a href="https://docs.microsoft.com/azure/location-based-services/zoom-levels-and-tile-grid">...</a>)).
      *
      * @param stream The output stream to which the tile is written to.
      * @param statesetId The stateset id.
@@ -276,7 +276,7 @@ public final class MapsRenderClient {
      * <p>
      * As an alternative to copyrights for map request, one can receive captions for displaying the map provider
      * information on the map.
-     *
+     * <p>
      * <!-- src_embed com.azure.maps.render.sync.get_copyright_caption -->
      * <pre>
      * System.out.println&#40;&quot;Get Copyright Caption&quot;&#41;;
@@ -302,7 +302,7 @@ public final class MapsRenderClient {
      * <p>
      * As an alternative to copyrights for map request, one can receive captions for displaying the map provider
      * information on the map.
-     *
+     * <p>
      * <!-- src_embed com.azure.maps.render.sync.get_copyright_caption -->
      * <pre>
      * System.out.println&#40;&quot;Get Copyright Caption&quot;&#41;;
@@ -331,7 +331,7 @@ public final class MapsRenderClient {
      * like to interact with the rendered map. If the map contents will be relatively unchanging, a static map is a good
      * choice. If you want to support a lot of zooming, panning and changing of the map content, the map tile service
      * would be a better choice.
-     *
+     * <p>
      * <!-- src_embed com.azure.maps.render.sync.get_map_static_image -->
      * <pre>
      * System.out.println&#40;&quot;Get Map Static Image&quot;&#41;;
@@ -366,7 +366,7 @@ public final class MapsRenderClient {
      * like to interact with the rendered map. If the map contents will be relatively unchanging, a static map is a good
      * choice. If you want to support a lot of zooming, panning and changing of the map content, the map tile service
      * would be a better choice.
-     *
+     * <p>
      * <!-- src_embed com.azure.maps.render.sync.get_map_static_image -->
      * <pre>
      * System.out.println&#40;&quot;Get Map Static Image&quot;&#41;;
@@ -399,7 +399,7 @@ public final class MapsRenderClient {
      * <p>
      * Returns copyright information for a given bounding box. Bounding-box requests should specify the minimum and
      * maximum longitude and latitude (EPSG-3857) coordinates.
-     *
+     * <p>
      * <!-- src_embed com.azure.maps.render.sync.get_copyright_from_bounding_box -->
      * <pre>
      * GeoBoundingBox boundingBox = new GeoBoundingBox&#40;52.41064, 4.84228, 52.41072, 4.84239&#41;;
@@ -425,7 +425,7 @@ public final class MapsRenderClient {
      * <p>
      * Returns copyright information for a given bounding box with response. Bounding-box requests should specify the minimum and
      * maximum longitude and latitude (EPSG-3857) coordinates.
-     *
+     * <p>
      * <!-- src_embed com.azure.maps.render.sync.get_copyright_from_bounding_box -->
      * <pre>
      * GeoBoundingBox boundingBox = new GeoBoundingBox&#40;52.41064, 4.84228, 52.41072, 4.84239&#41;;
@@ -454,7 +454,7 @@ public final class MapsRenderClient {
      * copyright for the whole map, API is serving specific groups of copyrights for some countries. Returns the
      * copyright information for a given tile. To obtain the copyright information for a particular tile, the request
      * should specify the tile's zoom level and x and y coordinates (see: Zoom Levels and Tile Grid).
-     *
+     * <p>
      * <!-- src_embed com.azure.maps.render.sync.get_copyright_for_tile -->
      * <pre>
      * client.getCopyrightForTile&#40;new TileIndex&#40;&#41;.setX&#40;9&#41;.setY&#40;22&#41;.setZ&#40;6&#41;, true&#41;;
@@ -481,7 +481,7 @@ public final class MapsRenderClient {
      * addition to basic copyright for the whole map, API is serving specific groups of copyrights for some countries.
      * Returns the copyright information for a given tile. To obtain the copyright information for a particular tile,
      * the request should specify the tile's zoom level and x and y coordinates (see: Zoom Levels and Tile Grid)
-     *
+     * <p>
      * <!-- src_embed com.azure.maps.render.sync.get_copyright_for_tile -->
      * <pre>
      * client.getCopyrightForTile&#40;new TileIndex&#40;&#41;.setX&#40;9&#41;.setY&#40;22&#41;.setZ&#40;6&#41;, true&#41;;
@@ -509,7 +509,7 @@ public final class MapsRenderClient {
      * copyright for the whole map, API is serving specific groups of copyrights for some countries. Returns the
      * copyright information for the world. To obtain the default copyright information for the whole world, do not
      * specify a tile or bounding box.
-     *
+     * <p>
      * <!-- src_embed com.azure.maps.render.sync.get_copyright_for_world -->
      * <pre>
      * client.getCopyrightForWorld&#40;true&#41;;
@@ -535,7 +535,7 @@ public final class MapsRenderClient {
      * addition to basic copyright for the whole map, API is serving specific groups of copyrights for some countries.
      * Returns the copyright information for the world. To obtain the default copyright information for the whole world,
      * do not specify a tile or bounding box.
-     *
+     * <p>
      * <!-- src_embed com.azure.maps.render.sync.get_copyright_for_world -->
      * <pre>
      * client.getCopyrightForWorld&#40;true&#41;;
