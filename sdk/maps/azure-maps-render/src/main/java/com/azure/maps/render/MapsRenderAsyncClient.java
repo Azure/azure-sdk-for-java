@@ -601,7 +601,7 @@ public final class MapsRenderAsyncClient {
             ? Arrays.asList(center.getLatitude(), center.getLongitude(), center.getAltitude()) : null;
         List<Double> bbox = Arrays.asList(boundingBox.getWest(), boundingBox.getSouth(), boundingBox.getEast(),
             boundingBox.getNorth());
-        return this.serviceClient.getMapStaticImageNoCustomHeadersWithResponseAsync(TilesetId.MICROSOFT_BASE_ROAD, TrafficTilesetId.MICROSOFT_TRAFFIC_RELATIVE_MAIN, options.getZoom(), centerPrivate, bbox,
+        return this.serviceClient.getMapStaticImageNoCustomHeadersWithResponseAsync(options.getTilesetId(), TrafficTilesetId.MICROSOFT_TRAFFIC_RELATIVE_MAIN, options.getZoom(), centerPrivate, bbox,
             options.getHeight(), options.getWidth(), options.getLanguage(), options.getLocalizedMapView(),
             options.getPins(), options.getPath(), context)
             .onErrorMap(throwable -> {

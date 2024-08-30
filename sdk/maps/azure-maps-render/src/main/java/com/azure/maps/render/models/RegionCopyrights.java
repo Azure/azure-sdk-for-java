@@ -35,7 +35,7 @@ public final class RegionCopyrights implements JsonSerializable<RegionCopyrights
 
     /**
      * Get the copyrights property: Copyrights array.
-     *
+     * 
      * @return the copyrights value.
      */
     public List<String> getCopyrights() {
@@ -44,7 +44,7 @@ public final class RegionCopyrights implements JsonSerializable<RegionCopyrights
 
     /**
      * Get the country property: Country property.
-     *
+     * 
      * @return the country value.
      */
     public RegionCopyrightsCountry getCountry() {
@@ -62,7 +62,7 @@ public final class RegionCopyrights implements JsonSerializable<RegionCopyrights
 
     /**
      * Reads an instance of RegionCopyrights from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of RegionCopyrights if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.

@@ -14,6 +14,7 @@ import java.util.List;
  */
 @Fluent
 public final class MapStaticImageOptions {
+    private TilesetId tilesetId;
     private StaticMapLayer layer;
     private Integer zoom;
     private GeoPosition center;
@@ -24,6 +25,15 @@ public final class MapStaticImageOptions {
     private LocalizedMapView localizedMapView;
     private List<String> pins;
     private List<String> path;
+
+    public TilesetId getTilesetId() {
+        return tilesetId;
+    }
+
+    public MapStaticImageOptions setTilesetId(TilesetId tilesetId) {
+        this.tilesetId = tilesetId;
+        return this;
+    }
 
     /**
      * Creates an instance of {@link MapStaticImageOptions}.

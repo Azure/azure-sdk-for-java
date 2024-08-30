@@ -24,7 +24,7 @@ public final class TrafficTilesetId extends ExpandableStringEnum<TrafficTilesetI
 
     /**
      * Creates a new instance of TrafficTilesetId value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,7 +33,7 @@ public final class TrafficTilesetId extends ExpandableStringEnum<TrafficTilesetI
 
     /**
      * Creates or finds a TrafficTilesetId from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding TrafficTilesetId.
      */
@@ -43,7 +43,7 @@ public final class TrafficTilesetId extends ExpandableStringEnum<TrafficTilesetI
 
     /**
      * Gets known TrafficTilesetId values.
-     *
+     * 
      * @return known TrafficTilesetId values.
      */
     public static Collection<TrafficTilesetId> values() {

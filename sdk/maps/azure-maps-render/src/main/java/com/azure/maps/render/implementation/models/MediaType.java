@@ -23,7 +23,7 @@ public final class MediaType extends ExpandableStringEnum<MediaType> {
 
     /**
      * Creates a new instance of MediaType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -32,7 +32,7 @@ public final class MediaType extends ExpandableStringEnum<MediaType> {
 
     /**
      * Creates or finds a MediaType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MediaType.
      */
@@ -42,7 +42,7 @@ public final class MediaType extends ExpandableStringEnum<MediaType> {
 
     /**
      * Gets known MediaType values.
-     *
+     * 
      * @return known MediaType values.
      */
     public static Collection<MediaType> values() {

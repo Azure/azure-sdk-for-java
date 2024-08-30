@@ -25,7 +25,7 @@ public final class RenderClientImpl {
     /**
      * Gets The Accept header field can be used to specify preferences regarding response media types. Allowed media
      * types include image/jpeg and image/png. Return image in image/png if Accept header is not specified.
-     *
+     * 
      * @return the accept value.
      */
     public MediaType getAccept() {
@@ -45,7 +45,7 @@ public final class RenderClientImpl {
      * represents a unique ID for the Azure Maps account and can be retrieved from the Azure Maps management plane
      * Account API. To use Microsoft Entra ID security in Azure Maps see the following
      * [articles](https://aka.ms/amauthdetails) for guidance.
-     *
+     * 
      * @return the clientId value.
      */
     public String getClientId() {
@@ -59,7 +59,7 @@ public final class RenderClientImpl {
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the host value.
      */
     public String getHost() {
@@ -73,7 +73,7 @@ public final class RenderClientImpl {
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     public String getApiVersion() {
@@ -87,7 +87,7 @@ public final class RenderClientImpl {
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
@@ -101,7 +101,7 @@ public final class RenderClientImpl {
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     public SerializerAdapter getSerializerAdapter() {
@@ -115,7 +115,7 @@ public final class RenderClientImpl {
 
     /**
      * Gets the RendersImpl object to access its operations.
-     *
+     * 
      * @return the RendersImpl object.
      */
     public RendersImpl getRenders() {
@@ -124,7 +124,7 @@ public final class RenderClientImpl {
 
     /**
      * Initializes an instance of RenderClient client.
-     *
+     * 
      * @param accept The Accept header field can be used to specify preferences regarding response media types. Allowed
      * media types include image/jpeg and image/png. Return image in image/png if Accept header is not specified.
      * @param clientId Specifies which account is intended for usage in conjunction with the Microsoft Entra ID security
@@ -141,7 +141,7 @@ public final class RenderClientImpl {
 
     /**
      * Initializes an instance of RenderClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param accept The Accept header field can be used to specify preferences regarding response media types. Allowed
      * media types include image/jpeg and image/png. Return image in image/png if Accept header is not specified.
@@ -158,7 +158,7 @@ public final class RenderClientImpl {
 
     /**
      * Initializes an instance of RenderClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param accept The Accept header field can be used to specify preferences regarding response media types. Allowed

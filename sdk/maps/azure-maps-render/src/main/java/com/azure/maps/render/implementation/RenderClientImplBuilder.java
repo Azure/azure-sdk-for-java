@@ -226,7 +226,7 @@ public final class RenderClientImplBuilder
     /**
      * Sets The Accept header field can be used to specify preferences regarding response media types. Allowed media
      * types include image/jpeg and image/png. Return image in image/png if Accept header is not specified.
-     *
+     * 
      * @param accept the accept value.
      * @return the RenderClientImplBuilder.
      */
@@ -247,7 +247,7 @@ public final class RenderClientImplBuilder
      * represents a unique ID for the Azure Maps account and can be retrieved from the Azure Maps management plane
      * Account API. To use Microsoft Entra ID security in Azure Maps see the following
      * [articles](https://aka.ms/amauthdetails) for guidance.
-     *
+     * 
      * @param clientId the clientId value.
      * @return the RenderClientImplBuilder.
      */
@@ -265,7 +265,7 @@ public final class RenderClientImplBuilder
 
     /**
      * Sets server parameter.
-     *
+     * 
      * @param host the host value.
      * @return the RenderClientImplBuilder.
      */
@@ -283,7 +283,7 @@ public final class RenderClientImplBuilder
 
     /**
      * Sets Api Version.
-     *
+     * 
      * @param apiVersion the apiVersion value.
      * @return the RenderClientImplBuilder.
      */
@@ -301,7 +301,7 @@ public final class RenderClientImplBuilder
 
     /**
      * Sets The serializer to serialize an object into a string.
-     *
+     * 
      * @param serializerAdapter the serializerAdapter value.
      * @return the RenderClientImplBuilder.
      */
@@ -319,7 +319,7 @@ public final class RenderClientImplBuilder
 
     /**
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
-     *
+     * 
      * @param retryPolicy the retryPolicy value.
      * @return the RenderClientImplBuilder.
      */
@@ -331,7 +331,7 @@ public final class RenderClientImplBuilder
 
     /**
      * Builds an instance of RenderClientImpl with the provided parameters.
-     *
+     * 
      * @return an instance of RenderClientImpl.
      */
     @Generated
