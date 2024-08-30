@@ -26,7 +26,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-maps-search</artifactId>
-    <version>1.0.0-beta.1</version>
+    <version>2.0.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -73,7 +73,7 @@ See [Authentication][authenticate] for more options.
 See [API design][design] for general introduction on design and key concepts on Azure Management Libraries.
 
 ## Examples
-Get Polygons
+### Get Polygons
 ```java sync.get_polygon
 System.out.println("Get Polygons:");
 GeoPosition coordinates = new GeoPosition(-122.204141, 47.61256);
@@ -84,7 +84,7 @@ Boundary result = client.getPolygons(coordinates, null, BoundaryResultTypeEnum.L
 Response<Boundary> response = client.getPolygonsWithResponse(coordinates, null, BoundaryResultTypeEnum.LOCALITY, ResolutionEnum.SMALL, Context.NONE);
 ```
 
-Get Geocoding
+### Get Geocoding
 ```java sync.get_geocoding
 System.out.println("Get Geocoding:");
 
@@ -104,7 +104,7 @@ Response<GeocodingResponse> responseNoHeader = client.getGeocodingNoCustomHeader
     new BaseSearchOptions().setCoordinates(new GeoPosition(-74.011454, 40.706270)).setTop(5), null);
 ```
 
-Get Geocoding Batch
+### Get Geocoding Batch
 ```java sync.get_geocoding_batch
 System.out.println("Get Geocoding Batch:");
 
@@ -123,7 +123,7 @@ Response<GeocodingBatchResponse> response = client.getGeocodingBatchWithResponse
 
 ```
 
-Get Reverse Geocoding
+### Get Reverse Geocoding
 ```java sync.get_reverse_geocoding
 System.out.println("Get Reverse Geocoding:");
 
@@ -134,7 +134,7 @@ GeocodingResponse result = client.getReverseGeocoding(coordinates, Arrays.asList
 Response<GeocodingResponse> response = client.getReverseGeocodingWithResponse(coordinates, Arrays.asList(ReverseGeocodingResultTypeEnum.ADDRESS), null, Context.NONE);
 ```
 
-Get Reverse Geocoding Batch
+### Get Reverse Geocoding Batch
 ```java sync.get_reverse_geocoding_batch
 System.out.println("Get Reverse Geocoding Batch:");
 

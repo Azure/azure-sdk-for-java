@@ -14,7 +14,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-maps-search</artifactId>
-  <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-maps-search;current} -->
+  <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-maps-search;current} -->
   <packaging>jar</packaging>
 
   <name>Azure Maps SDK Search client library</name>
