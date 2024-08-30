@@ -637,6 +637,9 @@
 # ServiceLabel: %Network - Private Link
 # ServiceOwners:                                     @privlinksuppgithub
 
+# PRLabel: %NetworkCloud 
+/sdk/networkcloud/                                   @Azure/azure-sdk-write-networkcloud
+
 # ServiceLabel: %Notification Hub
 # ServiceOwners:                                     @tjsomasundaram
 
