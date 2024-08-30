@@ -1,19 +1,18 @@
+parameters:
+  - name: LanguageVersion
+    type: string
+    default: '17'
+
 steps:
-  - pwsh: |
-      Write-Host "Update JAVA_HOME and PATH to make $(Java2docfxJavaHome) the default for java2docfx"
-      $Java2docfxJavaHomeValue = [System.Environment]::GetEnvironmentVariable($Java2docfxJavaHome)
-      if($Java2docfxJavaHomeValue){
-          Write-Host $Java2docfxJavaHomeValue
-          echo "##vso[task.setvariable variable=JAVA_HOME]$($Java2docfxJavaHomeValue)"
-          echo "##vso[task.setvariable variable=PATH]$($Java2docfxJavaHomeValue)\bin;${env:PATH}"
-          Write-Host "Echoing Java version"
-          java -version
-      }
-      else {
-          Write-Error "Java home $Java2docfxJavaHome not available is not available on this image."
-          exit 1
-      }
-    displayName: Set Java default version for Java2docfx
+  - task: JavaToolInstaller@0
+    inputs:
+      versionSpec: ${{ parameters.LanguageVersion }}
+      jdkArchitectureOption: 'x64'
+      jdkSourceOption: 'PreInstalled'
+    displayName: Install Java ${{ parameters.LanguageVersion }}
+  - script: |
+      java -version
+    displayName: Print Java Version
   # Create a java2docfx subdirectory in the $(Build.BinariesDirectory) and install the java2docfx there
   # This way, the jar file is in its own subdirectory and isolated.
   - pwsh: |

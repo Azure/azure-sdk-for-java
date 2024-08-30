@@ -14,9 +14,8 @@ variables:
   # This is the version of Python used by various tools in the Java build/release processes
   PythonVersion: '3.9'
 
-  # Basically, java2docfx needs to run against Java 17. Since setup needs to add this version to
-  # the path and update JAVA_HOME, use home variable
-  Java2docfxJavaHome: JAVA_HOME_17_X64
+  # java2docfx needs to run against Java 17
+  Java2docfxJavaVersion: '17'
 
   # True if 'Enable system diagnostics' is checked when running a pipeline manually
   IsDebug: $[coalesce(variables['System.Debug'], 'false')]
