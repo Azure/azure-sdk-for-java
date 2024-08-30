@@ -372,7 +372,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
 
     @DataProvider(name = "testConfigs_readAfterCreation")
     public Object[][] testConfigs_readAfterCreation() {
-        return new Object[][] {
+        Object[][] testConfigs_readAfterCreation = new Object[][] {
             // CONFIG description
             // new Object[] {
             //    TestId - name identifying the test case
@@ -383,6 +383,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             //    Failure injection callback
             //    Status code/sub status code validation callback
             //    Diagnostics context validation callback
+            //    Should use preferred regions
             // },
 
             // This test injects 404/1002 across all regions for the read operation after the initial creation
@@ -433,20 +434,6 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 injectReadSessionNotAvailableIntoFirstRegionOnly,
                 validateStatusCodeIs200Ok,
                 validateDiagnosticsContextHasDiagnosticsForAllRegions
-            },
-
-            // Only injects 404/1002 into secondary region - just ensure that no cross regional execution
-            // is even happening
-            new Object[] {
-                "404-1002_AllExceptFirstRegion_RemotePreferred",
-                ONE_SECOND_DURATION,
-                defaultAvailabilityStrategy,
-                CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED,
-                ConnectionMode.DIRECT,
-                sameDocumentIdJustCreated,
-                injectReadSessionNotAvailableIntoAllExceptFirstRegion,
-                validateStatusCodeIs200Ok,
-                validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
             },
 
             // This test simulates 404/1002 across all regions for the read operation after the initial creation
@@ -683,22 +670,6 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegionButWithRegionalFailover
             },
 
-            // This test injects 503 (Service Unavailable) into the local region only.
-            // Expected outcome is a successful retry either by the cross-regional retry triggered in the
-            // ClientRetryPolicy of the initial execution or the one triggered by the availability strategy
-            // whatever happens first
-            new Object[] {
-                "503_FirstRegionOnly",
-                ONE_SECOND_DURATION,
-                eagerThresholdAvailabilityStrategy,
-                noRegionSwitchHint,
-                ConnectionMode.DIRECT,
-                sameDocumentIdJustCreated,
-                injectServiceUnavailableIntoFirstRegionOnly,
-                validateStatusCodeIs200Ok,
-                validateDiagnosticsContextHasDiagnosticsForOneOrTwoRegionsButAlwaysContactedSecondRegion
-            },
-
             // This test injects 503 (Service Unavailable) into all regions.
             // Expected outcome is a timeout due to ongoing retries in both operations triggered by
             // availability strategy. Diagnostics should contain two operations.
@@ -712,23 +683,6 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 injectServiceUnavailableIntoAllRegions,
                 validateStatusCodeIsServiceUnavailable,
                 validateDiagnosticsContextHasDiagnosticsForAllRegions
-            },
-
-            // This test injects 500 (Internal Server Error) into all regions.
-            //
-            // Currently, 500 (Internal Server error) is not ever retried. Neither in the Consistency Reader
-            // nor ClientRetryPolicy - so, a 500 will immediately fail the Mono and there will only
-            // be diagnostics for the first region
-            new Object[] {
-               "500_FirstRegionOnly_NoAvailabilityStrategy",
-               Duration.ofSeconds(90),
-               noAvailabilityStrategy,
-               noRegionSwitchHint,
-                ConnectionMode.DIRECT,
-               sameDocumentIdJustCreated,
-               injectInternalServerErrorIntoFirstRegionOnly,
-               validateStatusCodeIsInternalServerError,
-               validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
             },
 
             // This test injects 500 (Internal Server Error) into all regions.
@@ -825,6 +779,23 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 validateDiagnosticsContextHasDiagnosticsForOneOrTwoRegionsButAlwaysContactedSecondRegion
             },
         };
+
+        List<List<Object>> intermediateTestConfigList = new ArrayList<>();
+        boolean[] shouldInjectPreferredRegionsFlags = new boolean[]{true, false};
+
+        for (boolean shouldInjectPreferredRegionsFlag : shouldInjectPreferredRegionsFlags) {
+            for (Object[] testConfigForSingleTest : testConfigs_readAfterCreation) {
+                List<Object> testConfigForSingleTestAsMutableList = new ArrayList<>(Arrays.asList(testConfigForSingleTest));
+                testConfigForSingleTestAsMutableList.add(shouldInjectPreferredRegionsFlag);
+                intermediateTestConfigList.add(testConfigForSingleTestAsMutableList);
+            }
+        }
+
+        testConfigs_readAfterCreation = intermediateTestConfigList.stream()
+            .map(l -> l.stream().toArray(Object[]::new))
+            .toArray(Object[][]::new);
+
+        return testConfigs_readAfterCreation;
     }
 
     @Test(groups = {"multi-master"}, dataProvider = "testConfigs_readAfterCreation")
@@ -837,7 +808,8 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         String readItemDocumentIdOverride,
         BiConsumer<CosmosAsyncContainer, FaultInjectionOperationType> faultInjectionCallback,
         BiConsumer<Integer, Integer> validateStatusCode,
-        Consumer<CosmosDiagnosticsContext> validateDiagnosticsContext) {
+        Consumer<CosmosDiagnosticsContext> validateDiagnosticsContext,
+        boolean shouldInjectPreferredRegionsInClient) {
 
         Function<ItemOperationInvocationParameters, CosmosResponseWrapper> readItemCallback = (params) ->
             new CosmosResponseWrapper(params.container
@@ -868,7 +840,8 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             0,
             0,
             false,
-            connectionMode);
+            connectionMode,
+            shouldInjectPreferredRegionsInClient);
     }
 
     @DataProvider(name = "testConfigs_writeAfterCreation")
@@ -962,7 +935,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                     .block());
             };
 
-        return new Object[][] {
+        Object[][] testConfigs_writeAfterCreation = new Object[][] {
             // CONFIG description
             // new Object[] {
             //    TestId - name identifying the test case
@@ -1604,7 +1577,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegionButWithRegionalFailover
             },
 
-            // 404/1022 into all region
+            // 404/1002 into all region
             // Availability strategy exists - but no hedging because NonIdempotentWriteRetries are disabled
             // Regional fail-over seen = remote preferred region switch allows cross-regional retry to happen in
             // client retry policy within the e2e timeout.
@@ -1624,7 +1597,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
             },
 
-            // 404/1022 into local region only
+            // 404/1002 into local region only
             // Availability strategy exists - hedging or cross regional retry (remote regional preference) would
             // result in successful response.
             new Object[] {
@@ -1662,7 +1635,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 validateDiagnosticsContextHasDiagnosticsForAllRegions
             },
 
-            // 404/1022 into local region only
+            // 404/1002 into local region only
             // Availability strategy exists, but threshold is very high. So, hedging is not applicable.
             // Expected to get successful response from cross regional retry - region switch is remote allowing the
             // cross regional retry to finish within e2e timeout.
@@ -1807,7 +1780,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 })
             },
 
-            // 404/1022 into local region only
+            // 404/1002 into local region only
             // No availability strategy exists.
             // Expected to get 408 because min. in-region wait time is larger than e2e timeout.
             new Object[] {
@@ -1863,7 +1836,8 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 injectReadSessionNotAvailableIntoFirstRegionOnly,
                 validateStatusCodeIs201Created,
                 // no hedging even with availability strategy because nonIdempotentWrites are disabled
-                validateDiagnosticsContextHasDiagnosticsForAllRegions
+                validateDiagnosticsContextHasDiagnosticsForAllRegions,
+                true
             },
 
             // 404/1022 into local region only, attempt to delete a non-existing item
@@ -2243,6 +2217,23 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 validateDiagnosticsContextHasDiagnosticsForOneOrTwoRegionsButAlwaysContactedSecondRegion
             },
         };
+
+        List<List<Object>> intermediateTestConfigList = new ArrayList<>();
+        boolean[] shouldInjectPreferredRegionsFlags = new boolean[]{true, false};
+
+        for (boolean shouldInjectPreferredRegionsFlag : shouldInjectPreferredRegionsFlags) {
+            for (Object[] testConfigForSingleTest : testConfigs_writeAfterCreation) {
+                List<Object> testConfigForSingleTestAsMutableList = new ArrayList<>(Arrays.asList(testConfigForSingleTest));
+                testConfigForSingleTestAsMutableList.add(shouldInjectPreferredRegionsFlag);
+                intermediateTestConfigList.add(testConfigForSingleTestAsMutableList);
+            }
+        }
+
+        testConfigs_writeAfterCreation = intermediateTestConfigList.stream()
+            .map(l -> l.stream().toArray(Object[]::new))
+            .toArray(Object[][]::new);
+
+        return testConfigs_writeAfterCreation;
     }
 
     @Test(groups = {"multi-master"}, dataProvider = "testConfigs_writeAfterCreation")
@@ -2258,7 +2249,8 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         Function<ItemOperationInvocationParameters, CosmosResponseWrapper> actionAfterInitialCreation,
         BiConsumer<CosmosAsyncContainer, FaultInjectionOperationType> faultInjectionCallback,
         BiConsumer<Integer, Integer> validateStatusCode,
-        Consumer<CosmosDiagnosticsContext> validateDiagnosticsContext) {
+        Consumer<CosmosDiagnosticsContext> validateDiagnosticsContext,
+        boolean shouldInjectPreferredRegionsInClient) {
 
         execute(
             testCaseId,
@@ -2278,7 +2270,8 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             0,
             0,
             false,
-            connectionMode);
+            connectionMode,
+            shouldInjectPreferredRegionsInClient);
     }
 
     private CosmosResponseWrapper queryReturnsTotalRecordCountCore(
@@ -2524,7 +2517,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             assertThat(secondRegionDiagnostics.getFeedResponseDiagnostics().getClientSideRequestStatistics().size()).isEqualTo(1);
         };
 
-        return new Object[][] {
+        Object[][] testConfigs_queryAfterCreation = new Object[][] {
             // CONFIG description
             // new Object[] {
             //    TestId - name identifying the test case
@@ -3402,6 +3395,23 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 NO_OTHER_DOCS_WITH_SAME_PK
             }
         };
+
+        List<List<Object>> intermediateTestConfigList = new ArrayList<>();
+        boolean[] shouldInjectPreferredRegionsFlags = new boolean[]{true, false};
+
+        for (boolean shouldInjectPreferredRegionsFlag : shouldInjectPreferredRegionsFlags) {
+            for (Object[] testConfigForSingleTest : testConfigs_queryAfterCreation) {
+                List<Object> testConfigForSingleTestAsMutableList = new ArrayList<>(Arrays.asList(testConfigForSingleTest));
+                testConfigForSingleTestAsMutableList.add(shouldInjectPreferredRegionsFlag);
+                intermediateTestConfigList.add(testConfigForSingleTestAsMutableList);
+            }
+        }
+
+        testConfigs_queryAfterCreation = intermediateTestConfigList.stream()
+            .map(l -> l.stream().toArray(Object[]::new))
+            .toArray(Object[][]::new);
+
+        return testConfigs_queryAfterCreation;
     }
 
     @Test(groups = {"multi-master"}, dataProvider = "testConfigs_queryAfterCreation")
@@ -3420,7 +3430,8 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         Consumer<CosmosDiagnosticsContext>[] otherDiagnosticsContextValidations,
         Consumer<CosmosResponseWrapper> responseValidator,
         int numberOfOtherDocumentsWithSameId,
-        int numberOfOtherDocumentsWithSamePk) {
+        int numberOfOtherDocumentsWithSamePk,
+        boolean shouldInjectPreferredRegionsInClient) {
 
         execute(
             testCaseId,
@@ -3440,7 +3451,8 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             numberOfOtherDocumentsWithSameId,
             numberOfOtherDocumentsWithSamePk,
             false,
-            connectionMode);
+            connectionMode,
+            shouldInjectPreferredRegionsInClient);
     }
 
     private CosmosResponseWrapper readManyCore(
@@ -3637,7 +3649,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         BiFunction<ItemOperationInvocationParameters, List<Pair<String, String>>, CosmosResponseWrapper>
             readMany = (inputParams, tuples) -> readManyCore(tuples, inputParams);
 
-        return new Object[][] {
+        Object[][] testConfigs_readManyAfterCreation = new Object[][] {
             // CONFIG description
             // new Object[] {
             //    TestId - name identifying the test case
@@ -3974,6 +3986,23 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 NO_OTHER_DOCS_WITH_SAME_PK
             },
         };
+
+        List<List<Object>> intermediateTestConfigList = new ArrayList<>();
+        boolean[] shouldInjectPreferredRegionsFlags = new boolean[]{true, false};
+
+        for (boolean shouldInjectPreferredRegionsFlag : shouldInjectPreferredRegionsFlags) {
+            for (Object[] testConfigForSingleTest : testConfigs_readManyAfterCreation) {
+                List<Object> testConfigForSingleTestAsMutableList = new ArrayList<>(Arrays.asList(testConfigForSingleTest));
+                testConfigForSingleTestAsMutableList.add(shouldInjectPreferredRegionsFlag);
+                intermediateTestConfigList.add(testConfigForSingleTestAsMutableList);
+            }
+        }
+
+        testConfigs_readManyAfterCreation = intermediateTestConfigList.stream()
+            .map(l -> l.stream().toArray(Object[]::new))
+            .toArray(Object[][]::new);
+
+        return testConfigs_readManyAfterCreation;
     }
 
     @Test(groups = {"multi-master"}, dataProvider = "testConfigs_readManyAfterCreation")
@@ -3991,7 +4020,8 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         Consumer<CosmosDiagnosticsContext>[] otherDiagnosticsContextValidations,
         Consumer<CosmosResponseWrapper> responseValidator,
         int numberOfOtherDocumentsWithSameId,
-        int numberOfOtherDocumentsWithSamePk) {
+        int numberOfOtherDocumentsWithSamePk,
+        boolean shouldInjectPreferredRegionsInClient) {
 
         execute(
             testCaseId,
@@ -4014,7 +4044,8 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             numberOfOtherDocumentsWithSameId,
             numberOfOtherDocumentsWithSamePk,
             false,
-            ConnectionMode.DIRECT);
+            ConnectionMode.DIRECT,
+            shouldInjectPreferredRegionsInClient);
     }
 
     private CosmosResponseWrapper readAllReturnsTotalRecordCountCore(
@@ -4270,7 +4301,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             }
         };
 
-        return new Object[][] {
+        Object[][] testConfigs_readAllAfterCreation = new Object[][] {
             // CONFIG description
             // new Object[] {
             //    TestId - name identifying the test case
@@ -4752,6 +4783,23 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 NO_OTHER_DOCS_WITH_SAME_PK
             },
         };
+
+        List<List<Object>> intermediateTestConfigList = new ArrayList<>();
+        boolean[] shouldInjectPreferredRegionsFlags = new boolean[]{true, false};
+
+        for (boolean shouldInjectPreferredRegionsFlag : shouldInjectPreferredRegionsFlags) {
+            for (Object[] testConfigForSingleTest : testConfigs_readAllAfterCreation()) {
+                List<Object> testConfigForSingleTestAsMutableList = new ArrayList<>(Arrays.asList(testConfigForSingleTest));
+                testConfigForSingleTestAsMutableList.add(shouldInjectPreferredRegionsFlag);
+                intermediateTestConfigList.add(testConfigForSingleTestAsMutableList);
+            }
+        }
+
+        testConfigs_readAllAfterCreation = intermediateTestConfigList.stream()
+            .map(l -> l.stream().toArray(Object[]::new))
+            .toArray(Object[][]::new);
+
+        return testConfigs_readAllAfterCreation;
     }
 
     @Test(groups = {"multi-master"}, dataProvider = "testConfigs_readAllAfterCreation")
@@ -4769,7 +4817,8 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         Consumer<CosmosDiagnosticsContext>[] otherDiagnosticsContextValidations,
         Consumer<CosmosResponseWrapper> responseValidator,
         int numberOfOtherDocumentsWithSameId,
-        int numberOfOtherDocumentsWithSamePk) {
+        int numberOfOtherDocumentsWithSamePk,
+        boolean shouldInjectPreferredRegionsInClient) {
 
         execute(
             testCaseId,
@@ -4789,7 +4838,8 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             numberOfOtherDocumentsWithSameId,
             numberOfOtherDocumentsWithSamePk,
             true,
-            connectionMode);
+            connectionMode,
+            shouldInjectPreferredRegionsInClient);
     }
 
     private static ObjectNode createTestItemAsJson(String id, String pkValue) {
@@ -5040,7 +5090,8 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         int numberOfOtherDocumentsWithSameId,
         int numberOfOtherDocumentsWithSamePk,
         boolean clearContainerBeforeExecution,
-        ConnectionMode connectionMode) {
+        ConnectionMode connectionMode,
+        boolean shouldInjectPreferredRegionsInClient) {
 
         // Test two cases here:
         // - the endToEndOperationLatencyPolicyConfig is being configured on the client only
@@ -5060,7 +5111,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
 
             if (endToEndOperationLatencyPolicyConfig != null) {
                 clientWithPreferredRegions = buildCosmosClientWithE2ETimeoutPolicy(
-                    this.writeableRegions,
+                    shouldInjectPreferredRegionsInClient ? this.writeableRegions : Collections.emptyList(),
                     regionSwitchHint,
                     connectionMode,
                     customMinRetryTimeInLocalRegionForWrites,
@@ -5068,7 +5119,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                     endToEndOperationLatencyPolicyConfig);
             } else {
                 clientWithPreferredRegions = buildCosmosClientWithoutE2ETimeoutPolicy(
-                    this.writeableRegions,
+                    shouldInjectPreferredRegionsInClient ? this.writeableRegions : Collections.emptyList(),
                     regionSwitchHint,
                     connectionMode,
                     customMinRetryTimeInLocalRegionForWrites,
