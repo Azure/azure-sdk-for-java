@@ -11,8 +11,8 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
@@ -24,13 +24,8 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appcontainers.fluent.ContainerAppsApiClient;
-import com.azure.resourcemanager.appcontainers.implementation.AppResilienciesImpl;
 import com.azure.resourcemanager.appcontainers.implementation.AvailableWorkloadProfilesImpl;
 import com.azure.resourcemanager.appcontainers.implementation.BillingMetersImpl;
-import com.azure.resourcemanager.appcontainers.implementation.BuildAuthTokensImpl;
-import com.azure.resourcemanager.appcontainers.implementation.BuildersImpl;
-import com.azure.resourcemanager.appcontainers.implementation.BuildsByBuilderResourcesImpl;
-import com.azure.resourcemanager.appcontainers.implementation.BuildsImpl;
 import com.azure.resourcemanager.appcontainers.implementation.CertificatesImpl;
 import com.azure.resourcemanager.appcontainers.implementation.ConnectedEnvironmentsCertificatesImpl;
 import com.azure.resourcemanager.appcontainers.implementation.ConnectedEnvironmentsDaprComponentsImpl;
@@ -43,30 +38,21 @@ import com.azure.resourcemanager.appcontainers.implementation.ContainerAppsImpl;
 import com.azure.resourcemanager.appcontainers.implementation.ContainerAppsRevisionReplicasImpl;
 import com.azure.resourcemanager.appcontainers.implementation.ContainerAppsRevisionsImpl;
 import com.azure.resourcemanager.appcontainers.implementation.ContainerAppsSourceControlsImpl;
-import com.azure.resourcemanager.appcontainers.implementation.DaprComponentResiliencyPoliciesImpl;
 import com.azure.resourcemanager.appcontainers.implementation.DaprComponentsImpl;
-import com.azure.resourcemanager.appcontainers.implementation.DaprSubscriptionsImpl;
-import com.azure.resourcemanager.appcontainers.implementation.DotNetComponentsImpl;
-import com.azure.resourcemanager.appcontainers.implementation.JavaComponentsImpl;
 import com.azure.resourcemanager.appcontainers.implementation.JobsExecutionsImpl;
 import com.azure.resourcemanager.appcontainers.implementation.JobsImpl;
 import com.azure.resourcemanager.appcontainers.implementation.ManagedCertificatesImpl;
 import com.azure.resourcemanager.appcontainers.implementation.ManagedEnvironmentDiagnosticsImpl;
-import com.azure.resourcemanager.appcontainers.implementation.ManagedEnvironmentUsagesImpl;
 import com.azure.resourcemanager.appcontainers.implementation.ManagedEnvironmentsDiagnosticsImpl;
 import com.azure.resourcemanager.appcontainers.implementation.ManagedEnvironmentsImpl;
 import com.azure.resourcemanager.appcontainers.implementation.ManagedEnvironmentsStoragesImpl;
+import com.azure.resourcemanager.appcontainers.implementation.ManagedEnvironmentUsagesImpl;
 import com.azure.resourcemanager.appcontainers.implementation.NamespacesImpl;
 import com.azure.resourcemanager.appcontainers.implementation.OperationsImpl;
 import com.azure.resourcemanager.appcontainers.implementation.ResourceProvidersImpl;
 import com.azure.resourcemanager.appcontainers.implementation.UsagesImpl;
-import com.azure.resourcemanager.appcontainers.models.AppResiliencies;
 import com.azure.resourcemanager.appcontainers.models.AvailableWorkloadProfiles;
 import com.azure.resourcemanager.appcontainers.models.BillingMeters;
-import com.azure.resourcemanager.appcontainers.models.BuildAuthTokens;
-import com.azure.resourcemanager.appcontainers.models.Builders;
-import com.azure.resourcemanager.appcontainers.models.Builds;
-import com.azure.resourcemanager.appcontainers.models.BuildsByBuilderResources;
 import com.azure.resourcemanager.appcontainers.models.Certificates;
 import com.azure.resourcemanager.appcontainers.models.ConnectedEnvironments;
 import com.azure.resourcemanager.appcontainers.models.ConnectedEnvironmentsCertificates;
@@ -78,19 +64,15 @@ import com.azure.resourcemanager.appcontainers.models.ContainerAppsDiagnostics;
 import com.azure.resourcemanager.appcontainers.models.ContainerAppsRevisionReplicas;
 import com.azure.resourcemanager.appcontainers.models.ContainerAppsRevisions;
 import com.azure.resourcemanager.appcontainers.models.ContainerAppsSourceControls;
-import com.azure.resourcemanager.appcontainers.models.DaprComponentResiliencyPolicies;
 import com.azure.resourcemanager.appcontainers.models.DaprComponents;
-import com.azure.resourcemanager.appcontainers.models.DaprSubscriptions;
-import com.azure.resourcemanager.appcontainers.models.DotNetComponents;
-import com.azure.resourcemanager.appcontainers.models.JavaComponents;
 import com.azure.resourcemanager.appcontainers.models.Jobs;
 import com.azure.resourcemanager.appcontainers.models.JobsExecutions;
 import com.azure.resourcemanager.appcontainers.models.ManagedCertificates;
 import com.azure.resourcemanager.appcontainers.models.ManagedEnvironmentDiagnostics;
-import com.azure.resourcemanager.appcontainers.models.ManagedEnvironmentUsages;
 import com.azure.resourcemanager.appcontainers.models.ManagedEnvironments;
 import com.azure.resourcemanager.appcontainers.models.ManagedEnvironmentsDiagnostics;
 import com.azure.resourcemanager.appcontainers.models.ManagedEnvironmentsStorages;
+import com.azure.resourcemanager.appcontainers.models.ManagedEnvironmentUsages;
 import com.azure.resourcemanager.appcontainers.models.Namespaces;
 import com.azure.resourcemanager.appcontainers.models.Operations;
 import com.azure.resourcemanager.appcontainers.models.ResourceProviders;
@@ -106,21 +88,11 @@ import java.util.stream.Collectors;
  * Entry point to ContainerAppsApiManager.
  */
 public final class ContainerAppsApiManager {
-    private AppResiliencies appResiliencies;
-
     private ContainerAppsAuthConfigs containerAppsAuthConfigs;
 
     private AvailableWorkloadProfiles availableWorkloadProfiles;
 
     private BillingMeters billingMeters;
-
-    private Builders builders;
-
-    private BuildsByBuilderResources buildsByBuilderResources;
-
-    private Builds builds;
-
-    private BuildAuthTokens buildAuthTokens;
 
     private ConnectedEnvironments connectedEnvironments;
 
@@ -158,11 +130,7 @@ public final class ContainerAppsApiManager {
 
     private Namespaces namespaces;
 
-    private DaprComponentResiliencyPolicies daprComponentResiliencyPolicies;
-
     private DaprComponents daprComponents;
-
-    private DaprSubscriptions daprSubscriptions;
 
     private ManagedEnvironmentsStorages managedEnvironmentsStorages;
 
@@ -172,18 +140,16 @@ public final class ContainerAppsApiManager {
 
     private ManagedEnvironmentUsages managedEnvironmentUsages;
 
-    private JavaComponents javaComponents;
-
-    private DotNetComponents dotNetComponents;
-
     private final ContainerAppsApiClient clientObject;
 
     private ContainerAppsApiManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
         this.clientObject = new ContainerAppsApiClientBuilder().pipeline(httpPipeline)
-            .endpoint(profile.getEnvironment().getResourceManagerEndpoint()).subscriptionId(profile.getSubscriptionId())
-            .defaultPollInterval(defaultPollInterval).buildClient();
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+            .subscriptionId(profile.getSubscriptionId())
+            .defaultPollInterval(defaultPollInterval)
+            .buildClient();
     }
 
     /**
@@ -334,12 +300,19 @@ public final class ContainerAppsApiManager {
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
             StringBuilder userAgentBuilder = new StringBuilder();
-            userAgentBuilder.append("azsdk-java").append("-").append("com.azure.resourcemanager.appcontainers")
-                .append("/").append("1.0.0-beta.7");
+            userAgentBuilder.append("azsdk-java")
+                .append("-")
+                .append("com.azure.resourcemanager.appcontainers")
+                .append("/")
+                .append("1.0.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
-                userAgentBuilder.append(" (").append(Configuration.getGlobalConfiguration().get("java.version"))
-                    .append("; ").append(Configuration.getGlobalConfiguration().get("os.name")).append("; ")
-                    .append(Configuration.getGlobalConfiguration().get("os.version")).append("; auto-generated)");
+                userAgentBuilder.append(" (")
+                    .append(Configuration.getGlobalConfiguration().get("java.version"))
+                    .append("; ")
+                    .append(Configuration.getGlobalConfiguration().get("os.name"))
+                    .append("; ")
+                    .append(Configuration.getGlobalConfiguration().get("os.version"))
+                    .append("; auto-generated)");
             } else {
                 userAgentBuilder.append(" (auto-generated)");
             }
@@ -358,32 +331,23 @@ public final class ContainerAppsApiManager {
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
             policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
-            policies.addAll(this.policies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
                 .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
             policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
             policies.addAll(this.policies.stream()
-                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY).collect(Collectors.toList()));
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
             HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
-                .policies(policies.toArray(new HttpPipelinePolicy[0])).build();
+                .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                .build();
             return new ContainerAppsApiManager(httpPipeline, profile, defaultPollInterval);
         }
-    }
-
-    /**
-     * Gets the resource collection API of AppResiliencies. It manages AppResiliency.
-     * 
-     * @return Resource collection API of AppResiliencies.
-     */
-    public AppResiliencies appResiliencies() {
-        if (this.appResiliencies == null) {
-            this.appResiliencies = new AppResilienciesImpl(clientObject.getAppResiliencies(), this);
-        }
-        return appResiliencies;
     }
 
     /**
@@ -422,55 +386,6 @@ public final class ContainerAppsApiManager {
             this.billingMeters = new BillingMetersImpl(clientObject.getBillingMeters(), this);
         }
         return billingMeters;
-    }
-
-    /**
-     * Gets the resource collection API of Builders. It manages BuilderResource.
-     * 
-     * @return Resource collection API of Builders.
-     */
-    public Builders builders() {
-        if (this.builders == null) {
-            this.builders = new BuildersImpl(clientObject.getBuilders(), this);
-        }
-        return builders;
-    }
-
-    /**
-     * Gets the resource collection API of BuildsByBuilderResources.
-     * 
-     * @return Resource collection API of BuildsByBuilderResources.
-     */
-    public BuildsByBuilderResources buildsByBuilderResources() {
-        if (this.buildsByBuilderResources == null) {
-            this.buildsByBuilderResources
-                = new BuildsByBuilderResourcesImpl(clientObject.getBuildsByBuilderResources(), this);
-        }
-        return buildsByBuilderResources;
-    }
-
-    /**
-     * Gets the resource collection API of Builds. It manages BuildResource.
-     * 
-     * @return Resource collection API of Builds.
-     */
-    public Builds builds() {
-        if (this.builds == null) {
-            this.builds = new BuildsImpl(clientObject.getBuilds(), this);
-        }
-        return builds;
-    }
-
-    /**
-     * Gets the resource collection API of BuildAuthTokens.
-     * 
-     * @return Resource collection API of BuildAuthTokens.
-     */
-    public BuildAuthTokens buildAuthTokens() {
-        if (this.buildAuthTokens == null) {
-            this.buildAuthTokens = new BuildAuthTokensImpl(clientObject.getBuildAuthTokens(), this);
-        }
-        return buildAuthTokens;
     }
 
     /**
@@ -698,19 +613,6 @@ public final class ContainerAppsApiManager {
     }
 
     /**
-     * Gets the resource collection API of DaprComponentResiliencyPolicies. It manages DaprComponentResiliencyPolicy.
-     * 
-     * @return Resource collection API of DaprComponentResiliencyPolicies.
-     */
-    public DaprComponentResiliencyPolicies daprComponentResiliencyPolicies() {
-        if (this.daprComponentResiliencyPolicies == null) {
-            this.daprComponentResiliencyPolicies
-                = new DaprComponentResiliencyPoliciesImpl(clientObject.getDaprComponentResiliencyPolicies(), this);
-        }
-        return daprComponentResiliencyPolicies;
-    }
-
-    /**
      * Gets the resource collection API of DaprComponents.
      * 
      * @return Resource collection API of DaprComponents.
@@ -720,18 +622,6 @@ public final class ContainerAppsApiManager {
             this.daprComponents = new DaprComponentsImpl(clientObject.getDaprComponents(), this);
         }
         return daprComponents;
-    }
-
-    /**
-     * Gets the resource collection API of DaprSubscriptions. It manages DaprSubscription.
-     * 
-     * @return Resource collection API of DaprSubscriptions.
-     */
-    public DaprSubscriptions daprSubscriptions() {
-        if (this.daprSubscriptions == null) {
-            this.daprSubscriptions = new DaprSubscriptionsImpl(clientObject.getDaprSubscriptions(), this);
-        }
-        return daprSubscriptions;
     }
 
     /**
@@ -783,30 +673,6 @@ public final class ContainerAppsApiManager {
                 = new ManagedEnvironmentUsagesImpl(clientObject.getManagedEnvironmentUsages(), this);
         }
         return managedEnvironmentUsages;
-    }
-
-    /**
-     * Gets the resource collection API of JavaComponents. It manages JavaComponent.
-     * 
-     * @return Resource collection API of JavaComponents.
-     */
-    public JavaComponents javaComponents() {
-        if (this.javaComponents == null) {
-            this.javaComponents = new JavaComponentsImpl(clientObject.getJavaComponents(), this);
-        }
-        return javaComponents;
-    }
-
-    /**
-     * Gets the resource collection API of DotNetComponents. It manages DotNetComponent.
-     * 
-     * @return Resource collection API of DotNetComponents.
-     */
-    public DotNetComponents dotNetComponents() {
-        if (this.dotNetComponents == null) {
-            this.dotNetComponents = new DotNetComponentsImpl(clientObject.getDotNetComponents(), this);
-        }
-        return dotNetComponents;
     }
 
     /**

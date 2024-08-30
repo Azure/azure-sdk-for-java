@@ -5,19 +5,22 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Application Routing add-on settings for the ingress profile.
  */
 @Fluent
-public final class ManagedClusterIngressProfileWebAppRouting {
+public final class ManagedClusterIngressProfileWebAppRouting
+    implements JsonSerializable<ManagedClusterIngressProfileWebAppRouting> {
     /*
      * Whether to enable the Application Routing add-on.
      */
-    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
@@ -25,7 +28,6 @@ public final class ManagedClusterIngressProfileWebAppRouting {
      * Routing add-on is enabled. Public and private DNS zones can be in different resource groups, but all public DNS
      * zones must be in the same resource group and all private DNS zones must be in the same resource group.
      */
-    @JsonProperty(value = "dnsZoneResourceIds")
     private List<String> dnsZoneResourceIds;
 
     /*
@@ -34,7 +36,6 @@ public final class ManagedClusterIngressProfileWebAppRouting {
      * overview of the add-on](https://learn.microsoft.com/en-us/azure/aks/web-app-routing?tabs=with-osm) for more
      * instructions.
      */
-    @JsonProperty(value = "identity", access = JsonProperty.Access.WRITE_ONLY)
     private UserAssignedIdentity identity;
 
     /**
@@ -45,7 +46,7 @@ public final class ManagedClusterIngressProfileWebAppRouting {
 
     /**
      * Get the enabled property: Whether to enable the Application Routing add-on.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -54,7 +55,7 @@ public final class ManagedClusterIngressProfileWebAppRouting {
 
     /**
      * Set the enabled property: Whether to enable the Application Routing add-on.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the ManagedClusterIngressProfileWebAppRouting object itself.
      */
@@ -68,7 +69,7 @@ public final class ManagedClusterIngressProfileWebAppRouting {
      * add-on. Used only when Application Routing add-on is enabled. Public and private DNS zones can be in different
      * resource groups, but all public DNS zones must be in the same resource group and all private DNS zones must be in
      * the same resource group.
-     *
+     * 
      * @return the dnsZoneResourceIds value.
      */
     public List<String> dnsZoneResourceIds() {
@@ -80,7 +81,7 @@ public final class ManagedClusterIngressProfileWebAppRouting {
      * add-on. Used only when Application Routing add-on is enabled. Public and private DNS zones can be in different
      * resource groups, but all public DNS zones must be in the same resource group and all private DNS zones must be in
      * the same resource group.
-     *
+     * 
      * @param dnsZoneResourceIds the dnsZoneResourceIds value to set.
      * @return the ManagedClusterIngressProfileWebAppRouting object itself.
      */
@@ -94,7 +95,7 @@ public final class ManagedClusterIngressProfileWebAppRouting {
      * be granted permissions, for example, to manage the associated Azure DNS resource and get certificates from Azure
      * Key Vault. See [this overview of the
      * add-on](https://learn.microsoft.com/en-us/azure/aks/web-app-routing?tabs=with-osm) for more instructions.
-     *
+     * 
      * @return the identity value.
      */
     public UserAssignedIdentity identity() {
@@ -103,12 +104,58 @@ public final class ManagedClusterIngressProfileWebAppRouting {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (identity() != null) {
             identity().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeArrayField("dnsZoneResourceIds", this.dnsZoneResourceIds,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedClusterIngressProfileWebAppRouting from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedClusterIngressProfileWebAppRouting if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedClusterIngressProfileWebAppRouting.
+     */
+    public static ManagedClusterIngressProfileWebAppRouting fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedClusterIngressProfileWebAppRouting deserializedManagedClusterIngressProfileWebAppRouting
+                = new ManagedClusterIngressProfileWebAppRouting();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enabled".equals(fieldName)) {
+                    deserializedManagedClusterIngressProfileWebAppRouting.enabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("dnsZoneResourceIds".equals(fieldName)) {
+                    List<String> dnsZoneResourceIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedManagedClusterIngressProfileWebAppRouting.dnsZoneResourceIds = dnsZoneResourceIds;
+                } else if ("identity".equals(fieldName)) {
+                    deserializedManagedClusterIngressProfileWebAppRouting.identity
+                        = UserAssignedIdentity.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedClusterIngressProfileWebAppRouting;
+        });
     }
 }

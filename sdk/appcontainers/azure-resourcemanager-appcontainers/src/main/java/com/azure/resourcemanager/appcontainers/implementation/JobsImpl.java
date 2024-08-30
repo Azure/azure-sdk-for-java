@@ -11,19 +11,17 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appcontainers.fluent.JobsClient;
 import com.azure.resourcemanager.appcontainers.fluent.models.ContainerAppJobExecutionsInner;
-import com.azure.resourcemanager.appcontainers.fluent.models.DiagnosticsCollectionInner;
 import com.azure.resourcemanager.appcontainers.fluent.models.DiagnosticsInner;
 import com.azure.resourcemanager.appcontainers.fluent.models.JobExecutionBaseInner;
 import com.azure.resourcemanager.appcontainers.fluent.models.JobInner;
 import com.azure.resourcemanager.appcontainers.fluent.models.JobSecretsCollectionInner;
 import com.azure.resourcemanager.appcontainers.models.ContainerAppJobExecutions;
 import com.azure.resourcemanager.appcontainers.models.Diagnostics;
-import com.azure.resourcemanager.appcontainers.models.DiagnosticsCollection;
 import com.azure.resourcemanager.appcontainers.models.Job;
 import com.azure.resourcemanager.appcontainers.models.JobExecutionBase;
 import com.azure.resourcemanager.appcontainers.models.JobExecutionTemplate;
-import com.azure.resourcemanager.appcontainers.models.JobSecretsCollection;
 import com.azure.resourcemanager.appcontainers.models.Jobs;
+import com.azure.resourcemanager.appcontainers.models.JobSecretsCollection;
 
 public final class JobsImpl implements Jobs {
     private static final ClientLogger LOGGER = new ClientLogger(JobsImpl.class);
@@ -38,25 +36,14 @@ public final class JobsImpl implements Jobs {
         this.serviceManager = serviceManager;
     }
 
-    public Response<DiagnosticsCollection> listDetectorsWithResponse(String resourceGroupName, String jobName,
-        Context context) {
-        Response<DiagnosticsCollectionInner> inner
-            = this.serviceClient().listDetectorsWithResponse(resourceGroupName, jobName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new DiagnosticsCollectionImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+    public PagedIterable<Diagnostics> listDetectors(String resourceGroupName, String jobName) {
+        PagedIterable<DiagnosticsInner> inner = this.serviceClient().listDetectors(resourceGroupName, jobName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DiagnosticsImpl(inner1, this.manager()));
     }
 
-    public DiagnosticsCollection listDetectors(String resourceGroupName, String jobName) {
-        DiagnosticsCollectionInner inner = this.serviceClient().listDetectors(resourceGroupName, jobName);
-        if (inner != null) {
-            return new DiagnosticsCollectionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public PagedIterable<Diagnostics> listDetectors(String resourceGroupName, String jobName, Context context) {
+        PagedIterable<DiagnosticsInner> inner = this.serviceClient().listDetectors(resourceGroupName, jobName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DiagnosticsImpl(inner1, this.manager()));
     }
 
     public Response<Diagnostics> getDetectorWithResponse(String resourceGroupName, String jobName, String detectorName,
@@ -80,8 +67,10 @@ public final class JobsImpl implements Jobs {
         }
     }
 
-    public Response<Job> proxyGetWithResponse(String resourceGroupName, String jobName, Context context) {
-        Response<JobInner> inner = this.serviceClient().proxyGetWithResponse(resourceGroupName, jobName, context);
+    public Response<Job> proxyGetWithResponse(String resourceGroupName, String jobName, String apiName,
+        Context context) {
+        Response<JobInner> inner
+            = this.serviceClient().proxyGetWithResponse(resourceGroupName, jobName, apiName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new JobImpl(inner.getValue(), this.manager()));
@@ -90,8 +79,8 @@ public final class JobsImpl implements Jobs {
         }
     }
 
-    public Job proxyGet(String resourceGroupName, String jobName) {
-        JobInner inner = this.serviceClient().proxyGet(resourceGroupName, jobName);
+    public Job proxyGet(String resourceGroupName, String jobName, String apiName) {
+        JobInner inner = this.serviceClient().proxyGet(resourceGroupName, jobName, apiName);
         if (inner != null) {
             return new JobImpl(inner, this.manager());
         } else {

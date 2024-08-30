@@ -5,42 +5,37 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * A copy activity Azure Blob source.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = BlobSource.class, visible = true)
-@JsonTypeName("BlobSource")
 @Fluent
 public final class BlobSource extends CopySource {
     /*
      * Copy source type.
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private String type = "BlobSource";
 
     /*
      * Treat empty as null. Type: boolean (or Expression with resultType boolean).
      */
-    @JsonProperty(value = "treatEmptyAsNull")
     private Object treatEmptyAsNull;
 
     /*
      * Number of header lines to skip from each blob. Type: integer (or Expression with resultType integer).
      */
-    @JsonProperty(value = "skipHeaderLineCount")
     private Object skipHeaderLineCount;
 
     /*
      * If true, files under the folder path will be read recursively. Default is true. Type: boolean (or Expression with
      * resultType boolean).
      */
-    @JsonProperty(value = "recursive")
     private Object recursive;
 
     /**
@@ -167,5 +162,73 @@ public final class BlobSource extends CopySource {
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("sourceRetryCount", sourceRetryCount());
+        jsonWriter.writeUntypedField("sourceRetryWait", sourceRetryWait());
+        jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
+        jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeUntypedField("treatEmptyAsNull", this.treatEmptyAsNull);
+        jsonWriter.writeUntypedField("skipHeaderLineCount", this.skipHeaderLineCount);
+        jsonWriter.writeUntypedField("recursive", this.recursive);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BlobSource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BlobSource if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the BlobSource.
+     */
+    public static BlobSource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BlobSource deserializedBlobSource = new BlobSource();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceRetryCount".equals(fieldName)) {
+                    deserializedBlobSource.withSourceRetryCount(reader.readUntyped());
+                } else if ("sourceRetryWait".equals(fieldName)) {
+                    deserializedBlobSource.withSourceRetryWait(reader.readUntyped());
+                } else if ("maxConcurrentConnections".equals(fieldName)) {
+                    deserializedBlobSource.withMaxConcurrentConnections(reader.readUntyped());
+                } else if ("disableMetricsCollection".equals(fieldName)) {
+                    deserializedBlobSource.withDisableMetricsCollection(reader.readUntyped());
+                } else if ("type".equals(fieldName)) {
+                    deserializedBlobSource.type = reader.getString();
+                } else if ("treatEmptyAsNull".equals(fieldName)) {
+                    deserializedBlobSource.treatEmptyAsNull = reader.readUntyped();
+                } else if ("skipHeaderLineCount".equals(fieldName)) {
+                    deserializedBlobSource.skipHeaderLineCount = reader.readUntyped();
+                } else if ("recursive".equals(fieldName)) {
+                    deserializedBlobSource.recursive = reader.readUntyped();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedBlobSource.withAdditionalProperties(additionalProperties);
+
+            return deserializedBlobSource;
+        });
     }
 }

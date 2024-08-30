@@ -5,73 +5,61 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Configuration properties that define the mutable settings of a Container App SourceControl.
  */
 @Fluent
-public final class GithubActionConfiguration {
+public final class GithubActionConfiguration implements JsonSerializable<GithubActionConfiguration> {
     /*
      * Registry configurations.
      */
-    @JsonProperty(value = "registryInfo")
     private RegistryInfo registryInfo;
 
     /*
      * AzureCredentials configurations.
      */
-    @JsonProperty(value = "azureCredentials")
     private AzureCredentials azureCredentials;
 
     /*
      * Context path
      */
-    @JsonProperty(value = "contextPath")
     private String contextPath;
 
     /*
      * One time Github PAT to configure github environment
      */
-    @JsonProperty(value = "githubPersonalAccessToken")
     private String githubPersonalAccessToken;
 
     /*
      * Image name
      */
-    @JsonProperty(value = "image")
     private String image;
 
     /*
      * Code or Image
      */
-    @JsonProperty(value = "publishType")
     private String publishType;
 
     /*
      * Operation system
      */
-    @JsonProperty(value = "os")
     private String os;
 
     /*
      * Runtime stack
      */
-    @JsonProperty(value = "runtimeStack")
     private String runtimeStack;
 
     /*
      * Runtime version
      */
-    @JsonProperty(value = "runtimeVersion")
     private String runtimeVersion;
-
-    /*
-     * List of environment variables to be passed to the build.
-     */
-    @JsonProperty(value = "buildEnvironmentVariables")
-    private List<EnvironmentVariable> buildEnvironmentVariables;
 
     /**
      * Creates an instance of GithubActionConfiguration class.
@@ -260,27 +248,6 @@ public final class GithubActionConfiguration {
     }
 
     /**
-     * Get the buildEnvironmentVariables property: List of environment variables to be passed to the build.
-     * 
-     * @return the buildEnvironmentVariables value.
-     */
-    public List<EnvironmentVariable> buildEnvironmentVariables() {
-        return this.buildEnvironmentVariables;
-    }
-
-    /**
-     * Set the buildEnvironmentVariables property: List of environment variables to be passed to the build.
-     * 
-     * @param buildEnvironmentVariables the buildEnvironmentVariables value to set.
-     * @return the GithubActionConfiguration object itself.
-     */
-    public GithubActionConfiguration
-        withBuildEnvironmentVariables(List<EnvironmentVariable> buildEnvironmentVariables) {
-        this.buildEnvironmentVariables = buildEnvironmentVariables;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -292,8 +259,65 @@ public final class GithubActionConfiguration {
         if (azureCredentials() != null) {
             azureCredentials().validate();
         }
-        if (buildEnvironmentVariables() != null) {
-            buildEnvironmentVariables().forEach(e -> e.validate());
-        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("registryInfo", this.registryInfo);
+        jsonWriter.writeJsonField("azureCredentials", this.azureCredentials);
+        jsonWriter.writeStringField("contextPath", this.contextPath);
+        jsonWriter.writeStringField("githubPersonalAccessToken", this.githubPersonalAccessToken);
+        jsonWriter.writeStringField("image", this.image);
+        jsonWriter.writeStringField("publishType", this.publishType);
+        jsonWriter.writeStringField("os", this.os);
+        jsonWriter.writeStringField("runtimeStack", this.runtimeStack);
+        jsonWriter.writeStringField("runtimeVersion", this.runtimeVersion);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GithubActionConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GithubActionConfiguration if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GithubActionConfiguration.
+     */
+    public static GithubActionConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GithubActionConfiguration deserializedGithubActionConfiguration = new GithubActionConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("registryInfo".equals(fieldName)) {
+                    deserializedGithubActionConfiguration.registryInfo = RegistryInfo.fromJson(reader);
+                } else if ("azureCredentials".equals(fieldName)) {
+                    deserializedGithubActionConfiguration.azureCredentials = AzureCredentials.fromJson(reader);
+                } else if ("contextPath".equals(fieldName)) {
+                    deserializedGithubActionConfiguration.contextPath = reader.getString();
+                } else if ("githubPersonalAccessToken".equals(fieldName)) {
+                    deserializedGithubActionConfiguration.githubPersonalAccessToken = reader.getString();
+                } else if ("image".equals(fieldName)) {
+                    deserializedGithubActionConfiguration.image = reader.getString();
+                } else if ("publishType".equals(fieldName)) {
+                    deserializedGithubActionConfiguration.publishType = reader.getString();
+                } else if ("os".equals(fieldName)) {
+                    deserializedGithubActionConfiguration.os = reader.getString();
+                } else if ("runtimeStack".equals(fieldName)) {
+                    deserializedGithubActionConfiguration.runtimeStack = reader.getString();
+                } else if ("runtimeVersion".equals(fieldName)) {
+                    deserializedGithubActionConfiguration.runtimeVersion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGithubActionConfiguration;
+        });
     }
 }

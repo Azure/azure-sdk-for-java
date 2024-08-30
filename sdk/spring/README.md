@@ -1,3 +1,10 @@
+> [!WARNING]  
+> [Spring Cloud Azure 4.19.0](https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_4.19.0) is the final release in the 4.x series. We will continue to provide support for this version until June 2025. After June 2025 we will stop all support for Spring Cloud Azure 4.x
+
+
+> [!NOTE]  
+> Spring Cloud Azure 5.x now fully supports Spring Boot 3.3.0 and later versions, we strongly encourage you to upgrade. For more information, please refer to [Which Version of Spring Cloud Azure Should I Use](https://github.com/Azure/azure-sdk-for-java/wiki/Spring-Versions-Mapping#which-version-of-spring-cloud-azure-should-i-use).
+
 # Spring Cloud Azure
 
 Spring Cloud Azure offers a convenient way to interact with **Azure** provided services using well-known Spring idioms and APIs for Spring developers. 
@@ -139,7 +146,7 @@ If you’re a Maven user, add our BOM to your pom.xml `<dependencyManagement>` s
         <dependency>
             <groupId>com.azure.spring</groupId>
             <artifactId>spring-cloud-azure-dependencies</artifactId>
-            <version>5.13.0</version>
+            <version>5.15.0</version>
             <type>pom</type>
             <scope>import</scope>
         </dependency>

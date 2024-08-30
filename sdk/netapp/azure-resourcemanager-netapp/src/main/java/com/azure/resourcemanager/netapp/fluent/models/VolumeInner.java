@@ -8,6 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.netapp.models.AvsDataStore;
 import com.azure.resourcemanager.netapp.models.CoolAccessRetrievalPolicy;
 import com.azure.resourcemanager.netapp.models.EnableSubvolumes;
@@ -22,7 +25,7 @@ import com.azure.resourcemanager.netapp.models.SmbNonBrowsable;
 import com.azure.resourcemanager.netapp.models.VolumePropertiesDataProtection;
 import com.azure.resourcemanager.netapp.models.VolumePropertiesExportPolicy;
 import com.azure.resourcemanager.netapp.models.VolumeStorageToNetworkProximity;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -34,26 +37,37 @@ public final class VolumeInner extends Resource {
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * Availability Zone
      */
-    @JsonProperty(value = "zones")
     private List<String> zones;
 
     /*
      * Volume properties
      */
-    @JsonProperty(value = "properties", required = true)
     private VolumeProperties innerProperties = new VolumeProperties();
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
 
     /**
      * Creates an instance of VolumeInner class.
@@ -109,6 +123,36 @@ public final class VolumeInner extends Resource {
     }
 
     /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -127,9 +171,7 @@ public final class VolumeInner extends Resource {
     }
 
     /**
-     * Get the fileSystemId property: FileSystem ID
-     * 
-     * Unique FileSystem Identifier.
+     * Get the fileSystemId property: Unique FileSystem Identifier.
      * 
      * @return the fileSystemId value.
      */
@@ -138,9 +180,7 @@ public final class VolumeInner extends Resource {
     }
 
     /**
-     * Get the creationToken property: Creation Token or File Path
-     * 
-     * A unique file path for the volume. Used when creating mount targets.
+     * Get the creationToken property: A unique file path for the volume. Used when creating mount targets.
      * 
      * @return the creationToken value.
      */
@@ -149,9 +189,7 @@ public final class VolumeInner extends Resource {
     }
 
     /**
-     * Set the creationToken property: Creation Token or File Path
-     * 
-     * A unique file path for the volume. Used when creating mount targets.
+     * Set the creationToken property: A unique file path for the volume. Used when creating mount targets.
      * 
      * @param creationToken the creationToken value to set.
      * @return the VolumeInner object itself.
@@ -165,9 +203,7 @@ public final class VolumeInner extends Resource {
     }
 
     /**
-     * Get the serviceLevel property: serviceLevel
-     * 
-     * The service level of the file system.
+     * Get the serviceLevel property: The service level of the file system.
      * 
      * @return the serviceLevel value.
      */
@@ -176,9 +212,7 @@ public final class VolumeInner extends Resource {
     }
 
     /**
-     * Set the serviceLevel property: serviceLevel
-     * 
-     * The service level of the file system.
+     * Set the serviceLevel property: The service level of the file system.
      * 
      * @param serviceLevel the serviceLevel value to set.
      * @return the VolumeInner object itself.
@@ -192,11 +226,10 @@ public final class VolumeInner extends Resource {
     }
 
     /**
-     * Get the usageThreshold property: usageThreshold
-     * 
-     * Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum
-     * size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume or 2400Tib for LargeVolume on exceptional basis.
-     * Specified in bytes.
+     * Get the usageThreshold property: Maximum storage quota allowed for a file system in bytes. This is a soft quota
+     * used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB. For large volumes,
+     * valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB to 2400TiB. Values
+     * expressed in bytes as multiples of 1 GiB.
      * 
      * @return the usageThreshold value.
      */
@@ -205,11 +238,10 @@ public final class VolumeInner extends Resource {
     }
 
     /**
-     * Set the usageThreshold property: usageThreshold
-     * 
-     * Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum
-     * size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume or 2400Tib for LargeVolume on exceptional basis.
-     * Specified in bytes.
+     * Set the usageThreshold property: Maximum storage quota allowed for a file system in bytes. This is a soft quota
+     * used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB. For large volumes,
+     * valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB to 2400TiB. Values
+     * expressed in bytes as multiples of 1 GiB.
      * 
      * @param usageThreshold the usageThreshold value to set.
      * @return the VolumeInner object itself.
@@ -223,9 +255,7 @@ public final class VolumeInner extends Resource {
     }
 
     /**
-     * Get the exportPolicy property: exportPolicy
-     * 
-     * Set of export policy rules.
+     * Get the exportPolicy property: Set of export policy rules.
      * 
      * @return the exportPolicy value.
      */
@@ -234,9 +264,7 @@ public final class VolumeInner extends Resource {
     }
 
     /**
-     * Set the exportPolicy property: exportPolicy
-     * 
-     * Set of export policy rules.
+     * Set the exportPolicy property: Set of export policy rules.
      * 
      * @param exportPolicy the exportPolicy value to set.
      * @return the VolumeInner object itself.
@@ -250,9 +278,7 @@ public final class VolumeInner extends Resource {
     }
 
     /**
-     * Get the protocolTypes property: protocolTypes
-     * 
-     * Set of protocol types, default NFSv3, CIFS for SMB protocol.
+     * Get the protocolTypes property: Set of protocol types, default NFSv3, CIFS for SMB protocol.
      * 
      * @return the protocolTypes value.
      */
@@ -261,9 +287,7 @@ public final class VolumeInner extends Resource {
     }
 
     /**
-     * Set the protocolTypes property: protocolTypes
-     * 
-     * Set of protocol types, default NFSv3, CIFS for SMB protocol.
+     * Set the protocolTypes property: Set of protocol types, default NFSv3, CIFS for SMB protocol.
      * 
      * @param protocolTypes the protocolTypes value to set.
      * @return the VolumeInner object itself.
@@ -286,9 +310,7 @@ public final class VolumeInner extends Resource {
     }
 
     /**
-     * Get the snapshotId property: Snapshot ID
-     * 
-     * Resource identifier used to identify the Snapshot.
+     * Get the snapshotId property: Resource identifier used to identify the Snapshot.
      * 
      * @return the snapshotId value.
      */
@@ -297,9 +319,7 @@ public final class VolumeInner extends Resource {
     }
 
     /**
-     * Set the snapshotId property: Snapshot ID
-     * 
-     * Resource identifier used to identify the Snapshot.
+     * Set the snapshotId property: Resource identifier used to identify the Snapshot.
      * 
      * @param snapshotId the snapshotId value to set.
      * @return the VolumeInner object itself.
@@ -338,9 +358,7 @@ public final class VolumeInner extends Resource {
     }
 
     /**
-     * Get the backupId property: Backup ID
-     * 
-     * Resource identifier used to identify the Backup.
+     * Get the backupId property: Resource identifier used to identify the Backup.
      * 
      * @return the backupId value.
      */
@@ -349,9 +367,7 @@ public final class VolumeInner extends Resource {
     }
 
     /**
-     * Set the backupId property: Backup ID
-     * 
-     * Resource identifier used to identify the Backup.
+     * Set the backupId property: Resource identifier used to identify the Backup.
      * 
      * @param backupId the backupId value to set.
      * @return the VolumeInner object itself.
@@ -365,9 +381,7 @@ public final class VolumeInner extends Resource {
     }
 
     /**
-     * Get the baremetalTenantId property: Baremetal Tenant ID
-     * 
-     * Unique Baremetal Tenant Identifier.
+     * Get the baremetalTenantId property: Unique Baremetal Tenant Identifier.
      * 
      * @return the baremetalTenantId value.
      */
@@ -401,9 +415,7 @@ public final class VolumeInner extends Resource {
     }
 
     /**
-     * Get the networkFeatures property: Network features
-     * 
-     * Network features available to the volume, or current state of update.
+     * Get the networkFeatures property: Network features available to the volume, or current state of update.
      * 
      * @return the networkFeatures value.
      */
@@ -412,9 +424,7 @@ public final class VolumeInner extends Resource {
     }
 
     /**
-     * Set the networkFeatures property: Network features
-     * 
-     * Network features available to the volume, or current state of update.
+     * Set the networkFeatures property: Network features available to the volume, or current state of update.
      * 
      * @param networkFeatures the networkFeatures value to set.
      * @return the VolumeInner object itself.
@@ -428,9 +438,8 @@ public final class VolumeInner extends Resource {
     }
 
     /**
-     * Get the networkSiblingSetId property: Network Sibling Set ID
-     * 
-     * Network Sibling Set ID for the the group of volumes sharing networking resources.
+     * Get the networkSiblingSetId property: Network Sibling Set ID for the the group of volumes sharing networking
+     * resources.
      * 
      * @return the networkSiblingSetId value.
      */
@@ -439,9 +448,7 @@ public final class VolumeInner extends Resource {
     }
 
     /**
-     * Get the storageToNetworkProximity property: Storage to Network Proximity
-     * 
-     * Provides storage to network proximity information for the volume.
+     * Get the storageToNetworkProximity property: Provides storage to network proximity information for the volume.
      * 
      * @return the storageToNetworkProximity value.
      */
@@ -450,9 +457,7 @@ public final class VolumeInner extends Resource {
     }
 
     /**
-     * Get the mountTargets property: mountTargets
-     * 
-     * List of mount targets.
+     * Get the mountTargets property: List of mount targets.
      * 
      * @return the mountTargets value.
      */
@@ -486,9 +491,8 @@ public final class VolumeInner extends Resource {
     }
 
     /**
-     * Get the dataProtection property: DataProtection
-     * 
-     * DataProtection type volumes include an object containing details of the replication.
+     * Get the dataProtection property: DataProtection type volumes include an object containing details of the
+     * replication.
      * 
      * @return the dataProtection value.
      */
@@ -497,9 +501,8 @@ public final class VolumeInner extends Resource {
     }
 
     /**
-     * Set the dataProtection property: DataProtection
-     * 
-     * DataProtection type volumes include an object containing details of the replication.
+     * Set the dataProtection property: DataProtection type volumes include an object containing details of the
+     * replication.
      * 
      * @param dataProtection the dataProtection value to set.
      * @return the VolumeInner object itself.
@@ -636,9 +639,8 @@ public final class VolumeInner extends Resource {
     }
 
     /**
-     * Get the smbAccessBasedEnumeration property: smbAccessBasedEnumeration
-     * 
-     * Enables access-based enumeration share property for SMB Shares. Only applicable for SMB/DualProtocol volume.
+     * Get the smbAccessBasedEnumeration property: Enables access-based enumeration share property for SMB Shares. Only
+     * applicable for SMB/DualProtocol volume.
      * 
      * @return the smbAccessBasedEnumeration value.
      */
@@ -647,9 +649,8 @@ public final class VolumeInner extends Resource {
     }
 
     /**
-     * Set the smbAccessBasedEnumeration property: smbAccessBasedEnumeration
-     * 
-     * Enables access-based enumeration share property for SMB Shares. Only applicable for SMB/DualProtocol volume.
+     * Set the smbAccessBasedEnumeration property: Enables access-based enumeration share property for SMB Shares. Only
+     * applicable for SMB/DualProtocol volume.
      * 
      * @param smbAccessBasedEnumeration the smbAccessBasedEnumeration value to set.
      * @return the VolumeInner object itself.
@@ -663,9 +664,8 @@ public final class VolumeInner extends Resource {
     }
 
     /**
-     * Get the smbNonBrowsable property: smbNonBrowsable
-     * 
-     * Enables non-browsable property for SMB Shares. Only applicable for SMB/DualProtocol volume.
+     * Get the smbNonBrowsable property: Enables non-browsable property for SMB Shares. Only applicable for
+     * SMB/DualProtocol volume.
      * 
      * @return the smbNonBrowsable value.
      */
@@ -674,9 +674,8 @@ public final class VolumeInner extends Resource {
     }
 
     /**
-     * Set the smbNonBrowsable property: smbNonBrowsable
-     * 
-     * Enables non-browsable property for SMB Shares. Only applicable for SMB/DualProtocol volume.
+     * Set the smbNonBrowsable property: Enables non-browsable property for SMB Shares. Only applicable for
+     * SMB/DualProtocol volume.
      * 
      * @param smbNonBrowsable the smbNonBrowsable value to set.
      * @return the VolumeInner object itself.
@@ -960,9 +959,8 @@ public final class VolumeInner extends Resource {
     }
 
     /**
-     * Get the avsDataStore property: avsDataStore
-     * 
-     * Specifies whether the volume is enabled for Azure VMware Solution (AVS) datastore purpose.
+     * Get the avsDataStore property: Specifies whether the volume is enabled for Azure VMware Solution (AVS) datastore
+     * purpose.
      * 
      * @return the avsDataStore value.
      */
@@ -971,9 +969,8 @@ public final class VolumeInner extends Resource {
     }
 
     /**
-     * Set the avsDataStore property: avsDataStore
-     * 
-     * Specifies whether the volume is enabled for Azure VMware Solution (AVS) datastore purpose.
+     * Set the avsDataStore property: Specifies whether the volume is enabled for Azure VMware Solution (AVS) datastore
+     * purpose.
      * 
      * @param avsDataStore the avsDataStore value to set.
      * @return the VolumeInner object itself.
@@ -987,9 +984,7 @@ public final class VolumeInner extends Resource {
     }
 
     /**
-     * Get the dataStoreResourceId property: dataStoreResourceId
-     * 
-     * Data store resource unique identifier.
+     * Get the dataStoreResourceId property: Data store resource unique identifier.
      * 
      * @return the dataStoreResourceId value.
      */
@@ -1180,9 +1175,7 @@ public final class VolumeInner extends Resource {
     }
 
     /**
-     * Get the placementRules property: Volume placement rules
-     * 
-     * Application specific placement rules for the particular volume.
+     * Get the placementRules property: Application specific placement rules for the particular volume.
      * 
      * @return the placementRules value.
      */
@@ -1191,9 +1184,7 @@ public final class VolumeInner extends Resource {
     }
 
     /**
-     * Set the placementRules property: Volume placement rules
-     * 
-     * Application specific placement rules for the particular volume.
+     * Set the placementRules property: Application specific placement rules for the particular volume.
      * 
      * @param placementRules the placementRules value to set.
      * @return the VolumeInner object itself.
@@ -1230,10 +1221,8 @@ public final class VolumeInner extends Resource {
     }
 
     /**
-     * Get the provisionedAvailabilityZone property: Provisioned Availability Zone
-     * 
-     * The availability zone where the volume is provisioned. This refers to the logical availability zone where the
-     * volume resides.
+     * Get the provisionedAvailabilityZone property: The availability zone where the volume is provisioned. This refers
+     * to the logical availability zone where the volume resides.
      * 
      * @return the provisionedAvailabilityZone value.
      */
@@ -1242,9 +1231,7 @@ public final class VolumeInner extends Resource {
     }
 
     /**
-     * Get the isLargeVolume property: Is Large Volume
-     * 
-     * Specifies whether volume is a Large Volume or Regular Volume.
+     * Get the isLargeVolume property: Specifies whether volume is a Large Volume or Regular Volume.
      * 
      * @return the isLargeVolume value.
      */
@@ -1253,9 +1240,7 @@ public final class VolumeInner extends Resource {
     }
 
     /**
-     * Set the isLargeVolume property: Is Large Volume
-     * 
-     * Specifies whether volume is a Large Volume or Regular Volume.
+     * Set the isLargeVolume property: Specifies whether volume is a Large Volume or Regular Volume.
      * 
      * @param isLargeVolume the isLargeVolume value to set.
      * @return the VolumeInner object itself.
@@ -1269,9 +1254,7 @@ public final class VolumeInner extends Resource {
     }
 
     /**
-     * Get the originatingResourceId property: Originating Resource Id
-     * 
-     * Id of the snapshot or backup that the volume is restored from.
+     * Get the originatingResourceId property: Id of the snapshot or backup that the volume is restored from.
      * 
      * @return the originatingResourceId value.
      */
@@ -1294,4 +1277,62 @@ public final class VolumeInner extends Resource {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VolumeInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeArrayField("zones", this.zones, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VolumeInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VolumeInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VolumeInner.
+     */
+    public static VolumeInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VolumeInner deserializedVolumeInner = new VolumeInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedVolumeInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedVolumeInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedVolumeInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedVolumeInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedVolumeInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedVolumeInner.innerProperties = VolumeProperties.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedVolumeInner.etag = reader.getString();
+                } else if ("zones".equals(fieldName)) {
+                    List<String> zones = reader.readArray(reader1 -> reader1.getString());
+                    deserializedVolumeInner.zones = zones;
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedVolumeInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVolumeInner;
+        });
+    }
 }

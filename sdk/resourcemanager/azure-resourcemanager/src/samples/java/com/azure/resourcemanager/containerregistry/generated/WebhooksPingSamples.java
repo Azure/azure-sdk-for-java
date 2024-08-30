@@ -19,7 +19,10 @@ public final class WebhooksPingSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void webhookPing(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.containerRegistries().manager().serviceClient().getWebhooks().pingWithResponse("myResourceGroup",
-            "myRegistry", "myWebhook", com.azure.core.util.Context.NONE);
+        azure.containerRegistries()
+            .manager()
+            .serviceClient()
+            .getWebhooks()
+            .pingWithResponse("myResourceGroup", "myRegistry", "myWebhook", com.azure.core.util.Context.NONE);
     }
 }

@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Configuration needed to perform TLS termination &amp; initiation.
  */
 @Fluent
-public final class FirewallPolicyTransportSecurity {
+public final class FirewallPolicyTransportSecurity implements JsonSerializable<FirewallPolicyTransportSecurity> {
     /*
      * The CA used for intermediate CA generation.
      */
-    @JsonProperty(value = "certificateAuthority")
     private FirewallPolicyCertificateAuthority certificateAuthority;
 
     /**
@@ -54,5 +57,43 @@ public final class FirewallPolicyTransportSecurity {
         if (certificateAuthority() != null) {
             certificateAuthority().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("certificateAuthority", this.certificateAuthority);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FirewallPolicyTransportSecurity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FirewallPolicyTransportSecurity if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FirewallPolicyTransportSecurity.
+     */
+    public static FirewallPolicyTransportSecurity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FirewallPolicyTransportSecurity deserializedFirewallPolicyTransportSecurity
+                = new FirewallPolicyTransportSecurity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("certificateAuthority".equals(fieldName)) {
+                    deserializedFirewallPolicyTransportSecurity.certificateAuthority
+                        = FirewallPolicyCertificateAuthority.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFirewallPolicyTransportSecurity;
+        });
     }
 }

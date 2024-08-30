@@ -16,6 +16,7 @@ import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.models.CosmosRequestOptions;
 import com.azure.cosmos.models.DedicatedGatewayRequestOptions;
 import com.azure.cosmos.models.FeedRange;
+import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.util.Beta;
 
 import java.util.HashMap;
@@ -43,6 +44,8 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
     private CosmosDiagnosticsThresholds thresholds;
     private List<String> excludeRegions;
     private CosmosItemSerializer customSerializer;
+    private PartitionKeyDefinition partitionKeyDefinition;
+    private String collectionRid;
     private Set<String> keywordIdentifiers;
 
     public CosmosChangeFeedRequestOptionsImpl(CosmosChangeFeedRequestOptionsImpl toBeCloned) {
@@ -61,6 +64,8 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
         this.thresholds = toBeCloned.thresholds;
         this.excludeRegions = toBeCloned.excludeRegions;
         this.customSerializer = toBeCloned.customSerializer;
+        this.collectionRid = toBeCloned.collectionRid;
+        this.partitionKeyDefinition = toBeCloned.partitionKeyDefinition;
         this.keywordIdentifiers = toBeCloned.keywordIdentifiers;
     }
 
@@ -327,6 +332,22 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
         this.setHeader(
             HttpConstants.HttpHeaders.CHANGE_FEED_WIRE_FORMAT_VERSION,
             HttpConstants.ChangeFeedWireFormatVersions.SEPARATE_METADATA_WITH_CRTS);
+    }
+
+    public PartitionKeyDefinition getPartitionKeyDefinition() {
+        return partitionKeyDefinition;
+    }
+
+    public void setPartitionKeyDefinition(PartitionKeyDefinition partitionKeyDefinition) {
+        this.partitionKeyDefinition = partitionKeyDefinition;
+    }
+
+    public String getCollectionRid() {
+        return collectionRid;
+    }
+
+    public void setCollectionRid(String collectionRid) {
+        this.collectionRid = collectionRid;
     }
 
     public void setKeywordIdentifiers(Set<String> keywordIdentifiers) {

@@ -74,56 +74,45 @@ public interface Volume {
     SystemData systemData();
 
     /**
-     * Gets the fileSystemId property: FileSystem ID
-     * 
-     * Unique FileSystem Identifier.
+     * Gets the fileSystemId property: Unique FileSystem Identifier.
      * 
      * @return the fileSystemId value.
      */
     String fileSystemId();
 
     /**
-     * Gets the creationToken property: Creation Token or File Path
-     * 
-     * A unique file path for the volume. Used when creating mount targets.
+     * Gets the creationToken property: A unique file path for the volume. Used when creating mount targets.
      * 
      * @return the creationToken value.
      */
     String creationToken();
 
     /**
-     * Gets the serviceLevel property: serviceLevel
-     * 
-     * The service level of the file system.
+     * Gets the serviceLevel property: The service level of the file system.
      * 
      * @return the serviceLevel value.
      */
     ServiceLevel serviceLevel();
 
     /**
-     * Gets the usageThreshold property: usageThreshold
-     * 
-     * Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum
-     * size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume or 2400Tib for LargeVolume on exceptional basis.
-     * Specified in bytes.
+     * Gets the usageThreshold property: Maximum storage quota allowed for a file system in bytes. This is a soft quota
+     * used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB. For large volumes,
+     * valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB to 2400TiB. Values
+     * expressed in bytes as multiples of 1 GiB.
      * 
      * @return the usageThreshold value.
      */
     long usageThreshold();
 
     /**
-     * Gets the exportPolicy property: exportPolicy
-     * 
-     * Set of export policy rules.
+     * Gets the exportPolicy property: Set of export policy rules.
      * 
      * @return the exportPolicy value.
      */
     VolumePropertiesExportPolicy exportPolicy();
 
     /**
-     * Gets the protocolTypes property: protocolTypes
-     * 
-     * Set of protocol types, default NFSv3, CIFS for SMB protocol.
+     * Gets the protocolTypes property: Set of protocol types, default NFSv3, CIFS for SMB protocol.
      * 
      * @return the protocolTypes value.
      */
@@ -137,9 +126,7 @@ public interface Volume {
     String provisioningState();
 
     /**
-     * Gets the snapshotId property: Snapshot ID
-     * 
-     * Resource identifier used to identify the Snapshot.
+     * Gets the snapshotId property: Resource identifier used to identify the Snapshot.
      * 
      * @return the snapshotId value.
      */
@@ -154,18 +141,14 @@ public interface Volume {
     Boolean deleteBaseSnapshot();
 
     /**
-     * Gets the backupId property: Backup ID
-     * 
-     * Resource identifier used to identify the Backup.
+     * Gets the backupId property: Resource identifier used to identify the Backup.
      * 
      * @return the backupId value.
      */
     String backupId();
 
     /**
-     * Gets the baremetalTenantId property: Baremetal Tenant ID
-     * 
-     * Unique Baremetal Tenant Identifier.
+     * Gets the baremetalTenantId property: Unique Baremetal Tenant Identifier.
      * 
      * @return the baremetalTenantId value.
      */
@@ -180,36 +163,29 @@ public interface Volume {
     String subnetId();
 
     /**
-     * Gets the networkFeatures property: Network features
-     * 
-     * Network features available to the volume, or current state of update.
+     * Gets the networkFeatures property: Network features available to the volume, or current state of update.
      * 
      * @return the networkFeatures value.
      */
     NetworkFeatures networkFeatures();
 
     /**
-     * Gets the networkSiblingSetId property: Network Sibling Set ID
-     * 
-     * Network Sibling Set ID for the the group of volumes sharing networking resources.
+     * Gets the networkSiblingSetId property: Network Sibling Set ID for the the group of volumes sharing networking
+     * resources.
      * 
      * @return the networkSiblingSetId value.
      */
     String networkSiblingSetId();
 
     /**
-     * Gets the storageToNetworkProximity property: Storage to Network Proximity
-     * 
-     * Provides storage to network proximity information for the volume.
+     * Gets the storageToNetworkProximity property: Provides storage to network proximity information for the volume.
      * 
      * @return the storageToNetworkProximity value.
      */
     VolumeStorageToNetworkProximity storageToNetworkProximity();
 
     /**
-     * Gets the mountTargets property: mountTargets
-     * 
-     * List of mount targets.
+     * Gets the mountTargets property: List of mount targets.
      * 
      * @return the mountTargets value.
      */
@@ -224,9 +200,8 @@ public interface Volume {
     String volumeType();
 
     /**
-     * Gets the dataProtection property: DataProtection
-     * 
-     * DataProtection type volumes include an object containing details of the replication.
+     * Gets the dataProtection property: DataProtection type volumes include an object containing details of the
+     * replication.
      * 
      * @return the dataProtection value.
      */
@@ -272,18 +247,16 @@ public interface Volume {
     Boolean smbEncryption();
 
     /**
-     * Gets the smbAccessBasedEnumeration property: smbAccessBasedEnumeration
-     * 
-     * Enables access-based enumeration share property for SMB Shares. Only applicable for SMB/DualProtocol volume.
+     * Gets the smbAccessBasedEnumeration property: Enables access-based enumeration share property for SMB Shares. Only
+     * applicable for SMB/DualProtocol volume.
      * 
      * @return the smbAccessBasedEnumeration value.
      */
     SmbAccessBasedEnumeration smbAccessBasedEnumeration();
 
     /**
-     * Gets the smbNonBrowsable property: smbNonBrowsable
-     * 
-     * Enables non-browsable property for SMB Shares. Only applicable for SMB/DualProtocol volume.
+     * Gets the smbNonBrowsable property: Enables non-browsable property for SMB Shares. Only applicable for
+     * SMB/DualProtocol volume.
      * 
      * @return the smbNonBrowsable value.
      */
@@ -394,18 +367,15 @@ public interface Volume {
     FileAccessLogs fileAccessLogs();
 
     /**
-     * Gets the avsDataStore property: avsDataStore
-     * 
-     * Specifies whether the volume is enabled for Azure VMware Solution (AVS) datastore purpose.
+     * Gets the avsDataStore property: Specifies whether the volume is enabled for Azure VMware Solution (AVS) datastore
+     * purpose.
      * 
      * @return the avsDataStore value.
      */
     AvsDataStore avsDataStore();
 
     /**
-     * Gets the dataStoreResourceId property: dataStoreResourceId
-     * 
-     * Data store resource unique identifier.
+     * Gets the dataStoreResourceId property: Data store resource unique identifier.
      * 
      * @return the dataStoreResourceId value.
      */
@@ -488,9 +458,7 @@ public interface Volume {
     Boolean encrypted();
 
     /**
-     * Gets the placementRules property: Volume placement rules
-     * 
-     * Application specific placement rules for the particular volume.
+     * Gets the placementRules property: Application specific placement rules for the particular volume.
      * 
      * @return the placementRules value.
      */
@@ -504,28 +472,22 @@ public interface Volume {
     EnableSubvolumes enableSubvolumes();
 
     /**
-     * Gets the provisionedAvailabilityZone property: Provisioned Availability Zone
-     * 
-     * The availability zone where the volume is provisioned. This refers to the logical availability zone where the
-     * volume resides.
+     * Gets the provisionedAvailabilityZone property: The availability zone where the volume is provisioned. This refers
+     * to the logical availability zone where the volume resides.
      * 
      * @return the provisionedAvailabilityZone value.
      */
     String provisionedAvailabilityZone();
 
     /**
-     * Gets the isLargeVolume property: Is Large Volume
-     * 
-     * Specifies whether volume is a Large Volume or Regular Volume.
+     * Gets the isLargeVolume property: Specifies whether volume is a Large Volume or Regular Volume.
      * 
      * @return the isLargeVolume value.
      */
     Boolean isLargeVolume();
 
     /**
-     * Gets the originatingResourceId property: Originating Resource Id
-     * 
-     * Id of the snapshot or backup that the volume is restored from.
+     * Gets the originatingResourceId property: Id of the snapshot or backup that the volume is restored from.
      * 
      * @return the originatingResourceId value.
      */
@@ -618,13 +580,10 @@ public interface Volume {
          */
         interface WithCreationToken {
             /**
-             * Specifies the creationToken property: Creation Token or File Path
+             * Specifies the creationToken property: A unique file path for the volume. Used when creating mount
+             * targets.
              * 
-             * A unique file path for the volume. Used when creating mount targets.
-             * 
-             * @param creationToken Creation Token or File Path
-             * 
-             * A unique file path for the volume. Used when creating mount targets.
+             * @param creationToken A unique file path for the volume. Used when creating mount targets.
              * @return the next definition stage.
              */
             WithUsageThreshold withCreationToken(String creationToken);
@@ -635,17 +594,15 @@ public interface Volume {
          */
         interface WithUsageThreshold {
             /**
-             * Specifies the usageThreshold property: usageThreshold
+             * Specifies the usageThreshold property: Maximum storage quota allowed for a file system in bytes. This is
+             * a soft quota used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB.
+             * For large volumes, valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to
+             * 2400GiB to 2400TiB. Values expressed in bytes as multiples of 1 GiB..
              * 
-             * Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only.
-             * Minimum size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume or 2400Tib for LargeVolume on
-             * exceptional basis. Specified in bytes..
-             * 
-             * @param usageThreshold usageThreshold
-             * 
-             * Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only.
-             * Minimum size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume or 2400Tib for LargeVolume on
-             * exceptional basis. Specified in bytes.
+             * @param usageThreshold Maximum storage quota allowed for a file system in bytes. This is a soft quota used
+             * for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB. For large volumes,
+             * valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB to 2400TiB.
+             * Values expressed in bytes as multiples of 1 GiB.
              * @return the next definition stage.
              */
             WithSubnetId withUsageThreshold(long usageThreshold);
@@ -734,13 +691,9 @@ public interface Volume {
          */
         interface WithServiceLevel {
             /**
-             * Specifies the serviceLevel property: serviceLevel
+             * Specifies the serviceLevel property: The service level of the file system.
              * 
-             * The service level of the file system.
-             * 
-             * @param serviceLevel serviceLevel
-             * 
-             * The service level of the file system.
+             * @param serviceLevel The service level of the file system.
              * @return the next definition stage.
              */
             WithCreate withServiceLevel(ServiceLevel serviceLevel);
@@ -751,13 +704,9 @@ public interface Volume {
          */
         interface WithExportPolicy {
             /**
-             * Specifies the exportPolicy property: exportPolicy
+             * Specifies the exportPolicy property: Set of export policy rules.
              * 
-             * Set of export policy rules.
-             * 
-             * @param exportPolicy exportPolicy
-             * 
-             * Set of export policy rules.
+             * @param exportPolicy Set of export policy rules.
              * @return the next definition stage.
              */
             WithCreate withExportPolicy(VolumePropertiesExportPolicy exportPolicy);
@@ -768,13 +717,9 @@ public interface Volume {
          */
         interface WithProtocolTypes {
             /**
-             * Specifies the protocolTypes property: protocolTypes
+             * Specifies the protocolTypes property: Set of protocol types, default NFSv3, CIFS for SMB protocol.
              * 
-             * Set of protocol types, default NFSv3, CIFS for SMB protocol.
-             * 
-             * @param protocolTypes protocolTypes
-             * 
-             * Set of protocol types, default NFSv3, CIFS for SMB protocol.
+             * @param protocolTypes Set of protocol types, default NFSv3, CIFS for SMB protocol.
              * @return the next definition stage.
              */
             WithCreate withProtocolTypes(List<String> protocolTypes);
@@ -785,13 +730,9 @@ public interface Volume {
          */
         interface WithSnapshotId {
             /**
-             * Specifies the snapshotId property: Snapshot ID
+             * Specifies the snapshotId property: Resource identifier used to identify the Snapshot..
              * 
-             * Resource identifier used to identify the Snapshot..
-             * 
-             * @param snapshotId Snapshot ID
-             * 
-             * Resource identifier used to identify the Snapshot.
+             * @param snapshotId Resource identifier used to identify the Snapshot.
              * @return the next definition stage.
              */
             WithCreate withSnapshotId(String snapshotId);
@@ -817,13 +758,9 @@ public interface Volume {
          */
         interface WithBackupId {
             /**
-             * Specifies the backupId property: Backup ID
+             * Specifies the backupId property: Resource identifier used to identify the Backup..
              * 
-             * Resource identifier used to identify the Backup..
-             * 
-             * @param backupId Backup ID
-             * 
-             * Resource identifier used to identify the Backup.
+             * @param backupId Resource identifier used to identify the Backup.
              * @return the next definition stage.
              */
             WithCreate withBackupId(String backupId);
@@ -834,13 +771,10 @@ public interface Volume {
          */
         interface WithNetworkFeatures {
             /**
-             * Specifies the networkFeatures property: Network features
+             * Specifies the networkFeatures property: Network features available to the volume, or current state of
+             * update..
              * 
-             * Network features available to the volume, or current state of update..
-             * 
-             * @param networkFeatures Network features
-             * 
-             * Network features available to the volume, or current state of update.
+             * @param networkFeatures Network features available to the volume, or current state of update.
              * @return the next definition stage.
              */
             WithCreate withNetworkFeatures(NetworkFeatures networkFeatures);
@@ -866,13 +800,11 @@ public interface Volume {
          */
         interface WithDataProtection {
             /**
-             * Specifies the dataProtection property: DataProtection
+             * Specifies the dataProtection property: DataProtection type volumes include an object containing details
+             * of the replication.
              * 
-             * DataProtection type volumes include an object containing details of the replication.
-             * 
-             * @param dataProtection DataProtection
-             * 
-             * DataProtection type volumes include an object containing details of the replication.
+             * @param dataProtection DataProtection type volumes include an object containing details of the
+             * replication.
              * @return the next definition stage.
              */
             WithCreate withDataProtection(VolumePropertiesDataProtection dataProtection);
@@ -956,15 +888,11 @@ public interface Volume {
          */
         interface WithSmbAccessBasedEnumeration {
             /**
-             * Specifies the smbAccessBasedEnumeration property: smbAccessBasedEnumeration
+             * Specifies the smbAccessBasedEnumeration property: Enables access-based enumeration share property for SMB
+             * Shares. Only applicable for SMB/DualProtocol volume.
              * 
-             * Enables access-based enumeration share property for SMB Shares. Only applicable for SMB/DualProtocol
-             * volume.
-             * 
-             * @param smbAccessBasedEnumeration smbAccessBasedEnumeration
-             * 
-             * Enables access-based enumeration share property for SMB Shares. Only applicable for SMB/DualProtocol
-             * volume.
+             * @param smbAccessBasedEnumeration Enables access-based enumeration share property for SMB Shares. Only
+             * applicable for SMB/DualProtocol volume.
              * @return the next definition stage.
              */
             WithCreate withSmbAccessBasedEnumeration(SmbAccessBasedEnumeration smbAccessBasedEnumeration);
@@ -975,13 +903,11 @@ public interface Volume {
          */
         interface WithSmbNonBrowsable {
             /**
-             * Specifies the smbNonBrowsable property: smbNonBrowsable
+             * Specifies the smbNonBrowsable property: Enables non-browsable property for SMB Shares. Only applicable
+             * for SMB/DualProtocol volume.
              * 
-             * Enables non-browsable property for SMB Shares. Only applicable for SMB/DualProtocol volume.
-             * 
-             * @param smbNonBrowsable smbNonBrowsable
-             * 
-             * Enables non-browsable property for SMB Shares. Only applicable for SMB/DualProtocol volume.
+             * @param smbNonBrowsable Enables non-browsable property for SMB Shares. Only applicable for
+             * SMB/DualProtocol volume.
              * @return the next definition stage.
              */
             WithCreate withSmbNonBrowsable(SmbNonBrowsable smbNonBrowsable);
@@ -1144,13 +1070,11 @@ public interface Volume {
          */
         interface WithAvsDataStore {
             /**
-             * Specifies the avsDataStore property: avsDataStore
+             * Specifies the avsDataStore property: Specifies whether the volume is enabled for Azure VMware Solution
+             * (AVS) datastore purpose.
              * 
-             * Specifies whether the volume is enabled for Azure VMware Solution (AVS) datastore purpose.
-             * 
-             * @param avsDataStore avsDataStore
-             * 
-             * Specifies whether the volume is enabled for Azure VMware Solution (AVS) datastore purpose.
+             * @param avsDataStore Specifies whether the volume is enabled for Azure VMware Solution (AVS) datastore
+             * purpose.
              * @return the next definition stage.
              */
             WithCreate withAvsDataStore(AvsDataStore avsDataStore);
@@ -1246,13 +1170,9 @@ public interface Volume {
          */
         interface WithPlacementRules {
             /**
-             * Specifies the placementRules property: Volume placement rules
+             * Specifies the placementRules property: Application specific placement rules for the particular volume.
              * 
-             * Application specific placement rules for the particular volume.
-             * 
-             * @param placementRules Volume placement rules
-             * 
-             * Application specific placement rules for the particular volume.
+             * @param placementRules Application specific placement rules for the particular volume.
              * @return the next definition stage.
              */
             WithCreate withPlacementRules(List<PlacementKeyValuePairs> placementRules);
@@ -1277,13 +1197,9 @@ public interface Volume {
          */
         interface WithIsLargeVolume {
             /**
-             * Specifies the isLargeVolume property: Is Large Volume
+             * Specifies the isLargeVolume property: Specifies whether volume is a Large Volume or Regular Volume..
              * 
-             * Specifies whether volume is a Large Volume or Regular Volume..
-             * 
-             * @param isLargeVolume Is Large Volume
-             * 
-             * Specifies whether volume is a Large Volume or Regular Volume.
+             * @param isLargeVolume Specifies whether volume is a Large Volume or Regular Volume.
              * @return the next definition stage.
              */
             WithCreate withIsLargeVolume(Boolean isLargeVolume);
@@ -1301,12 +1217,12 @@ public interface Volume {
      * The template for Volume update.
      */
     interface Update extends UpdateStages.WithTags, UpdateStages.WithServiceLevel, UpdateStages.WithUsageThreshold,
-        UpdateStages.WithExportPolicy, UpdateStages.WithThroughputMibps, UpdateStages.WithDataProtection,
-        UpdateStages.WithIsDefaultQuotaEnabled, UpdateStages.WithDefaultUserQuotaInKiBs,
-        UpdateStages.WithDefaultGroupQuotaInKiBs, UpdateStages.WithUnixPermissions, UpdateStages.WithCoolAccess,
-        UpdateStages.WithCoolnessPeriod, UpdateStages.WithCoolAccessRetrievalPolicy,
-        UpdateStages.WithSnapshotDirectoryVisible, UpdateStages.WithSmbAccessBasedEnumeration,
-        UpdateStages.WithSmbNonBrowsable {
+        UpdateStages.WithExportPolicy, UpdateStages.WithProtocolTypes, UpdateStages.WithThroughputMibps,
+        UpdateStages.WithDataProtection, UpdateStages.WithIsDefaultQuotaEnabled,
+        UpdateStages.WithDefaultUserQuotaInKiBs, UpdateStages.WithDefaultGroupQuotaInKiBs,
+        UpdateStages.WithUnixPermissions, UpdateStages.WithCoolAccess, UpdateStages.WithCoolnessPeriod,
+        UpdateStages.WithCoolAccessRetrievalPolicy, UpdateStages.WithSnapshotDirectoryVisible,
+        UpdateStages.WithSmbAccessBasedEnumeration, UpdateStages.WithSmbNonBrowsable {
         /**
          * Executes the update request.
          * 
@@ -1345,13 +1261,9 @@ public interface Volume {
          */
         interface WithServiceLevel {
             /**
-             * Specifies the serviceLevel property: serviceLevel
+             * Specifies the serviceLevel property: The service level of the file system.
              * 
-             * The service level of the file system.
-             * 
-             * @param serviceLevel serviceLevel
-             * 
-             * The service level of the file system.
+             * @param serviceLevel The service level of the file system.
              * @return the next definition stage.
              */
             Update withServiceLevel(ServiceLevel serviceLevel);
@@ -1362,17 +1274,15 @@ public interface Volume {
          */
         interface WithUsageThreshold {
             /**
-             * Specifies the usageThreshold property: usageThreshold
+             * Specifies the usageThreshold property: Maximum storage quota allowed for a file system in bytes. This is
+             * a soft quota used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB.
+             * For large volumes, valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to
+             * 2400GiB to 2400TiB. Values expressed in bytes as multiples of 1 GiB..
              * 
-             * Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only.
-             * Minimum size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume or 2400Tib for LargeVolume on
-             * exceptional basis. Specified in bytes..
-             * 
-             * @param usageThreshold usageThreshold
-             * 
-             * Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only.
-             * Minimum size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume or 2400Tib for LargeVolume on
-             * exceptional basis. Specified in bytes.
+             * @param usageThreshold Maximum storage quota allowed for a file system in bytes. This is a soft quota used
+             * for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB. For large volumes,
+             * valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB to 2400TiB.
+             * Values expressed in bytes as multiples of 1 GiB.
              * @return the next definition stage.
              */
             Update withUsageThreshold(Long usageThreshold);
@@ -1383,16 +1293,25 @@ public interface Volume {
          */
         interface WithExportPolicy {
             /**
-             * Specifies the exportPolicy property: exportPolicy
+             * Specifies the exportPolicy property: Set of export policy rules.
              * 
-             * Set of export policy rules.
-             * 
-             * @param exportPolicy exportPolicy
-             * 
-             * Set of export policy rules.
+             * @param exportPolicy Set of export policy rules.
              * @return the next definition stage.
              */
             Update withExportPolicy(VolumePatchPropertiesExportPolicy exportPolicy);
+        }
+
+        /**
+         * The stage of the Volume update allowing to specify protocolTypes.
+         */
+        interface WithProtocolTypes {
+            /**
+             * Specifies the protocolTypes property: Set of protocol types, default NFSv3, CIFS for SMB protocol.
+             * 
+             * @param protocolTypes Set of protocol types, default NFSv3, CIFS for SMB protocol.
+             * @return the next definition stage.
+             */
+            Update withProtocolTypes(List<String> protocolTypes);
         }
 
         /**
@@ -1415,13 +1334,11 @@ public interface Volume {
          */
         interface WithDataProtection {
             /**
-             * Specifies the dataProtection property: DataProtection
+             * Specifies the dataProtection property: DataProtection type volumes include an object containing details
+             * of the replication.
              * 
-             * DataProtection type volumes include an object containing details of the replication.
-             * 
-             * @param dataProtection DataProtection
-             * 
-             * DataProtection type volumes include an object containing details of the replication.
+             * @param dataProtection DataProtection type volumes include an object containing details of the
+             * replication.
              * @return the next definition stage.
              */
             Update withDataProtection(VolumePatchPropertiesDataProtection dataProtection);
@@ -1566,15 +1483,11 @@ public interface Volume {
          */
         interface WithSmbAccessBasedEnumeration {
             /**
-             * Specifies the smbAccessBasedEnumeration property: smbAccessBasedEnumeration
+             * Specifies the smbAccessBasedEnumeration property: Enables access-based enumeration share property for SMB
+             * Shares. Only applicable for SMB/DualProtocol volume.
              * 
-             * Enables access-based enumeration share property for SMB Shares. Only applicable for SMB/DualProtocol
-             * volume.
-             * 
-             * @param smbAccessBasedEnumeration smbAccessBasedEnumeration
-             * 
-             * Enables access-based enumeration share property for SMB Shares. Only applicable for SMB/DualProtocol
-             * volume.
+             * @param smbAccessBasedEnumeration Enables access-based enumeration share property for SMB Shares. Only
+             * applicable for SMB/DualProtocol volume.
              * @return the next definition stage.
              */
             Update withSmbAccessBasedEnumeration(SmbAccessBasedEnumeration smbAccessBasedEnumeration);
@@ -1585,13 +1498,11 @@ public interface Volume {
          */
         interface WithSmbNonBrowsable {
             /**
-             * Specifies the smbNonBrowsable property: smbNonBrowsable
+             * Specifies the smbNonBrowsable property: Enables non-browsable property for SMB Shares. Only applicable
+             * for SMB/DualProtocol volume.
              * 
-             * Enables non-browsable property for SMB Shares. Only applicable for SMB/DualProtocol volume.
-             * 
-             * @param smbNonBrowsable smbNonBrowsable
-             * 
-             * Enables non-browsable property for SMB Shares. Only applicable for SMB/DualProtocol volume.
+             * @param smbNonBrowsable Enables non-browsable property for SMB Shares. Only applicable for
+             * SMB/DualProtocol volume.
              * @return the next definition stage.
              */
             Update withSmbNonBrowsable(SmbNonBrowsable smbNonBrowsable);

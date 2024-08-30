@@ -6,89 +6,80 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.GatewayLoadBalancerTunnelInterface;
 import com.azure.resourcemanager.network.models.LoadBalancerBackendAddress;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.SyncMode;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Properties of the backend address pool.
  */
 @Fluent
-public final class BackendAddressPoolPropertiesFormat {
+public final class BackendAddressPoolPropertiesFormat implements JsonSerializable<BackendAddressPoolPropertiesFormat> {
     /*
      * The location of the backend address pool.
      */
-    @JsonProperty(value = "location")
     private String location;
 
     /*
      * An array of gateway load balancer tunnel interfaces.
      */
-    @JsonProperty(value = "tunnelInterfaces")
     private List<GatewayLoadBalancerTunnelInterface> tunnelInterfaces;
 
     /*
      * An array of backend addresses.
      */
-    @JsonProperty(value = "loadBalancerBackendAddresses")
     private List<LoadBalancerBackendAddress> loadBalancerBackendAddresses;
 
     /*
      * An array of references to IP addresses defined in network interfaces.
      */
-    @JsonProperty(value = "backendIPConfigurations", access = JsonProperty.Access.WRITE_ONLY)
     private List<NetworkInterfaceIpConfigurationInner> backendIpConfigurations;
 
     /*
      * An array of references to load balancing rules that use this backend address pool.
      */
-    @JsonProperty(value = "loadBalancingRules", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> loadBalancingRules;
 
     /*
      * A reference to an outbound rule that uses this backend address pool.
      */
-    @JsonProperty(value = "outboundRule", access = JsonProperty.Access.WRITE_ONLY)
     private SubResource outboundRule;
 
     /*
      * An array of references to outbound rules that use this backend address pool.
      */
-    @JsonProperty(value = "outboundRules", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> outboundRules;
 
     /*
      * An array of references to inbound NAT rules that use this backend address pool.
      */
-    @JsonProperty(value = "inboundNatRules", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> inboundNatRules;
 
     /*
      * The provisioning state of the backend address pool resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * Amount of seconds Load Balancer waits for before sending RESET to client and backend address.
      */
-    @JsonProperty(value = "drainPeriodInSeconds")
     private Integer drainPeriodInSeconds;
 
     /*
      * A reference to a virtual network.
      */
-    @JsonProperty(value = "virtualNetwork")
     private SubResource virtualNetwork;
 
     /*
      * Backend address synchronous mode for the backend pool
      */
-    @JsonProperty(value = "syncMode")
     private SyncMode syncMode;
 
     /**
@@ -99,7 +90,7 @@ public final class BackendAddressPoolPropertiesFormat {
 
     /**
      * Get the location property: The location of the backend address pool.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -108,7 +99,7 @@ public final class BackendAddressPoolPropertiesFormat {
 
     /**
      * Set the location property: The location of the backend address pool.
-     *
+     * 
      * @param location the location value to set.
      * @return the BackendAddressPoolPropertiesFormat object itself.
      */
@@ -119,7 +110,7 @@ public final class BackendAddressPoolPropertiesFormat {
 
     /**
      * Get the tunnelInterfaces property: An array of gateway load balancer tunnel interfaces.
-     *
+     * 
      * @return the tunnelInterfaces value.
      */
     public List<GatewayLoadBalancerTunnelInterface> tunnelInterfaces() {
@@ -128,7 +119,7 @@ public final class BackendAddressPoolPropertiesFormat {
 
     /**
      * Set the tunnelInterfaces property: An array of gateway load balancer tunnel interfaces.
-     *
+     * 
      * @param tunnelInterfaces the tunnelInterfaces value to set.
      * @return the BackendAddressPoolPropertiesFormat object itself.
      */
@@ -140,7 +131,7 @@ public final class BackendAddressPoolPropertiesFormat {
 
     /**
      * Get the loadBalancerBackendAddresses property: An array of backend addresses.
-     *
+     * 
      * @return the loadBalancerBackendAddresses value.
      */
     public List<LoadBalancerBackendAddress> loadBalancerBackendAddresses() {
@@ -149,7 +140,7 @@ public final class BackendAddressPoolPropertiesFormat {
 
     /**
      * Set the loadBalancerBackendAddresses property: An array of backend addresses.
-     *
+     * 
      * @param loadBalancerBackendAddresses the loadBalancerBackendAddresses value to set.
      * @return the BackendAddressPoolPropertiesFormat object itself.
      */
@@ -161,7 +152,7 @@ public final class BackendAddressPoolPropertiesFormat {
 
     /**
      * Get the backendIpConfigurations property: An array of references to IP addresses defined in network interfaces.
-     *
+     * 
      * @return the backendIpConfigurations value.
      */
     public List<NetworkInterfaceIpConfigurationInner> backendIpConfigurations() {
@@ -171,7 +162,7 @@ public final class BackendAddressPoolPropertiesFormat {
     /**
      * Get the loadBalancingRules property: An array of references to load balancing rules that use this backend address
      * pool.
-     *
+     * 
      * @return the loadBalancingRules value.
      */
     public List<SubResource> loadBalancingRules() {
@@ -180,7 +171,7 @@ public final class BackendAddressPoolPropertiesFormat {
 
     /**
      * Get the outboundRule property: A reference to an outbound rule that uses this backend address pool.
-     *
+     * 
      * @return the outboundRule value.
      */
     public SubResource outboundRule() {
@@ -189,7 +180,7 @@ public final class BackendAddressPoolPropertiesFormat {
 
     /**
      * Get the outboundRules property: An array of references to outbound rules that use this backend address pool.
-     *
+     * 
      * @return the outboundRules value.
      */
     public List<SubResource> outboundRules() {
@@ -198,7 +189,7 @@ public final class BackendAddressPoolPropertiesFormat {
 
     /**
      * Get the inboundNatRules property: An array of references to inbound NAT rules that use this backend address pool.
-     *
+     * 
      * @return the inboundNatRules value.
      */
     public List<SubResource> inboundNatRules() {
@@ -207,7 +198,7 @@ public final class BackendAddressPoolPropertiesFormat {
 
     /**
      * Get the provisioningState property: The provisioning state of the backend address pool resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -217,7 +208,7 @@ public final class BackendAddressPoolPropertiesFormat {
     /**
      * Get the drainPeriodInSeconds property: Amount of seconds Load Balancer waits for before sending RESET to client
      * and backend address.
-     *
+     * 
      * @return the drainPeriodInSeconds value.
      */
     public Integer drainPeriodInSeconds() {
@@ -227,7 +218,7 @@ public final class BackendAddressPoolPropertiesFormat {
     /**
      * Set the drainPeriodInSeconds property: Amount of seconds Load Balancer waits for before sending RESET to client
      * and backend address.
-     *
+     * 
      * @param drainPeriodInSeconds the drainPeriodInSeconds value to set.
      * @return the BackendAddressPoolPropertiesFormat object itself.
      */
@@ -238,7 +229,7 @@ public final class BackendAddressPoolPropertiesFormat {
 
     /**
      * Get the virtualNetwork property: A reference to a virtual network.
-     *
+     * 
      * @return the virtualNetwork value.
      */
     public SubResource virtualNetwork() {
@@ -247,7 +238,7 @@ public final class BackendAddressPoolPropertiesFormat {
 
     /**
      * Set the virtualNetwork property: A reference to a virtual network.
-     *
+     * 
      * @param virtualNetwork the virtualNetwork value to set.
      * @return the BackendAddressPoolPropertiesFormat object itself.
      */
@@ -258,7 +249,7 @@ public final class BackendAddressPoolPropertiesFormat {
 
     /**
      * Get the syncMode property: Backend address synchronous mode for the backend pool.
-     *
+     * 
      * @return the syncMode value.
      */
     public SyncMode syncMode() {
@@ -267,7 +258,7 @@ public final class BackendAddressPoolPropertiesFormat {
 
     /**
      * Set the syncMode property: Backend address synchronous mode for the backend pool.
-     *
+     * 
      * @param syncMode the syncMode value to set.
      * @return the BackendAddressPoolPropertiesFormat object itself.
      */
@@ -278,7 +269,7 @@ public final class BackendAddressPoolPropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -291,5 +282,83 @@ public final class BackendAddressPoolPropertiesFormat {
         if (backendIpConfigurations() != null) {
             backendIpConfigurations().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeArrayField("tunnelInterfaces", this.tunnelInterfaces,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("loadBalancerBackendAddresses", this.loadBalancerBackendAddresses,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeNumberField("drainPeriodInSeconds", this.drainPeriodInSeconds);
+        jsonWriter.writeJsonField("virtualNetwork", this.virtualNetwork);
+        jsonWriter.writeStringField("syncMode", this.syncMode == null ? null : this.syncMode.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BackendAddressPoolPropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BackendAddressPoolPropertiesFormat if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BackendAddressPoolPropertiesFormat.
+     */
+    public static BackendAddressPoolPropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BackendAddressPoolPropertiesFormat deserializedBackendAddressPoolPropertiesFormat
+                = new BackendAddressPoolPropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("location".equals(fieldName)) {
+                    deserializedBackendAddressPoolPropertiesFormat.location = reader.getString();
+                } else if ("tunnelInterfaces".equals(fieldName)) {
+                    List<GatewayLoadBalancerTunnelInterface> tunnelInterfaces
+                        = reader.readArray(reader1 -> GatewayLoadBalancerTunnelInterface.fromJson(reader1));
+                    deserializedBackendAddressPoolPropertiesFormat.tunnelInterfaces = tunnelInterfaces;
+                } else if ("loadBalancerBackendAddresses".equals(fieldName)) {
+                    List<LoadBalancerBackendAddress> loadBalancerBackendAddresses
+                        = reader.readArray(reader1 -> LoadBalancerBackendAddress.fromJson(reader1));
+                    deserializedBackendAddressPoolPropertiesFormat.loadBalancerBackendAddresses
+                        = loadBalancerBackendAddresses;
+                } else if ("backendIPConfigurations".equals(fieldName)) {
+                    List<NetworkInterfaceIpConfigurationInner> backendIpConfigurations
+                        = reader.readArray(reader1 -> NetworkInterfaceIpConfigurationInner.fromJson(reader1));
+                    deserializedBackendAddressPoolPropertiesFormat.backendIpConfigurations = backendIpConfigurations;
+                } else if ("loadBalancingRules".equals(fieldName)) {
+                    List<SubResource> loadBalancingRules = reader.readArray(reader1 -> SubResource.fromJson(reader1));
+                    deserializedBackendAddressPoolPropertiesFormat.loadBalancingRules = loadBalancingRules;
+                } else if ("outboundRule".equals(fieldName)) {
+                    deserializedBackendAddressPoolPropertiesFormat.outboundRule = SubResource.fromJson(reader);
+                } else if ("outboundRules".equals(fieldName)) {
+                    List<SubResource> outboundRules = reader.readArray(reader1 -> SubResource.fromJson(reader1));
+                    deserializedBackendAddressPoolPropertiesFormat.outboundRules = outboundRules;
+                } else if ("inboundNatRules".equals(fieldName)) {
+                    List<SubResource> inboundNatRules = reader.readArray(reader1 -> SubResource.fromJson(reader1));
+                    deserializedBackendAddressPoolPropertiesFormat.inboundNatRules = inboundNatRules;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedBackendAddressPoolPropertiesFormat.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("drainPeriodInSeconds".equals(fieldName)) {
+                    deserializedBackendAddressPoolPropertiesFormat.drainPeriodInSeconds
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("virtualNetwork".equals(fieldName)) {
+                    deserializedBackendAddressPoolPropertiesFormat.virtualNetwork = SubResource.fromJson(reader);
+                } else if ("syncMode".equals(fieldName)) {
+                    deserializedBackendAddressPoolPropertiesFormat.syncMode = SyncMode.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBackendAddressPoolPropertiesFormat;
+        });
     }
 }

@@ -6,198 +6,93 @@ package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** Sweep job definition. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "jobType")
-@JsonTypeName("Sweep")
+/**
+ * Sweep job definition.
+ */
 @Fluent
 public final class SweepJob extends JobBaseProperties {
     /*
-     * Early termination policies enable canceling poor-performing runs before they complete
+     * [Required] Specifies the type of job.
      */
-    @JsonProperty(value = "earlyTermination")
-    private EarlyTerminationPolicy earlyTermination;
-
-    /*
-     * Mapping of input data bindings used in the job.
-     */
-    @JsonProperty(value = "inputs")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
-    private Map<String, JobInput> inputs;
-
-    /*
-     * Sweep Job limit.
-     */
-    @JsonProperty(value = "limits")
-    private SweepJobLimits limits;
-
-    /*
-     * [Required] Optimization objective.
-     */
-    @JsonProperty(value = "objective", required = true)
-    private Objective objective;
-
-    /*
-     * Mapping of output data bindings used in the job.
-     */
-    @JsonProperty(value = "outputs")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
-    private Map<String, JobOutput> outputs;
-
-    /*
-     * [Required] The hyperparameter sampling algorithm
-     */
-    @JsonProperty(value = "samplingAlgorithm", required = true)
-    private SamplingAlgorithm samplingAlgorithm;
+    private JobType jobType = JobType.SWEEP;
 
     /*
      * [Required] A dictionary containing each parameter and its distribution. The dictionary key is the name of the
      * parameter
      */
-    @JsonProperty(value = "searchSpace", required = true)
     private Object searchSpace;
+
+    /*
+     * [Required] The hyperparameter sampling algorithm
+     */
+    private SamplingAlgorithm samplingAlgorithm;
+
+    /*
+     * Sweep Job limit.
+     */
+    private SweepJobLimits limits;
+
+    /*
+     * Early termination policies enable canceling poor-performing runs before they complete
+     */
+    private EarlyTerminationPolicy earlyTermination;
+
+    /*
+     * [Required] Optimization objective.
+     */
+    private Objective objective;
 
     /*
      * [Required] Trial component definition.
      */
-    @JsonProperty(value = "trial", required = true)
     private TrialComponent trial;
 
-    /** Creates an instance of SweepJob class. */
+    /*
+     * Mapping of input data bindings used in the job.
+     */
+    private Map<String, JobInput> inputs;
+
+    /*
+     * Mapping of output data bindings used in the job.
+     */
+    private Map<String, JobOutput> outputs;
+
+    /*
+     * Queue settings for the job
+     */
+    private QueueSettings queueSettings;
+
+    /*
+     * Status of the job.
+     */
+    private JobStatus status;
+
+    /**
+     * Creates an instance of SweepJob class.
+     */
     public SweepJob() {
     }
 
     /**
-     * Get the earlyTermination property: Early termination policies enable canceling poor-performing runs before they
-     * complete.
-     *
-     * @return the earlyTermination value.
+     * Get the jobType property: [Required] Specifies the type of job.
+     * 
+     * @return the jobType value.
      */
-    public EarlyTerminationPolicy earlyTermination() {
-        return this.earlyTermination;
-    }
-
-    /**
-     * Set the earlyTermination property: Early termination policies enable canceling poor-performing runs before they
-     * complete.
-     *
-     * @param earlyTermination the earlyTermination value to set.
-     * @return the SweepJob object itself.
-     */
-    public SweepJob withEarlyTermination(EarlyTerminationPolicy earlyTermination) {
-        this.earlyTermination = earlyTermination;
-        return this;
-    }
-
-    /**
-     * Get the inputs property: Mapping of input data bindings used in the job.
-     *
-     * @return the inputs value.
-     */
-    public Map<String, JobInput> inputs() {
-        return this.inputs;
-    }
-
-    /**
-     * Set the inputs property: Mapping of input data bindings used in the job.
-     *
-     * @param inputs the inputs value to set.
-     * @return the SweepJob object itself.
-     */
-    public SweepJob withInputs(Map<String, JobInput> inputs) {
-        this.inputs = inputs;
-        return this;
-    }
-
-    /**
-     * Get the limits property: Sweep Job limit.
-     *
-     * @return the limits value.
-     */
-    public SweepJobLimits limits() {
-        return this.limits;
-    }
-
-    /**
-     * Set the limits property: Sweep Job limit.
-     *
-     * @param limits the limits value to set.
-     * @return the SweepJob object itself.
-     */
-    public SweepJob withLimits(SweepJobLimits limits) {
-        this.limits = limits;
-        return this;
-    }
-
-    /**
-     * Get the objective property: [Required] Optimization objective.
-     *
-     * @return the objective value.
-     */
-    public Objective objective() {
-        return this.objective;
-    }
-
-    /**
-     * Set the objective property: [Required] Optimization objective.
-     *
-     * @param objective the objective value to set.
-     * @return the SweepJob object itself.
-     */
-    public SweepJob withObjective(Objective objective) {
-        this.objective = objective;
-        return this;
-    }
-
-    /**
-     * Get the outputs property: Mapping of output data bindings used in the job.
-     *
-     * @return the outputs value.
-     */
-    public Map<String, JobOutput> outputs() {
-        return this.outputs;
-    }
-
-    /**
-     * Set the outputs property: Mapping of output data bindings used in the job.
-     *
-     * @param outputs the outputs value to set.
-     * @return the SweepJob object itself.
-     */
-    public SweepJob withOutputs(Map<String, JobOutput> outputs) {
-        this.outputs = outputs;
-        return this;
-    }
-
-    /**
-     * Get the samplingAlgorithm property: [Required] The hyperparameter sampling algorithm.
-     *
-     * @return the samplingAlgorithm value.
-     */
-    public SamplingAlgorithm samplingAlgorithm() {
-        return this.samplingAlgorithm;
-    }
-
-    /**
-     * Set the samplingAlgorithm property: [Required] The hyperparameter sampling algorithm.
-     *
-     * @param samplingAlgorithm the samplingAlgorithm value to set.
-     * @return the SweepJob object itself.
-     */
-    public SweepJob withSamplingAlgorithm(SamplingAlgorithm samplingAlgorithm) {
-        this.samplingAlgorithm = samplingAlgorithm;
-        return this;
+    @Override
+    public JobType jobType() {
+        return this.jobType;
     }
 
     /**
      * Get the searchSpace property: [Required] A dictionary containing each parameter and its distribution. The
      * dictionary key is the name of the parameter.
-     *
+     * 
      * @return the searchSpace value.
      */
     public Object searchSpace() {
@@ -207,7 +102,7 @@ public final class SweepJob extends JobBaseProperties {
     /**
      * Set the searchSpace property: [Required] A dictionary containing each parameter and its distribution. The
      * dictionary key is the name of the parameter.
-     *
+     * 
      * @param searchSpace the searchSpace value to set.
      * @return the SweepJob object itself.
      */
@@ -217,8 +112,90 @@ public final class SweepJob extends JobBaseProperties {
     }
 
     /**
+     * Get the samplingAlgorithm property: [Required] The hyperparameter sampling algorithm.
+     * 
+     * @return the samplingAlgorithm value.
+     */
+    public SamplingAlgorithm samplingAlgorithm() {
+        return this.samplingAlgorithm;
+    }
+
+    /**
+     * Set the samplingAlgorithm property: [Required] The hyperparameter sampling algorithm.
+     * 
+     * @param samplingAlgorithm the samplingAlgorithm value to set.
+     * @return the SweepJob object itself.
+     */
+    public SweepJob withSamplingAlgorithm(SamplingAlgorithm samplingAlgorithm) {
+        this.samplingAlgorithm = samplingAlgorithm;
+        return this;
+    }
+
+    /**
+     * Get the limits property: Sweep Job limit.
+     * 
+     * @return the limits value.
+     */
+    public SweepJobLimits limits() {
+        return this.limits;
+    }
+
+    /**
+     * Set the limits property: Sweep Job limit.
+     * 
+     * @param limits the limits value to set.
+     * @return the SweepJob object itself.
+     */
+    public SweepJob withLimits(SweepJobLimits limits) {
+        this.limits = limits;
+        return this;
+    }
+
+    /**
+     * Get the earlyTermination property: Early termination policies enable canceling poor-performing runs before they
+     * complete.
+     * 
+     * @return the earlyTermination value.
+     */
+    public EarlyTerminationPolicy earlyTermination() {
+        return this.earlyTermination;
+    }
+
+    /**
+     * Set the earlyTermination property: Early termination policies enable canceling poor-performing runs before they
+     * complete.
+     * 
+     * @param earlyTermination the earlyTermination value to set.
+     * @return the SweepJob object itself.
+     */
+    public SweepJob withEarlyTermination(EarlyTerminationPolicy earlyTermination) {
+        this.earlyTermination = earlyTermination;
+        return this;
+    }
+
+    /**
+     * Get the objective property: [Required] Optimization objective.
+     * 
+     * @return the objective value.
+     */
+    public Objective objective() {
+        return this.objective;
+    }
+
+    /**
+     * Set the objective property: [Required] Optimization objective.
+     * 
+     * @param objective the objective value to set.
+     * @return the SweepJob object itself.
+     */
+    public SweepJob withObjective(Objective objective) {
+        this.objective = objective;
+        return this;
+    }
+
+    /**
      * Get the trial property: [Required] Trial component definition.
-     *
+     * 
      * @return the trial value.
      */
     public TrialComponent trial() {
@@ -227,7 +204,7 @@ public final class SweepJob extends JobBaseProperties {
 
     /**
      * Set the trial property: [Required] Trial component definition.
-     *
+     * 
      * @param trial the trial value to set.
      * @return the SweepJob object itself.
      */
@@ -236,70 +213,160 @@ public final class SweepJob extends JobBaseProperties {
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public SweepJob withComponentId(String componentId) {
-        super.withComponentId(componentId);
+    /**
+     * Get the inputs property: Mapping of input data bindings used in the job.
+     * 
+     * @return the inputs value.
+     */
+    public Map<String, JobInput> inputs() {
+        return this.inputs;
+    }
+
+    /**
+     * Set the inputs property: Mapping of input data bindings used in the job.
+     * 
+     * @param inputs the inputs value to set.
+     * @return the SweepJob object itself.
+     */
+    public SweepJob withInputs(Map<String, JobInput> inputs) {
+        this.inputs = inputs;
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public SweepJob withComputeId(String computeId) {
-        super.withComputeId(computeId);
+    /**
+     * Get the outputs property: Mapping of output data bindings used in the job.
+     * 
+     * @return the outputs value.
+     */
+    public Map<String, JobOutput> outputs() {
+        return this.outputs;
+    }
+
+    /**
+     * Set the outputs property: Mapping of output data bindings used in the job.
+     * 
+     * @param outputs the outputs value to set.
+     * @return the SweepJob object itself.
+     */
+    public SweepJob withOutputs(Map<String, JobOutput> outputs) {
+        this.outputs = outputs;
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the queueSettings property: Queue settings for the job.
+     * 
+     * @return the queueSettings value.
+     */
+    public QueueSettings queueSettings() {
+        return this.queueSettings;
+    }
+
+    /**
+     * Set the queueSettings property: Queue settings for the job.
+     * 
+     * @param queueSettings the queueSettings value to set.
+     * @return the SweepJob object itself.
+     */
+    public SweepJob withQueueSettings(QueueSettings queueSettings) {
+        this.queueSettings = queueSettings;
+        return this;
+    }
+
+    /**
+     * Get the status property: Status of the job.
+     * 
+     * @return the status value.
+     */
+    @Override
+    public JobStatus status() {
+        return this.status;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SweepJob withDisplayName(String displayName) {
         super.withDisplayName(displayName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SweepJob withExperimentName(String experimentName) {
         super.withExperimentName(experimentName);
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public SweepJob withIdentity(IdentityConfiguration identity) {
-        super.withIdentity(identity);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public SweepJob withIsArchived(Boolean isArchived) {
-        super.withIsArchived(isArchived);
-        return this;
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SweepJob withServices(Map<String, JobService> services) {
         super.withServices(services);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SweepJob withComputeId(String computeId) {
+        super.withComputeId(computeId);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SweepJob withIsArchived(Boolean isArchived) {
+        super.withIsArchived(isArchived);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SweepJob withIdentity(IdentityConfiguration identity) {
+        super.withIdentity(identity);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SweepJob withComponentId(String componentId) {
+        super.withComponentId(componentId);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SweepJob withNotificationSetting(NotificationSetting notificationSetting) {
+        super.withNotificationSetting(notificationSetting);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SweepJob withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public SweepJob withProperties(Map<String, String> properties) {
-        super.withProperties(properties);
-        return this;
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SweepJob withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -307,65 +374,172 @@ public final class SweepJob extends JobBaseProperties {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SweepJob withProperties(Map<String, String> properties) {
+        super.withProperties(properties);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
-        if (earlyTermination() != null) {
-            earlyTermination().validate();
+        if (searchSpace() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property searchSpace in model SweepJob"));
         }
-        if (inputs() != null) {
-            inputs()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+        if (samplingAlgorithm() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property samplingAlgorithm in model SweepJob"));
+        } else {
+            samplingAlgorithm().validate();
         }
         if (limits() != null) {
             limits().validate();
         }
+        if (earlyTermination() != null) {
+            earlyTermination().validate();
+        }
         if (objective() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property objective in model SweepJob"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property objective in model SweepJob"));
         } else {
             objective().validate();
         }
-        if (outputs() != null) {
-            outputs()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
-        }
-        if (samplingAlgorithm() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property samplingAlgorithm in model SweepJob"));
-        } else {
-            samplingAlgorithm().validate();
-        }
-        if (searchSpace() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property searchSpace in model SweepJob"));
-        }
         if (trial() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property trial in model SweepJob"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property trial in model SweepJob"));
         } else {
             trial().validate();
+        }
+        if (inputs() != null) {
+            inputs().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
+        }
+        if (outputs() != null) {
+            outputs().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
+        }
+        if (queueSettings() != null) {
+            queueSettings().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SweepJob.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("properties", properties(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("displayName", displayName());
+        jsonWriter.writeStringField("experimentName", experimentName());
+        jsonWriter.writeMapField("services", services(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("computeId", computeId());
+        jsonWriter.writeBooleanField("isArchived", isArchived());
+        jsonWriter.writeJsonField("identity", identity());
+        jsonWriter.writeStringField("componentId", componentId());
+        jsonWriter.writeJsonField("notificationSetting", notificationSetting());
+        jsonWriter.writeUntypedField("searchSpace", this.searchSpace);
+        jsonWriter.writeJsonField("samplingAlgorithm", this.samplingAlgorithm);
+        jsonWriter.writeJsonField("objective", this.objective);
+        jsonWriter.writeJsonField("trial", this.trial);
+        jsonWriter.writeStringField("jobType", this.jobType == null ? null : this.jobType.toString());
+        jsonWriter.writeJsonField("limits", this.limits);
+        jsonWriter.writeJsonField("earlyTermination", this.earlyTermination);
+        jsonWriter.writeMapField("inputs", this.inputs, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeMapField("outputs", this.outputs, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("queueSettings", this.queueSettings);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SweepJob from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SweepJob if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SweepJob.
+     */
+    public static SweepJob fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SweepJob deserializedSweepJob = new SweepJob();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedSweepJob.withDescription(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedSweepJob.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    Map<String, String> properties = reader.readMap(reader1 -> reader1.getString());
+                    deserializedSweepJob.withProperties(properties);
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedSweepJob.withDisplayName(reader.getString());
+                } else if ("status".equals(fieldName)) {
+                    deserializedSweepJob.status = JobStatus.fromString(reader.getString());
+                } else if ("experimentName".equals(fieldName)) {
+                    deserializedSweepJob.withExperimentName(reader.getString());
+                } else if ("services".equals(fieldName)) {
+                    Map<String, JobService> services = reader.readMap(reader1 -> JobService.fromJson(reader1));
+                    deserializedSweepJob.withServices(services);
+                } else if ("computeId".equals(fieldName)) {
+                    deserializedSweepJob.withComputeId(reader.getString());
+                } else if ("isArchived".equals(fieldName)) {
+                    deserializedSweepJob.withIsArchived(reader.getNullable(JsonReader::getBoolean));
+                } else if ("identity".equals(fieldName)) {
+                    deserializedSweepJob.withIdentity(IdentityConfiguration.fromJson(reader));
+                } else if ("componentId".equals(fieldName)) {
+                    deserializedSweepJob.withComponentId(reader.getString());
+                } else if ("notificationSetting".equals(fieldName)) {
+                    deserializedSweepJob.withNotificationSetting(NotificationSetting.fromJson(reader));
+                } else if ("searchSpace".equals(fieldName)) {
+                    deserializedSweepJob.searchSpace = reader.readUntyped();
+                } else if ("samplingAlgorithm".equals(fieldName)) {
+                    deserializedSweepJob.samplingAlgorithm = SamplingAlgorithm.fromJson(reader);
+                } else if ("objective".equals(fieldName)) {
+                    deserializedSweepJob.objective = Objective.fromJson(reader);
+                } else if ("trial".equals(fieldName)) {
+                    deserializedSweepJob.trial = TrialComponent.fromJson(reader);
+                } else if ("jobType".equals(fieldName)) {
+                    deserializedSweepJob.jobType = JobType.fromString(reader.getString());
+                } else if ("limits".equals(fieldName)) {
+                    deserializedSweepJob.limits = SweepJobLimits.fromJson(reader);
+                } else if ("earlyTermination".equals(fieldName)) {
+                    deserializedSweepJob.earlyTermination = EarlyTerminationPolicy.fromJson(reader);
+                } else if ("inputs".equals(fieldName)) {
+                    Map<String, JobInput> inputs = reader.readMap(reader1 -> JobInput.fromJson(reader1));
+                    deserializedSweepJob.inputs = inputs;
+                } else if ("outputs".equals(fieldName)) {
+                    Map<String, JobOutput> outputs = reader.readMap(reader1 -> JobOutput.fromJson(reader1));
+                    deserializedSweepJob.outputs = outputs;
+                } else if ("queueSettings".equals(fieldName)) {
+                    deserializedSweepJob.queueSettings = QueueSettings.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSweepJob;
+        });
+    }
 }

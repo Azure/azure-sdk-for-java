@@ -11,8 +11,9 @@ import com.azure.resourcemanager.appcontainers.models.CheckNameAvailabilityReque
  */
 public final class NamespacesCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/
-     * Certificates_CheckNameAvailability.json
+     * x-ms-original-file:
+     * specification/app/resource-manager/Microsoft.App/stable/2024-03-01/examples/Certificates_CheckNameAvailability.
+     * json
      */
     /**
      * Sample code: Certificates_CheckNameAvailability.
@@ -22,14 +23,16 @@ public final class NamespacesCheckNameAvailabilitySamples {
     public static void
         certificatesCheckNameAvailability(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
         manager.namespaces()
-            .checkNameAvailabilityWithResponse("examplerg", "testcontainerenv", new CheckNameAvailabilityRequest()
-                .withName("testcertificatename").withType("Microsoft.App/managedEnvironments/certificates"),
+            .checkNameAvailabilityWithResponse("examplerg", "testcontainerenv",
+                new CheckNameAvailabilityRequest().withName("testcertificatename")
+                    .withType("Microsoft.App/managedEnvironments/certificates"),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/
-     * ContainerApps_CheckNameAvailability.json
+     * x-ms-original-file:
+     * specification/app/resource-manager/Microsoft.App/stable/2024-03-01/examples/ContainerApps_CheckNameAvailability.
+     * json
      */
     /**
      * Sample code: ContainerApps_CheckNameAvailability.
@@ -38,8 +41,9 @@ public final class NamespacesCheckNameAvailabilitySamples {
      */
     public static void
         containerAppsCheckNameAvailability(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        manager.namespaces().checkNameAvailabilityWithResponse("examplerg", "testcontainerenv",
-            new CheckNameAvailabilityRequest().withName("testcappname").withType("Microsoft.App/containerApps"),
-            com.azure.core.util.Context.NONE);
+        manager.namespaces()
+            .checkNameAvailabilityWithResponse("examplerg", "testcontainerenv",
+                new CheckNameAvailabilityRequest().withName("testcappname").withType("Microsoft.App/containerApps"),
+                com.azure.core.util.Context.NONE);
     }
 }

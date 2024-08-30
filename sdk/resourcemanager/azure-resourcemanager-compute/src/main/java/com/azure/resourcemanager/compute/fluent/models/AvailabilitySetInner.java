@@ -7,10 +7,13 @@ package com.azure.resourcemanager.compute.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.InstanceViewStatus;
+import com.azure.resourcemanager.compute.models.ScheduledEventsPolicy;
 import com.azure.resourcemanager.compute.models.Sku;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -28,7 +31,6 @@ public final class AvailabilitySetInner extends Resource {
     /*
      * The instance view of a resource.
      */
-    @JsonProperty(value = "properties")
     private AvailabilitySetProperties innerProperties;
 
     /*
@@ -36,8 +38,22 @@ public final class AvailabilitySetInner extends Resource {
      * values. Use 'Aligned' for virtual machines with managed disks and 'Classic' for virtual machines with unmanaged
      * disks. Default value is 'Classic'.
      */
-    @JsonProperty(value = "sku")
     private Sku sku;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
 
     /**
      * Creates an instance of AvailabilitySetInner class.
@@ -47,7 +63,7 @@ public final class AvailabilitySetInner extends Resource {
 
     /**
      * Get the innerProperties property: The instance view of a resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AvailabilitySetProperties innerProperties() {
@@ -58,7 +74,7 @@ public final class AvailabilitySetInner extends Resource {
      * Get the sku property: Sku of the availability set, only name is required to be set. See AvailabilitySetSkuTypes
      * for possible set of values. Use 'Aligned' for virtual machines with managed disks and 'Classic' for virtual
      * machines with unmanaged disks. Default value is 'Classic'.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -69,13 +85,43 @@ public final class AvailabilitySetInner extends Resource {
      * Set the sku property: Sku of the availability set, only name is required to be set. See AvailabilitySetSkuTypes
      * for possible set of values. Use 'Aligned' for virtual machines with managed disks and 'Classic' for virtual
      * machines with unmanaged disks. Default value is 'Classic'.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the AvailabilitySetInner object itself.
      */
     public AvailabilitySetInner withSku(Sku sku) {
         this.sku = sku;
         return this;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -98,7 +144,7 @@ public final class AvailabilitySetInner extends Resource {
 
     /**
      * Get the platformUpdateDomainCount property: Update Domain count.
-     *
+     * 
      * @return the platformUpdateDomainCount value.
      */
     public Integer platformUpdateDomainCount() {
@@ -107,7 +153,7 @@ public final class AvailabilitySetInner extends Resource {
 
     /**
      * Set the platformUpdateDomainCount property: Update Domain count.
-     *
+     * 
      * @param platformUpdateDomainCount the platformUpdateDomainCount value to set.
      * @return the AvailabilitySetInner object itself.
      */
@@ -121,7 +167,7 @@ public final class AvailabilitySetInner extends Resource {
 
     /**
      * Get the platformFaultDomainCount property: Fault Domain count.
-     *
+     * 
      * @return the platformFaultDomainCount value.
      */
     public Integer platformFaultDomainCount() {
@@ -130,7 +176,7 @@ public final class AvailabilitySetInner extends Resource {
 
     /**
      * Set the platformFaultDomainCount property: Fault Domain count.
-     *
+     * 
      * @param platformFaultDomainCount the platformFaultDomainCount value to set.
      * @return the AvailabilitySetInner object itself.
      */
@@ -144,7 +190,7 @@ public final class AvailabilitySetInner extends Resource {
 
     /**
      * Get the virtualMachines property: A list of references to all virtual machines in the availability set.
-     *
+     * 
      * @return the virtualMachines value.
      */
     public List<SubResource> virtualMachines() {
@@ -153,7 +199,7 @@ public final class AvailabilitySetInner extends Resource {
 
     /**
      * Set the virtualMachines property: A list of references to all virtual machines in the availability set.
-     *
+     * 
      * @param virtualMachines the virtualMachines value to set.
      * @return the AvailabilitySetInner object itself.
      */
@@ -168,7 +214,7 @@ public final class AvailabilitySetInner extends Resource {
     /**
      * Get the proximityPlacementGroup property: Specifies information about the proximity placement group that the
      * availability set should be assigned to. Minimum api-version: 2018-04-01.
-     *
+     * 
      * @return the proximityPlacementGroup value.
      */
     public SubResource proximityPlacementGroup() {
@@ -178,7 +224,7 @@ public final class AvailabilitySetInner extends Resource {
     /**
      * Set the proximityPlacementGroup property: Specifies information about the proximity placement group that the
      * availability set should be assigned to. Minimum api-version: 2018-04-01.
-     *
+     * 
      * @param proximityPlacementGroup the proximityPlacementGroup value to set.
      * @return the AvailabilitySetInner object itself.
      */
@@ -192,7 +238,7 @@ public final class AvailabilitySetInner extends Resource {
 
     /**
      * Get the statuses property: The resource status information.
-     *
+     * 
      * @return the statuses value.
      */
     public List<InstanceViewStatus> statuses() {
@@ -200,8 +246,33 @@ public final class AvailabilitySetInner extends Resource {
     }
 
     /**
+     * Get the scheduledEventsPolicy property: Specifies Redeploy, Reboot and ScheduledEventsAdditionalPublishingTargets
+     * Scheduled Event related configurations for the availability set.
+     * 
+     * @return the scheduledEventsPolicy value.
+     */
+    public ScheduledEventsPolicy scheduledEventsPolicy() {
+        return this.innerProperties() == null ? null : this.innerProperties().scheduledEventsPolicy();
+    }
+
+    /**
+     * Set the scheduledEventsPolicy property: Specifies Redeploy, Reboot and ScheduledEventsAdditionalPublishingTargets
+     * Scheduled Event related configurations for the availability set.
+     * 
+     * @param scheduledEventsPolicy the scheduledEventsPolicy value to set.
+     * @return the AvailabilitySetInner object itself.
+     */
+    public AvailabilitySetInner withScheduledEventsPolicy(ScheduledEventsPolicy scheduledEventsPolicy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AvailabilitySetProperties();
+        }
+        this.innerProperties().withScheduledEventsPolicy(scheduledEventsPolicy);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -211,5 +282,58 @@ public final class AvailabilitySetInner extends Resource {
         if (sku() != null) {
             sku().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("sku", this.sku);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AvailabilitySetInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AvailabilitySetInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AvailabilitySetInner.
+     */
+    public static AvailabilitySetInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AvailabilitySetInner deserializedAvailabilitySetInner = new AvailabilitySetInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedAvailabilitySetInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedAvailabilitySetInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedAvailabilitySetInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedAvailabilitySetInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAvailabilitySetInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAvailabilitySetInner.innerProperties = AvailabilitySetProperties.fromJson(reader);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedAvailabilitySetInner.sku = Sku.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAvailabilitySetInner;
+        });
     }
 }

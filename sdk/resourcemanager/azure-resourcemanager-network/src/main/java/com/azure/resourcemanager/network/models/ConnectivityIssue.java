@@ -5,7 +5,11 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -13,29 +17,25 @@ import java.util.Map;
  * Information about an issue encountered in the process of checking for connectivity.
  */
 @Immutable
-public final class ConnectivityIssue {
+public final class ConnectivityIssue implements JsonSerializable<ConnectivityIssue> {
     /*
      * The origin of the issue.
      */
-    @JsonProperty(value = "origin", access = JsonProperty.Access.WRITE_ONLY)
     private Origin origin;
 
     /*
      * The severity of the issue.
      */
-    @JsonProperty(value = "severity", access = JsonProperty.Access.WRITE_ONLY)
     private Severity severity;
 
     /*
      * The type of issue.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private IssueType type;
 
     /*
      * Provides additional context on the issue.
      */
-    @JsonProperty(value = "context", access = JsonProperty.Access.WRITE_ONLY)
     private List<Map<String, String>> context;
 
     /**
@@ -86,5 +86,48 @@ public final class ConnectivityIssue {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectivityIssue from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectivityIssue if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConnectivityIssue.
+     */
+    public static ConnectivityIssue fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectivityIssue deserializedConnectivityIssue = new ConnectivityIssue();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("origin".equals(fieldName)) {
+                    deserializedConnectivityIssue.origin = Origin.fromString(reader.getString());
+                } else if ("severity".equals(fieldName)) {
+                    deserializedConnectivityIssue.severity = Severity.fromString(reader.getString());
+                } else if ("type".equals(fieldName)) {
+                    deserializedConnectivityIssue.type = IssueType.fromString(reader.getString());
+                } else if ("context".equals(fieldName)) {
+                    List<Map<String, String>> context
+                        = reader.readArray(reader1 -> reader1.readMap(reader2 -> reader2.getString()));
+                    deserializedConnectivityIssue.context = context;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectivityIssue;
+        });
     }
 }

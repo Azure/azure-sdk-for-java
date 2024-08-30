@@ -12,20 +12,20 @@ public final class ScriptActionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScriptAction model = BinaryData
-            .fromString("{\"name\":\"b\",\"uri\":\"htvughu\",\"roles\":\"dataiql\",\"parameters\":\"nfyfy\"}")
+            .fromString("{\"name\":\"v\",\"uri\":\"xjqru\",\"roles\":\"datak\",\"parameters\":\"qyfecnsqeewfuwgm\"}")
             .toObject(ScriptAction.class);
-        Assertions.assertEquals("b", model.name());
-        Assertions.assertEquals("htvughu", model.uri());
-        Assertions.assertEquals("nfyfy", model.parameters());
+        Assertions.assertEquals("v", model.name());
+        Assertions.assertEquals("xjqru", model.uri());
+        Assertions.assertEquals("qyfecnsqeewfuwgm", model.parameters());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ScriptAction model
-            = new ScriptAction().withName("b").withUri("htvughu").withRoles("dataiql").withParameters("nfyfy");
+            = new ScriptAction().withName("v").withUri("xjqru").withRoles("datak").withParameters("qyfecnsqeewfuwgm");
         model = BinaryData.fromObject(model).toObject(ScriptAction.class);
-        Assertions.assertEquals("b", model.name());
-        Assertions.assertEquals("htvughu", model.uri());
-        Assertions.assertEquals("nfyfy", model.parameters());
+        Assertions.assertEquals("v", model.name());
+        Assertions.assertEquals("xjqru", model.uri());
+        Assertions.assertEquals("qyfecnsqeewfuwgm", model.parameters());
     }
 }

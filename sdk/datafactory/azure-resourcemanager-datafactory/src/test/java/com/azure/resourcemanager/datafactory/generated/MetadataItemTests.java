@@ -10,13 +10,14 @@ import com.azure.resourcemanager.datafactory.models.MetadataItem;
 public final class MetadataItemTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MetadataItem model = BinaryData.fromString("{\"name\":\"datantoe\",\"value\":\"dataufgdgbzftsbpef\"}")
-            .toObject(MetadataItem.class);
+        MetadataItem model
+            = BinaryData.fromString("{\"name\":\"datamgsejisydhardxnk\",\"value\":\"dataqfffglftlqakie\"}")
+                .toObject(MetadataItem.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MetadataItem model = new MetadataItem().withName("datantoe").withValue("dataufgdgbzftsbpef");
+        MetadataItem model = new MetadataItem().withName("datamgsejisydhardxnk").withValue("dataqfffglftlqakie");
         model = BinaryData.fromObject(model).toObject(MetadataItem.class);
     }
 }

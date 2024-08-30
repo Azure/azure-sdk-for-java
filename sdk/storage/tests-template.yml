@@ -48,7 +48,9 @@ stages:
       Location: canadacentral
       CloudConfig:
         Preview:
-          SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources-preview)
+          ServiceConnection: azure-sdk-tests-preview
+          SubscriptionConfigurationFilePaths:
+            - eng/common/TestResources/sub-config/AzurePreviewMsft.json
         PrivatePreview:
           SubscriptionConfiguration: $(sub-config-storage-test-resources)
       Clouds: Preview
@@ -85,9 +87,6 @@ stages:
               JAVA_HOME: $(JAVA_HOME_8_X64)
           condition: and(succeeded(), eq(variables['StorageRunStressScenarios'], 'true'))
       EnvVars:
-        AZURE_TENANT_ID: $(STORAGE_TENANT_ID)
-        AZURE_CLIENT_ID: $(STORAGE_CLIENT_ID)
-        AZURE_CLIENT_SECRET: $(STORAGE_CLIENT_SECRET)
         VERSIONED_STORAGE_ACCOUNT_NAME: $(java-storage-versioned-account-name)
         VERSIONED_STORAGE_ACCOUNT_KEY: $(java-storage-versioned-account-key)
       UseHttpFaultInjector: true

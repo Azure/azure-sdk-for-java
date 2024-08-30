@@ -54,6 +54,7 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
     private final MessageSerializer messageSerializer;
     private final Scheduler scheduler;
     private final String eventHubName;
+    private final boolean isV2;
 
     private volatile ManagementChannel managementChannel;
 
@@ -70,9 +71,9 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
      */
     public EventHubReactorAmqpConnection(String connectionId, ConnectionOptions connectionOptions, String eventHubName,
         ReactorProvider reactorProvider, ReactorHandlerProvider handlerProvider, AmqpLinkProvider linkProvider,
-        TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer) {
+        TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer, boolean isV2) {
         super(connectionId, connectionOptions, reactorProvider, handlerProvider, linkProvider, tokenManagerProvider,
-            messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.SECOND, true);
+            messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.SECOND, isV2);
         this.connectionId = connectionId;
         this.reactorProvider = reactorProvider;
         this.handlerProvider = handlerProvider;
@@ -80,6 +81,7 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
         this.tokenManagerProvider = tokenManagerProvider;
         this.messageSerializer = messageSerializer;
         this.eventHubName = eventHubName;
+        this.isV2 = isV2;
         this.retryOptions = connectionOptions.getRetry();
         this.tokenCredential = connectionOptions.getTokenCredential();
         this.scheduler = connectionOptions.getScheduler();
@@ -165,7 +167,7 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
     @Override
     protected AmqpSession createSession(String sessionName, Session session, SessionHandler handler) {
         return new EventHubReactorSession(this, session, handler, sessionName, reactorProvider,
-            handlerProvider, linkProvider, getClaimsBasedSecurityNode(), tokenManagerProvider, retryOptions, messageSerializer);
+            handlerProvider, linkProvider, getClaimsBasedSecurityNode(), tokenManagerProvider, retryOptions, messageSerializer, isV2);
     }
 
     private synchronized ManagementChannel getOrCreateManagementChannel() {

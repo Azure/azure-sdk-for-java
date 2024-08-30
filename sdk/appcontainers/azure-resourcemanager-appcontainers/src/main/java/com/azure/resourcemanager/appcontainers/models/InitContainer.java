@@ -5,6 +5,10 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -89,5 +93,63 @@ public final class InitContainer extends BaseContainer {
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("image", image());
+        jsonWriter.writeStringField("name", name());
+        jsonWriter.writeArrayField("command", command(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("args", args(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("env", env(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("resources", resources());
+        jsonWriter.writeArrayField("volumeMounts", volumeMounts(), (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InitContainer from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InitContainer if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InitContainer.
+     */
+    public static InitContainer fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InitContainer deserializedInitContainer = new InitContainer();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("image".equals(fieldName)) {
+                    deserializedInitContainer.withImage(reader.getString());
+                } else if ("name".equals(fieldName)) {
+                    deserializedInitContainer.withName(reader.getString());
+                } else if ("command".equals(fieldName)) {
+                    List<String> command = reader.readArray(reader1 -> reader1.getString());
+                    deserializedInitContainer.withCommand(command);
+                } else if ("args".equals(fieldName)) {
+                    List<String> args = reader.readArray(reader1 -> reader1.getString());
+                    deserializedInitContainer.withArgs(args);
+                } else if ("env".equals(fieldName)) {
+                    List<EnvironmentVar> env = reader.readArray(reader1 -> EnvironmentVar.fromJson(reader1));
+                    deserializedInitContainer.withEnv(env);
+                } else if ("resources".equals(fieldName)) {
+                    deserializedInitContainer.withResources(ContainerResources.fromJson(reader));
+                } else if ("volumeMounts".equals(fieldName)) {
+                    List<VolumeMount> volumeMounts = reader.readArray(reader1 -> VolumeMount.fromJson(reader1));
+                    deserializedInitContainer.withVolumeMounts(volumeMounts);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInitContainer;
+        });
     }
 }

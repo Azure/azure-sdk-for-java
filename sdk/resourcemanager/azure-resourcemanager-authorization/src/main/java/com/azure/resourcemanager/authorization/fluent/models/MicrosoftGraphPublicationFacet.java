@@ -5,40 +5,43 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** publicationFacet. */
+/**
+ * publicationFacet.
+ */
 @Fluent
-public final class MicrosoftGraphPublicationFacet {
+public final class MicrosoftGraphPublicationFacet implements JsonSerializable<MicrosoftGraphPublicationFacet> {
     /*
      * The state of publication for this document. Either published or checkout. Read-only.
      */
-    @JsonProperty(value = "level")
     private String level;
 
     /*
      * The unique identifier for the version that is visible to the current caller. Read-only.
      */
-    @JsonProperty(value = "versionId")
     private String versionId;
 
     /*
      * publicationFacet
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphPublicationFacet class. */
+    /**
+     * Creates an instance of MicrosoftGraphPublicationFacet class.
+     */
     public MicrosoftGraphPublicationFacet() {
     }
 
     /**
      * Get the level property: The state of publication for this document. Either published or checkout. Read-only.
-     *
+     * 
      * @return the level value.
      */
     public String level() {
@@ -47,7 +50,7 @@ public final class MicrosoftGraphPublicationFacet {
 
     /**
      * Set the level property: The state of publication for this document. Either published or checkout. Read-only.
-     *
+     * 
      * @param level the level value to set.
      * @return the MicrosoftGraphPublicationFacet object itself.
      */
@@ -59,7 +62,7 @@ public final class MicrosoftGraphPublicationFacet {
     /**
      * Get the versionId property: The unique identifier for the version that is visible to the current caller.
      * Read-only.
-     *
+     * 
      * @return the versionId value.
      */
     public String versionId() {
@@ -69,7 +72,7 @@ public final class MicrosoftGraphPublicationFacet {
     /**
      * Set the versionId property: The unique identifier for the version that is visible to the current caller.
      * Read-only.
-     *
+     * 
      * @param versionId the versionId value to set.
      * @return the MicrosoftGraphPublicationFacet object itself.
      */
@@ -80,17 +83,16 @@ public final class MicrosoftGraphPublicationFacet {
 
     /**
      * Get the additionalProperties property: publicationFacet.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: publicationFacet.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphPublicationFacet object itself.
      */
@@ -99,19 +101,62 @@ public final class MicrosoftGraphPublicationFacet {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("level", this.level);
+        jsonWriter.writeStringField("versionId", this.versionId);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphPublicationFacet from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphPublicationFacet if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphPublicationFacet.
+     */
+    public static MicrosoftGraphPublicationFacet fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphPublicationFacet deserializedMicrosoftGraphPublicationFacet
+                = new MicrosoftGraphPublicationFacet();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("level".equals(fieldName)) {
+                    deserializedMicrosoftGraphPublicationFacet.level = reader.getString();
+                } else if ("versionId".equals(fieldName)) {
+                    deserializedMicrosoftGraphPublicationFacet.versionId = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphPublicationFacet.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphPublicationFacet;
+        });
     }
 }

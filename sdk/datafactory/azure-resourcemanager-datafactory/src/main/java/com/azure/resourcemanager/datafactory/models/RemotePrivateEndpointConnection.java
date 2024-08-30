@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * A remote private endpoint connection.
  */
 @Fluent
-public final class RemotePrivateEndpointConnection {
+public final class RemotePrivateEndpointConnection implements JsonSerializable<RemotePrivateEndpointConnection> {
     /*
      * The provisioningState property.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * PrivateEndpoint of a remote private endpoint connection
      */
-    @JsonProperty(value = "privateEndpoint")
     private ArmIdWrapper privateEndpoint;
 
     /*
      * The state of a private link connection
      */
-    @JsonProperty(value = "privateLinkServiceConnectionState")
     private PrivateLinkConnectionState privateLinkServiceConnectionState;
 
     /**
@@ -98,5 +99,48 @@ public final class RemotePrivateEndpointConnection {
         if (privateLinkServiceConnectionState() != null) {
             privateLinkServiceConnectionState().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("privateEndpoint", this.privateEndpoint);
+        jsonWriter.writeJsonField("privateLinkServiceConnectionState", this.privateLinkServiceConnectionState);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RemotePrivateEndpointConnection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RemotePrivateEndpointConnection if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RemotePrivateEndpointConnection.
+     */
+    public static RemotePrivateEndpointConnection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RemotePrivateEndpointConnection deserializedRemotePrivateEndpointConnection
+                = new RemotePrivateEndpointConnection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedRemotePrivateEndpointConnection.provisioningState = reader.getString();
+                } else if ("privateEndpoint".equals(fieldName)) {
+                    deserializedRemotePrivateEndpointConnection.privateEndpoint = ArmIdWrapper.fromJson(reader);
+                } else if ("privateLinkServiceConnectionState".equals(fieldName)) {
+                    deserializedRemotePrivateEndpointConnection.privateLinkServiceConnectionState
+                        = PrivateLinkConnectionState.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRemotePrivateEndpointConnection;
+        });
     }
 }

@@ -5,55 +5,57 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.SyncMemberDbType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Properties of an Azure SQL Database sync agent linked database. */
+/**
+ * Properties of an Azure SQL Database sync agent linked database.
+ */
 @Immutable
-public final class SyncAgentLinkedDatabaseProperties {
+public final class SyncAgentLinkedDatabaseProperties implements JsonSerializable<SyncAgentLinkedDatabaseProperties> {
     /*
      * Type of the sync agent linked database.
      */
-    @JsonProperty(value = "databaseType", access = JsonProperty.Access.WRITE_ONLY)
     private SyncMemberDbType databaseType;
 
     /*
      * Id of the sync agent linked database.
      */
-    @JsonProperty(value = "databaseId", access = JsonProperty.Access.WRITE_ONLY)
     private String databaseId;
 
     /*
      * Description of the sync agent linked database.
      */
-    @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
     /*
      * Server name of the sync agent linked database.
      */
-    @JsonProperty(value = "serverName", access = JsonProperty.Access.WRITE_ONLY)
     private String serverName;
 
     /*
      * Database name of the sync agent linked database.
      */
-    @JsonProperty(value = "databaseName", access = JsonProperty.Access.WRITE_ONLY)
     private String databaseName;
 
     /*
      * User name of the sync agent linked database.
      */
-    @JsonProperty(value = "userName", access = JsonProperty.Access.WRITE_ONLY)
     private String username;
 
-    /** Creates an instance of SyncAgentLinkedDatabaseProperties class. */
+    /**
+     * Creates an instance of SyncAgentLinkedDatabaseProperties class.
+     */
     public SyncAgentLinkedDatabaseProperties() {
     }
 
     /**
      * Get the databaseType property: Type of the sync agent linked database.
-     *
+     * 
      * @return the databaseType value.
      */
     public SyncMemberDbType databaseType() {
@@ -62,7 +64,7 @@ public final class SyncAgentLinkedDatabaseProperties {
 
     /**
      * Get the databaseId property: Id of the sync agent linked database.
-     *
+     * 
      * @return the databaseId value.
      */
     public String databaseId() {
@@ -71,7 +73,7 @@ public final class SyncAgentLinkedDatabaseProperties {
 
     /**
      * Get the description property: Description of the sync agent linked database.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -80,7 +82,7 @@ public final class SyncAgentLinkedDatabaseProperties {
 
     /**
      * Get the serverName property: Server name of the sync agent linked database.
-     *
+     * 
      * @return the serverName value.
      */
     public String serverName() {
@@ -89,7 +91,7 @@ public final class SyncAgentLinkedDatabaseProperties {
 
     /**
      * Get the databaseName property: Database name of the sync agent linked database.
-     *
+     * 
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -98,7 +100,7 @@ public final class SyncAgentLinkedDatabaseProperties {
 
     /**
      * Get the username property: User name of the sync agent linked database.
-     *
+     * 
      * @return the username value.
      */
     public String username() {
@@ -107,9 +109,56 @@ public final class SyncAgentLinkedDatabaseProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SyncAgentLinkedDatabaseProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SyncAgentLinkedDatabaseProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SyncAgentLinkedDatabaseProperties.
+     */
+    public static SyncAgentLinkedDatabaseProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SyncAgentLinkedDatabaseProperties deserializedSyncAgentLinkedDatabaseProperties
+                = new SyncAgentLinkedDatabaseProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("databaseType".equals(fieldName)) {
+                    deserializedSyncAgentLinkedDatabaseProperties.databaseType
+                        = SyncMemberDbType.fromString(reader.getString());
+                } else if ("databaseId".equals(fieldName)) {
+                    deserializedSyncAgentLinkedDatabaseProperties.databaseId = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedSyncAgentLinkedDatabaseProperties.description = reader.getString();
+                } else if ("serverName".equals(fieldName)) {
+                    deserializedSyncAgentLinkedDatabaseProperties.serverName = reader.getString();
+                } else if ("databaseName".equals(fieldName)) {
+                    deserializedSyncAgentLinkedDatabaseProperties.databaseName = reader.getString();
+                } else if ("userName".equals(fieldName)) {
+                    deserializedSyncAgentLinkedDatabaseProperties.username = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSyncAgentLinkedDatabaseProperties;
+        });
     }
 }

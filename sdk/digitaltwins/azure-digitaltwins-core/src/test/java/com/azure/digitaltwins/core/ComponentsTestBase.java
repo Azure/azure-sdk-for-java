@@ -4,8 +4,9 @@
 package com.azure.digitaltwins.core;
 
 import com.azure.core.http.HttpClient;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.Test;
+
+import java.io.IOException;
 
 /**
  * This abstract test class defines all the tests that both the sync and async component test classes need to implement.
@@ -13,12 +14,15 @@ import org.junit.jupiter.api.Test;
  */
 public abstract class ComponentsTestBase extends DigitalTwinsTestBase {
     @Test
-    public abstract void componentLifecycleTest(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws JsonProcessingException;
+    public abstract void componentLifecycleTest(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion)
+        throws IOException;
 
     @Test
-    public abstract void patchComponentFailsIfETagDoesNotMatch(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws JsonProcessingException;
+    public abstract void patchComponentFailsIfETagDoesNotMatch(HttpClient httpClient,
+        DigitalTwinsServiceVersion serviceVersion) throws IOException;
 
     @Test
-    public abstract void patchComponentSucceedsIfETagMatches(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws JsonProcessingException;
+    public abstract void patchComponentSucceedsIfETagMatches(HttpClient httpClient,
+        DigitalTwinsServiceVersion serviceVersion) throws IOException;
 
 }

@@ -66,8 +66,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
@@ -85,6 +87,7 @@ public class ClientMetricsTest extends BatchTestBase {
     private String preferredRegion;
     private CosmosClientTelemetryConfig inputClientTelemetryConfig;
     private CosmosMicrometerMetricsOptions inputMetricsOptions;
+    private Tag clientCorrelationTag;
 
     @Factory(dataProvider = "clientBuildersWithDirectTcpSession")
     public ClientMetricsTest(CosmosClientBuilder clientBuilder) {
@@ -153,6 +156,7 @@ public class ClientMetricsTest extends BatchTestBase {
             this.databaseId = asyncContainer.getDatabase().getId();
             this.containerId = asyncContainer.getId();
         }
+        this.clientCorrelationTag = client.asyncClient().getClientCorrelationTag();
 
         container = client.getDatabase(databaseId).getContainer(containerId);
     }
@@ -778,7 +782,7 @@ public class ClientMetricsTest extends BatchTestBase {
 
     @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void queryItems() throws Exception {
-        this.beforeTest(CosmosMetricCategory.DEFAULT);
+        this.beforeTest(CosmosMetricCategory.ALL);
         try {
             InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
             container.createItem(properties);
@@ -1124,7 +1128,7 @@ public class ClientMetricsTest extends BatchTestBase {
             RntbdServiceEndpoint.Provider endpointProvider =
                 (RntbdServiceEndpoint.Provider) ReflectionUtils.getRntbdEndpointProvider(transportClient);
             ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor =
-                    ReflectionUtils.getProactiveOpenConnectionsProcessor(transportClient);
+                ReflectionUtils.getProactiveOpenConnectionsProcessor(transportClient);
             AddressSelector addressSelector = (AddressSelector) FieldUtils.readField(transportClient, "addressSelector", true);
 
             String address = "https://localhost:12345";
@@ -1420,6 +1424,7 @@ public class ClientMetricsTest extends BatchTestBase {
                 .getCosmosClientTelemetryConfigAccessor()
                 .shouldApplyDiagnosticThresholdsForTransportLevelMeters(clientTelemetryConfig);
         assertThat(applyDiagnosticThresholdsForTransportLevelMeters).isTrue();
+        System.clearProperty("COSMOS.METRICS_CONFIG");
     }
 
     private InternalObjectNode getDocumentDefinition(String documentId) {
@@ -1571,6 +1576,8 @@ public class ClientMetricsTest extends BatchTestBase {
 
         if (expectedToFind) {
             assertThat(meters.size()).isGreaterThan(0);
+            // Makes sure that we stay compatible with prometheus which expects that all the same tags are present for a meter
+            assertTagInAllMeters(meters, prefix);
         }
 
         List<Meter> meterPrefixMatches = meters
@@ -1632,16 +1639,16 @@ public class ClientMetricsTest extends BatchTestBase {
             if (meterMatches.size() > 0) {
                 StringBuilder sb = new StringBuilder();
                 meterMatches.forEach(m -> {
-                        String message = String.format(
-                            "Found unexpected meter '%s' for prefix '%s' withTag '%s' --> '%s'",
-                            m,
-                            prefix,
-                            withTag,
-                            m);
-                        sb.append(message);
-                        sb.append(System.getProperty("line.separator"));
-                        logger.error(message);
-                    });
+                    String message = String.format(
+                        "Found unexpected meter '%s' for prefix '%s' withTag '%s' --> '%s'",
+                        m,
+                        prefix,
+                        withTag,
+                        m);
+                    sb.append(message);
+                    sb.append(System.getProperty("line.separator"));
+                    logger.error(message);
+                });
 
 
                 fail(sb.toString());
@@ -1649,6 +1656,43 @@ public class ClientMetricsTest extends BatchTestBase {
             assertThat(meterMatches.size()).isEqualTo(0);
 
             return null;
+        }
+    }
+
+    private void assertTagInAllMeters(List<Meter> meters, String prefix) {
+        List<Meter> meterMatches = meters
+            .stream()
+            .filter(meter -> meter.getId().getName().equals(prefix) && meter.getId().getTags().contains(this.clientCorrelationTag))
+            .collect(Collectors.toList());
+        if (meterMatches.size() >  0) {
+            Set<String> possibleTags = new HashSet<>();
+            for (Tag tag : meterMatches.get(0).getId().getTags()) {
+                possibleTags.add(tag.getKey());
+            }
+            List<Meter> metersTagPresent = meterMatches
+                .stream()
+                .filter(meter -> {
+                    int numTags = 0;
+                    for (Tag tag : meter.getId().getTags()) {
+                        if (!possibleTags.contains(tag.getKey())) {
+                            return false;
+                        }
+                        numTags++;
+                    }
+                    return numTags == possibleTags.size();
+                } )
+                .collect(Collectors.toList());
+            if (metersTagPresent.size() != meterMatches.size()) {
+                logger.error("MetersTagPresent");
+                for (Meter meter : metersTagPresent) {
+                    logger.error("Meter: {}", meter.getId());
+                }
+                logger.error("MeterMatches");
+                for (Meter meter : meterMatches) {
+                    logger.error("Meter: {}", meter.getId());
+                }
+            }
+            assertThat(metersTagPresent.size()).isEqualTo(meterMatches.size());
         }
     }
 

@@ -15,8 +15,7 @@ public final class RuntimeScriptActionDetailImpl implements RuntimeScriptActionD
 
     private final com.azure.resourcemanager.hdinsight.HDInsightManager serviceManager;
 
-    RuntimeScriptActionDetailImpl(
-        RuntimeScriptActionDetailInner innerObject,
+    RuntimeScriptActionDetailImpl(RuntimeScriptActionDetailInner innerObject,
         com.azure.resourcemanager.hdinsight.HDInsightManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

@@ -5,48 +5,64 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Text-NER task in AutoML NLP vertical. NER - Named Entity Recognition. NLP - Natural Language Processing. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "taskType")
-@JsonTypeName("TextNER")
+/**
+ * Text-NER task in AutoML NLP vertical.
+ * NER - Named Entity Recognition.
+ * NLP - Natural Language Processing.
+ */
 @Fluent
 public final class TextNer extends AutoMLVertical {
+    /*
+     * [Required] Task type for AutoMLJob.
+     */
+    private TaskType taskType = TaskType.TEXT_NER;
+
     /*
      * Primary metric for Text-NER task.
      * Only 'Accuracy' is supported for Text-NER, so user need not set this explicitly.
      */
-    @JsonProperty(value = "primaryMetric", access = JsonProperty.Access.WRITE_ONLY)
     private ClassificationPrimaryMetrics primaryMetric;
-
-    /*
-     * Featurization inputs needed for AutoML job.
-     */
-    @JsonProperty(value = "featurizationSettings")
-    private NlpVerticalFeaturizationSettings featurizationSettings;
 
     /*
      * Execution constraints for AutoMLJob.
      */
-    @JsonProperty(value = "limitSettings")
     private NlpVerticalLimitSettings limitSettings;
+
+    /*
+     * Featurization inputs needed for AutoML job.
+     */
+    private NlpVerticalFeaturizationSettings featurizationSettings;
 
     /*
      * Validation data inputs.
      */
-    @JsonProperty(value = "validationData")
     private MLTableJobInput validationData;
 
-    /** Creates an instance of TextNer class. */
+    /**
+     * Creates an instance of TextNer class.
+     */
     public TextNer() {
     }
 
     /**
-     * Get the primaryMetric property: Primary metric for Text-NER task. Only 'Accuracy' is supported for Text-NER, so
-     * user need not set this explicitly.
-     *
+     * Get the taskType property: [Required] Task type for AutoMLJob.
+     * 
+     * @return the taskType value.
+     */
+    @Override
+    public TaskType taskType() {
+        return this.taskType;
+    }
+
+    /**
+     * Get the primaryMetric property: Primary metric for Text-NER task.
+     * Only 'Accuracy' is supported for Text-NER, so user need not set this explicitly.
+     * 
      * @return the primaryMetric value.
      */
     public ClassificationPrimaryMetrics primaryMetric() {
@@ -54,28 +70,8 @@ public final class TextNer extends AutoMLVertical {
     }
 
     /**
-     * Get the featurizationSettings property: Featurization inputs needed for AutoML job.
-     *
-     * @return the featurizationSettings value.
-     */
-    public NlpVerticalFeaturizationSettings featurizationSettings() {
-        return this.featurizationSettings;
-    }
-
-    /**
-     * Set the featurizationSettings property: Featurization inputs needed for AutoML job.
-     *
-     * @param featurizationSettings the featurizationSettings value to set.
-     * @return the TextNer object itself.
-     */
-    public TextNer withFeaturizationSettings(NlpVerticalFeaturizationSettings featurizationSettings) {
-        this.featurizationSettings = featurizationSettings;
-        return this;
-    }
-
-    /**
      * Get the limitSettings property: Execution constraints for AutoMLJob.
-     *
+     * 
      * @return the limitSettings value.
      */
     public NlpVerticalLimitSettings limitSettings() {
@@ -84,7 +80,7 @@ public final class TextNer extends AutoMLVertical {
 
     /**
      * Set the limitSettings property: Execution constraints for AutoMLJob.
-     *
+     * 
      * @param limitSettings the limitSettings value to set.
      * @return the TextNer object itself.
      */
@@ -94,8 +90,28 @@ public final class TextNer extends AutoMLVertical {
     }
 
     /**
+     * Get the featurizationSettings property: Featurization inputs needed for AutoML job.
+     * 
+     * @return the featurizationSettings value.
+     */
+    public NlpVerticalFeaturizationSettings featurizationSettings() {
+        return this.featurizationSettings;
+    }
+
+    /**
+     * Set the featurizationSettings property: Featurization inputs needed for AutoML job.
+     * 
+     * @param featurizationSettings the featurizationSettings value to set.
+     * @return the TextNer object itself.
+     */
+    public TextNer withFeaturizationSettings(NlpVerticalFeaturizationSettings featurizationSettings) {
+        this.featurizationSettings = featurizationSettings;
+        return this;
+    }
+
+    /**
      * Get the validationData property: Validation data inputs.
-     *
+     * 
      * @return the validationData value.
      */
     public MLTableJobInput validationData() {
@@ -104,7 +120,7 @@ public final class TextNer extends AutoMLVertical {
 
     /**
      * Set the validationData property: Validation data inputs.
-     *
+     * 
      * @param validationData the validationData value to set.
      * @return the TextNer object itself.
      */
@@ -113,21 +129,18 @@ public final class TextNer extends AutoMLVertical {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TextNer withLogVerbosity(LogVerbosity logVerbosity) {
         super.withLogVerbosity(logVerbosity);
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public TextNer withTargetColumnName(String targetColumnName) {
-        super.withTargetColumnName(targetColumnName);
-        return this;
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TextNer withTrainingData(MLTableJobInput trainingData) {
         super.withTrainingData(trainingData);
@@ -135,21 +148,87 @@ public final class TextNer extends AutoMLVertical {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public TextNer withTargetColumnName(String targetColumnName) {
+        super.withTargetColumnName(targetColumnName);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
-        if (featurizationSettings() != null) {
-            featurizationSettings().validate();
-        }
         if (limitSettings() != null) {
             limitSettings().validate();
+        }
+        if (featurizationSettings() != null) {
+            featurizationSettings().validate();
         }
         if (validationData() != null) {
             validationData().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("trainingData", trainingData());
+        jsonWriter.writeStringField("logVerbosity", logVerbosity() == null ? null : logVerbosity().toString());
+        jsonWriter.writeStringField("targetColumnName", targetColumnName());
+        jsonWriter.writeStringField("taskType", this.taskType == null ? null : this.taskType.toString());
+        jsonWriter.writeJsonField("limitSettings", this.limitSettings);
+        jsonWriter.writeJsonField("featurizationSettings", this.featurizationSettings);
+        jsonWriter.writeJsonField("validationData", this.validationData);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TextNer from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TextNer if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TextNer.
+     */
+    public static TextNer fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TextNer deserializedTextNer = new TextNer();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("trainingData".equals(fieldName)) {
+                    deserializedTextNer.withTrainingData(MLTableJobInput.fromJson(reader));
+                } else if ("logVerbosity".equals(fieldName)) {
+                    deserializedTextNer.withLogVerbosity(LogVerbosity.fromString(reader.getString()));
+                } else if ("targetColumnName".equals(fieldName)) {
+                    deserializedTextNer.withTargetColumnName(reader.getString());
+                } else if ("taskType".equals(fieldName)) {
+                    deserializedTextNer.taskType = TaskType.fromString(reader.getString());
+                } else if ("primaryMetric".equals(fieldName)) {
+                    deserializedTextNer.primaryMetric = ClassificationPrimaryMetrics.fromString(reader.getString());
+                } else if ("limitSettings".equals(fieldName)) {
+                    deserializedTextNer.limitSettings = NlpVerticalLimitSettings.fromJson(reader);
+                } else if ("featurizationSettings".equals(fieldName)) {
+                    deserializedTextNer.featurizationSettings = NlpVerticalFeaturizationSettings.fromJson(reader);
+                } else if ("validationData".equals(fieldName)) {
+                    deserializedTextNer.validationData = MLTableJobInput.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTextNer;
+        });
     }
 }

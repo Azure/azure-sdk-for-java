@@ -5,40 +5,51 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The properties for updating encoded task step.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("EncodedTask")
 @Fluent
 public final class EncodedTaskStepUpdateParameters extends TaskStepUpdateParameters {
     /*
+     * The type of the step.
+     */
+    private StepType type = StepType.ENCODED_TASK;
+
+    /*
      * Base64 encoded value of the template/definition file content.
      */
-    @JsonProperty(value = "encodedTaskContent")
     private String encodedTaskContent;
 
     /*
      * Base64 encoded value of the parameters/values file content.
      */
-    @JsonProperty(value = "encodedValuesContent")
     private String encodedValuesContent;
 
     /*
      * The collection of overridable values that can be passed when running a task.
      */
-    @JsonProperty(value = "values")
     private List<SetValue> values;
 
     /**
      * Creates an instance of EncodedTaskStepUpdateParameters class.
      */
     public EncodedTaskStepUpdateParameters() {
+    }
+
+    /**
+     * Get the type property: The type of the step.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public StepType type() {
+        return this.type;
     }
 
     /**
@@ -130,5 +141,58 @@ public final class EncodedTaskStepUpdateParameters extends TaskStepUpdateParamet
         if (values() != null) {
             values().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("contextPath", contextPath());
+        jsonWriter.writeStringField("contextAccessToken", contextAccessToken());
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("encodedTaskContent", this.encodedTaskContent);
+        jsonWriter.writeStringField("encodedValuesContent", this.encodedValuesContent);
+        jsonWriter.writeArrayField("values", this.values, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EncodedTaskStepUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EncodedTaskStepUpdateParameters if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EncodedTaskStepUpdateParameters.
+     */
+    public static EncodedTaskStepUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EncodedTaskStepUpdateParameters deserializedEncodedTaskStepUpdateParameters
+                = new EncodedTaskStepUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("contextPath".equals(fieldName)) {
+                    deserializedEncodedTaskStepUpdateParameters.withContextPath(reader.getString());
+                } else if ("contextAccessToken".equals(fieldName)) {
+                    deserializedEncodedTaskStepUpdateParameters.withContextAccessToken(reader.getString());
+                } else if ("type".equals(fieldName)) {
+                    deserializedEncodedTaskStepUpdateParameters.type = StepType.fromString(reader.getString());
+                } else if ("encodedTaskContent".equals(fieldName)) {
+                    deserializedEncodedTaskStepUpdateParameters.encodedTaskContent = reader.getString();
+                } else if ("encodedValuesContent".equals(fieldName)) {
+                    deserializedEncodedTaskStepUpdateParameters.encodedValuesContent = reader.getString();
+                } else if ("values".equals(fieldName)) {
+                    List<SetValue> values = reader.readArray(reader1 -> SetValue.fromJson(reader1));
+                    deserializedEncodedTaskStepUpdateParameters.values = values;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEncodedTaskStepUpdateParameters;
+        });
     }
 }

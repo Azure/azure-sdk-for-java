@@ -6,10 +6,13 @@ package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.Configuration;
 import com.azure.resourcemanager.appservice.models.ContainerAppProvisioningState;
 import com.azure.resourcemanager.appservice.models.Template;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -20,14 +23,27 @@ public final class ContainerAppInner extends Resource {
     /*
      * ContainerApp resource specific properties
      */
-    @JsonProperty(value = "properties")
     private ContainerAppProperties innerProperties;
 
     /*
      * Kind of resource.
      */
-    @JsonProperty(value = "kind")
     private String kind;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
 
     /**
      * Creates an instance of ContainerAppInner class.
@@ -62,6 +78,36 @@ public final class ContainerAppInner extends Resource {
     public ContainerAppInner withKind(String kind) {
         this.kind = kind;
         return this;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -187,5 +233,58 @@ public final class ContainerAppInner extends Resource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("kind", this.kind);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContainerAppInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContainerAppInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ContainerAppInner.
+     */
+    public static ContainerAppInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContainerAppInner deserializedContainerAppInner = new ContainerAppInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedContainerAppInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedContainerAppInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedContainerAppInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedContainerAppInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedContainerAppInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedContainerAppInner.innerProperties = ContainerAppProperties.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedContainerAppInner.kind = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContainerAppInner;
+        });
     }
 }

@@ -14,11 +14,11 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-hdinsight</artifactId>
-  <version>1.1.0-beta.2</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-hdinsight;current} -->
+  <version>1.1.0-beta.3</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-hdinsight;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for HDInsight Management</name>
-  <description>This package contains Microsoft Azure SDK for HDInsight Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. HDInsight Management Client. Package tag package-2023-04-preview.</description>
+  <description>This package contains Microsoft Azure SDK for HDInsight Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. HDInsight Management Client. Package tag package-2024-08-preview.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>
@@ -50,24 +50,29 @@
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
+      <artifactId>azure-json</artifactId>
+      <version>1.2.0</version> <!-- {x-version-update;com.azure:azure-json;dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.50.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.51.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-management</artifactId>
-      <version>1.15.1</version> <!-- {x-version-update;com.azure:azure-core-management;dependency} -->
+      <version>1.15.2</version> <!-- {x-version-update;com.azure:azure-core-management;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.26.1</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.26.2</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.13.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.13.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -83,13 +88,17 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+      <version>1.7.36</version> <!-- {x-version-update;org.slf4j:slf4j-simple;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
       <version>4.11.0</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
-    <!-- bytebuddy dependencies are required for mockito 4.11.0 to work with Java 21. Mockito 4.11.0 is the last release -->
-    <!-- of Mockito supporting Java 8 as a baseline. -->
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy</artifactId>
@@ -103,27 +112,21 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-simple</artifactId>
-      <version>1.7.36</version> <!-- {x-version-update;org.slf4j:slf4j-simple;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-storage</artifactId>
-      <version>2.40.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-storage;dependency} -->
+      <version>2.42.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-storage;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-network</artifactId>
-      <version>2.40.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-network;dependency} -->
+      <version>2.42.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-network;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-resources</artifactId>
-      <version>2.40.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resources;dependency} -->
+      <version>2.42.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resources;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

@@ -8,30 +8,30 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Text analyze category.
+ * The harm category supported in Text content analysis.
  */
 public final class TextCategory extends ExpandableStringEnum<TextCategory> {
 
     /**
-     * Static value Hate for TextCategory.
+     * The harm category for Text - Hate.
      */
     @Generated
     public static final TextCategory HATE = fromString("Hate");
 
     /**
-     * Static value SelfHarm for TextCategory.
+     * The harm category for Text - SelfHarm.
      */
     @Generated
     public static final TextCategory SELF_HARM = fromString("SelfHarm");
 
     /**
-     * Static value Sexual for TextCategory.
+     * The harm category for Text - Sexual.
      */
     @Generated
     public static final TextCategory SEXUAL = fromString("Sexual");
 
     /**
-     * Static value Violence for TextCategory.
+     * The harm category for Text - Violence.
      */
     @Generated
     public static final TextCategory VIOLENCE = fromString("Violence");

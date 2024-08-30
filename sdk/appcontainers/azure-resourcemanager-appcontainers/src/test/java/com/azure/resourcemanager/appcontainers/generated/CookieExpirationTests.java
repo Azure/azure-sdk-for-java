@@ -13,18 +13,18 @@ public final class CookieExpirationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CookieExpiration model
-            = BinaryData.fromString("{\"convention\":\"IdentityProviderDerived\",\"timeToExpiration\":\"dlwtgrhpdj\"}")
+            = BinaryData.fromString("{\"convention\":\"FixedTime\",\"timeToExpiration\":\"zidnsezcxtbzsgfy\"}")
                 .toObject(CookieExpiration.class);
-        Assertions.assertEquals(CookieExpirationConvention.IDENTITY_PROVIDER_DERIVED, model.convention());
-        Assertions.assertEquals("dlwtgrhpdj", model.timeToExpiration());
+        Assertions.assertEquals(CookieExpirationConvention.FIXED_TIME, model.convention());
+        Assertions.assertEquals("zidnsezcxtbzsgfy", model.timeToExpiration());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CookieExpiration model = new CookieExpiration()
-            .withConvention(CookieExpirationConvention.IDENTITY_PROVIDER_DERIVED).withTimeToExpiration("dlwtgrhpdj");
+        CookieExpiration model = new CookieExpiration().withConvention(CookieExpirationConvention.FIXED_TIME)
+            .withTimeToExpiration("zidnsezcxtbzsgfy");
         model = BinaryData.fromObject(model).toObject(CookieExpiration.class);
-        Assertions.assertEquals(CookieExpirationConvention.IDENTITY_PROVIDER_DERIVED, model.convention());
-        Assertions.assertEquals("dlwtgrhpdj", model.timeToExpiration());
+        Assertions.assertEquals(CookieExpirationConvention.FIXED_TIME, model.convention());
+        Assertions.assertEquals("zidnsezcxtbzsgfy", model.timeToExpiration());
     }
 }

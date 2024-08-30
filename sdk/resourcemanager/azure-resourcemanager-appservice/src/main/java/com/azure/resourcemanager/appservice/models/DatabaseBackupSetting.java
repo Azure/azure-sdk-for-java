@@ -6,36 +6,37 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Database backup settings.
  */
 @Fluent
-public final class DatabaseBackupSetting {
+public final class DatabaseBackupSetting implements JsonSerializable<DatabaseBackupSetting> {
     /*
      * Database type (e.g. SqlAzure / MySql).
      */
-    @JsonProperty(value = "databaseType", required = true)
     private DatabaseType databaseType;
 
     /*
      * The name property.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Contains a connection string name that is linked to the SiteConfig.ConnectionStrings.
      * This is used during restore with overwrite connection strings options.
      */
-    @JsonProperty(value = "connectionStringName")
     private String connectionStringName;
 
     /*
-     * Contains a connection string to a database which is being backed up or restored. If the restore should happen to a new database, the database name inside is the new one.
+     * Contains a connection string to a database which is being backed up or restored. If the restore should happen to
+     * a new database, the database name inside is the new one.
      */
-    @JsonProperty(value = "connectionString")
     private String connectionString;
 
     /**
@@ -144,4 +145,50 @@ public final class DatabaseBackupSetting {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DatabaseBackupSetting.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("databaseType", this.databaseType == null ? null : this.databaseType.toString());
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("connectionStringName", this.connectionStringName);
+        jsonWriter.writeStringField("connectionString", this.connectionString);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DatabaseBackupSetting from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DatabaseBackupSetting if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DatabaseBackupSetting.
+     */
+    public static DatabaseBackupSetting fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DatabaseBackupSetting deserializedDatabaseBackupSetting = new DatabaseBackupSetting();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("databaseType".equals(fieldName)) {
+                    deserializedDatabaseBackupSetting.databaseType = DatabaseType.fromString(reader.getString());
+                } else if ("name".equals(fieldName)) {
+                    deserializedDatabaseBackupSetting.name = reader.getString();
+                } else if ("connectionStringName".equals(fieldName)) {
+                    deserializedDatabaseBackupSetting.connectionStringName = reader.getString();
+                } else if ("connectionString".equals(fieldName)) {
+                    deserializedDatabaseBackupSetting.connectionString = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDatabaseBackupSetting;
+        });
+    }
 }

@@ -51,9 +51,12 @@ public final class MetricsClient {
      * @return A time-series metrics result for the requested metric names.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MetricsQueryResourcesResult queryResources(List<String> resourceIds, List<String> metricsNames, String metricsNamespace) {
-        return this.queryResourcesWithResponse(resourceIds, metricsNames, metricsNamespace, new MetricsQueryResourcesOptions(),
-            Context.NONE).getValue();
+    public MetricsQueryResourcesResult queryResources(List<String> resourceIds, List<String> metricsNames,
+        String metricsNamespace) {
+        return this
+            .queryResourcesWithResponse(resourceIds, metricsNames, metricsNamespace, new MetricsQueryResourcesOptions(),
+                Context.NONE)
+            .getValue();
     }
 
     /**
@@ -69,8 +72,8 @@ public final class MetricsClient {
      * @throws NullPointerException thrown if {@code resourceIds}, {@code metricsNames} or {@code metricsNamespace} are null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MetricsQueryResourcesResult> queryResourcesWithResponse(List<String> resourceIds, List<String> metricsNames,
-                                                                            String metricsNamespace, MetricsQueryResourcesOptions options, Context context) {
+    public Response<MetricsQueryResourcesResult> queryResourcesWithResponse(List<String> resourceIds,
+        List<String> metricsNames, String metricsNamespace, MetricsQueryResourcesOptions options, Context context) {
         if (CoreUtils.isNullOrEmpty(Objects.requireNonNull(resourceIds, "'resourceIds cannot be null."))) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("resourceIds cannot be empty"));
         }
@@ -105,7 +108,8 @@ public final class MetricsClient {
 
             if (options.getTimeInterval() != null) {
                 if (options.getTimeInterval().getDuration() != null) {
-                    throw LOGGER.logExceptionAsError(new IllegalArgumentException("Duration is not a supported time interval for batch query. Use startTime and endTime instead."));
+                    throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                        "Duration is not a supported time interval for batch query. Use startTime and endTime instead."));
                 }
                 if (options.getTimeInterval().getStartTime() != null) {
                     startTime = options.getTimeInterval().getStartTime().toString();
@@ -122,17 +126,16 @@ public final class MetricsClient {
         ResourceIdList resourceIdList = new ResourceIdList();
         resourceIdList.setResourceids(resourceIds);
         Response<MetricResultsResponse> response = this.serviceClient.getMetricsBatches()
-            .batchWithResponse(subscriptionId, metricsNamespace, metricsNames, resourceIdList, startTime,
-                endTime, granularity, aggregations, top, orderBy, filter, rollupBy, context);
+            .batchWithResponse(subscriptionId, metricsNamespace, metricsNames, resourceIdList, startTime, endTime,
+                granularity, aggregations, top, orderBy, filter, rollupBy, context);
         MetricResultsResponse value = response.getValue();
         List<MetricResultsResponseValuesItem> values = value.getValues();
-        List<MetricsQueryResult> metricsQueryResults = values.stream()
-            .map(result -> mapToMetricsQueryResult(result))
-            .collect(Collectors.toList());
+        List<MetricsQueryResult> metricsQueryResults
+            = values.stream().map(result -> mapToMetricsQueryResult(result)).collect(Collectors.toList());
         MetricsQueryResourcesResult metricsQueryResourcesResult = new MetricsQueryResourcesResult(metricsQueryResults);
 
-        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-            response.getHeaders(), metricsQueryResourcesResult);
+        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+            metricsQueryResourcesResult);
 
     }
 

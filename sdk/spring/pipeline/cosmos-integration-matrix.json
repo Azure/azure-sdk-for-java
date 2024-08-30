@@ -9,7 +9,7 @@
         "AdditionalArgs": "-Dargline=-DCOSMOS.AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY=true"
       }
     },
-    "TestFromSource": true,
+    "TestFromSource": [true, false],
     "JavaTestVersion": ["1.17", "1.21"]
   }
 }

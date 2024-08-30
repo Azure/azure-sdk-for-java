@@ -9,7 +9,7 @@ package com.azure.resourcemanager.appcontainers.generated;
  */
 public final class ManagedEnvironmentsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/stable/2024-03-01/examples/
      * ManagedEnvironments_ListByResourceGroup.json
      */
     /**

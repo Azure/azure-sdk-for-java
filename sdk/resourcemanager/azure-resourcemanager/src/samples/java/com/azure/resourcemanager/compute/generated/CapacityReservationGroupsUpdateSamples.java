@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.compute.generated;
 
 import com.azure.resourcemanager.compute.models.CapacityReservationGroupUpdate;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,12 +14,12 @@ import java.util.Map;
 public final class CapacityReservationGroupsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * capacityReservationExamples/CapacityReservationGroup_Update_MinimumSet_Gen.json
      */
     /**
      * Sample code: CapacityReservationGroup_Update_MinimumSet_Gen.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
@@ -35,12 +34,12 @@ public final class CapacityReservationGroupsUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * capacityReservationExamples/CapacityReservationGroup_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: CapacityReservationGroup_Update_MaximumSet_Gen.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void

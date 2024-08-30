@@ -1,6 +1,6 @@
 # Release History
 
-## 5.19.0-beta.2 (Unreleased)
+## 5.19.0-beta.3 (Unreleased)
 
 ### Features Added
 
@@ -8,9 +8,33 @@
 
 ### Bugs Fixed
 
+### Other Changes
+
+## 5.19.0-beta.2 (2024-08-20)
+
+### Features Added
+
+- Enabling V2 stack support for Event Hubs, which can be opt-in using the configuration ` com.azure.messaging.eventhubs.v2`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.50.0` to version `1.51.0`.
+- Upgraded `azure-core-amqp` from `2.9.7` to version `2.9.8`.
+
+## 5.18.6 (2024-07-26)
+
+### Bugs Fixed
+
 - Copy connection string properties when cloning the EventHubClientBuilder in EventProcessorClientBuilder, fixes ([#40938](https://github.com/Azure/azure-sdk-for-java/issues/40938))
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.49.1` to version `1.50.0`.
+- Upgraded `azure-core-amqp` from `2.9.3` to version `2.9.7`.
 
 ## 5.18.5 (2024-06-24)
 

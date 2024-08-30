@@ -5,31 +5,44 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The license type to apply for this elastic pool. */
+/**
+ * The license type to apply for this elastic pool.
+ */
 public final class ElasticPoolLicenseType extends ExpandableStringEnum<ElasticPoolLicenseType> {
-    /** Static value LicenseIncluded for ElasticPoolLicenseType. */
+    /**
+     * Static value LicenseIncluded for ElasticPoolLicenseType.
+     */
     public static final ElasticPoolLicenseType LICENSE_INCLUDED = fromString("LicenseIncluded");
 
-    /** Static value BasePrice for ElasticPoolLicenseType. */
+    /**
+     * Static value BasePrice for ElasticPoolLicenseType.
+     */
     public static final ElasticPoolLicenseType BASE_PRICE = fromString("BasePrice");
 
     /**
+     * Creates a new instance of ElasticPoolLicenseType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ElasticPoolLicenseType() {
+    }
+
+    /**
      * Creates or finds a ElasticPoolLicenseType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ElasticPoolLicenseType.
      */
-    @JsonCreator
     public static ElasticPoolLicenseType fromString(String name) {
         return fromString(name, ElasticPoolLicenseType.class);
     }
 
     /**
      * Gets known ElasticPoolLicenseType values.
-     *
+     * 
      * @return known ElasticPoolLicenseType values.
      */
     public static Collection<ElasticPoolLicenseType> values() {

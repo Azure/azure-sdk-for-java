@@ -30,8 +30,8 @@ public final class ContainerAppsRevisionReplicasImpl implements ContainerAppsRev
 
     public Response<Replica> getReplicaWithResponse(String resourceGroupName, String containerAppName,
         String revisionName, String replicaName, Context context) {
-        Response<ReplicaInner> inner = this.serviceClient().getReplicaWithResponse(resourceGroupName, containerAppName,
-            revisionName, replicaName, context);
+        Response<ReplicaInner> inner = this.serviceClient()
+            .getReplicaWithResponse(resourceGroupName, containerAppName, revisionName, replicaName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ReplicaImpl(inner.getValue(), this.manager()));

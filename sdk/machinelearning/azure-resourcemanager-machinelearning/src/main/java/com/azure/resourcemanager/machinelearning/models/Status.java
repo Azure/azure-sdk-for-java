@@ -5,43 +5,58 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
  * Update Workspace Quota Status.
- *
- * <p>Status of update workspace quota.
+ * 
+ * Status of update workspace quota.
  */
 public final class Status extends ExpandableStringEnum<Status> {
-    /** Static value Undefined for Status. */
+    /**
+     * Static value Undefined for Status.
+     */
     public static final Status UNDEFINED = fromString("Undefined");
 
-    /** Static value Success for Status. */
+    /**
+     * Static value Success for Status.
+     */
     public static final Status SUCCESS = fromString("Success");
 
-    /** Static value Failure for Status. */
+    /**
+     * Static value Failure for Status.
+     */
     public static final Status FAILURE = fromString("Failure");
 
-    /** Static value InvalidQuotaBelowClusterMinimum for Status. */
+    /**
+     * Static value InvalidQuotaBelowClusterMinimum for Status.
+     */
     public static final Status INVALID_QUOTA_BELOW_CLUSTER_MINIMUM = fromString("InvalidQuotaBelowClusterMinimum");
 
-    /** Static value InvalidQuotaExceedsSubscriptionLimit for Status. */
-    public static final Status INVALID_QUOTA_EXCEEDS_SUBSCRIPTION_LIMIT =
-        fromString("InvalidQuotaExceedsSubscriptionLimit");
+    /**
+     * Static value InvalidQuotaExceedsSubscriptionLimit for Status.
+     */
+    public static final Status INVALID_QUOTA_EXCEEDS_SUBSCRIPTION_LIMIT
+        = fromString("InvalidQuotaExceedsSubscriptionLimit");
 
-    /** Static value InvalidVMFamilyName for Status. */
+    /**
+     * Static value InvalidVMFamilyName for Status.
+     */
     public static final Status INVALID_VMFAMILY_NAME = fromString("InvalidVMFamilyName");
 
-    /** Static value OperationNotSupportedForSku for Status. */
+    /**
+     * Static value OperationNotSupportedForSku for Status.
+     */
     public static final Status OPERATION_NOT_SUPPORTED_FOR_SKU = fromString("OperationNotSupportedForSku");
 
-    /** Static value OperationNotEnabledForRegion for Status. */
+    /**
+     * Static value OperationNotEnabledForRegion for Status.
+     */
     public static final Status OPERATION_NOT_ENABLED_FOR_REGION = fromString("OperationNotEnabledForRegion");
 
     /**
      * Creates a new instance of Status value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -50,18 +65,17 @@ public final class Status extends ExpandableStringEnum<Status> {
 
     /**
      * Creates or finds a Status from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Status.
      */
-    @JsonCreator
     public static Status fromString(String name) {
         return fromString(name, Status.class);
     }
 
     /**
      * Gets known Status values.
-     *
+     * 
      * @return known Status values.
      */
     public static Collection<Status> values() {

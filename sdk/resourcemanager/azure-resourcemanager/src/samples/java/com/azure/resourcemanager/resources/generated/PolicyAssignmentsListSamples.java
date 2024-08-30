@@ -9,7 +9,9 @@ package com.azure.resourcemanager.resources.generated;
  */
 public final class PolicyAssignmentsListSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/listPolicyAssignments.json
+     * x-ms-original-file:
+     * specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/listPolicyAssignments
+     * .json
      */
     /**
      * Sample code: List policy assignments that apply to a subscription.

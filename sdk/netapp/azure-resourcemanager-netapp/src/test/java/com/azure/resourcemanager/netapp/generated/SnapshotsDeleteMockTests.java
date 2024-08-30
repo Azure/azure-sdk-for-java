@@ -27,8 +27,7 @@ public final class SnapshotsDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.snapshots()
-            .delete("nzrdpsovwxz", "ptgoeiybbabp", "hv", "slkvntjl", "igjkskyrio", com.azure.core.util.Context.NONE);
+        manager.snapshots().delete("ayzejnhlbkpbz", "cpilj", "a", "zv", "chndbnwie", com.azure.core.util.Context.NONE);
 
     }
 }

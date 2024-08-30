@@ -44,6 +44,7 @@
     <module>sdk/cognitiveservices</module>
     <module>sdk/commerce</module>
     <module>sdk/communication</module>
+    <module>sdk/computefleet</module>
     <module>sdk/confidentialledger</module>
     <module>sdk/confluent</module>
     <module>sdk/connectedvmware</module>
@@ -101,6 +102,7 @@
     <module>sdk/hdinsight</module>
     <module>sdk/healthbot</module>
     <module>sdk/healthcareapis</module>
+    <module>sdk/healthdataaiservices</module>
     <module>sdk/healthinsights</module>
     <module>sdk/hybridcompute</module>
     <module>sdk/hybridconnectivity</module>
@@ -171,6 +173,7 @@
     <module>sdk/recoveryservicesbackup</module>
     <module>sdk/recoveryservicesdatareplication</module>
     <module>sdk/recoveryservicessiterecovery</module>
+    <module>sdk/redhatopenshift</module>
     <module>sdk/redisenterprise</module>
     <module>sdk/relay</module>
     <module>sdk/remoterendering</module>
@@ -190,6 +193,7 @@
     <module>sdk/serialization</module>
     <module>sdk/servicebus</module>
     <module>sdk/servicefabric</module>
+    <module>sdk/servicefabricmanagedclusters</module>
     <module>sdk/servicelinker</module>
     <module>sdk/servicenetworking</module>
     <module>sdk/signalr</module>

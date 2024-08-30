@@ -5,49 +5,47 @@
 package com.azure.resourcemanager.netapp.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.netapp.models.MirrorState;
 import com.azure.resourcemanager.netapp.models.RelationshipStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Restore status.
  */
 @Immutable
-public final class RestoreStatusInner {
+public final class RestoreStatusInner implements JsonSerializable<RestoreStatusInner> {
     /*
      * Restore health status
      */
-    @JsonProperty(value = "healthy", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean healthy;
 
     /*
      * Status of the restore SnapMirror relationship
      */
-    @JsonProperty(value = "relationshipStatus", access = JsonProperty.Access.WRITE_ONLY)
     private RelationshipStatus relationshipStatus;
 
     /*
      * The status of the restore
      */
-    @JsonProperty(value = "mirrorState", access = JsonProperty.Access.WRITE_ONLY)
     private MirrorState mirrorState;
 
     /*
      * Reason for the unhealthy restore relationship
      */
-    @JsonProperty(value = "unhealthyReason", access = JsonProperty.Access.WRITE_ONLY)
     private String unhealthyReason;
 
     /*
      * Displays error message if the restore is in an error state
      */
-    @JsonProperty(value = "errorMessage", access = JsonProperty.Access.WRITE_ONLY)
     private String errorMessage;
 
     /*
      * Displays the total bytes transferred
      */
-    @JsonProperty(value = "totalTransferBytes", access = JsonProperty.Access.WRITE_ONLY)
     private Long totalTransferBytes;
 
     /**
@@ -116,5 +114,51 @@ public final class RestoreStatusInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RestoreStatusInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RestoreStatusInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RestoreStatusInner.
+     */
+    public static RestoreStatusInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RestoreStatusInner deserializedRestoreStatusInner = new RestoreStatusInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("healthy".equals(fieldName)) {
+                    deserializedRestoreStatusInner.healthy = reader.getNullable(JsonReader::getBoolean);
+                } else if ("relationshipStatus".equals(fieldName)) {
+                    deserializedRestoreStatusInner.relationshipStatus
+                        = RelationshipStatus.fromString(reader.getString());
+                } else if ("mirrorState".equals(fieldName)) {
+                    deserializedRestoreStatusInner.mirrorState = MirrorState.fromString(reader.getString());
+                } else if ("unhealthyReason".equals(fieldName)) {
+                    deserializedRestoreStatusInner.unhealthyReason = reader.getString();
+                } else if ("errorMessage".equals(fieldName)) {
+                    deserializedRestoreStatusInner.errorMessage = reader.getString();
+                } else if ("totalTransferBytes".equals(fieldName)) {
+                    deserializedRestoreStatusInner.totalTransferBytes = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRestoreStatusInner;
+        });
     }
 }

@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.appservice.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Job status.
  */
@@ -51,7 +48,6 @@ public enum ContinuousWebJobStatus {
      * @param value the serialized value to parse.
      * @return the parsed ContinuousWebJobStatus object, or null if unable to parse.
      */
-    @JsonCreator
     public static ContinuousWebJobStatus fromString(String value) {
         if (value == null) {
             return null;
@@ -68,7 +64,6 @@ public enum ContinuousWebJobStatus {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

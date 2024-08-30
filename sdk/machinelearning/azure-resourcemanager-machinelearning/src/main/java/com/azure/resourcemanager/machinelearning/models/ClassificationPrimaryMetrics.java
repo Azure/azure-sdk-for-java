@@ -5,30 +5,41 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Primary metrics for classification tasks. */
+/**
+ * Primary metrics for classification tasks.
+ */
 public final class ClassificationPrimaryMetrics extends ExpandableStringEnum<ClassificationPrimaryMetrics> {
-    /** Static value AUCWeighted for ClassificationPrimaryMetrics. */
+    /**
+     * Static value AUCWeighted for ClassificationPrimaryMetrics.
+     */
     public static final ClassificationPrimaryMetrics AUCWEIGHTED = fromString("AUCWeighted");
 
-    /** Static value Accuracy for ClassificationPrimaryMetrics. */
+    /**
+     * Static value Accuracy for ClassificationPrimaryMetrics.
+     */
     public static final ClassificationPrimaryMetrics ACCURACY = fromString("Accuracy");
 
-    /** Static value NormMacroRecall for ClassificationPrimaryMetrics. */
+    /**
+     * Static value NormMacroRecall for ClassificationPrimaryMetrics.
+     */
     public static final ClassificationPrimaryMetrics NORM_MACRO_RECALL = fromString("NormMacroRecall");
 
-    /** Static value AveragePrecisionScoreWeighted for ClassificationPrimaryMetrics. */
-    public static final ClassificationPrimaryMetrics AVERAGE_PRECISION_SCORE_WEIGHTED =
-        fromString("AveragePrecisionScoreWeighted");
+    /**
+     * Static value AveragePrecisionScoreWeighted for ClassificationPrimaryMetrics.
+     */
+    public static final ClassificationPrimaryMetrics AVERAGE_PRECISION_SCORE_WEIGHTED
+        = fromString("AveragePrecisionScoreWeighted");
 
-    /** Static value PrecisionScoreWeighted for ClassificationPrimaryMetrics. */
+    /**
+     * Static value PrecisionScoreWeighted for ClassificationPrimaryMetrics.
+     */
     public static final ClassificationPrimaryMetrics PRECISION_SCORE_WEIGHTED = fromString("PrecisionScoreWeighted");
 
     /**
      * Creates a new instance of ClassificationPrimaryMetrics value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -37,18 +48,17 @@ public final class ClassificationPrimaryMetrics extends ExpandableStringEnum<Cla
 
     /**
      * Creates or finds a ClassificationPrimaryMetrics from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ClassificationPrimaryMetrics.
      */
-    @JsonCreator
     public static ClassificationPrimaryMetrics fromString(String name) {
         return fromString(name, ClassificationPrimaryMetrics.class);
     }
 
     /**
      * Gets known ClassificationPrimaryMetrics values.
-     *
+     * 
      * @return known ClassificationPrimaryMetrics values.
      */
     public static Collection<ClassificationPrimaryMetrics> values() {

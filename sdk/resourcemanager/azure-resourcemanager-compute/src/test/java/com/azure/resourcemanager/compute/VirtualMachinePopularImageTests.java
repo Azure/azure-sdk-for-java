@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 
 public class VirtualMachinePopularImageTests extends ComputeManagementTest {
     private String rgName = "";
+    private Region region = Region.US_WEST2;
 
     @Test
     @DoNotRecord(skipInPlayback = true)
@@ -37,7 +38,7 @@ public class VirtualMachinePopularImageTests extends ComputeManagementTest {
             .collect(Collectors.toList())) {
             Mono<VirtualMachine> mono = computeManager.virtualMachines()
                 .define(generateRandomResourceName("vm", 10))
-                .withRegion(Region.US_SOUTH_CENTRAL)
+                .withRegion(region)
                 .withNewResourceGroup(rgName)
                 .withNewPrimaryNetwork("10.0.0.0/24")
                 .withPrimaryPrivateIPAddressDynamic()
@@ -51,12 +52,14 @@ public class VirtualMachinePopularImageTests extends ComputeManagementTest {
         }
 
         for (KnownLinuxVirtualMachineImage image : Arrays.stream(KnownLinuxVirtualMachineImage.values())
-            .filter(image -> image != KnownLinuxVirtualMachineImage.OPENSUSE_LEAP_15_1 && image != KnownLinuxVirtualMachineImage.SLES_15_SP1)
+            .filter(image -> image != KnownLinuxVirtualMachineImage.OPENSUSE_LEAP_15_1
+                && image != KnownLinuxVirtualMachineImage.SLES_15_SP1
+                && image != KnownLinuxVirtualMachineImage.ORACLE_LINUX_8_1)
             .collect(Collectors.toList())) {
 
             Mono<VirtualMachine> mono = computeManager.virtualMachines()
                 .define(generateRandomResourceName("vm", 10))
-                .withRegion(Region.US_SOUTH_CENTRAL)
+                .withRegion(region)
                 .withNewResourceGroup(rgName)
                 .withNewPrimaryNetwork("10.0.0.0/24")
                 .withPrimaryPrivateIPAddressDynamic()

@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of DataVersions. */
+/**
+ * Resource collection API of DataVersions.
+ */
 public interface DataVersions {
     /**
      * List data versions in the data container.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Data container's name.
@@ -25,37 +27,29 @@ public interface DataVersions {
 
     /**
      * List data versions in the data container.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Data container's name.
      * @param orderBy Please choose OrderBy value from ['createdtime', 'modifiedtime'].
-     * @param top Top count of results, top count cannot be greater than the page size. If topCount &gt; page size,
-     *     results with be default page size count will be returned.
+     * @param top Top count of results, top count cannot be greater than the page size.
+     * If topCount &gt; page size, results with be default page size count will be returned.
      * @param skip Continuation token for pagination.
      * @param tags Comma-separated list of tag names (and optionally values). Example: tag1,tag2=value2.
      * @param listViewType [ListViewType.ActiveOnly, ListViewType.ArchivedOnly, ListViewType.All]View type for
-     *     including/excluding (for example) archived entities.
+     * including/excluding (for example) archived entities.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of DataVersionBase entities as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<DataVersionBase> list(
-        String resourceGroupName,
-        String workspaceName,
-        String name,
-        String orderBy,
-        Integer top,
-        String skip,
-        String tags,
-        ListViewType listViewType,
-        Context context);
+    PagedIterable<DataVersionBase> list(String resourceGroupName, String workspaceName, String name, String orderBy,
+        Integer top, String skip, String tags, ListViewType listViewType, Context context);
 
     /**
      * Delete version.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Container name.
@@ -66,12 +60,12 @@ public interface DataVersions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String workspaceName, String name, String version, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String name, String version,
+        Context context);
 
     /**
      * Delete version.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Container name.
@@ -84,7 +78,7 @@ public interface DataVersions {
 
     /**
      * Get version.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Container name.
@@ -95,12 +89,12 @@ public interface DataVersions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return version along with {@link Response}.
      */
-    Response<DataVersionBase> getWithResponse(
-        String resourceGroupName, String workspaceName, String name, String version, Context context);
+    Response<DataVersionBase> getWithResponse(String resourceGroupName, String workspaceName, String name,
+        String version, Context context);
 
     /**
      * Get version.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Container name.
@@ -113,8 +107,38 @@ public interface DataVersions {
     DataVersionBase get(String resourceGroupName, String workspaceName, String name, String version);
 
     /**
+     * Publish version asset into registry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName Name of Azure Machine Learning workspace.
+     * @param name Container name.
+     * @param version Version identifier.
+     * @param body Destination registry info.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void publish(String resourceGroupName, String workspaceName, String name, String version, DestinationAsset body);
+
+    /**
+     * Publish version asset into registry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName Name of Azure Machine Learning workspace.
+     * @param name Container name.
+     * @param version Version identifier.
+     * @param body Destination registry info.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void publish(String resourceGroupName, String workspaceName, String name, String version, DestinationAsset body,
+        Context context);
+
+    /**
      * Get version.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -125,7 +149,7 @@ public interface DataVersions {
 
     /**
      * Get version.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -137,7 +161,7 @@ public interface DataVersions {
 
     /**
      * Delete version.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -147,7 +171,7 @@ public interface DataVersions {
 
     /**
      * Delete version.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -159,7 +183,7 @@ public interface DataVersions {
 
     /**
      * Begins definition for a new DataVersionBase resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new DataVersionBase definition.
      */

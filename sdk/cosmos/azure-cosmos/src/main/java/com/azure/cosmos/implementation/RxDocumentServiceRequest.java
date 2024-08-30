@@ -87,6 +87,8 @@ public class RxDocumentServiceRequest implements Cloneable {
 
     private volatile boolean nonIdempotentWriteRetriesEnabled = false;
 
+    private volatile boolean hasFeedRangeFilteringBeenApplied = false;
+
     public boolean isReadOnlyRequest() {
         return this.operationType.isReadOnlyOperation();
     }
@@ -118,6 +120,14 @@ public class RxDocumentServiceRequest implements Cloneable {
 
     public boolean getNonIdempotentWriteRetriesEnabled() {
         return this.nonIdempotentWriteRetriesEnabled;
+    }
+
+    public boolean hasFeedRangeFilteringBeenApplied() {
+        return this.hasFeedRangeFilteringBeenApplied;
+    }
+
+    public void setHasFeedRangeFilteringBeenApplied(boolean hasFeedRangeFilteringBeenApplied) {
+        this.hasFeedRangeFilteringBeenApplied = hasFeedRangeFilteringBeenApplied;
     }
 
     public boolean isReadOnly() {
@@ -1091,6 +1101,8 @@ public class RxDocumentServiceRequest implements Cloneable {
         rxDocumentServiceRequest.feedRange = this.feedRange;
         rxDocumentServiceRequest.effectiveRange = this.effectiveRange;
         rxDocumentServiceRequest.isFeed = this.isFeed;
+        rxDocumentServiceRequest.resourceId = this.resourceId;
+        rxDocumentServiceRequest.hasFeedRangeFilteringBeenApplied = this.hasFeedRangeFilteringBeenApplied;
         return rxDocumentServiceRequest;
     }
 

@@ -6,67 +6,49 @@ package com.azure.resourcemanager.appcontainers.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.appcontainers.ContainerAppsApiManager;
 import com.azure.resourcemanager.appcontainers.models.JobExecution;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class JobsExecutionsListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"value\":[{\"name\":\"gnnbzrtf\",\"id\":\"dzuubjtvgjsxm\",\"type\":\"jjvavdpww\",\"properties\":{\"status\":\"Degraded\",\"startTime\":\"2021-08-09T18:08:13Z\",\"endTime\":\"2021-10-21T08:59:09Z\",\"template\":{\"containers\":[{\"image\":\"ofw\",\"name\":\"m\",\"command\":[\"cauwazcgwdfriwg\",\"bjpozokscvgllixd\",\"byfg\",\"ewqkjvxprwpxs\"],\"args\":[\"utxlcskltezu\"],\"env\":[{},{}],\"resources\":{}},{\"image\":\"lfb\",\"name\":\"dc\",\"command\":[\"srtmdylperpiltt\"],\"args\":[\"czfcmfpfbod\",\"tresr\"],\"env\":[{},{},{}],\"resources\":{}}],\"initContainers\":[{\"image\":\"ft\",\"name\":\"ivmuqkevzgjyp\",\"command\":[\"xmpdxxzetww\",\"jwotnxlkfhglhrf\"],\"args\":[\"wecr\"],\"env\":[{},{},{}],\"resources\":{}},{\"image\":\"selqxov\",\"name\":\"qibukklvzrl\",\"command\":[\"ccmetjsczivfqb\"],\"args\":[\"sdsyenzsie\",\"scplhyvd\",\"xlyzkxit\"],\"env\":[{},{},{},{}],\"resources\":{}},{\"image\":\"svkolru\",\"name\":\"ovmozsayebraz\",\"command\":[\"pzbtzuyk\",\"kipfsdyepf\",\"ocmbezacf\",\"ztgaz\"],\"args\":[\"ejgaaokct\"],\"env\":[{},{}],\"resources\":{}}]}}}]}";
+            = "{\"value\":[{\"name\":\"lhkalehpavawugi\",\"id\":\"tiogqgdmini\",\"type\":\"teajohiyg\",\"properties\":{\"status\":\"Running\",\"startTime\":\"2021-01-10T08:24:54Z\",\"endTime\":\"2021-06-30T15:37:59Z\",\"template\":{\"containers\":[{\"image\":\"mktp\",\"name\":\"xqcsehch\",\"command\":[\"fmpqumqyjg\",\"dzulo\",\"saeuzanhsfnhsenw\"],\"args\":[\"zf\",\"gqjclidftujwj\",\"ufwbeqrku\"],\"env\":[{},{},{},{}],\"resources\":{}}],\"initContainers\":[{\"image\":\"uqnmdvhazcvj\",\"name\":\"iqswbqer\",\"command\":[\"iytxt\",\"gukvlbpkt\",\"dstyouam\"],\"args\":[\"reswmowegmmut\",\"yxey\",\"uqi\"],\"env\":[{},{},{},{}],\"resources\":{}},{\"image\":\"tnspxlzdesygri\",\"name\":\"aiuf\",\"command\":[\"aybfu\",\"qfrojsydgrhyd\",\"ygywe\"],\"args\":[\"iecafygzmxi\",\"qv\",\"smaklixqcahy\"],\"env\":[{},{},{}],\"resources\":{}},{\"image\":\"bx\",\"name\":\"oij\",\"command\":[\"tblxpkkwjdjodqhy\",\"incnr\"],\"args\":[\"hllizhceumoq\",\"dkadppyibn\",\"qladywrxwhydtlu\"],\"env\":[{},{}],\"resources\":{}}]}}}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        ContainerAppsApiManager manager = ContainerAppsApiManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        ContainerAppsApiManager manager = ContainerAppsApiManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<JobExecution> response
-            = manager.jobsExecutions().list("cy", "yzlwhbwzjnufzrf", "m", com.azure.core.util.Context.NONE);
+            = manager.jobsExecutions().list("y", "mvqdbpbhfckdvez", "rcssbzhddubbnq", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("gnnbzrtf", response.iterator().next().name());
-        Assertions.assertEquals("dzuubjtvgjsxm", response.iterator().next().id());
-        Assertions.assertEquals("jjvavdpww", response.iterator().next().type());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-09T18:08:13Z"), response.iterator().next().startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-21T08:59:09Z"), response.iterator().next().endTime());
-        Assertions.assertEquals("ofw", response.iterator().next().template().containers().get(0).image());
-        Assertions.assertEquals("m", response.iterator().next().template().containers().get(0).name());
-        Assertions.assertEquals("cauwazcgwdfriwg",
+        Assertions.assertEquals("lhkalehpavawugi", response.iterator().next().name());
+        Assertions.assertEquals("tiogqgdmini", response.iterator().next().id());
+        Assertions.assertEquals("teajohiyg", response.iterator().next().type());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-10T08:24:54Z"), response.iterator().next().startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-30T15:37:59Z"), response.iterator().next().endTime());
+        Assertions.assertEquals("mktp", response.iterator().next().template().containers().get(0).image());
+        Assertions.assertEquals("xqcsehch", response.iterator().next().template().containers().get(0).name());
+        Assertions.assertEquals("fmpqumqyjg",
             response.iterator().next().template().containers().get(0).command().get(0));
-        Assertions.assertEquals("utxlcskltezu",
-            response.iterator().next().template().containers().get(0).args().get(0));
-        Assertions.assertEquals("ft", response.iterator().next().template().initContainers().get(0).image());
-        Assertions.assertEquals("ivmuqkevzgjyp", response.iterator().next().template().initContainers().get(0).name());
-        Assertions.assertEquals("xmpdxxzetww",
+        Assertions.assertEquals("zf", response.iterator().next().template().containers().get(0).args().get(0));
+        Assertions.assertEquals("uqnmdvhazcvj", response.iterator().next().template().initContainers().get(0).image());
+        Assertions.assertEquals("iqswbqer", response.iterator().next().template().initContainers().get(0).name());
+        Assertions.assertEquals("iytxt",
             response.iterator().next().template().initContainers().get(0).command().get(0));
-        Assertions.assertEquals("wecr", response.iterator().next().template().initContainers().get(0).args().get(0));
+        Assertions.assertEquals("reswmowegmmut",
+            response.iterator().next().template().initContainers().get(0).args().get(0));
     }
 }

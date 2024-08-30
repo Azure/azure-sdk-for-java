@@ -10,8 +10,7 @@ package com.azure.resourcemanager.appcontainers.generated;
 public final class ConnectedEnvironmentsGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/ConnectedEnvironments_Get.
-     * json
+     * specification/app/resource-manager/Microsoft.App/stable/2024-03-01/examples/ConnectedEnvironments_Get.json
      */
     /**
      * Sample code: Get connected environment by connectedEnvironmentName.
@@ -20,7 +19,7 @@ public final class ConnectedEnvironmentsGetByResourceGroupSamples {
      */
     public static void getConnectedEnvironmentByConnectedEnvironmentName(
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        manager.connectedEnvironments().getByResourceGroupWithResponse("examplerg", "examplekenv",
-            com.azure.core.util.Context.NONE);
+        manager.connectedEnvironments()
+            .getByResourceGroupWithResponse("examplerg", "examplekenv", com.azure.core.util.Context.NONE);
     }
 }

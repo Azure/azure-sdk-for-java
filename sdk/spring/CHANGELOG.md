@@ -1,20 +1,46 @@
 # Release History
 
-## 5.15.0 (Unreleased)
+## 5.16.0-beta.1 (unreleased)
+
+#### Dependency Updates
+Upgrade Spring Boot dependencies version to 3.3.3 and Spring Cloud dependencies version to 2023.0.3
+
+### Spring Cloud Azure Autoconfigure
+This section includes changes in `spring-cloud-azure-autoconfigure` module.
+
+#### Features Added
+- Provide extension point to configure token credential for Key Vault property source  [#41580](https://github.com/Azure/azure-sdk-for-java/pull/41580).
+
+## 5.15.0 (2024-08-07)
+- This release is compatible with Spring Boot 3.0.0-3.0.13, 3.1.0-3.1.12, 3.2.0-3.2.7, 3.3.0-3.3.2. (Note: 3.0.x (x>13), 3.1.y (y>12), 3.2.z (z>7) and 3.3.m (m>2) should be supported, but they aren't tested with this release.)
+- This release is compatible with Spring Cloud 2022.0.0-2022.0.5, 2023.0.0-2023.0.3. (Note: 2022.0.x (x>5) and 2023.0.y (y>3) should be supported, but they aren't tested with this release.)
 
 ### Spring Cloud Azure Dependencies (BOM)
 
 #### Dependency Updates
- - Added a new dependency: `spring-cloud-azure-testcontainers`.
+- Upgrade `azure-sdk-bom` to 1.2.26.
+- Added a new dependency: `spring-cloud-azure-testcontainers`.
+- Added a new dependency: `spring-cloud-azure-docker-compose`.
 
 ### Spring Cloud Azure Autoconfigure
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
 #### Features Added
 - Add `ConnectionDetails` for Cosmos, Storage Blob and Storage Queue. For more information about `ConnectionDetails`, please refer to [Spring Boot 3.1's ConnectionDetails abstraction](https://spring.io/blog/2023/06/19/spring-boot-31-connectiondetails-abstraction).
+- Add the property `customEndpointAddress` for Service Bus SDK clients [#41279](https://github.com/Azure/azure-sdk-for-java/pull/41279).
+
+### Spring Cloud Stream Service Bus Binder
+This section includes changes in `spring-cloud-azure-stream-binder-servicebus` module.
+
+#### Features Added
+- Support share the 'ServiceBusClientBuilder' for sender client and processor clients creation [#41279](https://github.com/Azure/azure-sdk-for-java/pull/41279).
 
 #### Bugs Fixed
 - Fix bug: DLQ reason and description not work in spring-cloud-azure-stream-binder-servicebus. [40951](https://github.com/Azure/azure-sdk-for-java/issues/40951).
+
+### Azure Spring Data Cosmos
+This section includes changes in `azure-spring-data-cosmos` module.
+Please refer to [azure-spring-data-cosmos/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-data-cosmos/CHANGELOG.md#5150-2024-08-07) for more details.
 
 ## 5.14.0 (2024-07-05)
 - This release is compatible with Spring Boot 3.0.0-3.0.13, 3.1.0-3.1.12, 3.2.0-3.2.7, 3.3.0-3.3.1. (Note: 3.0.x (x>13), 3.1.y (y>12), 3.2.z (z>7) and 3.3.m (m>1) should be supported, but they aren't tested with this release.)

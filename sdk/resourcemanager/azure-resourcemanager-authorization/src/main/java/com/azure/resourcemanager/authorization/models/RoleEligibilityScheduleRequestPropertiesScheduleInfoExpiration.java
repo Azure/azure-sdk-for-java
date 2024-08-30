@@ -5,37 +5,45 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Expiration of the role eligibility schedule. */
+/**
+ * Expiration of the role eligibility schedule.
+ */
 @Fluent
-public final class RoleEligibilityScheduleRequestPropertiesScheduleInfoExpiration {
+public final class RoleEligibilityScheduleRequestPropertiesScheduleInfoExpiration
+    implements JsonSerializable<RoleEligibilityScheduleRequestPropertiesScheduleInfoExpiration> {
     /*
      * Type of the role eligibility schedule expiration
      */
-    @JsonProperty(value = "type")
     private Type type;
 
     /*
      * End DateTime of the role eligibility schedule.
      */
-    @JsonProperty(value = "endDateTime")
     private OffsetDateTime endDateTime;
 
     /*
      * Duration of the role eligibility schedule in TimeSpan.
      */
-    @JsonProperty(value = "duration")
     private String duration;
 
-    /** Creates an instance of RoleEligibilityScheduleRequestPropertiesScheduleInfoExpiration class. */
+    /**
+     * Creates an instance of RoleEligibilityScheduleRequestPropertiesScheduleInfoExpiration class.
+     */
     public RoleEligibilityScheduleRequestPropertiesScheduleInfoExpiration() {
     }
 
     /**
      * Get the type property: Type of the role eligibility schedule expiration.
-     *
+     * 
      * @return the type value.
      */
     public Type type() {
@@ -44,7 +52,7 @@ public final class RoleEligibilityScheduleRequestPropertiesScheduleInfoExpiratio
 
     /**
      * Set the type property: Type of the role eligibility schedule expiration.
-     *
+     * 
      * @param type the type value to set.
      * @return the RoleEligibilityScheduleRequestPropertiesScheduleInfoExpiration object itself.
      */
@@ -55,7 +63,7 @@ public final class RoleEligibilityScheduleRequestPropertiesScheduleInfoExpiratio
 
     /**
      * Get the endDateTime property: End DateTime of the role eligibility schedule.
-     *
+     * 
      * @return the endDateTime value.
      */
     public OffsetDateTime endDateTime() {
@@ -64,7 +72,7 @@ public final class RoleEligibilityScheduleRequestPropertiesScheduleInfoExpiratio
 
     /**
      * Set the endDateTime property: End DateTime of the role eligibility schedule.
-     *
+     * 
      * @param endDateTime the endDateTime value to set.
      * @return the RoleEligibilityScheduleRequestPropertiesScheduleInfoExpiration object itself.
      */
@@ -75,7 +83,7 @@ public final class RoleEligibilityScheduleRequestPropertiesScheduleInfoExpiratio
 
     /**
      * Get the duration property: Duration of the role eligibility schedule in TimeSpan.
-     *
+     * 
      * @return the duration value.
      */
     public String duration() {
@@ -84,7 +92,7 @@ public final class RoleEligibilityScheduleRequestPropertiesScheduleInfoExpiratio
 
     /**
      * Set the duration property: Duration of the role eligibility schedule in TimeSpan.
-     *
+     * 
      * @param duration the duration value to set.
      * @return the RoleEligibilityScheduleRequestPropertiesScheduleInfoExpiration object itself.
      */
@@ -95,9 +103,58 @@ public final class RoleEligibilityScheduleRequestPropertiesScheduleInfoExpiratio
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("endDateTime",
+            this.endDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endDateTime));
+        jsonWriter.writeStringField("duration", this.duration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RoleEligibilityScheduleRequestPropertiesScheduleInfoExpiration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RoleEligibilityScheduleRequestPropertiesScheduleInfoExpiration if the JsonReader was
+     * pointing to an instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the
+     * RoleEligibilityScheduleRequestPropertiesScheduleInfoExpiration.
+     */
+    public static RoleEligibilityScheduleRequestPropertiesScheduleInfoExpiration fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            RoleEligibilityScheduleRequestPropertiesScheduleInfoExpiration deserializedRoleEligibilityScheduleRequestPropertiesScheduleInfoExpiration
+                = new RoleEligibilityScheduleRequestPropertiesScheduleInfoExpiration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedRoleEligibilityScheduleRequestPropertiesScheduleInfoExpiration.type
+                        = Type.fromString(reader.getString());
+                } else if ("endDateTime".equals(fieldName)) {
+                    deserializedRoleEligibilityScheduleRequestPropertiesScheduleInfoExpiration.endDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("duration".equals(fieldName)) {
+                    deserializedRoleEligibilityScheduleRequestPropertiesScheduleInfoExpiration.duration
+                        = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRoleEligibilityScheduleRequestPropertiesScheduleInfoExpiration;
+        });
     }
 }

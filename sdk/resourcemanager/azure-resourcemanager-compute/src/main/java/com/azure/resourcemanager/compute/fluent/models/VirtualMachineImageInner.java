@@ -5,6 +5,9 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.ArchitectureTypes;
 import com.azure.resourcemanager.compute.models.AutomaticOSUpgradeProperties;
 import com.azure.resourcemanager.compute.models.DataDiskImage;
@@ -15,7 +18,7 @@ import com.azure.resourcemanager.compute.models.ImageDeprecationStatus;
 import com.azure.resourcemanager.compute.models.OSDiskImage;
 import com.azure.resourcemanager.compute.models.PurchasePlan;
 import com.azure.resourcemanager.compute.models.VirtualMachineImageFeature;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -27,7 +30,6 @@ public final class VirtualMachineImageInner extends VirtualMachineImageResourceI
     /*
      * Describes the properties of a Virtual Machine Image.
      */
-    @JsonProperty(value = "properties")
     private VirtualMachineImageProperties innerProperties;
 
     /**
@@ -309,5 +311,59 @@ public final class VirtualMachineImageInner extends VirtualMachineImageResourceI
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", name());
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("extendedLocation", extendedLocation());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineImageInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineImageInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VirtualMachineImageInner.
+     */
+    public static VirtualMachineImageInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineImageInner deserializedVirtualMachineImageInner = new VirtualMachineImageInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedVirtualMachineImageInner.withName(reader.getString());
+                } else if ("location".equals(fieldName)) {
+                    deserializedVirtualMachineImageInner.withLocation(reader.getString());
+                } else if ("id".equals(fieldName)) {
+                    deserializedVirtualMachineImageInner.withId(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedVirtualMachineImageInner.withTags(tags);
+                } else if ("extendedLocation".equals(fieldName)) {
+                    deserializedVirtualMachineImageInner.withExtendedLocation(ExtendedLocation.fromJson(reader));
+                } else if ("properties".equals(fieldName)) {
+                    deserializedVirtualMachineImageInner.innerProperties
+                        = VirtualMachineImageProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineImageInner;
+        });
     }
 }

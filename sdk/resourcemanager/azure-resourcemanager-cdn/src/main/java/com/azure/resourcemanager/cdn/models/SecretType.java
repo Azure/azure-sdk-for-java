@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -48,7 +47,6 @@ public final class SecretType extends ExpandableStringEnum<SecretType> {
      * @param name a name to look for.
      * @return the corresponding SecretType.
      */
-    @JsonCreator
     public static SecretType fromString(String name) {
         return fromString(name, SecretType.class);
     }

@@ -23,14 +23,13 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <spotbugs.skip>true</spotbugs.skip>
     <codesnippet.skip>true</codesnippet.skip>
-    <opentelemetry.version>1.32.0</opentelemetry.version> <!-- Only required with Spring Boot 3 to override the OTel version used in the Spring Boot BOM-->
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-starter-monitor</artifactId>
-      <version>1.0.0-beta.6</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-monitor;current} -->
+      <version>1.0.0-beta.7</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-monitor;current} -->
     </dependency>
 
     <dependency>
@@ -52,7 +51,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.26.1</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.26.2</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

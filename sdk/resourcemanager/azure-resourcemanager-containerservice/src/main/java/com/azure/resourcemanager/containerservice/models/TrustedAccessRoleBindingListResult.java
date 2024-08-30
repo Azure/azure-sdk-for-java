@@ -5,25 +5,27 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerservice.fluent.models.TrustedAccessRoleBindingInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * List of trusted access role bindings.
  */
 @Fluent
-public final class TrustedAccessRoleBindingListResult {
+public final class TrustedAccessRoleBindingListResult implements JsonSerializable<TrustedAccessRoleBindingListResult> {
     /*
      * Role binding list
      */
-    @JsonProperty(value = "value")
     private List<TrustedAccessRoleBindingInner> value;
 
     /*
      * Link to next page of resources.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
@@ -70,5 +72,46 @@ public final class TrustedAccessRoleBindingListResult {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TrustedAccessRoleBindingListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TrustedAccessRoleBindingListResult if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TrustedAccessRoleBindingListResult.
+     */
+    public static TrustedAccessRoleBindingListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TrustedAccessRoleBindingListResult deserializedTrustedAccessRoleBindingListResult
+                = new TrustedAccessRoleBindingListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<TrustedAccessRoleBindingInner> value
+                        = reader.readArray(reader1 -> TrustedAccessRoleBindingInner.fromJson(reader1));
+                    deserializedTrustedAccessRoleBindingListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedTrustedAccessRoleBindingListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTrustedAccessRoleBindingListResult;
+        });
     }
 }

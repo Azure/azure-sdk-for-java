@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -28,11 +27,6 @@ public final class StorageType extends ExpandableStringEnum<StorageType> {
     public static final StorageType SECRET = fromString("Secret");
 
     /**
-     * Static value NfsAzureFile for StorageType.
-     */
-    public static final StorageType NFS_AZURE_FILE = fromString("NfsAzureFile");
-
-    /**
      * Creates a new instance of StorageType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
@@ -47,7 +41,6 @@ public final class StorageType extends ExpandableStringEnum<StorageType> {
      * @param name a name to look for.
      * @return the corresponding StorageType.
      */
-    @JsonCreator
     public static StorageType fromString(String name) {
         return fromString(name, StorageType.class);
     }

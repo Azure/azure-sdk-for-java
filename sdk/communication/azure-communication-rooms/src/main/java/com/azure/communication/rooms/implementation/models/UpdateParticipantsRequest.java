@@ -5,24 +5,32 @@
 package com.azure.communication.rooms.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** Participants to be updated in the room. */
+/**
+ * Participants to be updated in the room.
+ */
 @Fluent
-public final class UpdateParticipantsRequest {
+public final class UpdateParticipantsRequest implements JsonSerializable<UpdateParticipantsRequest> {
     /*
      * Participants to be updated.
      */
-    @JsonProperty(value = "participants")
     private Map<String, ParticipantProperties> participants;
 
-    /** Creates an instance of UpdateParticipantsRequest class. */
-    public UpdateParticipantsRequest() {}
+    /**
+     * Creates an instance of UpdateParticipantsRequest class.
+     */
+    public UpdateParticipantsRequest() {
+    }
 
     /**
      * Get the participants property: Participants to be updated.
-     *
+     * 
      * @return the participants value.
      */
     public Map<String, ParticipantProperties> getParticipants() {
@@ -31,12 +39,47 @@ public final class UpdateParticipantsRequest {
 
     /**
      * Set the participants property: Participants to be updated.
-     *
+     * 
      * @param participants the participants value to set.
      * @return the UpdateParticipantsRequest object itself.
      */
     public UpdateParticipantsRequest setParticipants(Map<String, ParticipantProperties> participants) {
         this.participants = participants;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("participants", this.participants, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UpdateParticipantsRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UpdateParticipantsRequest if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UpdateParticipantsRequest.
+     */
+    public static UpdateParticipantsRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UpdateParticipantsRequest deserializedUpdateParticipantsRequest = new UpdateParticipantsRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("participants".equals(fieldName)) {
+                    Map<String, ParticipantProperties> participants
+                        = reader.readMap(reader1 -> ParticipantProperties.fromJson(reader1));
+                    deserializedUpdateParticipantsRequest.participants = participants;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUpdateParticipantsRequest;
+        });
     }
 }

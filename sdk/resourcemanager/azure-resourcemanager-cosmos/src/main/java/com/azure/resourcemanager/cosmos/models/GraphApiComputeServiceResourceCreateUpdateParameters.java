@@ -5,27 +5,19 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Parameters for Create or Update request for GraphAPIComputeServiceResource.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "serviceType",
-    defaultImpl = GraphApiComputeServiceResourceCreateUpdateParameters.class,
-    visible = true)
-@JsonTypeName("GraphAPICompute")
 @Fluent
 public final class GraphApiComputeServiceResourceCreateUpdateParameters extends ServiceResourceCreateUpdateProperties {
     /*
      * ServiceType for the service.
      */
-    @JsonTypeId
-    @JsonProperty(value = "serviceType", required = true)
     private ServiceType serviceType = ServiceType.GRAPH_APICOMPUTE;
 
     /**
@@ -70,5 +62,52 @@ public final class GraphApiComputeServiceResourceCreateUpdateParameters extends 
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("instanceSize", instanceSize() == null ? null : instanceSize().toString());
+        jsonWriter.writeNumberField("instanceCount", instanceCount());
+        jsonWriter.writeStringField("serviceType", this.serviceType == null ? null : this.serviceType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GraphApiComputeServiceResourceCreateUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GraphApiComputeServiceResourceCreateUpdateParameters if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GraphApiComputeServiceResourceCreateUpdateParameters.
+     */
+    public static GraphApiComputeServiceResourceCreateUpdateParameters fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            GraphApiComputeServiceResourceCreateUpdateParameters deserializedGraphApiComputeServiceResourceCreateUpdateParameters
+                = new GraphApiComputeServiceResourceCreateUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instanceSize".equals(fieldName)) {
+                    deserializedGraphApiComputeServiceResourceCreateUpdateParameters
+                        .withInstanceSize(ServiceSize.fromString(reader.getString()));
+                } else if ("instanceCount".equals(fieldName)) {
+                    deserializedGraphApiComputeServiceResourceCreateUpdateParameters
+                        .withInstanceCount(reader.getNullable(JsonReader::getInt));
+                } else if ("serviceType".equals(fieldName)) {
+                    deserializedGraphApiComputeServiceResourceCreateUpdateParameters.serviceType
+                        = ServiceType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGraphApiComputeServiceResourceCreateUpdateParameters;
+        });
     }
 }

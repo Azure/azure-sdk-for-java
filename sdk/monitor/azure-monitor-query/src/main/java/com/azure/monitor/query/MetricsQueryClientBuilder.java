@@ -75,15 +75,16 @@ import com.azure.monitor.query.implementation.metricsnamespaces.MetricsNamespace
  * @see MetricsQueryClient
  * @see MetricsQueryAsyncClient
  */
-@ServiceClientBuilder(serviceClients = {MetricsQueryClient.class, MetricsQueryAsyncClient.class})
-public final class MetricsQueryClientBuilder implements EndpointTrait<MetricsQueryClientBuilder>,
-        HttpTrait<MetricsQueryClientBuilder>, ConfigurationTrait<MetricsQueryClientBuilder>, TokenCredentialTrait<MetricsQueryClientBuilder> {
+@ServiceClientBuilder(serviceClients = { MetricsQueryClient.class, MetricsQueryAsyncClient.class })
+public final class MetricsQueryClientBuilder
+    implements EndpointTrait<MetricsQueryClientBuilder>, HttpTrait<MetricsQueryClientBuilder>,
+    ConfigurationTrait<MetricsQueryClientBuilder>, TokenCredentialTrait<MetricsQueryClientBuilder> {
 
     private final MonitorManagementClientImplBuilder innerMetricsBuilder = new MonitorManagementClientImplBuilder();
-    private final MetricsDefinitionsClientImplBuilder innerMetricsDefinitionsBuilder =
-            new MetricsDefinitionsClientImplBuilder();
-    private final MetricsNamespacesClientImplBuilder innerMetricsNamespaceBuilder =
-            new MetricsNamespacesClientImplBuilder();
+    private final MetricsDefinitionsClientImplBuilder innerMetricsDefinitionsBuilder
+        = new MetricsDefinitionsClientImplBuilder();
+    private final MetricsNamespacesClientImplBuilder innerMetricsNamespaceBuilder
+        = new MetricsNamespacesClientImplBuilder();
 
     private final AzureMonitorMetricBatchBuilder innerMetricsBatchBuilder = new AzureMonitorMetricBatchBuilder();
     private final ClientLogger logger = new ClientLogger(MetricsQueryClientBuilder.class);
@@ -92,7 +93,8 @@ public final class MetricsQueryClientBuilder implements EndpointTrait<MetricsQue
     /**
      * Creates an instance of MetricsQueryClientBuilder.
      */
-    public MetricsQueryClientBuilder() { }
+    public MetricsQueryClientBuilder() {
+    }
 
     /**
      * Sets the metrics query endpoint.
@@ -250,8 +252,8 @@ public final class MetricsQueryClientBuilder implements EndpointTrait<MetricsQue
      * @return A synchronous {@link MetricsQueryClient}.
      */
     public MetricsQueryClient buildClient() {
-        return new MetricsQueryClient(innerMetricsBuilder.buildClient(),
-            innerMetricsNamespaceBuilder.buildClient(), innerMetricsDefinitionsBuilder.buildClient());
+        return new MetricsQueryClient(innerMetricsBuilder.buildClient(), innerMetricsNamespaceBuilder.buildClient(),
+            innerMetricsDefinitionsBuilder.buildClient());
     }
 
     /**
@@ -261,7 +263,7 @@ public final class MetricsQueryClientBuilder implements EndpointTrait<MetricsQue
     public MetricsQueryAsyncClient buildAsyncClient() {
         logger.info("Using service version " + this.serviceVersion);
         return new MetricsQueryAsyncClient(innerMetricsBuilder.buildClient(),
-                innerMetricsNamespaceBuilder.buildClient(), innerMetricsDefinitionsBuilder.buildClient());
+            innerMetricsNamespaceBuilder.buildClient(), innerMetricsDefinitionsBuilder.buildClient());
     }
 
 }

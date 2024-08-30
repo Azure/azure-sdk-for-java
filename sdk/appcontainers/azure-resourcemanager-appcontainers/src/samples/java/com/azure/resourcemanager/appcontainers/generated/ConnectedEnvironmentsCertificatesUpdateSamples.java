@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class ConnectedEnvironmentsCertificatesUpdateSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/stable/2024-03-01/examples/
      * ConnectedEnvironmentsCertificates_Patch.json
      */
     /**
@@ -22,8 +22,10 @@ public final class ConnectedEnvironmentsCertificatesUpdateSamples {
      * @param manager Entry point to ContainerAppsApiManager.
      */
     public static void patchCertificate(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        Certificate resource = manager.connectedEnvironmentsCertificates().getWithResponse("examplerg",
-            "testcontainerenv", "certificate-firendly-name", com.azure.core.util.Context.NONE).getValue();
+        Certificate resource = manager.connectedEnvironmentsCertificates()
+            .getWithResponse("examplerg", "testcontainerenv", "certificate-firendly-name",
+                com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }
 

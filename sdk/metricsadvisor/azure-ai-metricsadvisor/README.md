@@ -54,7 +54,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-metricsadvisor</artifactId>
-    <version>1.1.20</version>
+    <version>1.2.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -113,7 +113,7 @@ Authentication with AAD requires some initial setup:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.12.2</version>
+    <version>1.13.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

@@ -87,7 +87,7 @@ To use the [DefaultAzureCredential][azure_sdk_java_default_azure_credential] typ
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.12.2</version>
+    <version>1.13.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -226,7 +226,7 @@ FaceSessionClient sessionClient = new FaceSessionClientBuilder()
     .buildClient();
 
 String deviceCorrelationId = UUID.randomUUID().toString();
-CreateLivenessSessionContent parameters = new CreateLivenessSessionContent(LivenessOperationMode.PASSIVE)
+CreateLivenessWithVerifySessionJsonContent parameters = new CreateLivenessWithVerifySessionJsonContent(LivenessOperationMode.PASSIVE)
     .setDeviceCorrelationId(deviceCorrelationId)
     .setSendResultsToClient(false);
 Path path = Paths.get(imagePathString);

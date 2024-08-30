@@ -15,20 +15,21 @@ public final class AzureFunctionActivityTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureFunctionActivityTypeProperties model = BinaryData.fromString(
-            "{\"method\":\"HEAD\",\"functionName\":\"datakrwihbyufmuinhq\",\"headers\":{\"huxzdgoto\":\"dataowxd\"},\"body\":\"datasduirjqxkna\"}")
+            "{\"method\":\"OPTIONS\",\"functionName\":\"datayfugk\",\"headers\":{\"fna\":\"datavevudywnyu\",\"vdslrrtvahi\":\"datanlxwukpqcfkxagti\",\"kekbd\":\"datamzbaqrxzjmxtmedo\"},\"body\":\"datawhuepyrfjzyini\"}")
             .toObject(AzureFunctionActivityTypeProperties.class);
-        Assertions.assertEquals(AzureFunctionActivityMethod.HEAD, model.method());
+        Assertions.assertEquals(AzureFunctionActivityMethod.OPTIONS, model.method());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureFunctionActivityTypeProperties model
-            = new AzureFunctionActivityTypeProperties().withMethod(AzureFunctionActivityMethod.HEAD)
-                .withFunctionName("datakrwihbyufmuinhq")
-                .withHeaders(mapOf("huxzdgoto", "dataowxd"))
-                .withBody("datasduirjqxkna");
+        AzureFunctionActivityTypeProperties model = new AzureFunctionActivityTypeProperties()
+            .withMethod(AzureFunctionActivityMethod.OPTIONS)
+            .withFunctionName("datayfugk")
+            .withHeaders(
+                mapOf("fna", "datavevudywnyu", "vdslrrtvahi", "datanlxwukpqcfkxagti", "kekbd", "datamzbaqrxzjmxtmedo"))
+            .withBody("datawhuepyrfjzyini");
         model = BinaryData.fromObject(model).toObject(AzureFunctionActivityTypeProperties.class);
-        Assertions.assertEquals(AzureFunctionActivityMethod.HEAD, model.method());
+        Assertions.assertEquals(AzureFunctionActivityMethod.OPTIONS, model.method());
     }
 
     // Use "Map.of" if available

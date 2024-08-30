@@ -32,9 +32,11 @@ import com.azure.storage.file.share.implementation.models.SharesGetPermissionHea
 import com.azure.storage.file.share.implementation.models.SharesGetPropertiesHeaders;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.implementation.util.ShareSasImplUtil;
+import com.azure.storage.file.share.models.FilePermissionFormat;
 import com.azure.storage.file.share.models.ShareDirectoryInfo;
 import com.azure.storage.file.share.models.ShareErrorCode;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
+import com.azure.storage.file.share.models.ShareFilePermission;
 import com.azure.storage.file.share.models.ShareInfo;
 import com.azure.storage.file.share.models.ShareProperties;
 import com.azure.storage.file.share.models.ShareRequestConditions;
@@ -58,6 +60,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.Callable;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import static com.azure.storage.common.implementation.StorageImplUtils.sendRequest;
@@ -304,9 +307,12 @@ public class ShareClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-share">Azure Docs</a>.</p>
      *
+     * <p>For more information on updated max file share size values, see the
+     * <a href="https://learn.microsoft.com/azure/storage/files/storage-files-scale-targets#azure-file-share-scale-targets">Azure Docs</a>.</p>
+     *
      * @param metadata Optional metadata to associate with the share
-     * @param quotaInGB Optional maximum size the share is allowed to grow to in GB. This must be greater than 0 and
-     * less than or equal to 5120. The default value is 5120.
+     * @param quotaInGB Optional maximum size the share is allowed to grow to in GB. The default value is 5120.
+     * Refer to the Azure Docs for updated values.
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -359,7 +365,8 @@ public class ShareClient {
         Callable<Response<Void>> operation = () -> azureFileStorageClient.getShares()
             .createNoCustomHeadersWithResponse(shareName, null, finalOptions.getMetadata(), finalOptions.getQuotaInGb(),
                 finalOptions.getAccessTier(), finalEnabledProtocol, finalOptions.getRootSquash(),
-                finalOptions.isSnapshotVirtualDirectoryAccessEnabled(), finalContext);
+                finalOptions.isSnapshotVirtualDirectoryAccessEnabled(), finalOptions.isPaidBurstingEnabled(),
+                finalOptions.getPaidBurstingMaxBandwidthMibps(), finalOptions.getPaidBurstingMaxIops(), finalContext);
 
         return ModelHelper.mapToShareInfoResponse(sendRequest(operation, timeout, ShareStorageException.class));
     }
@@ -494,8 +501,8 @@ public class ShareClient {
     public Response<ShareSnapshotInfo> createSnapshotWithResponse(Map<String, String> metadata, Duration timeout,
         Context context) {
         Context finalContext = context == null ? Context.NONE : context;
-        Callable<ResponseBase<SharesCreateSnapshotHeaders, Void>> operation = () ->
-            this.azureFileStorageClient.getShares().createSnapshotWithResponse(shareName, null, metadata, finalContext);
+        Callable<ResponseBase<SharesCreateSnapshotHeaders, Void>> operation = () -> azureFileStorageClient.getShares()
+            .createSnapshotWithResponse(shareName, null, metadata, finalContext);
 
         return ModelHelper.mapCreateSnapshotResponse(sendRequest(operation, timeout, ShareStorageException.class));
     }
@@ -588,8 +595,9 @@ public class ShareClient {
             ? new ShareRequestConditions() : finalOptions.getRequestConditions();
 
         Callable<Response<Void>> operation = () -> this.azureFileStorageClient.getShares()
-            .deleteNoCustomHeadersWithResponse(shareName, snapshot, null, ModelHelper.toDeleteSnapshotsOptionType(
-                finalOptions.getDeleteSnapshotsOptions()), requestConditions.getLeaseId(), finalContext);
+            .deleteNoCustomHeadersWithResponse(shareName, snapshot, null,
+                ModelHelper.toDeleteSnapshotsOptionType(finalOptions.getDeleteSnapshotsOptions()),
+                requestConditions.getLeaseId(), finalContext);
 
         return sendRequest(operation, timeout, ShareStorageException.class);
     }
@@ -753,9 +761,8 @@ public class ShareClient {
         Context finalContext = context == null ? Context.NONE : context;
         ShareRequestConditions requestConditions = options.getRequestConditions() == null
             ? new ShareRequestConditions() : options.getRequestConditions();
-        Callable<ResponseBase<SharesGetPropertiesHeaders, Void>> operation = () ->
-            this.azureFileStorageClient.getShares()
-                .getPropertiesWithResponse(shareName, snapshot, null, requestConditions.getLeaseId(), finalContext);
+        Callable<ResponseBase<SharesGetPropertiesHeaders, Void>> operation = () -> azureFileStorageClient.getShares()
+            .getPropertiesWithResponse(shareName, snapshot, null, requestConditions.getLeaseId(), finalContext);
 
         return ModelHelper.mapGetPropertiesResponse(sendRequest(operation, timeout, ShareStorageException.class));
     }
@@ -776,7 +783,10 @@ public class ShareClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-share-properties">Azure Docs</a>.</p>
      *
-     * @param quotaInGB Size in GB to limit the share's growth. The quota in GB must be between 1 and 5120.
+     * <p>For more information on updated max file share size values, see the
+     * <a href="https://learn.microsoft.com/azure/storage/files/storage-files-scale-targets#azure-file-share-scale-targets">Azure Docs</a>.</p>
+     *
+     * @param quotaInGB Size in GB to limit the share's growth. The default value is 5120. Refer to the Azure Docs for updated values.
      * @return The {@link ShareInfo information about the share}
      * @throws ShareStorageException If the share doesn't exist or {@code quotaInGB} is outside the allowed bounds
      * @deprecated Use {@link ShareClient#setProperties(ShareSetPropertiesOptions)}
@@ -805,7 +815,10 @@ public class ShareClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-share-properties">Azure Docs</a>.</p>
      *
-     * @param quotaInGB Size in GB to limit the share's growth. The quota in GB must be between 1 and 5120.
+     * <p>For more information on updated max file share size values, see the
+     * <a href="https://learn.microsoft.com/azure/storage/files/storage-files-scale-targets#azure-file-share-scale-targets">Azure Docs</a>.</p>
+     *
+     * @param quotaInGB Size in GB to limit the share's growth. The default value is 5120. Refer to the Azure Docs for updated values.
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -877,7 +890,8 @@ public class ShareClient {
         Callable<Response<Void>> operation = () -> this.azureFileStorageClient.getShares()
             .setPropertiesNoCustomHeadersWithResponse(shareName, null, options.getQuotaInGb(), options.getAccessTier(),
                 requestConditions.getLeaseId(), options.getRootSquash(),
-                options.isSnapshotVirtualDirectoryAccessEnabled(), finalContext);
+                options.isSnapshotVirtualDirectoryAccessEnabled(), options.isPaidBurstingEnabled(),
+                options.getPaidBurstingMaxBandwidthMibps(), options.getPaidBurstingMaxIops(), finalContext);
 
         return ModelHelper.mapToShareInfoResponse(sendRequest(operation, timeout, ShareStorageException.class));
     }
@@ -1058,9 +1072,9 @@ public class ShareClient {
         ShareRequestConditions requestConditions = finalOptions.getRequestConditions() == null
             ? new ShareRequestConditions() : finalOptions.getRequestConditions();
 
-        ResponseBase<SharesGetAccessPolicyHeaders, ShareSignedIdentifierWrapper> responseBase =
-            this.azureFileStorageClient.getShares()
-                .getAccessPolicyWithResponse(shareName, null, requestConditions.getLeaseId(), Context.NONE);
+        ResponseBase<SharesGetAccessPolicyHeaders, ShareSignedIdentifierWrapper> responseBase
+            = this.azureFileStorageClient.getShares().getAccessPolicyWithResponse(shareName, null,
+            requestConditions.getLeaseId(), Context.NONE);
 
         Supplier<PagedResponse<ShareSignedIdentifier>> response = () -> new PagedResponseBase<>(
             responseBase.getRequest(),
@@ -1913,6 +1927,29 @@ public class ShareClient {
     }
 
     /**
+     * Creates a permission at the share level. If a permission already exists, it returns the key of it, else creates a
+     * new permission and returns the key.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.share.ShareClient.createPermission#ShareFilePermission -->
+     * <pre>
+     * ShareFilePermission permission = new ShareFilePermission&#40;&#41;.setPermission&#40;&quot;filePermission&quot;&#41;
+     *     .setPermissionFormat&#40;FilePermissionFormat.BINARY&#41;;
+     * String response1 = shareClient.createPermission&#40;permission&#41;;
+     * System.out.printf&#40;&quot;The file permission key is %s&quot;, response1&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareClient.createPermission#ShareFilePermission -->
+     *
+     * @param filePermission The file permission to get/create.
+     * @return The file permission key associated with the file permission.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public String createPermission(ShareFilePermission filePermission) {
+        return createPermissionWithResponse(filePermission, Context.NONE).getValue();
+    }
+
+    /**
      * Creates a permission t the share level. If a permission already exists, it returns the key of it, else creates a
      * new permission and returns the key.
      *
@@ -1936,8 +1973,37 @@ public class ShareClient {
         ResponseBase<SharesCreatePermissionHeaders, Void> response = this.azureFileStorageClient.getShares()
             .createPermissionWithResponse(shareName, sharePermission, null, finalContext);
 
-        return new SimpleResponse<>(response,
-            response.getDeserializedHeaders().getXMsFilePermissionKey());
+        return new SimpleResponse<>(response, response.getDeserializedHeaders().getXMsFilePermissionKey());
+    }
+
+    /**
+     * Creates a permission at the share level. If a permission already exists, it returns the key of it, else creates a
+     * new permission and returns the key.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.share.ShareClient.createPermissionWithResponse#ShareFilePermission-context -->
+     * <pre>
+     * ShareFilePermission permission = new ShareFilePermission&#40;&#41;.setPermission&#40;&quot;filePermission&quot;&#41;
+     *     .setPermissionFormat&#40;FilePermissionFormat.BINARY&#41;;
+     * Response&lt;String&gt; response1 = shareClient.createPermissionWithResponse&#40;permission, Context.NONE&#41;;
+     * System.out.printf&#40;&quot;The file permission key is %s&quot;, response1.getValue&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareClient.createPermissionWithResponse#ShareFilePermission-context -->
+     *
+     * @param filePermission The file permission to get/create.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response that contains the file permission key associated with the file permission.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<String> createPermissionWithResponse(ShareFilePermission filePermission, Context context) {
+        Context finalContext = context == null ? Context.NONE : context;
+        SharePermission sharePermission = new SharePermission().setPermission(filePermission.getPermission())
+            .setFormat(filePermission.getPermissionFormat());
+        ResponseBase<SharesCreatePermissionHeaders, Void> response = this.azureFileStorageClient.getShares()
+            .createPermissionWithResponse(shareName, sharePermission, null, finalContext);
+
+        return new SimpleResponse<>(response, response.getDeserializedHeaders().getXMsFilePermissionKey());
     }
 
     /**
@@ -1961,6 +2027,31 @@ public class ShareClient {
     }
 
     /**
+     * Gets a permission for a given key
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.share.ShareClient.getPermission#string-FilePermissionFormat -->
+     * <pre>
+     * FilePermissionFormat filePermissionFormat = FilePermissionFormat.BINARY;
+     * String response2 = shareClient.getPermission&#40;&quot;filePermissionKey&quot;, filePermissionFormat&#41;;
+     * System.out.printf&#40;&quot;The file permission is %s&quot;, response2&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareClient.getPermission#string-FilePermissionFormat -->
+     *
+     * @param filePermissionKey The file permission key.
+     * @param filePermissionFormat Optional. Available for version 2024-11-04 and later. Specifies the format in which
+     * the permission is returned. If filePermissionFormat is unspecified or explicitly set to SDDL, the permission will
+     * be returned in SSDL format. If filePermissionFormat is explicity set to binary, the permission is returned as a
+     * base64 string representing the binary encoding of the permission in self-relative format.
+     * @return The file permission associated with the file permission key.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public String getPermission(String filePermissionKey, FilePermissionFormat filePermissionFormat) {
+        return getPermissionWithResponse(filePermissionKey, filePermissionFormat,  Context.NONE).getValue();
+    }
+
+    /**
      * Gets a permission for a given key.
      *
      * <p><strong>Code Samples</strong></p>
@@ -1980,7 +2071,38 @@ public class ShareClient {
     public Response<String> getPermissionWithResponse(String filePermissionKey, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
         ResponseBase<SharesGetPermissionHeaders, SharePermission> response = this.azureFileStorageClient.getShares()
-            .getPermissionWithResponse(shareName, filePermissionKey, null, finalContext);
+            .getPermissionWithResponse(shareName, filePermissionKey, null, null, finalContext);
+
+        return new SimpleResponse<>(response, response.getValue().getPermission());
+    }
+
+    /**
+     * Gets a permission for a given key.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.share.ShareClient.getPermissionWithResponse#string-FilePermissionFormat-context -->
+     * <pre>
+     * FilePermissionFormat filePermissionFormat = FilePermissionFormat.BINARY;
+     * Response&lt;String&gt; response1 = shareClient.getPermissionWithResponse&#40;&quot;filePermissionKey&quot;,
+     *     filePermissionFormat, Context.NONE&#41;;
+     * System.out.printf&#40;&quot;The file permission is %s&quot;, response1.getValue&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareClient.getPermissionWithResponse#string-FilePermissionFormat-context -->
+     *
+     * @param filePermissionKey The file permission key.
+     * @param filePermissionFormat Optional. Available for version 2024-11-04 and later. Specifies the format in which
+     * the permission is returned. If filePermissionFormat is unspecified or explicitly set to SDDL, the permission will
+     * be returned in SSDL format. If filePermissionFormat is explicity set to binary, the permission is returned as a
+     * base64 string representing the binary encoding of the permission in self-relative format.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response that contains th file permission associated with the file permission key.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<String> getPermissionWithResponse(String filePermissionKey, FilePermissionFormat filePermissionFormat, Context context) {
+        Context finalContext = context == null ? Context.NONE : context;
+        ResponseBase<SharesGetPermissionHeaders, SharePermission> response = this.azureFileStorageClient.getShares()
+            .getPermissionWithResponse(shareName, filePermissionKey, filePermissionFormat, null, finalContext);
 
         return new SimpleResponse<>(response, response.getValue().getPermission());
     }
@@ -2101,7 +2223,24 @@ public class ShareClient {
      * @return A {@code String} representing the SAS query parameters.
      */
     public String generateSas(ShareServiceSasSignatureValues shareServiceSasSignatureValues, Context context) {
+        return generateSas(shareServiceSasSignatureValues, null, context);
+    }
+
+    /**
+     * Generates a service sas for the queue using the specified {@link ShareServiceSasSignatureValues}
+     * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>See {@link ShareServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
+     *
+     * @param shareServiceSasSignatureValues {@link ShareServiceSasSignatureValues}
+     * @param stringToSignHandler For debugging purposes only. Returns the string to sign that was used to generate the
+     * signature.
+     * @param context Additional context that is passed through the code when generating a SAS.
+     *
+     * @return A {@code String} representing the SAS query parameters.
+     */
+    public String generateSas(ShareServiceSasSignatureValues shareServiceSasSignatureValues,
+        Consumer<String> stringToSignHandler, Context context) {
         return new ShareSasImplUtil(shareServiceSasSignatureValues, getShareName())
-            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), context);
+            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), stringToSignHandler, context);
     }
 }

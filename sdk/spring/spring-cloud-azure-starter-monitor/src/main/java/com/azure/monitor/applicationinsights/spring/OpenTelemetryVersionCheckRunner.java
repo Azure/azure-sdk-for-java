@@ -19,7 +19,7 @@ public class OpenTelemetryVersionCheckRunner implements CommandLineRunner {
     /**
      * OpenTelemetry version of the starter
      */
-    public static final String STARTER_OTEL_VERSION = "1.38.0";
+    static final String STARTER_OTEL_VERSION = "1.41.0";
 
     /**
      * To verify the OpenTelemetry version at the application start-up.

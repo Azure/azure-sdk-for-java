@@ -99,9 +99,10 @@ class EncryptedFlux extends Flux<ByteBuffer> {
     EncryptedFlux(int testCase, AsyncKeyEncryptionKey key, BlobCryptographyTestBase base) throws InvalidKeyException {
         this.testCase = testCase;
         this.plainText = base.getRandomData(DOWNLOAD_SIZE - 2); // This will yield two bytes of padding... for fun.
+        String blobName = base.generateBlobName();
 
         EncryptedBlob encryptedBlob = new EncryptedBlobAsyncClient(null, "https://random.blob.core.windows.net",
-            BlobServiceVersion.getLatest(), null, null, null, null, null, null, key, "keyWrapAlgorithm", null,
+            BlobServiceVersion.getLatest(), null, null, blobName, null, null, null, key, "keyWrapAlgorithm", null,
             EncryptionVersion.V1, false)
             .encryptBlob(just(this.plainText)).block();
         this.cipherText = FluxUtil.collectBytesInByteBufferStream(encryptedBlob.getCiphertextFlux())

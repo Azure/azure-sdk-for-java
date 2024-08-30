@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -67,7 +66,6 @@ public final class AliasPathTokenType extends ExpandableStringEnum<AliasPathToke
      * @param name a name to look for.
      * @return the corresponding AliasPathTokenType.
      */
-    @JsonCreator
     public static AliasPathTokenType fromString(String name) {
         return fromString(name, AliasPathTokenType.class);
     }

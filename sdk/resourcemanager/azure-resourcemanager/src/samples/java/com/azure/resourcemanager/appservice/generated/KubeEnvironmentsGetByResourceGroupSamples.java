@@ -9,7 +9,8 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class KubeEnvironmentsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/KubeEnvironments_Get.json
+     * x-ms-original-file:
+     * specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/KubeEnvironments_Get.json
      */
     /**
      * Sample code: Get kube environments by name.

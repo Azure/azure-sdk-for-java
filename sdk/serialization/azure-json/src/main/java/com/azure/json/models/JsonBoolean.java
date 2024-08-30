@@ -79,7 +79,7 @@ public final class JsonBoolean extends JsonElement {
 
         if (token != JsonToken.BOOLEAN) {
             throw new IllegalStateException(
-                "JsonReader is pointing to an invalid token for deserialization. " + "Token was: " + token + ".");
+                "JsonReader is pointing to an invalid token for deserialization. Token was: " + token + ".");
         }
 
         return getInstance(jsonReader.getBoolean());

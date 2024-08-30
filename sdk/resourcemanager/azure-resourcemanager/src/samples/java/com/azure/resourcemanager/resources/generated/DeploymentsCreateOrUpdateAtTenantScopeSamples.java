@@ -16,7 +16,9 @@ import java.util.Map;
  */
 public final class DeploymentsCreateOrUpdateAtTenantScopeSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/PutDeploymentAtTenant.json
+     * x-ms-original-file:
+     * specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/PutDeploymentAtTenant.
+     * json
      */
     /**
      * Sample code: Create deployment at tenant scope.

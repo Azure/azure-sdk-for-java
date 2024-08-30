@@ -9,8 +9,8 @@ package com.azure.resourcemanager.appcontainers.generated;
  */
 public final class AvailableWorkloadProfilesGetSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/
-     * AvailableWorkloadProfiles_Get.json
+     * x-ms-original-file:
+     * specification/app/resource-manager/Microsoft.App/stable/2024-03-01/examples/AvailableWorkloadProfiles_Get.json
      */
     /**
      * Sample code: BillingMeters_Get.

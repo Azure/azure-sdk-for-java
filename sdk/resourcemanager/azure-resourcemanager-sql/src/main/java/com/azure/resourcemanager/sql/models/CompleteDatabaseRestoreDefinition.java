@@ -6,24 +6,31 @@ package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Contains the information necessary to perform a complete database restore operation. */
+/**
+ * Contains the information necessary to perform a complete database restore operation.
+ */
 @Fluent
-public final class CompleteDatabaseRestoreDefinition {
+public final class CompleteDatabaseRestoreDefinition implements JsonSerializable<CompleteDatabaseRestoreDefinition> {
     /*
      * The last backup name to apply
      */
-    @JsonProperty(value = "lastBackupName", required = true)
     private String lastBackupName;
 
-    /** Creates an instance of CompleteDatabaseRestoreDefinition class. */
+    /**
+     * Creates an instance of CompleteDatabaseRestoreDefinition class.
+     */
     public CompleteDatabaseRestoreDefinition() {
     }
 
     /**
      * Get the lastBackupName property: The last backup name to apply.
-     *
+     * 
      * @return the lastBackupName value.
      */
     public String lastBackupName() {
@@ -32,7 +39,7 @@ public final class CompleteDatabaseRestoreDefinition {
 
     /**
      * Set the lastBackupName property: The last backup name to apply.
-     *
+     * 
      * @param lastBackupName the lastBackupName value to set.
      * @return the CompleteDatabaseRestoreDefinition object itself.
      */
@@ -43,17 +50,54 @@ public final class CompleteDatabaseRestoreDefinition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (lastBackupName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property lastBackupName in model CompleteDatabaseRestoreDefinition"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property lastBackupName in model CompleteDatabaseRestoreDefinition"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CompleteDatabaseRestoreDefinition.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("lastBackupName", this.lastBackupName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CompleteDatabaseRestoreDefinition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CompleteDatabaseRestoreDefinition if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CompleteDatabaseRestoreDefinition.
+     */
+    public static CompleteDatabaseRestoreDefinition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CompleteDatabaseRestoreDefinition deserializedCompleteDatabaseRestoreDefinition
+                = new CompleteDatabaseRestoreDefinition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("lastBackupName".equals(fieldName)) {
+                    deserializedCompleteDatabaseRestoreDefinition.lastBackupName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCompleteDatabaseRestoreDefinition;
+        });
+    }
 }

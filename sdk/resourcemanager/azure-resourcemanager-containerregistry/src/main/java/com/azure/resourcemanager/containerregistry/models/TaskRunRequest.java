@@ -6,33 +6,45 @@ package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The parameters for a task run request.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("TaskRunRequest")
 @Fluent
 public final class TaskRunRequest extends RunRequest {
     /*
+     * The type of the run request.
+     */
+    private String type = "TaskRunRequest";
+
+    /*
      * The resource ID of task against which run has to be queued.
      */
-    @JsonProperty(value = "taskId", required = true)
     private String taskId;
 
     /*
      * Set of overridable parameters that can be passed when running a Task.
      */
-    @JsonProperty(value = "overrideTaskStepProperties")
     private OverrideTaskStepProperties overrideTaskStepProperties;
 
     /**
      * Creates an instance of TaskRunRequest class.
      */
     public TaskRunRequest() {
+    }
+
+    /**
+     * Get the type property: The type of the run request.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -113,8 +125,8 @@ public final class TaskRunRequest extends RunRequest {
     public void validate() {
         super.validate();
         if (taskId() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property taskId in model TaskRunRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property taskId in model TaskRunRequest"));
         }
         if (overrideTaskStepProperties() != null) {
             overrideTaskStepProperties().validate();
@@ -122,4 +134,56 @@ public final class TaskRunRequest extends RunRequest {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(TaskRunRequest.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("isArchiveEnabled", isArchiveEnabled());
+        jsonWriter.writeStringField("agentPoolName", agentPoolName());
+        jsonWriter.writeStringField("logTemplate", logTemplate());
+        jsonWriter.writeStringField("taskId", this.taskId);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeJsonField("overrideTaskStepProperties", this.overrideTaskStepProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TaskRunRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TaskRunRequest if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TaskRunRequest.
+     */
+    public static TaskRunRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TaskRunRequest deserializedTaskRunRequest = new TaskRunRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("isArchiveEnabled".equals(fieldName)) {
+                    deserializedTaskRunRequest.withIsArchiveEnabled(reader.getNullable(JsonReader::getBoolean));
+                } else if ("agentPoolName".equals(fieldName)) {
+                    deserializedTaskRunRequest.withAgentPoolName(reader.getString());
+                } else if ("logTemplate".equals(fieldName)) {
+                    deserializedTaskRunRequest.withLogTemplate(reader.getString());
+                } else if ("taskId".equals(fieldName)) {
+                    deserializedTaskRunRequest.taskId = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedTaskRunRequest.type = reader.getString();
+                } else if ("overrideTaskStepProperties".equals(fieldName)) {
+                    deserializedTaskRunRequest.overrideTaskStepProperties = OverrideTaskStepProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTaskRunRequest;
+        });
+    }
 }

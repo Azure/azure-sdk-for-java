@@ -6,29 +6,30 @@ package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Custom Domain of a Container App.
  */
 @Fluent
-public final class CustomDomain {
+public final class CustomDomain implements JsonSerializable<CustomDomain> {
     /*
      * Hostname.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * Custom Domain binding type.
      */
-    @JsonProperty(value = "bindingType")
     private BindingType bindingType;
 
     /*
      * Resource Id of the Certificate to be bound to this hostname. Must exist in the Managed Environment.
      */
-    @JsonProperty(value = "certificateId")
     private String certificateId;
 
     /**
@@ -106,10 +107,53 @@ public final class CustomDomain {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property name in model CustomDomain"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model CustomDomain"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CustomDomain.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("bindingType", this.bindingType == null ? null : this.bindingType.toString());
+        jsonWriter.writeStringField("certificateId", this.certificateId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomDomain from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomDomain if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CustomDomain.
+     */
+    public static CustomDomain fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomDomain deserializedCustomDomain = new CustomDomain();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedCustomDomain.name = reader.getString();
+                } else if ("bindingType".equals(fieldName)) {
+                    deserializedCustomDomain.bindingType = BindingType.fromString(reader.getString());
+                } else if ("certificateId".equals(fieldName)) {
+                    deserializedCustomDomain.certificateId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomDomain;
+        });
+    }
 }

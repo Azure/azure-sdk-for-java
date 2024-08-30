@@ -5,35 +5,35 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The GitHub action configuration.
  */
 @Fluent
-public final class GitHubActionConfiguration {
+public final class GitHubActionConfiguration implements JsonSerializable<GitHubActionConfiguration> {
     /*
      * GitHub Action code configuration.
      */
-    @JsonProperty(value = "codeConfiguration")
     private GitHubActionCodeConfiguration codeConfiguration;
 
     /*
      * GitHub Action container configuration.
      */
-    @JsonProperty(value = "containerConfiguration")
     private GitHubActionContainerConfiguration containerConfiguration;
 
     /*
      * This will help determine the workflow configuration to select.
      */
-    @JsonProperty(value = "isLinux")
     private Boolean isLinux;
 
     /*
      * Workflow option to determine whether the workflow file should be generated and written to the repository.
      */
-    @JsonProperty(value = "generateWorkflowFile")
     private Boolean generateWorkflowFile;
 
     /**
@@ -137,5 +137,53 @@ public final class GitHubActionConfiguration {
         if (containerConfiguration() != null) {
             containerConfiguration().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("codeConfiguration", this.codeConfiguration);
+        jsonWriter.writeJsonField("containerConfiguration", this.containerConfiguration);
+        jsonWriter.writeBooleanField("isLinux", this.isLinux);
+        jsonWriter.writeBooleanField("generateWorkflowFile", this.generateWorkflowFile);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GitHubActionConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GitHubActionConfiguration if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GitHubActionConfiguration.
+     */
+    public static GitHubActionConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GitHubActionConfiguration deserializedGitHubActionConfiguration = new GitHubActionConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("codeConfiguration".equals(fieldName)) {
+                    deserializedGitHubActionConfiguration.codeConfiguration
+                        = GitHubActionCodeConfiguration.fromJson(reader);
+                } else if ("containerConfiguration".equals(fieldName)) {
+                    deserializedGitHubActionConfiguration.containerConfiguration
+                        = GitHubActionContainerConfiguration.fromJson(reader);
+                } else if ("isLinux".equals(fieldName)) {
+                    deserializedGitHubActionConfiguration.isLinux = reader.getNullable(JsonReader::getBoolean);
+                } else if ("generateWorkflowFile".equals(fieldName)) {
+                    deserializedGitHubActionConfiguration.generateWorkflowFile
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGitHubActionConfiguration;
+        });
     }
 }

@@ -1,11 +1,20 @@
 # Release History
 
-## 1.3.0-beta.1 (Unreleased)
+## 1.4.0-beta.1 (Unreleased)
 
 ### Features Added
 
-- Added a `clientEndpointType` option to `GenerateClientTokenOptions` to specify the type of client endpoint
-  when generating token. This option can be used to generate token and client connection URL for a specific client endpoint type, such as `Default` or `MQTT`.
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.3.0 (2024-08-06)
+
+### Features Added
+
+- Added a `webPubSubClientProtocol` option to `GenerateClientTokenOptions` to specify the type of client when generating token. This option can be used to generate token and client connection URL for a specific client type, such as `Default` or `MQTT`.
 - Added a `addConnectionsToGroups` method to `WebPubSubServiceClient` and `WebPubSubServiceAsyncClient` to add filtered connections to multiple groups.
 - Migrated serialization to `azure-json` which offers implementation agnostic serialization, providing support for
   more serialization frameworks than just Jackson.
@@ -14,9 +23,23 @@
 
 - Removed Jackson annotations from models and removed custom serializer for raw JSON fields.
 
-### Bugs Fixed
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2024-01-01`.
+- Upgraded `azure-core` from `1.50.0` to version `1.51.0`.
+- Upgraded `azure-core-http-netty` from `1.15.2` to version `1.15.3`.
+
+
+## 1.2.17 (2024-07-26)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.15.1` to version `1.15.2`.
+- Upgraded `azure-core` from `1.49.1` to version `1.50.0`.
 
 
 ## 1.2.16 (2024-06-27)
@@ -79,6 +102,7 @@
 - Upgraded `azure-core-http-netty` from `1.13.10` to version `1.13.11`.
 - Upgraded `azure-core` from `1.45.0` to version `1.45.1`.
 
+
 ## 1.2.10 (2023-11-20)
 
 ### Other Changes
@@ -87,6 +111,7 @@
 
 - Upgraded `azure-core` from `1.44.1` to version `1.45.0`.
 - Upgraded `azure-core-http-netty` from `1.13.9` to version `1.13.10`.
+
 
 ## 1.2.9 (2023-10-20)
 
@@ -97,6 +122,7 @@
 - Upgraded `azure-core-http-netty` from `1.13.7` to version `1.13.9`.
 - Upgraded `azure-core` from `1.43.0` to version `1.44.1`.
 
+
 ## 1.2.8 (2023-09-22)
 
 ### Other Changes
@@ -106,6 +132,7 @@
 - Upgraded `azure-core-http-netty` from `1.13.6` to version `1.13.7`.
 - Upgraded `azure-core` from `1.42.0` to version `1.43.0`.
 
+
 ## 1.2.7 (2023-08-18)
 
 ### Other Changes
@@ -114,6 +141,7 @@
 
 - Upgraded `azure-core-http-netty` from `1.13.5` to version `1.13.6`.
 - Upgraded `azure-core` from `1.41.0` to version `1.42.0`.
+
 
 ## 1.2.6 (2023-07-25)
 
@@ -134,6 +162,7 @@
 - Upgraded `azure-core-http-netty` from `1.13.3` to version `1.13.4`.
 - Upgraded `azure-core` from `1.39.0` to version `1.40.0`.
 
+
 ## 1.2.4 (2023-05-23)
 
 ### Other Changes
@@ -142,6 +171,7 @@
 
 - Upgraded `azure-core-http-netty` from `1.13.2` to version `1.13.3`.
 - Upgraded `azure-core` from `1.38.0` to version `1.39.0`.
+
 
 ## 1.2.3 (2023-04-21)
 
@@ -153,6 +183,7 @@
 - Upgraded `nimbus-jose-jwt` from `9.22` to version `9.31`.
 - Upgraded `azure-core-http-netty` from `1.13.1` to version `1.13.2`.
 
+
 ## 1.2.2 (2023-03-16)
 
 ### Other Changes
@@ -162,6 +193,7 @@
 - Upgraded `azure-core-http-netty` from `1.13.0` to version `1.13.1`.
 - Upgraded `azure-core` from `1.36.0` to version `1.37.0`.
 
+
 ## 1.2.1 (2023-02-16)
 
 ### Other Changes
@@ -170,6 +202,7 @@
 
 - Upgraded `azure-core` from `1.35.0` to version `1.36.0`.
 - Upgraded `azure-core-http-netty` from `1.12.8` to version `1.13.0`.
+
 
 ## 1.2.0 (2023-01-11)
 

@@ -6,49 +6,47 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Nat Gateway properties.
  */
 @Fluent
-public final class NatGatewayPropertiesFormat {
+public final class NatGatewayPropertiesFormat implements JsonSerializable<NatGatewayPropertiesFormat> {
     /*
      * The idle timeout of the nat gateway.
      */
-    @JsonProperty(value = "idleTimeoutInMinutes")
     private Integer idleTimeoutInMinutes;
 
     /*
      * An array of public ip addresses associated with the nat gateway resource.
      */
-    @JsonProperty(value = "publicIpAddresses")
     private List<SubResource> publicIpAddresses;
 
     /*
      * An array of public ip prefixes associated with the nat gateway resource.
      */
-    @JsonProperty(value = "publicIpPrefixes")
     private List<SubResource> publicIpPrefixes;
 
     /*
      * An array of references to the subnets using this nat gateway resource.
      */
-    @JsonProperty(value = "subnets", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> subnets;
 
     /*
      * The resource GUID property of the NAT gateway resource.
      */
-    @JsonProperty(value = "resourceGuid", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceGuid;
 
     /*
      * The provisioning state of the NAT gateway resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /**
@@ -150,5 +148,60 @@ public final class NatGatewayPropertiesFormat {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("idleTimeoutInMinutes", this.idleTimeoutInMinutes);
+        jsonWriter.writeArrayField("publicIpAddresses", this.publicIpAddresses,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("publicIpPrefixes", this.publicIpPrefixes,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NatGatewayPropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NatGatewayPropertiesFormat if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NatGatewayPropertiesFormat.
+     */
+    public static NatGatewayPropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NatGatewayPropertiesFormat deserializedNatGatewayPropertiesFormat = new NatGatewayPropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("idleTimeoutInMinutes".equals(fieldName)) {
+                    deserializedNatGatewayPropertiesFormat.idleTimeoutInMinutes
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("publicIpAddresses".equals(fieldName)) {
+                    List<SubResource> publicIpAddresses = reader.readArray(reader1 -> SubResource.fromJson(reader1));
+                    deserializedNatGatewayPropertiesFormat.publicIpAddresses = publicIpAddresses;
+                } else if ("publicIpPrefixes".equals(fieldName)) {
+                    List<SubResource> publicIpPrefixes = reader.readArray(reader1 -> SubResource.fromJson(reader1));
+                    deserializedNatGatewayPropertiesFormat.publicIpPrefixes = publicIpPrefixes;
+                } else if ("subnets".equals(fieldName)) {
+                    List<SubResource> subnets = reader.readArray(reader1 -> SubResource.fromJson(reader1));
+                    deserializedNatGatewayPropertiesFormat.subnets = subnets;
+                } else if ("resourceGuid".equals(fieldName)) {
+                    deserializedNatGatewayPropertiesFormat.resourceGuid = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedNatGatewayPropertiesFormat.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNatGatewayPropertiesFormat;
+        });
     }
 }

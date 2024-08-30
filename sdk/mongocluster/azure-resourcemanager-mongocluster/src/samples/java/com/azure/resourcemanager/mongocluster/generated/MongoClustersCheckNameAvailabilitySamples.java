@@ -11,8 +11,7 @@ import com.azure.resourcemanager.mongocluster.models.CheckNameAvailabilityReques
  */
 public final class MongoClustersCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/mongocluster/DocumentDB.MongoCluster.Management/examples/2024-03-01-preview/
-     * MongoClusters_NameAvailability.json
+     * x-ms-original-file: 2024-03-01-preview/MongoClusters_NameAvailability.json
      */
     /**
      * Sample code: Checks and confirms the Mongo Cluster name is availability for use.
@@ -24,5 +23,22 @@ public final class MongoClustersCheckNameAvailabilitySamples {
         manager.mongoClusters()
             .checkNameAvailabilityWithResponse("westus2", new CheckNameAvailabilityRequest().withName("newmongocluster")
                 .withType("Microsoft.DocumentDB/mongoClusters"), com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2024-03-01-preview/MongoClusters_NameAvailability_AlreadyExists.json
+     */
+    /**
+     * Sample code: Checks and returns that the Mongo Cluster name is already in-use.
+     * 
+     * @param manager Entry point to MongoClusterManager.
+     */
+    public static void checksAndReturnsThatTheMongoClusterNameIsAlreadyInUse(
+        com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
+        manager.mongoClusters()
+            .checkNameAvailabilityWithResponse("westus2",
+                new CheckNameAvailabilityRequest().withName("existingmongocluster")
+                    .withType("Microsoft.DocumentDB/mongoClusters"),
+                com.azure.core.util.Context.NONE);
     }
 }
