@@ -14,95 +14,97 @@ public final class TilesetId extends ExpandableStringEnum<TilesetId> {
     /**
      * A base map is a standard map that displays roads, natural and artificial features along with the labels for those
      * features in a vector tile.&lt;br&gt;
-     * 
+     *
      * Supports zoom levels 0 through 22. Format: vector (pbf).
      */
     public static final TilesetId MICROSOFT_BASE = fromString("microsoft.base");
 
     /**
      * Displays labels for roads, natural and artificial features in a vector tile.&lt;br&gt;
-     * 
+     *
      * Supports zoom levels 0 through 22. Format: vector (pbf).
      */
     public static final TilesetId MICROSOFT_BASE_LABELS = fromString("microsoft.base.labels");
 
     /**
      * Displays road, boundary and label data in a vector tile.&lt;br&gt;
-     * 
+     *
      * Supports zoom levels 0 through 22. Format: vector (pbf).
      */
     public static final TilesetId MICROSOFT_BASE_HYBRID = fromString("microsoft.base.hybrid");
 
     /**
      * Shaded relief and terra layers.&lt;br&gt;
-     * 
+     *
      * Supports zoom levels 0 through 6. Format: raster (png).
      */
     public static final TilesetId MICROSOFT_TERRA_MAIN = fromString("microsoft.terra.main");
 
     /**
      * All layers with our main style.&lt;br&gt;
-     * 
+     *
      * Supports zoom levels 0 through 22. Format: raster (png).
      */
     public static final TilesetId MICROSOFT_BASE_ROAD = fromString("microsoft.base.road");
 
     /**
      * All layers with our dark grey style.&lt;br&gt;
-     * 
+     *
      * Supports zoom levels 0 through 22. Format: raster (png).
      */
     public static final TilesetId MICROSOFT_BASE_DARKGREY = fromString("microsoft.base.darkgrey");
 
     /**
      * Label data in our main style.&lt;br&gt;
-     * 
+     *
      * Supports zoom levels 0 through 22. Format: raster (png).
      */
     public static final TilesetId MICROSOFT_BASE_LABELS_ROAD = fromString("microsoft.base.labels.road");
 
     /**
      * Label data in our dark grey style.&lt;br&gt;
-     * 
+     *
      * Supports zoom levels 0 through 22. Format: raster (png).
      */
     public static final TilesetId MICROSOFT_BASE_LABELS_DARKGREY = fromString("microsoft.base.labels.darkgrey");
 
     /**
      * Road, boundary and label data in our main style.&lt;br&gt;
-     * 
+     *
      * Supports zoom levels 0 through 22. Format: raster (png).
      */
     public static final TilesetId MICROSOFT_BASE_HYBRID_ROAD = fromString("microsoft.base.hybrid.road");
 
     /**
      * Road, boundary and label data in our dark grey style.&lt;br&gt;
-     * 
+     *
      * Supports zoom levels 0 through 22. Format: raster (png).
      */
     public static final TilesetId MICROSOFT_BASE_HYBRID_DARKGREY = fromString("microsoft.base.hybrid.darkgrey");
 
     /**
-     * A combination of satellite and aerial imagery. Only available in S1 pricing SKU.&lt;br&gt;
-     * 
-     * Supports zoom levels 1 through 19. Format: raster (jpeg).
+     * A combination of satellite or aerial imagery. Only available in S1 and G2 pricing SKU.&lt;br&gt;
+     *
+     * Supports zoom levels 1 through 19. Format: raster (png).
      */
     public static final TilesetId MICROSOFT_IMAGERY = fromString("microsoft.imagery");
 
     /**
-     * Weather radar tiles. Latest weather radar images including areas of rain, snow, ice and mixed conditions. Please
-     * see [coverage information](https://aka.ms/AzureMapsWeatherCoverage) for Azure Maps Weather service. To learn more
-     * about the Radar data, please see [Weather concepts](https://aka.ms/AzureMapsWeatherConcepts).&lt;br&gt;
-     * 
+     * Weather radar tiles. Latest weather radar images including areas of rain, snow, ice and mixed conditions. For
+     * more information on the Azure Maps Weather service coverage, see [Azure Maps weather services
+     * coverage](/azure/azure-maps/weather-coverage). For more information on Radar data, see [Weather services in Azure
+     * Maps](/azure/azure-maps/weather-services-concepts#radar-images).
+     *
      * Supports zoom levels 0 through 15. Format: raster (png).
      */
     public static final TilesetId MICROSOFT_WEATHER_RADAR_MAIN = fromString("microsoft.weather.radar.main");
 
     /**
-     * Weather infrared tiles. Latest Infrared Satellite images shows clouds by their temperature. Please see [coverage
-     * information](https://aka.ms/AzureMapsWeatherCoverage) for Azure Maps Weather service. To learn more about the
-     * returned Satellite data, please see [Weather concepts](https://aka.ms/AzureMapsWeatherConcepts).&lt;br&gt;
-     * 
+     * Weather infrared tiles. Latest Infrared Satellite images shows clouds by their temperature. For more information,
+     * see [Azure Maps weather services coverage](/azure/azure-maps/weather-coverage). For more information about the
+     * satellite data returned, see [Weather services in Azure
+     * Maps](https://learn.microsoft.com/azure/azure-maps/weather-services-concepts#satellite-images).
+     *
      * Supports zoom levels 0 through 15. Format: raster (png).
      */
     public static final TilesetId MICROSOFT_WEATHER_INFRARED_MAIN = fromString("microsoft.weather.infrared.main");
@@ -154,7 +156,7 @@ public final class TilesetId extends ExpandableStringEnum<TilesetId> {
 
     /**
      * Creates a new instance of TilesetID value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -163,7 +165,7 @@ public final class TilesetId extends ExpandableStringEnum<TilesetId> {
 
     /**
      * Creates or finds a TilesetID from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding TilesetID.
      */
@@ -173,7 +175,7 @@ public final class TilesetId extends ExpandableStringEnum<TilesetId> {
 
     /**
      * Gets known TilesetID values.
-     * 
+     *
      * @return known TilesetID values.
      */
     public static Collection<TilesetId> values() {

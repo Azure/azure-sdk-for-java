@@ -12,7 +12,7 @@ public enum MapsRenderServiceVersion implements ServiceVersion {
     /**
     * Service version {@code 2.1}.
     */
-    V2_1("2.1");
+    V2("2024-04-01");
 
     private final String version;
 
@@ -31,7 +31,7 @@ public enum MapsRenderServiceVersion implements ServiceVersion {
      * @return the latest {@link MapsRenderServiceVersion}
      */
     public static MapsRenderServiceVersion getLatest() {
-        return V2_1;
+        return V2;
     }
 
     /**

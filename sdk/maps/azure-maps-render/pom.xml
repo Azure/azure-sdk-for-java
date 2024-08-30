@@ -13,7 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-maps-render</artifactId>
-  <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-maps-render;current} -->
+  <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-maps-render;current} -->
   <packaging>jar</packaging>
 
   <name>Azure Maps SDK Render client library</name>

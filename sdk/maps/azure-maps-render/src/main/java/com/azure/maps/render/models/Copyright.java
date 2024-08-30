@@ -40,7 +40,7 @@ public final class Copyright implements JsonSerializable<Copyright> {
 
     /**
      * Get the formatVersion property: Format Version property.
-     * 
+     *
      * @return the formatVersion value.
      */
     public String getFormatVersion() {
@@ -49,7 +49,7 @@ public final class Copyright implements JsonSerializable<Copyright> {
 
     /**
      * Get the generalCopyrights property: General Copyrights array.
-     * 
+     *
      * @return the generalCopyrights value.
      */
     public List<String> getGeneralCopyrights() {
@@ -58,7 +58,7 @@ public final class Copyright implements JsonSerializable<Copyright> {
 
     /**
      * Get the regions property: Regions array.
-     * 
+     *
      * @return the regions value.
      */
     public List<RegionCopyrights> getRegions() {
@@ -76,7 +76,7 @@ public final class Copyright implements JsonSerializable<Copyright> {
 
     /**
      * Reads an instance of Copyright from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of Copyright if the JsonReader was pointing to an instance of it, or null if it was pointing
      * to JSON null.

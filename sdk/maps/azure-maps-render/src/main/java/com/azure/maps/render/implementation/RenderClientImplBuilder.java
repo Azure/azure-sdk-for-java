@@ -38,6 +38,7 @@ import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.maps.render.implementation.models.MediaType;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -217,6 +218,25 @@ public final class RenderClientImplBuilder
     }
 
     /*
+     * The Accept header field can be used to specify preferences regarding response media types. Allowed media types include image/jpeg and image/png. Return image in image/png if Accept header is not specified.
+     */
+    @Generated
+    private MediaType accept;
+
+    /**
+     * Sets The Accept header field can be used to specify preferences regarding response media types. Allowed media
+     * types include image/jpeg and image/png. Return image in image/png if Accept header is not specified.
+     *
+     * @param accept the accept value.
+     * @return the RenderClientImplBuilder.
+     */
+    @Generated
+    public RenderClientImplBuilder accept(MediaType accept) {
+        this.accept = accept;
+        return this;
+    }
+
+    /*
      * Specifies which account is intended for usage in conjunction with the Microsoft Entra ID security model.  It represents a unique ID for the Azure Maps account and can be retrieved from the Azure Maps management  plane Account API. To use Microsoft Entra ID security in Azure Maps see the following [articles](https://aka.ms/amauthdetails) for guidance.
      */
     @Generated
@@ -227,7 +247,7 @@ public final class RenderClientImplBuilder
      * represents a unique ID for the Azure Maps account and can be retrieved from the Azure Maps management plane
      * Account API. To use Microsoft Entra ID security in Azure Maps see the following
      * [articles](https://aka.ms/amauthdetails) for guidance.
-     * 
+     *
      * @param clientId the clientId value.
      * @return the RenderClientImplBuilder.
      */
@@ -245,7 +265,7 @@ public final class RenderClientImplBuilder
 
     /**
      * Sets server parameter.
-     * 
+     *
      * @param host the host value.
      * @return the RenderClientImplBuilder.
      */
@@ -263,7 +283,7 @@ public final class RenderClientImplBuilder
 
     /**
      * Sets Api Version.
-     * 
+     *
      * @param apiVersion the apiVersion value.
      * @return the RenderClientImplBuilder.
      */
@@ -281,7 +301,7 @@ public final class RenderClientImplBuilder
 
     /**
      * Sets The serializer to serialize an object into a string.
-     * 
+     *
      * @param serializerAdapter the serializerAdapter value.
      * @return the RenderClientImplBuilder.
      */
@@ -299,7 +319,7 @@ public final class RenderClientImplBuilder
 
     /**
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
-     * 
+     *
      * @param retryPolicy the retryPolicy value.
      * @return the RenderClientImplBuilder.
      */
@@ -311,18 +331,18 @@ public final class RenderClientImplBuilder
 
     /**
      * Builds an instance of RenderClientImpl with the provided parameters.
-     * 
+     *
      * @return an instance of RenderClientImpl.
      */
     @Generated
     public RenderClientImpl buildClient() {
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
         String localHost = (host != null) ? host : "https://atlas.microsoft.com";
-        String localApiVersion = (apiVersion != null) ? apiVersion : "2022-08-01";
+        String localApiVersion = (apiVersion != null) ? apiVersion : "2024-04-01";
         SerializerAdapter localSerializerAdapter
             = (serializerAdapter != null) ? serializerAdapter : JacksonAdapter.createDefaultSerializerAdapter();
-        RenderClientImpl client
-            = new RenderClientImpl(localPipeline, localSerializerAdapter, this.clientId, localHost, localApiVersion);
+        RenderClientImpl client = new RenderClientImpl(localPipeline, localSerializerAdapter, this.accept,
+            this.clientId, localHost, localApiVersion);
         return client;
     }
 

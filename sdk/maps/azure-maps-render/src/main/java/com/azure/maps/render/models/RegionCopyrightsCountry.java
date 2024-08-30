@@ -68,6 +68,8 @@ public final class RegionCopyrightsCountry implements JsonSerializable<RegionCop
      * @throws IOException If an error occurs while reading the RegionCopyrightsCountry.
      */
     public static RegionCopyrightsCountry fromJson(JsonReader jsonReader) throws IOException {
+        jsonReader.nextToken();
+        jsonReader.nextToken();
         return jsonReader.readObject(reader -> {
             RegionCopyrightsCountry deserializedRegionCopyrightsCountry = new RegionCopyrightsCountry();
             while (reader.nextToken() != JsonToken.END_OBJECT) {

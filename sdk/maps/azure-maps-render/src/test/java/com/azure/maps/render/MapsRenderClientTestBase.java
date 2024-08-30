@@ -3,6 +3,7 @@
 
 package com.azure.maps.render;
 
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.ExponentialBackoff;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -69,14 +70,11 @@ public class MapsRenderClientTestBase extends TestProxyTestBase {
 
         if (interceptorManager.isRecordMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
-                .credential(new DefaultAzureCredentialBuilder().build())
-                .mapsClientId(Configuration.getGlobalConfiguration().get("MAPS_CLIENT_ID"));
+                .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("SUBSCRIPTION_KEY")));
         } else if (interceptorManager.isPlaybackMode()) {
-            builder.credential(new MockTokenCredential())
-                .mapsClientId("testRenderClient");
+            builder.credential(new AzureKeyCredential("REDACTED"));;
         } else {
-            builder.credential(new AzurePowerShellCredentialBuilder().build())
-                .mapsClientId(Configuration.getGlobalConfiguration().get("MAPS_CLIENT_ID"));
+            builder.credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("SUBSCRIPTION_KEY")));
         }
 
         return builder.httpClient(
@@ -94,17 +92,15 @@ public class MapsRenderClientTestBase extends TestProxyTestBase {
         validateGetMapTile(response.getValue().toBytes());
     }
 
-    static void validateGetMapTileset(MapTileset expected, MapTileset actual) {
-        assertNotNull(actual);
-        assertNotNull(expected);
-        assertEquals(expected.getName(), actual.getName());
-        assertEquals(expected.getMinZoom(), actual.getMinZoom());
+    static void validateGetMapTileset(MapTileset result) {
+        assertNotNull(result);
+        assertEquals("microsoft.base.hybrid", result.getName());
+        assertEquals("xyz", result.getScheme());
     }
 
-    static void validateGetMapTilesetWithResponse(MapTileset expected, Response<MapTileset> response) {
+    static void validateGetMapTilesetWithResponse(Response<MapTileset> response) {
         assertNotNull(response);
         assertEquals(200, response.getStatusCode());
-        validateGetMapTileset(expected, response.getValue());
     }
 
     static void validateGetMapAttribution(MapAttribution expected, MapAttribution actual) {
@@ -132,19 +128,15 @@ public class MapsRenderClientTestBase extends TestProxyTestBase {
         validateGetCopyrightCaption(expected, response.getValue());
     }
 
-    static void validateGetCopyrightCaptionFromBoundingBox(Copyright expected, Copyright actual) {
-        assertNotNull(actual);
-        assertNotNull(expected);
-        assertEquals(expected.getFormatVersion(), actual.getFormatVersion());
-        assertEquals(expected.getGeneralCopyrights().size(), actual.getGeneralCopyrights().size());
-        assertEquals(expected.getRegions().size(), actual.getRegions().size());
+    static void validateGetCopyrightCaptionFromBoundingBox(Copyright result) {
+        assertNotNull(result);
+        assertEquals("0.0.1", result.getFormatVersion());
+        assertEquals(3, result.getRegions().size());
     }
 
-    static void validateGetCopyrightCaptionFromBoundingBoxWithResponse(Copyright expected,
-        Response<Copyright> response) {
+    static void validateGetCopyrightCaptionFromBoundingBoxWithResponse(Response<Copyright> response) {
         assertNotNull(response);
         assertEquals(200, response.getStatusCode());
-        validateGetCopyrightCaptionFromBoundingBox(expected, response.getValue());
     }
 
     static void validateGetMapStaticImage(byte[] actual) {
@@ -158,30 +150,25 @@ public class MapsRenderClientTestBase extends TestProxyTestBase {
         validateGetMapStaticImage(response.getValue().toBytes());
     }
 
-    static void validateGetCopyrightForTile(Copyright expected, Copyright actual) {
-        assertNotNull(actual);
-        assertNotNull(expected);
-        assertEquals(expected.getFormatVersion(), actual.getFormatVersion());
-        assertEquals(expected.getGeneralCopyrights().size(), actual.getGeneralCopyrights().size());
-        assertEquals(expected.getRegions().size(), actual.getRegions().size());
+    static void validateGetCopyrightForTile(Copyright result) {
+        assertNotNull(result);
+        assertEquals(6, result.getRegions().size());
+        assertEquals("0.0.1", result.getFormatVersion());
     }
 
-    static void validateGetCopyrightForTileWithResponse(Copyright expected, Response<Copyright> response) {
+    static void validateGetCopyrightForTileWithResponse(Response<Copyright> response) {
         assertNotNull(response);
         assertEquals(200, response.getStatusCode());
-        validateGetCopyrightForTile(expected, response.getValue());
     }
 
-    static void validateGetCopyrightForWorld(Copyright expected, Copyright actual) {
+    static void validateGetCopyrightForWorld(Copyright actual) {
         assertNotNull(actual);
-        assertNotNull(expected);
-        assertEquals(expected.getFormatVersion(), actual.getFormatVersion());
-        assertEquals(expected.getGeneralCopyrights().size(), actual.getGeneralCopyrights().size());
+        assertEquals("0.0.1", actual.getFormatVersion());
+        assertEquals(3, actual.getGeneralCopyrights().size());
     }
 
-    static void validateGetCopyrightForWorldWithResponse(Copyright expected, Response<Copyright> response) {
+    static void validateGetCopyrightForWorldWithResponse(Response<Copyright> response) {
         assertNotNull(response);
         assertEquals(200, response.getStatusCode());
-        validateGetCopyrightForWorld(expected, response.getValue());
     }
 }

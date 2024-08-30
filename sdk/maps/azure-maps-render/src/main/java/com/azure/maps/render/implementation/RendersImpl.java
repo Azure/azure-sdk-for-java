@@ -25,20 +25,19 @@ import com.azure.core.util.serializer.CollectionFormat;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.maps.render.implementation.models.BoundingBox;
 import com.azure.maps.render.implementation.models.IncludeText;
+import com.azure.maps.render.implementation.models.MediaType;
 import com.azure.maps.render.implementation.models.RendersGetMapStateTileHeaders;
 import com.azure.maps.render.implementation.models.RendersGetMapStaticImageHeaders;
 import com.azure.maps.render.implementation.models.RendersGetMapTileHeaders;
 import com.azure.maps.render.implementation.models.ResponseFormat;
+import com.azure.maps.render.implementation.models.TrafficTilesetId;
 import com.azure.maps.render.models.Copyright;
 import com.azure.maps.render.models.CopyrightCaption;
 import com.azure.maps.render.models.ErrorResponseException;
 import com.azure.maps.render.models.LocalizedMapView;
 import com.azure.maps.render.models.MapAttribution;
-import com.azure.maps.render.models.MapImageStyle;
 import com.azure.maps.render.models.MapTileset;
 import com.azure.maps.render.models.MapTileSize;
-import com.azure.maps.render.models.RasterTileFormat;
-import com.azure.maps.render.models.StaticMapLayer;
 import com.azure.maps.render.models.TileIndex;
 import com.azure.maps.render.models.TilesetId;
 import java.time.OffsetDateTime;
@@ -64,7 +63,7 @@ public final class RendersImpl {
 
     /**
      * Initializes an instance of RendersImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     RendersImpl(RenderClientImpl client) {
@@ -139,34 +138,33 @@ public final class RendersImpl {
             @HeaderParam("x-ms-client-id") String clientId, @QueryParam("api-version") String apiVersion,
             @PathParam("format") ResponseFormat format, @HeaderParam("Accept") String accept, Context context);
 
-        @Get("/map/static/{format}")
+        @Get("/map/static")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<ResponseBase<RendersGetMapStaticImageHeaders, BinaryData>> getMapStaticImage(
             @HostParam("$host") String host, @HeaderParam("x-ms-client-id") String clientId,
-            @QueryParam("api-version") String apiVersion, @PathParam("format") RasterTileFormat format,
-            @QueryParam("layer") StaticMapLayer layer, @QueryParam("style") MapImageStyle style,
+            @QueryParam("api-version") String apiVersion, @QueryParam("tilesetId") TilesetId tilesetId,
+            @QueryParam("trafficLayer") TrafficTilesetId trafficLayer, @QueryParam("zoom") Integer zoom,
+            @QueryParam("center") String center, @QueryParam("bbox") String boundingBoxPrivate,
+            @QueryParam("height") Integer height, @QueryParam("width") Integer width,
+            @QueryParam("language") String language, @QueryParam("view") LocalizedMapView localizedMapView,
+            @QueryParam(value = "pins", multipleQueryParams = true) List<String> pins,
+            @QueryParam(value = "path", multipleQueryParams = true) List<String> path,
+            @HeaderParam("Accept") MediaType accept, Context context);
+
+        @Get("/map/static")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<Response<BinaryData>> getMapStaticImageNoCustomHeaders(@HostParam("$host") String host,
+            @HeaderParam("x-ms-client-id") String clientId, @QueryParam("api-version") String apiVersion,
+            @QueryParam("tilesetId") TilesetId tilesetId, @QueryParam("trafficLayer") TrafficTilesetId trafficLayer,
             @QueryParam("zoom") Integer zoom, @QueryParam("center") String center,
             @QueryParam("bbox") String boundingBoxPrivate, @QueryParam("height") Integer height,
             @QueryParam("width") Integer width, @QueryParam("language") String language,
             @QueryParam("view") LocalizedMapView localizedMapView,
             @QueryParam(value = "pins", multipleQueryParams = true) List<String> pins,
             @QueryParam(value = "path", multipleQueryParams = true) List<String> path,
-            @HeaderParam("Accept") String accept, Context context);
-
-        @Get("/map/static/{format}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<BinaryData>> getMapStaticImageNoCustomHeaders(@HostParam("$host") String host,
-            @HeaderParam("x-ms-client-id") String clientId, @QueryParam("api-version") String apiVersion,
-            @PathParam("format") RasterTileFormat format, @QueryParam("layer") StaticMapLayer layer,
-            @QueryParam("style") MapImageStyle style, @QueryParam("zoom") Integer zoom,
-            @QueryParam("center") String center, @QueryParam("bbox") String boundingBoxPrivate,
-            @QueryParam("height") Integer height, @QueryParam("width") Integer width,
-            @QueryParam("language") String language, @QueryParam("view") LocalizedMapView localizedMapView,
-            @QueryParam(value = "pins", multipleQueryParams = true) List<String> pins,
-            @QueryParam(value = "path", multipleQueryParams = true) List<String> path,
-            @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("Accept") MediaType accept, Context context);
 
         @Get("/map/copyright/bounding/{format}")
         @ExpectedResponses({ 200 })
@@ -197,16 +195,16 @@ public final class RendersImpl {
 
     /**
      * Use to request map tiles in vector or raster format.
-     * 
-     * **
-     * 
-     * The `Get Map Tiles` API is an HTTP `GET` request that allows users to request map tiles in vector or raster
-     * formats, typically to be integrated into a map control or SDK. Some example tiles that can be requested are Azure
-     * Maps road tiles, real-time Weather Radar tiles or the map tiles created using [Azure Maps
+     *
+     *
+     *
+     * The `Get Map Tiles` API in an HTTP GET request that allows users to request map tiles in vector or raster formats
+     * typically to be integrated into a map control or SDK. Some example tiles that can be requested are Azure Maps
+     * road tiles, real-time Weather Radar tiles or the map tiles created using [Azure Maps
      * Creator](https://aka.ms/amcreator). By default, Azure Maps uses vector tiles for its web map control ([Web
      * SDK](/azure/azure-maps/about-azure-maps#web-sdk)) and [Android
      * SDK](/azure/azure-maps/about-azure-maps#android-sdk).
-     * 
+     *
      * @param tilesetId A tileset is a collection of raster or vector data broken up into a uniform grid of square tiles
      * at preset zoom levels. Every tileset has a **tilesetId** to use when making requests. The **tilesetId** for
      * tilesets created using [Azure Maps Creator](https://aka.ms/amcreator) are generated through the [Tileset Create
@@ -217,7 +215,7 @@ public final class RendersImpl {
      * standard date-time format (e.g. 2019-11-14T16:03:00-08:00), as defined by [ISO
      * 8601](https://en.wikipedia.org/wiki/ISO_8601). This parameter is only supported when tilesetId parameter is set
      * to one of the values below.
-     * 
+     *
      * * microsoft.weather.infrared.main: We provide tiles up to 3 hours in the past. Tiles are available in 10-minute
      * intervals. We round the timeStamp value to the nearest 10-minute time frame.
      * * microsoft.weather.radar.main: We provide tiles up to 1.5 hours in the past and up to 2 hours in the future.
@@ -226,7 +224,7 @@ public final class RendersImpl {
      * @param language Language in which search results should be returned. Should be one of supported IETF language
      * tags, case insensitive. When data in specified language is not available for a specific field, default language
      * is used.
-     * 
+     *
      * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
      * details.
      * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
@@ -239,7 +237,7 @@ public final class RendersImpl {
      * used in compliance with applicable laws, including those regarding mapping, of the country/region where maps,
      * images and other data and third party content that you are authorized to access via Azure Maps is made available.
      * Example: view=IN.
-     * 
+     *
      * Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the available
      * Views.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -262,16 +260,16 @@ public final class RendersImpl {
 
     /**
      * Use to request map tiles in vector or raster format.
-     * 
-     * **
-     * 
-     * The `Get Map Tiles` API is an HTTP `GET` request that allows users to request map tiles in vector or raster
-     * formats, typically to be integrated into a map control or SDK. Some example tiles that can be requested are Azure
-     * Maps road tiles, real-time Weather Radar tiles or the map tiles created using [Azure Maps
+     *
+     *
+     *
+     * The `Get Map Tiles` API in an HTTP GET request that allows users to request map tiles in vector or raster formats
+     * typically to be integrated into a map control or SDK. Some example tiles that can be requested are Azure Maps
+     * road tiles, real-time Weather Radar tiles or the map tiles created using [Azure Maps
      * Creator](https://aka.ms/amcreator). By default, Azure Maps uses vector tiles for its web map control ([Web
      * SDK](/azure/azure-maps/about-azure-maps#web-sdk)) and [Android
      * SDK](/azure/azure-maps/about-azure-maps#android-sdk).
-     * 
+     *
      * @param tilesetId A tileset is a collection of raster or vector data broken up into a uniform grid of square tiles
      * at preset zoom levels. Every tileset has a **tilesetId** to use when making requests. The **tilesetId** for
      * tilesets created using [Azure Maps Creator](https://aka.ms/amcreator) are generated through the [Tileset Create
@@ -282,7 +280,7 @@ public final class RendersImpl {
      * standard date-time format (e.g. 2019-11-14T16:03:00-08:00), as defined by [ISO
      * 8601](https://en.wikipedia.org/wiki/ISO_8601). This parameter is only supported when tilesetId parameter is set
      * to one of the values below.
-     * 
+     *
      * * microsoft.weather.infrared.main: We provide tiles up to 3 hours in the past. Tiles are available in 10-minute
      * intervals. We round the timeStamp value to the nearest 10-minute time frame.
      * * microsoft.weather.radar.main: We provide tiles up to 1.5 hours in the past and up to 2 hours in the future.
@@ -291,7 +289,7 @@ public final class RendersImpl {
      * @param language Language in which search results should be returned. Should be one of supported IETF language
      * tags, case insensitive. When data in specified language is not available for a specific field, default language
      * is used.
-     * 
+     *
      * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
      * details.
      * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
@@ -304,7 +302,7 @@ public final class RendersImpl {
      * used in compliance with applicable laws, including those regarding mapping, of the country/region where maps,
      * images and other data and third party content that you are authorized to access via Azure Maps is made available.
      * Example: view=IN.
-     * 
+     *
      * Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the available
      * Views.
      * @param context The context to associate with this operation.
@@ -327,16 +325,16 @@ public final class RendersImpl {
 
     /**
      * Use to request map tiles in vector or raster format.
-     * 
-     * **
-     * 
-     * The `Get Map Tiles` API is an HTTP `GET` request that allows users to request map tiles in vector or raster
-     * formats, typically to be integrated into a map control or SDK. Some example tiles that can be requested are Azure
-     * Maps road tiles, real-time Weather Radar tiles or the map tiles created using [Azure Maps
+     *
+     *
+     *
+     * The `Get Map Tiles` API in an HTTP GET request that allows users to request map tiles in vector or raster formats
+     * typically to be integrated into a map control or SDK. Some example tiles that can be requested are Azure Maps
+     * road tiles, real-time Weather Radar tiles or the map tiles created using [Azure Maps
      * Creator](https://aka.ms/amcreator). By default, Azure Maps uses vector tiles for its web map control ([Web
      * SDK](/azure/azure-maps/about-azure-maps#web-sdk)) and [Android
      * SDK](/azure/azure-maps/about-azure-maps#android-sdk).
-     * 
+     *
      * @param tilesetId A tileset is a collection of raster or vector data broken up into a uniform grid of square tiles
      * at preset zoom levels. Every tileset has a **tilesetId** to use when making requests. The **tilesetId** for
      * tilesets created using [Azure Maps Creator](https://aka.ms/amcreator) are generated through the [Tileset Create
@@ -347,7 +345,7 @@ public final class RendersImpl {
      * standard date-time format (e.g. 2019-11-14T16:03:00-08:00), as defined by [ISO
      * 8601](https://en.wikipedia.org/wiki/ISO_8601). This parameter is only supported when tilesetId parameter is set
      * to one of the values below.
-     * 
+     *
      * * microsoft.weather.infrared.main: We provide tiles up to 3 hours in the past. Tiles are available in 10-minute
      * intervals. We round the timeStamp value to the nearest 10-minute time frame.
      * * microsoft.weather.radar.main: We provide tiles up to 1.5 hours in the past and up to 2 hours in the future.
@@ -356,7 +354,7 @@ public final class RendersImpl {
      * @param language Language in which search results should be returned. Should be one of supported IETF language
      * tags, case insensitive. When data in specified language is not available for a specific field, default language
      * is used.
-     * 
+     *
      * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
      * details.
      * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
@@ -369,7 +367,7 @@ public final class RendersImpl {
      * used in compliance with applicable laws, including those regarding mapping, of the country/region where maps,
      * images and other data and third party content that you are authorized to access via Azure Maps is made available.
      * Example: view=IN.
-     * 
+     *
      * Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the available
      * Views.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -386,16 +384,16 @@ public final class RendersImpl {
 
     /**
      * Use to request map tiles in vector or raster format.
-     * 
-     * **
-     * 
-     * The `Get Map Tiles` API is an HTTP `GET` request that allows users to request map tiles in vector or raster
-     * formats, typically to be integrated into a map control or SDK. Some example tiles that can be requested are Azure
-     * Maps road tiles, real-time Weather Radar tiles or the map tiles created using [Azure Maps
+     *
+     *
+     *
+     * The `Get Map Tiles` API in an HTTP GET request that allows users to request map tiles in vector or raster formats
+     * typically to be integrated into a map control or SDK. Some example tiles that can be requested are Azure Maps
+     * road tiles, real-time Weather Radar tiles or the map tiles created using [Azure Maps
      * Creator](https://aka.ms/amcreator). By default, Azure Maps uses vector tiles for its web map control ([Web
      * SDK](/azure/azure-maps/about-azure-maps#web-sdk)) and [Android
      * SDK](/azure/azure-maps/about-azure-maps#android-sdk).
-     * 
+     *
      * @param tilesetId A tileset is a collection of raster or vector data broken up into a uniform grid of square tiles
      * at preset zoom levels. Every tileset has a **tilesetId** to use when making requests. The **tilesetId** for
      * tilesets created using [Azure Maps Creator](https://aka.ms/amcreator) are generated through the [Tileset Create
@@ -406,7 +404,7 @@ public final class RendersImpl {
      * standard date-time format (e.g. 2019-11-14T16:03:00-08:00), as defined by [ISO
      * 8601](https://en.wikipedia.org/wiki/ISO_8601). This parameter is only supported when tilesetId parameter is set
      * to one of the values below.
-     * 
+     *
      * * microsoft.weather.infrared.main: We provide tiles up to 3 hours in the past. Tiles are available in 10-minute
      * intervals. We round the timeStamp value to the nearest 10-minute time frame.
      * * microsoft.weather.radar.main: We provide tiles up to 1.5 hours in the past and up to 2 hours in the future.
@@ -415,7 +413,7 @@ public final class RendersImpl {
      * @param language Language in which search results should be returned. Should be one of supported IETF language
      * tags, case insensitive. When data in specified language is not available for a specific field, default language
      * is used.
-     * 
+     *
      * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
      * details.
      * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
@@ -428,7 +426,7 @@ public final class RendersImpl {
      * used in compliance with applicable laws, including those regarding mapping, of the country/region where maps,
      * images and other data and third party content that you are authorized to access via Azure Maps is made available.
      * Example: view=IN.
-     * 
+     *
      * Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the available
      * Views.
      * @param context The context to associate with this operation.
@@ -446,16 +444,16 @@ public final class RendersImpl {
 
     /**
      * Use to request map tiles in vector or raster format.
-     * 
-     * **
-     * 
-     * The `Get Map Tiles` API is an HTTP `GET` request that allows users to request map tiles in vector or raster
-     * formats, typically to be integrated into a map control or SDK. Some example tiles that can be requested are Azure
-     * Maps road tiles, real-time Weather Radar tiles or the map tiles created using [Azure Maps
+     *
+     *
+     *
+     * The `Get Map Tiles` API in an HTTP GET request that allows users to request map tiles in vector or raster formats
+     * typically to be integrated into a map control or SDK. Some example tiles that can be requested are Azure Maps
+     * road tiles, real-time Weather Radar tiles or the map tiles created using [Azure Maps
      * Creator](https://aka.ms/amcreator). By default, Azure Maps uses vector tiles for its web map control ([Web
      * SDK](/azure/azure-maps/about-azure-maps#web-sdk)) and [Android
      * SDK](/azure/azure-maps/about-azure-maps#android-sdk).
-     * 
+     *
      * @param tilesetId A tileset is a collection of raster or vector data broken up into a uniform grid of square tiles
      * at preset zoom levels. Every tileset has a **tilesetId** to use when making requests. The **tilesetId** for
      * tilesets created using [Azure Maps Creator](https://aka.ms/amcreator) are generated through the [Tileset Create
@@ -466,7 +464,7 @@ public final class RendersImpl {
      * standard date-time format (e.g. 2019-11-14T16:03:00-08:00), as defined by [ISO
      * 8601](https://en.wikipedia.org/wiki/ISO_8601). This parameter is only supported when tilesetId parameter is set
      * to one of the values below.
-     * 
+     *
      * * microsoft.weather.infrared.main: We provide tiles up to 3 hours in the past. Tiles are available in 10-minute
      * intervals. We round the timeStamp value to the nearest 10-minute time frame.
      * * microsoft.weather.radar.main: We provide tiles up to 1.5 hours in the past and up to 2 hours in the future.
@@ -475,7 +473,7 @@ public final class RendersImpl {
      * @param language Language in which search results should be returned. Should be one of supported IETF language
      * tags, case insensitive. When data in specified language is not available for a specific field, default language
      * is used.
-     * 
+     *
      * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
      * details.
      * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
@@ -488,7 +486,7 @@ public final class RendersImpl {
      * used in compliance with applicable laws, including those regarding mapping, of the country/region where maps,
      * images and other data and third party content that you are authorized to access via Azure Maps is made available.
      * Example: view=IN.
-     * 
+     *
      * Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the available
      * Views.
      * @param context The context to associate with this operation.
@@ -507,16 +505,16 @@ public final class RendersImpl {
 
     /**
      * Use to request map tiles in vector or raster format.
-     * 
-     * **
-     * 
-     * The `Get Map Tiles` API is an HTTP `GET` request that allows users to request map tiles in vector or raster
-     * formats, typically to be integrated into a map control or SDK. Some example tiles that can be requested are Azure
-     * Maps road tiles, real-time Weather Radar tiles or the map tiles created using [Azure Maps
+     *
+     *
+     *
+     * The `Get Map Tiles` API in an HTTP GET request that allows users to request map tiles in vector or raster formats
+     * typically to be integrated into a map control or SDK. Some example tiles that can be requested are Azure Maps
+     * road tiles, real-time Weather Radar tiles or the map tiles created using [Azure Maps
      * Creator](https://aka.ms/amcreator). By default, Azure Maps uses vector tiles for its web map control ([Web
      * SDK](/azure/azure-maps/about-azure-maps#web-sdk)) and [Android
      * SDK](/azure/azure-maps/about-azure-maps#android-sdk).
-     * 
+     *
      * @param tilesetId A tileset is a collection of raster or vector data broken up into a uniform grid of square tiles
      * at preset zoom levels. Every tileset has a **tilesetId** to use when making requests. The **tilesetId** for
      * tilesets created using [Azure Maps Creator](https://aka.ms/amcreator) are generated through the [Tileset Create
@@ -527,7 +525,7 @@ public final class RendersImpl {
      * standard date-time format (e.g. 2019-11-14T16:03:00-08:00), as defined by [ISO
      * 8601](https://en.wikipedia.org/wiki/ISO_8601). This parameter is only supported when tilesetId parameter is set
      * to one of the values below.
-     * 
+     *
      * * microsoft.weather.infrared.main: We provide tiles up to 3 hours in the past. Tiles are available in 10-minute
      * intervals. We round the timeStamp value to the nearest 10-minute time frame.
      * * microsoft.weather.radar.main: We provide tiles up to 1.5 hours in the past and up to 2 hours in the future.
@@ -536,7 +534,7 @@ public final class RendersImpl {
      * @param language Language in which search results should be returned. Should be one of supported IETF language
      * tags, case insensitive. When data in specified language is not available for a specific field, default language
      * is used.
-     * 
+     *
      * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
      * details.
      * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
@@ -549,7 +547,7 @@ public final class RendersImpl {
      * used in compliance with applicable laws, including those regarding mapping, of the country/region where maps,
      * images and other data and third party content that you are authorized to access via Azure Maps is made available.
      * Example: view=IN.
-     * 
+     *
      * Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the available
      * Views.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -566,16 +564,16 @@ public final class RendersImpl {
 
     /**
      * Use to request map tiles in vector or raster format.
-     * 
-     * **
-     * 
-     * The `Get Map Tiles` API is an HTTP `GET` request that allows users to request map tiles in vector or raster
-     * formats, typically to be integrated into a map control or SDK. Some example tiles that can be requested are Azure
-     * Maps road tiles, real-time Weather Radar tiles or the map tiles created using [Azure Maps
+     *
+     *
+     *
+     * The `Get Map Tiles` API in an HTTP GET request that allows users to request map tiles in vector or raster formats
+     * typically to be integrated into a map control or SDK. Some example tiles that can be requested are Azure Maps
+     * road tiles, real-time Weather Radar tiles or the map tiles created using [Azure Maps
      * Creator](https://aka.ms/amcreator). By default, Azure Maps uses vector tiles for its web map control ([Web
      * SDK](/azure/azure-maps/about-azure-maps#web-sdk)) and [Android
      * SDK](/azure/azure-maps/about-azure-maps#android-sdk).
-     * 
+     *
      * @param tilesetId A tileset is a collection of raster or vector data broken up into a uniform grid of square tiles
      * at preset zoom levels. Every tileset has a **tilesetId** to use when making requests. The **tilesetId** for
      * tilesets created using [Azure Maps Creator](https://aka.ms/amcreator) are generated through the [Tileset Create
@@ -586,7 +584,7 @@ public final class RendersImpl {
      * standard date-time format (e.g. 2019-11-14T16:03:00-08:00), as defined by [ISO
      * 8601](https://en.wikipedia.org/wiki/ISO_8601). This parameter is only supported when tilesetId parameter is set
      * to one of the values below.
-     * 
+     *
      * * microsoft.weather.infrared.main: We provide tiles up to 3 hours in the past. Tiles are available in 10-minute
      * intervals. We round the timeStamp value to the nearest 10-minute time frame.
      * * microsoft.weather.radar.main: We provide tiles up to 1.5 hours in the past and up to 2 hours in the future.
@@ -595,7 +593,7 @@ public final class RendersImpl {
      * @param language Language in which search results should be returned. Should be one of supported IETF language
      * tags, case insensitive. When data in specified language is not available for a specific field, default language
      * is used.
-     * 
+     *
      * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
      * details.
      * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
@@ -608,7 +606,7 @@ public final class RendersImpl {
      * used in compliance with applicable laws, including those regarding mapping, of the country/region where maps,
      * images and other data and third party content that you are authorized to access via Azure Maps is made available.
      * Example: view=IN.
-     * 
+     *
      * Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the available
      * Views.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -631,16 +629,16 @@ public final class RendersImpl {
 
     /**
      * Use to request map tiles in vector or raster format.
-     * 
-     * **
-     * 
-     * The `Get Map Tiles` API is an HTTP `GET` request that allows users to request map tiles in vector or raster
-     * formats, typically to be integrated into a map control or SDK. Some example tiles that can be requested are Azure
-     * Maps road tiles, real-time Weather Radar tiles or the map tiles created using [Azure Maps
+     *
+     *
+     *
+     * The `Get Map Tiles` API in an HTTP GET request that allows users to request map tiles in vector or raster formats
+     * typically to be integrated into a map control or SDK. Some example tiles that can be requested are Azure Maps
+     * road tiles, real-time Weather Radar tiles or the map tiles created using [Azure Maps
      * Creator](https://aka.ms/amcreator). By default, Azure Maps uses vector tiles for its web map control ([Web
      * SDK](/azure/azure-maps/about-azure-maps#web-sdk)) and [Android
      * SDK](/azure/azure-maps/about-azure-maps#android-sdk).
-     * 
+     *
      * @param tilesetId A tileset is a collection of raster or vector data broken up into a uniform grid of square tiles
      * at preset zoom levels. Every tileset has a **tilesetId** to use when making requests. The **tilesetId** for
      * tilesets created using [Azure Maps Creator](https://aka.ms/amcreator) are generated through the [Tileset Create
@@ -651,7 +649,7 @@ public final class RendersImpl {
      * standard date-time format (e.g. 2019-11-14T16:03:00-08:00), as defined by [ISO
      * 8601](https://en.wikipedia.org/wiki/ISO_8601). This parameter is only supported when tilesetId parameter is set
      * to one of the values below.
-     * 
+     *
      * * microsoft.weather.infrared.main: We provide tiles up to 3 hours in the past. Tiles are available in 10-minute
      * intervals. We round the timeStamp value to the nearest 10-minute time frame.
      * * microsoft.weather.radar.main: We provide tiles up to 1.5 hours in the past and up to 2 hours in the future.
@@ -660,7 +658,7 @@ public final class RendersImpl {
      * @param language Language in which search results should be returned. Should be one of supported IETF language
      * tags, case insensitive. When data in specified language is not available for a specific field, default language
      * is used.
-     * 
+     *
      * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
      * details.
      * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
@@ -673,7 +671,7 @@ public final class RendersImpl {
      * used in compliance with applicable laws, including those regarding mapping, of the country/region where maps,
      * images and other data and third party content that you are authorized to access via Azure Maps is made available.
      * Example: view=IN.
-     * 
+     *
      * Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the available
      * Views.
      * @param context The context to associate with this operation.
@@ -697,16 +695,16 @@ public final class RendersImpl {
 
     /**
      * Use to request map tiles in vector or raster format.
-     * 
-     * **
-     * 
-     * The `Get Map Tiles` API is an HTTP `GET` request that allows users to request map tiles in vector or raster
-     * formats, typically to be integrated into a map control or SDK. Some example tiles that can be requested are Azure
-     * Maps road tiles, real-time Weather Radar tiles or the map tiles created using [Azure Maps
+     *
+     *
+     *
+     * The `Get Map Tiles` API in an HTTP GET request that allows users to request map tiles in vector or raster formats
+     * typically to be integrated into a map control or SDK. Some example tiles that can be requested are Azure Maps
+     * road tiles, real-time Weather Radar tiles or the map tiles created using [Azure Maps
      * Creator](https://aka.ms/amcreator). By default, Azure Maps uses vector tiles for its web map control ([Web
      * SDK](/azure/azure-maps/about-azure-maps#web-sdk)) and [Android
      * SDK](/azure/azure-maps/about-azure-maps#android-sdk).
-     * 
+     *
      * @param tilesetId A tileset is a collection of raster or vector data broken up into a uniform grid of square tiles
      * at preset zoom levels. Every tileset has a **tilesetId** to use when making requests. The **tilesetId** for
      * tilesets created using [Azure Maps Creator](https://aka.ms/amcreator) are generated through the [Tileset Create
@@ -717,7 +715,7 @@ public final class RendersImpl {
      * standard date-time format (e.g. 2019-11-14T16:03:00-08:00), as defined by [ISO
      * 8601](https://en.wikipedia.org/wiki/ISO_8601). This parameter is only supported when tilesetId parameter is set
      * to one of the values below.
-     * 
+     *
      * * microsoft.weather.infrared.main: We provide tiles up to 3 hours in the past. Tiles are available in 10-minute
      * intervals. We round the timeStamp value to the nearest 10-minute time frame.
      * * microsoft.weather.radar.main: We provide tiles up to 1.5 hours in the past and up to 2 hours in the future.
@@ -726,7 +724,7 @@ public final class RendersImpl {
      * @param language Language in which search results should be returned. Should be one of supported IETF language
      * tags, case insensitive. When data in specified language is not available for a specific field, default language
      * is used.
-     * 
+     *
      * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
      * details.
      * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
@@ -739,7 +737,7 @@ public final class RendersImpl {
      * used in compliance with applicable laws, including those regarding mapping, of the country/region where maps,
      * images and other data and third party content that you are authorized to access via Azure Maps is made available.
      * Example: view=IN.
-     * 
+     *
      * Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the available
      * Views.
      * @param context The context to associate with this operation.
@@ -758,11 +756,11 @@ public final class RendersImpl {
 
     /**
      * Use to get metadata for a tileset.
-     * 
-     * **
-     * 
-     * The `Get Map Tileset` API is an HTTP `GET` request allows users to request [metadata](#maptileset) for a tileset.
-     * 
+     *
+     *
+     *
+     * The Get Map Tileset API allows users to request metadata for a tileset.
+     *
      * @param tilesetId A tileset is a collection of raster or vector data broken up into a uniform grid of square tiles
      * at preset zoom levels. Every tileset has a **tilesetId** to use when making requests. The **tilesetId** for
      * tilesets created using [Azure Maps Creator](https://aka.ms/amcreator) are generated through the [Tileset Create
@@ -783,11 +781,11 @@ public final class RendersImpl {
 
     /**
      * Use to get metadata for a tileset.
-     * 
-     * **
-     * 
-     * The `Get Map Tileset` API is an HTTP `GET` request allows users to request [metadata](#maptileset) for a tileset.
-     * 
+     *
+     *
+     *
+     * The Get Map Tileset API allows users to request metadata for a tileset.
+     *
      * @param tilesetId A tileset is a collection of raster or vector data broken up into a uniform grid of square tiles
      * at preset zoom levels. Every tileset has a **tilesetId** to use when making requests. The **tilesetId** for
      * tilesets created using [Azure Maps Creator](https://aka.ms/amcreator) are generated through the [Tileset Create
@@ -809,11 +807,11 @@ public final class RendersImpl {
 
     /**
      * Use to get metadata for a tileset.
-     * 
-     * **
-     * 
-     * The `Get Map Tileset` API is an HTTP `GET` request allows users to request [metadata](#maptileset) for a tileset.
-     * 
+     *
+     *
+     *
+     * The Get Map Tileset API allows users to request metadata for a tileset.
+     *
      * @param tilesetId A tileset is a collection of raster or vector data broken up into a uniform grid of square tiles
      * at preset zoom levels. Every tileset has a **tilesetId** to use when making requests. The **tilesetId** for
      * tilesets created using [Azure Maps Creator](https://aka.ms/amcreator) are generated through the [Tileset Create
@@ -831,11 +829,11 @@ public final class RendersImpl {
 
     /**
      * Use to get metadata for a tileset.
-     * 
-     * **
-     * 
-     * The `Get Map Tileset` API is an HTTP `GET` request allows users to request [metadata](#maptileset) for a tileset.
-     * 
+     *
+     *
+     *
+     * The Get Map Tileset API allows users to request metadata for a tileset.
+     *
      * @param tilesetId A tileset is a collection of raster or vector data broken up into a uniform grid of square tiles
      * at preset zoom levels. Every tileset has a **tilesetId** to use when making requests. The **tilesetId** for
      * tilesets created using [Azure Maps Creator](https://aka.ms/amcreator) are generated through the [Tileset Create
@@ -854,11 +852,11 @@ public final class RendersImpl {
 
     /**
      * Use to get metadata for a tileset.
-     * 
-     * **
-     * 
-     * The `Get Map Tileset` API is an HTTP `GET` request allows users to request [metadata](#maptileset) for a tileset.
-     * 
+     *
+     *
+     *
+     * The Get Map Tileset API allows users to request metadata for a tileset.
+     *
      * @param tilesetId A tileset is a collection of raster or vector data broken up into a uniform grid of square tiles
      * at preset zoom levels. Every tileset has a **tilesetId** to use when making requests. The **tilesetId** for
      * tilesets created using [Azure Maps Creator](https://aka.ms/amcreator) are generated through the [Tileset Create
@@ -877,11 +875,11 @@ public final class RendersImpl {
 
     /**
      * Use to get metadata for a tileset.
-     * 
-     * **
-     * 
-     * The `Get Map Tileset` API is an HTTP `GET` request allows users to request [metadata](#maptileset) for a tileset.
-     * 
+     *
+     *
+     *
+     * The Get Map Tileset API allows users to request metadata for a tileset.
+     *
      * @param tilesetId A tileset is a collection of raster or vector data broken up into a uniform grid of square tiles
      * at preset zoom levels. Every tileset has a **tilesetId** to use when making requests. The **tilesetId** for
      * tilesets created using [Azure Maps Creator](https://aka.ms/amcreator) are generated through the [Tileset Create
@@ -899,12 +897,12 @@ public final class RendersImpl {
 
     /**
      * Use to get map copyright attribution information.
-     * 
-     * 
-     * 
-     * The `Get Map Attribution` API is an HTTP `GET` request that returns map copyright attribution information for a
-     * section of a tileset as defined by the four bounding box coordinates and zoom level.
-     * 
+     *
+     *
+     *
+     * The `Get Map Attribution` API allows users to request map copyright attribution information for a section of a
+     * tileset.
+     *
      * @param tilesetId A tileset is a collection of raster or vector data broken up into a uniform grid of square tiles
      * at preset zoom levels. Every tileset has a **tilesetId** to use when making requests. The **tilesetId** for
      * tilesets created using [Azure Maps Creator](https://aka.ms/amcreator) are generated through the [Tileset Create
@@ -933,12 +931,12 @@ public final class RendersImpl {
 
     /**
      * Use to get map copyright attribution information.
-     * 
-     * 
-     * 
-     * The `Get Map Attribution` API is an HTTP `GET` request that returns map copyright attribution information for a
-     * section of a tileset as defined by the four bounding box coordinates and zoom level.
-     * 
+     *
+     *
+     *
+     * The `Get Map Attribution` API allows users to request map copyright attribution information for a section of a
+     * tileset.
+     *
      * @param tilesetId A tileset is a collection of raster or vector data broken up into a uniform grid of square tiles
      * at preset zoom levels. Every tileset has a **tilesetId** to use when making requests. The **tilesetId** for
      * tilesets created using [Azure Maps Creator](https://aka.ms/amcreator) are generated through the [Tileset Create
@@ -968,12 +966,12 @@ public final class RendersImpl {
 
     /**
      * Use to get map copyright attribution information.
-     * 
-     * 
-     * 
-     * The `Get Map Attribution` API is an HTTP `GET` request that returns map copyright attribution information for a
-     * section of a tileset as defined by the four bounding box coordinates and zoom level.
-     * 
+     *
+     *
+     *
+     * The `Get Map Attribution` API allows users to request map copyright attribution information for a section of a
+     * tileset.
+     *
      * @param tilesetId A tileset is a collection of raster or vector data broken up into a uniform grid of square tiles
      * at preset zoom levels. Every tileset has a **tilesetId** to use when making requests. The **tilesetId** for
      * tilesets created using [Azure Maps Creator](https://aka.ms/amcreator) are generated through the [Tileset Create
@@ -997,12 +995,12 @@ public final class RendersImpl {
 
     /**
      * Use to get map copyright attribution information.
-     * 
-     * 
-     * 
-     * The `Get Map Attribution` API is an HTTP `GET` request that returns map copyright attribution information for a
-     * section of a tileset as defined by the four bounding box coordinates and zoom level.
-     * 
+     *
+     *
+     *
+     * The `Get Map Attribution` API allows users to request map copyright attribution information for a section of a
+     * tileset.
+     *
      * @param tilesetId A tileset is a collection of raster or vector data broken up into a uniform grid of square tiles
      * at preset zoom levels. Every tileset has a **tilesetId** to use when making requests. The **tilesetId** for
      * tilesets created using [Azure Maps Creator](https://aka.ms/amcreator) are generated through the [Tileset Create
@@ -1028,12 +1026,12 @@ public final class RendersImpl {
 
     /**
      * Use to get map copyright attribution information.
-     * 
-     * 
-     * 
-     * The `Get Map Attribution` API is an HTTP `GET` request that returns map copyright attribution information for a
-     * section of a tileset as defined by the four bounding box coordinates and zoom level.
-     * 
+     *
+     *
+     *
+     * The `Get Map Attribution` API allows users to request map copyright attribution information for a section of a
+     * tileset.
+     *
      * @param tilesetId A tileset is a collection of raster or vector data broken up into a uniform grid of square tiles
      * at preset zoom levels. Every tileset has a **tilesetId** to use when making requests. The **tilesetId** for
      * tilesets created using [Azure Maps Creator](https://aka.ms/amcreator) are generated through the [Tileset Create
@@ -1058,12 +1056,12 @@ public final class RendersImpl {
 
     /**
      * Use to get map copyright attribution information.
-     * 
-     * 
-     * 
-     * The `Get Map Attribution` API is an HTTP `GET` request that returns map copyright attribution information for a
-     * section of a tileset as defined by the four bounding box coordinates and zoom level.
-     * 
+     *
+     *
+     *
+     * The `Get Map Attribution` API allows users to request map copyright attribution information for a section of a
+     * tileset.
+     *
      * @param tilesetId A tileset is a collection of raster or vector data broken up into a uniform grid of square tiles
      * at preset zoom levels. Every tileset has a **tilesetId** to use when making requests. The **tilesetId** for
      * tilesets created using [Azure Maps Creator](https://aka.ms/amcreator) are generated through the [Tileset Create
@@ -1087,14 +1085,13 @@ public final class RendersImpl {
     /**
      * Use to get state tiles in vector format that can then be used to display feature state information in an indoor
      * map.
-     * 
-     * 
-     * 
-     * The `Get Map State Tile` API is an HTTP `GET` request that fetches state tiles in vector format, typically to be
-     * integrated into the indoor maps module of a map control or SDK. The map control calls this API after dynamic
-     * styling is turned on. For more information, see [Zoom Levels and Tile
-     * Grid](/azure/azure-maps/zoom-levels-and-tile-grid).
-     * 
+     *
+     *
+     *
+     * Fetches state tiles in vector format typically to be integrated into indoor maps module of map control or SDK.
+     * The map control will call this API after user turns on dynamic styling. For more information, see [Zoom Levels
+     * and Tile Grid](/azure/location-based-services/zoom-levels-and-tile-grid).
+     *
      * @param statesetId The stateset id.
      * @param tileIndex Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1116,14 +1113,13 @@ public final class RendersImpl {
     /**
      * Use to get state tiles in vector format that can then be used to display feature state information in an indoor
      * map.
-     * 
-     * 
-     * 
-     * The `Get Map State Tile` API is an HTTP `GET` request that fetches state tiles in vector format, typically to be
-     * integrated into the indoor maps module of a map control or SDK. The map control calls this API after dynamic
-     * styling is turned on. For more information, see [Zoom Levels and Tile
-     * Grid](/azure/azure-maps/zoom-levels-and-tile-grid).
-     * 
+     *
+     *
+     *
+     * Fetches state tiles in vector format typically to be integrated into indoor maps module of map control or SDK.
+     * The map control will call this API after user turns on dynamic styling. For more information, see [Zoom Levels
+     * and Tile Grid](/azure/location-based-services/zoom-levels-and-tile-grid).
+     *
      * @param statesetId The stateset id.
      * @param tileIndex Parameter group.
      * @param context The context to associate with this operation.
@@ -1146,14 +1142,13 @@ public final class RendersImpl {
     /**
      * Use to get state tiles in vector format that can then be used to display feature state information in an indoor
      * map.
-     * 
-     * 
-     * 
-     * The `Get Map State Tile` API is an HTTP `GET` request that fetches state tiles in vector format, typically to be
-     * integrated into the indoor maps module of a map control or SDK. The map control calls this API after dynamic
-     * styling is turned on. For more information, see [Zoom Levels and Tile
-     * Grid](/azure/azure-maps/zoom-levels-and-tile-grid).
-     * 
+     *
+     *
+     *
+     * Fetches state tiles in vector format typically to be integrated into indoor maps module of map control or SDK.
+     * The map control will call this API after user turns on dynamic styling. For more information, see [Zoom Levels
+     * and Tile Grid](/azure/location-based-services/zoom-levels-and-tile-grid).
+     *
      * @param statesetId The stateset id.
      * @param tileIndex Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1169,14 +1164,13 @@ public final class RendersImpl {
     /**
      * Use to get state tiles in vector format that can then be used to display feature state information in an indoor
      * map.
-     * 
-     * 
-     * 
-     * The `Get Map State Tile` API is an HTTP `GET` request that fetches state tiles in vector format, typically to be
-     * integrated into the indoor maps module of a map control or SDK. The map control calls this API after dynamic
-     * styling is turned on. For more information, see [Zoom Levels and Tile
-     * Grid](/azure/azure-maps/zoom-levels-and-tile-grid).
-     * 
+     *
+     *
+     *
+     * Fetches state tiles in vector format typically to be integrated into indoor maps module of map control or SDK.
+     * The map control will call this API after user turns on dynamic styling. For more information, see [Zoom Levels
+     * and Tile Grid](/azure/location-based-services/zoom-levels-and-tile-grid).
+     *
      * @param statesetId The stateset id.
      * @param tileIndex Parameter group.
      * @param context The context to associate with this operation.
@@ -1194,14 +1188,13 @@ public final class RendersImpl {
     /**
      * Use to get state tiles in vector format that can then be used to display feature state information in an indoor
      * map.
-     * 
-     * 
-     * 
-     * The `Get Map State Tile` API is an HTTP `GET` request that fetches state tiles in vector format, typically to be
-     * integrated into the indoor maps module of a map control or SDK. The map control calls this API after dynamic
-     * styling is turned on. For more information, see [Zoom Levels and Tile
-     * Grid](/azure/azure-maps/zoom-levels-and-tile-grid).
-     * 
+     *
+     *
+     *
+     * Fetches state tiles in vector format typically to be integrated into indoor maps module of map control or SDK.
+     * The map control will call this API after user turns on dynamic styling. For more information, see [Zoom Levels
+     * and Tile Grid](/azure/location-based-services/zoom-levels-and-tile-grid).
+     *
      * @param statesetId The stateset id.
      * @param tileIndex Parameter group.
      * @param context The context to associate with this operation.
@@ -1219,14 +1212,13 @@ public final class RendersImpl {
     /**
      * Use to get state tiles in vector format that can then be used to display feature state information in an indoor
      * map.
-     * 
-     * 
-     * 
-     * The `Get Map State Tile` API is an HTTP `GET` request that fetches state tiles in vector format, typically to be
-     * integrated into the indoor maps module of a map control or SDK. The map control calls this API after dynamic
-     * styling is turned on. For more information, see [Zoom Levels and Tile
-     * Grid](/azure/azure-maps/zoom-levels-and-tile-grid).
-     * 
+     *
+     *
+     *
+     * Fetches state tiles in vector format typically to be integrated into indoor maps module of map control or SDK.
+     * The map control will call this API after user turns on dynamic styling. For more information, see [Zoom Levels
+     * and Tile Grid](/azure/location-based-services/zoom-levels-and-tile-grid).
+     *
      * @param statesetId The stateset id.
      * @param tileIndex Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1242,14 +1234,13 @@ public final class RendersImpl {
     /**
      * Use to get state tiles in vector format that can then be used to display feature state information in an indoor
      * map.
-     * 
-     * 
-     * 
-     * The `Get Map State Tile` API is an HTTP `GET` request that fetches state tiles in vector format, typically to be
-     * integrated into the indoor maps module of a map control or SDK. The map control calls this API after dynamic
-     * styling is turned on. For more information, see [Zoom Levels and Tile
-     * Grid](/azure/azure-maps/zoom-levels-and-tile-grid).
-     * 
+     *
+     *
+     *
+     * Fetches state tiles in vector format typically to be integrated into indoor maps module of map control or SDK.
+     * The map control will call this API after user turns on dynamic styling. For more information, see [Zoom Levels
+     * and Tile Grid](/azure/location-based-services/zoom-levels-and-tile-grid).
+     *
      * @param statesetId The stateset id.
      * @param tileIndex Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1271,14 +1262,13 @@ public final class RendersImpl {
     /**
      * Use to get state tiles in vector format that can then be used to display feature state information in an indoor
      * map.
-     * 
-     * 
-     * 
-     * The `Get Map State Tile` API is an HTTP `GET` request that fetches state tiles in vector format, typically to be
-     * integrated into the indoor maps module of a map control or SDK. The map control calls this API after dynamic
-     * styling is turned on. For more information, see [Zoom Levels and Tile
-     * Grid](/azure/azure-maps/zoom-levels-and-tile-grid).
-     * 
+     *
+     *
+     *
+     * Fetches state tiles in vector format typically to be integrated into indoor maps module of map control or SDK.
+     * The map control will call this API after user turns on dynamic styling. For more information, see [Zoom Levels
+     * and Tile Grid](/azure/location-based-services/zoom-levels-and-tile-grid).
+     *
      * @param statesetId The stateset id.
      * @param tileIndex Parameter group.
      * @param context The context to associate with this operation.
@@ -1301,14 +1291,13 @@ public final class RendersImpl {
     /**
      * Use to get state tiles in vector format that can then be used to display feature state information in an indoor
      * map.
-     * 
-     * 
-     * 
-     * The `Get Map State Tile` API is an HTTP `GET` request that fetches state tiles in vector format, typically to be
-     * integrated into the indoor maps module of a map control or SDK. The map control calls this API after dynamic
-     * styling is turned on. For more information, see [Zoom Levels and Tile
-     * Grid](/azure/azure-maps/zoom-levels-and-tile-grid).
-     * 
+     *
+     *
+     *
+     * Fetches state tiles in vector format typically to be integrated into indoor maps module of map control or SDK.
+     * The map control will call this API after user turns on dynamic styling. For more information, see [Zoom Levels
+     * and Tile Grid](/azure/location-based-services/zoom-levels-and-tile-grid).
+     *
      * @param statesetId The stateset id.
      * @param tileIndex Parameter group.
      * @param context The context to associate with this operation.
@@ -1325,16 +1314,16 @@ public final class RendersImpl {
 
     /**
      * Use to get copyright information to use when rendering a tile.
-     * 
-     * 
-     * 
-     * The `Get Copyright Caption` API is an HTTP `GET` request designed to serve copyright information to be use in
-     * conjunction with tiles requested from the Render service. In addition to a basic copyright for the whole map, it
-     * can serve specific groups of copyrights for some countries/regions.
-     * 
-     * As an alternative to copyrights for map request, one can receive captions for displaying the map provider
-     * information on the map.
-     * 
+     *
+     *
+     *
+     * The `Get Copyright Caption` API is an HTTP GET request designed to serve copyright information to be used with
+     * tiles requested from the Render service. In addition to a basic copyright for the whole map, it can serve
+     * specific groups of copyrights for some countries/regions.
+     *
+     * As an alternative to copyrights for map request, it can also return captions for displaying provider information
+     * on the map.
+     *
      * @param format Desired format of the response. Value can be either _json_ or _xml_.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1351,16 +1340,16 @@ public final class RendersImpl {
 
     /**
      * Use to get copyright information to use when rendering a tile.
-     * 
-     * 
-     * 
-     * The `Get Copyright Caption` API is an HTTP `GET` request designed to serve copyright information to be use in
-     * conjunction with tiles requested from the Render service. In addition to a basic copyright for the whole map, it
-     * can serve specific groups of copyrights for some countries/regions.
-     * 
-     * As an alternative to copyrights for map request, one can receive captions for displaying the map provider
-     * information on the map.
-     * 
+     *
+     *
+     *
+     * The `Get Copyright Caption` API is an HTTP GET request designed to serve copyright information to be used with
+     * tiles requested from the Render service. In addition to a basic copyright for the whole map, it can serve
+     * specific groups of copyrights for some countries/regions.
+     *
+     * As an alternative to copyrights for map request, it can also return captions for displaying provider information
+     * on the map.
+     *
      * @param format Desired format of the response. Value can be either _json_ or _xml_.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1379,16 +1368,16 @@ public final class RendersImpl {
 
     /**
      * Use to get copyright information to use when rendering a tile.
-     * 
-     * 
-     * 
-     * The `Get Copyright Caption` API is an HTTP `GET` request designed to serve copyright information to be use in
-     * conjunction with tiles requested from the Render service. In addition to a basic copyright for the whole map, it
-     * can serve specific groups of copyrights for some countries/regions.
-     * 
-     * As an alternative to copyrights for map request, one can receive captions for displaying the map provider
-     * information on the map.
-     * 
+     *
+     *
+     *
+     * The `Get Copyright Caption` API is an HTTP GET request designed to serve copyright information to be used with
+     * tiles requested from the Render service. In addition to a basic copyright for the whole map, it can serve
+     * specific groups of copyrights for some countries/regions.
+     *
+     * As an alternative to copyrights for map request, it can also return captions for displaying provider information
+     * on the map.
+     *
      * @param format Desired format of the response. Value can be either _json_ or _xml_.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1402,16 +1391,16 @@ public final class RendersImpl {
 
     /**
      * Use to get copyright information to use when rendering a tile.
-     * 
-     * 
-     * 
-     * The `Get Copyright Caption` API is an HTTP `GET` request designed to serve copyright information to be use in
-     * conjunction with tiles requested from the Render service. In addition to a basic copyright for the whole map, it
-     * can serve specific groups of copyrights for some countries/regions.
-     * 
-     * As an alternative to copyrights for map request, one can receive captions for displaying the map provider
-     * information on the map.
-     * 
+     *
+     *
+     *
+     * The `Get Copyright Caption` API is an HTTP GET request designed to serve copyright information to be used with
+     * tiles requested from the Render service. In addition to a basic copyright for the whole map, it can serve
+     * specific groups of copyrights for some countries/regions.
+     *
+     * As an alternative to copyrights for map request, it can also return captions for displaying provider information
+     * on the map.
+     *
      * @param format Desired format of the response. Value can be either _json_ or _xml_.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1426,16 +1415,16 @@ public final class RendersImpl {
 
     /**
      * Use to get copyright information to use when rendering a tile.
-     * 
-     * 
-     * 
-     * The `Get Copyright Caption` API is an HTTP `GET` request designed to serve copyright information to be use in
-     * conjunction with tiles requested from the Render service. In addition to a basic copyright for the whole map, it
-     * can serve specific groups of copyrights for some countries/regions.
-     * 
-     * As an alternative to copyrights for map request, one can receive captions for displaying the map provider
-     * information on the map.
-     * 
+     *
+     *
+     *
+     * The `Get Copyright Caption` API is an HTTP GET request designed to serve copyright information to be used with
+     * tiles requested from the Render service. In addition to a basic copyright for the whole map, it can serve
+     * specific groups of copyrights for some countries/regions.
+     *
+     * As an alternative to copyrights for map request, it can also return captions for displaying provider information
+     * on the map.
+     *
      * @param format Desired format of the response. Value can be either _json_ or _xml_.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1450,16 +1439,16 @@ public final class RendersImpl {
 
     /**
      * Use to get copyright information to use when rendering a tile.
-     * 
-     * 
-     * 
-     * The `Get Copyright Caption` API is an HTTP `GET` request designed to serve copyright information to be use in
-     * conjunction with tiles requested from the Render service. In addition to a basic copyright for the whole map, it
-     * can serve specific groups of copyrights for some countries/regions.
-     * 
-     * As an alternative to copyrights for map request, one can receive captions for displaying the map provider
-     * information on the map.
-     * 
+     *
+     *
+     *
+     * The `Get Copyright Caption` API is an HTTP GET request designed to serve copyright information to be used with
+     * tiles requested from the Render service. In addition to a basic copyright for the whole map, it can serve
+     * specific groups of copyrights for some countries/regions.
+     *
+     * As an alternative to copyrights for map request, it can also return captions for displaying provider information
+     * on the map.
+     *
      * @param format Desired format of the response. Value can be either _json_ or _xml_.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1472,81 +1461,84 @@ public final class RendersImpl {
     }
 
     /**
-     * Use to render a user-defined, rectangular image containing a map section using a zoom level ranging from 0 to 20.
-     * 
-     * 
-     * 
-     * The supported resolution range for the map image is from 1x1 to 8192x8192. If you are deciding when to use the
-     * static image service over the map tile service, you may want to consider how you would like to interact with the
-     * rendered map. If the map contents will be relatively unchanging, a static map is a good choice. If you want to
-     * support a lot of zooming, panning and changing of the map content, the map tile service would be a better choice.
-     * 
-     * Service also provides Image Composition functionality to get a static image back with additional data like;
-     * pushpins and geometry overlays with following capabilities.
-     * 
-     * - Specify multiple pushpin styles
-     * - Render circle, polyline and polygon geometry types.
-     * 
-     * Please see [How-to-Guide](https://aka.ms/AzureMapsHowToGuideImageCompositor) for detailed examples.
-     * 
-     * _Note_ : Either **center** or **bbox** parameter must be supplied to the
-     * API.
+     * This rendering API produces static, rasterized map views of a user-defined area. It's suitable for lightweight
+     * web applications, when the desired user experience doesn't require interactive map controls, or when bandwidth is
+     * limited. This API is also useful for embedding maps in applications outside of the browser, in backend services,
+     * report generation, or desktop applications.
+     *
+     * This API includes parameters for basic data visualization:
+     *
+     * - Labeled pushpins in multiple styles.
+     * - Render circle, path, and polygon geometry types.
+     *
+     * For more information and detailed examples, see [Render custom data on a raster
+     * map](/azure/azure-maps/how-to-render-custom-data).
      * &lt;br&gt;&lt;br&gt;
-     * The supported Lat and Lon ranges when using the **bbox** parameter, are as follows:
+     * The dimensions of the bbox parameter are constrained, depending on the zoom level. This ensures the resulting
+     * image has an appropriate level of detail.
      * &lt;br&gt;&lt;br&gt;
-     * 
-     * |Zoom Level | Max Lon Range | Max Lat Range|
-     * |:----------|:----------------|:-------------|
-     * |0 | 360.0 | 170.0 |
-     * |1 | 360.0 | 170.0 |
-     * |2 | 360.0 | 170.0 |
-     * |3 | 360.0 | 170.0 |
-     * |4 | 360.0 | 170.0 |
-     * |5 | 180.0 | 85.0 |
-     * |6 | 90.0 | 42.5 |
-     * |7 | 45.0 | 21.25 |
-     * |8 | 22.5 | 10.625 |
-     * |9 | 11.25 | 5.3125 |
-     * |10 | 5.625 | 2.62625 |
-     * |11 | 2.8125 | 1.328125 |
-     * |12 | 1.40625 | 0.6640625 |
-     * |13 | 0.703125 | 0.33203125 |
-     * |14 | 0.3515625 | 0.166015625 |
-     * |15 | 0.17578125 | 0.0830078125 |
-     * |16 | 0.087890625 | 0.0415039063 |
-     * |17 | 0.0439453125 | 0.0207519531 |
-     * |18 | 0.0219726563 | 0.0103759766 |
-     * |19 | 0.0109863281 | 0.0051879883 |
-     * |20 | 0.0054931641 | 0.0025939941 |.
-     * 
-     * @param format Desired format of the response. Possible value: png.
-     * @param layer Map layer requested. If layer is set to labels or hybrid, the format should be png.
-     * @param style Map style to be returned. Possible values are main and dark.
-     * @param zoom Desired zoom level of the map. Zoom value must be in the range: 0-20 (inclusive). Default value is
-     * 12.&lt;br&gt;&lt;br&gt;Please see [Zoom Levels and Tile
-     * Grid](https://docs.microsoft.com/azure/location-based-services/zoom-levels-and-tile-grid) for details.
-     * @param center Coordinates of the center point. Format: 'lon,lat'. Projection used
-     * - EPSG:3857. Longitude range: -180 to 180. Latitude range: -85 to 85.
-     * 
+     *
+     * |Zoom Level | Min Lon Range | Max Lon Range | Min Lat Range| Max Lat Range|
+     * |:----------|:----------------|:----------------|:----------------|:-------------|
+     * |0 | 56.25 | 360.0 | 30.1105585173 | 180.0 |
+     * |1 | 28.125 | 360.0 | 14.87468995 | 180.0 |
+     * |2 | 14.063 | 351.5625 | 7.4130741851 | 137.9576312246 |
+     * |3 | 7.03125 | 175.78125 | 3.7034501005 | 73.6354071932 |
+     * |4 | 3.515625 | 87.890625 | 1.8513375155 | 35.4776115315 |
+     * |5 | 1.7578125 | 43.9453125 | 0.925620264 | 17.4589959239 |
+     * |6 | 0.87890625 | 21.97265625 | 0.4628040687 | 8.6907788223 |
+     * |7 | 0.439453125 | 10.986328125 | 0.2314012764 | 4.3404320789 |
+     * |8 | 0.2197265625 | 5.4931640625 | 0.1157005434 | 2.1695927024 |
+     * |9 | 0.1098632812 | 2.7465820312 | 0.0578502599 | 1.0847183194 |
+     * |10 | 0.0549316406 | 1.3732910156 | 0.0289251285 | 0.5423494021 |
+     * |11 | 0.0274658203 | 0.6866455078 | 0.014462564 | 0.2711734813 |
+     * |12 | 0.0137329102 | 0.3433227539 | 0.007231282 | 0.1355865882 |
+     * |13 | 0.0068664551 | 0.171661377 | 0.003615641 | 0.067793275 |
+     * |14 | 0.0034332275 | 0.0858306885 | 0.0018078205 | 0.0338966351 |
+     * |15 | 0.0017166138 | 0.0429153442 | 0.0009039102 | 0.0169483173 |
+     * |16 | 0.0008583069 | 0.0214576721 | 0.0004519551 | 0.0084741586 |
+     * |17 | 0.0004291534 | 0.0107288361 | 0.0002259776 | 0.0042370793 |
+     * |18 | 0.0002145767 | 0.005364418 | 0.0001129888 | 0.0021185396 |
+     * |19 | 0.0001072884 | 0.002682209 | 5.64944E-05 | 0.0010592698 |
+     * |20 | 5.36442E-05 | 0.0013411045 | 2.82472E-05 | 0.0005296349 |
+     *
+     * _Note_ : Either **center** or **bbox** parameter must be supplied to the API.
+     *
+     * @param tilesetId Map style to be returned. Possible values are microsoft.base.road, microsoft.base.darkgrey, and
+     * microsoft.imagery. Default value is set to be microsoft.base.road. For more information, see [Render
+     * TilesetId](https://learn.microsoft.com/en-us/rest/api/maps/render/get-map-tileset?view=rest-maps-2023-06-01&amp;tabs=HTTP#tilesetid).
+     * @param trafficLayer Optional Value, indicating no traffic flow overlaid on the image result. Possible values are
+     * microsoft.traffic.relative.main and none. Default value is none, indicating no traffic flow returned. If traffic
+     * related tilesetId is provided, will return map image with corresponding traffic layer. For more information, see
+     * [Render
+     * TilesetId](https://learn.microsoft.com/en-us/rest/api/maps/render/get-map-tileset?view=rest-maps-2023-06-01&amp;tabs=HTTP#tilesetid).
+     * @param zoom Desired zoom level of the map. Support zoom value range from 0-20 (inclusive) for tilesetId being
+     * microsoft.base.road or microsoft.base.darkgrey. Support zoom value range from 0-19 (inclusive) for tilesetId
+     * being microsoft.imagery. Default value is 12.&lt;br&gt;&lt;br&gt;For more information, see [Zoom Levels and Tile
+     * Grid](https://docs.microsoft.com/azure/location-based-services/zoom-levels-and-tile-grid).
+     * @param center Coordinates of the center point in double. Format: 'lon,lat'. Longitude range: -180 to 180.
+     * Latitude range: -90 to 90.
+     *
      * Note: Either center or bbox are required parameters. They are
      * mutually exclusive.
-     * @param boundingBoxPrivate Bounding box. Projection used - EPSG:3857. Format : 'minLon, minLat,
-     * maxLon, maxLat'.
-     * 
+     * @param boundingBoxPrivate A bounding box is defined by two latitudes and two longitudes that represent the four
+     * sides of a rectangular area on the Earth. Format : 'minLon, minLat,
+     * maxLon, maxLat' (in double).
+     *
      * Note: Either bbox or center are required
-     * parameters. They are mutually exclusive. It shouldn’t be used with
+     * parameters. They are mutually exclusive. bbox shouldn’t be used with
      * height or width.
-     * 
-     * The maximum allowed ranges for Lat and Lon are defined for each zoom level
+     *
+     * The maximum and minimum allowed ranges for Lat and Lon are defined for each zoom level
      * in the table at the top of this page.
-     * @param height Height of the resulting image in pixels. Range is 1 to 8192. Default
+     * @param height Height of the resulting image in pixels. Range from 80 to 1500. Default
      * is 512. It shouldn’t be used with bbox.
-     * @param width Width of the resulting image in pixels. Range is 1 to 8192. Default is 512. It shouldn’t be used
+     * @param width Width of the resulting image in pixels. Range from 80 to 2000. Default is 512. It should not be used
      * with bbox.
      * @param language Language in which search results should be returned. Should be one of supported IETF language
      * tags, case insensitive. When data in specified language is not available for a specific field, default language
      * is used.
-     * 
+     *
      * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
      * details.
      * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
@@ -1559,72 +1551,76 @@ public final class RendersImpl {
      * used in compliance with applicable laws, including those regarding mapping, of the country/region where maps,
      * images and other data and third party content that you are authorized to access via Azure Maps is made available.
      * Example: view=IN.
-     * 
+     *
      * Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the available
      * Views.
      * @param pins Pushpin style and instances. Use this parameter to optionally add pushpins to the image.
      * The pushpin style describes the appearance of the pushpins, and the instances specify
-     * the coordinates of the pushpins and optional labels for each pin. (Be sure to properly URL-encode values of this
+     * the coordinates of the pushpins (in double) and optional labels for each pin. (Be sure to properly URL-encode
+     * values of this
      * parameter since it will contain reserved characters such as pipes and punctuation.)
-     * 
-     * The Azure Maps account S0 SKU only supports a single instance of the pins parameter. Other SKUs
-     * allow multiple instances of the pins parameter to specify multiple pin styles.
-     * 
+     *
+     * The Azure Maps account S0 SKU only supports a single instance of the pins parameter and the number of locations
+     * is limited to 5 per pin. Other SKUs
+     * allow up to 25 instances of the pins parameter to specify multiple pin styles, and the number of locations is
+     * limited to 50 per pin.
+     *
      * To render a pushpin at latitude 45°N and longitude 122°W using the default built-in pushpin style, add the
      * querystring parameter
-     * 
+     *
      * `pins=default||-122 45`
-     * 
+     *
      * Note that the longitude comes before the latitude.
      * After URL encoding this will look like
-     * 
+     *
      * `pins=default%7C%7C-122+45`
-     * 
+     *
      * All of the examples here show the pins
      * parameter without URL encoding, for clarity.
-     * 
+     *
      * To render a pin at multiple locations, separate each location with a pipe character. For example, use
-     * 
+     *
      * `pins=default||-122 45|-119.5 43.2|-121.67 47.12`
-     * 
+     *
      * The S0 Azure Maps account SKU only allows five pushpins. Other account SKUs do not have this limitation.
-     * 
+     *
      * ### Style Modifiers
-     * 
+     *
      * You can modify the appearance of the pins by adding style modifiers. These are added after the style but before
      * the locations and labels. Style modifiers each have a two-letter name. These abbreviated names are used to help
      * reduce the length of the URL.
-     * 
+     *
      * To change the color of the pushpin, use the 'co' style modifier and specify the color using the HTML/CSS RGB
      * color
      * format which is a six-digit hexadecimal number (the three-digit form is not supported). For example, to use
      * a deep pink color which you would specify as #FF1493 in CSS, use
-     * 
+     *
      * `pins=default|coFF1493||-122 45`
-     * 
+     *
      * ### Pushpin Labels
-     * 
-     * To add a label to the pins, put the label in single quotes just before the coordinates. For example, to label
+     *
+     * To add a label to the pins, put the label in single quotes just before the coordinates. Avoid using special
+     * character such as `|` or `||` in label. For example, to label
      * three pins with the values '1', '2', and '3', use
-     * 
+     *
      * `pins=default||'1'-122 45|'2'-119.5 43.2|'3'-121.67 47.12`
-     * 
-     * There is a built in pushpin style called 'none' that does not display a pushpin image. You can use this if
+     *
+     * There is a built-in pushpin style called 'none' that does not display a pushpin image. You can use this if
      * you want to display labels without any pin image. For example,
-     * 
+     *
      * `pins=none||'A'-122 45|'B'-119.5 43.2`
-     * 
+     *
      * To change the color of the pushpin labels, use the 'lc' label color style modifier. For example, to use pink
      * pushpins with black labels, use
-     * 
+     *
      * `pins=default|coFF1493|lc000000||-122 45`
-     * 
+     *
      * To change the size of the labels, use the 'ls' label size style modifier. The label size represents the
      * approximate
      * height of the label text in pixels. For example, to increase the label size to 12, use
-     * 
+     *
      * `pins=default|ls12||'A'-122 45|'B'-119 43`
-     * 
+     *
      * The labels are centered at the pushpin 'label anchor.' The anchor location is predefined for built-in pushpins
      * and
      * is at the top center of custom pushpins (see below). To override the label anchor, using the 'la' style modifier
@@ -1634,130 +1630,131 @@ public final class RendersImpl {
      * example,
      * to position the label anchor 10 pixels right and 4 pixels above the top left corner of the pushpin image,
      * use
-     * 
+     *
      * `pins=default|la10 -4||'A'-122 45|'B'-119 43`
-     * 
+     *
      * ### Custom Pushpins
-     * 
+     *
      * To use a custom pushpin image, use the word 'custom' as the pin style name, and then specify a URL after the
-     * location and label information. Use two pipe characters to indicate that you're done specifying locations and are
+     * location and label information. The maximum allowed size for a customized label image is 65,536 pixels. Use two
+     * pipe characters to indicate that you're done specifying locations and are
      * starting the URL. For example,
-     * 
+     *
      * `pins=custom||-122 45||http://contoso.com/pushpins/red.png`
-     * 
+     *
      * After URL encoding, this would look like
-     * 
+     *
      * `pins=custom%7C%7C-122+45%7C%7Chttp%3A%2F%2Fcontoso.com%2Fpushpins%2Fred.png`
-     * 
+     *
      * By default, custom pushpin images are drawn centered at the pin coordinates. This usually isn't ideal as it
      * obscures
      * the location that you're trying to highlight. To override the anchor location of the pin image, use the 'an'
      * style modifier. This uses the same format as the 'la' label anchor style modifier. For example, if your custom
      * pin image has the tip of the pin at the top left corner of the image, you can set the anchor to that spot by
      * using
-     * 
+     *
      * `pins=custom|an0 0||-122 45||http://contoso.com/pushpins/red.png`
-     * 
+     *
      * Note: If you use the 'co' color modifier with a custom pushpin image, the specified color will replace the RGB
      * channels of the pixels in the image but will leave the alpha (opacity) channel unchanged. This would usually
      * only be done with a solid-color custom image.
-     * 
+     *
      * ### Scale, Rotation, and Opacity
-     * 
+     *
      * You can make pushpins and their labels larger or smaller by using the 'sc' scale style modifier. This is a
      * value greater than zero. A value of 1 is the standard scale. Values larger than 1 will make the pins larger, and
      * values smaller than 1 will make them smaller. For example, to draw the pushpins 50% larger than normal, use
-     * 
+     *
      * `pins=default|sc1.5||-122 45`
-     * 
+     *
      * You can rotate pushpins and their labels by using the 'ro' rotation style modifier. This is a number of degrees
      * of clockwise rotation. Use a negative number to rotate counter-clockwise. For example, to rotate the pushpins
      * 90 degrees clockwise and double their size, use
-     * 
+     *
      * `pins=default|ro90|sc2||-122 45`
-     * 
+     *
      * You can make pushpins and their labels partially transparent by specifying the 'al' alpha style modifier.
      * This is a number between 0 and 1 indicating the opacity of the pushpins. Zero makes them completely transparent
      * (and not visible) and 1 makes them completely opaque (which is the default). For example, to make pushpins
      * and their labels only 67% opaque, use
-     * 
+     *
      * `pins=default|al.67||-122 45`
-     * 
+     *
      * ### Style Modifier Summary
-     * 
-     * Modifier | Description | Range
-     * :--------:|-----------------|------------------
-     * al | Alpha (opacity) | 0 to 1
-     * an | Pin anchor | *
-     * co | Pin color | 000000 to FFFFFF
-     * la | Label anchor | *
-     * lc | Label color | 000000 to FFFFFF
-     * ls | Label size | Greater than 0
-     * ro | Rotation | -360 to 360
-     * sc | Scale | Greater than 0
-     * 
+     *
+     * Modifier | Description | Type | Range
+     * :--------:|---------------|--------|----------
+     * al | Alpha (opacity) | float | 0 to 1
+     * an | Pin anchor | &lt;int32, int32&gt; | *
+     * co | Pin color | string | 000000 to FFFFFF
+     * la | Label anchor | &lt;int32, int32&gt; | *
+     * lc | Label color | string | 000000 to FFFFFF
+     * ls | Label size | float | Greater than 0
+     * ro | Rotation | float | -360 to 360
+     * sc | Scale | float | Greater than 0
+     *
      * * X and Y coordinates can be anywhere within pin image or a margin around it.
      * The margin size is the minimum of the pin width and height.
-     * @param path Path style and locations. Use this parameter to optionally add lines, polygons or circles to the
-     * image.
+     * @param path Path style and locations (in double). Use this parameter to optionally add lines, polygons or circles
+     * to the image.
      * The path style describes the appearance of the line and fill. (Be sure to properly URL-encode values of this
      * parameter since it will contain reserved characters such as pipes and punctuation.)
-     * 
+     *
      * Path parameter is supported in Azure Maps account SKU starting with S1. Multiple instances of the path parameter
      * allow to specify multiple geometries with their styles. Number of parameters per request is limited to 10 and
      * number of locations is limited to 100 per path.
-     * 
+     *
      * To render a circle with radius 100 meters and center point at latitude 45°N and longitude 122°W using the default
      * style, add the
      * querystring parameter
-     * 
+     *
      * `path=ra100||-122 45`
-     * 
+     *
      * Note that the longitude comes before the latitude.
      * After URL encoding this will look like
-     * 
+     *
      * `path=ra100%7C%7C-122+45`
-     * 
+     *
      * All of the examples here show the path parameter without URL encoding, for clarity.
-     * 
+     *
      * To render a line, separate each location with a pipe character. For example, use
-     * 
+     *
      * `path=||-122 45|-119.5 43.2|-121.67 47.12`
-     * 
-     * To render a polygon, last location must be equal to the start location. For example, use
-     * 
+     *
+     * A polygon is specified with a closed path, where the first and last points are equal. For example, use
+     *
      * `path=||-122 45|-119.5 43.2|-121.67 47.12|-122 45`
-     * 
-     * Longitude and latitude values for locations of lines and polygons can be in the range from -360 to 360 to allow
-     * for rendering of geometries crossing the anti-meridian.
-     * 
+     *
+     * Longitude value for locations of lines and polygons can be in the range from -360 to 360 to allow for rendering
+     * of geometries crossing the anti-meridian.
+     *
      * ### Style Modifiers
-     * 
+     *
      * You can modify the appearance of the path by adding style modifiers. These are added before the locations.
      * Style modifiers each have a two-letter name. These abbreviated names are used to help reduce the length
      * of the URL.
-     * 
+     *
      * To change the color of the outline, use the 'lc' style modifier and specify the color using the HTML/CSS RGB
      * color
      * format which is a six-digit hexadecimal number (the three-digit form is not supported). For example, to use
      * a deep pink color which you would specify as #FF1493 in CSS, use
-     * 
+     *
      * `path=lcFF1493||-122 45|-119.5 43.2`
-     * 
-     * Multiple style modifiers may be combined together to create a more complex visual style.
-     * 
+     *
+     * Multiple style modifiers may be combined to create a more complex visual style.
+     *
      * `lc0000FF|lw3|la0.60|fa0.50||-122.2 47.6|-122.2 47.7|-122.3 47.7|-122.3 47.6|-122.2 47.6`
-     * 
+     *
      * ### Style Modifier Summary
-     * 
-     * Modifier | Description | Range
-     * :--------:|------------------------|------------------
-     * lc | Line color | 000000 to FFFFFF
-     * fc | Fill color | 000000 to FFFFFF
-     * la | Line alpha (opacity) | 0 to 1
-     * fa | Fill alpha (opacity) | 0 to 1
-     * lw | Line width | Greater than 0
-     * ra | Circle radius (meters) | Greater than 0.
+     *
+     * Modifier | Description | Type | Range
+     * :--------:|---------------|--------|----------
+     * lc | Line color | string | 000000 to FFFFFF
+     * fc | Fill color | string | 000000 to FFFFFF
+     * la | Line alpha (opacity) | float | 0 to 1
+     * fa | Fill alpha (opacity) | float | 0 to 1
+     * lw | Line width |int32 | (0, 50]
+     * ra | Circle radius (meters) | float | Greater than 0.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1765,10 +1762,9 @@ public final class RendersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<RendersGetMapStaticImageHeaders, BinaryData>> getMapStaticImageWithResponseAsync(
-        RasterTileFormat format, StaticMapLayer layer, MapImageStyle style, Integer zoom, List<Double> center,
+        TilesetId tilesetId, TrafficTilesetId trafficLayer, Integer zoom, List<Double> center,
         List<Double> boundingBoxPrivate, Integer height, Integer width, String language,
         LocalizedMapView localizedMapView, List<String> pins, List<String> path) {
-        final String accept = "application/json, image/jpeg, image/png, image/pbf, application/vnd.mapbox-vector-tile";
         String centerConverted
             = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(center, CollectionFormat.CSV);
         String boundingBoxPrivateConverted = JacksonAdapter.createDefaultSerializerAdapter()
@@ -1779,88 +1775,91 @@ public final class RendersImpl {
         List<String> pathConverted = (path == null)
             ? new ArrayList<>()
             : path.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        return FluxUtil
-            .withContext(context -> service.getMapStaticImage(this.client.getHost(), this.client.getClientId(),
-                this.client.getApiVersion(), format, layer, style, zoom, centerConverted, boundingBoxPrivateConverted,
-                height, width, language, localizedMapView, pinsConverted, pathConverted, accept, context));
+        return FluxUtil.withContext(context -> service.getMapStaticImage(this.client.getHost(),
+            this.client.getClientId(), this.client.getApiVersion(), tilesetId, trafficLayer, zoom, centerConverted,
+            boundingBoxPrivateConverted, height, width, language, localizedMapView, pinsConverted, pathConverted,
+            this.client.getAccept(), context));
     }
 
     /**
-     * Use to render a user-defined, rectangular image containing a map section using a zoom level ranging from 0 to 20.
-     * 
-     * 
-     * 
-     * The supported resolution range for the map image is from 1x1 to 8192x8192. If you are deciding when to use the
-     * static image service over the map tile service, you may want to consider how you would like to interact with the
-     * rendered map. If the map contents will be relatively unchanging, a static map is a good choice. If you want to
-     * support a lot of zooming, panning and changing of the map content, the map tile service would be a better choice.
-     * 
-     * Service also provides Image Composition functionality to get a static image back with additional data like;
-     * pushpins and geometry overlays with following capabilities.
-     * 
-     * - Specify multiple pushpin styles
-     * - Render circle, polyline and polygon geometry types.
-     * 
-     * Please see [How-to-Guide](https://aka.ms/AzureMapsHowToGuideImageCompositor) for detailed examples.
-     * 
-     * _Note_ : Either **center** or **bbox** parameter must be supplied to the
-     * API.
+     * This rendering API produces static, rasterized map views of a user-defined area. It's suitable for lightweight
+     * web applications, when the desired user experience doesn't require interactive map controls, or when bandwidth is
+     * limited. This API is also useful for embedding maps in applications outside of the browser, in backend services,
+     * report generation, or desktop applications.
+     *
+     * This API includes parameters for basic data visualization:
+     *
+     * - Labeled pushpins in multiple styles.
+     * - Render circle, path, and polygon geometry types.
+     *
+     * For more information and detailed examples, see [Render custom data on a raster
+     * map](/azure/azure-maps/how-to-render-custom-data).
      * &lt;br&gt;&lt;br&gt;
-     * The supported Lat and Lon ranges when using the **bbox** parameter, are as follows:
+     * The dimensions of the bbox parameter are constrained, depending on the zoom level. This ensures the resulting
+     * image has an appropriate level of detail.
      * &lt;br&gt;&lt;br&gt;
-     * 
-     * |Zoom Level | Max Lon Range | Max Lat Range|
-     * |:----------|:----------------|:-------------|
-     * |0 | 360.0 | 170.0 |
-     * |1 | 360.0 | 170.0 |
-     * |2 | 360.0 | 170.0 |
-     * |3 | 360.0 | 170.0 |
-     * |4 | 360.0 | 170.0 |
-     * |5 | 180.0 | 85.0 |
-     * |6 | 90.0 | 42.5 |
-     * |7 | 45.0 | 21.25 |
-     * |8 | 22.5 | 10.625 |
-     * |9 | 11.25 | 5.3125 |
-     * |10 | 5.625 | 2.62625 |
-     * |11 | 2.8125 | 1.328125 |
-     * |12 | 1.40625 | 0.6640625 |
-     * |13 | 0.703125 | 0.33203125 |
-     * |14 | 0.3515625 | 0.166015625 |
-     * |15 | 0.17578125 | 0.0830078125 |
-     * |16 | 0.087890625 | 0.0415039063 |
-     * |17 | 0.0439453125 | 0.0207519531 |
-     * |18 | 0.0219726563 | 0.0103759766 |
-     * |19 | 0.0109863281 | 0.0051879883 |
-     * |20 | 0.0054931641 | 0.0025939941 |.
-     * 
-     * @param format Desired format of the response. Possible value: png.
-     * @param layer Map layer requested. If layer is set to labels or hybrid, the format should be png.
-     * @param style Map style to be returned. Possible values are main and dark.
-     * @param zoom Desired zoom level of the map. Zoom value must be in the range: 0-20 (inclusive). Default value is
-     * 12.&lt;br&gt;&lt;br&gt;Please see [Zoom Levels and Tile
-     * Grid](https://docs.microsoft.com/azure/location-based-services/zoom-levels-and-tile-grid) for details.
-     * @param center Coordinates of the center point. Format: 'lon,lat'. Projection used
-     * - EPSG:3857. Longitude range: -180 to 180. Latitude range: -85 to 85.
-     * 
+     *
+     * |Zoom Level | Min Lon Range | Max Lon Range | Min Lat Range| Max Lat Range|
+     * |:----------|:----------------|:----------------|:----------------|:-------------|
+     * |0 | 56.25 | 360.0 | 30.1105585173 | 180.0 |
+     * |1 | 28.125 | 360.0 | 14.87468995 | 180.0 |
+     * |2 | 14.063 | 351.5625 | 7.4130741851 | 137.9576312246 |
+     * |3 | 7.03125 | 175.78125 | 3.7034501005 | 73.6354071932 |
+     * |4 | 3.515625 | 87.890625 | 1.8513375155 | 35.4776115315 |
+     * |5 | 1.7578125 | 43.9453125 | 0.925620264 | 17.4589959239 |
+     * |6 | 0.87890625 | 21.97265625 | 0.4628040687 | 8.6907788223 |
+     * |7 | 0.439453125 | 10.986328125 | 0.2314012764 | 4.3404320789 |
+     * |8 | 0.2197265625 | 5.4931640625 | 0.1157005434 | 2.1695927024 |
+     * |9 | 0.1098632812 | 2.7465820312 | 0.0578502599 | 1.0847183194 |
+     * |10 | 0.0549316406 | 1.3732910156 | 0.0289251285 | 0.5423494021 |
+     * |11 | 0.0274658203 | 0.6866455078 | 0.014462564 | 0.2711734813 |
+     * |12 | 0.0137329102 | 0.3433227539 | 0.007231282 | 0.1355865882 |
+     * |13 | 0.0068664551 | 0.171661377 | 0.003615641 | 0.067793275 |
+     * |14 | 0.0034332275 | 0.0858306885 | 0.0018078205 | 0.0338966351 |
+     * |15 | 0.0017166138 | 0.0429153442 | 0.0009039102 | 0.0169483173 |
+     * |16 | 0.0008583069 | 0.0214576721 | 0.0004519551 | 0.0084741586 |
+     * |17 | 0.0004291534 | 0.0107288361 | 0.0002259776 | 0.0042370793 |
+     * |18 | 0.0002145767 | 0.005364418 | 0.0001129888 | 0.0021185396 |
+     * |19 | 0.0001072884 | 0.002682209 | 5.64944E-05 | 0.0010592698 |
+     * |20 | 5.36442E-05 | 0.0013411045 | 2.82472E-05 | 0.0005296349 |
+     *
+     * _Note_ : Either **center** or **bbox** parameter must be supplied to the API.
+     *
+     * @param tilesetId Map style to be returned. Possible values are microsoft.base.road, microsoft.base.darkgrey, and
+     * microsoft.imagery. Default value is set to be microsoft.base.road. For more information, see [Render
+     * TilesetId](https://learn.microsoft.com/en-us/rest/api/maps/render/get-map-tileset?view=rest-maps-2023-06-01&amp;tabs=HTTP#tilesetid).
+     * @param trafficLayer Optional Value, indicating no traffic flow overlaid on the image result. Possible values are
+     * microsoft.traffic.relative.main and none. Default value is none, indicating no traffic flow returned. If traffic
+     * related tilesetId is provided, will return map image with corresponding traffic layer. For more information, see
+     * [Render
+     * TilesetId](https://learn.microsoft.com/en-us/rest/api/maps/render/get-map-tileset?view=rest-maps-2023-06-01&amp;tabs=HTTP#tilesetid).
+     * @param zoom Desired zoom level of the map. Support zoom value range from 0-20 (inclusive) for tilesetId being
+     * microsoft.base.road or microsoft.base.darkgrey. Support zoom value range from 0-19 (inclusive) for tilesetId
+     * being microsoft.imagery. Default value is 12.&lt;br&gt;&lt;br&gt;For more information, see [Zoom Levels and Tile
+     * Grid](https://docs.microsoft.com/azure/location-based-services/zoom-levels-and-tile-grid).
+     * @param center Coordinates of the center point in double. Format: 'lon,lat'. Longitude range: -180 to 180.
+     * Latitude range: -90 to 90.
+     *
      * Note: Either center or bbox are required parameters. They are
      * mutually exclusive.
-     * @param boundingBoxPrivate Bounding box. Projection used - EPSG:3857. Format : 'minLon, minLat,
-     * maxLon, maxLat'.
-     * 
+     * @param boundingBoxPrivate A bounding box is defined by two latitudes and two longitudes that represent the four
+     * sides of a rectangular area on the Earth. Format : 'minLon, minLat,
+     * maxLon, maxLat' (in double).
+     *
      * Note: Either bbox or center are required
-     * parameters. They are mutually exclusive. It shouldn’t be used with
+     * parameters. They are mutually exclusive. bbox shouldn’t be used with
      * height or width.
-     * 
-     * The maximum allowed ranges for Lat and Lon are defined for each zoom level
+     *
+     * The maximum and minimum allowed ranges for Lat and Lon are defined for each zoom level
      * in the table at the top of this page.
-     * @param height Height of the resulting image in pixels. Range is 1 to 8192. Default
+     * @param height Height of the resulting image in pixels. Range from 80 to 1500. Default
      * is 512. It shouldn’t be used with bbox.
-     * @param width Width of the resulting image in pixels. Range is 1 to 8192. Default is 512. It shouldn’t be used
+     * @param width Width of the resulting image in pixels. Range from 80 to 2000. Default is 512. It should not be used
      * with bbox.
      * @param language Language in which search results should be returned. Should be one of supported IETF language
      * tags, case insensitive. When data in specified language is not available for a specific field, default language
      * is used.
-     * 
+     *
      * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
      * details.
      * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
@@ -1873,72 +1872,76 @@ public final class RendersImpl {
      * used in compliance with applicable laws, including those regarding mapping, of the country/region where maps,
      * images and other data and third party content that you are authorized to access via Azure Maps is made available.
      * Example: view=IN.
-     * 
+     *
      * Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the available
      * Views.
      * @param pins Pushpin style and instances. Use this parameter to optionally add pushpins to the image.
      * The pushpin style describes the appearance of the pushpins, and the instances specify
-     * the coordinates of the pushpins and optional labels for each pin. (Be sure to properly URL-encode values of this
+     * the coordinates of the pushpins (in double) and optional labels for each pin. (Be sure to properly URL-encode
+     * values of this
      * parameter since it will contain reserved characters such as pipes and punctuation.)
-     * 
-     * The Azure Maps account S0 SKU only supports a single instance of the pins parameter. Other SKUs
-     * allow multiple instances of the pins parameter to specify multiple pin styles.
-     * 
+     *
+     * The Azure Maps account S0 SKU only supports a single instance of the pins parameter and the number of locations
+     * is limited to 5 per pin. Other SKUs
+     * allow up to 25 instances of the pins parameter to specify multiple pin styles, and the number of locations is
+     * limited to 50 per pin.
+     *
      * To render a pushpin at latitude 45°N and longitude 122°W using the default built-in pushpin style, add the
      * querystring parameter
-     * 
+     *
      * `pins=default||-122 45`
-     * 
+     *
      * Note that the longitude comes before the latitude.
      * After URL encoding this will look like
-     * 
+     *
      * `pins=default%7C%7C-122+45`
-     * 
+     *
      * All of the examples here show the pins
      * parameter without URL encoding, for clarity.
-     * 
+     *
      * To render a pin at multiple locations, separate each location with a pipe character. For example, use
-     * 
+     *
      * `pins=default||-122 45|-119.5 43.2|-121.67 47.12`
-     * 
+     *
      * The S0 Azure Maps account SKU only allows five pushpins. Other account SKUs do not have this limitation.
-     * 
+     *
      * ### Style Modifiers
-     * 
+     *
      * You can modify the appearance of the pins by adding style modifiers. These are added after the style but before
      * the locations and labels. Style modifiers each have a two-letter name. These abbreviated names are used to help
      * reduce the length of the URL.
-     * 
+     *
      * To change the color of the pushpin, use the 'co' style modifier and specify the color using the HTML/CSS RGB
      * color
      * format which is a six-digit hexadecimal number (the three-digit form is not supported). For example, to use
      * a deep pink color which you would specify as #FF1493 in CSS, use
-     * 
+     *
      * `pins=default|coFF1493||-122 45`
-     * 
+     *
      * ### Pushpin Labels
-     * 
-     * To add a label to the pins, put the label in single quotes just before the coordinates. For example, to label
+     *
+     * To add a label to the pins, put the label in single quotes just before the coordinates. Avoid using special
+     * character such as `|` or `||` in label. For example, to label
      * three pins with the values '1', '2', and '3', use
-     * 
+     *
      * `pins=default||'1'-122 45|'2'-119.5 43.2|'3'-121.67 47.12`
-     * 
-     * There is a built in pushpin style called 'none' that does not display a pushpin image. You can use this if
+     *
+     * There is a built-in pushpin style called 'none' that does not display a pushpin image. You can use this if
      * you want to display labels without any pin image. For example,
-     * 
+     *
      * `pins=none||'A'-122 45|'B'-119.5 43.2`
-     * 
+     *
      * To change the color of the pushpin labels, use the 'lc' label color style modifier. For example, to use pink
      * pushpins with black labels, use
-     * 
+     *
      * `pins=default|coFF1493|lc000000||-122 45`
-     * 
+     *
      * To change the size of the labels, use the 'ls' label size style modifier. The label size represents the
      * approximate
      * height of the label text in pixels. For example, to increase the label size to 12, use
-     * 
+     *
      * `pins=default|ls12||'A'-122 45|'B'-119 43`
-     * 
+     *
      * The labels are centered at the pushpin 'label anchor.' The anchor location is predefined for built-in pushpins
      * and
      * is at the top center of custom pushpins (see below). To override the label anchor, using the 'la' style modifier
@@ -1948,130 +1951,131 @@ public final class RendersImpl {
      * example,
      * to position the label anchor 10 pixels right and 4 pixels above the top left corner of the pushpin image,
      * use
-     * 
+     *
      * `pins=default|la10 -4||'A'-122 45|'B'-119 43`
-     * 
+     *
      * ### Custom Pushpins
-     * 
+     *
      * To use a custom pushpin image, use the word 'custom' as the pin style name, and then specify a URL after the
-     * location and label information. Use two pipe characters to indicate that you're done specifying locations and are
+     * location and label information. The maximum allowed size for a customized label image is 65,536 pixels. Use two
+     * pipe characters to indicate that you're done specifying locations and are
      * starting the URL. For example,
-     * 
+     *
      * `pins=custom||-122 45||http://contoso.com/pushpins/red.png`
-     * 
+     *
      * After URL encoding, this would look like
-     * 
+     *
      * `pins=custom%7C%7C-122+45%7C%7Chttp%3A%2F%2Fcontoso.com%2Fpushpins%2Fred.png`
-     * 
+     *
      * By default, custom pushpin images are drawn centered at the pin coordinates. This usually isn't ideal as it
      * obscures
      * the location that you're trying to highlight. To override the anchor location of the pin image, use the 'an'
      * style modifier. This uses the same format as the 'la' label anchor style modifier. For example, if your custom
      * pin image has the tip of the pin at the top left corner of the image, you can set the anchor to that spot by
      * using
-     * 
+     *
      * `pins=custom|an0 0||-122 45||http://contoso.com/pushpins/red.png`
-     * 
+     *
      * Note: If you use the 'co' color modifier with a custom pushpin image, the specified color will replace the RGB
      * channels of the pixels in the image but will leave the alpha (opacity) channel unchanged. This would usually
      * only be done with a solid-color custom image.
-     * 
+     *
      * ### Scale, Rotation, and Opacity
-     * 
+     *
      * You can make pushpins and their labels larger or smaller by using the 'sc' scale style modifier. This is a
      * value greater than zero. A value of 1 is the standard scale. Values larger than 1 will make the pins larger, and
      * values smaller than 1 will make them smaller. For example, to draw the pushpins 50% larger than normal, use
-     * 
+     *
      * `pins=default|sc1.5||-122 45`
-     * 
+     *
      * You can rotate pushpins and their labels by using the 'ro' rotation style modifier. This is a number of degrees
      * of clockwise rotation. Use a negative number to rotate counter-clockwise. For example, to rotate the pushpins
      * 90 degrees clockwise and double their size, use
-     * 
+     *
      * `pins=default|ro90|sc2||-122 45`
-     * 
+     *
      * You can make pushpins and their labels partially transparent by specifying the 'al' alpha style modifier.
      * This is a number between 0 and 1 indicating the opacity of the pushpins. Zero makes them completely transparent
      * (and not visible) and 1 makes them completely opaque (which is the default). For example, to make pushpins
      * and their labels only 67% opaque, use
-     * 
+     *
      * `pins=default|al.67||-122 45`
-     * 
+     *
      * ### Style Modifier Summary
-     * 
-     * Modifier | Description | Range
-     * :--------:|-----------------|------------------
-     * al | Alpha (opacity) | 0 to 1
-     * an | Pin anchor | *
-     * co | Pin color | 000000 to FFFFFF
-     * la | Label anchor | *
-     * lc | Label color | 000000 to FFFFFF
-     * ls | Label size | Greater than 0
-     * ro | Rotation | -360 to 360
-     * sc | Scale | Greater than 0
-     * 
+     *
+     * Modifier | Description | Type | Range
+     * :--------:|---------------|--------|----------
+     * al | Alpha (opacity) | float | 0 to 1
+     * an | Pin anchor | &lt;int32, int32&gt; | *
+     * co | Pin color | string | 000000 to FFFFFF
+     * la | Label anchor | &lt;int32, int32&gt; | *
+     * lc | Label color | string | 000000 to FFFFFF
+     * ls | Label size | float | Greater than 0
+     * ro | Rotation | float | -360 to 360
+     * sc | Scale | float | Greater than 0
+     *
      * * X and Y coordinates can be anywhere within pin image or a margin around it.
      * The margin size is the minimum of the pin width and height.
-     * @param path Path style and locations. Use this parameter to optionally add lines, polygons or circles to the
-     * image.
+     * @param path Path style and locations (in double). Use this parameter to optionally add lines, polygons or circles
+     * to the image.
      * The path style describes the appearance of the line and fill. (Be sure to properly URL-encode values of this
      * parameter since it will contain reserved characters such as pipes and punctuation.)
-     * 
+     *
      * Path parameter is supported in Azure Maps account SKU starting with S1. Multiple instances of the path parameter
      * allow to specify multiple geometries with their styles. Number of parameters per request is limited to 10 and
      * number of locations is limited to 100 per path.
-     * 
+     *
      * To render a circle with radius 100 meters and center point at latitude 45°N and longitude 122°W using the default
      * style, add the
      * querystring parameter
-     * 
+     *
      * `path=ra100||-122 45`
-     * 
+     *
      * Note that the longitude comes before the latitude.
      * After URL encoding this will look like
-     * 
+     *
      * `path=ra100%7C%7C-122+45`
-     * 
+     *
      * All of the examples here show the path parameter without URL encoding, for clarity.
-     * 
+     *
      * To render a line, separate each location with a pipe character. For example, use
-     * 
+     *
      * `path=||-122 45|-119.5 43.2|-121.67 47.12`
-     * 
-     * To render a polygon, last location must be equal to the start location. For example, use
-     * 
+     *
+     * A polygon is specified with a closed path, where the first and last points are equal. For example, use
+     *
      * `path=||-122 45|-119.5 43.2|-121.67 47.12|-122 45`
-     * 
-     * Longitude and latitude values for locations of lines and polygons can be in the range from -360 to 360 to allow
-     * for rendering of geometries crossing the anti-meridian.
-     * 
+     *
+     * Longitude value for locations of lines and polygons can be in the range from -360 to 360 to allow for rendering
+     * of geometries crossing the anti-meridian.
+     *
      * ### Style Modifiers
-     * 
+     *
      * You can modify the appearance of the path by adding style modifiers. These are added before the locations.
      * Style modifiers each have a two-letter name. These abbreviated names are used to help reduce the length
      * of the URL.
-     * 
+     *
      * To change the color of the outline, use the 'lc' style modifier and specify the color using the HTML/CSS RGB
      * color
      * format which is a six-digit hexadecimal number (the three-digit form is not supported). For example, to use
      * a deep pink color which you would specify as #FF1493 in CSS, use
-     * 
+     *
      * `path=lcFF1493||-122 45|-119.5 43.2`
-     * 
-     * Multiple style modifiers may be combined together to create a more complex visual style.
-     * 
+     *
+     * Multiple style modifiers may be combined to create a more complex visual style.
+     *
      * `lc0000FF|lw3|la0.60|fa0.50||-122.2 47.6|-122.2 47.7|-122.3 47.7|-122.3 47.6|-122.2 47.6`
-     * 
+     *
      * ### Style Modifier Summary
-     * 
-     * Modifier | Description | Range
-     * :--------:|------------------------|------------------
-     * lc | Line color | 000000 to FFFFFF
-     * fc | Fill color | 000000 to FFFFFF
-     * la | Line alpha (opacity) | 0 to 1
-     * fa | Fill alpha (opacity) | 0 to 1
-     * lw | Line width | Greater than 0
-     * ra | Circle radius (meters) | Greater than 0.
+     *
+     * Modifier | Description | Type | Range
+     * :--------:|---------------|--------|----------
+     * lc | Line color | string | 000000 to FFFFFF
+     * fc | Fill color | string | 000000 to FFFFFF
+     * la | Line alpha (opacity) | float | 0 to 1
+     * fa | Fill alpha (opacity) | float | 0 to 1
+     * lw | Line width |int32 | (0, 50]
+     * ra | Circle radius (meters) | float | Greater than 0.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -2080,10 +2084,9 @@ public final class RendersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<RendersGetMapStaticImageHeaders, BinaryData>> getMapStaticImageWithResponseAsync(
-        RasterTileFormat format, StaticMapLayer layer, MapImageStyle style, Integer zoom, List<Double> center,
+        TilesetId tilesetId, TrafficTilesetId trafficLayer, Integer zoom, List<Double> center,
         List<Double> boundingBoxPrivate, Integer height, Integer width, String language,
         LocalizedMapView localizedMapView, List<String> pins, List<String> path, Context context) {
-        final String accept = "application/json, image/jpeg, image/png, image/pbf, application/vnd.mapbox-vector-tile";
         String centerConverted
             = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(center, CollectionFormat.CSV);
         String boundingBoxPrivateConverted = JacksonAdapter.createDefaultSerializerAdapter()
@@ -2095,86 +2098,89 @@ public final class RendersImpl {
             ? new ArrayList<>()
             : path.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         return service.getMapStaticImage(this.client.getHost(), this.client.getClientId(), this.client.getApiVersion(),
-            format, layer, style, zoom, centerConverted, boundingBoxPrivateConverted, height, width, language,
-            localizedMapView, pinsConverted, pathConverted, accept, context);
+            tilesetId, trafficLayer, zoom, centerConverted, boundingBoxPrivateConverted, height, width, language,
+            localizedMapView, pinsConverted, pathConverted, this.client.getAccept(), context);
     }
 
     /**
-     * Use to render a user-defined, rectangular image containing a map section using a zoom level ranging from 0 to 20.
-     * 
-     * 
-     * 
-     * The supported resolution range for the map image is from 1x1 to 8192x8192. If you are deciding when to use the
-     * static image service over the map tile service, you may want to consider how you would like to interact with the
-     * rendered map. If the map contents will be relatively unchanging, a static map is a good choice. If you want to
-     * support a lot of zooming, panning and changing of the map content, the map tile service would be a better choice.
-     * 
-     * Service also provides Image Composition functionality to get a static image back with additional data like;
-     * pushpins and geometry overlays with following capabilities.
-     * 
-     * - Specify multiple pushpin styles
-     * - Render circle, polyline and polygon geometry types.
-     * 
-     * Please see [How-to-Guide](https://aka.ms/AzureMapsHowToGuideImageCompositor) for detailed examples.
-     * 
-     * _Note_ : Either **center** or **bbox** parameter must be supplied to the
-     * API.
+     * This rendering API produces static, rasterized map views of a user-defined area. It's suitable for lightweight
+     * web applications, when the desired user experience doesn't require interactive map controls, or when bandwidth is
+     * limited. This API is also useful for embedding maps in applications outside of the browser, in backend services,
+     * report generation, or desktop applications.
+     *
+     * This API includes parameters for basic data visualization:
+     *
+     * - Labeled pushpins in multiple styles.
+     * - Render circle, path, and polygon geometry types.
+     *
+     * For more information and detailed examples, see [Render custom data on a raster
+     * map](/azure/azure-maps/how-to-render-custom-data).
      * &lt;br&gt;&lt;br&gt;
-     * The supported Lat and Lon ranges when using the **bbox** parameter, are as follows:
+     * The dimensions of the bbox parameter are constrained, depending on the zoom level. This ensures the resulting
+     * image has an appropriate level of detail.
      * &lt;br&gt;&lt;br&gt;
-     * 
-     * |Zoom Level | Max Lon Range | Max Lat Range|
-     * |:----------|:----------------|:-------------|
-     * |0 | 360.0 | 170.0 |
-     * |1 | 360.0 | 170.0 |
-     * |2 | 360.0 | 170.0 |
-     * |3 | 360.0 | 170.0 |
-     * |4 | 360.0 | 170.0 |
-     * |5 | 180.0 | 85.0 |
-     * |6 | 90.0 | 42.5 |
-     * |7 | 45.0 | 21.25 |
-     * |8 | 22.5 | 10.625 |
-     * |9 | 11.25 | 5.3125 |
-     * |10 | 5.625 | 2.62625 |
-     * |11 | 2.8125 | 1.328125 |
-     * |12 | 1.40625 | 0.6640625 |
-     * |13 | 0.703125 | 0.33203125 |
-     * |14 | 0.3515625 | 0.166015625 |
-     * |15 | 0.17578125 | 0.0830078125 |
-     * |16 | 0.087890625 | 0.0415039063 |
-     * |17 | 0.0439453125 | 0.0207519531 |
-     * |18 | 0.0219726563 | 0.0103759766 |
-     * |19 | 0.0109863281 | 0.0051879883 |
-     * |20 | 0.0054931641 | 0.0025939941 |.
-     * 
-     * @param format Desired format of the response. Possible value: png.
-     * @param layer Map layer requested. If layer is set to labels or hybrid, the format should be png.
-     * @param style Map style to be returned. Possible values are main and dark.
-     * @param zoom Desired zoom level of the map. Zoom value must be in the range: 0-20 (inclusive). Default value is
-     * 12.&lt;br&gt;&lt;br&gt;Please see [Zoom Levels and Tile
-     * Grid](https://docs.microsoft.com/azure/location-based-services/zoom-levels-and-tile-grid) for details.
-     * @param center Coordinates of the center point. Format: 'lon,lat'. Projection used
-     * - EPSG:3857. Longitude range: -180 to 180. Latitude range: -85 to 85.
-     * 
+     *
+     * |Zoom Level | Min Lon Range | Max Lon Range | Min Lat Range| Max Lat Range|
+     * |:----------|:----------------|:----------------|:----------------|:-------------|
+     * |0 | 56.25 | 360.0 | 30.1105585173 | 180.0 |
+     * |1 | 28.125 | 360.0 | 14.87468995 | 180.0 |
+     * |2 | 14.063 | 351.5625 | 7.4130741851 | 137.9576312246 |
+     * |3 | 7.03125 | 175.78125 | 3.7034501005 | 73.6354071932 |
+     * |4 | 3.515625 | 87.890625 | 1.8513375155 | 35.4776115315 |
+     * |5 | 1.7578125 | 43.9453125 | 0.925620264 | 17.4589959239 |
+     * |6 | 0.87890625 | 21.97265625 | 0.4628040687 | 8.6907788223 |
+     * |7 | 0.439453125 | 10.986328125 | 0.2314012764 | 4.3404320789 |
+     * |8 | 0.2197265625 | 5.4931640625 | 0.1157005434 | 2.1695927024 |
+     * |9 | 0.1098632812 | 2.7465820312 | 0.0578502599 | 1.0847183194 |
+     * |10 | 0.0549316406 | 1.3732910156 | 0.0289251285 | 0.5423494021 |
+     * |11 | 0.0274658203 | 0.6866455078 | 0.014462564 | 0.2711734813 |
+     * |12 | 0.0137329102 | 0.3433227539 | 0.007231282 | 0.1355865882 |
+     * |13 | 0.0068664551 | 0.171661377 | 0.003615641 | 0.067793275 |
+     * |14 | 0.0034332275 | 0.0858306885 | 0.0018078205 | 0.0338966351 |
+     * |15 | 0.0017166138 | 0.0429153442 | 0.0009039102 | 0.0169483173 |
+     * |16 | 0.0008583069 | 0.0214576721 | 0.0004519551 | 0.0084741586 |
+     * |17 | 0.0004291534 | 0.0107288361 | 0.0002259776 | 0.0042370793 |
+     * |18 | 0.0002145767 | 0.005364418 | 0.0001129888 | 0.0021185396 |
+     * |19 | 0.0001072884 | 0.002682209 | 5.64944E-05 | 0.0010592698 |
+     * |20 | 5.36442E-05 | 0.0013411045 | 2.82472E-05 | 0.0005296349 |
+     *
+     * _Note_ : Either **center** or **bbox** parameter must be supplied to the API.
+     *
+     * @param tilesetId Map style to be returned. Possible values are microsoft.base.road, microsoft.base.darkgrey, and
+     * microsoft.imagery. Default value is set to be microsoft.base.road. For more information, see [Render
+     * TilesetId](https://learn.microsoft.com/en-us/rest/api/maps/render/get-map-tileset?view=rest-maps-2023-06-01&amp;tabs=HTTP#tilesetid).
+     * @param trafficLayer Optional Value, indicating no traffic flow overlaid on the image result. Possible values are
+     * microsoft.traffic.relative.main and none. Default value is none, indicating no traffic flow returned. If traffic
+     * related tilesetId is provided, will return map image with corresponding traffic layer. For more information, see
+     * [Render
+     * TilesetId](https://learn.microsoft.com/en-us/rest/api/maps/render/get-map-tileset?view=rest-maps-2023-06-01&amp;tabs=HTTP#tilesetid).
+     * @param zoom Desired zoom level of the map. Support zoom value range from 0-20 (inclusive) for tilesetId being
+     * microsoft.base.road or microsoft.base.darkgrey. Support zoom value range from 0-19 (inclusive) for tilesetId
+     * being microsoft.imagery. Default value is 12.&lt;br&gt;&lt;br&gt;For more information, see [Zoom Levels and Tile
+     * Grid](https://docs.microsoft.com/azure/location-based-services/zoom-levels-and-tile-grid).
+     * @param center Coordinates of the center point in double. Format: 'lon,lat'. Longitude range: -180 to 180.
+     * Latitude range: -90 to 90.
+     *
      * Note: Either center or bbox are required parameters. They are
      * mutually exclusive.
-     * @param boundingBoxPrivate Bounding box. Projection used - EPSG:3857. Format : 'minLon, minLat,
-     * maxLon, maxLat'.
-     * 
+     * @param boundingBoxPrivate A bounding box is defined by two latitudes and two longitudes that represent the four
+     * sides of a rectangular area on the Earth. Format : 'minLon, minLat,
+     * maxLon, maxLat' (in double).
+     *
      * Note: Either bbox or center are required
-     * parameters. They are mutually exclusive. It shouldn’t be used with
+     * parameters. They are mutually exclusive. bbox shouldn’t be used with
      * height or width.
-     * 
-     * The maximum allowed ranges for Lat and Lon are defined for each zoom level
+     *
+     * The maximum and minimum allowed ranges for Lat and Lon are defined for each zoom level
      * in the table at the top of this page.
-     * @param height Height of the resulting image in pixels. Range is 1 to 8192. Default
+     * @param height Height of the resulting image in pixels. Range from 80 to 1500. Default
      * is 512. It shouldn’t be used with bbox.
-     * @param width Width of the resulting image in pixels. Range is 1 to 8192. Default is 512. It shouldn’t be used
+     * @param width Width of the resulting image in pixels. Range from 80 to 2000. Default is 512. It should not be used
      * with bbox.
      * @param language Language in which search results should be returned. Should be one of supported IETF language
      * tags, case insensitive. When data in specified language is not available for a specific field, default language
      * is used.
-     * 
+     *
      * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
      * details.
      * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
@@ -2187,72 +2193,76 @@ public final class RendersImpl {
      * used in compliance with applicable laws, including those regarding mapping, of the country/region where maps,
      * images and other data and third party content that you are authorized to access via Azure Maps is made available.
      * Example: view=IN.
-     * 
+     *
      * Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the available
      * Views.
      * @param pins Pushpin style and instances. Use this parameter to optionally add pushpins to the image.
      * The pushpin style describes the appearance of the pushpins, and the instances specify
-     * the coordinates of the pushpins and optional labels for each pin. (Be sure to properly URL-encode values of this
+     * the coordinates of the pushpins (in double) and optional labels for each pin. (Be sure to properly URL-encode
+     * values of this
      * parameter since it will contain reserved characters such as pipes and punctuation.)
-     * 
-     * The Azure Maps account S0 SKU only supports a single instance of the pins parameter. Other SKUs
-     * allow multiple instances of the pins parameter to specify multiple pin styles.
-     * 
+     *
+     * The Azure Maps account S0 SKU only supports a single instance of the pins parameter and the number of locations
+     * is limited to 5 per pin. Other SKUs
+     * allow up to 25 instances of the pins parameter to specify multiple pin styles, and the number of locations is
+     * limited to 50 per pin.
+     *
      * To render a pushpin at latitude 45°N and longitude 122°W using the default built-in pushpin style, add the
      * querystring parameter
-     * 
+     *
      * `pins=default||-122 45`
-     * 
+     *
      * Note that the longitude comes before the latitude.
      * After URL encoding this will look like
-     * 
+     *
      * `pins=default%7C%7C-122+45`
-     * 
+     *
      * All of the examples here show the pins
      * parameter without URL encoding, for clarity.
-     * 
+     *
      * To render a pin at multiple locations, separate each location with a pipe character. For example, use
-     * 
+     *
      * `pins=default||-122 45|-119.5 43.2|-121.67 47.12`
-     * 
+     *
      * The S0 Azure Maps account SKU only allows five pushpins. Other account SKUs do not have this limitation.
-     * 
+     *
      * ### Style Modifiers
-     * 
+     *
      * You can modify the appearance of the pins by adding style modifiers. These are added after the style but before
      * the locations and labels. Style modifiers each have a two-letter name. These abbreviated names are used to help
      * reduce the length of the URL.
-     * 
+     *
      * To change the color of the pushpin, use the 'co' style modifier and specify the color using the HTML/CSS RGB
      * color
      * format which is a six-digit hexadecimal number (the three-digit form is not supported). For example, to use
      * a deep pink color which you would specify as #FF1493 in CSS, use
-     * 
+     *
      * `pins=default|coFF1493||-122 45`
-     * 
+     *
      * ### Pushpin Labels
-     * 
-     * To add a label to the pins, put the label in single quotes just before the coordinates. For example, to label
+     *
+     * To add a label to the pins, put the label in single quotes just before the coordinates. Avoid using special
+     * character such as `|` or `||` in label. For example, to label
      * three pins with the values '1', '2', and '3', use
-     * 
+     *
      * `pins=default||'1'-122 45|'2'-119.5 43.2|'3'-121.67 47.12`
-     * 
-     * There is a built in pushpin style called 'none' that does not display a pushpin image. You can use this if
+     *
+     * There is a built-in pushpin style called 'none' that does not display a pushpin image. You can use this if
      * you want to display labels without any pin image. For example,
-     * 
+     *
      * `pins=none||'A'-122 45|'B'-119.5 43.2`
-     * 
+     *
      * To change the color of the pushpin labels, use the 'lc' label color style modifier. For example, to use pink
      * pushpins with black labels, use
-     * 
+     *
      * `pins=default|coFF1493|lc000000||-122 45`
-     * 
+     *
      * To change the size of the labels, use the 'ls' label size style modifier. The label size represents the
      * approximate
      * height of the label text in pixels. For example, to increase the label size to 12, use
-     * 
+     *
      * `pins=default|ls12||'A'-122 45|'B'-119 43`
-     * 
+     *
      * The labels are centered at the pushpin 'label anchor.' The anchor location is predefined for built-in pushpins
      * and
      * is at the top center of custom pushpins (see below). To override the label anchor, using the 'la' style modifier
@@ -2262,219 +2272,223 @@ public final class RendersImpl {
      * example,
      * to position the label anchor 10 pixels right and 4 pixels above the top left corner of the pushpin image,
      * use
-     * 
+     *
      * `pins=default|la10 -4||'A'-122 45|'B'-119 43`
-     * 
+     *
      * ### Custom Pushpins
-     * 
+     *
      * To use a custom pushpin image, use the word 'custom' as the pin style name, and then specify a URL after the
-     * location and label information. Use two pipe characters to indicate that you're done specifying locations and are
+     * location and label information. The maximum allowed size for a customized label image is 65,536 pixels. Use two
+     * pipe characters to indicate that you're done specifying locations and are
      * starting the URL. For example,
-     * 
+     *
      * `pins=custom||-122 45||http://contoso.com/pushpins/red.png`
-     * 
+     *
      * After URL encoding, this would look like
-     * 
+     *
      * `pins=custom%7C%7C-122+45%7C%7Chttp%3A%2F%2Fcontoso.com%2Fpushpins%2Fred.png`
-     * 
+     *
      * By default, custom pushpin images are drawn centered at the pin coordinates. This usually isn't ideal as it
      * obscures
      * the location that you're trying to highlight. To override the anchor location of the pin image, use the 'an'
      * style modifier. This uses the same format as the 'la' label anchor style modifier. For example, if your custom
      * pin image has the tip of the pin at the top left corner of the image, you can set the anchor to that spot by
      * using
-     * 
+     *
      * `pins=custom|an0 0||-122 45||http://contoso.com/pushpins/red.png`
-     * 
+     *
      * Note: If you use the 'co' color modifier with a custom pushpin image, the specified color will replace the RGB
      * channels of the pixels in the image but will leave the alpha (opacity) channel unchanged. This would usually
      * only be done with a solid-color custom image.
-     * 
+     *
      * ### Scale, Rotation, and Opacity
-     * 
+     *
      * You can make pushpins and their labels larger or smaller by using the 'sc' scale style modifier. This is a
      * value greater than zero. A value of 1 is the standard scale. Values larger than 1 will make the pins larger, and
      * values smaller than 1 will make them smaller. For example, to draw the pushpins 50% larger than normal, use
-     * 
+     *
      * `pins=default|sc1.5||-122 45`
-     * 
+     *
      * You can rotate pushpins and their labels by using the 'ro' rotation style modifier. This is a number of degrees
      * of clockwise rotation. Use a negative number to rotate counter-clockwise. For example, to rotate the pushpins
      * 90 degrees clockwise and double their size, use
-     * 
+     *
      * `pins=default|ro90|sc2||-122 45`
-     * 
+     *
      * You can make pushpins and their labels partially transparent by specifying the 'al' alpha style modifier.
      * This is a number between 0 and 1 indicating the opacity of the pushpins. Zero makes them completely transparent
      * (and not visible) and 1 makes them completely opaque (which is the default). For example, to make pushpins
      * and their labels only 67% opaque, use
-     * 
+     *
      * `pins=default|al.67||-122 45`
-     * 
+     *
      * ### Style Modifier Summary
-     * 
-     * Modifier | Description | Range
-     * :--------:|-----------------|------------------
-     * al | Alpha (opacity) | 0 to 1
-     * an | Pin anchor | *
-     * co | Pin color | 000000 to FFFFFF
-     * la | Label anchor | *
-     * lc | Label color | 000000 to FFFFFF
-     * ls | Label size | Greater than 0
-     * ro | Rotation | -360 to 360
-     * sc | Scale | Greater than 0
-     * 
+     *
+     * Modifier | Description | Type | Range
+     * :--------:|---------------|--------|----------
+     * al | Alpha (opacity) | float | 0 to 1
+     * an | Pin anchor | &lt;int32, int32&gt; | *
+     * co | Pin color | string | 000000 to FFFFFF
+     * la | Label anchor | &lt;int32, int32&gt; | *
+     * lc | Label color | string | 000000 to FFFFFF
+     * ls | Label size | float | Greater than 0
+     * ro | Rotation | float | -360 to 360
+     * sc | Scale | float | Greater than 0
+     *
      * * X and Y coordinates can be anywhere within pin image or a margin around it.
      * The margin size is the minimum of the pin width and height.
-     * @param path Path style and locations. Use this parameter to optionally add lines, polygons or circles to the
-     * image.
+     * @param path Path style and locations (in double). Use this parameter to optionally add lines, polygons or circles
+     * to the image.
      * The path style describes the appearance of the line and fill. (Be sure to properly URL-encode values of this
      * parameter since it will contain reserved characters such as pipes and punctuation.)
-     * 
+     *
      * Path parameter is supported in Azure Maps account SKU starting with S1. Multiple instances of the path parameter
      * allow to specify multiple geometries with their styles. Number of parameters per request is limited to 10 and
      * number of locations is limited to 100 per path.
-     * 
+     *
      * To render a circle with radius 100 meters and center point at latitude 45°N and longitude 122°W using the default
      * style, add the
      * querystring parameter
-     * 
+     *
      * `path=ra100||-122 45`
-     * 
+     *
      * Note that the longitude comes before the latitude.
      * After URL encoding this will look like
-     * 
+     *
      * `path=ra100%7C%7C-122+45`
-     * 
+     *
      * All of the examples here show the path parameter without URL encoding, for clarity.
-     * 
+     *
      * To render a line, separate each location with a pipe character. For example, use
-     * 
+     *
      * `path=||-122 45|-119.5 43.2|-121.67 47.12`
-     * 
-     * To render a polygon, last location must be equal to the start location. For example, use
-     * 
+     *
+     * A polygon is specified with a closed path, where the first and last points are equal. For example, use
+     *
      * `path=||-122 45|-119.5 43.2|-121.67 47.12|-122 45`
-     * 
-     * Longitude and latitude values for locations of lines and polygons can be in the range from -360 to 360 to allow
-     * for rendering of geometries crossing the anti-meridian.
-     * 
+     *
+     * Longitude value for locations of lines and polygons can be in the range from -360 to 360 to allow for rendering
+     * of geometries crossing the anti-meridian.
+     *
      * ### Style Modifiers
-     * 
+     *
      * You can modify the appearance of the path by adding style modifiers. These are added before the locations.
      * Style modifiers each have a two-letter name. These abbreviated names are used to help reduce the length
      * of the URL.
-     * 
+     *
      * To change the color of the outline, use the 'lc' style modifier and specify the color using the HTML/CSS RGB
      * color
      * format which is a six-digit hexadecimal number (the three-digit form is not supported). For example, to use
      * a deep pink color which you would specify as #FF1493 in CSS, use
-     * 
+     *
      * `path=lcFF1493||-122 45|-119.5 43.2`
-     * 
-     * Multiple style modifiers may be combined together to create a more complex visual style.
-     * 
+     *
+     * Multiple style modifiers may be combined to create a more complex visual style.
+     *
      * `lc0000FF|lw3|la0.60|fa0.50||-122.2 47.6|-122.2 47.7|-122.3 47.7|-122.3 47.6|-122.2 47.6`
-     * 
+     *
      * ### Style Modifier Summary
-     * 
-     * Modifier | Description | Range
-     * :--------:|------------------------|------------------
-     * lc | Line color | 000000 to FFFFFF
-     * fc | Fill color | 000000 to FFFFFF
-     * la | Line alpha (opacity) | 0 to 1
-     * fa | Fill alpha (opacity) | 0 to 1
-     * lw | Line width | Greater than 0
-     * ra | Circle radius (meters) | Greater than 0.
+     *
+     * Modifier | Description | Type | Range
+     * :--------:|---------------|--------|----------
+     * lc | Line color | string | 000000 to FFFFFF
+     * fc | Fill color | string | 000000 to FFFFFF
+     * la | Line alpha (opacity) | float | 0 to 1
+     * fa | Fill alpha (opacity) | float | 0 to 1
+     * lw | Line width |int32 | (0, 50]
+     * ra | Circle radius (meters) | float | Greater than 0.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> getMapStaticImageAsync(RasterTileFormat format, StaticMapLayer layer, MapImageStyle style,
-        Integer zoom, List<Double> center, List<Double> boundingBoxPrivate, Integer height, Integer width,
-        String language, LocalizedMapView localizedMapView, List<String> pins, List<String> path) {
-        return getMapStaticImageWithResponseAsync(format, layer, style, zoom, center, boundingBoxPrivate, height, width,
-            language, localizedMapView, pins, path).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<BinaryData> getMapStaticImageAsync(TilesetId tilesetId, TrafficTilesetId trafficLayer, Integer zoom,
+        List<Double> center, List<Double> boundingBoxPrivate, Integer height, Integer width, String language,
+        LocalizedMapView localizedMapView, List<String> pins, List<String> path) {
+        return getMapStaticImageWithResponseAsync(tilesetId, trafficLayer, zoom, center, boundingBoxPrivate, height,
+            width, language, localizedMapView, pins, path).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Use to render a user-defined, rectangular image containing a map section using a zoom level ranging from 0 to 20.
-     * 
-     * 
-     * 
-     * The supported resolution range for the map image is from 1x1 to 8192x8192. If you are deciding when to use the
-     * static image service over the map tile service, you may want to consider how you would like to interact with the
-     * rendered map. If the map contents will be relatively unchanging, a static map is a good choice. If you want to
-     * support a lot of zooming, panning and changing of the map content, the map tile service would be a better choice.
-     * 
-     * Service also provides Image Composition functionality to get a static image back with additional data like;
-     * pushpins and geometry overlays with following capabilities.
-     * 
-     * - Specify multiple pushpin styles
-     * - Render circle, polyline and polygon geometry types.
-     * 
-     * Please see [How-to-Guide](https://aka.ms/AzureMapsHowToGuideImageCompositor) for detailed examples.
-     * 
-     * _Note_ : Either **center** or **bbox** parameter must be supplied to the
-     * API.
+     * This rendering API produces static, rasterized map views of a user-defined area. It's suitable for lightweight
+     * web applications, when the desired user experience doesn't require interactive map controls, or when bandwidth is
+     * limited. This API is also useful for embedding maps in applications outside of the browser, in backend services,
+     * report generation, or desktop applications.
+     *
+     * This API includes parameters for basic data visualization:
+     *
+     * - Labeled pushpins in multiple styles.
+     * - Render circle, path, and polygon geometry types.
+     *
+     * For more information and detailed examples, see [Render custom data on a raster
+     * map](/azure/azure-maps/how-to-render-custom-data).
      * &lt;br&gt;&lt;br&gt;
-     * The supported Lat and Lon ranges when using the **bbox** parameter, are as follows:
+     * The dimensions of the bbox parameter are constrained, depending on the zoom level. This ensures the resulting
+     * image has an appropriate level of detail.
      * &lt;br&gt;&lt;br&gt;
-     * 
-     * |Zoom Level | Max Lon Range | Max Lat Range|
-     * |:----------|:----------------|:-------------|
-     * |0 | 360.0 | 170.0 |
-     * |1 | 360.0 | 170.0 |
-     * |2 | 360.0 | 170.0 |
-     * |3 | 360.0 | 170.0 |
-     * |4 | 360.0 | 170.0 |
-     * |5 | 180.0 | 85.0 |
-     * |6 | 90.0 | 42.5 |
-     * |7 | 45.0 | 21.25 |
-     * |8 | 22.5 | 10.625 |
-     * |9 | 11.25 | 5.3125 |
-     * |10 | 5.625 | 2.62625 |
-     * |11 | 2.8125 | 1.328125 |
-     * |12 | 1.40625 | 0.6640625 |
-     * |13 | 0.703125 | 0.33203125 |
-     * |14 | 0.3515625 | 0.166015625 |
-     * |15 | 0.17578125 | 0.0830078125 |
-     * |16 | 0.087890625 | 0.0415039063 |
-     * |17 | 0.0439453125 | 0.0207519531 |
-     * |18 | 0.0219726563 | 0.0103759766 |
-     * |19 | 0.0109863281 | 0.0051879883 |
-     * |20 | 0.0054931641 | 0.0025939941 |.
-     * 
-     * @param format Desired format of the response. Possible value: png.
-     * @param layer Map layer requested. If layer is set to labels or hybrid, the format should be png.
-     * @param style Map style to be returned. Possible values are main and dark.
-     * @param zoom Desired zoom level of the map. Zoom value must be in the range: 0-20 (inclusive). Default value is
-     * 12.&lt;br&gt;&lt;br&gt;Please see [Zoom Levels and Tile
-     * Grid](https://docs.microsoft.com/azure/location-based-services/zoom-levels-and-tile-grid) for details.
-     * @param center Coordinates of the center point. Format: 'lon,lat'. Projection used
-     * - EPSG:3857. Longitude range: -180 to 180. Latitude range: -85 to 85.
-     * 
+     *
+     * |Zoom Level | Min Lon Range | Max Lon Range | Min Lat Range| Max Lat Range|
+     * |:----------|:----------------|:----------------|:----------------|:-------------|
+     * |0 | 56.25 | 360.0 | 30.1105585173 | 180.0 |
+     * |1 | 28.125 | 360.0 | 14.87468995 | 180.0 |
+     * |2 | 14.063 | 351.5625 | 7.4130741851 | 137.9576312246 |
+     * |3 | 7.03125 | 175.78125 | 3.7034501005 | 73.6354071932 |
+     * |4 | 3.515625 | 87.890625 | 1.8513375155 | 35.4776115315 |
+     * |5 | 1.7578125 | 43.9453125 | 0.925620264 | 17.4589959239 |
+     * |6 | 0.87890625 | 21.97265625 | 0.4628040687 | 8.6907788223 |
+     * |7 | 0.439453125 | 10.986328125 | 0.2314012764 | 4.3404320789 |
+     * |8 | 0.2197265625 | 5.4931640625 | 0.1157005434 | 2.1695927024 |
+     * |9 | 0.1098632812 | 2.7465820312 | 0.0578502599 | 1.0847183194 |
+     * |10 | 0.0549316406 | 1.3732910156 | 0.0289251285 | 0.5423494021 |
+     * |11 | 0.0274658203 | 0.6866455078 | 0.014462564 | 0.2711734813 |
+     * |12 | 0.0137329102 | 0.3433227539 | 0.007231282 | 0.1355865882 |
+     * |13 | 0.0068664551 | 0.171661377 | 0.003615641 | 0.067793275 |
+     * |14 | 0.0034332275 | 0.0858306885 | 0.0018078205 | 0.0338966351 |
+     * |15 | 0.0017166138 | 0.0429153442 | 0.0009039102 | 0.0169483173 |
+     * |16 | 0.0008583069 | 0.0214576721 | 0.0004519551 | 0.0084741586 |
+     * |17 | 0.0004291534 | 0.0107288361 | 0.0002259776 | 0.0042370793 |
+     * |18 | 0.0002145767 | 0.005364418 | 0.0001129888 | 0.0021185396 |
+     * |19 | 0.0001072884 | 0.002682209 | 5.64944E-05 | 0.0010592698 |
+     * |20 | 5.36442E-05 | 0.0013411045 | 2.82472E-05 | 0.0005296349 |
+     *
+     * _Note_ : Either **center** or **bbox** parameter must be supplied to the API.
+     *
+     * @param tilesetId Map style to be returned. Possible values are microsoft.base.road, microsoft.base.darkgrey, and
+     * microsoft.imagery. Default value is set to be microsoft.base.road. For more information, see [Render
+     * TilesetId](https://learn.microsoft.com/en-us/rest/api/maps/render/get-map-tileset?view=rest-maps-2023-06-01&amp;tabs=HTTP#tilesetid).
+     * @param trafficLayer Optional Value, indicating no traffic flow overlaid on the image result. Possible values are
+     * microsoft.traffic.relative.main and none. Default value is none, indicating no traffic flow returned. If traffic
+     * related tilesetId is provided, will return map image with corresponding traffic layer. For more information, see
+     * [Render
+     * TilesetId](https://learn.microsoft.com/en-us/rest/api/maps/render/get-map-tileset?view=rest-maps-2023-06-01&amp;tabs=HTTP#tilesetid).
+     * @param zoom Desired zoom level of the map. Support zoom value range from 0-20 (inclusive) for tilesetId being
+     * microsoft.base.road or microsoft.base.darkgrey. Support zoom value range from 0-19 (inclusive) for tilesetId
+     * being microsoft.imagery. Default value is 12.&lt;br&gt;&lt;br&gt;For more information, see [Zoom Levels and Tile
+     * Grid](https://docs.microsoft.com/azure/location-based-services/zoom-levels-and-tile-grid).
+     * @param center Coordinates of the center point in double. Format: 'lon,lat'. Longitude range: -180 to 180.
+     * Latitude range: -90 to 90.
+     *
      * Note: Either center or bbox are required parameters. They are
      * mutually exclusive.
-     * @param boundingBoxPrivate Bounding box. Projection used - EPSG:3857. Format : 'minLon, minLat,
-     * maxLon, maxLat'.
-     * 
+     * @param boundingBoxPrivate A bounding box is defined by two latitudes and two longitudes that represent the four
+     * sides of a rectangular area on the Earth. Format : 'minLon, minLat,
+     * maxLon, maxLat' (in double).
+     *
      * Note: Either bbox or center are required
-     * parameters. They are mutually exclusive. It shouldn’t be used with
+     * parameters. They are mutually exclusive. bbox shouldn’t be used with
      * height or width.
-     * 
-     * The maximum allowed ranges for Lat and Lon are defined for each zoom level
+     *
+     * The maximum and minimum allowed ranges for Lat and Lon are defined for each zoom level
      * in the table at the top of this page.
-     * @param height Height of the resulting image in pixels. Range is 1 to 8192. Default
+     * @param height Height of the resulting image in pixels. Range from 80 to 1500. Default
      * is 512. It shouldn’t be used with bbox.
-     * @param width Width of the resulting image in pixels. Range is 1 to 8192. Default is 512. It shouldn’t be used
+     * @param width Width of the resulting image in pixels. Range from 80 to 2000. Default is 512. It should not be used
      * with bbox.
      * @param language Language in which search results should be returned. Should be one of supported IETF language
      * tags, case insensitive. When data in specified language is not available for a specific field, default language
      * is used.
-     * 
+     *
      * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
      * details.
      * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
@@ -2487,72 +2501,76 @@ public final class RendersImpl {
      * used in compliance with applicable laws, including those regarding mapping, of the country/region where maps,
      * images and other data and third party content that you are authorized to access via Azure Maps is made available.
      * Example: view=IN.
-     * 
+     *
      * Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the available
      * Views.
      * @param pins Pushpin style and instances. Use this parameter to optionally add pushpins to the image.
      * The pushpin style describes the appearance of the pushpins, and the instances specify
-     * the coordinates of the pushpins and optional labels for each pin. (Be sure to properly URL-encode values of this
+     * the coordinates of the pushpins (in double) and optional labels for each pin. (Be sure to properly URL-encode
+     * values of this
      * parameter since it will contain reserved characters such as pipes and punctuation.)
-     * 
-     * The Azure Maps account S0 SKU only supports a single instance of the pins parameter. Other SKUs
-     * allow multiple instances of the pins parameter to specify multiple pin styles.
-     * 
+     *
+     * The Azure Maps account S0 SKU only supports a single instance of the pins parameter and the number of locations
+     * is limited to 5 per pin. Other SKUs
+     * allow up to 25 instances of the pins parameter to specify multiple pin styles, and the number of locations is
+     * limited to 50 per pin.
+     *
      * To render a pushpin at latitude 45°N and longitude 122°W using the default built-in pushpin style, add the
      * querystring parameter
-     * 
+     *
      * `pins=default||-122 45`
-     * 
+     *
      * Note that the longitude comes before the latitude.
      * After URL encoding this will look like
-     * 
+     *
      * `pins=default%7C%7C-122+45`
-     * 
+     *
      * All of the examples here show the pins
      * parameter without URL encoding, for clarity.
-     * 
+     *
      * To render a pin at multiple locations, separate each location with a pipe character. For example, use
-     * 
+     *
      * `pins=default||-122 45|-119.5 43.2|-121.67 47.12`
-     * 
+     *
      * The S0 Azure Maps account SKU only allows five pushpins. Other account SKUs do not have this limitation.
-     * 
+     *
      * ### Style Modifiers
-     * 
+     *
      * You can modify the appearance of the pins by adding style modifiers. These are added after the style but before
      * the locations and labels. Style modifiers each have a two-letter name. These abbreviated names are used to help
      * reduce the length of the URL.
-     * 
+     *
      * To change the color of the pushpin, use the 'co' style modifier and specify the color using the HTML/CSS RGB
      * color
      * format which is a six-digit hexadecimal number (the three-digit form is not supported). For example, to use
      * a deep pink color which you would specify as #FF1493 in CSS, use
-     * 
+     *
      * `pins=default|coFF1493||-122 45`
-     * 
+     *
      * ### Pushpin Labels
-     * 
-     * To add a label to the pins, put the label in single quotes just before the coordinates. For example, to label
+     *
+     * To add a label to the pins, put the label in single quotes just before the coordinates. Avoid using special
+     * character such as `|` or `||` in label. For example, to label
      * three pins with the values '1', '2', and '3', use
-     * 
+     *
      * `pins=default||'1'-122 45|'2'-119.5 43.2|'3'-121.67 47.12`
-     * 
-     * There is a built in pushpin style called 'none' that does not display a pushpin image. You can use this if
+     *
+     * There is a built-in pushpin style called 'none' that does not display a pushpin image. You can use this if
      * you want to display labels without any pin image. For example,
-     * 
+     *
      * `pins=none||'A'-122 45|'B'-119.5 43.2`
-     * 
+     *
      * To change the color of the pushpin labels, use the 'lc' label color style modifier. For example, to use pink
      * pushpins with black labels, use
-     * 
+     *
      * `pins=default|coFF1493|lc000000||-122 45`
-     * 
+     *
      * To change the size of the labels, use the 'ls' label size style modifier. The label size represents the
      * approximate
      * height of the label text in pixels. For example, to increase the label size to 12, use
-     * 
+     *
      * `pins=default|ls12||'A'-122 45|'B'-119 43`
-     * 
+     *
      * The labels are centered at the pushpin 'label anchor.' The anchor location is predefined for built-in pushpins
      * and
      * is at the top center of custom pushpins (see below). To override the label anchor, using the 'la' style modifier
@@ -2562,130 +2580,131 @@ public final class RendersImpl {
      * example,
      * to position the label anchor 10 pixels right and 4 pixels above the top left corner of the pushpin image,
      * use
-     * 
+     *
      * `pins=default|la10 -4||'A'-122 45|'B'-119 43`
-     * 
+     *
      * ### Custom Pushpins
-     * 
+     *
      * To use a custom pushpin image, use the word 'custom' as the pin style name, and then specify a URL after the
-     * location and label information. Use two pipe characters to indicate that you're done specifying locations and are
+     * location and label information. The maximum allowed size for a customized label image is 65,536 pixels. Use two
+     * pipe characters to indicate that you're done specifying locations and are
      * starting the URL. For example,
-     * 
+     *
      * `pins=custom||-122 45||http://contoso.com/pushpins/red.png`
-     * 
+     *
      * After URL encoding, this would look like
-     * 
+     *
      * `pins=custom%7C%7C-122+45%7C%7Chttp%3A%2F%2Fcontoso.com%2Fpushpins%2Fred.png`
-     * 
+     *
      * By default, custom pushpin images are drawn centered at the pin coordinates. This usually isn't ideal as it
      * obscures
      * the location that you're trying to highlight. To override the anchor location of the pin image, use the 'an'
      * style modifier. This uses the same format as the 'la' label anchor style modifier. For example, if your custom
      * pin image has the tip of the pin at the top left corner of the image, you can set the anchor to that spot by
      * using
-     * 
+     *
      * `pins=custom|an0 0||-122 45||http://contoso.com/pushpins/red.png`
-     * 
+     *
      * Note: If you use the 'co' color modifier with a custom pushpin image, the specified color will replace the RGB
      * channels of the pixels in the image but will leave the alpha (opacity) channel unchanged. This would usually
      * only be done with a solid-color custom image.
-     * 
+     *
      * ### Scale, Rotation, and Opacity
-     * 
+     *
      * You can make pushpins and their labels larger or smaller by using the 'sc' scale style modifier. This is a
      * value greater than zero. A value of 1 is the standard scale. Values larger than 1 will make the pins larger, and
      * values smaller than 1 will make them smaller. For example, to draw the pushpins 50% larger than normal, use
-     * 
+     *
      * `pins=default|sc1.5||-122 45`
-     * 
+     *
      * You can rotate pushpins and their labels by using the 'ro' rotation style modifier. This is a number of degrees
      * of clockwise rotation. Use a negative number to rotate counter-clockwise. For example, to rotate the pushpins
      * 90 degrees clockwise and double their size, use
-     * 
+     *
      * `pins=default|ro90|sc2||-122 45`
-     * 
+     *
      * You can make pushpins and their labels partially transparent by specifying the 'al' alpha style modifier.
      * This is a number between 0 and 1 indicating the opacity of the pushpins. Zero makes them completely transparent
      * (and not visible) and 1 makes them completely opaque (which is the default). For example, to make pushpins
      * and their labels only 67% opaque, use
-     * 
+     *
      * `pins=default|al.67||-122 45`
-     * 
+     *
      * ### Style Modifier Summary
-     * 
-     * Modifier | Description | Range
-     * :--------:|-----------------|------------------
-     * al | Alpha (opacity) | 0 to 1
-     * an | Pin anchor | *
-     * co | Pin color | 000000 to FFFFFF
-     * la | Label anchor | *
-     * lc | Label color | 000000 to FFFFFF
-     * ls | Label size | Greater than 0
-     * ro | Rotation | -360 to 360
-     * sc | Scale | Greater than 0
-     * 
+     *
+     * Modifier | Description | Type | Range
+     * :--------:|---------------|--------|----------
+     * al | Alpha (opacity) | float | 0 to 1
+     * an | Pin anchor | &lt;int32, int32&gt; | *
+     * co | Pin color | string | 000000 to FFFFFF
+     * la | Label anchor | &lt;int32, int32&gt; | *
+     * lc | Label color | string | 000000 to FFFFFF
+     * ls | Label size | float | Greater than 0
+     * ro | Rotation | float | -360 to 360
+     * sc | Scale | float | Greater than 0
+     *
      * * X and Y coordinates can be anywhere within pin image or a margin around it.
      * The margin size is the minimum of the pin width and height.
-     * @param path Path style and locations. Use this parameter to optionally add lines, polygons or circles to the
-     * image.
+     * @param path Path style and locations (in double). Use this parameter to optionally add lines, polygons or circles
+     * to the image.
      * The path style describes the appearance of the line and fill. (Be sure to properly URL-encode values of this
      * parameter since it will contain reserved characters such as pipes and punctuation.)
-     * 
+     *
      * Path parameter is supported in Azure Maps account SKU starting with S1. Multiple instances of the path parameter
      * allow to specify multiple geometries with their styles. Number of parameters per request is limited to 10 and
      * number of locations is limited to 100 per path.
-     * 
+     *
      * To render a circle with radius 100 meters and center point at latitude 45°N and longitude 122°W using the default
      * style, add the
      * querystring parameter
-     * 
+     *
      * `path=ra100||-122 45`
-     * 
+     *
      * Note that the longitude comes before the latitude.
      * After URL encoding this will look like
-     * 
+     *
      * `path=ra100%7C%7C-122+45`
-     * 
+     *
      * All of the examples here show the path parameter without URL encoding, for clarity.
-     * 
+     *
      * To render a line, separate each location with a pipe character. For example, use
-     * 
+     *
      * `path=||-122 45|-119.5 43.2|-121.67 47.12`
-     * 
-     * To render a polygon, last location must be equal to the start location. For example, use
-     * 
+     *
+     * A polygon is specified with a closed path, where the first and last points are equal. For example, use
+     *
      * `path=||-122 45|-119.5 43.2|-121.67 47.12|-122 45`
-     * 
-     * Longitude and latitude values for locations of lines and polygons can be in the range from -360 to 360 to allow
-     * for rendering of geometries crossing the anti-meridian.
-     * 
+     *
+     * Longitude value for locations of lines and polygons can be in the range from -360 to 360 to allow for rendering
+     * of geometries crossing the anti-meridian.
+     *
      * ### Style Modifiers
-     * 
+     *
      * You can modify the appearance of the path by adding style modifiers. These are added before the locations.
      * Style modifiers each have a two-letter name. These abbreviated names are used to help reduce the length
      * of the URL.
-     * 
+     *
      * To change the color of the outline, use the 'lc' style modifier and specify the color using the HTML/CSS RGB
      * color
      * format which is a six-digit hexadecimal number (the three-digit form is not supported). For example, to use
      * a deep pink color which you would specify as #FF1493 in CSS, use
-     * 
+     *
      * `path=lcFF1493||-122 45|-119.5 43.2`
-     * 
-     * Multiple style modifiers may be combined together to create a more complex visual style.
-     * 
+     *
+     * Multiple style modifiers may be combined to create a more complex visual style.
+     *
      * `lc0000FF|lw3|la0.60|fa0.50||-122.2 47.6|-122.2 47.7|-122.3 47.7|-122.3 47.6|-122.2 47.6`
-     * 
+     *
      * ### Style Modifier Summary
-     * 
-     * Modifier | Description | Range
-     * :--------:|------------------------|------------------
-     * lc | Line color | 000000 to FFFFFF
-     * fc | Fill color | 000000 to FFFFFF
-     * la | Line alpha (opacity) | 0 to 1
-     * fa | Fill alpha (opacity) | 0 to 1
-     * lw | Line width | Greater than 0
-     * ra | Circle radius (meters) | Greater than 0.
+     *
+     * Modifier | Description | Type | Range
+     * :--------:|---------------|--------|----------
+     * lc | Line color | string | 000000 to FFFFFF
+     * fc | Fill color | string | 000000 to FFFFFF
+     * la | Line alpha (opacity) | float | 0 to 1
+     * fa | Fill alpha (opacity) | float | 0 to 1
+     * lw | Line width |int32 | (0, 50]
+     * ra | Circle radius (meters) | float | Greater than 0.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -2693,89 +2712,92 @@ public final class RendersImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> getMapStaticImageAsync(RasterTileFormat format, StaticMapLayer layer, MapImageStyle style,
-        Integer zoom, List<Double> center, List<Double> boundingBoxPrivate, Integer height, Integer width,
-        String language, LocalizedMapView localizedMapView, List<String> pins, List<String> path, Context context) {
-        return getMapStaticImageWithResponseAsync(format, layer, style, zoom, center, boundingBoxPrivate, height, width,
-            language, localizedMapView, pins, path, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<BinaryData> getMapStaticImageAsync(TilesetId tilesetId, TrafficTilesetId trafficLayer, Integer zoom,
+        List<Double> center, List<Double> boundingBoxPrivate, Integer height, Integer width, String language,
+        LocalizedMapView localizedMapView, List<String> pins, List<String> path, Context context) {
+        return getMapStaticImageWithResponseAsync(tilesetId, trafficLayer, zoom, center, boundingBoxPrivate, height,
+            width, language, localizedMapView, pins, path, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Use to render a user-defined, rectangular image containing a map section using a zoom level ranging from 0 to 20.
-     * 
-     * 
-     * 
-     * The supported resolution range for the map image is from 1x1 to 8192x8192. If you are deciding when to use the
-     * static image service over the map tile service, you may want to consider how you would like to interact with the
-     * rendered map. If the map contents will be relatively unchanging, a static map is a good choice. If you want to
-     * support a lot of zooming, panning and changing of the map content, the map tile service would be a better choice.
-     * 
-     * Service also provides Image Composition functionality to get a static image back with additional data like;
-     * pushpins and geometry overlays with following capabilities.
-     * 
-     * - Specify multiple pushpin styles
-     * - Render circle, polyline and polygon geometry types.
-     * 
-     * Please see [How-to-Guide](https://aka.ms/AzureMapsHowToGuideImageCompositor) for detailed examples.
-     * 
-     * _Note_ : Either **center** or **bbox** parameter must be supplied to the
-     * API.
+     * This rendering API produces static, rasterized map views of a user-defined area. It's suitable for lightweight
+     * web applications, when the desired user experience doesn't require interactive map controls, or when bandwidth is
+     * limited. This API is also useful for embedding maps in applications outside of the browser, in backend services,
+     * report generation, or desktop applications.
+     *
+     * This API includes parameters for basic data visualization:
+     *
+     * - Labeled pushpins in multiple styles.
+     * - Render circle, path, and polygon geometry types.
+     *
+     * For more information and detailed examples, see [Render custom data on a raster
+     * map](/azure/azure-maps/how-to-render-custom-data).
      * &lt;br&gt;&lt;br&gt;
-     * The supported Lat and Lon ranges when using the **bbox** parameter, are as follows:
+     * The dimensions of the bbox parameter are constrained, depending on the zoom level. This ensures the resulting
+     * image has an appropriate level of detail.
      * &lt;br&gt;&lt;br&gt;
-     * 
-     * |Zoom Level | Max Lon Range | Max Lat Range|
-     * |:----------|:----------------|:-------------|
-     * |0 | 360.0 | 170.0 |
-     * |1 | 360.0 | 170.0 |
-     * |2 | 360.0 | 170.0 |
-     * |3 | 360.0 | 170.0 |
-     * |4 | 360.0 | 170.0 |
-     * |5 | 180.0 | 85.0 |
-     * |6 | 90.0 | 42.5 |
-     * |7 | 45.0 | 21.25 |
-     * |8 | 22.5 | 10.625 |
-     * |9 | 11.25 | 5.3125 |
-     * |10 | 5.625 | 2.62625 |
-     * |11 | 2.8125 | 1.328125 |
-     * |12 | 1.40625 | 0.6640625 |
-     * |13 | 0.703125 | 0.33203125 |
-     * |14 | 0.3515625 | 0.166015625 |
-     * |15 | 0.17578125 | 0.0830078125 |
-     * |16 | 0.087890625 | 0.0415039063 |
-     * |17 | 0.0439453125 | 0.0207519531 |
-     * |18 | 0.0219726563 | 0.0103759766 |
-     * |19 | 0.0109863281 | 0.0051879883 |
-     * |20 | 0.0054931641 | 0.0025939941 |.
-     * 
-     * @param format Desired format of the response. Possible value: png.
-     * @param layer Map layer requested. If layer is set to labels or hybrid, the format should be png.
-     * @param style Map style to be returned. Possible values are main and dark.
-     * @param zoom Desired zoom level of the map. Zoom value must be in the range: 0-20 (inclusive). Default value is
-     * 12.&lt;br&gt;&lt;br&gt;Please see [Zoom Levels and Tile
-     * Grid](https://docs.microsoft.com/azure/location-based-services/zoom-levels-and-tile-grid) for details.
-     * @param center Coordinates of the center point. Format: 'lon,lat'. Projection used
-     * - EPSG:3857. Longitude range: -180 to 180. Latitude range: -85 to 85.
-     * 
+     *
+     * |Zoom Level | Min Lon Range | Max Lon Range | Min Lat Range| Max Lat Range|
+     * |:----------|:----------------|:----------------|:----------------|:-------------|
+     * |0 | 56.25 | 360.0 | 30.1105585173 | 180.0 |
+     * |1 | 28.125 | 360.0 | 14.87468995 | 180.0 |
+     * |2 | 14.063 | 351.5625 | 7.4130741851 | 137.9576312246 |
+     * |3 | 7.03125 | 175.78125 | 3.7034501005 | 73.6354071932 |
+     * |4 | 3.515625 | 87.890625 | 1.8513375155 | 35.4776115315 |
+     * |5 | 1.7578125 | 43.9453125 | 0.925620264 | 17.4589959239 |
+     * |6 | 0.87890625 | 21.97265625 | 0.4628040687 | 8.6907788223 |
+     * |7 | 0.439453125 | 10.986328125 | 0.2314012764 | 4.3404320789 |
+     * |8 | 0.2197265625 | 5.4931640625 | 0.1157005434 | 2.1695927024 |
+     * |9 | 0.1098632812 | 2.7465820312 | 0.0578502599 | 1.0847183194 |
+     * |10 | 0.0549316406 | 1.3732910156 | 0.0289251285 | 0.5423494021 |
+     * |11 | 0.0274658203 | 0.6866455078 | 0.014462564 | 0.2711734813 |
+     * |12 | 0.0137329102 | 0.3433227539 | 0.007231282 | 0.1355865882 |
+     * |13 | 0.0068664551 | 0.171661377 | 0.003615641 | 0.067793275 |
+     * |14 | 0.0034332275 | 0.0858306885 | 0.0018078205 | 0.0338966351 |
+     * |15 | 0.0017166138 | 0.0429153442 | 0.0009039102 | 0.0169483173 |
+     * |16 | 0.0008583069 | 0.0214576721 | 0.0004519551 | 0.0084741586 |
+     * |17 | 0.0004291534 | 0.0107288361 | 0.0002259776 | 0.0042370793 |
+     * |18 | 0.0002145767 | 0.005364418 | 0.0001129888 | 0.0021185396 |
+     * |19 | 0.0001072884 | 0.002682209 | 5.64944E-05 | 0.0010592698 |
+     * |20 | 5.36442E-05 | 0.0013411045 | 2.82472E-05 | 0.0005296349 |
+     *
+     * _Note_ : Either **center** or **bbox** parameter must be supplied to the API.
+     *
+     * @param tilesetId Map style to be returned. Possible values are microsoft.base.road, microsoft.base.darkgrey, and
+     * microsoft.imagery. Default value is set to be microsoft.base.road. For more information, see [Render
+     * TilesetId](https://learn.microsoft.com/en-us/rest/api/maps/render/get-map-tileset?view=rest-maps-2023-06-01&amp;tabs=HTTP#tilesetid).
+     * @param trafficLayer Optional Value, indicating no traffic flow overlaid on the image result. Possible values are
+     * microsoft.traffic.relative.main and none. Default value is none, indicating no traffic flow returned. If traffic
+     * related tilesetId is provided, will return map image with corresponding traffic layer. For more information, see
+     * [Render
+     * TilesetId](https://learn.microsoft.com/en-us/rest/api/maps/render/get-map-tileset?view=rest-maps-2023-06-01&amp;tabs=HTTP#tilesetid).
+     * @param zoom Desired zoom level of the map. Support zoom value range from 0-20 (inclusive) for tilesetId being
+     * microsoft.base.road or microsoft.base.darkgrey. Support zoom value range from 0-19 (inclusive) for tilesetId
+     * being microsoft.imagery. Default value is 12.&lt;br&gt;&lt;br&gt;For more information, see [Zoom Levels and Tile
+     * Grid](https://docs.microsoft.com/azure/location-based-services/zoom-levels-and-tile-grid).
+     * @param center Coordinates of the center point in double. Format: 'lon,lat'. Longitude range: -180 to 180.
+     * Latitude range: -90 to 90.
+     *
      * Note: Either center or bbox are required parameters. They are
      * mutually exclusive.
-     * @param boundingBoxPrivate Bounding box. Projection used - EPSG:3857. Format : 'minLon, minLat,
-     * maxLon, maxLat'.
-     * 
+     * @param boundingBoxPrivate A bounding box is defined by two latitudes and two longitudes that represent the four
+     * sides of a rectangular area on the Earth. Format : 'minLon, minLat,
+     * maxLon, maxLat' (in double).
+     *
      * Note: Either bbox or center are required
-     * parameters. They are mutually exclusive. It shouldn’t be used with
+     * parameters. They are mutually exclusive. bbox shouldn’t be used with
      * height or width.
-     * 
-     * The maximum allowed ranges for Lat and Lon are defined for each zoom level
+     *
+     * The maximum and minimum allowed ranges for Lat and Lon are defined for each zoom level
      * in the table at the top of this page.
-     * @param height Height of the resulting image in pixels. Range is 1 to 8192. Default
+     * @param height Height of the resulting image in pixels. Range from 80 to 1500. Default
      * is 512. It shouldn’t be used with bbox.
-     * @param width Width of the resulting image in pixels. Range is 1 to 8192. Default is 512. It shouldn’t be used
+     * @param width Width of the resulting image in pixels. Range from 80 to 2000. Default is 512. It should not be used
      * with bbox.
      * @param language Language in which search results should be returned. Should be one of supported IETF language
      * tags, case insensitive. When data in specified language is not available for a specific field, default language
      * is used.
-     * 
+     *
      * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
      * details.
      * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
@@ -2788,72 +2810,76 @@ public final class RendersImpl {
      * used in compliance with applicable laws, including those regarding mapping, of the country/region where maps,
      * images and other data and third party content that you are authorized to access via Azure Maps is made available.
      * Example: view=IN.
-     * 
+     *
      * Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the available
      * Views.
      * @param pins Pushpin style and instances. Use this parameter to optionally add pushpins to the image.
      * The pushpin style describes the appearance of the pushpins, and the instances specify
-     * the coordinates of the pushpins and optional labels for each pin. (Be sure to properly URL-encode values of this
+     * the coordinates of the pushpins (in double) and optional labels for each pin. (Be sure to properly URL-encode
+     * values of this
      * parameter since it will contain reserved characters such as pipes and punctuation.)
-     * 
-     * The Azure Maps account S0 SKU only supports a single instance of the pins parameter. Other SKUs
-     * allow multiple instances of the pins parameter to specify multiple pin styles.
-     * 
+     *
+     * The Azure Maps account S0 SKU only supports a single instance of the pins parameter and the number of locations
+     * is limited to 5 per pin. Other SKUs
+     * allow up to 25 instances of the pins parameter to specify multiple pin styles, and the number of locations is
+     * limited to 50 per pin.
+     *
      * To render a pushpin at latitude 45°N and longitude 122°W using the default built-in pushpin style, add the
      * querystring parameter
-     * 
+     *
      * `pins=default||-122 45`
-     * 
+     *
      * Note that the longitude comes before the latitude.
      * After URL encoding this will look like
-     * 
+     *
      * `pins=default%7C%7C-122+45`
-     * 
+     *
      * All of the examples here show the pins
      * parameter without URL encoding, for clarity.
-     * 
+     *
      * To render a pin at multiple locations, separate each location with a pipe character. For example, use
-     * 
+     *
      * `pins=default||-122 45|-119.5 43.2|-121.67 47.12`
-     * 
+     *
      * The S0 Azure Maps account SKU only allows five pushpins. Other account SKUs do not have this limitation.
-     * 
+     *
      * ### Style Modifiers
-     * 
+     *
      * You can modify the appearance of the pins by adding style modifiers. These are added after the style but before
      * the locations and labels. Style modifiers each have a two-letter name. These abbreviated names are used to help
      * reduce the length of the URL.
-     * 
+     *
      * To change the color of the pushpin, use the 'co' style modifier and specify the color using the HTML/CSS RGB
      * color
      * format which is a six-digit hexadecimal number (the three-digit form is not supported). For example, to use
      * a deep pink color which you would specify as #FF1493 in CSS, use
-     * 
+     *
      * `pins=default|coFF1493||-122 45`
-     * 
+     *
      * ### Pushpin Labels
-     * 
-     * To add a label to the pins, put the label in single quotes just before the coordinates. For example, to label
+     *
+     * To add a label to the pins, put the label in single quotes just before the coordinates. Avoid using special
+     * character such as `|` or `||` in label. For example, to label
      * three pins with the values '1', '2', and '3', use
-     * 
+     *
      * `pins=default||'1'-122 45|'2'-119.5 43.2|'3'-121.67 47.12`
-     * 
-     * There is a built in pushpin style called 'none' that does not display a pushpin image. You can use this if
+     *
+     * There is a built-in pushpin style called 'none' that does not display a pushpin image. You can use this if
      * you want to display labels without any pin image. For example,
-     * 
+     *
      * `pins=none||'A'-122 45|'B'-119.5 43.2`
-     * 
+     *
      * To change the color of the pushpin labels, use the 'lc' label color style modifier. For example, to use pink
      * pushpins with black labels, use
-     * 
+     *
      * `pins=default|coFF1493|lc000000||-122 45`
-     * 
+     *
      * To change the size of the labels, use the 'ls' label size style modifier. The label size represents the
      * approximate
      * height of the label text in pixels. For example, to increase the label size to 12, use
-     * 
+     *
      * `pins=default|ls12||'A'-122 45|'B'-119 43`
-     * 
+     *
      * The labels are centered at the pushpin 'label anchor.' The anchor location is predefined for built-in pushpins
      * and
      * is at the top center of custom pushpins (see below). To override the label anchor, using the 'la' style modifier
@@ -2863,130 +2889,131 @@ public final class RendersImpl {
      * example,
      * to position the label anchor 10 pixels right and 4 pixels above the top left corner of the pushpin image,
      * use
-     * 
+     *
      * `pins=default|la10 -4||'A'-122 45|'B'-119 43`
-     * 
+     *
      * ### Custom Pushpins
-     * 
+     *
      * To use a custom pushpin image, use the word 'custom' as the pin style name, and then specify a URL after the
-     * location and label information. Use two pipe characters to indicate that you're done specifying locations and are
+     * location and label information. The maximum allowed size for a customized label image is 65,536 pixels. Use two
+     * pipe characters to indicate that you're done specifying locations and are
      * starting the URL. For example,
-     * 
+     *
      * `pins=custom||-122 45||http://contoso.com/pushpins/red.png`
-     * 
+     *
      * After URL encoding, this would look like
-     * 
+     *
      * `pins=custom%7C%7C-122+45%7C%7Chttp%3A%2F%2Fcontoso.com%2Fpushpins%2Fred.png`
-     * 
+     *
      * By default, custom pushpin images are drawn centered at the pin coordinates. This usually isn't ideal as it
      * obscures
      * the location that you're trying to highlight. To override the anchor location of the pin image, use the 'an'
      * style modifier. This uses the same format as the 'la' label anchor style modifier. For example, if your custom
      * pin image has the tip of the pin at the top left corner of the image, you can set the anchor to that spot by
      * using
-     * 
+     *
      * `pins=custom|an0 0||-122 45||http://contoso.com/pushpins/red.png`
-     * 
+     *
      * Note: If you use the 'co' color modifier with a custom pushpin image, the specified color will replace the RGB
      * channels of the pixels in the image but will leave the alpha (opacity) channel unchanged. This would usually
      * only be done with a solid-color custom image.
-     * 
+     *
      * ### Scale, Rotation, and Opacity
-     * 
+     *
      * You can make pushpins and their labels larger or smaller by using the 'sc' scale style modifier. This is a
      * value greater than zero. A value of 1 is the standard scale. Values larger than 1 will make the pins larger, and
      * values smaller than 1 will make them smaller. For example, to draw the pushpins 50% larger than normal, use
-     * 
+     *
      * `pins=default|sc1.5||-122 45`
-     * 
+     *
      * You can rotate pushpins and their labels by using the 'ro' rotation style modifier. This is a number of degrees
      * of clockwise rotation. Use a negative number to rotate counter-clockwise. For example, to rotate the pushpins
      * 90 degrees clockwise and double their size, use
-     * 
+     *
      * `pins=default|ro90|sc2||-122 45`
-     * 
+     *
      * You can make pushpins and their labels partially transparent by specifying the 'al' alpha style modifier.
      * This is a number between 0 and 1 indicating the opacity of the pushpins. Zero makes them completely transparent
      * (and not visible) and 1 makes them completely opaque (which is the default). For example, to make pushpins
      * and their labels only 67% opaque, use
-     * 
+     *
      * `pins=default|al.67||-122 45`
-     * 
+     *
      * ### Style Modifier Summary
-     * 
-     * Modifier | Description | Range
-     * :--------:|-----------------|------------------
-     * al | Alpha (opacity) | 0 to 1
-     * an | Pin anchor | *
-     * co | Pin color | 000000 to FFFFFF
-     * la | Label anchor | *
-     * lc | Label color | 000000 to FFFFFF
-     * ls | Label size | Greater than 0
-     * ro | Rotation | -360 to 360
-     * sc | Scale | Greater than 0
-     * 
+     *
+     * Modifier | Description | Type | Range
+     * :--------:|---------------|--------|----------
+     * al | Alpha (opacity) | float | 0 to 1
+     * an | Pin anchor | &lt;int32, int32&gt; | *
+     * co | Pin color | string | 000000 to FFFFFF
+     * la | Label anchor | &lt;int32, int32&gt; | *
+     * lc | Label color | string | 000000 to FFFFFF
+     * ls | Label size | float | Greater than 0
+     * ro | Rotation | float | -360 to 360
+     * sc | Scale | float | Greater than 0
+     *
      * * X and Y coordinates can be anywhere within pin image or a margin around it.
      * The margin size is the minimum of the pin width and height.
-     * @param path Path style and locations. Use this parameter to optionally add lines, polygons or circles to the
-     * image.
+     * @param path Path style and locations (in double). Use this parameter to optionally add lines, polygons or circles
+     * to the image.
      * The path style describes the appearance of the line and fill. (Be sure to properly URL-encode values of this
      * parameter since it will contain reserved characters such as pipes and punctuation.)
-     * 
+     *
      * Path parameter is supported in Azure Maps account SKU starting with S1. Multiple instances of the path parameter
      * allow to specify multiple geometries with their styles. Number of parameters per request is limited to 10 and
      * number of locations is limited to 100 per path.
-     * 
+     *
      * To render a circle with radius 100 meters and center point at latitude 45°N and longitude 122°W using the default
      * style, add the
      * querystring parameter
-     * 
+     *
      * `path=ra100||-122 45`
-     * 
+     *
      * Note that the longitude comes before the latitude.
      * After URL encoding this will look like
-     * 
+     *
      * `path=ra100%7C%7C-122+45`
-     * 
+     *
      * All of the examples here show the path parameter without URL encoding, for clarity.
-     * 
+     *
      * To render a line, separate each location with a pipe character. For example, use
-     * 
+     *
      * `path=||-122 45|-119.5 43.2|-121.67 47.12`
-     * 
-     * To render a polygon, last location must be equal to the start location. For example, use
-     * 
+     *
+     * A polygon is specified with a closed path, where the first and last points are equal. For example, use
+     *
      * `path=||-122 45|-119.5 43.2|-121.67 47.12|-122 45`
-     * 
-     * Longitude and latitude values for locations of lines and polygons can be in the range from -360 to 360 to allow
-     * for rendering of geometries crossing the anti-meridian.
-     * 
+     *
+     * Longitude value for locations of lines and polygons can be in the range from -360 to 360 to allow for rendering
+     * of geometries crossing the anti-meridian.
+     *
      * ### Style Modifiers
-     * 
+     *
      * You can modify the appearance of the path by adding style modifiers. These are added before the locations.
      * Style modifiers each have a two-letter name. These abbreviated names are used to help reduce the length
      * of the URL.
-     * 
+     *
      * To change the color of the outline, use the 'lc' style modifier and specify the color using the HTML/CSS RGB
      * color
      * format which is a six-digit hexadecimal number (the three-digit form is not supported). For example, to use
      * a deep pink color which you would specify as #FF1493 in CSS, use
-     * 
+     *
      * `path=lcFF1493||-122 45|-119.5 43.2`
-     * 
-     * Multiple style modifiers may be combined together to create a more complex visual style.
-     * 
+     *
+     * Multiple style modifiers may be combined to create a more complex visual style.
+     *
      * `lc0000FF|lw3|la0.60|fa0.50||-122.2 47.6|-122.2 47.7|-122.3 47.7|-122.3 47.6|-122.2 47.6`
-     * 
+     *
      * ### Style Modifier Summary
-     * 
-     * Modifier | Description | Range
-     * :--------:|------------------------|------------------
-     * lc | Line color | 000000 to FFFFFF
-     * fc | Fill color | 000000 to FFFFFF
-     * la | Line alpha (opacity) | 0 to 1
-     * fa | Fill alpha (opacity) | 0 to 1
-     * lw | Line width | Greater than 0
-     * ra | Circle radius (meters) | Greater than 0.
+     *
+     * Modifier | Description | Type | Range
+     * :--------:|---------------|--------|----------
+     * lc | Line color | string | 000000 to FFFFFF
+     * fc | Fill color | string | 000000 to FFFFFF
+     * la | Line alpha (opacity) | float | 0 to 1
+     * fa | Fill alpha (opacity) | float | 0 to 1
+     * lw | Line width |int32 | (0, 50]
+     * ra | Circle radius (meters) | float | Greater than 0.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -2994,90 +3021,93 @@ public final class RendersImpl {
      * @return the response body along with {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<RendersGetMapStaticImageHeaders, BinaryData> getMapStaticImageWithResponse(
-        RasterTileFormat format, StaticMapLayer layer, MapImageStyle style, Integer zoom, List<Double> center,
-        List<Double> boundingBoxPrivate, Integer height, Integer width, String language,
-        LocalizedMapView localizedMapView, List<String> pins, List<String> path, Context context) {
-        return getMapStaticImageWithResponseAsync(format, layer, style, zoom, center, boundingBoxPrivate, height, width,
-            language, localizedMapView, pins, path, context).block();
+    public ResponseBase<RendersGetMapStaticImageHeaders, BinaryData> getMapStaticImageWithResponse(TilesetId tilesetId,
+        TrafficTilesetId trafficLayer, Integer zoom, List<Double> center, List<Double> boundingBoxPrivate,
+        Integer height, Integer width, String language, LocalizedMapView localizedMapView, List<String> pins,
+        List<String> path, Context context) {
+        return getMapStaticImageWithResponseAsync(tilesetId, trafficLayer, zoom, center, boundingBoxPrivate, height,
+            width, language, localizedMapView, pins, path, context).block();
     }
 
     /**
-     * Use to render a user-defined, rectangular image containing a map section using a zoom level ranging from 0 to 20.
-     * 
-     * 
-     * 
-     * The supported resolution range for the map image is from 1x1 to 8192x8192. If you are deciding when to use the
-     * static image service over the map tile service, you may want to consider how you would like to interact with the
-     * rendered map. If the map contents will be relatively unchanging, a static map is a good choice. If you want to
-     * support a lot of zooming, panning and changing of the map content, the map tile service would be a better choice.
-     * 
-     * Service also provides Image Composition functionality to get a static image back with additional data like;
-     * pushpins and geometry overlays with following capabilities.
-     * 
-     * - Specify multiple pushpin styles
-     * - Render circle, polyline and polygon geometry types.
-     * 
-     * Please see [How-to-Guide](https://aka.ms/AzureMapsHowToGuideImageCompositor) for detailed examples.
-     * 
-     * _Note_ : Either **center** or **bbox** parameter must be supplied to the
-     * API.
+     * This rendering API produces static, rasterized map views of a user-defined area. It's suitable for lightweight
+     * web applications, when the desired user experience doesn't require interactive map controls, or when bandwidth is
+     * limited. This API is also useful for embedding maps in applications outside of the browser, in backend services,
+     * report generation, or desktop applications.
+     *
+     * This API includes parameters for basic data visualization:
+     *
+     * - Labeled pushpins in multiple styles.
+     * - Render circle, path, and polygon geometry types.
+     *
+     * For more information and detailed examples, see [Render custom data on a raster
+     * map](/azure/azure-maps/how-to-render-custom-data).
      * &lt;br&gt;&lt;br&gt;
-     * The supported Lat and Lon ranges when using the **bbox** parameter, are as follows:
+     * The dimensions of the bbox parameter are constrained, depending on the zoom level. This ensures the resulting
+     * image has an appropriate level of detail.
      * &lt;br&gt;&lt;br&gt;
-     * 
-     * |Zoom Level | Max Lon Range | Max Lat Range|
-     * |:----------|:----------------|:-------------|
-     * |0 | 360.0 | 170.0 |
-     * |1 | 360.0 | 170.0 |
-     * |2 | 360.0 | 170.0 |
-     * |3 | 360.0 | 170.0 |
-     * |4 | 360.0 | 170.0 |
-     * |5 | 180.0 | 85.0 |
-     * |6 | 90.0 | 42.5 |
-     * |7 | 45.0 | 21.25 |
-     * |8 | 22.5 | 10.625 |
-     * |9 | 11.25 | 5.3125 |
-     * |10 | 5.625 | 2.62625 |
-     * |11 | 2.8125 | 1.328125 |
-     * |12 | 1.40625 | 0.6640625 |
-     * |13 | 0.703125 | 0.33203125 |
-     * |14 | 0.3515625 | 0.166015625 |
-     * |15 | 0.17578125 | 0.0830078125 |
-     * |16 | 0.087890625 | 0.0415039063 |
-     * |17 | 0.0439453125 | 0.0207519531 |
-     * |18 | 0.0219726563 | 0.0103759766 |
-     * |19 | 0.0109863281 | 0.0051879883 |
-     * |20 | 0.0054931641 | 0.0025939941 |.
-     * 
-     * @param format Desired format of the response. Possible value: png.
-     * @param layer Map layer requested. If layer is set to labels or hybrid, the format should be png.
-     * @param style Map style to be returned. Possible values are main and dark.
-     * @param zoom Desired zoom level of the map. Zoom value must be in the range: 0-20 (inclusive). Default value is
-     * 12.&lt;br&gt;&lt;br&gt;Please see [Zoom Levels and Tile
-     * Grid](https://docs.microsoft.com/azure/location-based-services/zoom-levels-and-tile-grid) for details.
-     * @param center Coordinates of the center point. Format: 'lon,lat'. Projection used
-     * - EPSG:3857. Longitude range: -180 to 180. Latitude range: -85 to 85.
-     * 
+     *
+     * |Zoom Level | Min Lon Range | Max Lon Range | Min Lat Range| Max Lat Range|
+     * |:----------|:----------------|:----------------|:----------------|:-------------|
+     * |0 | 56.25 | 360.0 | 30.1105585173 | 180.0 |
+     * |1 | 28.125 | 360.0 | 14.87468995 | 180.0 |
+     * |2 | 14.063 | 351.5625 | 7.4130741851 | 137.9576312246 |
+     * |3 | 7.03125 | 175.78125 | 3.7034501005 | 73.6354071932 |
+     * |4 | 3.515625 | 87.890625 | 1.8513375155 | 35.4776115315 |
+     * |5 | 1.7578125 | 43.9453125 | 0.925620264 | 17.4589959239 |
+     * |6 | 0.87890625 | 21.97265625 | 0.4628040687 | 8.6907788223 |
+     * |7 | 0.439453125 | 10.986328125 | 0.2314012764 | 4.3404320789 |
+     * |8 | 0.2197265625 | 5.4931640625 | 0.1157005434 | 2.1695927024 |
+     * |9 | 0.1098632812 | 2.7465820312 | 0.0578502599 | 1.0847183194 |
+     * |10 | 0.0549316406 | 1.3732910156 | 0.0289251285 | 0.5423494021 |
+     * |11 | 0.0274658203 | 0.6866455078 | 0.014462564 | 0.2711734813 |
+     * |12 | 0.0137329102 | 0.3433227539 | 0.007231282 | 0.1355865882 |
+     * |13 | 0.0068664551 | 0.171661377 | 0.003615641 | 0.067793275 |
+     * |14 | 0.0034332275 | 0.0858306885 | 0.0018078205 | 0.0338966351 |
+     * |15 | 0.0017166138 | 0.0429153442 | 0.0009039102 | 0.0169483173 |
+     * |16 | 0.0008583069 | 0.0214576721 | 0.0004519551 | 0.0084741586 |
+     * |17 | 0.0004291534 | 0.0107288361 | 0.0002259776 | 0.0042370793 |
+     * |18 | 0.0002145767 | 0.005364418 | 0.0001129888 | 0.0021185396 |
+     * |19 | 0.0001072884 | 0.002682209 | 5.64944E-05 | 0.0010592698 |
+     * |20 | 5.36442E-05 | 0.0013411045 | 2.82472E-05 | 0.0005296349 |
+     *
+     * _Note_ : Either **center** or **bbox** parameter must be supplied to the API.
+     *
+     * @param tilesetId Map style to be returned. Possible values are microsoft.base.road, microsoft.base.darkgrey, and
+     * microsoft.imagery. Default value is set to be microsoft.base.road. For more information, see [Render
+     * TilesetId](https://learn.microsoft.com/en-us/rest/api/maps/render/get-map-tileset?view=rest-maps-2023-06-01&amp;tabs=HTTP#tilesetid).
+     * @param trafficLayer Optional Value, indicating no traffic flow overlaid on the image result. Possible values are
+     * microsoft.traffic.relative.main and none. Default value is none, indicating no traffic flow returned. If traffic
+     * related tilesetId is provided, will return map image with corresponding traffic layer. For more information, see
+     * [Render
+     * TilesetId](https://learn.microsoft.com/en-us/rest/api/maps/render/get-map-tileset?view=rest-maps-2023-06-01&amp;tabs=HTTP#tilesetid).
+     * @param zoom Desired zoom level of the map. Support zoom value range from 0-20 (inclusive) for tilesetId being
+     * microsoft.base.road or microsoft.base.darkgrey. Support zoom value range from 0-19 (inclusive) for tilesetId
+     * being microsoft.imagery. Default value is 12.&lt;br&gt;&lt;br&gt;For more information, see [Zoom Levels and Tile
+     * Grid](https://docs.microsoft.com/azure/location-based-services/zoom-levels-and-tile-grid).
+     * @param center Coordinates of the center point in double. Format: 'lon,lat'. Longitude range: -180 to 180.
+     * Latitude range: -90 to 90.
+     *
      * Note: Either center or bbox are required parameters. They are
      * mutually exclusive.
-     * @param boundingBoxPrivate Bounding box. Projection used - EPSG:3857. Format : 'minLon, minLat,
-     * maxLon, maxLat'.
-     * 
+     * @param boundingBoxPrivate A bounding box is defined by two latitudes and two longitudes that represent the four
+     * sides of a rectangular area on the Earth. Format : 'minLon, minLat,
+     * maxLon, maxLat' (in double).
+     *
      * Note: Either bbox or center are required
-     * parameters. They are mutually exclusive. It shouldn’t be used with
+     * parameters. They are mutually exclusive. bbox shouldn’t be used with
      * height or width.
-     * 
-     * The maximum allowed ranges for Lat and Lon are defined for each zoom level
+     *
+     * The maximum and minimum allowed ranges for Lat and Lon are defined for each zoom level
      * in the table at the top of this page.
-     * @param height Height of the resulting image in pixels. Range is 1 to 8192. Default
+     * @param height Height of the resulting image in pixels. Range from 80 to 1500. Default
      * is 512. It shouldn’t be used with bbox.
-     * @param width Width of the resulting image in pixels. Range is 1 to 8192. Default is 512. It shouldn’t be used
+     * @param width Width of the resulting image in pixels. Range from 80 to 2000. Default is 512. It should not be used
      * with bbox.
      * @param language Language in which search results should be returned. Should be one of supported IETF language
      * tags, case insensitive. When data in specified language is not available for a specific field, default language
      * is used.
-     * 
+     *
      * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
      * details.
      * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
@@ -3090,72 +3120,76 @@ public final class RendersImpl {
      * used in compliance with applicable laws, including those regarding mapping, of the country/region where maps,
      * images and other data and third party content that you are authorized to access via Azure Maps is made available.
      * Example: view=IN.
-     * 
+     *
      * Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the available
      * Views.
      * @param pins Pushpin style and instances. Use this parameter to optionally add pushpins to the image.
      * The pushpin style describes the appearance of the pushpins, and the instances specify
-     * the coordinates of the pushpins and optional labels for each pin. (Be sure to properly URL-encode values of this
+     * the coordinates of the pushpins (in double) and optional labels for each pin. (Be sure to properly URL-encode
+     * values of this
      * parameter since it will contain reserved characters such as pipes and punctuation.)
-     * 
-     * The Azure Maps account S0 SKU only supports a single instance of the pins parameter. Other SKUs
-     * allow multiple instances of the pins parameter to specify multiple pin styles.
-     * 
+     *
+     * The Azure Maps account S0 SKU only supports a single instance of the pins parameter and the number of locations
+     * is limited to 5 per pin. Other SKUs
+     * allow up to 25 instances of the pins parameter to specify multiple pin styles, and the number of locations is
+     * limited to 50 per pin.
+     *
      * To render a pushpin at latitude 45°N and longitude 122°W using the default built-in pushpin style, add the
      * querystring parameter
-     * 
+     *
      * `pins=default||-122 45`
-     * 
+     *
      * Note that the longitude comes before the latitude.
      * After URL encoding this will look like
-     * 
+     *
      * `pins=default%7C%7C-122+45`
-     * 
+     *
      * All of the examples here show the pins
      * parameter without URL encoding, for clarity.
-     * 
+     *
      * To render a pin at multiple locations, separate each location with a pipe character. For example, use
-     * 
+     *
      * `pins=default||-122 45|-119.5 43.2|-121.67 47.12`
-     * 
+     *
      * The S0 Azure Maps account SKU only allows five pushpins. Other account SKUs do not have this limitation.
-     * 
+     *
      * ### Style Modifiers
-     * 
+     *
      * You can modify the appearance of the pins by adding style modifiers. These are added after the style but before
      * the locations and labels. Style modifiers each have a two-letter name. These abbreviated names are used to help
      * reduce the length of the URL.
-     * 
+     *
      * To change the color of the pushpin, use the 'co' style modifier and specify the color using the HTML/CSS RGB
      * color
      * format which is a six-digit hexadecimal number (the three-digit form is not supported). For example, to use
      * a deep pink color which you would specify as #FF1493 in CSS, use
-     * 
+     *
      * `pins=default|coFF1493||-122 45`
-     * 
+     *
      * ### Pushpin Labels
-     * 
-     * To add a label to the pins, put the label in single quotes just before the coordinates. For example, to label
+     *
+     * To add a label to the pins, put the label in single quotes just before the coordinates. Avoid using special
+     * character such as `|` or `||` in label. For example, to label
      * three pins with the values '1', '2', and '3', use
-     * 
+     *
      * `pins=default||'1'-122 45|'2'-119.5 43.2|'3'-121.67 47.12`
-     * 
-     * There is a built in pushpin style called 'none' that does not display a pushpin image. You can use this if
+     *
+     * There is a built-in pushpin style called 'none' that does not display a pushpin image. You can use this if
      * you want to display labels without any pin image. For example,
-     * 
+     *
      * `pins=none||'A'-122 45|'B'-119.5 43.2`
-     * 
+     *
      * To change the color of the pushpin labels, use the 'lc' label color style modifier. For example, to use pink
      * pushpins with black labels, use
-     * 
+     *
      * `pins=default|coFF1493|lc000000||-122 45`
-     * 
+     *
      * To change the size of the labels, use the 'ls' label size style modifier. The label size represents the
      * approximate
      * height of the label text in pixels. For example, to increase the label size to 12, use
-     * 
+     *
      * `pins=default|ls12||'A'-122 45|'B'-119 43`
-     * 
+     *
      * The labels are centered at the pushpin 'label anchor.' The anchor location is predefined for built-in pushpins
      * and
      * is at the top center of custom pushpins (see below). To override the label anchor, using the 'la' style modifier
@@ -3165,219 +3199,223 @@ public final class RendersImpl {
      * example,
      * to position the label anchor 10 pixels right and 4 pixels above the top left corner of the pushpin image,
      * use
-     * 
+     *
      * `pins=default|la10 -4||'A'-122 45|'B'-119 43`
-     * 
+     *
      * ### Custom Pushpins
-     * 
+     *
      * To use a custom pushpin image, use the word 'custom' as the pin style name, and then specify a URL after the
-     * location and label information. Use two pipe characters to indicate that you're done specifying locations and are
+     * location and label information. The maximum allowed size for a customized label image is 65,536 pixels. Use two
+     * pipe characters to indicate that you're done specifying locations and are
      * starting the URL. For example,
-     * 
+     *
      * `pins=custom||-122 45||http://contoso.com/pushpins/red.png`
-     * 
+     *
      * After URL encoding, this would look like
-     * 
+     *
      * `pins=custom%7C%7C-122+45%7C%7Chttp%3A%2F%2Fcontoso.com%2Fpushpins%2Fred.png`
-     * 
+     *
      * By default, custom pushpin images are drawn centered at the pin coordinates. This usually isn't ideal as it
      * obscures
      * the location that you're trying to highlight. To override the anchor location of the pin image, use the 'an'
      * style modifier. This uses the same format as the 'la' label anchor style modifier. For example, if your custom
      * pin image has the tip of the pin at the top left corner of the image, you can set the anchor to that spot by
      * using
-     * 
+     *
      * `pins=custom|an0 0||-122 45||http://contoso.com/pushpins/red.png`
-     * 
+     *
      * Note: If you use the 'co' color modifier with a custom pushpin image, the specified color will replace the RGB
      * channels of the pixels in the image but will leave the alpha (opacity) channel unchanged. This would usually
      * only be done with a solid-color custom image.
-     * 
+     *
      * ### Scale, Rotation, and Opacity
-     * 
+     *
      * You can make pushpins and their labels larger or smaller by using the 'sc' scale style modifier. This is a
      * value greater than zero. A value of 1 is the standard scale. Values larger than 1 will make the pins larger, and
      * values smaller than 1 will make them smaller. For example, to draw the pushpins 50% larger than normal, use
-     * 
+     *
      * `pins=default|sc1.5||-122 45`
-     * 
+     *
      * You can rotate pushpins and their labels by using the 'ro' rotation style modifier. This is a number of degrees
      * of clockwise rotation. Use a negative number to rotate counter-clockwise. For example, to rotate the pushpins
      * 90 degrees clockwise and double their size, use
-     * 
+     *
      * `pins=default|ro90|sc2||-122 45`
-     * 
+     *
      * You can make pushpins and their labels partially transparent by specifying the 'al' alpha style modifier.
      * This is a number between 0 and 1 indicating the opacity of the pushpins. Zero makes them completely transparent
      * (and not visible) and 1 makes them completely opaque (which is the default). For example, to make pushpins
      * and their labels only 67% opaque, use
-     * 
+     *
      * `pins=default|al.67||-122 45`
-     * 
+     *
      * ### Style Modifier Summary
-     * 
-     * Modifier | Description | Range
-     * :--------:|-----------------|------------------
-     * al | Alpha (opacity) | 0 to 1
-     * an | Pin anchor | *
-     * co | Pin color | 000000 to FFFFFF
-     * la | Label anchor | *
-     * lc | Label color | 000000 to FFFFFF
-     * ls | Label size | Greater than 0
-     * ro | Rotation | -360 to 360
-     * sc | Scale | Greater than 0
-     * 
+     *
+     * Modifier | Description | Type | Range
+     * :--------:|---------------|--------|----------
+     * al | Alpha (opacity) | float | 0 to 1
+     * an | Pin anchor | &lt;int32, int32&gt; | *
+     * co | Pin color | string | 000000 to FFFFFF
+     * la | Label anchor | &lt;int32, int32&gt; | *
+     * lc | Label color | string | 000000 to FFFFFF
+     * ls | Label size | float | Greater than 0
+     * ro | Rotation | float | -360 to 360
+     * sc | Scale | float | Greater than 0
+     *
      * * X and Y coordinates can be anywhere within pin image or a margin around it.
      * The margin size is the minimum of the pin width and height.
-     * @param path Path style and locations. Use this parameter to optionally add lines, polygons or circles to the
-     * image.
+     * @param path Path style and locations (in double). Use this parameter to optionally add lines, polygons or circles
+     * to the image.
      * The path style describes the appearance of the line and fill. (Be sure to properly URL-encode values of this
      * parameter since it will contain reserved characters such as pipes and punctuation.)
-     * 
+     *
      * Path parameter is supported in Azure Maps account SKU starting with S1. Multiple instances of the path parameter
      * allow to specify multiple geometries with their styles. Number of parameters per request is limited to 10 and
      * number of locations is limited to 100 per path.
-     * 
+     *
      * To render a circle with radius 100 meters and center point at latitude 45°N and longitude 122°W using the default
      * style, add the
      * querystring parameter
-     * 
+     *
      * `path=ra100||-122 45`
-     * 
+     *
      * Note that the longitude comes before the latitude.
      * After URL encoding this will look like
-     * 
+     *
      * `path=ra100%7C%7C-122+45`
-     * 
+     *
      * All of the examples here show the path parameter without URL encoding, for clarity.
-     * 
+     *
      * To render a line, separate each location with a pipe character. For example, use
-     * 
+     *
      * `path=||-122 45|-119.5 43.2|-121.67 47.12`
-     * 
-     * To render a polygon, last location must be equal to the start location. For example, use
-     * 
+     *
+     * A polygon is specified with a closed path, where the first and last points are equal. For example, use
+     *
      * `path=||-122 45|-119.5 43.2|-121.67 47.12|-122 45`
-     * 
-     * Longitude and latitude values for locations of lines and polygons can be in the range from -360 to 360 to allow
-     * for rendering of geometries crossing the anti-meridian.
-     * 
+     *
+     * Longitude value for locations of lines and polygons can be in the range from -360 to 360 to allow for rendering
+     * of geometries crossing the anti-meridian.
+     *
      * ### Style Modifiers
-     * 
+     *
      * You can modify the appearance of the path by adding style modifiers. These are added before the locations.
      * Style modifiers each have a two-letter name. These abbreviated names are used to help reduce the length
      * of the URL.
-     * 
+     *
      * To change the color of the outline, use the 'lc' style modifier and specify the color using the HTML/CSS RGB
      * color
      * format which is a six-digit hexadecimal number (the three-digit form is not supported). For example, to use
      * a deep pink color which you would specify as #FF1493 in CSS, use
-     * 
+     *
      * `path=lcFF1493||-122 45|-119.5 43.2`
-     * 
-     * Multiple style modifiers may be combined together to create a more complex visual style.
-     * 
+     *
+     * Multiple style modifiers may be combined to create a more complex visual style.
+     *
      * `lc0000FF|lw3|la0.60|fa0.50||-122.2 47.6|-122.2 47.7|-122.3 47.7|-122.3 47.6|-122.2 47.6`
-     * 
+     *
      * ### Style Modifier Summary
-     * 
-     * Modifier | Description | Range
-     * :--------:|------------------------|------------------
-     * lc | Line color | 000000 to FFFFFF
-     * fc | Fill color | 000000 to FFFFFF
-     * la | Line alpha (opacity) | 0 to 1
-     * fa | Fill alpha (opacity) | 0 to 1
-     * lw | Line width | Greater than 0
-     * ra | Circle radius (meters) | Greater than 0.
+     *
+     * Modifier | Description | Type | Range
+     * :--------:|---------------|--------|----------
+     * lc | Line color | string | 000000 to FFFFFF
+     * fc | Fill color | string | 000000 to FFFFFF
+     * la | Line alpha (opacity) | float | 0 to 1
+     * fa | Fill alpha (opacity) | float | 0 to 1
+     * lw | Line width |int32 | (0, 50]
+     * ra | Circle radius (meters) | float | Greater than 0.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData getMapStaticImage(RasterTileFormat format, StaticMapLayer layer, MapImageStyle style,
-        Integer zoom, List<Double> center, List<Double> boundingBoxPrivate, Integer height, Integer width,
-        String language, LocalizedMapView localizedMapView, List<String> pins, List<String> path) {
-        return getMapStaticImageWithResponse(format, layer, style, zoom, center, boundingBoxPrivate, height, width,
+    public BinaryData getMapStaticImage(TilesetId tilesetId, TrafficTilesetId trafficLayer, Integer zoom,
+        List<Double> center, List<Double> boundingBoxPrivate, Integer height, Integer width, String language,
+        LocalizedMapView localizedMapView, List<String> pins, List<String> path) {
+        return getMapStaticImageWithResponse(tilesetId, trafficLayer, zoom, center, boundingBoxPrivate, height, width,
             language, localizedMapView, pins, path, Context.NONE).getValue();
     }
 
     /**
-     * Use to render a user-defined, rectangular image containing a map section using a zoom level ranging from 0 to 20.
-     * 
-     * 
-     * 
-     * The supported resolution range for the map image is from 1x1 to 8192x8192. If you are deciding when to use the
-     * static image service over the map tile service, you may want to consider how you would like to interact with the
-     * rendered map. If the map contents will be relatively unchanging, a static map is a good choice. If you want to
-     * support a lot of zooming, panning and changing of the map content, the map tile service would be a better choice.
-     * 
-     * Service also provides Image Composition functionality to get a static image back with additional data like;
-     * pushpins and geometry overlays with following capabilities.
-     * 
-     * - Specify multiple pushpin styles
-     * - Render circle, polyline and polygon geometry types.
-     * 
-     * Please see [How-to-Guide](https://aka.ms/AzureMapsHowToGuideImageCompositor) for detailed examples.
-     * 
-     * _Note_ : Either **center** or **bbox** parameter must be supplied to the
-     * API.
+     * This rendering API produces static, rasterized map views of a user-defined area. It's suitable for lightweight
+     * web applications, when the desired user experience doesn't require interactive map controls, or when bandwidth is
+     * limited. This API is also useful for embedding maps in applications outside of the browser, in backend services,
+     * report generation, or desktop applications.
+     *
+     * This API includes parameters for basic data visualization:
+     *
+     * - Labeled pushpins in multiple styles.
+     * - Render circle, path, and polygon geometry types.
+     *
+     * For more information and detailed examples, see [Render custom data on a raster
+     * map](/azure/azure-maps/how-to-render-custom-data).
      * &lt;br&gt;&lt;br&gt;
-     * The supported Lat and Lon ranges when using the **bbox** parameter, are as follows:
+     * The dimensions of the bbox parameter are constrained, depending on the zoom level. This ensures the resulting
+     * image has an appropriate level of detail.
      * &lt;br&gt;&lt;br&gt;
-     * 
-     * |Zoom Level | Max Lon Range | Max Lat Range|
-     * |:----------|:----------------|:-------------|
-     * |0 | 360.0 | 170.0 |
-     * |1 | 360.0 | 170.0 |
-     * |2 | 360.0 | 170.0 |
-     * |3 | 360.0 | 170.0 |
-     * |4 | 360.0 | 170.0 |
-     * |5 | 180.0 | 85.0 |
-     * |6 | 90.0 | 42.5 |
-     * |7 | 45.0 | 21.25 |
-     * |8 | 22.5 | 10.625 |
-     * |9 | 11.25 | 5.3125 |
-     * |10 | 5.625 | 2.62625 |
-     * |11 | 2.8125 | 1.328125 |
-     * |12 | 1.40625 | 0.6640625 |
-     * |13 | 0.703125 | 0.33203125 |
-     * |14 | 0.3515625 | 0.166015625 |
-     * |15 | 0.17578125 | 0.0830078125 |
-     * |16 | 0.087890625 | 0.0415039063 |
-     * |17 | 0.0439453125 | 0.0207519531 |
-     * |18 | 0.0219726563 | 0.0103759766 |
-     * |19 | 0.0109863281 | 0.0051879883 |
-     * |20 | 0.0054931641 | 0.0025939941 |.
-     * 
-     * @param format Desired format of the response. Possible value: png.
-     * @param layer Map layer requested. If layer is set to labels or hybrid, the format should be png.
-     * @param style Map style to be returned. Possible values are main and dark.
-     * @param zoom Desired zoom level of the map. Zoom value must be in the range: 0-20 (inclusive). Default value is
-     * 12.&lt;br&gt;&lt;br&gt;Please see [Zoom Levels and Tile
-     * Grid](https://docs.microsoft.com/azure/location-based-services/zoom-levels-and-tile-grid) for details.
-     * @param center Coordinates of the center point. Format: 'lon,lat'. Projection used
-     * - EPSG:3857. Longitude range: -180 to 180. Latitude range: -85 to 85.
-     * 
+     *
+     * |Zoom Level | Min Lon Range | Max Lon Range | Min Lat Range| Max Lat Range|
+     * |:----------|:----------------|:----------------|:----------------|:-------------|
+     * |0 | 56.25 | 360.0 | 30.1105585173 | 180.0 |
+     * |1 | 28.125 | 360.0 | 14.87468995 | 180.0 |
+     * |2 | 14.063 | 351.5625 | 7.4130741851 | 137.9576312246 |
+     * |3 | 7.03125 | 175.78125 | 3.7034501005 | 73.6354071932 |
+     * |4 | 3.515625 | 87.890625 | 1.8513375155 | 35.4776115315 |
+     * |5 | 1.7578125 | 43.9453125 | 0.925620264 | 17.4589959239 |
+     * |6 | 0.87890625 | 21.97265625 | 0.4628040687 | 8.6907788223 |
+     * |7 | 0.439453125 | 10.986328125 | 0.2314012764 | 4.3404320789 |
+     * |8 | 0.2197265625 | 5.4931640625 | 0.1157005434 | 2.1695927024 |
+     * |9 | 0.1098632812 | 2.7465820312 | 0.0578502599 | 1.0847183194 |
+     * |10 | 0.0549316406 | 1.3732910156 | 0.0289251285 | 0.5423494021 |
+     * |11 | 0.0274658203 | 0.6866455078 | 0.014462564 | 0.2711734813 |
+     * |12 | 0.0137329102 | 0.3433227539 | 0.007231282 | 0.1355865882 |
+     * |13 | 0.0068664551 | 0.171661377 | 0.003615641 | 0.067793275 |
+     * |14 | 0.0034332275 | 0.0858306885 | 0.0018078205 | 0.0338966351 |
+     * |15 | 0.0017166138 | 0.0429153442 | 0.0009039102 | 0.0169483173 |
+     * |16 | 0.0008583069 | 0.0214576721 | 0.0004519551 | 0.0084741586 |
+     * |17 | 0.0004291534 | 0.0107288361 | 0.0002259776 | 0.0042370793 |
+     * |18 | 0.0002145767 | 0.005364418 | 0.0001129888 | 0.0021185396 |
+     * |19 | 0.0001072884 | 0.002682209 | 5.64944E-05 | 0.0010592698 |
+     * |20 | 5.36442E-05 | 0.0013411045 | 2.82472E-05 | 0.0005296349 |
+     *
+     * _Note_ : Either **center** or **bbox** parameter must be supplied to the API.
+     *
+     * @param tilesetId Map style to be returned. Possible values are microsoft.base.road, microsoft.base.darkgrey, and
+     * microsoft.imagery. Default value is set to be microsoft.base.road. For more information, see [Render
+     * TilesetId](https://learn.microsoft.com/en-us/rest/api/maps/render/get-map-tileset?view=rest-maps-2023-06-01&amp;tabs=HTTP#tilesetid).
+     * @param trafficLayer Optional Value, indicating no traffic flow overlaid on the image result. Possible values are
+     * microsoft.traffic.relative.main and none. Default value is none, indicating no traffic flow returned. If traffic
+     * related tilesetId is provided, will return map image with corresponding traffic layer. For more information, see
+     * [Render
+     * TilesetId](https://learn.microsoft.com/en-us/rest/api/maps/render/get-map-tileset?view=rest-maps-2023-06-01&amp;tabs=HTTP#tilesetid).
+     * @param zoom Desired zoom level of the map. Support zoom value range from 0-20 (inclusive) for tilesetId being
+     * microsoft.base.road or microsoft.base.darkgrey. Support zoom value range from 0-19 (inclusive) for tilesetId
+     * being microsoft.imagery. Default value is 12.&lt;br&gt;&lt;br&gt;For more information, see [Zoom Levels and Tile
+     * Grid](https://docs.microsoft.com/azure/location-based-services/zoom-levels-and-tile-grid).
+     * @param center Coordinates of the center point in double. Format: 'lon,lat'. Longitude range: -180 to 180.
+     * Latitude range: -90 to 90.
+     *
      * Note: Either center or bbox are required parameters. They are
      * mutually exclusive.
-     * @param boundingBoxPrivate Bounding box. Projection used - EPSG:3857. Format : 'minLon, minLat,
-     * maxLon, maxLat'.
-     * 
+     * @param boundingBoxPrivate A bounding box is defined by two latitudes and two longitudes that represent the four
+     * sides of a rectangular area on the Earth. Format : 'minLon, minLat,
+     * maxLon, maxLat' (in double).
+     *
      * Note: Either bbox or center are required
-     * parameters. They are mutually exclusive. It shouldn’t be used with
+     * parameters. They are mutually exclusive. bbox shouldn’t be used with
      * height or width.
-     * 
-     * The maximum allowed ranges for Lat and Lon are defined for each zoom level
+     *
+     * The maximum and minimum allowed ranges for Lat and Lon are defined for each zoom level
      * in the table at the top of this page.
-     * @param height Height of the resulting image in pixels. Range is 1 to 8192. Default
+     * @param height Height of the resulting image in pixels. Range from 80 to 1500. Default
      * is 512. It shouldn’t be used with bbox.
-     * @param width Width of the resulting image in pixels. Range is 1 to 8192. Default is 512. It shouldn’t be used
+     * @param width Width of the resulting image in pixels. Range from 80 to 2000. Default is 512. It should not be used
      * with bbox.
      * @param language Language in which search results should be returned. Should be one of supported IETF language
      * tags, case insensitive. When data in specified language is not available for a specific field, default language
      * is used.
-     * 
+     *
      * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
      * details.
      * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
@@ -3390,72 +3428,76 @@ public final class RendersImpl {
      * used in compliance with applicable laws, including those regarding mapping, of the country/region where maps,
      * images and other data and third party content that you are authorized to access via Azure Maps is made available.
      * Example: view=IN.
-     * 
+     *
      * Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the available
      * Views.
      * @param pins Pushpin style and instances. Use this parameter to optionally add pushpins to the image.
      * The pushpin style describes the appearance of the pushpins, and the instances specify
-     * the coordinates of the pushpins and optional labels for each pin. (Be sure to properly URL-encode values of this
+     * the coordinates of the pushpins (in double) and optional labels for each pin. (Be sure to properly URL-encode
+     * values of this
      * parameter since it will contain reserved characters such as pipes and punctuation.)
-     * 
-     * The Azure Maps account S0 SKU only supports a single instance of the pins parameter. Other SKUs
-     * allow multiple instances of the pins parameter to specify multiple pin styles.
-     * 
+     *
+     * The Azure Maps account S0 SKU only supports a single instance of the pins parameter and the number of locations
+     * is limited to 5 per pin. Other SKUs
+     * allow up to 25 instances of the pins parameter to specify multiple pin styles, and the number of locations is
+     * limited to 50 per pin.
+     *
      * To render a pushpin at latitude 45°N and longitude 122°W using the default built-in pushpin style, add the
      * querystring parameter
-     * 
+     *
      * `pins=default||-122 45`
-     * 
+     *
      * Note that the longitude comes before the latitude.
      * After URL encoding this will look like
-     * 
+     *
      * `pins=default%7C%7C-122+45`
-     * 
+     *
      * All of the examples here show the pins
      * parameter without URL encoding, for clarity.
-     * 
+     *
      * To render a pin at multiple locations, separate each location with a pipe character. For example, use
-     * 
+     *
      * `pins=default||-122 45|-119.5 43.2|-121.67 47.12`
-     * 
+     *
      * The S0 Azure Maps account SKU only allows five pushpins. Other account SKUs do not have this limitation.
-     * 
+     *
      * ### Style Modifiers
-     * 
+     *
      * You can modify the appearance of the pins by adding style modifiers. These are added after the style but before
      * the locations and labels. Style modifiers each have a two-letter name. These abbreviated names are used to help
      * reduce the length of the URL.
-     * 
+     *
      * To change the color of the pushpin, use the 'co' style modifier and specify the color using the HTML/CSS RGB
      * color
      * format which is a six-digit hexadecimal number (the three-digit form is not supported). For example, to use
      * a deep pink color which you would specify as #FF1493 in CSS, use
-     * 
+     *
      * `pins=default|coFF1493||-122 45`
-     * 
+     *
      * ### Pushpin Labels
-     * 
-     * To add a label to the pins, put the label in single quotes just before the coordinates. For example, to label
+     *
+     * To add a label to the pins, put the label in single quotes just before the coordinates. Avoid using special
+     * character such as `|` or `||` in label. For example, to label
      * three pins with the values '1', '2', and '3', use
-     * 
+     *
      * `pins=default||'1'-122 45|'2'-119.5 43.2|'3'-121.67 47.12`
-     * 
-     * There is a built in pushpin style called 'none' that does not display a pushpin image. You can use this if
+     *
+     * There is a built-in pushpin style called 'none' that does not display a pushpin image. You can use this if
      * you want to display labels without any pin image. For example,
-     * 
+     *
      * `pins=none||'A'-122 45|'B'-119.5 43.2`
-     * 
+     *
      * To change the color of the pushpin labels, use the 'lc' label color style modifier. For example, to use pink
      * pushpins with black labels, use
-     * 
+     *
      * `pins=default|coFF1493|lc000000||-122 45`
-     * 
+     *
      * To change the size of the labels, use the 'ls' label size style modifier. The label size represents the
      * approximate
      * height of the label text in pixels. For example, to increase the label size to 12, use
-     * 
+     *
      * `pins=default|ls12||'A'-122 45|'B'-119 43`
-     * 
+     *
      * The labels are centered at the pushpin 'label anchor.' The anchor location is predefined for built-in pushpins
      * and
      * is at the top center of custom pushpins (see below). To override the label anchor, using the 'la' style modifier
@@ -3465,141 +3507,141 @@ public final class RendersImpl {
      * example,
      * to position the label anchor 10 pixels right and 4 pixels above the top left corner of the pushpin image,
      * use
-     * 
+     *
      * `pins=default|la10 -4||'A'-122 45|'B'-119 43`
-     * 
+     *
      * ### Custom Pushpins
-     * 
+     *
      * To use a custom pushpin image, use the word 'custom' as the pin style name, and then specify a URL after the
-     * location and label information. Use two pipe characters to indicate that you're done specifying locations and are
+     * location and label information. The maximum allowed size for a customized label image is 65,536 pixels. Use two
+     * pipe characters to indicate that you're done specifying locations and are
      * starting the URL. For example,
-     * 
+     *
      * `pins=custom||-122 45||http://contoso.com/pushpins/red.png`
-     * 
+     *
      * After URL encoding, this would look like
-     * 
+     *
      * `pins=custom%7C%7C-122+45%7C%7Chttp%3A%2F%2Fcontoso.com%2Fpushpins%2Fred.png`
-     * 
+     *
      * By default, custom pushpin images are drawn centered at the pin coordinates. This usually isn't ideal as it
      * obscures
      * the location that you're trying to highlight. To override the anchor location of the pin image, use the 'an'
      * style modifier. This uses the same format as the 'la' label anchor style modifier. For example, if your custom
      * pin image has the tip of the pin at the top left corner of the image, you can set the anchor to that spot by
      * using
-     * 
+     *
      * `pins=custom|an0 0||-122 45||http://contoso.com/pushpins/red.png`
-     * 
+     *
      * Note: If you use the 'co' color modifier with a custom pushpin image, the specified color will replace the RGB
      * channels of the pixels in the image but will leave the alpha (opacity) channel unchanged. This would usually
      * only be done with a solid-color custom image.
-     * 
+     *
      * ### Scale, Rotation, and Opacity
-     * 
+     *
      * You can make pushpins and their labels larger or smaller by using the 'sc' scale style modifier. This is a
      * value greater than zero. A value of 1 is the standard scale. Values larger than 1 will make the pins larger, and
      * values smaller than 1 will make them smaller. For example, to draw the pushpins 50% larger than normal, use
-     * 
+     *
      * `pins=default|sc1.5||-122 45`
-     * 
+     *
      * You can rotate pushpins and their labels by using the 'ro' rotation style modifier. This is a number of degrees
      * of clockwise rotation. Use a negative number to rotate counter-clockwise. For example, to rotate the pushpins
      * 90 degrees clockwise and double their size, use
-     * 
+     *
      * `pins=default|ro90|sc2||-122 45`
-     * 
+     *
      * You can make pushpins and their labels partially transparent by specifying the 'al' alpha style modifier.
      * This is a number between 0 and 1 indicating the opacity of the pushpins. Zero makes them completely transparent
      * (and not visible) and 1 makes them completely opaque (which is the default). For example, to make pushpins
      * and their labels only 67% opaque, use
-     * 
+     *
      * `pins=default|al.67||-122 45`
-     * 
+     *
      * ### Style Modifier Summary
-     * 
-     * Modifier | Description | Range
-     * :--------:|-----------------|------------------
-     * al | Alpha (opacity) | 0 to 1
-     * an | Pin anchor | *
-     * co | Pin color | 000000 to FFFFFF
-     * la | Label anchor | *
-     * lc | Label color | 000000 to FFFFFF
-     * ls | Label size | Greater than 0
-     * ro | Rotation | -360 to 360
-     * sc | Scale | Greater than 0
-     * 
+     *
+     * Modifier | Description | Type | Range
+     * :--------:|---------------|--------|----------
+     * al | Alpha (opacity) | float | 0 to 1
+     * an | Pin anchor | &lt;int32, int32&gt; | *
+     * co | Pin color | string | 000000 to FFFFFF
+     * la | Label anchor | &lt;int32, int32&gt; | *
+     * lc | Label color | string | 000000 to FFFFFF
+     * ls | Label size | float | Greater than 0
+     * ro | Rotation | float | -360 to 360
+     * sc | Scale | float | Greater than 0
+     *
      * * X and Y coordinates can be anywhere within pin image or a margin around it.
      * The margin size is the minimum of the pin width and height.
-     * @param path Path style and locations. Use this parameter to optionally add lines, polygons or circles to the
-     * image.
+     * @param path Path style and locations (in double). Use this parameter to optionally add lines, polygons or circles
+     * to the image.
      * The path style describes the appearance of the line and fill. (Be sure to properly URL-encode values of this
      * parameter since it will contain reserved characters such as pipes and punctuation.)
-     * 
+     *
      * Path parameter is supported in Azure Maps account SKU starting with S1. Multiple instances of the path parameter
      * allow to specify multiple geometries with their styles. Number of parameters per request is limited to 10 and
      * number of locations is limited to 100 per path.
-     * 
+     *
      * To render a circle with radius 100 meters and center point at latitude 45°N and longitude 122°W using the default
      * style, add the
      * querystring parameter
-     * 
+     *
      * `path=ra100||-122 45`
-     * 
+     *
      * Note that the longitude comes before the latitude.
      * After URL encoding this will look like
-     * 
+     *
      * `path=ra100%7C%7C-122+45`
-     * 
+     *
      * All of the examples here show the path parameter without URL encoding, for clarity.
-     * 
+     *
      * To render a line, separate each location with a pipe character. For example, use
-     * 
+     *
      * `path=||-122 45|-119.5 43.2|-121.67 47.12`
-     * 
-     * To render a polygon, last location must be equal to the start location. For example, use
-     * 
+     *
+     * A polygon is specified with a closed path, where the first and last points are equal. For example, use
+     *
      * `path=||-122 45|-119.5 43.2|-121.67 47.12|-122 45`
-     * 
-     * Longitude and latitude values for locations of lines and polygons can be in the range from -360 to 360 to allow
-     * for rendering of geometries crossing the anti-meridian.
-     * 
+     *
+     * Longitude value for locations of lines and polygons can be in the range from -360 to 360 to allow for rendering
+     * of geometries crossing the anti-meridian.
+     *
      * ### Style Modifiers
-     * 
+     *
      * You can modify the appearance of the path by adding style modifiers. These are added before the locations.
      * Style modifiers each have a two-letter name. These abbreviated names are used to help reduce the length
      * of the URL.
-     * 
+     *
      * To change the color of the outline, use the 'lc' style modifier and specify the color using the HTML/CSS RGB
      * color
      * format which is a six-digit hexadecimal number (the three-digit form is not supported). For example, to use
      * a deep pink color which you would specify as #FF1493 in CSS, use
-     * 
+     *
      * `path=lcFF1493||-122 45|-119.5 43.2`
-     * 
-     * Multiple style modifiers may be combined together to create a more complex visual style.
-     * 
+     *
+     * Multiple style modifiers may be combined to create a more complex visual style.
+     *
      * `lc0000FF|lw3|la0.60|fa0.50||-122.2 47.6|-122.2 47.7|-122.3 47.7|-122.3 47.6|-122.2 47.6`
-     * 
+     *
      * ### Style Modifier Summary
-     * 
-     * Modifier | Description | Range
-     * :--------:|------------------------|------------------
-     * lc | Line color | 000000 to FFFFFF
-     * fc | Fill color | 000000 to FFFFFF
-     * la | Line alpha (opacity) | 0 to 1
-     * fa | Fill alpha (opacity) | 0 to 1
-     * lw | Line width | Greater than 0
-     * ra | Circle radius (meters) | Greater than 0.
+     *
+     * Modifier | Description | Type | Range
+     * :--------:|---------------|--------|----------
+     * lc | Line color | string | 000000 to FFFFFF
+     * fc | Fill color | string | 000000 to FFFFFF
+     * la | Line alpha (opacity) | float | 0 to 1
+     * fa | Fill alpha (opacity) | float | 0 to 1
+     * lw | Line width |int32 | (0, 50]
+     * ra | Circle radius (meters) | float | Greater than 0.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getMapStaticImageNoCustomHeadersWithResponseAsync(RasterTileFormat format,
-        StaticMapLayer layer, MapImageStyle style, Integer zoom, List<Double> center, List<Double> boundingBoxPrivate,
+    public Mono<Response<BinaryData>> getMapStaticImageNoCustomHeadersWithResponseAsync(TilesetId tilesetId,
+        TrafficTilesetId trafficLayer, Integer zoom, List<Double> center, List<Double> boundingBoxPrivate,
         Integer height, Integer width, String language, LocalizedMapView localizedMapView, List<String> pins,
         List<String> path) {
-        final String accept = "application/json, image/jpeg, image/png, image/pbf, application/vnd.mapbox-vector-tile";
         String centerConverted
             = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(center, CollectionFormat.CSV);
         String boundingBoxPrivateConverted = JacksonAdapter.createDefaultSerializerAdapter()
@@ -3610,88 +3652,91 @@ public final class RendersImpl {
         List<String> pathConverted = (path == null)
             ? new ArrayList<>()
             : path.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        return FluxUtil.withContext(
-            context -> service.getMapStaticImageNoCustomHeaders(this.client.getHost(), this.client.getClientId(),
-                this.client.getApiVersion(), format, layer, style, zoom, centerConverted, boundingBoxPrivateConverted,
-                height, width, language, localizedMapView, pinsConverted, pathConverted, accept, context));
+        return FluxUtil.withContext(context -> service.getMapStaticImageNoCustomHeaders(this.client.getHost(),
+            this.client.getClientId(), this.client.getApiVersion(), tilesetId, trafficLayer, zoom, centerConverted,
+            boundingBoxPrivateConverted, height, width, language, localizedMapView, pinsConverted, pathConverted,
+            this.client.getAccept(), context));
     }
 
     /**
-     * Use to render a user-defined, rectangular image containing a map section using a zoom level ranging from 0 to 20.
-     * 
-     * 
-     * 
-     * The supported resolution range for the map image is from 1x1 to 8192x8192. If you are deciding when to use the
-     * static image service over the map tile service, you may want to consider how you would like to interact with the
-     * rendered map. If the map contents will be relatively unchanging, a static map is a good choice. If you want to
-     * support a lot of zooming, panning and changing of the map content, the map tile service would be a better choice.
-     * 
-     * Service also provides Image Composition functionality to get a static image back with additional data like;
-     * pushpins and geometry overlays with following capabilities.
-     * 
-     * - Specify multiple pushpin styles
-     * - Render circle, polyline and polygon geometry types.
-     * 
-     * Please see [How-to-Guide](https://aka.ms/AzureMapsHowToGuideImageCompositor) for detailed examples.
-     * 
-     * _Note_ : Either **center** or **bbox** parameter must be supplied to the
-     * API.
+     * This rendering API produces static, rasterized map views of a user-defined area. It's suitable for lightweight
+     * web applications, when the desired user experience doesn't require interactive map controls, or when bandwidth is
+     * limited. This API is also useful for embedding maps in applications outside of the browser, in backend services,
+     * report generation, or desktop applications.
+     *
+     * This API includes parameters for basic data visualization:
+     *
+     * - Labeled pushpins in multiple styles.
+     * - Render circle, path, and polygon geometry types.
+     *
+     * For more information and detailed examples, see [Render custom data on a raster
+     * map](/azure/azure-maps/how-to-render-custom-data).
      * &lt;br&gt;&lt;br&gt;
-     * The supported Lat and Lon ranges when using the **bbox** parameter, are as follows:
+     * The dimensions of the bbox parameter are constrained, depending on the zoom level. This ensures the resulting
+     * image has an appropriate level of detail.
      * &lt;br&gt;&lt;br&gt;
-     * 
-     * |Zoom Level | Max Lon Range | Max Lat Range|
-     * |:----------|:----------------|:-------------|
-     * |0 | 360.0 | 170.0 |
-     * |1 | 360.0 | 170.0 |
-     * |2 | 360.0 | 170.0 |
-     * |3 | 360.0 | 170.0 |
-     * |4 | 360.0 | 170.0 |
-     * |5 | 180.0 | 85.0 |
-     * |6 | 90.0 | 42.5 |
-     * |7 | 45.0 | 21.25 |
-     * |8 | 22.5 | 10.625 |
-     * |9 | 11.25 | 5.3125 |
-     * |10 | 5.625 | 2.62625 |
-     * |11 | 2.8125 | 1.328125 |
-     * |12 | 1.40625 | 0.6640625 |
-     * |13 | 0.703125 | 0.33203125 |
-     * |14 | 0.3515625 | 0.166015625 |
-     * |15 | 0.17578125 | 0.0830078125 |
-     * |16 | 0.087890625 | 0.0415039063 |
-     * |17 | 0.0439453125 | 0.0207519531 |
-     * |18 | 0.0219726563 | 0.0103759766 |
-     * |19 | 0.0109863281 | 0.0051879883 |
-     * |20 | 0.0054931641 | 0.0025939941 |.
-     * 
-     * @param format Desired format of the response. Possible value: png.
-     * @param layer Map layer requested. If layer is set to labels or hybrid, the format should be png.
-     * @param style Map style to be returned. Possible values are main and dark.
-     * @param zoom Desired zoom level of the map. Zoom value must be in the range: 0-20 (inclusive). Default value is
-     * 12.&lt;br&gt;&lt;br&gt;Please see [Zoom Levels and Tile
-     * Grid](https://docs.microsoft.com/azure/location-based-services/zoom-levels-and-tile-grid) for details.
-     * @param center Coordinates of the center point. Format: 'lon,lat'. Projection used
-     * - EPSG:3857. Longitude range: -180 to 180. Latitude range: -85 to 85.
-     * 
+     *
+     * |Zoom Level | Min Lon Range | Max Lon Range | Min Lat Range| Max Lat Range|
+     * |:----------|:----------------|:----------------|:----------------|:-------------|
+     * |0 | 56.25 | 360.0 | 30.1105585173 | 180.0 |
+     * |1 | 28.125 | 360.0 | 14.87468995 | 180.0 |
+     * |2 | 14.063 | 351.5625 | 7.4130741851 | 137.9576312246 |
+     * |3 | 7.03125 | 175.78125 | 3.7034501005 | 73.6354071932 |
+     * |4 | 3.515625 | 87.890625 | 1.8513375155 | 35.4776115315 |
+     * |5 | 1.7578125 | 43.9453125 | 0.925620264 | 17.4589959239 |
+     * |6 | 0.87890625 | 21.97265625 | 0.4628040687 | 8.6907788223 |
+     * |7 | 0.439453125 | 10.986328125 | 0.2314012764 | 4.3404320789 |
+     * |8 | 0.2197265625 | 5.4931640625 | 0.1157005434 | 2.1695927024 |
+     * |9 | 0.1098632812 | 2.7465820312 | 0.0578502599 | 1.0847183194 |
+     * |10 | 0.0549316406 | 1.3732910156 | 0.0289251285 | 0.5423494021 |
+     * |11 | 0.0274658203 | 0.6866455078 | 0.014462564 | 0.2711734813 |
+     * |12 | 0.0137329102 | 0.3433227539 | 0.007231282 | 0.1355865882 |
+     * |13 | 0.0068664551 | 0.171661377 | 0.003615641 | 0.067793275 |
+     * |14 | 0.0034332275 | 0.0858306885 | 0.0018078205 | 0.0338966351 |
+     * |15 | 0.0017166138 | 0.0429153442 | 0.0009039102 | 0.0169483173 |
+     * |16 | 0.0008583069 | 0.0214576721 | 0.0004519551 | 0.0084741586 |
+     * |17 | 0.0004291534 | 0.0107288361 | 0.0002259776 | 0.0042370793 |
+     * |18 | 0.0002145767 | 0.005364418 | 0.0001129888 | 0.0021185396 |
+     * |19 | 0.0001072884 | 0.002682209 | 5.64944E-05 | 0.0010592698 |
+     * |20 | 5.36442E-05 | 0.0013411045 | 2.82472E-05 | 0.0005296349 |
+     *
+     * _Note_ : Either **center** or **bbox** parameter must be supplied to the API.
+     *
+     * @param tilesetId Map style to be returned. Possible values are microsoft.base.road, microsoft.base.darkgrey, and
+     * microsoft.imagery. Default value is set to be microsoft.base.road. For more information, see [Render
+     * TilesetId](https://learn.microsoft.com/en-us/rest/api/maps/render/get-map-tileset?view=rest-maps-2023-06-01&amp;tabs=HTTP#tilesetid).
+     * @param trafficLayer Optional Value, indicating no traffic flow overlaid on the image result. Possible values are
+     * microsoft.traffic.relative.main and none. Default value is none, indicating no traffic flow returned. If traffic
+     * related tilesetId is provided, will return map image with corresponding traffic layer. For more information, see
+     * [Render
+     * TilesetId](https://learn.microsoft.com/en-us/rest/api/maps/render/get-map-tileset?view=rest-maps-2023-06-01&amp;tabs=HTTP#tilesetid).
+     * @param zoom Desired zoom level of the map. Support zoom value range from 0-20 (inclusive) for tilesetId being
+     * microsoft.base.road or microsoft.base.darkgrey. Support zoom value range from 0-19 (inclusive) for tilesetId
+     * being microsoft.imagery. Default value is 12.&lt;br&gt;&lt;br&gt;For more information, see [Zoom Levels and Tile
+     * Grid](https://docs.microsoft.com/azure/location-based-services/zoom-levels-and-tile-grid).
+     * @param center Coordinates of the center point in double. Format: 'lon,lat'. Longitude range: -180 to 180.
+     * Latitude range: -90 to 90.
+     *
      * Note: Either center or bbox are required parameters. They are
      * mutually exclusive.
-     * @param boundingBoxPrivate Bounding box. Projection used - EPSG:3857. Format : 'minLon, minLat,
-     * maxLon, maxLat'.
-     * 
+     * @param boundingBoxPrivate A bounding box is defined by two latitudes and two longitudes that represent the four
+     * sides of a rectangular area on the Earth. Format : 'minLon, minLat,
+     * maxLon, maxLat' (in double).
+     *
      * Note: Either bbox or center are required
-     * parameters. They are mutually exclusive. It shouldn’t be used with
+     * parameters. They are mutually exclusive. bbox shouldn’t be used with
      * height or width.
-     * 
-     * The maximum allowed ranges for Lat and Lon are defined for each zoom level
+     *
+     * The maximum and minimum allowed ranges for Lat and Lon are defined for each zoom level
      * in the table at the top of this page.
-     * @param height Height of the resulting image in pixels. Range is 1 to 8192. Default
+     * @param height Height of the resulting image in pixels. Range from 80 to 1500. Default
      * is 512. It shouldn’t be used with bbox.
-     * @param width Width of the resulting image in pixels. Range is 1 to 8192. Default is 512. It shouldn’t be used
+     * @param width Width of the resulting image in pixels. Range from 80 to 2000. Default is 512. It should not be used
      * with bbox.
      * @param language Language in which search results should be returned. Should be one of supported IETF language
      * tags, case insensitive. When data in specified language is not available for a specific field, default language
      * is used.
-     * 
+     *
      * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
      * details.
      * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
@@ -3704,72 +3749,76 @@ public final class RendersImpl {
      * used in compliance with applicable laws, including those regarding mapping, of the country/region where maps,
      * images and other data and third party content that you are authorized to access via Azure Maps is made available.
      * Example: view=IN.
-     * 
+     *
      * Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the available
      * Views.
      * @param pins Pushpin style and instances. Use this parameter to optionally add pushpins to the image.
      * The pushpin style describes the appearance of the pushpins, and the instances specify
-     * the coordinates of the pushpins and optional labels for each pin. (Be sure to properly URL-encode values of this
+     * the coordinates of the pushpins (in double) and optional labels for each pin. (Be sure to properly URL-encode
+     * values of this
      * parameter since it will contain reserved characters such as pipes and punctuation.)
-     * 
-     * The Azure Maps account S0 SKU only supports a single instance of the pins parameter. Other SKUs
-     * allow multiple instances of the pins parameter to specify multiple pin styles.
-     * 
+     *
+     * The Azure Maps account S0 SKU only supports a single instance of the pins parameter and the number of locations
+     * is limited to 5 per pin. Other SKUs
+     * allow up to 25 instances of the pins parameter to specify multiple pin styles, and the number of locations is
+     * limited to 50 per pin.
+     *
      * To render a pushpin at latitude 45°N and longitude 122°W using the default built-in pushpin style, add the
      * querystring parameter
-     * 
+     *
      * `pins=default||-122 45`
-     * 
+     *
      * Note that the longitude comes before the latitude.
      * After URL encoding this will look like
-     * 
+     *
      * `pins=default%7C%7C-122+45`
-     * 
+     *
      * All of the examples here show the pins
      * parameter without URL encoding, for clarity.
-     * 
+     *
      * To render a pin at multiple locations, separate each location with a pipe character. For example, use
-     * 
+     *
      * `pins=default||-122 45|-119.5 43.2|-121.67 47.12`
-     * 
+     *
      * The S0 Azure Maps account SKU only allows five pushpins. Other account SKUs do not have this limitation.
-     * 
+     *
      * ### Style Modifiers
-     * 
+     *
      * You can modify the appearance of the pins by adding style modifiers. These are added after the style but before
      * the locations and labels. Style modifiers each have a two-letter name. These abbreviated names are used to help
      * reduce the length of the URL.
-     * 
+     *
      * To change the color of the pushpin, use the 'co' style modifier and specify the color using the HTML/CSS RGB
      * color
      * format which is a six-digit hexadecimal number (the three-digit form is not supported). For example, to use
      * a deep pink color which you would specify as #FF1493 in CSS, use
-     * 
+     *
      * `pins=default|coFF1493||-122 45`
-     * 
+     *
      * ### Pushpin Labels
-     * 
-     * To add a label to the pins, put the label in single quotes just before the coordinates. For example, to label
+     *
+     * To add a label to the pins, put the label in single quotes just before the coordinates. Avoid using special
+     * character such as `|` or `||` in label. For example, to label
      * three pins with the values '1', '2', and '3', use
-     * 
+     *
      * `pins=default||'1'-122 45|'2'-119.5 43.2|'3'-121.67 47.12`
-     * 
-     * There is a built in pushpin style called 'none' that does not display a pushpin image. You can use this if
+     *
+     * There is a built-in pushpin style called 'none' that does not display a pushpin image. You can use this if
      * you want to display labels without any pin image. For example,
-     * 
+     *
      * `pins=none||'A'-122 45|'B'-119.5 43.2`
-     * 
+     *
      * To change the color of the pushpin labels, use the 'lc' label color style modifier. For example, to use pink
      * pushpins with black labels, use
-     * 
+     *
      * `pins=default|coFF1493|lc000000||-122 45`
-     * 
+     *
      * To change the size of the labels, use the 'ls' label size style modifier. The label size represents the
      * approximate
      * height of the label text in pixels. For example, to increase the label size to 12, use
-     * 
+     *
      * `pins=default|ls12||'A'-122 45|'B'-119 43`
-     * 
+     *
      * The labels are centered at the pushpin 'label anchor.' The anchor location is predefined for built-in pushpins
      * and
      * is at the top center of custom pushpins (see below). To override the label anchor, using the 'la' style modifier
@@ -3779,130 +3828,131 @@ public final class RendersImpl {
      * example,
      * to position the label anchor 10 pixels right and 4 pixels above the top left corner of the pushpin image,
      * use
-     * 
+     *
      * `pins=default|la10 -4||'A'-122 45|'B'-119 43`
-     * 
+     *
      * ### Custom Pushpins
-     * 
+     *
      * To use a custom pushpin image, use the word 'custom' as the pin style name, and then specify a URL after the
-     * location and label information. Use two pipe characters to indicate that you're done specifying locations and are
+     * location and label information. The maximum allowed size for a customized label image is 65,536 pixels. Use two
+     * pipe characters to indicate that you're done specifying locations and are
      * starting the URL. For example,
-     * 
+     *
      * `pins=custom||-122 45||http://contoso.com/pushpins/red.png`
-     * 
+     *
      * After URL encoding, this would look like
-     * 
+     *
      * `pins=custom%7C%7C-122+45%7C%7Chttp%3A%2F%2Fcontoso.com%2Fpushpins%2Fred.png`
-     * 
+     *
      * By default, custom pushpin images are drawn centered at the pin coordinates. This usually isn't ideal as it
      * obscures
      * the location that you're trying to highlight. To override the anchor location of the pin image, use the 'an'
      * style modifier. This uses the same format as the 'la' label anchor style modifier. For example, if your custom
      * pin image has the tip of the pin at the top left corner of the image, you can set the anchor to that spot by
      * using
-     * 
+     *
      * `pins=custom|an0 0||-122 45||http://contoso.com/pushpins/red.png`
-     * 
+     *
      * Note: If you use the 'co' color modifier with a custom pushpin image, the specified color will replace the RGB
      * channels of the pixels in the image but will leave the alpha (opacity) channel unchanged. This would usually
      * only be done with a solid-color custom image.
-     * 
+     *
      * ### Scale, Rotation, and Opacity
-     * 
+     *
      * You can make pushpins and their labels larger or smaller by using the 'sc' scale style modifier. This is a
      * value greater than zero. A value of 1 is the standard scale. Values larger than 1 will make the pins larger, and
      * values smaller than 1 will make them smaller. For example, to draw the pushpins 50% larger than normal, use
-     * 
+     *
      * `pins=default|sc1.5||-122 45`
-     * 
+     *
      * You can rotate pushpins and their labels by using the 'ro' rotation style modifier. This is a number of degrees
      * of clockwise rotation. Use a negative number to rotate counter-clockwise. For example, to rotate the pushpins
      * 90 degrees clockwise and double their size, use
-     * 
+     *
      * `pins=default|ro90|sc2||-122 45`
-     * 
+     *
      * You can make pushpins and their labels partially transparent by specifying the 'al' alpha style modifier.
      * This is a number between 0 and 1 indicating the opacity of the pushpins. Zero makes them completely transparent
      * (and not visible) and 1 makes them completely opaque (which is the default). For example, to make pushpins
      * and their labels only 67% opaque, use
-     * 
+     *
      * `pins=default|al.67||-122 45`
-     * 
+     *
      * ### Style Modifier Summary
-     * 
-     * Modifier | Description | Range
-     * :--------:|-----------------|------------------
-     * al | Alpha (opacity) | 0 to 1
-     * an | Pin anchor | *
-     * co | Pin color | 000000 to FFFFFF
-     * la | Label anchor | *
-     * lc | Label color | 000000 to FFFFFF
-     * ls | Label size | Greater than 0
-     * ro | Rotation | -360 to 360
-     * sc | Scale | Greater than 0
-     * 
+     *
+     * Modifier | Description | Type | Range
+     * :--------:|---------------|--------|----------
+     * al | Alpha (opacity) | float | 0 to 1
+     * an | Pin anchor | &lt;int32, int32&gt; | *
+     * co | Pin color | string | 000000 to FFFFFF
+     * la | Label anchor | &lt;int32, int32&gt; | *
+     * lc | Label color | string | 000000 to FFFFFF
+     * ls | Label size | float | Greater than 0
+     * ro | Rotation | float | -360 to 360
+     * sc | Scale | float | Greater than 0
+     *
      * * X and Y coordinates can be anywhere within pin image or a margin around it.
      * The margin size is the minimum of the pin width and height.
-     * @param path Path style and locations. Use this parameter to optionally add lines, polygons or circles to the
-     * image.
+     * @param path Path style and locations (in double). Use this parameter to optionally add lines, polygons or circles
+     * to the image.
      * The path style describes the appearance of the line and fill. (Be sure to properly URL-encode values of this
      * parameter since it will contain reserved characters such as pipes and punctuation.)
-     * 
+     *
      * Path parameter is supported in Azure Maps account SKU starting with S1. Multiple instances of the path parameter
      * allow to specify multiple geometries with their styles. Number of parameters per request is limited to 10 and
      * number of locations is limited to 100 per path.
-     * 
+     *
      * To render a circle with radius 100 meters and center point at latitude 45°N and longitude 122°W using the default
      * style, add the
      * querystring parameter
-     * 
+     *
      * `path=ra100||-122 45`
-     * 
+     *
      * Note that the longitude comes before the latitude.
      * After URL encoding this will look like
-     * 
+     *
      * `path=ra100%7C%7C-122+45`
-     * 
+     *
      * All of the examples here show the path parameter without URL encoding, for clarity.
-     * 
+     *
      * To render a line, separate each location with a pipe character. For example, use
-     * 
+     *
      * `path=||-122 45|-119.5 43.2|-121.67 47.12`
-     * 
-     * To render a polygon, last location must be equal to the start location. For example, use
-     * 
+     *
+     * A polygon is specified with a closed path, where the first and last points are equal. For example, use
+     *
      * `path=||-122 45|-119.5 43.2|-121.67 47.12|-122 45`
-     * 
-     * Longitude and latitude values for locations of lines and polygons can be in the range from -360 to 360 to allow
-     * for rendering of geometries crossing the anti-meridian.
-     * 
+     *
+     * Longitude value for locations of lines and polygons can be in the range from -360 to 360 to allow for rendering
+     * of geometries crossing the anti-meridian.
+     *
      * ### Style Modifiers
-     * 
+     *
      * You can modify the appearance of the path by adding style modifiers. These are added before the locations.
      * Style modifiers each have a two-letter name. These abbreviated names are used to help reduce the length
      * of the URL.
-     * 
+     *
      * To change the color of the outline, use the 'lc' style modifier and specify the color using the HTML/CSS RGB
      * color
      * format which is a six-digit hexadecimal number (the three-digit form is not supported). For example, to use
      * a deep pink color which you would specify as #FF1493 in CSS, use
-     * 
+     *
      * `path=lcFF1493||-122 45|-119.5 43.2`
-     * 
-     * Multiple style modifiers may be combined together to create a more complex visual style.
-     * 
+     *
+     * Multiple style modifiers may be combined to create a more complex visual style.
+     *
      * `lc0000FF|lw3|la0.60|fa0.50||-122.2 47.6|-122.2 47.7|-122.3 47.7|-122.3 47.6|-122.2 47.6`
-     * 
+     *
      * ### Style Modifier Summary
-     * 
-     * Modifier | Description | Range
-     * :--------:|------------------------|------------------
-     * lc | Line color | 000000 to FFFFFF
-     * fc | Fill color | 000000 to FFFFFF
-     * la | Line alpha (opacity) | 0 to 1
-     * fa | Fill alpha (opacity) | 0 to 1
-     * lw | Line width | Greater than 0
-     * ra | Circle radius (meters) | Greater than 0.
+     *
+     * Modifier | Description | Type | Range
+     * :--------:|---------------|--------|----------
+     * lc | Line color | string | 000000 to FFFFFF
+     * fc | Fill color | string | 000000 to FFFFFF
+     * la | Line alpha (opacity) | float | 0 to 1
+     * fa | Fill alpha (opacity) | float | 0 to 1
+     * lw | Line width |int32 | (0, 50]
+     * ra | Circle radius (meters) | float | Greater than 0.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -3910,11 +3960,10 @@ public final class RendersImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getMapStaticImageNoCustomHeadersWithResponseAsync(RasterTileFormat format,
-        StaticMapLayer layer, MapImageStyle style, Integer zoom, List<Double> center, List<Double> boundingBoxPrivate,
+    public Mono<Response<BinaryData>> getMapStaticImageNoCustomHeadersWithResponseAsync(TilesetId tilesetId,
+        TrafficTilesetId trafficLayer, Integer zoom, List<Double> center, List<Double> boundingBoxPrivate,
         Integer height, Integer width, String language, LocalizedMapView localizedMapView, List<String> pins,
         List<String> path, Context context) {
-        final String accept = "application/json, image/jpeg, image/png, image/pbf, application/vnd.mapbox-vector-tile";
         String centerConverted
             = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(center, CollectionFormat.CSV);
         String boundingBoxPrivateConverted = JacksonAdapter.createDefaultSerializerAdapter()
@@ -3926,86 +3975,89 @@ public final class RendersImpl {
             ? new ArrayList<>()
             : path.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         return service.getMapStaticImageNoCustomHeaders(this.client.getHost(), this.client.getClientId(),
-            this.client.getApiVersion(), format, layer, style, zoom, centerConverted, boundingBoxPrivateConverted,
-            height, width, language, localizedMapView, pinsConverted, pathConverted, accept, context);
+            this.client.getApiVersion(), tilesetId, trafficLayer, zoom, centerConverted, boundingBoxPrivateConverted,
+            height, width, language, localizedMapView, pinsConverted, pathConverted, this.client.getAccept(), context);
     }
 
     /**
-     * Use to render a user-defined, rectangular image containing a map section using a zoom level ranging from 0 to 20.
-     * 
-     * 
-     * 
-     * The supported resolution range for the map image is from 1x1 to 8192x8192. If you are deciding when to use the
-     * static image service over the map tile service, you may want to consider how you would like to interact with the
-     * rendered map. If the map contents will be relatively unchanging, a static map is a good choice. If you want to
-     * support a lot of zooming, panning and changing of the map content, the map tile service would be a better choice.
-     * 
-     * Service also provides Image Composition functionality to get a static image back with additional data like;
-     * pushpins and geometry overlays with following capabilities.
-     * 
-     * - Specify multiple pushpin styles
-     * - Render circle, polyline and polygon geometry types.
-     * 
-     * Please see [How-to-Guide](https://aka.ms/AzureMapsHowToGuideImageCompositor) for detailed examples.
-     * 
-     * _Note_ : Either **center** or **bbox** parameter must be supplied to the
-     * API.
+     * This rendering API produces static, rasterized map views of a user-defined area. It's suitable for lightweight
+     * web applications, when the desired user experience doesn't require interactive map controls, or when bandwidth is
+     * limited. This API is also useful for embedding maps in applications outside of the browser, in backend services,
+     * report generation, or desktop applications.
+     *
+     * This API includes parameters for basic data visualization:
+     *
+     * - Labeled pushpins in multiple styles.
+     * - Render circle, path, and polygon geometry types.
+     *
+     * For more information and detailed examples, see [Render custom data on a raster
+     * map](/azure/azure-maps/how-to-render-custom-data).
      * &lt;br&gt;&lt;br&gt;
-     * The supported Lat and Lon ranges when using the **bbox** parameter, are as follows:
+     * The dimensions of the bbox parameter are constrained, depending on the zoom level. This ensures the resulting
+     * image has an appropriate level of detail.
      * &lt;br&gt;&lt;br&gt;
-     * 
-     * |Zoom Level | Max Lon Range | Max Lat Range|
-     * |:----------|:----------------|:-------------|
-     * |0 | 360.0 | 170.0 |
-     * |1 | 360.0 | 170.0 |
-     * |2 | 360.0 | 170.0 |
-     * |3 | 360.0 | 170.0 |
-     * |4 | 360.0 | 170.0 |
-     * |5 | 180.0 | 85.0 |
-     * |6 | 90.0 | 42.5 |
-     * |7 | 45.0 | 21.25 |
-     * |8 | 22.5 | 10.625 |
-     * |9 | 11.25 | 5.3125 |
-     * |10 | 5.625 | 2.62625 |
-     * |11 | 2.8125 | 1.328125 |
-     * |12 | 1.40625 | 0.6640625 |
-     * |13 | 0.703125 | 0.33203125 |
-     * |14 | 0.3515625 | 0.166015625 |
-     * |15 | 0.17578125 | 0.0830078125 |
-     * |16 | 0.087890625 | 0.0415039063 |
-     * |17 | 0.0439453125 | 0.0207519531 |
-     * |18 | 0.0219726563 | 0.0103759766 |
-     * |19 | 0.0109863281 | 0.0051879883 |
-     * |20 | 0.0054931641 | 0.0025939941 |.
-     * 
-     * @param format Desired format of the response. Possible value: png.
-     * @param layer Map layer requested. If layer is set to labels or hybrid, the format should be png.
-     * @param style Map style to be returned. Possible values are main and dark.
-     * @param zoom Desired zoom level of the map. Zoom value must be in the range: 0-20 (inclusive). Default value is
-     * 12.&lt;br&gt;&lt;br&gt;Please see [Zoom Levels and Tile
-     * Grid](https://docs.microsoft.com/azure/location-based-services/zoom-levels-and-tile-grid) for details.
-     * @param center Coordinates of the center point. Format: 'lon,lat'. Projection used
-     * - EPSG:3857. Longitude range: -180 to 180. Latitude range: -85 to 85.
-     * 
+     *
+     * |Zoom Level | Min Lon Range | Max Lon Range | Min Lat Range| Max Lat Range|
+     * |:----------|:----------------|:----------------|:----------------|:-------------|
+     * |0 | 56.25 | 360.0 | 30.1105585173 | 180.0 |
+     * |1 | 28.125 | 360.0 | 14.87468995 | 180.0 |
+     * |2 | 14.063 | 351.5625 | 7.4130741851 | 137.9576312246 |
+     * |3 | 7.03125 | 175.78125 | 3.7034501005 | 73.6354071932 |
+     * |4 | 3.515625 | 87.890625 | 1.8513375155 | 35.4776115315 |
+     * |5 | 1.7578125 | 43.9453125 | 0.925620264 | 17.4589959239 |
+     * |6 | 0.87890625 | 21.97265625 | 0.4628040687 | 8.6907788223 |
+     * |7 | 0.439453125 | 10.986328125 | 0.2314012764 | 4.3404320789 |
+     * |8 | 0.2197265625 | 5.4931640625 | 0.1157005434 | 2.1695927024 |
+     * |9 | 0.1098632812 | 2.7465820312 | 0.0578502599 | 1.0847183194 |
+     * |10 | 0.0549316406 | 1.3732910156 | 0.0289251285 | 0.5423494021 |
+     * |11 | 0.0274658203 | 0.6866455078 | 0.014462564 | 0.2711734813 |
+     * |12 | 0.0137329102 | 0.3433227539 | 0.007231282 | 0.1355865882 |
+     * |13 | 0.0068664551 | 0.171661377 | 0.003615641 | 0.067793275 |
+     * |14 | 0.0034332275 | 0.0858306885 | 0.0018078205 | 0.0338966351 |
+     * |15 | 0.0017166138 | 0.0429153442 | 0.0009039102 | 0.0169483173 |
+     * |16 | 0.0008583069 | 0.0214576721 | 0.0004519551 | 0.0084741586 |
+     * |17 | 0.0004291534 | 0.0107288361 | 0.0002259776 | 0.0042370793 |
+     * |18 | 0.0002145767 | 0.005364418 | 0.0001129888 | 0.0021185396 |
+     * |19 | 0.0001072884 | 0.002682209 | 5.64944E-05 | 0.0010592698 |
+     * |20 | 5.36442E-05 | 0.0013411045 | 2.82472E-05 | 0.0005296349 |
+     *
+     * _Note_ : Either **center** or **bbox** parameter must be supplied to the API.
+     *
+     * @param tilesetId Map style to be returned. Possible values are microsoft.base.road, microsoft.base.darkgrey, and
+     * microsoft.imagery. Default value is set to be microsoft.base.road. For more information, see [Render
+     * TilesetId](https://learn.microsoft.com/en-us/rest/api/maps/render/get-map-tileset?view=rest-maps-2023-06-01&amp;tabs=HTTP#tilesetid).
+     * @param trafficLayer Optional Value, indicating no traffic flow overlaid on the image result. Possible values are
+     * microsoft.traffic.relative.main and none. Default value is none, indicating no traffic flow returned. If traffic
+     * related tilesetId is provided, will return map image with corresponding traffic layer. For more information, see
+     * [Render
+     * TilesetId](https://learn.microsoft.com/en-us/rest/api/maps/render/get-map-tileset?view=rest-maps-2023-06-01&amp;tabs=HTTP#tilesetid).
+     * @param zoom Desired zoom level of the map. Support zoom value range from 0-20 (inclusive) for tilesetId being
+     * microsoft.base.road or microsoft.base.darkgrey. Support zoom value range from 0-19 (inclusive) for tilesetId
+     * being microsoft.imagery. Default value is 12.&lt;br&gt;&lt;br&gt;For more information, see [Zoom Levels and Tile
+     * Grid](https://docs.microsoft.com/azure/location-based-services/zoom-levels-and-tile-grid).
+     * @param center Coordinates of the center point in double. Format: 'lon,lat'. Longitude range: -180 to 180.
+     * Latitude range: -90 to 90.
+     *
      * Note: Either center or bbox are required parameters. They are
      * mutually exclusive.
-     * @param boundingBoxPrivate Bounding box. Projection used - EPSG:3857. Format : 'minLon, minLat,
-     * maxLon, maxLat'.
-     * 
+     * @param boundingBoxPrivate A bounding box is defined by two latitudes and two longitudes that represent the four
+     * sides of a rectangular area on the Earth. Format : 'minLon, minLat,
+     * maxLon, maxLat' (in double).
+     *
      * Note: Either bbox or center are required
-     * parameters. They are mutually exclusive. It shouldn’t be used with
+     * parameters. They are mutually exclusive. bbox shouldn’t be used with
      * height or width.
-     * 
-     * The maximum allowed ranges for Lat and Lon are defined for each zoom level
+     *
+     * The maximum and minimum allowed ranges for Lat and Lon are defined for each zoom level
      * in the table at the top of this page.
-     * @param height Height of the resulting image in pixels. Range is 1 to 8192. Default
+     * @param height Height of the resulting image in pixels. Range from 80 to 1500. Default
      * is 512. It shouldn’t be used with bbox.
-     * @param width Width of the resulting image in pixels. Range is 1 to 8192. Default is 512. It shouldn’t be used
+     * @param width Width of the resulting image in pixels. Range from 80 to 2000. Default is 512. It should not be used
      * with bbox.
      * @param language Language in which search results should be returned. Should be one of supported IETF language
      * tags, case insensitive. When data in specified language is not available for a specific field, default language
      * is used.
-     * 
+     *
      * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
      * details.
      * @param localizedMapView The View parameter (also called the "user region" parameter) allows you to show the
@@ -4018,72 +4070,76 @@ public final class RendersImpl {
      * used in compliance with applicable laws, including those regarding mapping, of the country/region where maps,
      * images and other data and third party content that you are authorized to access via Azure Maps is made available.
      * Example: view=IN.
-     * 
+     *
      * Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the available
      * Views.
      * @param pins Pushpin style and instances. Use this parameter to optionally add pushpins to the image.
      * The pushpin style describes the appearance of the pushpins, and the instances specify
-     * the coordinates of the pushpins and optional labels for each pin. (Be sure to properly URL-encode values of this
+     * the coordinates of the pushpins (in double) and optional labels for each pin. (Be sure to properly URL-encode
+     * values of this
      * parameter since it will contain reserved characters such as pipes and punctuation.)
-     * 
-     * The Azure Maps account S0 SKU only supports a single instance of the pins parameter. Other SKUs
-     * allow multiple instances of the pins parameter to specify multiple pin styles.
-     * 
+     *
+     * The Azure Maps account S0 SKU only supports a single instance of the pins parameter and the number of locations
+     * is limited to 5 per pin. Other SKUs
+     * allow up to 25 instances of the pins parameter to specify multiple pin styles, and the number of locations is
+     * limited to 50 per pin.
+     *
      * To render a pushpin at latitude 45°N and longitude 122°W using the default built-in pushpin style, add the
      * querystring parameter
-     * 
+     *
      * `pins=default||-122 45`
-     * 
+     *
      * Note that the longitude comes before the latitude.
      * After URL encoding this will look like
-     * 
+     *
      * `pins=default%7C%7C-122+45`
-     * 
+     *
      * All of the examples here show the pins
      * parameter without URL encoding, for clarity.
-     * 
+     *
      * To render a pin at multiple locations, separate each location with a pipe character. For example, use
-     * 
+     *
      * `pins=default||-122 45|-119.5 43.2|-121.67 47.12`
-     * 
+     *
      * The S0 Azure Maps account SKU only allows five pushpins. Other account SKUs do not have this limitation.
-     * 
+     *
      * ### Style Modifiers
-     * 
+     *
      * You can modify the appearance of the pins by adding style modifiers. These are added after the style but before
      * the locations and labels. Style modifiers each have a two-letter name. These abbreviated names are used to help
      * reduce the length of the URL.
-     * 
+     *
      * To change the color of the pushpin, use the 'co' style modifier and specify the color using the HTML/CSS RGB
      * color
      * format which is a six-digit hexadecimal number (the three-digit form is not supported). For example, to use
      * a deep pink color which you would specify as #FF1493 in CSS, use
-     * 
+     *
      * `pins=default|coFF1493||-122 45`
-     * 
+     *
      * ### Pushpin Labels
-     * 
-     * To add a label to the pins, put the label in single quotes just before the coordinates. For example, to label
+     *
+     * To add a label to the pins, put the label in single quotes just before the coordinates. Avoid using special
+     * character such as `|` or `||` in label. For example, to label
      * three pins with the values '1', '2', and '3', use
-     * 
+     *
      * `pins=default||'1'-122 45|'2'-119.5 43.2|'3'-121.67 47.12`
-     * 
-     * There is a built in pushpin style called 'none' that does not display a pushpin image. You can use this if
+     *
+     * There is a built-in pushpin style called 'none' that does not display a pushpin image. You can use this if
      * you want to display labels without any pin image. For example,
-     * 
+     *
      * `pins=none||'A'-122 45|'B'-119.5 43.2`
-     * 
+     *
      * To change the color of the pushpin labels, use the 'lc' label color style modifier. For example, to use pink
      * pushpins with black labels, use
-     * 
+     *
      * `pins=default|coFF1493|lc000000||-122 45`
-     * 
+     *
      * To change the size of the labels, use the 'ls' label size style modifier. The label size represents the
      * approximate
      * height of the label text in pixels. For example, to increase the label size to 12, use
-     * 
+     *
      * `pins=default|ls12||'A'-122 45|'B'-119 43`
-     * 
+     *
      * The labels are centered at the pushpin 'label anchor.' The anchor location is predefined for built-in pushpins
      * and
      * is at the top center of custom pushpins (see below). To override the label anchor, using the 'la' style modifier
@@ -4093,130 +4149,131 @@ public final class RendersImpl {
      * example,
      * to position the label anchor 10 pixels right and 4 pixels above the top left corner of the pushpin image,
      * use
-     * 
+     *
      * `pins=default|la10 -4||'A'-122 45|'B'-119 43`
-     * 
+     *
      * ### Custom Pushpins
-     * 
+     *
      * To use a custom pushpin image, use the word 'custom' as the pin style name, and then specify a URL after the
-     * location and label information. Use two pipe characters to indicate that you're done specifying locations and are
+     * location and label information. The maximum allowed size for a customized label image is 65,536 pixels. Use two
+     * pipe characters to indicate that you're done specifying locations and are
      * starting the URL. For example,
-     * 
+     *
      * `pins=custom||-122 45||http://contoso.com/pushpins/red.png`
-     * 
+     *
      * After URL encoding, this would look like
-     * 
+     *
      * `pins=custom%7C%7C-122+45%7C%7Chttp%3A%2F%2Fcontoso.com%2Fpushpins%2Fred.png`
-     * 
+     *
      * By default, custom pushpin images are drawn centered at the pin coordinates. This usually isn't ideal as it
      * obscures
      * the location that you're trying to highlight. To override the anchor location of the pin image, use the 'an'
      * style modifier. This uses the same format as the 'la' label anchor style modifier. For example, if your custom
      * pin image has the tip of the pin at the top left corner of the image, you can set the anchor to that spot by
      * using
-     * 
+     *
      * `pins=custom|an0 0||-122 45||http://contoso.com/pushpins/red.png`
-     * 
+     *
      * Note: If you use the 'co' color modifier with a custom pushpin image, the specified color will replace the RGB
      * channels of the pixels in the image but will leave the alpha (opacity) channel unchanged. This would usually
      * only be done with a solid-color custom image.
-     * 
+     *
      * ### Scale, Rotation, and Opacity
-     * 
+     *
      * You can make pushpins and their labels larger or smaller by using the 'sc' scale style modifier. This is a
      * value greater than zero. A value of 1 is the standard scale. Values larger than 1 will make the pins larger, and
      * values smaller than 1 will make them smaller. For example, to draw the pushpins 50% larger than normal, use
-     * 
+     *
      * `pins=default|sc1.5||-122 45`
-     * 
+     *
      * You can rotate pushpins and their labels by using the 'ro' rotation style modifier. This is a number of degrees
      * of clockwise rotation. Use a negative number to rotate counter-clockwise. For example, to rotate the pushpins
      * 90 degrees clockwise and double their size, use
-     * 
+     *
      * `pins=default|ro90|sc2||-122 45`
-     * 
+     *
      * You can make pushpins and their labels partially transparent by specifying the 'al' alpha style modifier.
      * This is a number between 0 and 1 indicating the opacity of the pushpins. Zero makes them completely transparent
      * (and not visible) and 1 makes them completely opaque (which is the default). For example, to make pushpins
      * and their labels only 67% opaque, use
-     * 
+     *
      * `pins=default|al.67||-122 45`
-     * 
+     *
      * ### Style Modifier Summary
-     * 
-     * Modifier | Description | Range
-     * :--------:|-----------------|------------------
-     * al | Alpha (opacity) | 0 to 1
-     * an | Pin anchor | *
-     * co | Pin color | 000000 to FFFFFF
-     * la | Label anchor | *
-     * lc | Label color | 000000 to FFFFFF
-     * ls | Label size | Greater than 0
-     * ro | Rotation | -360 to 360
-     * sc | Scale | Greater than 0
-     * 
+     *
+     * Modifier | Description | Type | Range
+     * :--------:|---------------|--------|----------
+     * al | Alpha (opacity) | float | 0 to 1
+     * an | Pin anchor | &lt;int32, int32&gt; | *
+     * co | Pin color | string | 000000 to FFFFFF
+     * la | Label anchor | &lt;int32, int32&gt; | *
+     * lc | Label color | string | 000000 to FFFFFF
+     * ls | Label size | float | Greater than 0
+     * ro | Rotation | float | -360 to 360
+     * sc | Scale | float | Greater than 0
+     *
      * * X and Y coordinates can be anywhere within pin image or a margin around it.
      * The margin size is the minimum of the pin width and height.
-     * @param path Path style and locations. Use this parameter to optionally add lines, polygons or circles to the
-     * image.
+     * @param path Path style and locations (in double). Use this parameter to optionally add lines, polygons or circles
+     * to the image.
      * The path style describes the appearance of the line and fill. (Be sure to properly URL-encode values of this
      * parameter since it will contain reserved characters such as pipes and punctuation.)
-     * 
+     *
      * Path parameter is supported in Azure Maps account SKU starting with S1. Multiple instances of the path parameter
      * allow to specify multiple geometries with their styles. Number of parameters per request is limited to 10 and
      * number of locations is limited to 100 per path.
-     * 
+     *
      * To render a circle with radius 100 meters and center point at latitude 45°N and longitude 122°W using the default
      * style, add the
      * querystring parameter
-     * 
+     *
      * `path=ra100||-122 45`
-     * 
+     *
      * Note that the longitude comes before the latitude.
      * After URL encoding this will look like
-     * 
+     *
      * `path=ra100%7C%7C-122+45`
-     * 
+     *
      * All of the examples here show the path parameter without URL encoding, for clarity.
-     * 
+     *
      * To render a line, separate each location with a pipe character. For example, use
-     * 
+     *
      * `path=||-122 45|-119.5 43.2|-121.67 47.12`
-     * 
-     * To render a polygon, last location must be equal to the start location. For example, use
-     * 
+     *
+     * A polygon is specified with a closed path, where the first and last points are equal. For example, use
+     *
      * `path=||-122 45|-119.5 43.2|-121.67 47.12|-122 45`
-     * 
-     * Longitude and latitude values for locations of lines and polygons can be in the range from -360 to 360 to allow
-     * for rendering of geometries crossing the anti-meridian.
-     * 
+     *
+     * Longitude value for locations of lines and polygons can be in the range from -360 to 360 to allow for rendering
+     * of geometries crossing the anti-meridian.
+     *
      * ### Style Modifiers
-     * 
+     *
      * You can modify the appearance of the path by adding style modifiers. These are added before the locations.
      * Style modifiers each have a two-letter name. These abbreviated names are used to help reduce the length
      * of the URL.
-     * 
+     *
      * To change the color of the outline, use the 'lc' style modifier and specify the color using the HTML/CSS RGB
      * color
      * format which is a six-digit hexadecimal number (the three-digit form is not supported). For example, to use
      * a deep pink color which you would specify as #FF1493 in CSS, use
-     * 
+     *
      * `path=lcFF1493||-122 45|-119.5 43.2`
-     * 
-     * Multiple style modifiers may be combined together to create a more complex visual style.
-     * 
+     *
+     * Multiple style modifiers may be combined to create a more complex visual style.
+     *
      * `lc0000FF|lw3|la0.60|fa0.50||-122.2 47.6|-122.2 47.7|-122.3 47.7|-122.3 47.6|-122.2 47.6`
-     * 
+     *
      * ### Style Modifier Summary
-     * 
-     * Modifier | Description | Range
-     * :--------:|------------------------|------------------
-     * lc | Line color | 000000 to FFFFFF
-     * fc | Fill color | 000000 to FFFFFF
-     * la | Line alpha (opacity) | 0 to 1
-     * fa | Fill alpha (opacity) | 0 to 1
-     * lw | Line width | Greater than 0
-     * ra | Circle radius (meters) | Greater than 0.
+     *
+     * Modifier | Description | Type | Range
+     * :--------:|---------------|--------|----------
+     * lc | Line color | string | 000000 to FFFFFF
+     * fc | Fill color | string | 000000 to FFFFFF
+     * la | Line alpha (opacity) | float | 0 to 1
+     * fa | Fill alpha (opacity) | float | 0 to 1
+     * lw | Line width |int32 | (0, 50]
+     * ra | Circle radius (meters) | float | Greater than 0.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -4224,21 +4281,22 @@ public final class RendersImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getMapStaticImageNoCustomHeadersWithResponse(RasterTileFormat format,
-        StaticMapLayer layer, MapImageStyle style, Integer zoom, List<Double> center, List<Double> boundingBoxPrivate,
+    public Response<BinaryData> getMapStaticImageNoCustomHeadersWithResponse(TilesetId tilesetId,
+        TrafficTilesetId trafficLayer, Integer zoom, List<Double> center, List<Double> boundingBoxPrivate,
         Integer height, Integer width, String language, LocalizedMapView localizedMapView, List<String> pins,
         List<String> path, Context context) {
-        return getMapStaticImageNoCustomHeadersWithResponseAsync(format, layer, style, zoom, center, boundingBoxPrivate,
-            height, width, language, localizedMapView, pins, path, context).block();
+        return getMapStaticImageNoCustomHeadersWithResponseAsync(tilesetId, trafficLayer, zoom, center,
+            boundingBoxPrivate, height, width, language, localizedMapView, pins, path, context).block();
     }
 
     /**
      * Use to get copyright information for the specified bounding box.
-     * 
-     * 
-     * 
-     * Bounding-box requests should specify the minimum and maximum longitude and latitude (EPSG-3857) coordinates.
-     * 
+     *
+     *
+     *
+     * Returns copyright information for a given bounding box. Bounding-box requests should specify the minimum and
+     * maximum longitude and latitude (EPSG-3857) coordinates.
+     *
      * @param format Desired format of the response. Value can be either _json_ or _xml_.
      * @param boundingBox Parameter group.
      * @param includeText Yes/no value to exclude textual data from response. Only images and country/region names will
@@ -4266,11 +4324,12 @@ public final class RendersImpl {
 
     /**
      * Use to get copyright information for the specified bounding box.
-     * 
-     * 
-     * 
-     * Bounding-box requests should specify the minimum and maximum longitude and latitude (EPSG-3857) coordinates.
-     * 
+     *
+     *
+     *
+     * Returns copyright information for a given bounding box. Bounding-box requests should specify the minimum and
+     * maximum longitude and latitude (EPSG-3857) coordinates.
+     *
      * @param format Desired format of the response. Value can be either _json_ or _xml_.
      * @param boundingBox Parameter group.
      * @param includeText Yes/no value to exclude textual data from response. Only images and country/region names will
@@ -4298,11 +4357,12 @@ public final class RendersImpl {
 
     /**
      * Use to get copyright information for the specified bounding box.
-     * 
-     * 
-     * 
-     * Bounding-box requests should specify the minimum and maximum longitude and latitude (EPSG-3857) coordinates.
-     * 
+     *
+     *
+     *
+     * Returns copyright information for a given bounding box. Bounding-box requests should specify the minimum and
+     * maximum longitude and latitude (EPSG-3857) coordinates.
+     *
      * @param format Desired format of the response. Value can be either _json_ or _xml_.
      * @param boundingBox Parameter group.
      * @param includeText Yes/no value to exclude textual data from response. Only images and country/region names will
@@ -4321,11 +4381,12 @@ public final class RendersImpl {
 
     /**
      * Use to get copyright information for the specified bounding box.
-     * 
-     * 
-     * 
-     * Bounding-box requests should specify the minimum and maximum longitude and latitude (EPSG-3857) coordinates.
-     * 
+     *
+     *
+     *
+     * Returns copyright information for a given bounding box. Bounding-box requests should specify the minimum and
+     * maximum longitude and latitude (EPSG-3857) coordinates.
+     *
      * @param format Desired format of the response. Value can be either _json_ or _xml_.
      * @param boundingBox Parameter group.
      * @param includeText Yes/no value to exclude textual data from response. Only images and country/region names will
@@ -4345,11 +4406,12 @@ public final class RendersImpl {
 
     /**
      * Use to get copyright information for the specified bounding box.
-     * 
-     * 
-     * 
-     * Bounding-box requests should specify the minimum and maximum longitude and latitude (EPSG-3857) coordinates.
-     * 
+     *
+     *
+     *
+     * Returns copyright information for a given bounding box. Bounding-box requests should specify the minimum and
+     * maximum longitude and latitude (EPSG-3857) coordinates.
+     *
      * @param format Desired format of the response. Value can be either _json_ or _xml_.
      * @param boundingBox Parameter group.
      * @param includeText Yes/no value to exclude textual data from response. Only images and country/region names will
@@ -4368,11 +4430,12 @@ public final class RendersImpl {
 
     /**
      * Use to get copyright information for the specified bounding box.
-     * 
-     * 
-     * 
-     * Bounding-box requests should specify the minimum and maximum longitude and latitude (EPSG-3857) coordinates.
-     * 
+     *
+     *
+     *
+     * Returns copyright information for a given bounding box. Bounding-box requests should specify the minimum and
+     * maximum longitude and latitude (EPSG-3857) coordinates.
+     *
      * @param format Desired format of the response. Value can be either _json_ or _xml_.
      * @param boundingBox Parameter group.
      * @param includeText Yes/no value to exclude textual data from response. Only images and country/region names will
@@ -4390,14 +4453,16 @@ public final class RendersImpl {
 
     /**
      * Use to get copyright information.
-     * 
-     * 
-     * 
-     * In addition to basic copyright for the whole map, API is serving specific groups of copyrights for some
-     * countries/regions.
-     * Returns the copyright information for a given tile. To obtain the copyright information for a particular tile,
-     * the request should specify the tile's zoom level and x and y coordinates (see: Zoom Levels and Tile Grid).
-     * 
+     *
+     *
+     *
+     * To obtain the copyright information for a particular tile, the request should specify the tile's zoom level and x
+     * and y coordinates. For more information, see [Zoom Levels and Tile
+     * Grid](/azure/azure-maps/zoom-levels-and-tile-grid).
+     *
+     * Copyrights API is designed to serve copyright information for Render service. In addition to basic copyright for
+     * the whole map, API is serving specific groups of copyrights for some countries/regions.
+     *
      * @param format Desired format of the response. Value can be either _json_ or _xml_.
      * @param tileIndex Parameter group.
      * @param includeText Yes/no value to exclude textual data from response. Only images and country/region names will
@@ -4421,14 +4486,16 @@ public final class RendersImpl {
 
     /**
      * Use to get copyright information.
-     * 
-     * 
-     * 
-     * In addition to basic copyright for the whole map, API is serving specific groups of copyrights for some
-     * countries/regions.
-     * Returns the copyright information for a given tile. To obtain the copyright information for a particular tile,
-     * the request should specify the tile's zoom level and x and y coordinates (see: Zoom Levels and Tile Grid).
-     * 
+     *
+     *
+     *
+     * To obtain the copyright information for a particular tile, the request should specify the tile's zoom level and x
+     * and y coordinates. For more information, see [Zoom Levels and Tile
+     * Grid](/azure/azure-maps/zoom-levels-and-tile-grid).
+     *
+     * Copyrights API is designed to serve copyright information for Render service. In addition to basic copyright for
+     * the whole map, API is serving specific groups of copyrights for some countries/regions.
+     *
      * @param format Desired format of the response. Value can be either _json_ or _xml_.
      * @param tileIndex Parameter group.
      * @param includeText Yes/no value to exclude textual data from response. Only images and country/region names will
@@ -4453,14 +4520,16 @@ public final class RendersImpl {
 
     /**
      * Use to get copyright information.
-     * 
-     * 
-     * 
-     * In addition to basic copyright for the whole map, API is serving specific groups of copyrights for some
-     * countries/regions.
-     * Returns the copyright information for a given tile. To obtain the copyright information for a particular tile,
-     * the request should specify the tile's zoom level and x and y coordinates (see: Zoom Levels and Tile Grid).
-     * 
+     *
+     *
+     *
+     * To obtain the copyright information for a particular tile, the request should specify the tile's zoom level and x
+     * and y coordinates. For more information, see [Zoom Levels and Tile
+     * Grid](/azure/azure-maps/zoom-levels-and-tile-grid).
+     *
+     * Copyrights API is designed to serve copyright information for Render service. In addition to basic copyright for
+     * the whole map, API is serving specific groups of copyrights for some countries/regions.
+     *
      * @param format Desired format of the response. Value can be either _json_ or _xml_.
      * @param tileIndex Parameter group.
      * @param includeText Yes/no value to exclude textual data from response. Only images and country/region names will
@@ -4479,14 +4548,16 @@ public final class RendersImpl {
 
     /**
      * Use to get copyright information.
-     * 
-     * 
-     * 
-     * In addition to basic copyright for the whole map, API is serving specific groups of copyrights for some
-     * countries/regions.
-     * Returns the copyright information for a given tile. To obtain the copyright information for a particular tile,
-     * the request should specify the tile's zoom level and x and y coordinates (see: Zoom Levels and Tile Grid).
-     * 
+     *
+     *
+     *
+     * To obtain the copyright information for a particular tile, the request should specify the tile's zoom level and x
+     * and y coordinates. For more information, see [Zoom Levels and Tile
+     * Grid](/azure/azure-maps/zoom-levels-and-tile-grid).
+     *
+     * Copyrights API is designed to serve copyright information for Render service. In addition to basic copyright for
+     * the whole map, API is serving specific groups of copyrights for some countries/regions.
+     *
      * @param format Desired format of the response. Value can be either _json_ or _xml_.
      * @param tileIndex Parameter group.
      * @param includeText Yes/no value to exclude textual data from response. Only images and country/region names will
@@ -4506,14 +4577,16 @@ public final class RendersImpl {
 
     /**
      * Use to get copyright information.
-     * 
-     * 
-     * 
-     * In addition to basic copyright for the whole map, API is serving specific groups of copyrights for some
-     * countries/regions.
-     * Returns the copyright information for a given tile. To obtain the copyright information for a particular tile,
-     * the request should specify the tile's zoom level and x and y coordinates (see: Zoom Levels and Tile Grid).
-     * 
+     *
+     *
+     *
+     * To obtain the copyright information for a particular tile, the request should specify the tile's zoom level and x
+     * and y coordinates. For more information, see [Zoom Levels and Tile
+     * Grid](/azure/azure-maps/zoom-levels-and-tile-grid).
+     *
+     * Copyrights API is designed to serve copyright information for Render service. In addition to basic copyright for
+     * the whole map, API is serving specific groups of copyrights for some countries/regions.
+     *
      * @param format Desired format of the response. Value can be either _json_ or _xml_.
      * @param tileIndex Parameter group.
      * @param includeText Yes/no value to exclude textual data from response. Only images and country/region names will
@@ -4532,14 +4605,16 @@ public final class RendersImpl {
 
     /**
      * Use to get copyright information.
-     * 
-     * 
-     * 
-     * In addition to basic copyright for the whole map, API is serving specific groups of copyrights for some
-     * countries/regions.
-     * Returns the copyright information for a given tile. To obtain the copyright information for a particular tile,
-     * the request should specify the tile's zoom level and x and y coordinates (see: Zoom Levels and Tile Grid).
-     * 
+     *
+     *
+     *
+     * To obtain the copyright information for a particular tile, the request should specify the tile's zoom level and x
+     * and y coordinates. For more information, see [Zoom Levels and Tile
+     * Grid](/azure/azure-maps/zoom-levels-and-tile-grid).
+     *
+     * Copyrights API is designed to serve copyright information for Render service. In addition to basic copyright for
+     * the whole map, API is serving specific groups of copyrights for some countries/regions.
+     *
      * @param format Desired format of the response. Value can be either _json_ or _xml_.
      * @param tileIndex Parameter group.
      * @param includeText Yes/no value to exclude textual data from response. Only images and country/region names will
@@ -4556,13 +4631,15 @@ public final class RendersImpl {
 
     /**
      * Use to get copyright information for for the world.
-     * 
-     * 
-     * 
-     * In addition to basic copyright for the whole map, API is serving specific groups of copyrights for some
-     * countries/regions.
-     * To obtain the default copyright information for the whole world, do not specify a tile or bounding box.
-     * 
+     *
+     *
+     *
+     * Returns the copyright information for the world. To obtain the default copyright information for the whole world,
+     * don't specify a tile or bounding box.
+     *
+     * Copyrights API is designed to serve copyright information for Render service. In addition to basic copyright for
+     * the whole map, API is serving specific groups of copyrights for some countries/regions.
+     *
      * @param format Desired format of the response. Value can be either _json_ or _xml_.
      * @param includeText Yes/no value to exclude textual data from response. Only images and country/region names will
      * be in response.
@@ -4582,13 +4659,15 @@ public final class RendersImpl {
 
     /**
      * Use to get copyright information for for the world.
-     * 
-     * 
-     * 
-     * In addition to basic copyright for the whole map, API is serving specific groups of copyrights for some
-     * countries/regions.
-     * To obtain the default copyright information for the whole world, do not specify a tile or bounding box.
-     * 
+     *
+     *
+     *
+     * Returns the copyright information for the world. To obtain the default copyright information for the whole world,
+     * don't specify a tile or bounding box.
+     *
+     * Copyrights API is designed to serve copyright information for Render service. In addition to basic copyright for
+     * the whole map, API is serving specific groups of copyrights for some countries/regions.
+     *
      * @param format Desired format of the response. Value can be either _json_ or _xml_.
      * @param includeText Yes/no value to exclude textual data from response. Only images and country/region names will
      * be in response.
@@ -4609,13 +4688,15 @@ public final class RendersImpl {
 
     /**
      * Use to get copyright information for for the world.
-     * 
-     * 
-     * 
-     * In addition to basic copyright for the whole map, API is serving specific groups of copyrights for some
-     * countries/regions.
-     * To obtain the default copyright information for the whole world, do not specify a tile or bounding box.
-     * 
+     *
+     *
+     *
+     * Returns the copyright information for the world. To obtain the default copyright information for the whole world,
+     * don't specify a tile or bounding box.
+     *
+     * Copyrights API is designed to serve copyright information for Render service. In addition to basic copyright for
+     * the whole map, API is serving specific groups of copyrights for some countries/regions.
+     *
      * @param format Desired format of the response. Value can be either _json_ or _xml_.
      * @param includeText Yes/no value to exclude textual data from response. Only images and country/region names will
      * be in response.
@@ -4632,13 +4713,15 @@ public final class RendersImpl {
 
     /**
      * Use to get copyright information for for the world.
-     * 
-     * 
-     * 
-     * In addition to basic copyright for the whole map, API is serving specific groups of copyrights for some
-     * countries/regions.
-     * To obtain the default copyright information for the whole world, do not specify a tile or bounding box.
-     * 
+     *
+     *
+     *
+     * Returns the copyright information for the world. To obtain the default copyright information for the whole world,
+     * don't specify a tile or bounding box.
+     *
+     * Copyrights API is designed to serve copyright information for Render service. In addition to basic copyright for
+     * the whole map, API is serving specific groups of copyrights for some countries/regions.
+     *
      * @param format Desired format of the response. Value can be either _json_ or _xml_.
      * @param includeText Yes/no value to exclude textual data from response. Only images and country/region names will
      * be in response.
@@ -4656,13 +4739,15 @@ public final class RendersImpl {
 
     /**
      * Use to get copyright information for for the world.
-     * 
-     * 
-     * 
-     * In addition to basic copyright for the whole map, API is serving specific groups of copyrights for some
-     * countries/regions.
-     * To obtain the default copyright information for the whole world, do not specify a tile or bounding box.
-     * 
+     *
+     *
+     *
+     * Returns the copyright information for the world. To obtain the default copyright information for the whole world,
+     * don't specify a tile or bounding box.
+     *
+     * Copyrights API is designed to serve copyright information for Render service. In addition to basic copyright for
+     * the whole map, API is serving specific groups of copyrights for some countries/regions.
+     *
      * @param format Desired format of the response. Value can be either _json_ or _xml_.
      * @param includeText Yes/no value to exclude textual data from response. Only images and country/region names will
      * be in response.
@@ -4680,13 +4765,15 @@ public final class RendersImpl {
 
     /**
      * Use to get copyright information for for the world.
-     * 
-     * 
-     * 
-     * In addition to basic copyright for the whole map, API is serving specific groups of copyrights for some
-     * countries/regions.
-     * To obtain the default copyright information for the whole world, do not specify a tile or bounding box.
-     * 
+     *
+     *
+     *
+     * Returns the copyright information for the world. To obtain the default copyright information for the whole world,
+     * don't specify a tile or bounding box.
+     *
+     * Copyrights API is designed to serve copyright information for Render service. In addition to basic copyright for
+     * the whole map, API is serving specific groups of copyrights for some countries/regions.
+     *
      * @param format Desired format of the response. Value can be either _json_ or _xml_.
      * @param includeText Yes/no value to exclude textual data from response. Only images and country/region names will
      * be in response.

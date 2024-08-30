@@ -19,6 +19,7 @@ import com.azure.maps.render.implementation.RendersImpl;
 import com.azure.maps.render.implementation.models.BoundingBox;
 import com.azure.maps.render.implementation.models.IncludeText;
 import com.azure.maps.render.implementation.models.ResponseFormat;
+import com.azure.maps.render.implementation.models.TrafficTilesetId;
 import com.azure.maps.render.models.Copyright;
 import com.azure.maps.render.models.CopyrightCaption;
 import com.azure.maps.render.models.ErrorResponseException;
@@ -600,8 +601,7 @@ public final class MapsRenderAsyncClient {
             ? Arrays.asList(center.getLatitude(), center.getLongitude(), center.getAltitude()) : null;
         List<Double> bbox = Arrays.asList(boundingBox.getWest(), boundingBox.getSouth(), boundingBox.getEast(),
             boundingBox.getNorth());
-        return this.serviceClient.getMapStaticImageNoCustomHeadersWithResponseAsync(options.getRasterTileFormat(),
-            options.getStaticMapLayer(), options.getMapImageStyle(), options.getZoom(), centerPrivate, bbox,
+        return this.serviceClient.getMapStaticImageNoCustomHeadersWithResponseAsync(TilesetId.MICROSOFT_BASE_ROAD, TrafficTilesetId.MICROSOFT_TRAFFIC_RELATIVE_MAIN, options.getZoom(), centerPrivate, bbox,
             options.getHeight(), options.getWidth(), options.getLanguage(), options.getLocalizedMapView(),
             options.getPins(), options.getPath(), context)
             .onErrorMap(throwable -> {

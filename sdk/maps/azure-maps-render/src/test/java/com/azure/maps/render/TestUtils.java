@@ -20,9 +20,6 @@ import java.util.Arrays;
 import java.util.stream.Stream;
 
 public class TestUtils {
-    static MapTileset getExpectedMapTileset() {
-        return deserialize(MapTileset::fromJson, "maptileset.json");
-    }
 
     static MapAttribution getExpectedMapAttribution() {
         return deserialize(MapAttribution::fromJson, "mapattribution.json");
@@ -30,18 +27,6 @@ public class TestUtils {
 
     static CopyrightCaption getExpectedCopyrightCaption() {
         return deserialize(CopyrightCaption::fromJson, "copyrightcaption.json");
-    }
-
-    static Copyright getExpectedCopyrightFromBoundingBox() {
-        return deserialize(Copyright::fromJson, "getcopyrightfromboundingbox.json");
-    }
-
-    static Copyright getExpectedCopyrightForTile() {
-        return deserialize(Copyright::fromJson, "getcopyrightfortile.json");
-    }
-
-    static Copyright getExpectedCopyrightForWorld() {
-        return deserialize(Copyright::fromJson, "getcopyrightforworld.json");
     }
 
     private static <T> T deserialize(ReadValueCallback<JsonReader, T> deserializer, String resourceName) {
