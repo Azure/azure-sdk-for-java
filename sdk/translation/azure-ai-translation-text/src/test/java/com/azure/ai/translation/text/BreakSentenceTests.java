@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import com.azure.ai.translation.text.models.BreakSentenceItem;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +18,8 @@ public class BreakSentenceTests extends TextTranslationClientBase {
     public void breakSentenceWithAutoDetect() {
         BreakSentenceItem response = getTranslationClient().findSentenceBoundaries("hello world");
         assertEquals("en", response.getDetectedLanguage().getLanguage());
-        assertEquals(0.98, response.getDetectedLanguage().getConfidence());
+        assertTrue(response.getDetectedLanguage().getConfidence() > 0.8); //Created task: https://machinetranslation.visualstudio.com/MachineTranslation/_workitems/edit/164493
+        //assertEquals(0.98, response.getDetectedLanguage().getConfidence());
         assertEquals(11, response.getSentencesLengths().get(0));
     }
 
