@@ -198,12 +198,12 @@ public class TranslateTests extends TextTranslationClientBase {
             .setProfanityAction(ProfanityAction.MARKED)
             .setProfanityMarker(ProfanityMarker.ASTERISK);
 
-        TranslatedTextItem response = getTranslationClient().translate("shit this is fucking crazy", translateOptions);
+        TranslatedTextItem response = getTranslationClient().translate("shit this is fucking crazy shit fuck", translateOptions);
 
         assertEquals(1, response.getTranslations().size());
         assertEquals("en", response.getDetectedLanguage().getLanguage());
         assertEquals(1, response.getDetectedLanguage().getConfidence());
-        // assertTrue(response.getTranslations().get(0).getText().contains("***")); Created task: https://machinetranslation.visualstudio.com/MachineTranslation/_workitems/edit/164493
+        assertTrue(response.getTranslations().get(0).getText().contains("***"));
     }
 
     @Test
