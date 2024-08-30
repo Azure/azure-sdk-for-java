@@ -103,7 +103,7 @@ public class ManagedIdentityCredentialBuilder extends CredentialBuilderBase<Mana
      * @return the ManagedIdentityCredentialBuilder itself
      */
     public ManagedIdentityCredentialBuilder objectId(String objectId) {
-        this.resourceId = resourceId;
+        this.objectId = objectId;
         return this;
     }
 

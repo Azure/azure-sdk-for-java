@@ -344,15 +344,10 @@ public class DefaultAzureCredentialTest {
     public void testInvalidIdCombination() {
         // setup
         String resourceId = "/subscriptions/" + UUID.randomUUID() + "/resourcegroups/aresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/ident";
-        String objectId = "2323-sd2323s-32323-32334-34343";
 
         // test
         Assertions.assertThrows(IllegalStateException.class, () -> new DefaultAzureCredentialBuilder()
             .managedIdentityClientId(CLIENT_ID).managedIdentityResourceId(resourceId).build());
-
-        Assertions.assertThrows(IllegalStateException.class,
-            () -> new DefaultAzureCredentialBuilder()
-                .managedIdentityClientId(CLIENT_ID).managedIdentityResourceId(resourceId));
     }
 
     @Test
