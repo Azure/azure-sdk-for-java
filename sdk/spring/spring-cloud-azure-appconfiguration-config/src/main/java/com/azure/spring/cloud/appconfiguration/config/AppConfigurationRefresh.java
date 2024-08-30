@@ -4,6 +4,8 @@ package com.azure.spring.cloud.appconfiguration.config;
 
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisherAware;
 
 import reactor.core.publisher.Mono;
@@ -12,6 +14,9 @@ import reactor.core.publisher.Mono;
  * Enables checking of Configuration updates.
  */
 public interface AppConfigurationRefresh extends ApplicationEventPublisherAware {
+    
+    static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationRefresh.class);
+
     /**
      * Checks configurations to see if configurations should be reloaded. If the refresh interval has passed and a
      * trigger has been updated configuration are reloaded.
@@ -25,7 +30,9 @@ public interface AppConfigurationRefresh extends ApplicationEventPublisherAware 
      * Checks configurations to see if configurations should be reloaded. If the refresh interval has passed and a
      * trigger has been updated configuration are reloaded.
      */
-    void refreshAsync();
+    default void refreshAsync() {
+        LOGGER.info("AppConfiguration.refreshAsync needs to be implimented to trigger a refresh.");
+    }
 
     /**
      * Soft expires refresh interval. Sets amount of time to next refresh to be a random value between 0 and 15 seconds,
