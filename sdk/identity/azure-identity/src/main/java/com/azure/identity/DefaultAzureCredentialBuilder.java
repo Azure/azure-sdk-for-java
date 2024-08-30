@@ -10,7 +10,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.IdentityLogOptionsImpl;
 import com.azure.identity.implementation.util.IdentityConstants;
 import com.azure.identity.implementation.util.IdentityUtil;
-import com.azure.identity.implementation.util.ValidationUtil;
 
 import java.time.Duration;
 import java.util.ArrayList;
