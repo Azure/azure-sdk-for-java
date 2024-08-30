@@ -1,4 +1,16 @@
 steps:
+  - pwsh: |
+      Write-Host "Update JAVA_HOME and PATH to make $(Java2docfxJavaHome) the default for java2docfx"
+      $Java2docfxJavaHomeValue = [System.Environment]::GetEnvironmentVariable($Java2docfxJavaHome)
+      if($Java2docfxJavaHomeValue){
+          Write-Host $Java2docfxJavaHomeValue
+          echo "##vso[task.setvariable variable=JAVA_HOME]$($Java2docfxJavaHomeValue)"
+          echo "##vso[task.setvariable variable=PATH]$($Java2docfxJavaHomeValue)\bin;${env:PATH}"
+      }
+      else {
+          Write-Error -Message  "Java home $Java2docfxJavaHome not available is not available on this image."
+      }
+    displayName: Set Java default version for Java2docfx
   # Create a java2docfx subdirectory in the $(Build.BinariesDirectory) and install the java2docfx there
   # This way, the jar file is in its own subdirectory and isolated.
   - pwsh: |
@@ -14,6 +26,8 @@ steps:
         Write-Host "mvn dependency:copy -Dartifact=""com.microsoft:java2docfx:$java2docfxVer"" -DoutputDirectory=""$java2docfxDir"""
         mvn dependency:copy -Dartifact="com.microsoft:java2docfx:$java2docfxVer" -DoutputDirectory="$java2docfxDir"
         $java2docfxJarLoc = Join-Path $java2docfxDir -ChildPath "java2docfx-$java2docfxVer.jar"
+        Write-Host "Echoing Java version"
+        java -version
         Write-Host "Testing the install, running java -jar $java2docfxJarLoc -h"
         java -jar $java2docfxJarLoc -h
       } finally {
