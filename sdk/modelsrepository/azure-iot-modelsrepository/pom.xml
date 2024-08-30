@@ -79,6 +79,14 @@
       <version>1.0.0-beta.20</version> <!-- {x-version-update;com.azure:azure-core-http-vertx;dependency} -->
       <scope>test</scope>
     </dependency>
+    <!-- Appears this requires generic XML parsing not defined in code anywhere -->
+    <!-- Given this library isn't GA'd we can defer removing this when GA'ing -->
+    <dependency>
+      <groupId>com.fasterxml.jackson.dataformat</groupId>
+      <artifactId>jackson-dataformat-xml</artifactId>
+      <version>2.17.2</version> <!-- {x-version-update;com.azure:azure-core-http-jdk;dependency} -->
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
