@@ -2749,12 +2749,12 @@ public class ExcludedRegionWithFaultInjectionTests extends FaultInjectionTestBas
 
     private Object[][] addBooleanFlagsToAllTestConfigs(Object[][] testConfigs) {
         List<List<Object>> intermediateTestConfigList = new ArrayList<>();
-        boolean[] shouldInjectPreferredRegionsFlags = new boolean[]{true, false};
+        boolean[] possibleBooleans = new boolean[]{true, false};
 
-        for (boolean shouldInjectPreferredRegionsFlag : shouldInjectPreferredRegionsFlags) {
+        for (boolean possibleBoolean : possibleBooleans) {
             for (Object[] testConfigForSingleTest : testConfigs) {
                 List<Object> testConfigForSingleTestAsMutableList = new ArrayList<>(Arrays.asList(testConfigForSingleTest));
-                testConfigForSingleTestAsMutableList.add(shouldInjectPreferredRegionsFlag);
+                testConfigForSingleTestAsMutableList.add(possibleBoolean);
                 intermediateTestConfigList.add(testConfigForSingleTestAsMutableList);
             }
         }
