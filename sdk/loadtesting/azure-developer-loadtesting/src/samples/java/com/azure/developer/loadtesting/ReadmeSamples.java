@@ -18,6 +18,7 @@ import com.azure.json.JsonReader;
 import java.io.File;
 import java.io.IOException;
 import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -183,6 +184,8 @@ public final class ReadmeSamples {
 
         String startDateTime = jsonTree.get("startDateTime").toString();
         String endDateTime = jsonTree.get("endDateTime").toString();
+        OffsetDateTime startOffsetDateTime = OffsetDateTime.parse(startDateTime);
+        OffsetDateTime endOffsetDateTime = OffsetDateTime.parse(endDateTime);
 
         // get list of all metric namespaces and pick the first one
         Response<BinaryData> metricNamespacesOut = testRunClient.getMetricNamespacesWithResponse("testrun12345", null);

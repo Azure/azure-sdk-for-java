@@ -262,6 +262,8 @@ try (JsonReader jsonReader = JsonProviders.createReader(testRunBinary.toBytes())
 
 String startDateTime = jsonTree.get("startDateTime").toString();
 String endDateTime = jsonTree.get("endDateTime").toString();
+OffsetDateTime startOffsetDateTime = OffsetDateTime.parse(startDateTime);
+OffsetDateTime endOffsetDateTime = OffsetDateTime.parse(endDateTime);
 
 // get list of all metric namespaces and pick the first one
 Response<BinaryData> metricNamespacesOut = testRunClient.getMetricNamespacesWithResponse("testrun12345", null);
