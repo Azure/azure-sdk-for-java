@@ -15,7 +15,7 @@ import reactor.core.publisher.Mono;
  */
 public interface AppConfigurationRefresh extends ApplicationEventPublisherAware {
     
-   Logger logger = LoggerFactory.getLogger(AppConfigurationRefresh.class);
+    Logger LOGGER = LoggerFactory.getLogger(AppConfigurationRefresh.class);
 
     /**
      * Checks configurations to see if configurations should be reloaded. If the refresh interval has passed and a
@@ -31,7 +31,7 @@ public interface AppConfigurationRefresh extends ApplicationEventPublisherAware 
      * trigger has been updated configuration are reloaded.
      */
     default void refreshAsync() {
-        logger.info("AppConfiguration.refreshAsync needs to be implimented to trigger a refresh.");
+        LOGGER.info("AppConfiguration.refreshAsync needs to be implimented to trigger a refresh.");
     }
 
     /**
