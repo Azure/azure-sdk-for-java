@@ -78,26 +78,25 @@ public final class PoolsClientImpl implements PoolsClient {
         Mono<Response<PoolInner>> getByResourceGroup(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("poolName") String poolName,
-            @HeaderParam("accept") String accept, Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevOpsInfrastructure/pools/{poolName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("poolName") String poolName,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") PoolInner resource, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") PoolInner resource, Context context);
 
-        @Headers({ "Content-Type: application/json" })
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevOpsInfrastructure/pools/{poolName}")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("poolName") String poolName,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") PoolUpdate properties,
-            Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") PoolUpdate properties, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevOpsInfrastructure/pools/{poolName}")
@@ -106,7 +105,7 @@ public final class PoolsClientImpl implements PoolsClient {
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("poolName") String poolName,
-            @HeaderParam("accept") String accept, Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevOpsInfrastructure/pools")
@@ -114,7 +113,7 @@ public final class PoolsClientImpl implements PoolsClient {
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PoolListResult>> listByResourceGroup(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -123,7 +122,7 @@ public final class PoolsClientImpl implements PoolsClient {
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PoolListResult>> list(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("accept") String accept, Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -131,7 +130,7 @@ public final class PoolsClientImpl implements PoolsClient {
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PoolListResult>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -139,7 +138,7 @@ public final class PoolsClientImpl implements PoolsClient {
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PoolListResult>> listBySubscriptionNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, Context context);
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -294,10 +293,11 @@ public final class PoolsClientImpl implements PoolsClient {
         } else {
             resource.validate();
         }
+        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, poolName, accept, resource, context))
+                this.client.getSubscriptionId(), resourceGroupName, poolName, contentType, accept, resource, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -337,10 +337,11 @@ public final class PoolsClientImpl implements PoolsClient {
         } else {
             resource.validate();
         }
+        final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, poolName, accept, resource, context);
+            this.client.getSubscriptionId(), resourceGroupName, poolName, contentType, accept, resource, context);
     }
 
     /**
@@ -529,10 +530,11 @@ public final class PoolsClientImpl implements PoolsClient {
         } else {
             properties.validate();
         }
+        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, poolName, accept, properties, context))
+                this.client.getSubscriptionId(), resourceGroupName, poolName, contentType, accept, properties, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -572,10 +574,11 @@ public final class PoolsClientImpl implements PoolsClient {
         } else {
             properties.validate();
         }
+        final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.update(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, poolName, accept, properties, context);
+            resourceGroupName, poolName, contentType, accept, properties, context);
     }
 
     /**
@@ -1166,6 +1169,8 @@ public final class PoolsClientImpl implements PoolsClient {
     }
 
     /**
+     * List Pool resources by resource group
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1194,6 +1199,8 @@ public final class PoolsClientImpl implements PoolsClient {
     }
 
     /**
+     * List Pool resources by resource group
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1221,6 +1228,8 @@ public final class PoolsClientImpl implements PoolsClient {
     }
 
     /**
+     * List Pool resources by subscription ID
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1249,6 +1258,8 @@ public final class PoolsClientImpl implements PoolsClient {
     }
 
     /**
+     * List Pool resources by subscription ID
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.

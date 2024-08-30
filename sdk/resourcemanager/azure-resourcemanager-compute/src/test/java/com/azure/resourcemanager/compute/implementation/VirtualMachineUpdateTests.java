@@ -41,7 +41,7 @@ public class VirtualMachineUpdateTests extends ComputeManagementTest {
     public void testVirtualMachineUpdate() {
         final String vmname = "javavm1";
 
-        final String mySqlInstallScript = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/0f875b569cb30b3cd4232bd20abb02452431b1ad/sdk/resourcemanager/azure-resourcemanager-compute/src/test/assets/install_mysql_server_5.7.sh";
+        final String mySqlInstallScript = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/00df5c3ae1e25c526e265e78a00211d068b94f93/sdk/resourcemanager/azure-resourcemanager-compute/src/test/assets/install_mysql_server_5.7.sh";
         final String installCommand = "bash install_mysql_server_5.7.sh " + password();
         List<String> fileUris = new ArrayList<>();
         fileUris.add(mySqlInstallScript);

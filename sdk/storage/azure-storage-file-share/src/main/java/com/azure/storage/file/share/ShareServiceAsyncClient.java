@@ -252,9 +252,8 @@ public final class ShareServiceAsyncClient {
 
         BiFunction<String, Integer, Mono<PagedResponse<ShareItem>>> retriever =
             (nextMarker, pageSize) -> StorageImplUtils.applyOptionalTimeout(this.azureFileStorageClient.getServices()
-                    .listSharesSegmentSinglePageAsync(
-                        prefix, nextMarker, pageSize == null ? maxResultsPerPage : pageSize, include, null, context)
-                    .onErrorMap(ModelHelper::mapToShareStorageException)
+                    .listSharesSegmentSinglePageAsync(prefix, nextMarker,
+                        pageSize == null ? maxResultsPerPage : pageSize, include, null, context)
                     .map(response -> {
                         List<ShareItem> value = response.getValue() == null
                             ? Collections.emptyList()
@@ -336,7 +335,6 @@ public final class ShareServiceAsyncClient {
     Mono<Response<ShareServiceProperties>> getPropertiesWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
         return azureFileStorageClient.getServices().getPropertiesWithResponseAsync(null, context)
-            .onErrorMap(ModelHelper::mapToShareStorageException)
             .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 
@@ -458,8 +456,7 @@ public final class ShareServiceAsyncClient {
     Mono<Response<Void>> setPropertiesWithResponse(ShareServiceProperties properties, Context context) {
         context = context == null ? Context.NONE : context;
         return azureFileStorageClient.getServices()
-            .setPropertiesNoCustomHeadersWithResponseAsync(properties, null, context)
-            .onErrorMap(ModelHelper::mapToShareStorageException);
+            .setPropertiesNoCustomHeadersWithResponseAsync(properties, null, context);
     }
 
     /**
@@ -660,8 +657,7 @@ public final class ShareServiceAsyncClient {
         }
         context = context == null ? Context.NONE : context;
         return azureFileStorageClient.getShares()
-            .deleteNoCustomHeadersWithResponseAsync(shareName, snapshot, null, deleteSnapshots, null, context)
-            .onErrorMap(ModelHelper::mapToShareStorageException);
+            .deleteNoCustomHeadersWithResponseAsync(shareName, snapshot, null, deleteSnapshots, null, context);
     }
 
     /**
@@ -858,7 +854,6 @@ public final class ShareServiceAsyncClient {
         String deletedShareName, String deletedShareVersion, Context context) {
         return this.azureFileStorageClient.getShares().restoreWithResponseAsync(
             deletedShareName, null, null, deletedShareName, deletedShareVersion, context)
-            .onErrorMap(ModelHelper::mapToShareStorageException)
             .map(response -> new SimpleResponse<>(response, getShareAsyncClient(deletedShareName)));
     }
 }

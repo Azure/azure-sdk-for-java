@@ -22,7 +22,6 @@ import com.azure.storage.blob.implementation.models.AppendBlobsAppendBlockFromUr
 import com.azure.storage.blob.implementation.models.AppendBlobsAppendBlockHeaders;
 import com.azure.storage.blob.implementation.models.AppendBlobsCreateHeaders;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
-import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.AppendBlobItem;
 import com.azure.storage.blob.models.AppendBlobRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
@@ -32,12 +31,13 @@ import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
+import com.azure.storage.blob.options.AppendBlobAppendBlockFromUrlOptions;
 import com.azure.storage.blob.options.AppendBlobCreateOptions;
 import com.azure.storage.blob.options.AppendBlobSealOptions;
-import com.azure.storage.blob.options.AppendBlobAppendBlockFromUrlOptions;
 import com.azure.storage.common.implementation.Constants;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
@@ -294,7 +294,6 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
                 ModelHelper.tagsToString(options.getTags()), immutabilityPolicy.getExpiryTime(), immutabilityPolicy.getPolicyMode(),
             options.hasLegalHold(), options.getHeaders(), getCustomerProvidedKey(),
             encryptionScope, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException)
             .map(rb -> {
                 AppendBlobsCreateHeaders hd = rb.getDeserializedHeaders();
                 AppendBlobItem item = new AppendBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
@@ -475,7 +474,6 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
             appendBlobRequestConditions.getIfMatch(), appendBlobRequestConditions.getIfNoneMatch(),
             appendBlobRequestConditions.getTagsConditions(), null, getCustomerProvidedKey(), encryptionScope,
             context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException)
             .map(rb -> {
                 AppendBlobsAppendBlockHeaders hd = rb.getDeserializedHeaders();
                 AppendBlobItem item = new AppendBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
@@ -611,7 +609,6 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
             sourceRequestConditions.getIfUnmodifiedSince(), sourceRequestConditions.getIfMatch(),
             sourceRequestConditions.getIfNoneMatch(), null, sourceAuth, getCustomerProvidedKey(),
             encryptionScope, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException)
             .map(rb -> {
                 AppendBlobsAppendBlockFromUrlHeaders hd = rb.getDeserializedHeaders();
                 AppendBlobItem item = new AppendBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
@@ -676,8 +673,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
         return this.azureBlobStorage.getAppendBlobs().sealNoCustomHeadersWithResponseAsync(containerName, blobName,
             null, null, requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-            requestConditions.getIfNoneMatch(), requestConditions.getAppendPosition(), context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            requestConditions.getIfNoneMatch(), requestConditions.getAppendPosition(), context);
     }
 
     /**
