@@ -352,16 +352,7 @@ public class DefaultAzureCredentialTest {
 
         Assertions.assertThrows(IllegalStateException.class,
             () -> new DefaultAzureCredentialBuilder()
-                .managedIdentityClientId(CLIENT_ID).managedIdentityResourceId(resourceId).
-                managedIdentityObjectId(objectId).build());
-
-        Assertions.assertThrows(IllegalStateException.class,
-            () -> new DefaultAzureCredentialBuilder()
-                .managedIdentityClientId(CLIENT_ID).managedIdentityObjectId(objectId).build());
-
-        Assertions.assertThrows(IllegalStateException.class,
-            () -> new DefaultAzureCredentialBuilder()
-                .managedIdentityResourceId(resourceId).managedIdentityObjectId(objectId).build());
+                .managedIdentityClientId(CLIENT_ID).managedIdentityResourceId(resourceId));
     }
 
     @Test

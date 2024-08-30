@@ -68,7 +68,6 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
     private String managedIdentityClientId;
     private String workloadIdentityClientId;
     private String managedIdentityResourceId;
-    private String managedIdentityObjectId;
     private List<String> additionallyAllowedTenants = IdentityUtil
         .getAdditionalTenantsFromEnvironment(Configuration.getGlobalConfiguration().clone());
 
@@ -175,22 +174,6 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
     }
 
     /**
-     * Specifies the object ID of user assigned or system assigned identity, when this credential is running
-     * in an environment with managed identities. If unset, the value in the AZURE_CLIENT_ID environment variable
-     * will be used. If neither is set, the default value is null and will only work with system assigned
-     * managed identities and not user assigned managed identities.
-     *
-     * Only one of managedIdentityResourceId and managedIdentityClientId can be specified.
-     *
-     * @param objectId the object ID
-     * @return the DefaultAzureCredentialBuilder itself
-     */
-    public DefaultAzureCredentialBuilder managedIdentityObjectId(String objectId) {
-        this.managedIdentityObjectId = objectId;
-        return this;
-    }
-
-    /**
      * Specifies the ExecutorService to be used to execute the authentication requests.
      * Developer is responsible for maintaining the lifecycle of the ExecutorService.
      *
@@ -273,8 +256,10 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
     public DefaultAzureCredential build() {
         loadFallbackValuesFromEnvironment();
 
-        ValidationUtil.validateManagedIdentityIdParams(managedIdentityClientId, managedIdentityResourceId,
-            managedIdentityObjectId, LOGGER);
+        if (managedIdentityClientId != null && managedIdentityResourceId != null) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalStateException("Only one of managedIdentityClientId and managedIdentityResourceId can be specified."));
+        }
 
         if (!CoreUtils.isNullOrEmpty(additionallyAllowedTenants)) {
             identityClientOptions.setAdditionallyAllowedTenants(additionallyAllowedTenants);
@@ -293,7 +278,7 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
         ArrayList<TokenCredential> output = new ArrayList<TokenCredential>(8);
         output.add(new EnvironmentCredential(identityClientOptions.clone()));
         output.add(getWorkloadIdentityCredential());
-        output.add(new ManagedIdentityCredential(managedIdentityClientId, managedIdentityResourceId, managedIdentityObjectId, identityClientOptions.clone()));
+        output.add(new ManagedIdentityCredential(managedIdentityClientId, managedIdentityResourceId, null, identityClientOptions.clone()));
         output.add(new SharedTokenCacheCredential(null, IdentityConstants.DEVELOPER_SINGLE_SIGN_ON_ID,
             tenantId, identityClientOptions.clone()));
         output.add(new IntelliJCredential(tenantId, identityClientOptions.clone()));
