@@ -5,49 +5,47 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cosmos.models.Role;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Azure Cosmos DB Mongo User Definition resource object.
  */
 @Fluent
-public final class MongoUserDefinitionResource {
+public final class MongoUserDefinitionResource implements JsonSerializable<MongoUserDefinitionResource> {
     /*
      * The user name for User Definition.
      */
-    @JsonProperty(value = "userName")
     private String username;
 
     /*
      * The password for User Definition. Response does not contain user password.
      */
-    @JsonProperty(value = "password")
     private String password;
 
     /*
      * The database name for which access is being granted for this User Definition.
      */
-    @JsonProperty(value = "databaseName")
     private String databaseName;
 
     /*
      * A custom definition for the USer Definition.
      */
-    @JsonProperty(value = "customData")
     private String customData;
 
     /*
      * The set of roles inherited by the User Definition.
      */
-    @JsonProperty(value = "roles")
     private List<Role> roles;
 
     /*
      * The Mongo Auth mechanism. For now, we only support auth mechanism SCRAM-SHA-256.
      */
-    @JsonProperty(value = "mechanisms")
     private String mechanisms;
 
     /**
@@ -185,5 +183,57 @@ public final class MongoUserDefinitionResource {
         if (roles() != null) {
             roles().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("userName", this.username);
+        jsonWriter.writeStringField("password", this.password);
+        jsonWriter.writeStringField("databaseName", this.databaseName);
+        jsonWriter.writeStringField("customData", this.customData);
+        jsonWriter.writeArrayField("roles", this.roles, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("mechanisms", this.mechanisms);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MongoUserDefinitionResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MongoUserDefinitionResource if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MongoUserDefinitionResource.
+     */
+    public static MongoUserDefinitionResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MongoUserDefinitionResource deserializedMongoUserDefinitionResource = new MongoUserDefinitionResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("userName".equals(fieldName)) {
+                    deserializedMongoUserDefinitionResource.username = reader.getString();
+                } else if ("password".equals(fieldName)) {
+                    deserializedMongoUserDefinitionResource.password = reader.getString();
+                } else if ("databaseName".equals(fieldName)) {
+                    deserializedMongoUserDefinitionResource.databaseName = reader.getString();
+                } else if ("customData".equals(fieldName)) {
+                    deserializedMongoUserDefinitionResource.customData = reader.getString();
+                } else if ("roles".equals(fieldName)) {
+                    List<Role> roles = reader.readArray(reader1 -> Role.fromJson(reader1));
+                    deserializedMongoUserDefinitionResource.roles = roles;
+                } else if ("mechanisms".equals(fieldName)) {
+                    deserializedMongoUserDefinitionResource.mechanisms = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMongoUserDefinitionResource;
+        });
     }
 }

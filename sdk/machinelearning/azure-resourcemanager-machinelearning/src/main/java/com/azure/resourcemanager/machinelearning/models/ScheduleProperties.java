@@ -6,69 +6,51 @@ package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** Base definition of a schedule. */
+/**
+ * Base definition of a schedule.
+ */
 @Fluent
 public final class ScheduleProperties extends ResourceBase {
     /*
-     * [Required] Specifies the action of the schedule
-     */
-    @JsonProperty(value = "action", required = true)
-    private ScheduleActionBase action;
-
-    /*
      * Display name of schedule.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * Is the schedule enabled?
      */
-    @JsonProperty(value = "isEnabled")
     private Boolean isEnabled;
-
-    /*
-     * Provisioning state for the schedule.
-     */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ScheduleProvisioningStatus provisioningState;
 
     /*
      * [Required] Specifies the trigger details
      */
-    @JsonProperty(value = "trigger", required = true)
     private TriggerBase trigger;
 
-    /** Creates an instance of ScheduleProperties class. */
+    /*
+     * [Required] Specifies the action of the schedule
+     */
+    private ScheduleActionBase action;
+
+    /*
+     * Provisioning state for the schedule.
+     */
+    private ScheduleProvisioningStatus provisioningState;
+
+    /**
+     * Creates an instance of ScheduleProperties class.
+     */
     public ScheduleProperties() {
     }
 
     /**
-     * Get the action property: [Required] Specifies the action of the schedule.
-     *
-     * @return the action value.
-     */
-    public ScheduleActionBase action() {
-        return this.action;
-    }
-
-    /**
-     * Set the action property: [Required] Specifies the action of the schedule.
-     *
-     * @param action the action value to set.
-     * @return the ScheduleProperties object itself.
-     */
-    public ScheduleProperties withAction(ScheduleActionBase action) {
-        this.action = action;
-        return this;
-    }
-
-    /**
      * Get the displayName property: Display name of schedule.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -77,7 +59,7 @@ public final class ScheduleProperties extends ResourceBase {
 
     /**
      * Set the displayName property: Display name of schedule.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the ScheduleProperties object itself.
      */
@@ -88,7 +70,7 @@ public final class ScheduleProperties extends ResourceBase {
 
     /**
      * Get the isEnabled property: Is the schedule enabled?.
-     *
+     * 
      * @return the isEnabled value.
      */
     public Boolean isEnabled() {
@@ -97,7 +79,7 @@ public final class ScheduleProperties extends ResourceBase {
 
     /**
      * Set the isEnabled property: Is the schedule enabled?.
-     *
+     * 
      * @param isEnabled the isEnabled value to set.
      * @return the ScheduleProperties object itself.
      */
@@ -107,17 +89,8 @@ public final class ScheduleProperties extends ResourceBase {
     }
 
     /**
-     * Get the provisioningState property: Provisioning state for the schedule.
-     *
-     * @return the provisioningState value.
-     */
-    public ScheduleProvisioningStatus provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
      * Get the trigger property: [Required] Specifies the trigger details.
-     *
+     * 
      * @return the trigger value.
      */
     public TriggerBase trigger() {
@@ -126,7 +99,7 @@ public final class ScheduleProperties extends ResourceBase {
 
     /**
      * Set the trigger property: [Required] Specifies the trigger details.
-     *
+     * 
      * @param trigger the trigger value to set.
      * @return the ScheduleProperties object itself.
      */
@@ -135,21 +108,47 @@ public final class ScheduleProperties extends ResourceBase {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the action property: [Required] Specifies the action of the schedule.
+     * 
+     * @return the action value.
+     */
+    public ScheduleActionBase action() {
+        return this.action;
+    }
+
+    /**
+     * Set the action property: [Required] Specifies the action of the schedule.
+     * 
+     * @param action the action value to set.
+     * @return the ScheduleProperties object itself.
+     */
+    public ScheduleProperties withAction(ScheduleActionBase action) {
+        this.action = action;
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: Provisioning state for the schedule.
+     * 
+     * @return the provisioningState value.
+     */
+    public ScheduleProvisioningStatus provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ScheduleProperties withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public ScheduleProperties withProperties(Map<String, String> properties) {
-        super.withProperties(properties);
-        return this;
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ScheduleProperties withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -157,28 +156,95 @@ public final class ScheduleProperties extends ResourceBase {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ScheduleProperties withProperties(Map<String, String> properties) {
+        super.withProperties(properties);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
-        if (action() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property action in model ScheduleProperties"));
-        } else {
-            action().validate();
-        }
         if (trigger() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property trigger in model ScheduleProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property trigger in model ScheduleProperties"));
         } else {
             trigger().validate();
+        }
+        if (action() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property action in model ScheduleProperties"));
+        } else {
+            action().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ScheduleProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("properties", properties(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("trigger", this.trigger);
+        jsonWriter.writeJsonField("action", this.action);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeBooleanField("isEnabled", this.isEnabled);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScheduleProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScheduleProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ScheduleProperties.
+     */
+    public static ScheduleProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScheduleProperties deserializedScheduleProperties = new ScheduleProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedScheduleProperties.withDescription(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedScheduleProperties.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    Map<String, String> properties = reader.readMap(reader1 -> reader1.getString());
+                    deserializedScheduleProperties.withProperties(properties);
+                } else if ("trigger".equals(fieldName)) {
+                    deserializedScheduleProperties.trigger = TriggerBase.fromJson(reader);
+                } else if ("action".equals(fieldName)) {
+                    deserializedScheduleProperties.action = ScheduleActionBase.fromJson(reader);
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedScheduleProperties.displayName = reader.getString();
+                } else if ("isEnabled".equals(fieldName)) {
+                    deserializedScheduleProperties.isEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedScheduleProperties.provisioningState
+                        = ScheduleProvisioningStatus.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScheduleProperties;
+        });
+    }
 }

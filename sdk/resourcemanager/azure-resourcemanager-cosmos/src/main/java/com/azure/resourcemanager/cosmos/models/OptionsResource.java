@@ -5,23 +5,26 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Cosmos DB options resource object.
  */
 @Fluent
-public class OptionsResource {
+public class OptionsResource implements JsonSerializable<OptionsResource> {
     /*
-     * Value of the Cosmos DB resource throughput or autoscaleSettings. Use the ThroughputSetting resource when retrieving offer details.
+     * Value of the Cosmos DB resource throughput or autoscaleSettings. Use the ThroughputSetting resource when
+     * retrieving offer details.
      */
-    @JsonProperty(value = "throughput")
     private Integer throughput;
 
     /*
      * Specifies the Autoscale settings.
      */
-    @JsonProperty(value = "autoscaleSettings")
     private AutoscaleSettings autoscaleSettings;
 
     /**
@@ -81,5 +84,44 @@ public class OptionsResource {
         if (autoscaleSettings() != null) {
             autoscaleSettings().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("throughput", this.throughput);
+        jsonWriter.writeJsonField("autoscaleSettings", this.autoscaleSettings);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OptionsResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OptionsResource if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OptionsResource.
+     */
+    public static OptionsResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OptionsResource deserializedOptionsResource = new OptionsResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("throughput".equals(fieldName)) {
+                    deserializedOptionsResource.throughput = reader.getNullable(JsonReader::getInt);
+                } else if ("autoscaleSettings".equals(fieldName)) {
+                    deserializedOptionsResource.autoscaleSettings = AutoscaleSettings.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOptionsResource;
+        });
     }
 }

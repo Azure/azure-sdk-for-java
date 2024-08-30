@@ -5,64 +5,39 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
  * Connector read setting.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = StoreReadSettings.class, visible = true)
-@JsonTypeName("StoreReadSettings")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "AzureBlobStorageReadSettings", value = AzureBlobStorageReadSettings.class),
-    @JsonSubTypes.Type(name = "AzureBlobFSReadSettings", value = AzureBlobFSReadSettings.class),
-    @JsonSubTypes.Type(name = "AzureDataLakeStoreReadSettings", value = AzureDataLakeStoreReadSettings.class),
-    @JsonSubTypes.Type(name = "AmazonS3ReadSettings", value = AmazonS3ReadSettings.class),
-    @JsonSubTypes.Type(name = "FileServerReadSettings", value = FileServerReadSettings.class),
-    @JsonSubTypes.Type(name = "AzureFileStorageReadSettings", value = AzureFileStorageReadSettings.class),
-    @JsonSubTypes.Type(name = "AmazonS3CompatibleReadSettings", value = AmazonS3CompatibleReadSettings.class),
-    @JsonSubTypes.Type(name = "OracleCloudStorageReadSettings", value = OracleCloudStorageReadSettings.class),
-    @JsonSubTypes.Type(name = "GoogleCloudStorageReadSettings", value = GoogleCloudStorageReadSettings.class),
-    @JsonSubTypes.Type(name = "FtpReadSettings", value = FtpReadSettings.class),
-    @JsonSubTypes.Type(name = "SftpReadSettings", value = SftpReadSettings.class),
-    @JsonSubTypes.Type(name = "HttpReadSettings", value = HttpReadSettings.class),
-    @JsonSubTypes.Type(name = "HdfsReadSettings", value = HdfsReadSettings.class),
-    @JsonSubTypes.Type(name = "LakeHouseReadSettings", value = LakeHouseReadSettings.class) })
 @Fluent
-public class StoreReadSettings {
+public class StoreReadSettings implements JsonSerializable<StoreReadSettings> {
     /*
      * The read setting type.
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private String type = "StoreReadSettings";
 
     /*
      * The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType
      * integer).
      */
-    @JsonProperty(value = "maxConcurrentConnections")
     private Object maxConcurrentConnections;
 
     /*
      * If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType
      * boolean).
      */
-    @JsonProperty(value = "disableMetricsCollection")
     private Object disableMetricsCollection;
 
     /*
      * Connector read setting.
      */
-    @JsonIgnore
     private Map<String, Object> additionalProperties;
 
     /**
@@ -129,7 +104,6 @@ public class StoreReadSettings {
      * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
@@ -145,19 +119,115 @@ public class StoreReadSettings {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new LinkedHashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeUntypedField("maxConcurrentConnections", this.maxConcurrentConnections);
+        jsonWriter.writeUntypedField("disableMetricsCollection", this.disableMetricsCollection);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StoreReadSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StoreReadSettings if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StoreReadSettings.
+     */
+    public static StoreReadSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("type".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("AzureBlobStorageReadSettings".equals(discriminatorValue)) {
+                    return AzureBlobStorageReadSettings.fromJson(readerToUse.reset());
+                } else if ("AzureBlobFSReadSettings".equals(discriminatorValue)) {
+                    return AzureBlobFSReadSettings.fromJson(readerToUse.reset());
+                } else if ("AzureDataLakeStoreReadSettings".equals(discriminatorValue)) {
+                    return AzureDataLakeStoreReadSettings.fromJson(readerToUse.reset());
+                } else if ("AmazonS3ReadSettings".equals(discriminatorValue)) {
+                    return AmazonS3ReadSettings.fromJson(readerToUse.reset());
+                } else if ("FileServerReadSettings".equals(discriminatorValue)) {
+                    return FileServerReadSettings.fromJson(readerToUse.reset());
+                } else if ("AzureFileStorageReadSettings".equals(discriminatorValue)) {
+                    return AzureFileStorageReadSettings.fromJson(readerToUse.reset());
+                } else if ("AmazonS3CompatibleReadSettings".equals(discriminatorValue)) {
+                    return AmazonS3CompatibleReadSettings.fromJson(readerToUse.reset());
+                } else if ("OracleCloudStorageReadSettings".equals(discriminatorValue)) {
+                    return OracleCloudStorageReadSettings.fromJson(readerToUse.reset());
+                } else if ("GoogleCloudStorageReadSettings".equals(discriminatorValue)) {
+                    return GoogleCloudStorageReadSettings.fromJson(readerToUse.reset());
+                } else if ("FtpReadSettings".equals(discriminatorValue)) {
+                    return FtpReadSettings.fromJson(readerToUse.reset());
+                } else if ("SftpReadSettings".equals(discriminatorValue)) {
+                    return SftpReadSettings.fromJson(readerToUse.reset());
+                } else if ("HttpReadSettings".equals(discriminatorValue)) {
+                    return HttpReadSettings.fromJson(readerToUse.reset());
+                } else if ("HdfsReadSettings".equals(discriminatorValue)) {
+                    return HdfsReadSettings.fromJson(readerToUse.reset());
+                } else if ("LakeHouseReadSettings".equals(discriminatorValue)) {
+                    return LakeHouseReadSettings.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static StoreReadSettings fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StoreReadSettings deserializedStoreReadSettings = new StoreReadSettings();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedStoreReadSettings.type = reader.getString();
+                } else if ("maxConcurrentConnections".equals(fieldName)) {
+                    deserializedStoreReadSettings.maxConcurrentConnections = reader.readUntyped();
+                } else if ("disableMetricsCollection".equals(fieldName)) {
+                    deserializedStoreReadSettings.disableMetricsCollection = reader.readUntyped();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedStoreReadSettings.additionalProperties = additionalProperties;
+
+            return deserializedStoreReadSettings;
+        });
     }
 }

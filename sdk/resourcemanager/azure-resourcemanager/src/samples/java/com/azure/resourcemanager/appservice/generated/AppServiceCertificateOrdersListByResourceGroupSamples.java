@@ -9,7 +9,9 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class AppServiceCertificateOrdersListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2023-12-01/examples/ListAppServiceCertificateOrdersByResourceGroup.json
+     * x-ms-original-file:
+     * specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2023-12-01/examples/
+     * ListAppServiceCertificateOrdersByResourceGroup.json
      */
     /**
      * Sample code: List App Service Certificate orders by resource group.

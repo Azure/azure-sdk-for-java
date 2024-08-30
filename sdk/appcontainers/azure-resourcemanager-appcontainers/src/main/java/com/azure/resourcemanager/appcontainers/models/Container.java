@@ -60,15 +60,6 @@ public final class Container extends BaseContainer {
      * {@inheritDoc}
      */
     @Override
-    public Container withImageType(ImageType imageType) {
-        super.withImageType(imageType);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public Container withName(String name) {
         super.withName(name);
         return this;
@@ -139,7 +130,6 @@ public final class Container extends BaseContainer {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("image", image());
-        jsonWriter.writeStringField("imageType", imageType() == null ? null : imageType().toString());
         jsonWriter.writeStringField("name", name());
         jsonWriter.writeArrayField("command", command(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("args", args(), (writer, element) -> writer.writeString(element));
@@ -167,8 +157,6 @@ public final class Container extends BaseContainer {
 
                 if ("image".equals(fieldName)) {
                     deserializedContainer.withImage(reader.getString());
-                } else if ("imageType".equals(fieldName)) {
-                    deserializedContainer.withImageType(ImageType.fromString(reader.getString()));
                 } else if ("name".equals(fieldName)) {
                     deserializedContainer.withName(reader.getString());
                 } else if ("command".equals(fieldName)) {

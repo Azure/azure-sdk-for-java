@@ -5,49 +5,54 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Scheduling properties of a job. */
+/**
+ * Scheduling properties of a job.
+ */
 @Fluent
-public final class JobSchedule {
+public final class JobSchedule implements JsonSerializable<JobSchedule> {
     /*
      * Schedule start time.
      */
-    @JsonProperty(value = "startTime")
     private OffsetDateTime startTime;
 
     /*
      * Schedule end time.
      */
-    @JsonProperty(value = "endTime")
     private OffsetDateTime endTime;
 
     /*
      * Schedule interval type
      */
-    @JsonProperty(value = "type")
     private JobScheduleType type;
 
     /*
      * Whether or not the schedule is enabled.
      */
-    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
      * Value of the schedule's recurring interval, if the ScheduleType is recurring. ISO8601 duration format.
      */
-    @JsonProperty(value = "interval")
     private String interval;
 
-    /** Creates an instance of JobSchedule class. */
+    /**
+     * Creates an instance of JobSchedule class.
+     */
     public JobSchedule() {
     }
 
     /**
      * Get the startTime property: Schedule start time.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -56,7 +61,7 @@ public final class JobSchedule {
 
     /**
      * Set the startTime property: Schedule start time.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the JobSchedule object itself.
      */
@@ -67,7 +72,7 @@ public final class JobSchedule {
 
     /**
      * Get the endTime property: Schedule end time.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -76,7 +81,7 @@ public final class JobSchedule {
 
     /**
      * Set the endTime property: Schedule end time.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the JobSchedule object itself.
      */
@@ -87,7 +92,7 @@ public final class JobSchedule {
 
     /**
      * Get the type property: Schedule interval type.
-     *
+     * 
      * @return the type value.
      */
     public JobScheduleType type() {
@@ -96,7 +101,7 @@ public final class JobSchedule {
 
     /**
      * Set the type property: Schedule interval type.
-     *
+     * 
      * @param type the type value to set.
      * @return the JobSchedule object itself.
      */
@@ -107,7 +112,7 @@ public final class JobSchedule {
 
     /**
      * Get the enabled property: Whether or not the schedule is enabled.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -116,7 +121,7 @@ public final class JobSchedule {
 
     /**
      * Set the enabled property: Whether or not the schedule is enabled.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the JobSchedule object itself.
      */
@@ -128,7 +133,7 @@ public final class JobSchedule {
     /**
      * Get the interval property: Value of the schedule's recurring interval, if the ScheduleType is recurring. ISO8601
      * duration format.
-     *
+     * 
      * @return the interval value.
      */
     public String interval() {
@@ -138,7 +143,7 @@ public final class JobSchedule {
     /**
      * Set the interval property: Value of the schedule's recurring interval, if the ScheduleType is recurring. ISO8601
      * duration format.
-     *
+     * 
      * @param interval the interval value to set.
      * @return the JobSchedule object itself.
      */
@@ -149,9 +154,61 @@ public final class JobSchedule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("endTime",
+            this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeStringField("interval", this.interval);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JobSchedule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JobSchedule if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the JobSchedule.
+     */
+    public static JobSchedule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JobSchedule deserializedJobSchedule = new JobSchedule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("startTime".equals(fieldName)) {
+                    deserializedJobSchedule.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedJobSchedule.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("type".equals(fieldName)) {
+                    deserializedJobSchedule.type = JobScheduleType.fromString(reader.getString());
+                } else if ("enabled".equals(fieldName)) {
+                    deserializedJobSchedule.enabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("interval".equals(fieldName)) {
+                    deserializedJobSchedule.interval = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJobSchedule;
+        });
     }
 }

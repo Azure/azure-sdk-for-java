@@ -4,21 +4,28 @@
 
 package com.azure.resourcemanager.servicebus.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Name of this SKU. */
+/**
+ * Name of this SKU.
+ */
 public enum SkuName {
-    /** Enum value Basic. */
+    /**
+     * Enum value Basic.
+     */
     BASIC("Basic"),
 
-    /** Enum value Standard. */
+    /**
+     * Enum value Standard.
+     */
     STANDARD("Standard"),
 
-    /** Enum value Premium. */
+    /**
+     * Enum value Premium.
+     */
     PREMIUM("Premium");
 
-    /** The actual serialized value for a SkuName instance. */
+    /**
+     * The actual serialized value for a SkuName instance.
+     */
     private final String value;
 
     SkuName(String value) {
@@ -27,11 +34,10 @@ public enum SkuName {
 
     /**
      * Parses a serialized value to a SkuName instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed SkuName object, or null if unable to parse.
      */
-    @JsonCreator
     public static SkuName fromString(String value) {
         if (value == null) {
             return null;
@@ -45,8 +51,9 @@ public enum SkuName {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

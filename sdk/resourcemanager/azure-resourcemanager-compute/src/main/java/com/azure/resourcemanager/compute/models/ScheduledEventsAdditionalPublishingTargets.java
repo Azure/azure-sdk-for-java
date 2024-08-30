@@ -5,17 +5,21 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The ScheduledEventsAdditionalPublishingTargets model.
  */
 @Fluent
-public final class ScheduledEventsAdditionalPublishingTargets {
+public final class ScheduledEventsAdditionalPublishingTargets
+    implements JsonSerializable<ScheduledEventsAdditionalPublishingTargets> {
     /*
      * The configuration parameters used while creating eventGridAndResourceGraph Scheduled Event setting.
      */
-    @JsonProperty(value = "eventGridAndResourceGraph")
     private EventGridAndResourceGraph eventGridAndResourceGraph;
 
     /**
@@ -56,5 +60,43 @@ public final class ScheduledEventsAdditionalPublishingTargets {
         if (eventGridAndResourceGraph() != null) {
             eventGridAndResourceGraph().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("eventGridAndResourceGraph", this.eventGridAndResourceGraph);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScheduledEventsAdditionalPublishingTargets from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScheduledEventsAdditionalPublishingTargets if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ScheduledEventsAdditionalPublishingTargets.
+     */
+    public static ScheduledEventsAdditionalPublishingTargets fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScheduledEventsAdditionalPublishingTargets deserializedScheduledEventsAdditionalPublishingTargets
+                = new ScheduledEventsAdditionalPublishingTargets();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("eventGridAndResourceGraph".equals(fieldName)) {
+                    deserializedScheduledEventsAdditionalPublishingTargets.eventGridAndResourceGraph
+                        = EventGridAndResourceGraph.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScheduledEventsAdditionalPublishingTargets;
+        });
     }
 }

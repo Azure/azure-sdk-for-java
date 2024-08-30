@@ -14,50 +14,40 @@ import org.junit.jupiter.api.Assertions;
 public final class MLTableDataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MLTableData model =
-            BinaryData
-                .fromString(
-                    "{\"dataType\":\"mltable\",\"referencedUris\":[\"uavt\",\"tbkewkqynspg\"],\"dataUri\":\"voffbkkwvdxae\",\"isAnonymous\":false,\"isArchived\":false,\"description\":\"rlj\",\"properties\":{\"lpbcjtrpz\":\"zbnobr\",\"qelwgdhuruzytza\":\"yudivbxnhsqeaeo\",\"mpinmzvfkneerzzt\":\"ogatmoljiy\",\"bnhrxlelfjhkeiz\":\"knsjulugd\"},\"tags\":{\"wjekptycaydbj\":\"htdm\"}}")
-                .toObject(MLTableData.class);
-        Assertions.assertEquals("rlj", model.description());
-        Assertions.assertEquals("zbnobr", model.properties().get("lpbcjtrpz"));
-        Assertions.assertEquals("htdm", model.tags().get("wjekptycaydbj"));
-        Assertions.assertEquals(false, model.isAnonymous());
+        MLTableData model = BinaryData.fromString(
+            "{\"dataType\":\"mltable\",\"referencedUris\":[\"xdfsfvkjc\",\"m\"],\"dataUri\":\"rsvxphtjnhptj\",\"isArchived\":false,\"isAnonymous\":true,\"description\":\"z\",\"tags\":{\"rgyzcslazp\":\"mydtdtftmizuzjd\",\"teagbgac\":\"kqoyimxpggk\",\"lpbybkisb\":\"qpjuytvude\",\"glpwdjr\":\"ifm\"},\"properties\":{\"ttuhaaax\":\"fshznu\",\"xstowagehxuihwes\":\"dcdjmdkqtxfrmbe\",\"kncypmte\":\"tjaqgbl\",\"hrfbrj\":\"spsaneyvaerpiob\"}}")
+            .toObject(MLTableData.class);
+        Assertions.assertEquals("z", model.description());
+        Assertions.assertEquals("mydtdtftmizuzjd", model.tags().get("rgyzcslazp"));
+        Assertions.assertEquals("fshznu", model.properties().get("ttuhaaax"));
         Assertions.assertEquals(false, model.isArchived());
-        Assertions.assertEquals("voffbkkwvdxae", model.dataUri());
-        Assertions.assertEquals("uavt", model.referencedUris().get(0));
+        Assertions.assertEquals(true, model.isAnonymous());
+        Assertions.assertEquals("rsvxphtjnhptj", model.dataUri());
+        Assertions.assertEquals("xdfsfvkjc", model.referencedUris().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MLTableData model =
-            new MLTableData()
-                .withDescription("rlj")
-                .withProperties(
-                    mapOf(
-                        "lpbcjtrpz",
-                        "zbnobr",
-                        "qelwgdhuruzytza",
-                        "yudivbxnhsqeaeo",
-                        "mpinmzvfkneerzzt",
-                        "ogatmoljiy",
-                        "bnhrxlelfjhkeiz",
-                        "knsjulugd"))
-                .withTags(mapOf("wjekptycaydbj", "htdm"))
-                .withIsAnonymous(false)
-                .withIsArchived(false)
-                .withDataUri("voffbkkwvdxae")
-                .withReferencedUris(Arrays.asList("uavt", "tbkewkqynspg"));
+        MLTableData model = new MLTableData().withDescription("z")
+            .withTags(mapOf("rgyzcslazp", "mydtdtftmizuzjd", "teagbgac", "kqoyimxpggk", "lpbybkisb", "qpjuytvude",
+                "glpwdjr", "ifm"))
+            .withProperties(mapOf("ttuhaaax", "fshznu", "xstowagehxuihwes", "dcdjmdkqtxfrmbe", "kncypmte", "tjaqgbl",
+                "hrfbrj", "spsaneyvaerpiob"))
+            .withIsArchived(false)
+            .withIsAnonymous(true)
+            .withDataUri("rsvxphtjnhptj")
+            .withReferencedUris(Arrays.asList("xdfsfvkjc", "m"));
         model = BinaryData.fromObject(model).toObject(MLTableData.class);
-        Assertions.assertEquals("rlj", model.description());
-        Assertions.assertEquals("zbnobr", model.properties().get("lpbcjtrpz"));
-        Assertions.assertEquals("htdm", model.tags().get("wjekptycaydbj"));
-        Assertions.assertEquals(false, model.isAnonymous());
+        Assertions.assertEquals("z", model.description());
+        Assertions.assertEquals("mydtdtftmizuzjd", model.tags().get("rgyzcslazp"));
+        Assertions.assertEquals("fshznu", model.properties().get("ttuhaaax"));
         Assertions.assertEquals(false, model.isArchived());
-        Assertions.assertEquals("voffbkkwvdxae", model.dataUri());
-        Assertions.assertEquals("uavt", model.referencedUris().get(0));
+        Assertions.assertEquals(true, model.isAnonymous());
+        Assertions.assertEquals("rsvxphtjnhptj", model.dataUri());
+        Assertions.assertEquals("xdfsfvkjc", model.referencedUris().get(0));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

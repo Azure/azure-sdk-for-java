@@ -6,17 +6,20 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Input of CheckHostNameAvailability API.
  */
 @Fluent
-public final class CheckHostnameAvailabilityInput {
+public final class CheckHostnameAvailabilityInput implements JsonSerializable<CheckHostnameAvailabilityInput> {
     /*
      * The host name to validate.
      */
-    @JsonProperty(value = "hostName", required = true)
     private String hostname;
 
     /**
@@ -52,10 +55,49 @@ public final class CheckHostnameAvailabilityInput {
      */
     public void validate() {
         if (hostname() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property hostname in model CheckHostnameAvailabilityInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property hostname in model CheckHostnameAvailabilityInput"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CheckHostnameAvailabilityInput.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("hostName", this.hostname);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CheckHostnameAvailabilityInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CheckHostnameAvailabilityInput if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CheckHostnameAvailabilityInput.
+     */
+    public static CheckHostnameAvailabilityInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CheckHostnameAvailabilityInput deserializedCheckHostnameAvailabilityInput
+                = new CheckHostnameAvailabilityInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("hostName".equals(fieldName)) {
+                    deserializedCheckHostnameAvailabilityInput.hostname = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCheckHostnameAvailabilityInput;
+        });
+    }
 }

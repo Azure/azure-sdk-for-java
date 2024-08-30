@@ -5,36 +5,32 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * A copy activity Salesforce V2 sink.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = SalesforceV2Sink.class, visible = true)
-@JsonTypeName("SalesforceV2Sink")
 @Fluent
 public final class SalesforceV2Sink extends CopySink {
     /*
      * Copy sink type.
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private String type = "SalesforceV2Sink";
 
     /*
      * The write behavior for the operation. Default is Insert.
      */
-    @JsonProperty(value = "writeBehavior")
     private SalesforceV2SinkWriteBehavior writeBehavior;
 
     /*
      * The name of the external ID field for upsert operation. Default value is 'Id' column. Type: string (or Expression
      * with resultType string).
      */
-    @JsonProperty(value = "externalIdFieldName")
     private Object externalIdFieldName;
 
     /*
@@ -44,7 +40,6 @@ public final class SalesforceV2Sink extends CopySink {
      * ADF will update the data in the destination object to NULL when doing upsert/update operation and insert NULL
      * value when doing insert operation. Type: boolean (or Expression with resultType boolean).
      */
-    @JsonProperty(value = "ignoreNullValues")
     private Object ignoreNullValues;
 
     /**
@@ -197,5 +192,80 @@ public final class SalesforceV2Sink extends CopySink {
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("writeBatchSize", writeBatchSize());
+        jsonWriter.writeUntypedField("writeBatchTimeout", writeBatchTimeout());
+        jsonWriter.writeUntypedField("sinkRetryCount", sinkRetryCount());
+        jsonWriter.writeUntypedField("sinkRetryWait", sinkRetryWait());
+        jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
+        jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("writeBehavior", this.writeBehavior == null ? null : this.writeBehavior.toString());
+        jsonWriter.writeUntypedField("externalIdFieldName", this.externalIdFieldName);
+        jsonWriter.writeUntypedField("ignoreNullValues", this.ignoreNullValues);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SalesforceV2Sink from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SalesforceV2Sink if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SalesforceV2Sink.
+     */
+    public static SalesforceV2Sink fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SalesforceV2Sink deserializedSalesforceV2Sink = new SalesforceV2Sink();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("writeBatchSize".equals(fieldName)) {
+                    deserializedSalesforceV2Sink.withWriteBatchSize(reader.readUntyped());
+                } else if ("writeBatchTimeout".equals(fieldName)) {
+                    deserializedSalesforceV2Sink.withWriteBatchTimeout(reader.readUntyped());
+                } else if ("sinkRetryCount".equals(fieldName)) {
+                    deserializedSalesforceV2Sink.withSinkRetryCount(reader.readUntyped());
+                } else if ("sinkRetryWait".equals(fieldName)) {
+                    deserializedSalesforceV2Sink.withSinkRetryWait(reader.readUntyped());
+                } else if ("maxConcurrentConnections".equals(fieldName)) {
+                    deserializedSalesforceV2Sink.withMaxConcurrentConnections(reader.readUntyped());
+                } else if ("disableMetricsCollection".equals(fieldName)) {
+                    deserializedSalesforceV2Sink.withDisableMetricsCollection(reader.readUntyped());
+                } else if ("type".equals(fieldName)) {
+                    deserializedSalesforceV2Sink.type = reader.getString();
+                } else if ("writeBehavior".equals(fieldName)) {
+                    deserializedSalesforceV2Sink.writeBehavior
+                        = SalesforceV2SinkWriteBehavior.fromString(reader.getString());
+                } else if ("externalIdFieldName".equals(fieldName)) {
+                    deserializedSalesforceV2Sink.externalIdFieldName = reader.readUntyped();
+                } else if ("ignoreNullValues".equals(fieldName)) {
+                    deserializedSalesforceV2Sink.ignoreNullValues = reader.readUntyped();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedSalesforceV2Sink.withAdditionalProperties(additionalProperties);
+
+            return deserializedSalesforceV2Sink;
+        });
     }
 }

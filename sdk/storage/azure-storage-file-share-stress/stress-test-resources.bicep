@@ -16,3 +16,4 @@ resource primaryAccount 'Microsoft.Storage/storageAccounts@2022-09-01' = {
 }
 
 output STORAGE_CONNECTION_STRING string = '"DefaultEndpointsProtocol=https;AccountName=${primaryAccountName};AccountKey=${listKeys(primaryAccount.id, storageApiVersion).keys[0].value};EndpointSuffix=${endpointSuffix}"'
+output STORAGE_ENDPOINT_STRING string = '"https://${primaryAccountName}.file.core.windows.net"'

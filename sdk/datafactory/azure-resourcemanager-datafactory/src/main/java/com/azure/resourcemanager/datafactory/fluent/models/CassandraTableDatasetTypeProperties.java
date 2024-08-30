@@ -5,23 +5,26 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Cassandra dataset properties.
  */
 @Fluent
-public final class CassandraTableDatasetTypeProperties {
+public final class CassandraTableDatasetTypeProperties
+    implements JsonSerializable<CassandraTableDatasetTypeProperties> {
     /*
      * The table name of the Cassandra database. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "tableName")
     private Object tableName;
 
     /*
      * The keyspace of the Cassandra database. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "keyspace")
     private Object keyspace;
 
     /**
@@ -80,5 +83,45 @@ public final class CassandraTableDatasetTypeProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("tableName", this.tableName);
+        jsonWriter.writeUntypedField("keyspace", this.keyspace);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CassandraTableDatasetTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CassandraTableDatasetTypeProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CassandraTableDatasetTypeProperties.
+     */
+    public static CassandraTableDatasetTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CassandraTableDatasetTypeProperties deserializedCassandraTableDatasetTypeProperties
+                = new CassandraTableDatasetTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tableName".equals(fieldName)) {
+                    deserializedCassandraTableDatasetTypeProperties.tableName = reader.readUntyped();
+                } else if ("keyspace".equals(fieldName)) {
+                    deserializedCassandraTableDatasetTypeProperties.keyspace = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCassandraTableDatasetTypeProperties;
+        });
     }
 }

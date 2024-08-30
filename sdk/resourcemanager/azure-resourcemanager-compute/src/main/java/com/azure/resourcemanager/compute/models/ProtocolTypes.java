@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.compute.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Specifies the protocol of WinRM listener. Possible values are: **http,** **https.**.
  */
@@ -36,7 +33,6 @@ public enum ProtocolTypes {
      * @param value the serialized value to parse.
      * @return the parsed ProtocolTypes object, or null if unable to parse.
      */
-    @JsonCreator
     public static ProtocolTypes fromString(String value) {
         if (value == null) {
             return null;
@@ -53,7 +49,6 @@ public enum ProtocolTypes {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

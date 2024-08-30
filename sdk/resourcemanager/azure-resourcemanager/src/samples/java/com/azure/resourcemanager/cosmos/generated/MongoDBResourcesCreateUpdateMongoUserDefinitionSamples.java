@@ -6,7 +6,6 @@ package com.azure.resourcemanager.cosmos.generated;
 
 import com.azure.resourcemanager.cosmos.models.MongoUserDefinitionCreateUpdateParameters;
 import com.azure.resourcemanager.cosmos.models.Role;
-
 import java.util.Arrays;
 
 /**
@@ -14,11 +13,12 @@ import java.util.Arrays;
  */
 public final class MongoDBResourcesCreateUpdateMongoUserDefinitionSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBMongoDBUserDefinitionCreateUpdate.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/
+     * CosmosDBMongoDBUserDefinitionCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBMongoDBUserDefinitionCreateUpdate.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBMongoDBUserDefinitionCreateUpdate(com.azure.resourcemanager.AzureResourceManager azure) {

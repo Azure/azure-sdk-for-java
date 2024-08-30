@@ -5,51 +5,52 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cosmos.models.ApiType;
 import com.azure.resourcemanager.cosmos.models.RestorableLocationResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
  * The properties of a restorable database account.
  */
 @Fluent
-public final class RestorableDatabaseAccountProperties {
+public final class RestorableDatabaseAccountProperties
+    implements JsonSerializable<RestorableDatabaseAccountProperties> {
     /*
      * The name of the global database account
      */
-    @JsonProperty(value = "accountName")
     private String accountName;
 
     /*
      * The creation time of the restorable database account (ISO-8601 format).
      */
-    @JsonProperty(value = "creationTime")
     private OffsetDateTime creationTime;
 
     /*
      * The time at which the restorable database account has been deleted (ISO-8601 format).
      */
-    @JsonProperty(value = "deletionTime")
     private OffsetDateTime deletionTime;
 
     /*
      * The least recent time at which the database account can be restored to (ISO-8601 format).
      */
-    @JsonProperty(value = "oldestRestorableTime")
     private OffsetDateTime oldestRestorableTime;
 
     /*
      * The API type of the restorable database account.
      */
-    @JsonProperty(value = "apiType", access = JsonProperty.Access.WRITE_ONLY)
     private ApiType apiType;
 
     /*
      * List of regions where the of the database account can be restored from.
      */
-    @JsonProperty(value = "restorableLocations", access = JsonProperty.Access.WRITE_ONLY)
     private List<RestorableLocationResource> restorableLocations;
 
     /**
@@ -169,5 +170,65 @@ public final class RestorableDatabaseAccountProperties {
         if (restorableLocations() != null) {
             restorableLocations().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("accountName", this.accountName);
+        jsonWriter.writeStringField("creationTime",
+            this.creationTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.creationTime));
+        jsonWriter.writeStringField("deletionTime",
+            this.deletionTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.deletionTime));
+        jsonWriter.writeStringField("oldestRestorableTime",
+            this.oldestRestorableTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.oldestRestorableTime));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RestorableDatabaseAccountProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RestorableDatabaseAccountProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RestorableDatabaseAccountProperties.
+     */
+    public static RestorableDatabaseAccountProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RestorableDatabaseAccountProperties deserializedRestorableDatabaseAccountProperties
+                = new RestorableDatabaseAccountProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("accountName".equals(fieldName)) {
+                    deserializedRestorableDatabaseAccountProperties.accountName = reader.getString();
+                } else if ("creationTime".equals(fieldName)) {
+                    deserializedRestorableDatabaseAccountProperties.creationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("deletionTime".equals(fieldName)) {
+                    deserializedRestorableDatabaseAccountProperties.deletionTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("oldestRestorableTime".equals(fieldName)) {
+                    deserializedRestorableDatabaseAccountProperties.oldestRestorableTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("apiType".equals(fieldName)) {
+                    deserializedRestorableDatabaseAccountProperties.apiType = ApiType.fromString(reader.getString());
+                } else if ("restorableLocations".equals(fieldName)) {
+                    List<RestorableLocationResource> restorableLocations
+                        = reader.readArray(reader1 -> RestorableLocationResource.fromJson(reader1));
+                    deserializedRestorableDatabaseAccountProperties.restorableLocations = restorableLocations;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRestorableDatabaseAccountProperties;
+        });
     }
 }

@@ -6,19 +6,22 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.DatasetCompression;
 import com.azure.resourcemanager.datafactory.models.DatasetLocation;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Xml dataset properties.
  */
 @Fluent
-public final class XmlDatasetTypeProperties {
+public final class XmlDatasetTypeProperties implements JsonSerializable<XmlDatasetTypeProperties> {
     /*
      * The location of the json data storage.
      */
-    @JsonProperty(value = "location", required = true)
     private DatasetLocation location;
 
     /*
@@ -27,19 +30,16 @@ public final class XmlDatasetTypeProperties {
      * https://msdn.microsoft.com/library/system.text.encoding.aspx. Type: string (or Expression with resultType
      * string).
      */
-    @JsonProperty(value = "encodingName")
     private Object encodingName;
 
     /*
      * The null value string. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "nullValue")
     private Object nullValue;
 
     /*
      * The data compression method used for the json dataset.
      */
-    @JsonProperty(value = "compression")
     private DatasetCompression compression;
 
     /**
@@ -153,4 +153,50 @@ public final class XmlDatasetTypeProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(XmlDatasetTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("location", this.location);
+        jsonWriter.writeUntypedField("encodingName", this.encodingName);
+        jsonWriter.writeUntypedField("nullValue", this.nullValue);
+        jsonWriter.writeJsonField("compression", this.compression);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of XmlDatasetTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of XmlDatasetTypeProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the XmlDatasetTypeProperties.
+     */
+    public static XmlDatasetTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            XmlDatasetTypeProperties deserializedXmlDatasetTypeProperties = new XmlDatasetTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("location".equals(fieldName)) {
+                    deserializedXmlDatasetTypeProperties.location = DatasetLocation.fromJson(reader);
+                } else if ("encodingName".equals(fieldName)) {
+                    deserializedXmlDatasetTypeProperties.encodingName = reader.readUntyped();
+                } else if ("nullValue".equals(fieldName)) {
+                    deserializedXmlDatasetTypeProperties.nullValue = reader.readUntyped();
+                } else if ("compression".equals(fieldName)) {
+                    deserializedXmlDatasetTypeProperties.compression = DatasetCompression.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedXmlDatasetTypeProperties;
+        });
+    }
 }

@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Partner region information for the failover group. */
+/**
+ * Partner region information for the failover group.
+ */
 @Fluent
-public final class PartnerRegionInfo {
+public final class PartnerRegionInfo implements JsonSerializable<PartnerRegionInfo> {
     /*
      * Geo location of the partner managed instances.
      */
-    @JsonProperty(value = "location")
     private String location;
 
     /*
      * Replication role of the partner managed instances.
      */
-    @JsonProperty(value = "replicationRole", access = JsonProperty.Access.WRITE_ONLY)
     private InstanceFailoverGroupReplicationRole replicationRole;
 
-    /** Creates an instance of PartnerRegionInfo class. */
+    /**
+     * Creates an instance of PartnerRegionInfo class.
+     */
     public PartnerRegionInfo() {
     }
 
     /**
      * Get the location property: Geo location of the partner managed instances.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -37,7 +43,7 @@ public final class PartnerRegionInfo {
 
     /**
      * Set the location property: Geo location of the partner managed instances.
-     *
+     * 
      * @param location the location value to set.
      * @return the PartnerRegionInfo object itself.
      */
@@ -48,7 +54,7 @@ public final class PartnerRegionInfo {
 
     /**
      * Get the replicationRole property: Replication role of the partner managed instances.
-     *
+     * 
      * @return the replicationRole value.
      */
     public InstanceFailoverGroupReplicationRole replicationRole() {
@@ -57,9 +63,48 @@ public final class PartnerRegionInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", this.location);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PartnerRegionInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PartnerRegionInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PartnerRegionInfo.
+     */
+    public static PartnerRegionInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PartnerRegionInfo deserializedPartnerRegionInfo = new PartnerRegionInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("location".equals(fieldName)) {
+                    deserializedPartnerRegionInfo.location = reader.getString();
+                } else if ("replicationRole".equals(fieldName)) {
+                    deserializedPartnerRegionInfo.replicationRole
+                        = InstanceFailoverGroupReplicationRole.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPartnerRegionInfo;
+        });
     }
 }

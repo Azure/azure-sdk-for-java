@@ -18,10 +18,7 @@ public final class RequestExtractor {
     public static final String REQUEST_RESULT_CODE = "request/resultCode";
     public static final String REQUEST_SUCCESS = "Request.Success";
 
-    public static void extract(
-        MetricTelemetryBuilder metricBuilder,
-        @Nullable Long statusCode,
-        boolean success,
+    public static void extract(MetricTelemetryBuilder metricBuilder, @Nullable Long statusCode, boolean success,
         @Nullable Boolean isSynthetic) {
         extractCommon(metricBuilder, isSynthetic);
 

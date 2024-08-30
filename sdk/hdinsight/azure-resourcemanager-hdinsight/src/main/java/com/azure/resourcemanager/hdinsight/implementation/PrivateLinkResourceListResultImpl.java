@@ -17,8 +17,7 @@ public final class PrivateLinkResourceListResultImpl implements PrivateLinkResou
 
     private final com.azure.resourcemanager.hdinsight.HDInsightManager serviceManager;
 
-    PrivateLinkResourceListResultImpl(
-        PrivateLinkResourceListResultInner innerObject,
+    PrivateLinkResourceListResultImpl(PrivateLinkResourceListResultInner innerObject,
         com.azure.resourcemanager.hdinsight.HDInsightManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -27,12 +26,9 @@ public final class PrivateLinkResourceListResultImpl implements PrivateLinkResou
     public List<PrivateLinkResource> value() {
         List<PrivateLinkResourceInner> inner = this.innerModel().value();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new PrivateLinkResourceImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new PrivateLinkResourceImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }

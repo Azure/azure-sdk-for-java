@@ -729,14 +729,14 @@
 # ServiceOwners:                                     @QingChenmsft @vaishnavk @juhacket
 
 # PRLabel: %WebPubSub
-/sdk/webpubsub/azure-messaging-webpubsub-client/     @vicancy
-/sdk/webpubsub/azure-messaging-webpubsub/            @vicancy
+/sdk/webpubsub/azure-messaging-webpubsub-client/     @vicancy @chenkennt @zackliu
+/sdk/webpubsub/azure-messaging-webpubsub/            @vicancy @chenkennt 
 
 # ServiceLabel:  %WebPubSub
-# ServiceOwners:                                     @vicancy
+# ServiceOwners:                                     @vicancy @chenkennt
 
 # ServiceLabel:  %SignalR
-# ServiceOwners:                                     @vicancy
+# ServiceOwners:                                     @vicancy @chenkennt
 
 # ServiceLabel:  %SQL
 # ServiceOwners:                                     @azureSQLGitHub
@@ -760,10 +760,10 @@
 # ServiceOwners:                                     @azureSQLGitHub
 
 # PRLabel: %Storage
-/sdk/storage/                                        @ibrahimrabab @seanmcc-msft @ibrandes @alzimmermsft
+/sdk/storage/                                        @ibrahimrabab @seanmcc-msft @ibrandes @kyleknap @alzimmermsft
 
 # ServiceLabel:  %Storage
-# AzureSdkOwners:                                    @ibrahimrabab @seanmcc-msft @ibrandes
+# AzureSdkOwners:                                    @ibrahimrabab @seanmcc-msft @ibrandes @kyleknap
 # ServiceOwners:                                     @xgithubtriage
 
 # ServiceLabel:  %Storsimple

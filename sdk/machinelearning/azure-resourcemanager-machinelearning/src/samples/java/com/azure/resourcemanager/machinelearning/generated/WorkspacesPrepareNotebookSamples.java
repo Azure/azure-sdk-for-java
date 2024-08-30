@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-/** Samples for Workspaces PrepareNotebook. */
+/**
+ * Samples for Workspaces PrepareNotebook.
+ */
 public final class WorkspacesPrepareNotebookSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/Notebook/prepare.json
+     * x-ms-original-file:
+     * specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/
+     * examples/Notebook/prepare.json
      */
     /**
      * Sample code: Prepare Notebook.
-     *
+     * 
      * @param manager Entry point to MachineLearningManager.
      */
     public static void prepareNotebook(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {

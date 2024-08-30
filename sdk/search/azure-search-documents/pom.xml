@@ -100,13 +100,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.13.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.13.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-ai-openai</artifactId>
-      <version>1.0.0-beta.10</version> <!-- {x-version-update;com.azure:azure-ai-openai;dependency} -->
+      <version>1.0.0-beta.11</version> <!-- {x-version-update;com.azure:azure-ai-openai;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

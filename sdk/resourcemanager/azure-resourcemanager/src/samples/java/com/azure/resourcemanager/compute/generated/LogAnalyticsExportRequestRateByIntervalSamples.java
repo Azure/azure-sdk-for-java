@@ -14,7 +14,7 @@ import java.time.OffsetDateTime;
 public final class LogAnalyticsExportRequestRateByIntervalSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/logAnalyticExamples
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/logAnalyticExamples
      * /LogAnalytics_RequestRateByInterval.json
      */
     /**

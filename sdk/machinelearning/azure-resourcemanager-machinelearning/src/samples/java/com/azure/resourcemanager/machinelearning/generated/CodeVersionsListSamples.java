@@ -4,19 +4,24 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-/** Samples for CodeVersions List. */
+/**
+ * Samples for CodeVersions List.
+ */
 public final class CodeVersionsListSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/CodeVersion/list.json
+     * x-ms-original-file:
+     * specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/
+     * examples/Workspace/CodeVersion/list.json
      */
     /**
-     * Sample code: List Code Version.
-     *
+     * Sample code: List Workspace Code Version.
+     * 
      * @param manager Entry point to MachineLearningManager.
      */
-    public static void listCodeVersion(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager
-            .codeVersions()
-            .list("test-rg", "my-aml-workspace", "string", "string", 1, null, com.azure.core.util.Context.NONE);
+    public static void
+        listWorkspaceCodeVersion(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
+        manager.codeVersions()
+            .list("test-rg", "my-aml-workspace", "string", "string", 1, null, null, null,
+                com.azure.core.util.Context.NONE);
     }
 }

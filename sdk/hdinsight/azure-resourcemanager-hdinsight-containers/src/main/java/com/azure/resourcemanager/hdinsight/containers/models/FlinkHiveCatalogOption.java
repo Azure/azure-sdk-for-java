@@ -6,37 +6,37 @@ package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Hive Catalog Option for Flink cluster.
  */
 @Fluent
-public final class FlinkHiveCatalogOption {
+public final class FlinkHiveCatalogOption implements JsonSerializable<FlinkHiveCatalogOption> {
     /*
      * The authentication mode to connect to your Hive metastore database. More details:
      * https://learn.microsoft.com/en-us/azure/azure-sql/database/logins-create-manage?view=azuresql#authentication-and-
      * authorization
      */
-    @JsonProperty(value = "metastoreDbConnectionAuthenticationMode")
     private MetastoreDbConnectionAuthenticationMode metastoreDbConnectionAuthenticationMode;
 
     /*
      * Secret reference name from secretsProfile.secrets containing password for database connection.
      */
-    @JsonProperty(value = "metastoreDbConnectionPasswordSecret")
     private String metastoreDbConnectionPasswordSecret;
 
     /*
      * Connection string for hive metastore database.
      */
-    @JsonProperty(value = "metastoreDbConnectionURL", required = true)
     private String metastoreDbConnectionUrl;
 
     /*
      * User name for database connection.
      */
-    @JsonProperty(value = "metastoreDbConnectionUserName")
     private String metastoreDbConnectionUsername;
 
     /**
@@ -139,10 +139,61 @@ public final class FlinkHiveCatalogOption {
      */
     public void validate() {
         if (metastoreDbConnectionUrl() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property metastoreDbConnectionUrl in model FlinkHiveCatalogOption"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property metastoreDbConnectionUrl in model FlinkHiveCatalogOption"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(FlinkHiveCatalogOption.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("metastoreDbConnectionURL", this.metastoreDbConnectionUrl);
+        jsonWriter.writeStringField("metastoreDbConnectionAuthenticationMode",
+            this.metastoreDbConnectionAuthenticationMode == null
+                ? null
+                : this.metastoreDbConnectionAuthenticationMode.toString());
+        jsonWriter.writeStringField("metastoreDbConnectionPasswordSecret", this.metastoreDbConnectionPasswordSecret);
+        jsonWriter.writeStringField("metastoreDbConnectionUserName", this.metastoreDbConnectionUsername);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FlinkHiveCatalogOption from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FlinkHiveCatalogOption if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FlinkHiveCatalogOption.
+     */
+    public static FlinkHiveCatalogOption fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FlinkHiveCatalogOption deserializedFlinkHiveCatalogOption = new FlinkHiveCatalogOption();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("metastoreDbConnectionURL".equals(fieldName)) {
+                    deserializedFlinkHiveCatalogOption.metastoreDbConnectionUrl = reader.getString();
+                } else if ("metastoreDbConnectionAuthenticationMode".equals(fieldName)) {
+                    deserializedFlinkHiveCatalogOption.metastoreDbConnectionAuthenticationMode
+                        = MetastoreDbConnectionAuthenticationMode.fromString(reader.getString());
+                } else if ("metastoreDbConnectionPasswordSecret".equals(fieldName)) {
+                    deserializedFlinkHiveCatalogOption.metastoreDbConnectionPasswordSecret = reader.getString();
+                } else if ("metastoreDbConnectionUserName".equals(fieldName)) {
+                    deserializedFlinkHiveCatalogOption.metastoreDbConnectionUsername = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFlinkHiveCatalogOption;
+        });
+    }
 }

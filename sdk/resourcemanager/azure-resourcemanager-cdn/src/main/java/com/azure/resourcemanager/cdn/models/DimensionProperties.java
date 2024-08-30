@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Type of operation: get, read, delete, etc.
  */
 @Fluent
-public final class DimensionProperties {
+public final class DimensionProperties implements JsonSerializable<DimensionProperties> {
     /*
      * Name of dimension.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Display name of dimension.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * Internal name of dimension.
      */
-    @JsonProperty(value = "internalName")
     private String internalName;
 
     /**
@@ -102,5 +103,47 @@ public final class DimensionProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("internalName", this.internalName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DimensionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DimensionProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DimensionProperties.
+     */
+    public static DimensionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DimensionProperties deserializedDimensionProperties = new DimensionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedDimensionProperties.name = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedDimensionProperties.displayName = reader.getString();
+                } else if ("internalName".equals(fieldName)) {
+                    deserializedDimensionProperties.internalName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDimensionProperties;
+        });
     }
 }

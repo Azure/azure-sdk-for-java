@@ -14,7 +14,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-ai-openai</artifactId>
-  <version>1.0.0-beta.11</version> <!-- {x-version-update;com.azure:azure-ai-openai;current} -->
+  <version>1.0.0-beta.12</version> <!-- {x-version-update;com.azure:azure-ai-openai;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure Client Library For OpenAI</name>
@@ -86,7 +86,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.13.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.13.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

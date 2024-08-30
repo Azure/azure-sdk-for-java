@@ -5,32 +5,35 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
  * Domain purchase consent object, representing acceptance of applicable legal agreements.
  */
 @Fluent
-public final class DomainPurchaseConsent {
+public final class DomainPurchaseConsent implements JsonSerializable<DomainPurchaseConsent> {
     /*
-     * List of applicable legal agreement keys. This list can be retrieved using ListLegalAgreements API under <code>TopLevelDomain</code> resource.
+     * List of applicable legal agreement keys. This list can be retrieved using ListLegalAgreements API under
+     * <code>TopLevelDomain</code> resource.
      */
-    @JsonProperty(value = "agreementKeys")
     private List<String> agreementKeys;
 
     /*
      * Client IP address.
      */
-    @JsonProperty(value = "agreedBy")
     private String agreedBy;
 
     /*
      * Timestamp when the agreements were accepted.
      */
-    @JsonProperty(value = "agreedAt")
     private OffsetDateTime agreedAt;
 
     /**
@@ -42,7 +45,7 @@ public final class DomainPurchaseConsent {
     /**
      * Get the agreementKeys property: List of applicable legal agreement keys. This list can be retrieved using
      * ListLegalAgreements API under &lt;code&gt;TopLevelDomain&lt;/code&gt; resource.
-     *
+     * 
      * @return the agreementKeys value.
      */
     public List<String> agreementKeys() {
@@ -52,7 +55,7 @@ public final class DomainPurchaseConsent {
     /**
      * Set the agreementKeys property: List of applicable legal agreement keys. This list can be retrieved using
      * ListLegalAgreements API under &lt;code&gt;TopLevelDomain&lt;/code&gt; resource.
-     *
+     * 
      * @param agreementKeys the agreementKeys value to set.
      * @return the DomainPurchaseConsent object itself.
      */
@@ -63,7 +66,7 @@ public final class DomainPurchaseConsent {
 
     /**
      * Get the agreedBy property: Client IP address.
-     *
+     * 
      * @return the agreedBy value.
      */
     public String agreedBy() {
@@ -72,7 +75,7 @@ public final class DomainPurchaseConsent {
 
     /**
      * Set the agreedBy property: Client IP address.
-     *
+     * 
      * @param agreedBy the agreedBy value to set.
      * @return the DomainPurchaseConsent object itself.
      */
@@ -83,7 +86,7 @@ public final class DomainPurchaseConsent {
 
     /**
      * Get the agreedAt property: Timestamp when the agreements were accepted.
-     *
+     * 
      * @return the agreedAt value.
      */
     public OffsetDateTime agreedAt() {
@@ -92,7 +95,7 @@ public final class DomainPurchaseConsent {
 
     /**
      * Set the agreedAt property: Timestamp when the agreements were accepted.
-     *
+     * 
      * @param agreedAt the agreedAt value to set.
      * @return the DomainPurchaseConsent object itself.
      */
@@ -103,9 +106,55 @@ public final class DomainPurchaseConsent {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("agreementKeys", this.agreementKeys,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("agreedBy", this.agreedBy);
+        jsonWriter.writeStringField("agreedAt",
+            this.agreedAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.agreedAt));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DomainPurchaseConsent from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DomainPurchaseConsent if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DomainPurchaseConsent.
+     */
+    public static DomainPurchaseConsent fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DomainPurchaseConsent deserializedDomainPurchaseConsent = new DomainPurchaseConsent();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("agreementKeys".equals(fieldName)) {
+                    List<String> agreementKeys = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDomainPurchaseConsent.agreementKeys = agreementKeys;
+                } else if ("agreedBy".equals(fieldName)) {
+                    deserializedDomainPurchaseConsent.agreedBy = reader.getString();
+                } else if ("agreedAt".equals(fieldName)) {
+                    deserializedDomainPurchaseConsent.agreedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDomainPurchaseConsent;
+        });
     }
 }
