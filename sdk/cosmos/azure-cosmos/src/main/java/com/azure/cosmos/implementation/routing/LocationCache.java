@@ -609,9 +609,12 @@ public class LocationCache {
                     for (String location : orderedLocations) {
 
                         Utils.ValueHolder<URI> endpoint = Utils.ValueHolder.initialize(null);
-                        if (!Strings.isNullOrEmpty(location) && // location is empty during manual failover
-                            Utils.tryGetValue(endpointsByLocation, location, endpoint)) {
-                            endpoints.add(endpoint.v);
+                        if (Utils.tryGetValue(endpointsByLocation, location, endpoint)) {
+                            if (this.isEndpointUnavailable(endpoint.v, expectedAvailableOperation)) {
+                                unavailableEndpoints.add(endpoint.v);
+                            } else {
+                                endpoints.add(endpoint.v);
+                            }
                         }
                     }
                 }
