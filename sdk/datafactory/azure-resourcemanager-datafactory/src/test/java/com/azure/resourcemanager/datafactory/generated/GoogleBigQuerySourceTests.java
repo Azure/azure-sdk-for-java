@@ -11,19 +11,19 @@ public final class GoogleBigQuerySourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GoogleBigQuerySource model = BinaryData.fromString(
-            "{\"type\":\"GoogleBigQuerySource\",\"query\":\"datawaejxzkqcmddc\",\"queryTimeout\":\"datanxyr\",\"additionalColumns\":\"dataegabsfjrjzdqscgo\",\"sourceRetryCount\":\"datagd\",\"sourceRetryWait\":\"dataepgfrb\",\"maxConcurrentConnections\":\"dataoeh\",\"disableMetricsCollection\":\"datawwsgqziwo\",\"\":{\"okckxfk\":\"datawjssyazmmbuxq\",\"qf\":\"datatqkbyruheawuc\",\"jguwts\":\"datarbtbogxlyvebv\"}}")
+            "{\"type\":\"GoogleBigQuerySource\",\"query\":\"datavijdr\",\"queryTimeout\":\"datayqvhz\",\"additionalColumns\":\"datayvhrenozl\",\"sourceRetryCount\":\"dataqfghlosho\",\"sourceRetryWait\":\"datakpcmtsbandesalv\",\"maxConcurrentConnections\":\"datawrljmlo\",\"disableMetricsCollection\":\"datatzvtfyqe\",\"\":{\"xhcygfg\":\"databsyni\",\"aosttbwap\":\"datamdbazggr\"}}")
             .toObject(GoogleBigQuerySource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GoogleBigQuerySource model = new GoogleBigQuerySource().withSourceRetryCount("datagd")
-            .withSourceRetryWait("dataepgfrb")
-            .withMaxConcurrentConnections("dataoeh")
-            .withDisableMetricsCollection("datawwsgqziwo")
-            .withQueryTimeout("datanxyr")
-            .withAdditionalColumns("dataegabsfjrjzdqscgo")
-            .withQuery("datawaejxzkqcmddc");
+        GoogleBigQuerySource model = new GoogleBigQuerySource().withSourceRetryCount("dataqfghlosho")
+            .withSourceRetryWait("datakpcmtsbandesalv")
+            .withMaxConcurrentConnections("datawrljmlo")
+            .withDisableMetricsCollection("datatzvtfyqe")
+            .withQueryTimeout("datayqvhz")
+            .withAdditionalColumns("datayvhrenozl")
+            .withQuery("datavijdr");
         model = BinaryData.fromObject(model).toObject(GoogleBigQuerySource.class);
     }
 }

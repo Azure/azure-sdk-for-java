@@ -18,9 +18,13 @@ public final class MetricDefinitionsListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getMetricDefinitionsWithoutFilter(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getMetricDefinitions().list(
-            "subscriptions/07c0b09d-9f69-4e6e-8d05-f59f67299cb2/resourceGroups/Rac46PostSwapRG/providers/Microsoft.Web/sites/alertruleTest/providers/microsoft.insights/metricDefinitions",
-            "Microsoft.Web/sites", com.azure.core.util.Context.NONE);
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getMetricDefinitions()
+            .list(
+                "subscriptions/07c0b09d-9f69-4e6e-8d05-f59f67299cb2/resourceGroups/Rac46PostSwapRG/providers/Microsoft.Web/sites/alertruleTest/providers/microsoft.insights/metricDefinitions",
+                "Microsoft.Web/sites", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -34,9 +38,13 @@ public final class MetricDefinitionsListSamples {
      */
     public static void
         getApplicationInsightsMetricDefinitionsWithoutFilter(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getMetricDefinitions().list(
-            "subscriptions/182c901a-129a-4f5d-86e4-cc6b294590a2/resourceGroups/hyr-log/providers/microsoft.insights/components/f1-bill/providers/microsoft.insights/metricdefinitions",
-            "microsoft.insights/components", com.azure.core.util.Context.NONE);
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getMetricDefinitions()
+            .list(
+                "subscriptions/182c901a-129a-4f5d-86e4-cc6b294590a2/resourceGroups/hyr-log/providers/microsoft.insights/components/f1-bill/providers/microsoft.insights/metricdefinitions",
+                "microsoft.insights/components", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -50,8 +58,12 @@ public final class MetricDefinitionsListSamples {
      */
     public static void
         getStorageCacheMetricDefinitionsWithMetricClass(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getMetricDefinitions().list(
-            "subscriptions/46841c0e-69c8-4b17-af46-6626ecb15fc2/resourceGroups/adgarntptestrg/providers/Microsoft.StorageCache/caches/adgarntptestcache",
-            "microsoft.storagecache/caches", com.azure.core.util.Context.NONE);
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getMetricDefinitions()
+            .list(
+                "subscriptions/46841c0e-69c8-4b17-af46-6626ecb15fc2/resourceGroups/adgarntptestrg/providers/Microsoft.StorageCache/caches/adgarntptestcache",
+                "microsoft.storagecache/caches", com.azure.core.util.Context.NONE);
     }
 }

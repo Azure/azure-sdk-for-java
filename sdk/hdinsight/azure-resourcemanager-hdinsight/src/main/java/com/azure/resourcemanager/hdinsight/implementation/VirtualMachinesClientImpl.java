@@ -34,22 +34,28 @@ import java.util.List;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in VirtualMachinesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in VirtualMachinesClient.
+ */
 public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final VirtualMachinesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final HDInsightManagementClientImpl client;
 
     /**
      * Initializes an instance of VirtualMachinesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     VirtualMachinesClientImpl(HDInsightManagementClientImpl client) {
-        this.service =
-            RestProxy.create(VirtualMachinesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(VirtualMachinesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -60,76 +66,57 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
     @Host("{$host}")
     @ServiceInterface(name = "HDInsightManagementC")
     public interface VirtualMachinesService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/listHosts")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/listHosts")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<List<HostInfoInner>>> listHosts(
-            @HostParam("$host") String endpoint,
+        Mono<Response<List<HostInfoInner>>> listHosts(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/restartHosts")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/restartHosts")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> restartHosts(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> restartHosts(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") List<String> hosts,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") List<String> hosts,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/restartHosts/azureasyncoperations/{operationId}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/restartHosts/azureasyncoperations/{operationId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AsyncOperationResultInner>> getAsyncOperationStatus(
-            @HostParam("$host") String endpoint,
+        Mono<Response<AsyncOperationResultInner>> getAsyncOperationStatus(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("operationId") String operationId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @QueryParam("api-version") String apiVersion, @PathParam("operationId") String operationId,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Lists the HDInsight clusters hosts.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list cluster hosts along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<List<HostInfoInner>>> listHostsWithResponseAsync(
-        String resourceGroupName, String clusterName) {
+    private Mono<Response<List<HostInfoInner>>> listHostsWithResponseAsync(String resourceGroupName,
+        String clusterName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -140,23 +127,14 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listHosts(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            clusterName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.listHosts(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, clusterName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists the HDInsight clusters hosts.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
@@ -164,22 +142,18 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list cluster hosts along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<List<HostInfoInner>>> listHostsWithResponseAsync(
-        String resourceGroupName, String clusterName, Context context) {
+    private Mono<Response<List<HostInfoInner>>> listHostsWithResponseAsync(String resourceGroupName, String clusterName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -190,20 +164,13 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listHosts(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                clusterName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.listHosts(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            clusterName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Lists the HDInsight clusters hosts.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -219,7 +186,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Lists the HDInsight clusters hosts.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
@@ -229,14 +196,14 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @return result of the request to list cluster hosts along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<HostInfoInner>> listHostsWithResponse(
-        String resourceGroupName, String clusterName, Context context) {
+    public Response<List<HostInfoInner>> listHostsWithResponse(String resourceGroupName, String clusterName,
+        Context context) {
         return listHostsWithResponseAsync(resourceGroupName, clusterName, context).block();
     }
 
     /**
      * Lists the HDInsight clusters hosts.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -251,7 +218,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Restarts the specified HDInsight cluster hosts.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param hosts The list of hosts to restart.
@@ -261,19 +228,15 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> restartHostsWithResponseAsync(
-        String resourceGroupName, String clusterName, List<String> hosts) {
+    private Mono<Response<Flux<ByteBuffer>>> restartHostsWithResponseAsync(String resourceGroupName, String clusterName,
+        List<String> hosts) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -287,24 +250,14 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .restartHosts(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            clusterName,
-                            this.client.getApiVersion(),
-                            hosts,
-                            accept,
-                            context))
+            .withContext(context -> service.restartHosts(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, clusterName, this.client.getApiVersion(), hosts, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Restarts the specified HDInsight cluster hosts.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param hosts The list of hosts to restart.
@@ -315,19 +268,15 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> restartHostsWithResponseAsync(
-        String resourceGroupName, String clusterName, List<String> hosts, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> restartHostsWithResponseAsync(String resourceGroupName, String clusterName,
+        List<String> hosts, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -341,21 +290,13 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .restartHosts(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                clusterName,
-                this.client.getApiVersion(),
-                hosts,
-                accept,
-                context);
+        return service.restartHosts(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            clusterName, this.client.getApiVersion(), hosts, accept, context);
     }
 
     /**
      * Restarts the specified HDInsight cluster hosts.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param hosts The list of hosts to restart.
@@ -365,18 +306,16 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginRestartHostsAsync(
-        String resourceGroupName, String clusterName, List<String> hosts) {
+    private PollerFlux<PollResult<Void>, Void> beginRestartHostsAsync(String resourceGroupName, String clusterName,
+        List<String> hosts) {
         Mono<Response<Flux<ByteBuffer>>> mono = restartHostsWithResponseAsync(resourceGroupName, clusterName, hosts);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Restarts the specified HDInsight cluster hosts.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param hosts The list of hosts to restart.
@@ -387,19 +326,18 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginRestartHostsAsync(
-        String resourceGroupName, String clusterName, List<String> hosts, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginRestartHostsAsync(String resourceGroupName, String clusterName,
+        List<String> hosts, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            restartHostsWithResponseAsync(resourceGroupName, clusterName, hosts, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = restartHostsWithResponseAsync(resourceGroupName, clusterName, hosts, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Restarts the specified HDInsight cluster hosts.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param hosts The list of hosts to restart.
@@ -409,14 +347,14 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginRestartHosts(
-        String resourceGroupName, String clusterName, List<String> hosts) {
+    public SyncPoller<PollResult<Void>, Void> beginRestartHosts(String resourceGroupName, String clusterName,
+        List<String> hosts) {
         return this.beginRestartHostsAsync(resourceGroupName, clusterName, hosts).getSyncPoller();
     }
 
     /**
      * Restarts the specified HDInsight cluster hosts.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param hosts The list of hosts to restart.
@@ -427,14 +365,14 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginRestartHosts(
-        String resourceGroupName, String clusterName, List<String> hosts, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginRestartHosts(String resourceGroupName, String clusterName,
+        List<String> hosts, Context context) {
         return this.beginRestartHostsAsync(resourceGroupName, clusterName, hosts, context).getSyncPoller();
     }
 
     /**
      * Restarts the specified HDInsight cluster hosts.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param hosts The list of hosts to restart.
@@ -445,14 +383,13 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> restartHostsAsync(String resourceGroupName, String clusterName, List<String> hosts) {
-        return beginRestartHostsAsync(resourceGroupName, clusterName, hosts)
-            .last()
+        return beginRestartHostsAsync(resourceGroupName, clusterName, hosts).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Restarts the specified HDInsight cluster hosts.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param hosts The list of hosts to restart.
@@ -463,16 +400,15 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> restartHostsAsync(
-        String resourceGroupName, String clusterName, List<String> hosts, Context context) {
-        return beginRestartHostsAsync(resourceGroupName, clusterName, hosts, context)
-            .last()
+    private Mono<Void> restartHostsAsync(String resourceGroupName, String clusterName, List<String> hosts,
+        Context context) {
+        return beginRestartHostsAsync(resourceGroupName, clusterName, hosts, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Restarts the specified HDInsight cluster hosts.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param hosts The list of hosts to restart.
@@ -487,7 +423,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Restarts the specified HDInsight cluster hosts.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param hosts The list of hosts to restart.
@@ -503,7 +439,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Gets the async operation status.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param operationId The long running operation id.
@@ -513,19 +449,15 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @return the async operation status along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AsyncOperationResultInner>> getAsyncOperationStatusWithResponseAsync(
-        String resourceGroupName, String clusterName, String operationId) {
+    private Mono<Response<AsyncOperationResultInner>> getAsyncOperationStatusWithResponseAsync(String resourceGroupName,
+        String clusterName, String operationId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -540,23 +472,14 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .getAsyncOperationStatus(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            clusterName,
-                            this.client.getApiVersion(),
-                            operationId,
-                            accept,
-                            context))
+                context -> service.getAsyncOperationStatus(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, clusterName, this.client.getApiVersion(), operationId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the async operation status.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param operationId The long running operation id.
@@ -567,19 +490,15 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @return the async operation status along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AsyncOperationResultInner>> getAsyncOperationStatusWithResponseAsync(
-        String resourceGroupName, String clusterName, String operationId, Context context) {
+    private Mono<Response<AsyncOperationResultInner>> getAsyncOperationStatusWithResponseAsync(String resourceGroupName,
+        String clusterName, String operationId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -593,21 +512,13 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getAsyncOperationStatus(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                clusterName,
-                this.client.getApiVersion(),
-                operationId,
-                accept,
-                context);
+        return service.getAsyncOperationStatus(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, clusterName, this.client.getApiVersion(), operationId, accept, context);
     }
 
     /**
      * Gets the async operation status.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param operationId The long running operation id.
@@ -617,15 +528,15 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @return the async operation status on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AsyncOperationResultInner> getAsyncOperationStatusAsync(
-        String resourceGroupName, String clusterName, String operationId) {
+    private Mono<AsyncOperationResultInner> getAsyncOperationStatusAsync(String resourceGroupName, String clusterName,
+        String operationId) {
         return getAsyncOperationStatusWithResponseAsync(resourceGroupName, clusterName, operationId)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets the async operation status.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param operationId The long running operation id.
@@ -636,14 +547,14 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @return the async operation status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AsyncOperationResultInner> getAsyncOperationStatusWithResponse(
-        String resourceGroupName, String clusterName, String operationId, Context context) {
+    public Response<AsyncOperationResultInner> getAsyncOperationStatusWithResponse(String resourceGroupName,
+        String clusterName, String operationId, Context context) {
         return getAsyncOperationStatusWithResponseAsync(resourceGroupName, clusterName, operationId, context).block();
     }
 
     /**
      * Gets the async operation status.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param operationId The long running operation id.
@@ -653,8 +564,8 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @return the async operation status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AsyncOperationResultInner getAsyncOperationStatus(
-        String resourceGroupName, String clusterName, String operationId) {
+    public AsyncOperationResultInner getAsyncOperationStatus(String resourceGroupName, String clusterName,
+        String operationId) {
         return getAsyncOperationStatusWithResponse(resourceGroupName, clusterName, operationId, Context.NONE)
             .getValue();
     }

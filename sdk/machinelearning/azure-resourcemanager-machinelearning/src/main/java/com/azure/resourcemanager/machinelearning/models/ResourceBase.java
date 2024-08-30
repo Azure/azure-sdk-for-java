@@ -5,40 +5,42 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** The ResourceBase model. */
+/**
+ * The ResourceBase model.
+ */
 @Fluent
-public class ResourceBase {
+public class ResourceBase implements JsonSerializable<ResourceBase> {
     /*
      * The asset description text.
      */
-    @JsonProperty(value = "description")
     private String description;
-
-    /*
-     * The asset property dictionary.
-     */
-    @JsonProperty(value = "properties")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
-    private Map<String, String> properties;
 
     /*
      * Tag dictionary. Tags can be added, removed, and updated.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /** Creates an instance of ResourceBase class. */
+    /*
+     * The asset property dictionary.
+     */
+    private Map<String, String> properties;
+
+    /**
+     * Creates an instance of ResourceBase class.
+     */
     public ResourceBase() {
     }
 
     /**
      * Get the description property: The asset description text.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -47,7 +49,7 @@ public class ResourceBase {
 
     /**
      * Set the description property: The asset description text.
-     *
+     * 
      * @param description the description value to set.
      * @return the ResourceBase object itself.
      */
@@ -57,28 +59,8 @@ public class ResourceBase {
     }
 
     /**
-     * Get the properties property: The asset property dictionary.
-     *
-     * @return the properties value.
-     */
-    public Map<String, String> properties() {
-        return this.properties;
-    }
-
-    /**
-     * Set the properties property: The asset property dictionary.
-     *
-     * @param properties the properties value to set.
-     * @return the ResourceBase object itself.
-     */
-    public ResourceBase withProperties(Map<String, String> properties) {
-        this.properties = properties;
-        return this;
-    }
-
-    /**
      * Get the tags property: Tag dictionary. Tags can be added, removed, and updated.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -87,7 +69,7 @@ public class ResourceBase {
 
     /**
      * Set the tags property: Tag dictionary. Tags can be added, removed, and updated.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the ResourceBase object itself.
      */
@@ -97,10 +79,74 @@ public class ResourceBase {
     }
 
     /**
+     * Get the properties property: The asset property dictionary.
+     * 
+     * @return the properties value.
+     */
+    public Map<String, String> properties() {
+        return this.properties;
+    }
+
+    /**
+     * Set the properties property: The asset property dictionary.
+     * 
+     * @param properties the properties value to set.
+     * @return the ResourceBase object itself.
+     */
+    public ResourceBase withProperties(Map<String, String> properties) {
+        this.properties = properties;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("properties", this.properties, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceBase from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceBase if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceBase.
+     */
+    public static ResourceBase fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceBase deserializedResourceBase = new ResourceBase();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedResourceBase.description = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedResourceBase.tags = tags;
+                } else if ("properties".equals(fieldName)) {
+                    Map<String, String> properties = reader.readMap(reader1 -> reader1.getString());
+                    deserializedResourceBase.properties = properties;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceBase;
+        });
     }
 }

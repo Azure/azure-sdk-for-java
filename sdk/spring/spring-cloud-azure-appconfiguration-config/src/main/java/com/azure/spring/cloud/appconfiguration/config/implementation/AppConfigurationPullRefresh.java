@@ -16,7 +16,6 @@ import com.azure.spring.cloud.appconfiguration.config.AppConfigurationRefresh;
 import com.azure.spring.cloud.appconfiguration.config.AppConfigurationStoreHealth;
 import com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationRefreshUtil.RefreshEventData;
 import com.azure.spring.cloud.appconfiguration.config.implementation.autofailover.ReplicaLookUp;
-import com.azure.spring.cloud.appconfiguration.config.implementation.http.policy.BaseAppConfigurationPolicy;
 
 import reactor.core.publisher.Mono;
 
@@ -39,6 +38,8 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh {
     private final Duration refreshInterval;
     
     private final ReplicaLookUp replicaLookUp;
+    
+    private final AppConfigurationRefreshUtil refreshUtils;
 
     /**
      * Component used for checking for and triggering configuration refreshes.
@@ -48,11 +49,12 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh {
      * @param defaultMinBackoff minimum time between backoff retries minimum backoff time
      */
     public AppConfigurationPullRefresh(AppConfigurationReplicaClientFactory clientFactory, Duration refreshInterval,
-        Long defaultMinBackoff, ReplicaLookUp replicaLookUp) {
+        Long defaultMinBackoff, ReplicaLookUp replicaLookUp, AppConfigurationRefreshUtil refreshUtils) {
         this.defaultMinBackoff = defaultMinBackoff;
         this.refreshInterval = refreshInterval;
         this.clientFactory = clientFactory;
         this.replicaLookUp = replicaLookUp;
+        this.refreshUtils = refreshUtils;
 
     }
 
@@ -70,6 +72,17 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh {
      */
     public Mono<Boolean> refreshConfigurations() {
         return Mono.just(refreshStores());
+    }
+    
+    /**
+     * Checks configurations to see if configurations should be reloaded. If the refresh interval has passed and a
+     * trigger has been updated configuration are reloaded.
+     *
+     * @return Mono with a boolean of if a RefreshEvent was published. If refreshConfigurations is currently being run
+     * elsewhere this method will return right away as <b>false</b>.
+     */
+    public void refreshAsync() {
+        new Thread(() -> refreshStores()).start();
     }
 
     /**
@@ -96,9 +109,8 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh {
      */
     private boolean refreshStores() {
         if (running.compareAndSet(false, true)) {
-            BaseAppConfigurationPolicy.setWatchRequests(true);
             try {
-                RefreshEventData eventData = AppConfigurationRefreshUtil.refreshStoresCheck(clientFactory,
+                RefreshEventData eventData = refreshUtils.refreshStoresCheck(clientFactory,
                     refreshInterval, defaultMinBackoff, replicaLookUp);
                 if (eventData.getDoRefresh()) {
                     publisher.publishEvent(new RefreshEvent(this, eventData, eventData.getMessage()));

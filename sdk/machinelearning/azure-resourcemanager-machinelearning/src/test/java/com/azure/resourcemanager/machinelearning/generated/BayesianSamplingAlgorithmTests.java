@@ -10,8 +10,8 @@ import com.azure.resourcemanager.machinelearning.models.BayesianSamplingAlgorith
 public final class BayesianSamplingAlgorithmTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BayesianSamplingAlgorithm model =
-            BinaryData.fromString("{\"samplingAlgorithmType\":\"Bayesian\"}").toObject(BayesianSamplingAlgorithm.class);
+        BayesianSamplingAlgorithm model = BinaryData.fromString("{\"samplingAlgorithmType\":\"Bayesian\"}")
+            .toObject(BayesianSamplingAlgorithm.class);
     }
 
     @org.junit.jupiter.api.Test

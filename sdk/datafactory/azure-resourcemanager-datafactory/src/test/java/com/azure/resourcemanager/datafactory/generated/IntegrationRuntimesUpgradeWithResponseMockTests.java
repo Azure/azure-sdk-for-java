@@ -28,7 +28,7 @@ public final class IntegrationRuntimesUpgradeWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.integrationRuntimes()
-            .upgradeWithResponse("wdcgdkwwulj", "euj", "sxrsxbofmvau", com.azure.core.util.Context.NONE);
+            .upgradeWithResponse("nglfcrtkpfsjwtq", "o", "eofjoqjmlzlki", com.azure.core.util.Context.NONE);
 
     }
 }

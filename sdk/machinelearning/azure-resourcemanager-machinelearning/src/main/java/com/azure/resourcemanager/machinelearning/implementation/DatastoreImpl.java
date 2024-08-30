@@ -66,24 +66,20 @@ public final class DatastoreImpl implements Datastore, Datastore.Definition, Dat
     }
 
     public Datastore create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDatastores()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, workspaceName, name, this.innerModel(), createSkipValidation, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDatastores()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, this.innerModel(), createSkipValidation,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public Datastore create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDatastores()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, workspaceName, name, this.innerModel(), createSkipValidation, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDatastores()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, this.innerModel(), createSkipValidation,
+                context)
+            .getValue();
         return this;
     }
 
@@ -100,53 +96,45 @@ public final class DatastoreImpl implements Datastore, Datastore.Definition, Dat
     }
 
     public Datastore apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDatastores()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, workspaceName, name, this.innerModel(), updateSkipValidation, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDatastores()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, this.innerModel(), updateSkipValidation,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public Datastore apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDatastores()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, workspaceName, name, this.innerModel(), updateSkipValidation, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDatastores()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, this.innerModel(), updateSkipValidation,
+                context)
+            .getValue();
         return this;
     }
 
-    DatastoreImpl(
-        DatastoreInner innerObject, com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
+    DatastoreImpl(DatastoreInner innerObject,
+        com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = Utils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.name = Utils.getValueFromIdByName(innerObject.id(), "datastores");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
+        this.name = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "datastores");
     }
 
     public Datastore refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDatastores()
-                .getWithResponse(resourceGroupName, workspaceName, name, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDatastores()
+            .getWithResponse(resourceGroupName, workspaceName, name, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Datastore refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDatastores()
-                .getWithResponse(resourceGroupName, workspaceName, name, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDatastores()
+            .getWithResponse(resourceGroupName, workspaceName, name, context)
+            .getValue();
         return this;
     }
 

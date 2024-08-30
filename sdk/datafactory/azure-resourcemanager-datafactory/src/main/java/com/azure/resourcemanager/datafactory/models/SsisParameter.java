@@ -5,83 +5,75 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Ssis parameter.
  */
 @Fluent
-public final class SsisParameter {
+public final class SsisParameter implements JsonSerializable<SsisParameter> {
     /*
      * Parameter id.
      */
-    @JsonProperty(value = "id")
     private Long id;
 
     /*
      * Parameter name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Parameter description.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Parameter type.
      */
-    @JsonProperty(value = "dataType")
     private String dataType;
 
     /*
      * Whether parameter is required.
      */
-    @JsonProperty(value = "required")
     private Boolean required;
 
     /*
      * Whether parameter is sensitive.
      */
-    @JsonProperty(value = "sensitive")
     private Boolean sensitive;
 
     /*
      * Design default value of parameter.
      */
-    @JsonProperty(value = "designDefaultValue")
     private String designDefaultValue;
 
     /*
      * Default value of parameter.
      */
-    @JsonProperty(value = "defaultValue")
     private String defaultValue;
 
     /*
      * Default sensitive value of parameter.
      */
-    @JsonProperty(value = "sensitiveDefaultValue")
     private String sensitiveDefaultValue;
 
     /*
      * Parameter value type.
      */
-    @JsonProperty(value = "valueType")
     private String valueType;
 
     /*
      * Parameter value set.
      */
-    @JsonProperty(value = "valueSet")
     private Boolean valueSet;
 
     /*
      * Parameter reference variable.
      */
-    @JsonProperty(value = "variable")
     private String variable;
 
     /**
@@ -336,5 +328,74 @@ public final class SsisParameter {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("id", this.id);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("dataType", this.dataType);
+        jsonWriter.writeBooleanField("required", this.required);
+        jsonWriter.writeBooleanField("sensitive", this.sensitive);
+        jsonWriter.writeStringField("designDefaultValue", this.designDefaultValue);
+        jsonWriter.writeStringField("defaultValue", this.defaultValue);
+        jsonWriter.writeStringField("sensitiveDefaultValue", this.sensitiveDefaultValue);
+        jsonWriter.writeStringField("valueType", this.valueType);
+        jsonWriter.writeBooleanField("valueSet", this.valueSet);
+        jsonWriter.writeStringField("variable", this.variable);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SsisParameter from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SsisParameter if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SsisParameter.
+     */
+    public static SsisParameter fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SsisParameter deserializedSsisParameter = new SsisParameter();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSsisParameter.id = reader.getNullable(JsonReader::getLong);
+                } else if ("name".equals(fieldName)) {
+                    deserializedSsisParameter.name = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedSsisParameter.description = reader.getString();
+                } else if ("dataType".equals(fieldName)) {
+                    deserializedSsisParameter.dataType = reader.getString();
+                } else if ("required".equals(fieldName)) {
+                    deserializedSsisParameter.required = reader.getNullable(JsonReader::getBoolean);
+                } else if ("sensitive".equals(fieldName)) {
+                    deserializedSsisParameter.sensitive = reader.getNullable(JsonReader::getBoolean);
+                } else if ("designDefaultValue".equals(fieldName)) {
+                    deserializedSsisParameter.designDefaultValue = reader.getString();
+                } else if ("defaultValue".equals(fieldName)) {
+                    deserializedSsisParameter.defaultValue = reader.getString();
+                } else if ("sensitiveDefaultValue".equals(fieldName)) {
+                    deserializedSsisParameter.sensitiveDefaultValue = reader.getString();
+                } else if ("valueType".equals(fieldName)) {
+                    deserializedSsisParameter.valueType = reader.getString();
+                } else if ("valueSet".equals(fieldName)) {
+                    deserializedSsisParameter.valueSet = reader.getNullable(JsonReader::getBoolean);
+                } else if ("variable".equals(fieldName)) {
+                    deserializedSsisParameter.variable = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSsisParameter;
+        });
     }
 }

@@ -29,7 +29,7 @@ public final class VolumesRevertMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.volumes()
-            .revert("llibphbqzmizak", "kan", "jpdn", "zhajoylhjlmuo", new VolumeRevert().withSnapshotId("primr"),
+            .revert("uufuz", "oyjathwtzol", "a", "mwmdxmebwjscjpa", new VolumeRevert().withSnapshotId("xveabf"),
                 com.azure.core.util.Context.NONE);
 
     }

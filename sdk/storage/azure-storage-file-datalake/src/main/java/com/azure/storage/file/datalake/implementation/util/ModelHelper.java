@@ -8,6 +8,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.file.datalake.implementation.models.DataLakeStorageExceptionInternal;
 import com.azure.storage.file.datalake.implementation.models.PathExpiryOptions;
 import com.azure.storage.file.datalake.implementation.models.PathResourceType;
 import com.azure.storage.file.datalake.models.DataLakeAclChangeFailedException;
@@ -21,7 +22,7 @@ import java.util.Objects;
 
 /**
  * This class provides helper methods for common model patterns.
- *
+ * <p>
  * RESERVED FOR INTERNAL USE.
  */
 public class ModelHelper {
@@ -183,5 +184,20 @@ public class ModelHelper {
         } else {
             return null;
         }
+    }
+
+    /**
+     * Maps the internal exception to a public exception, if and only if {@code internal} is an instance of
+     * {@link DataLakeStorageExceptionInternal} and it will be mapped to {@link DataLakeStorageException}.
+     * <p>
+     * The internal exception is required as the public exception was created using Object as the exception value. This
+     * was incorrect and should have been a specific type that was XML deserializable. So, an internal exception was
+     * added to handle this and we map that to the public exception, keeping the API the same.
+     *
+     * @param internal The internal exception.
+     * @return The public exception.
+     */
+    public static DataLakeStorageException mapToDataLakeStorageException(DataLakeStorageExceptionInternal internal) {
+        return new DataLakeStorageException(internal.getMessage(), internal.getResponse(), internal.getValue());
     }
 }

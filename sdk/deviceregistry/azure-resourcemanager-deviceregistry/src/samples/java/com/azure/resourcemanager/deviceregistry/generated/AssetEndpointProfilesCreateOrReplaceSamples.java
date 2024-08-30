@@ -16,9 +16,7 @@ import java.util.Map;
  */
 public final class AssetEndpointProfilesCreateOrReplaceSamples {
     /*
-     * x-ms-original-file:
-     * specification/deviceregistry/DeviceRegistry.Management/examples/2023-11-01-preview/Create_AssetEndpointProfile.
-     * json
+     * x-ms-original-file: 2023-11-01-preview/Create_AssetEndpointProfile.json
      */
     /**
      * Sample code: Create_AssetEndpointProfile.

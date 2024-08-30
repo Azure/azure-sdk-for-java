@@ -4,19 +4,23 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-/** Samples for EnvironmentVersions Get. */
+/**
+ * Samples for EnvironmentVersions Get.
+ */
 public final class EnvironmentVersionsGetSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/EnvironmentVersion/get.json
+     * x-ms-original-file:
+     * specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/
+     * examples/Workspace/EnvironmentVersion/get.json
      */
     /**
-     * Sample code: Get Environment Version.
-     *
+     * Sample code: Get Workspace Environment Version.
+     * 
      * @param manager Entry point to MachineLearningManager.
      */
-    public static void getEnvironmentVersion(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager
-            .environmentVersions()
+    public static void
+        getWorkspaceEnvironmentVersion(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
+        manager.environmentVersions()
             .getWithResponse("test-rg", "my-aml-workspace", "string", "string", com.azure.core.util.Context.NONE);
     }
 }

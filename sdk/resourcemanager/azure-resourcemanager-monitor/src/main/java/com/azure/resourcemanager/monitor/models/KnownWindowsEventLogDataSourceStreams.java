@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -39,7 +38,6 @@ public final class KnownWindowsEventLogDataSourceStreams
      * @param name a name to look for.
      * @return the corresponding KnownWindowsEventLogDataSourceStreams.
      */
-    @JsonCreator
     public static KnownWindowsEventLogDataSourceStreams fromString(String name) {
         return fromString(name, KnownWindowsEventLogDataSourceStreams.class);
     }

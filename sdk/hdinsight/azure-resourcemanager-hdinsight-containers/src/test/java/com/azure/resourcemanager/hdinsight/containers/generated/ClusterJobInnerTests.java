@@ -12,7 +12,7 @@ public final class ClusterJobInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterJobInner model = BinaryData.fromString(
-            "{\"properties\":{\"jobType\":\"ClusterJobProperties\"},\"id\":\"washr\",\"name\":\"dtkcnqxwbpokulp\",\"type\":\"ujw\"}")
+            "{\"properties\":{\"jobType\":\"ClusterJobProperties\"},\"id\":\"wib\",\"name\":\"rcdlbhshfwpr\",\"type\":\"cstwity\"}")
             .toObject(ClusterJobInner.class);
     }
 

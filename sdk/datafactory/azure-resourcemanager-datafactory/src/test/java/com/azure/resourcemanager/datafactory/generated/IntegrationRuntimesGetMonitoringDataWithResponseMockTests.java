@@ -21,7 +21,7 @@ public final class IntegrationRuntimesGetMonitoringDataWithResponseMockTests {
     @Test
     public void testGetMonitoringDataWithResponse() throws Exception {
         String responseStr
-            = "{\"name\":\"nisinpkcww\",\"nodes\":[{\"nodeName\":\"b\",\"availableMemoryInMB\":26795964,\"cpuUtilization\":2078169809,\"concurrentJobsLimit\":1586982490,\"concurrentJobsRunning\":597607505,\"maxConcurrentJobs\":1140443642,\"sentBytes\":0.19900799,\"receivedBytes\":92.48324,\"\":{\"zxotwralnl\":\"datauptnhuybtmtokohy\",\"sarfmjschcxud\":\"datazlnrellwfgyabg\",\"qlltoiud\":\"dataomhhsumzfvrak\",\"bsbhaqsu\":\"dataeoibehrholjjxi\"}}]}";
+            = "{\"name\":\"uwbrwoyqty\",\"nodes\":[{\"nodeName\":\"ccumk\",\"availableMemoryInMB\":728800792,\"cpuUtilization\":436941349,\"concurrentJobsLimit\":1852688001,\"concurrentJobsRunning\":2013623616,\"maxConcurrentJobs\":1911258771,\"sentBytes\":4.5306683,\"receivedBytes\":32.07864,\"\":{\"lrfqst\":\"datarbotzvrgoxpayjs\",\"qmlnefvbeyugggf\":\"dataf\",\"aevrkxyjsuappdm\":\"datahntykenmjznjqrxy\",\"syoybjtzdgzt\":\"datajiguusbw\"}},{\"nodeName\":\"qiilfovmcjchbof\",\"availableMemoryInMB\":626803302,\"cpuUtilization\":1317203532,\"concurrentJobsLimit\":867009902,\"concurrentJobsRunning\":299777437,\"maxConcurrentJobs\":1143361378,\"sentBytes\":26.287401,\"receivedBytes\":81.01534,\"\":{\"rcjgkauyzbrd\":\"dataeznkrer\",\"gxqsbwepduyqxv\":\"databdb\",\"yftwdprtpxwgtt\":\"dataxarddbnqyayl\"}},{\"nodeName\":\"bjihz\",\"availableMemoryInMB\":1190147943,\"cpuUtilization\":765252755,\"concurrentJobsLimit\":832580974,\"concurrentJobsRunning\":1491820891,\"maxConcurrentJobs\":2117066441,\"sentBytes\":27.401001,\"receivedBytes\":71.859505,\"\":{\"lqnoeyfufleioyw\":\"datazwstytexueugq\",\"kt\":\"dataclhbytshsat\",\"yzjq\":\"datawqljnuayp\"}},{\"nodeName\":\"qajipnpwom\",\"availableMemoryInMB\":1489726911,\"cpuUtilization\":1683883253,\"concurrentJobsLimit\":508436125,\"concurrentJobsRunning\":961704290,\"maxConcurrentJobs\":2081574756,\"sentBytes\":69.46848,\"receivedBytes\":39.533035,\"\":{\"nw\":\"datadnp\",\"lwoozlfliiru\":\"dataqag\"}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class IntegrationRuntimesGetMonitoringDataWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         IntegrationRuntimeMonitoringData response = manager.integrationRuntimes()
-            .getMonitoringDataWithResponse("yuukhssretugorc", "kcsevq", "dwktogmcblwh",
+            .getMonitoringDataWithResponse("imnfvqaqtzo", "ulwdhjb", "hflbchzoboeeiakw",
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("nisinpkcww", response.name());
+        Assertions.assertEquals("uwbrwoyqty", response.name());
     }
 }

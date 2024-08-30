@@ -32,6 +32,13 @@ def get_args():
         help='Which major version of Spring Boot to use. The default is ' + SPRING_BOOT_MAJOR_3_VERSION_NAME + '.'
     )
     parser.add_argument('-mcp', '--matrix-config-path', type=str, default='sdk/spring/pipeline/supported-version-matrix.json')
+    parser.add_argument(
+        '--use-the-latest-version',
+        type=str,
+        choices=['yes', 'no'],
+        default=None,
+        help='If true only use the latest Spring version, otherwise out the end of life versions. Default value is None then use all compatibility versions.'
+    )
     return parser.parse_args()
 
 
@@ -40,15 +47,28 @@ def change_to_repo_root_dir():
     os.chdir('../../..')
 
 
-def update_supported_version_matrix_json_file(filepath, suppoerted_spring_boot_version):
+def update_supported_version_matrix_json_file(filepath, suppoerted_spring_boot_version, use_the_latest_version):
     names = {}
-    for boot_version in suppoerted_spring_boot_version:
+    target_versions = suppoerted_spring_boot_version
+    if use_the_latest_version is not None:
+        if use_the_latest_version == 'yes':
+            target_versions = suppoerted_spring_boot_version[0:1]
+        else:
+            target_versions = suppoerted_spring_boot_version[1:]
+    for boot_version in target_versions:
         cloud_version = get_spring_cloud_version(boot_version)
         names[boot_version] = "SpringBoot" + boot_version.replace(".", "_") + "_Cloud" + cloud_version.replace(".", "_")
     with open(filepath, 'r') as file:
         data = json.load(file)
         data['displayNames'].update(names)
-        data['matrix']['SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION'] = suppoerted_spring_boot_version
+        data['matrix']['SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION'] = target_versions
+        if use_the_latest_version is not None and use_the_latest_version == 'no':
+            data['matrix']['Agent'] = {
+                "ubuntu-20.04": {
+                    "OSVmImage": "env:LINUXVMIMAGE",
+                    "Pool": "env:LINUXPOOL"
+                }
+            }
     with open(filepath, 'w') as file:
         json.dump(data, file, indent=2)
 
@@ -86,7 +106,7 @@ def main():
     log.debug('Current working directory = {}.'.format(os.getcwd()))
     supported_spring_boot_version = get_supported_spring_boot_version(
         get_args().target_version_prefix, get_args().non_target_version_prefix_list)
-    update_supported_version_matrix_json_file(get_args().matrix_config_path, supported_spring_boot_version)
+    update_supported_version_matrix_json_file(get_args().matrix_config_path, supported_spring_boot_version, get_args().use_the_latest_version)
     elapsed_time = time.time() - start_time
     log.info('elapsed_time = {}'.format(elapsed_time))
 

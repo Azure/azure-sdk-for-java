@@ -5,37 +5,37 @@
 package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Trino user telemetry definition.
  */
 @Fluent
-public final class TrinoTelemetryConfig {
+public final class TrinoTelemetryConfig implements JsonSerializable<TrinoTelemetryConfig> {
     /*
      * Hive Catalog name used to mount external tables on the logs written by trino, if not specified there tables are
      * not created.
      */
-    @JsonProperty(value = "hivecatalogName")
     private String hivecatalogName;
 
     /*
      * Schema of the above catalog to use, to mount query logs as external tables, if not specified tables will be
      * mounted under schema trinologs.
      */
-    @JsonProperty(value = "hivecatalogSchema")
     private String hivecatalogSchema;
 
     /*
      * Retention period for query log table partitions, this doesn't have any affect on actual data.
      */
-    @JsonProperty(value = "partitionRetentionInDays")
     private Integer partitionRetentionInDays;
 
     /*
      * Azure storage location of the blobs.
      */
-    @JsonProperty(value = "path")
     private String path;
 
     /**
@@ -89,8 +89,8 @@ public final class TrinoTelemetryConfig {
     }
 
     /**
-     * Get the partitionRetentionInDays property: Retention period for query log table partitions, this doesn't have
-     * any affect on actual data.
+     * Get the partitionRetentionInDays property: Retention period for query log table partitions, this doesn't have any
+     * affect on actual data.
      * 
      * @return the partitionRetentionInDays value.
      */
@@ -99,8 +99,8 @@ public final class TrinoTelemetryConfig {
     }
 
     /**
-     * Set the partitionRetentionInDays property: Retention period for query log table partitions, this doesn't have
-     * any affect on actual data.
+     * Set the partitionRetentionInDays property: Retention period for query log table partitions, this doesn't have any
+     * affect on actual data.
      * 
      * @param partitionRetentionInDays the partitionRetentionInDays value to set.
      * @return the TrinoTelemetryConfig object itself.
@@ -136,5 +136,50 @@ public final class TrinoTelemetryConfig {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("hivecatalogName", this.hivecatalogName);
+        jsonWriter.writeStringField("hivecatalogSchema", this.hivecatalogSchema);
+        jsonWriter.writeNumberField("partitionRetentionInDays", this.partitionRetentionInDays);
+        jsonWriter.writeStringField("path", this.path);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TrinoTelemetryConfig from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TrinoTelemetryConfig if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TrinoTelemetryConfig.
+     */
+    public static TrinoTelemetryConfig fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TrinoTelemetryConfig deserializedTrinoTelemetryConfig = new TrinoTelemetryConfig();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("hivecatalogName".equals(fieldName)) {
+                    deserializedTrinoTelemetryConfig.hivecatalogName = reader.getString();
+                } else if ("hivecatalogSchema".equals(fieldName)) {
+                    deserializedTrinoTelemetryConfig.hivecatalogSchema = reader.getString();
+                } else if ("partitionRetentionInDays".equals(fieldName)) {
+                    deserializedTrinoTelemetryConfig.partitionRetentionInDays = reader.getNullable(JsonReader::getInt);
+                } else if ("path".equals(fieldName)) {
+                    deserializedTrinoTelemetryConfig.path = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTrinoTelemetryConfig;
+        });
     }
 }

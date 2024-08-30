@@ -14,11 +14,13 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.hdinsight.fluent.models.ApplicationInner;
 import com.azure.resourcemanager.hdinsight.fluent.models.AsyncOperationResultInner;
 
-/** An instance of this class provides access to all the operations defined in ApplicationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ApplicationsClient.
+ */
 public interface ApplicationsClient {
     /**
      * Lists all of the applications for the HDInsight cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -31,7 +33,7 @@ public interface ApplicationsClient {
 
     /**
      * Lists all of the applications for the HDInsight cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
@@ -45,7 +47,7 @@ public interface ApplicationsClient {
 
     /**
      * Gets properties of the specified application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param applicationName The constant value for the application name.
@@ -56,12 +58,12 @@ public interface ApplicationsClient {
      * @return properties of the specified application along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApplicationInner> getWithResponse(
-        String resourceGroupName, String clusterName, String applicationName, Context context);
+    Response<ApplicationInner> getWithResponse(String resourceGroupName, String clusterName, String applicationName,
+        Context context);
 
     /**
      * Gets properties of the specified application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param applicationName The constant value for the application name.
@@ -75,7 +77,7 @@ public interface ApplicationsClient {
 
     /**
      * Creates applications for the HDInsight cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param applicationName The constant value for the application name.
@@ -86,12 +88,12 @@ public interface ApplicationsClient {
      * @return the {@link SyncPoller} for polling of the HDInsight cluster application.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ApplicationInner>, ApplicationInner> beginCreate(
-        String resourceGroupName, String clusterName, String applicationName, ApplicationInner parameters);
+    SyncPoller<PollResult<ApplicationInner>, ApplicationInner> beginCreate(String resourceGroupName, String clusterName,
+        String applicationName, ApplicationInner parameters);
 
     /**
      * Creates applications for the HDInsight cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param applicationName The constant value for the application name.
@@ -103,16 +105,12 @@ public interface ApplicationsClient {
      * @return the {@link SyncPoller} for polling of the HDInsight cluster application.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ApplicationInner>, ApplicationInner> beginCreate(
-        String resourceGroupName,
-        String clusterName,
-        String applicationName,
-        ApplicationInner parameters,
-        Context context);
+    SyncPoller<PollResult<ApplicationInner>, ApplicationInner> beginCreate(String resourceGroupName, String clusterName,
+        String applicationName, ApplicationInner parameters, Context context);
 
     /**
      * Creates applications for the HDInsight cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param applicationName The constant value for the application name.
@@ -123,12 +121,12 @@ public interface ApplicationsClient {
      * @return the HDInsight cluster application.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApplicationInner create(
-        String resourceGroupName, String clusterName, String applicationName, ApplicationInner parameters);
+    ApplicationInner create(String resourceGroupName, String clusterName, String applicationName,
+        ApplicationInner parameters);
 
     /**
      * Creates applications for the HDInsight cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param applicationName The constant value for the application name.
@@ -140,16 +138,12 @@ public interface ApplicationsClient {
      * @return the HDInsight cluster application.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApplicationInner create(
-        String resourceGroupName,
-        String clusterName,
-        String applicationName,
-        ApplicationInner parameters,
-        Context context);
+    ApplicationInner create(String resourceGroupName, String clusterName, String applicationName,
+        ApplicationInner parameters, Context context);
 
     /**
      * Deletes the specified application on the HDInsight cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param applicationName The constant value for the application name.
@@ -159,12 +153,12 @@ public interface ApplicationsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String clusterName, String applicationName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
+        String applicationName);
 
     /**
      * Deletes the specified application on the HDInsight cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param applicationName The constant value for the application name.
@@ -175,12 +169,12 @@ public interface ApplicationsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String clusterName, String applicationName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName, String applicationName,
+        Context context);
 
     /**
      * Deletes the specified application on the HDInsight cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param applicationName The constant value for the application name.
@@ -193,7 +187,7 @@ public interface ApplicationsClient {
 
     /**
      * Deletes the specified application on the HDInsight cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param applicationName The constant value for the application name.
@@ -207,7 +201,7 @@ public interface ApplicationsClient {
 
     /**
      * Gets the async operation status.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param applicationName The constant value for the application name.
@@ -219,12 +213,12 @@ public interface ApplicationsClient {
      * @return the async operation status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AsyncOperationResultInner> getAzureAsyncOperationStatusWithResponse(
-        String resourceGroupName, String clusterName, String applicationName, String operationId, Context context);
+    Response<AsyncOperationResultInner> getAzureAsyncOperationStatusWithResponse(String resourceGroupName,
+        String clusterName, String applicationName, String operationId, Context context);
 
     /**
      * Gets the async operation status.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param applicationName The constant value for the application name.
@@ -235,6 +229,6 @@ public interface ApplicationsClient {
      * @return the async operation status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AsyncOperationResultInner getAzureAsyncOperationStatus(
-        String resourceGroupName, String clusterName, String applicationName, String operationId);
+    AsyncOperationResultInner getAzureAsyncOperationStatus(String resourceGroupName, String clusterName,
+        String applicationName, String operationId);
 }

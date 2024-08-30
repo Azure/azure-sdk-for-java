@@ -83,8 +83,7 @@ public final class MetricsQueryAsyncClient {
     private final MetricsDefinitionsClientImpl metricsDefinitionsClient;
 
     MetricsQueryAsyncClient(MonitorManagementClientImpl metricsClient,
-                            MetricsNamespacesClientImpl metricsNamespaceClient,
-                            MetricsDefinitionsClientImpl metricsDefinitionsClients) {
+        MetricsNamespacesClientImpl metricsNamespaceClient, MetricsDefinitionsClientImpl metricsDefinitionsClients) {
         this.metricsClient = metricsClient;
         this.metricsNamespaceClient = metricsNamespaceClient;
         this.metricsDefinitionsClient = metricsDefinitionsClients;
@@ -131,7 +130,7 @@ public final class MetricsQueryAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MetricsQueryResult>> queryResourceWithResponse(String resourceUri, List<String> metricsNames,
-                                                                        MetricsQueryOptions options) {
+        MetricsQueryOptions options) {
         return withContext(context -> queryResourceWithResponse(resourceUri, metricsNames, options, context));
     }
 
@@ -144,10 +143,9 @@ public final class MetricsQueryAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     @SuppressWarnings("deprecation")
     public PagedFlux<MetricNamespace> listMetricNamespaces(String resourceUri, OffsetDateTime startTime) {
-        return metricsNamespaceClient
-                .getMetricNamespaces()
-                .listAsync(resourceUri, startTime == null ? null : startTime.toString())
-                .mapPage(MetricsHelper::mapMetricNamespace);
+        return metricsNamespaceClient.getMetricNamespaces()
+            .listAsync(resourceUri, startTime == null ? null : startTime.toString())
+            .mapPage(MetricsHelper::mapMetricNamespace);
     }
 
     /**
@@ -169,51 +167,43 @@ public final class MetricsQueryAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     @SuppressWarnings("deprecation")
     public PagedFlux<MetricDefinition> listMetricDefinitions(String resourceUri, String metricsNamespace) {
-        return metricsDefinitionsClient
-                .getMetricDefinitions()
-                .listAsync(resourceUri, metricsNamespace)
-                .mapPage(MetricsHelper::mapToMetricDefinition);
+        return metricsDefinitionsClient.getMetricDefinitions()
+            .listAsync(resourceUri, metricsNamespace)
+            .mapPage(MetricsHelper::mapToMetricDefinition);
     }
-
 
     @SuppressWarnings("deprecation")
     PagedFlux<MetricNamespace> listMetricNamespaces(String resourceUri, OffsetDateTime startTime, Context context) {
-        return metricsNamespaceClient
-                .getMetricNamespaces()
-                .listAsync(resourceUri, startTime == null ? null : startTime.toString(), context)
-                .mapPage(MetricsHelper::mapMetricNamespace);
+        return metricsNamespaceClient.getMetricNamespaces()
+            .listAsync(resourceUri, startTime == null ? null : startTime.toString(), context)
+            .mapPage(MetricsHelper::mapMetricNamespace);
     }
-
-
 
     @SuppressWarnings("deprecation")
     PagedFlux<MetricDefinition> listMetricDefinitions(String resourceUri, String metricsNamespace, Context context) {
         return metricsDefinitionsClient.getMetricDefinitions()
-                .listAsync(resourceUri, metricsNamespace, context)
-                .mapPage(MetricsHelper::mapToMetricDefinition);
+            .listAsync(resourceUri, metricsNamespace, context)
+            .mapPage(MetricsHelper::mapToMetricDefinition);
     }
 
     Mono<Response<MetricsQueryResult>> queryResourceWithResponse(String resourceUri, List<String> metricsNames,
-                                                                 MetricsQueryOptions options, Context context) {
+        MetricsQueryOptions options, Context context) {
         String aggregation = null;
         if (!CoreUtils.isNullOrEmpty(options.getAggregations())) {
-            aggregation = options.getAggregations()
-                    .stream()
-                    .map(type -> type.toString())
-                    .collect(Collectors.joining(","));
+            aggregation
+                = options.getAggregations().stream().map(type -> type.toString()).collect(Collectors.joining(","));
         }
-        String timespan = options.getTimeInterval() == null ? null
-                : LogsQueryHelper.toIso8601Format(options.getTimeInterval());
-        return metricsClient
-                .getMetrics()
-                .listWithResponseAsync(resourceUri, timespan, options.getGranularity(),
-                        String.join(",", metricsNames), aggregation, options.getTop(), options.getOrderBy(),
-                        options.getFilter(), ResultType.DATA, options.getMetricNamespace(), null, null, null, context)
-                .map(response -> convertToMetricsQueryResult(response))
-                .onErrorMap(ErrorResponseException.class, ex -> {
-                    return new HttpResponseException(ex.getMessage(), ex.getResponse(),
-                            new ResponseError(ex.getValue().getCode(), ex.getValue().getMessage()));
-                });
+        String timespan
+            = options.getTimeInterval() == null ? null : LogsQueryHelper.toIso8601Format(options.getTimeInterval());
+        return metricsClient.getMetrics()
+            .listWithResponseAsync(resourceUri, timespan, options.getGranularity(), String.join(",", metricsNames),
+                aggregation, options.getTop(), options.getOrderBy(), options.getFilter(), ResultType.DATA,
+                options.getMetricNamespace(), null, null, null, context)
+            .map(response -> convertToMetricsQueryResult(response))
+            .onErrorMap(ErrorResponseException.class, ex -> {
+                return new HttpResponseException(ex.getMessage(), ex.getResponse(),
+                    new ResponseError(ex.getValue().getCode(), ex.getValue().getMessage()));
+            });
     }
 
 }

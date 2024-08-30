@@ -105,13 +105,6 @@ public final class ChatChoice implements JsonSerializable<ChatChoice> {
     }
 
     /*
-     * The reason the model stopped generating tokens, together with any applicable details.
-     * This structured representation replaces 'finish_reason' for some models.
-     */
-    @Generated
-    private ChatFinishDetails finishDetails;
-
-    /*
      * Represents the output results of Azure OpenAI enhancements to chat completions, as configured via the matching
      * input
      * provided in the request. This supplementary information is only available when using Azure OpenAI and only when
@@ -120,18 +113,6 @@ public final class ChatChoice implements JsonSerializable<ChatChoice> {
      */
     @Generated
     private AzureChatEnhancements enhancements;
-
-    /**
-     * Get the finishDetails property: The reason the model stopped generating tokens, together with any applicable
-     * details.
-     * This structured representation replaces 'finish_reason' for some models.
-     *
-     * @return the finishDetails value.
-     */
-    @Generated
-    public ChatFinishDetails getFinishDetails() {
-        return this.finishDetails;
-    }
 
     /**
      * Get the enhancements property: Represents the output results of Azure OpenAI enhancements to chat completions, as
@@ -189,7 +170,6 @@ public final class ChatChoice implements JsonSerializable<ChatChoice> {
         jsonWriter.writeIntField("index", this.index);
         jsonWriter.writeStringField("finish_reason", this.finishReason == null ? null : this.finishReason.toString());
         jsonWriter.writeJsonField("message", this.message);
-        jsonWriter.writeJsonField("finish_details", this.finishDetails);
         jsonWriter.writeJsonField("delta", this.delta);
         jsonWriter.writeJsonField("content_filter_results", this.contentFilterResults);
         jsonWriter.writeJsonField("enhancements", this.enhancements);
@@ -212,7 +192,6 @@ public final class ChatChoice implements JsonSerializable<ChatChoice> {
             int index = 0;
             CompletionsFinishReason finishReason = null;
             ChatResponseMessage message = null;
-            ChatFinishDetails finishDetails = null;
             ChatResponseMessage delta = null;
             ContentFilterResultsForChoice contentFilterResults = null;
             AzureChatEnhancements enhancements = null;
@@ -227,8 +206,6 @@ public final class ChatChoice implements JsonSerializable<ChatChoice> {
                     finishReason = CompletionsFinishReason.fromString(reader.getString());
                 } else if ("message".equals(fieldName)) {
                     message = ChatResponseMessage.fromJson(reader);
-                } else if ("finish_details".equals(fieldName)) {
-                    finishDetails = ChatFinishDetails.fromJson(reader);
                 } else if ("delta".equals(fieldName)) {
                     delta = ChatResponseMessage.fromJson(reader);
                 } else if ("content_filter_results".equals(fieldName)) {
@@ -241,7 +218,6 @@ public final class ChatChoice implements JsonSerializable<ChatChoice> {
             }
             ChatChoice deserializedChatChoice = new ChatChoice(logprobs, index, finishReason);
             deserializedChatChoice.message = message;
-            deserializedChatChoice.finishDetails = finishDetails;
             deserializedChatChoice.delta = delta;
             deserializedChatChoice.contentFilterResults = contentFilterResults;
             deserializedChatChoice.enhancements = enhancements;

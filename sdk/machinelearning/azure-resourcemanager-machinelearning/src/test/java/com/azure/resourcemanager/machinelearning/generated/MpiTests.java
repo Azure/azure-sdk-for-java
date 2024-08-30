@@ -11,17 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class MpiTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Mpi model =
-            BinaryData
-                .fromString("{\"distributionType\":\"Mpi\",\"processCountPerInstance\":589201934}")
-                .toObject(Mpi.class);
-        Assertions.assertEquals(589201934, model.processCountPerInstance());
+        Mpi model = BinaryData.fromString("{\"distributionType\":\"Mpi\",\"processCountPerInstance\":2025598947}")
+            .toObject(Mpi.class);
+        Assertions.assertEquals(2025598947, model.processCountPerInstance());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Mpi model = new Mpi().withProcessCountPerInstance(589201934);
+        Mpi model = new Mpi().withProcessCountPerInstance(2025598947);
         model = BinaryData.fromObject(model).toObject(Mpi.class);
-        Assertions.assertEquals(589201934, model.processCountPerInstance());
+        Assertions.assertEquals(2025598947, model.processCountPerInstance());
     }
 }

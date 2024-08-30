@@ -17,50 +17,47 @@ public final class LoadBasedConfigTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LoadBasedConfig model = BinaryData.fromString(
-            "{\"minNodes\":1358628547,\"maxNodes\":113016072,\"pollInterval\":393084907,\"cooldownPeriod\":1346758763,\"scalingRules\":[{\"actionType\":\"scaledown\",\"evaluationCount\":2142840160,\"scalingMetric\":\"fkts\",\"comparisonRule\":{\"operator\":\"greaterThanOrEqual\",\"threshold\":94.88104}},{\"actionType\":\"scaleup\",\"evaluationCount\":801364840,\"scalingMetric\":\"ocmnyyazttbtwwrq\",\"comparisonRule\":{\"operator\":\"greaterThanOrEqual\",\"threshold\":92.70088}},{\"actionType\":\"scaledown\",\"evaluationCount\":1640743814,\"scalingMetric\":\"kzywbiex\",\"comparisonRule\":{\"operator\":\"greaterThan\",\"threshold\":78.08101}},{\"actionType\":\"scaledown\",\"evaluationCount\":315634017,\"scalingMetric\":\"eaxib\",\"comparisonRule\":{\"operator\":\"greaterThan\",\"threshold\":67.12364}}]}")
+            "{\"minNodes\":385457826,\"maxNodes\":395045632,\"pollInterval\":1463995661,\"cooldownPeriod\":2026519653,\"scalingRules\":[{\"actionType\":\"scaledown\",\"evaluationCount\":948183907,\"scalingMetric\":\"rvnaenqpeh\",\"comparisonRule\":{\"operator\":\"lessThanOrEqual\",\"threshold\":15.866309}},{\"actionType\":\"scaleup\",\"evaluationCount\":895776000,\"scalingMetric\":\"gmifthnzd\",\"comparisonRule\":{\"operator\":\"lessThanOrEqual\",\"threshold\":6.8623724}}]}")
             .toObject(LoadBasedConfig.class);
-        Assertions.assertEquals(1358628547, model.minNodes());
-        Assertions.assertEquals(113016072, model.maxNodes());
-        Assertions.assertEquals(393084907, model.pollInterval());
-        Assertions.assertEquals(1346758763, model.cooldownPeriod());
+        Assertions.assertEquals(385457826, model.minNodes());
+        Assertions.assertEquals(395045632, model.maxNodes());
+        Assertions.assertEquals(1463995661, model.pollInterval());
+        Assertions.assertEquals(2026519653, model.cooldownPeriod());
         Assertions.assertEquals(ScaleActionType.SCALEDOWN, model.scalingRules().get(0).actionType());
-        Assertions.assertEquals(2142840160, model.scalingRules().get(0).evaluationCount());
-        Assertions.assertEquals("fkts", model.scalingRules().get(0).scalingMetric());
-        Assertions.assertEquals(ComparisonOperator.GREATER_THAN_OR_EQUAL,
+        Assertions.assertEquals(948183907, model.scalingRules().get(0).evaluationCount());
+        Assertions.assertEquals("rvnaenqpeh", model.scalingRules().get(0).scalingMetric());
+        Assertions.assertEquals(ComparisonOperator.LESS_THAN_OR_EQUAL,
             model.scalingRules().get(0).comparisonRule().operator());
-        Assertions.assertEquals(94.88104f, model.scalingRules().get(0).comparisonRule().threshold());
+        Assertions.assertEquals(15.866309f, model.scalingRules().get(0).comparisonRule().threshold());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LoadBasedConfig model
-            = new LoadBasedConfig().withMinNodes(1358628547).withMaxNodes(113016072).withPollInterval(393084907)
-                .withCooldownPeriod(1346758763).withScalingRules(
-                    Arrays.asList(
-                        new ScalingRule().withActionType(ScaleActionType.SCALEDOWN).withEvaluationCount(2142840160)
-                            .withScalingMetric("fkts")
-                            .withComparisonRule(new ComparisonRule()
-                                .withOperator(ComparisonOperator.GREATER_THAN_OR_EQUAL).withThreshold(94.88104f)),
-                        new ScalingRule().withActionType(ScaleActionType.SCALEUP).withEvaluationCount(801364840)
-                            .withScalingMetric("ocmnyyazttbtwwrq").withComparisonRule(new ComparisonRule()
-                                .withOperator(ComparisonOperator.GREATER_THAN_OR_EQUAL).withThreshold(92.70088f)),
-                        new ScalingRule().withActionType(ScaleActionType.SCALEDOWN).withEvaluationCount(1640743814)
-                            .withScalingMetric("kzywbiex")
-                            .withComparisonRule(new ComparisonRule().withOperator(ComparisonOperator.GREATER_THAN)
-                                .withThreshold(78.08101f)),
-                        new ScalingRule().withActionType(ScaleActionType.SCALEDOWN).withEvaluationCount(315634017)
-                            .withScalingMetric("eaxib").withComparisonRule(new ComparisonRule()
-                                .withOperator(ComparisonOperator.GREATER_THAN).withThreshold(67.12364f))));
+        LoadBasedConfig model = new LoadBasedConfig().withMinNodes(385457826)
+            .withMaxNodes(395045632)
+            .withPollInterval(1463995661)
+            .withCooldownPeriod(2026519653)
+            .withScalingRules(Arrays.asList(
+                new ScalingRule().withActionType(ScaleActionType.SCALEDOWN)
+                    .withEvaluationCount(948183907)
+                    .withScalingMetric("rvnaenqpeh")
+                    .withComparisonRule(new ComparisonRule().withOperator(ComparisonOperator.LESS_THAN_OR_EQUAL)
+                        .withThreshold(15.866309f)),
+                new ScalingRule().withActionType(ScaleActionType.SCALEUP)
+                    .withEvaluationCount(895776000)
+                    .withScalingMetric("gmifthnzd")
+                    .withComparisonRule(new ComparisonRule().withOperator(ComparisonOperator.LESS_THAN_OR_EQUAL)
+                        .withThreshold(6.8623724f))));
         model = BinaryData.fromObject(model).toObject(LoadBasedConfig.class);
-        Assertions.assertEquals(1358628547, model.minNodes());
-        Assertions.assertEquals(113016072, model.maxNodes());
-        Assertions.assertEquals(393084907, model.pollInterval());
-        Assertions.assertEquals(1346758763, model.cooldownPeriod());
+        Assertions.assertEquals(385457826, model.minNodes());
+        Assertions.assertEquals(395045632, model.maxNodes());
+        Assertions.assertEquals(1463995661, model.pollInterval());
+        Assertions.assertEquals(2026519653, model.cooldownPeriod());
         Assertions.assertEquals(ScaleActionType.SCALEDOWN, model.scalingRules().get(0).actionType());
-        Assertions.assertEquals(2142840160, model.scalingRules().get(0).evaluationCount());
-        Assertions.assertEquals("fkts", model.scalingRules().get(0).scalingMetric());
-        Assertions.assertEquals(ComparisonOperator.GREATER_THAN_OR_EQUAL,
+        Assertions.assertEquals(948183907, model.scalingRules().get(0).evaluationCount());
+        Assertions.assertEquals("rvnaenqpeh", model.scalingRules().get(0).scalingMetric());
+        Assertions.assertEquals(ComparisonOperator.LESS_THAN_OR_EQUAL,
             model.scalingRules().get(0).comparisonRule().operator());
-        Assertions.assertEquals(94.88104f, model.scalingRules().get(0).comparisonRule().threshold());
+        Assertions.assertEquals(15.866309f, model.scalingRules().get(0).comparisonRule().threshold());
     }
 }

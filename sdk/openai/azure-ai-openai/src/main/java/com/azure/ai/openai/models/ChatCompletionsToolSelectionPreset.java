@@ -56,4 +56,10 @@ public final class ChatCompletionsToolSelectionPreset extends ExpandableStringEn
     public static Collection<ChatCompletionsToolSelectionPreset> values() {
         return values(ChatCompletionsToolSelectionPreset.class);
     }
+
+    /**
+     * Specifies that the model must call one or more tools.
+     */
+    @Generated
+    public static final ChatCompletionsToolSelectionPreset REQUIRED = fromString("required");
 }

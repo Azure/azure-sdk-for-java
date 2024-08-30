@@ -7,12 +7,15 @@ package com.azure.resourcemanager.cdn.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cdn.models.AfdProvisioningState;
 import com.azure.resourcemanager.cdn.models.DeliveryRuleAction;
 import com.azure.resourcemanager.cdn.models.DeliveryRuleCondition;
 import com.azure.resourcemanager.cdn.models.DeploymentStatus;
 import com.azure.resourcemanager.cdn.models.MatchProcessingBehavior;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -23,14 +26,27 @@ public final class RuleInner extends ProxyResource {
     /*
      * The JSON object that contains the properties of the Rules to create.
      */
-    @JsonProperty(value = "properties")
     private RuleProperties innerProperties;
 
     /*
      * Read only system data
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
      * Creates an instance of RuleInner class.
@@ -54,6 +70,36 @@ public final class RuleInner extends ProxyResource {
      */
     public SystemData systemData() {
         return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -84,9 +130,9 @@ public final class RuleInner extends ProxyResource {
     }
 
     /**
-     * Get the order property: The order in which the rules are applied for the endpoint. Possible values
-     * {0,1,2,3,………}. A rule with a lesser order will be applied before a rule with a greater order. Rule with order 0
-     * is a special rule. It does not require any condition and actions listed in it will always be applied.
+     * Get the order property: The order in which the rules are applied for the endpoint. Possible values {0,1,2,3,………}.
+     * A rule with a lesser order will be applied before a rule with a greater order. Rule with order 0 is a special
+     * rule. It does not require any condition and actions listed in it will always be applied.
      * 
      * @return the order value.
      */
@@ -95,9 +141,9 @@ public final class RuleInner extends ProxyResource {
     }
 
     /**
-     * Set the order property: The order in which the rules are applied for the endpoint. Possible values
-     * {0,1,2,3,………}. A rule with a lesser order will be applied before a rule with a greater order. Rule with order 0
-     * is a special rule. It does not require any condition and actions listed in it will always be applied.
+     * Set the order property: The order in which the rules are applied for the endpoint. Possible values {0,1,2,3,………}.
+     * A rule with a lesser order will be applied before a rule with a greater order. Rule with order 0 is a special
+     * rule. It does not require any condition and actions listed in it will always be applied.
      * 
      * @param order the order value to set.
      * @return the RuleInner object itself.
@@ -190,5 +236,50 @@ public final class RuleInner extends ProxyResource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RuleInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RuleInner if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RuleInner.
+     */
+    public static RuleInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RuleInner deserializedRuleInner = new RuleInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedRuleInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedRuleInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedRuleInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedRuleInner.innerProperties = RuleProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedRuleInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRuleInner;
+        });
     }
 }
