@@ -11,7 +11,7 @@ import com.azure.ai.translation.text.models.TextType;
 import com.azure.ai.translation.text.models.TranslatedTextItem;
 import com.azure.ai.translation.text.models.TranslateOptions;
 import org.junit.jupiter.api.Test;
-import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
+import com.azure.core.test.annotation.PlaybackOnly;
 
 import java.util.ArrayList;
 import java.util.List;
