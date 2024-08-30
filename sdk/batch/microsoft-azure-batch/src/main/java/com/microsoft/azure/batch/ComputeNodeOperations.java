@@ -11,7 +11,6 @@ import com.microsoft.azure.batch.protocol.models.ComputeNodeDeleteUserOptions;
 import com.microsoft.azure.batch.protocol.models.ComputeNodeDisableSchedulingOptions;
 import com.microsoft.azure.batch.protocol.models.ComputeNodeEnableSchedulingOptions;
 import com.microsoft.azure.batch.protocol.models.ComputeNodeGetOptions;
-import com.microsoft.azure.batch.protocol.models.ComputeNodeGetRemoteDesktopOptions;
 import com.microsoft.azure.batch.protocol.models.ComputeNodeGetRemoteLoginSettingsOptions;
 import com.microsoft.azure.batch.protocol.models.ComputeNodeGetRemoteLoginSettingsResult;
 import com.microsoft.azure.batch.protocol.models.ComputeNodeListOptions;
@@ -28,7 +27,6 @@ import com.microsoft.azure.batch.protocol.models.UploadBatchServiceLogsConfigura
 import com.microsoft.azure.batch.protocol.models.UploadBatchServiceLogsResult;
 import org.joda.time.DateTime;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Collection;
 
@@ -427,41 +425,6 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
         bhMgr.applyRequestBehaviors(options);
 
         this.parentBatchClient.protocolLayer().computeNodes().enableScheduling(poolId, nodeId, options);
-    }
-
-    /**
-     * Gets a Remote Desktop Protocol (RDP) file for the specified node.
-     *
-     * @param poolId The ID of the pool that contains the compute node.
-     * @param nodeId The ID of the compute node for which to get a Remote Desktop file.
-     * @return The RDP file contents.
-     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
-     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
-     */
-    public String getComputeNodeRemoteDesktop(String poolId, String nodeId) throws BatchErrorException, IOException {
-        return getComputeNodeRemoteDesktop(poolId, nodeId, null);
-    }
-
-    /**
-     * Gets a Remote Desktop Protocol (RDP) file for the specified node.
-     *
-     * @param poolId The ID of the pool that contains the compute node.
-     * @param nodeId The ID of the compute node for which to get a Remote Desktop file.
-     * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
-     * @return The RDP file contents.
-     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
-     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
-     */
-    public String getComputeNodeRemoteDesktop(String poolId, String nodeId, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
-        ComputeNodeGetRemoteDesktopOptions options = new ComputeNodeGetRemoteDesktopOptions();
-        BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
-        bhMgr.applyRequestBehaviors(options);
-
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        this.parentBatchClient.protocolLayer().computeNodes().getRemoteDesktop(poolId, nodeId, options, outputStream);
-        String rdpContent = outputStream.toString("UTF-8");
-        outputStream.close();
-        return rdpContent;
     }
 
     /**

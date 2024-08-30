@@ -14,9 +14,9 @@ import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Defines headers for GetRemoteDesktop operation.
+ * Defines headers for Deallocate operation.
  */
-public class ComputeNodeGetRemoteDesktopHeaders {
+public class ComputeNodeDeallocateHeaders {
     /**
      * The client-request-id provided by the client during the request. This
      * will be returned only if the return-client-request-id parameter was set
@@ -53,6 +53,12 @@ public class ComputeNodeGetRemoteDesktopHeaders {
     private DateTimeRfc1123 lastModified;
 
     /**
+     * The OData ID of the resource to which the request applied.
+     */
+    @JsonProperty(value = "DataServiceId")
+    private String dataServiceId;
+
+    /**
      * Get the client-request-id provided by the client during the request. This will be returned only if the return-client-request-id parameter was set to true.
      *
      * @return the clientRequestId value
@@ -65,9 +71,9 @@ public class ComputeNodeGetRemoteDesktopHeaders {
      * Set the client-request-id provided by the client during the request. This will be returned only if the return-client-request-id parameter was set to true.
      *
      * @param clientRequestId the clientRequestId value to set
-     * @return the ComputeNodeGetRemoteDesktopHeaders object itself.
+     * @return the ComputeNodeDeallocateHeaders object itself.
      */
-    public ComputeNodeGetRemoteDesktopHeaders withClientRequestId(UUID clientRequestId) {
+    public ComputeNodeDeallocateHeaders withClientRequestId(UUID clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -85,9 +91,9 @@ public class ComputeNodeGetRemoteDesktopHeaders {
      * Set a unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report, include the value of this request ID, the approximate time that the request was made, the Batch Account against which the request was made, and the region that Account resides in.
      *
      * @param requestId the requestId value to set
-     * @return the ComputeNodeGetRemoteDesktopHeaders object itself.
+     * @return the ComputeNodeDeallocateHeaders object itself.
      */
-    public ComputeNodeGetRemoteDesktopHeaders withRequestId(UUID requestId) {
+    public ComputeNodeDeallocateHeaders withRequestId(UUID requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -105,9 +111,9 @@ public class ComputeNodeGetRemoteDesktopHeaders {
      * Set the ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.
      *
      * @param eTag the eTag value to set
-     * @return the ComputeNodeGetRemoteDesktopHeaders object itself.
+     * @return the ComputeNodeDeallocateHeaders object itself.
      */
-    public ComputeNodeGetRemoteDesktopHeaders withETag(String eTag) {
+    public ComputeNodeDeallocateHeaders withETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -128,14 +134,34 @@ public class ComputeNodeGetRemoteDesktopHeaders {
      * Set the time at which the resource was last modified.
      *
      * @param lastModified the lastModified value to set
-     * @return the ComputeNodeGetRemoteDesktopHeaders object itself.
+     * @return the ComputeNodeDeallocateHeaders object itself.
      */
-    public ComputeNodeGetRemoteDesktopHeaders withLastModified(DateTime lastModified) {
+    public ComputeNodeDeallocateHeaders withLastModified(DateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
             this.lastModified = new DateTimeRfc1123(lastModified);
         }
+        return this;
+    }
+
+    /**
+     * Get the OData ID of the resource to which the request applied.
+     *
+     * @return the dataServiceId value
+     */
+    public String dataServiceId() {
+        return this.dataServiceId;
+    }
+
+    /**
+     * Set the OData ID of the resource to which the request applied.
+     *
+     * @param dataServiceId the dataServiceId value to set
+     * @return the ComputeNodeDeallocateHeaders object itself.
+     */
+    public ComputeNodeDeallocateHeaders withDataServiceId(String dataServiceId) {
+        this.dataServiceId = dataServiceId;
         return this;
     }
 

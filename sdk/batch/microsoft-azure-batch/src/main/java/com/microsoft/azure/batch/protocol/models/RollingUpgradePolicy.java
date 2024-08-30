@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.batch.protocol.models;
 
+import org.joda.time.Period;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -67,7 +68,7 @@ public class RollingUpgradePolicy {
      * specified in ISO 8601 format.
      */
     @JsonProperty(value = "pauseTimeBetweenBatches")
-    private String pauseTimeBetweenBatches;
+    private Period pauseTimeBetweenBatches;
 
     /**
      * Upgrade all unhealthy instances in a scale set before any healthy
@@ -168,7 +169,7 @@ public class RollingUpgradePolicy {
      *
      * @return the pauseTimeBetweenBatches value
      */
-    public String pauseTimeBetweenBatches() {
+    public Period pauseTimeBetweenBatches() {
         return this.pauseTimeBetweenBatches;
     }
 
@@ -178,7 +179,7 @@ public class RollingUpgradePolicy {
      * @param pauseTimeBetweenBatches the pauseTimeBetweenBatches value to set
      * @return the RollingUpgradePolicy object itself.
      */
-    public RollingUpgradePolicy withPauseTimeBetweenBatches(String pauseTimeBetweenBatches) {
+    public RollingUpgradePolicy withPauseTimeBetweenBatches(Period pauseTimeBetweenBatches) {
         this.pauseTimeBetweenBatches = pauseTimeBetweenBatches;
         return this;
     }

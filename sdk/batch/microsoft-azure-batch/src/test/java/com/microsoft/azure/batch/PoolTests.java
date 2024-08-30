@@ -3,6 +3,7 @@
 
 package com.microsoft.azure.batch;
 
+import org.joda.time.Period;
 import org.junit.*;
 
 import java.io.IOException;
@@ -828,7 +829,7 @@ public class PoolTests extends BatchIntegrationTestBase {
                     .withMaxBatchInstancePercent(20)
                     .withMaxUnhealthyInstancePercent(20)
                     .withMaxUnhealthyUpgradedInstancePercent(20)
-                    .withPauseTimeBetweenBatches("PT5S") // ISO 8601 format for 5 seconds
+                    .withPauseTimeBetweenBatches(Period.parse("PT5S")) // ISO 8601 format for 5 seconds
                     .withPrioritizeUnhealthyInstances(false)
                     .withRollbackFailedInstancesOnPolicyBreach(false));
 
