@@ -5,10 +5,12 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.ResourceResponse;
@@ -94,7 +96,7 @@ public class ChangeFeedTest extends TestSuiteBase {
     }
 
     @Test(groups = { "query" }, timeOut = TIMEOUT)
-    public void changeFeed_fromBeginning() throws Exception {
+    public void changeFeed_fromBeginning() {
         String partitionKey = partitionKeyToDocuments.keySet().iterator().next();
         Collection<Document> expectedDocuments = partitionKeyToDocuments.get(partitionKey);
 
@@ -107,6 +109,12 @@ public class ChangeFeedTest extends TestSuiteBase {
         List<FeedResponse<Document>> changeFeedResultList = client
             .queryDocumentChangeFeed(createdCollection, changeFeedOption, Document.class)
             .collectList().block();
+
+        // since the changeFeed is targeting a specific partitionKey,
+        // for each feedResponse,
+        // we should only expect one store result in stable situation(no error happens)
+        assertThat(changeFeedResultList.size()).isGreaterThanOrEqualTo(1);
+        validateCosmosDiagnostics(changeFeedResultList);
 
         int count = 0;
         for (int i = 0; i < changeFeedResultList.size(); i++) {
@@ -142,6 +150,12 @@ public class ChangeFeedTest extends TestSuiteBase {
         List<FeedResponse<Document>> changeFeedResultList = client
             .queryDocumentChangeFeed(createdCollection, changeFeedOption, Document.class)
             .collectList().block();
+
+        // since the changeFeed is targeting a specific partitionKey,
+        // for each feedResponse,
+        // we should only expect one store result in stable situation(no error happens)
+        assertThat(changeFeedResultList.size()).isGreaterThanOrEqualTo(1);
+        validateCosmosDiagnostics(changeFeedResultList);
 
         int count = 0;
         for(int i = 0; i < changeFeedResultList.size(); i++) {
@@ -180,6 +194,12 @@ public class ChangeFeedTest extends TestSuiteBase {
             .queryDocumentChangeFeed(createdCollection, changeFeedOption, Document.class)
             .collectList()
             .block();
+
+        // since the changeFeed is targeting a specific partitionKey,
+        // for each feedResponse,
+        // we should only expect one store result in stable situation(no error happens)
+        assertThat(changeFeedResultsList.size()).isGreaterThanOrEqualTo(1);
+        validateCosmosDiagnostics(changeFeedResultsList);
 
         FeedResponseListValidator<Document> validator =
             new FeedResponseListValidator.Builder<Document>().totalSize(0).build();
@@ -548,6 +568,22 @@ public class ChangeFeedTest extends TestSuiteBase {
     private static void waitAtleastASecond(Instant befTime) throws InterruptedException {
         while (befTime.plusSeconds(1).isAfter(Instant.now())) {
             Thread.sleep(100);
+        }
+    }
+
+    private void validateCosmosDiagnostics(List<FeedResponse<Document>> responses) {
+        for (FeedResponse<Document> feedResponse : responses) {
+            Collection<ClientSideRequestStatistics> clientSideRequestStatistics = ImplementationBridgeHelpers
+                .CosmosDiagnosticsHelper
+                .getCosmosDiagnosticsAccessor()
+                .getClientSideRequestStatistics(feedResponse.getCosmosDiagnostics());
+            assertThat(clientSideRequestStatistics.size()).isEqualTo(1);
+            Collection<ClientSideRequestStatistics.StoreResponseStatistics> storeResponseStatistics =
+                clientSideRequestStatistics
+                    .iterator()
+                    .next()
+                    .getResponseStatisticsList();
+            assertThat(storeResponseStatistics.size()).isEqualTo(1);
         }
     }
 
