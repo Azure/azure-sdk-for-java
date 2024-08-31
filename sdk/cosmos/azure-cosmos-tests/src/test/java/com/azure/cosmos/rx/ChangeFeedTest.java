@@ -3,6 +3,7 @@
 package com.azure.cosmos.rx;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
@@ -36,6 +37,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
@@ -95,6 +97,14 @@ public class ChangeFeedTest extends TestSuiteBase {
         subscriberValidationTimeout = TIMEOUT;
     }
 
+    @DataProvider(name = "startFromParamProvider")
+    public Object[] startFromParamProvider() {
+        return new Object[]{
+            false,
+            true
+        };
+    }
+
     @Test(groups = { "query" }, timeOut = TIMEOUT)
     public void changeFeed_fromBeginning() {
         String partitionKey = partitionKeyToDocuments.keySet().iterator().next();
@@ -109,12 +119,6 @@ public class ChangeFeedTest extends TestSuiteBase {
         List<FeedResponse<Document>> changeFeedResultList = client
             .queryDocumentChangeFeed(createdCollection, changeFeedOption, Document.class)
             .collectList().block();
-
-        // since the changeFeed is targeting a specific partitionKey,
-        // for each feedResponse,
-        // we should only expect one store result in stable situation(no error happens)
-        assertThat(changeFeedResultList.size()).isGreaterThanOrEqualTo(1);
-        validateCosmosDiagnostics(changeFeedResultList);
 
         int count = 0;
         for (int i = 0; i < changeFeedResultList.size(); i++) {
@@ -150,12 +154,6 @@ public class ChangeFeedTest extends TestSuiteBase {
         List<FeedResponse<Document>> changeFeedResultList = client
             .queryDocumentChangeFeed(createdCollection, changeFeedOption, Document.class)
             .collectList().block();
-
-        // since the changeFeed is targeting a specific partitionKey,
-        // for each feedResponse,
-        // we should only expect one store result in stable situation(no error happens)
-        assertThat(changeFeedResultList.size()).isGreaterThanOrEqualTo(1);
-        validateCosmosDiagnostics(changeFeedResultList);
 
         int count = 0;
         for(int i = 0; i < changeFeedResultList.size(); i++) {
@@ -195,17 +193,38 @@ public class ChangeFeedTest extends TestSuiteBase {
             .collectList()
             .block();
 
-        // since the changeFeed is targeting a specific partitionKey,
-        // for each feedResponse,
-        // we should only expect one store result in stable situation(no error happens)
-        assertThat(changeFeedResultsList.size()).isGreaterThanOrEqualTo(1);
-        validateCosmosDiagnostics(changeFeedResultsList);
-
         FeedResponseListValidator<Document> validator =
             new FeedResponseListValidator.Builder<Document>().totalSize(0).build();
         validator.validate(changeFeedResultsList);
         assertThat(changeFeedResultsList.get(changeFeedResultsList.size() -1 ).
             getContinuationToken()).as("Response continuation should not be null").isNotNull();
+    }
+
+    @Test(groups = { "query" }, dataProvider = "startFromParamProvider", timeOut = TIMEOUT)
+    public void changeFeed_cosmosDiagnostics(boolean startFromBeginning) {
+        // READ change feed from a partitionKey.
+        String partitionKey = partitionKeyToDocuments.keySet().iterator().next();
+        FeedRange feedRange = new FeedRangePartitionKeyImpl(
+            ModelBridgeInternal.getPartitionKeyInternal(new PartitionKey(partitionKey)));
+        CosmosChangeFeedRequestOptions changeFeedOption =
+            startFromBeginning ?
+                CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(feedRange) :
+                CosmosChangeFeedRequestOptions.createForProcessingFromNow(feedRange);
+
+        List<FeedResponse<Document>> changeFeedResultsList = client
+            .queryDocumentChangeFeed(createdCollection, changeFeedOption, Document.class)
+            .collectList()
+            .block();
+
+        // since the changeFeed is targeting a specific partitionKey,
+        // for each feedResponse,
+        // we should only expect one store result in stable situation(no error happens)
+        assertThat(changeFeedResultsList.size()).isGreaterThanOrEqualTo(1);
+        for (FeedResponse<Document> changeFeedResponse : changeFeedResultsList) {
+            validateStoreResultInDiagnostics(
+                changeFeedResponse.getCosmosDiagnostics(),
+                1);
+        }
     }
 
     private void changeFeed_withUpdatesAndDelete(boolean enableFullFidelityChangeFeedMode) {
@@ -545,7 +564,7 @@ public class ChangeFeedTest extends TestSuiteBase {
     }
 
     @BeforeClass(groups = { "query", "emulator" }, timeOut = SETUP_TIMEOUT)
-    public void before_ChangeFeedTest() throws Exception {
+    public void before_ChangeFeedTest() {
         // set up the client
         client = clientBuilder().build();
         createdDatabase = SHARED_DATABASE;
@@ -571,20 +590,20 @@ public class ChangeFeedTest extends TestSuiteBase {
         }
     }
 
-    private void validateCosmosDiagnostics(List<FeedResponse<Document>> responses) {
-        for (FeedResponse<Document> feedResponse : responses) {
-            Collection<ClientSideRequestStatistics> clientSideRequestStatistics = ImplementationBridgeHelpers
-                .CosmosDiagnosticsHelper
-                .getCosmosDiagnosticsAccessor()
-                .getClientSideRequestStatistics(feedResponse.getCosmosDiagnostics());
-            assertThat(clientSideRequestStatistics.size()).isEqualTo(1);
-            Collection<ClientSideRequestStatistics.StoreResponseStatistics> storeResponseStatistics =
-                clientSideRequestStatistics
-                    .iterator()
-                    .next()
-                    .getResponseStatisticsList();
-            assertThat(storeResponseStatistics.size()).isEqualTo(1);
-        }
+    private void validateStoreResultInDiagnostics(
+        CosmosDiagnostics cosmosDiagnostics,
+        int expectedStoreResultCount) {
+        Collection<ClientSideRequestStatistics> clientSideRequestStatistics = ImplementationBridgeHelpers
+            .CosmosDiagnosticsHelper
+            .getCosmosDiagnosticsAccessor()
+            .getClientSideRequestStatistics(cosmosDiagnostics);
+        assertThat(clientSideRequestStatistics.size()).isEqualTo(1);
+        Collection<ClientSideRequestStatistics.StoreResponseStatistics> storeResponseStatistics =
+            clientSideRequestStatistics
+                .iterator()
+                .next()
+                .getResponseStatisticsList();
+        assertThat(storeResponseStatistics.size()).isEqualTo(expectedStoreResultCount);
     }
 
     @Retention(java.lang.annotation.RetentionPolicy.RUNTIME)
