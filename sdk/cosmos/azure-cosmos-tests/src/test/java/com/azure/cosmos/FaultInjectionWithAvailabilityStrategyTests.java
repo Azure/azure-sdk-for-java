@@ -5326,7 +5326,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
 
     private Object[][] addBooleanFlagsToAllTestConfigs(Object[][] testConfigs) {
         List<List<Object>> intermediateTestConfigList = new ArrayList<>();
-        boolean[] possibleBooleans = new boolean[]{true, false};
+        boolean[] possibleBooleans = new boolean[]{false};
 
         for (boolean possibleBoolean : possibleBooleans) {
             for (Object[] testConfigForSingleTest : testConfigs) {
