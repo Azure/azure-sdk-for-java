@@ -62,16 +62,9 @@ import reactor.core.publisher.Mono;
 import java.lang.reflect.Field;
 import java.net.URI;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Consumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -3400,6 +3393,14 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
 
         CosmosClientBuilder clientBuilder = getClientBuilder().multipleWriteRegionsEnabled(true).preferredRegions(preferredRegions);
 
+
+        boolean shouldInjectEmptyPreferredRegions = ThreadLocalRandom.current().nextBoolean();
+
+        if (shouldInjectEmptyPreferredRegions) {
+            clientBuilder = clientBuilder
+                .preferredRegions(Collections.emptyList());
+        }
+
         System.setProperty(
             "COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG",
             "{\"isPartitionLevelCircuitBreakerEnabled\": true, "
@@ -3720,6 +3721,14 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                     .sessionRetryOptions(new SessionRetryOptionsBuilder().regionSwitchHint(regionSwitchHint).build());
             }
 
+
+            boolean shouldInjectEmptyPreferredRegions = ThreadLocalRandom.current().nextBoolean();
+
+            if (shouldInjectEmptyPreferredRegions) {
+                clientBuilder = clientBuilder
+                    .preferredRegions(Collections.emptyList());
+            }
+
             CosmosAsyncContainer asyncContainer = asyncClient.getDatabase(this.sharedAsyncDatabaseId).getContainer(operationInvocationParamsWrapper.containerIdToTarget);
             operationInvocationParamsWrapper.asyncContainer = asyncContainer;
             operationInvocationParamsWrapper.partitionKeyForReadAllOperation = new PartitionKey(testObjects.get(0).getMypk());
@@ -3830,6 +3839,14 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                     .sessionRetryOptions(new SessionRetryOptionsBuilder().regionSwitchHint(regionSwitchHint).build());
             }
 
+
+            boolean shouldInjectEmptyPreferredRegions = ThreadLocalRandom.current().nextBoolean();
+
+            if (shouldInjectEmptyPreferredRegions) {
+                clientBuilder = clientBuilder
+                    .preferredRegions(Collections.emptyList());
+            }
+
             asyncClient = clientBuilder.buildAsyncClient();
             CosmosAsyncContainer asyncContainer = asyncClient.getDatabase(this.sharedAsyncDatabaseId).getContainer(operationInvocationParamsWrapper.containerIdToTarget);
             operationInvocationParamsWrapper.asyncContainer = asyncContainer;
@@ -3923,6 +3940,13 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                     .sessionRetryOptions(new SessionRetryOptionsBuilder().regionSwitchHint(regionSwitchHint).build());
             }
 
+            boolean shouldInjectEmptyPreferredRegions = ThreadLocalRandom.current().nextBoolean();
+
+            if (shouldInjectEmptyPreferredRegions) {
+                clientBuilder = clientBuilder
+                    .preferredRegions(Collections.emptyList());
+            }
+
             asyncClient = clientBuilder.buildAsyncClient();
             CosmosAsyncContainer asyncContainer = asyncClient.getDatabase(this.sharedAsyncDatabaseId).getContainer(operationInvocationParamsWrapper.containerIdToTarget);
             operationInvocationParamsWrapper.asyncContainer = asyncContainer;
@@ -4012,6 +4036,14 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
              if (regionSwitchHint != null) {
                  clientBuilder = clientBuilder
                      .sessionRetryOptions(new SessionRetryOptionsBuilder().regionSwitchHint(regionSwitchHint).build());
+             }
+
+
+             boolean shouldInjectEmptyPreferredRegions = ThreadLocalRandom.current().nextBoolean();
+
+             if (shouldInjectEmptyPreferredRegions) {
+                 clientBuilder = clientBuilder
+                     .preferredRegions(Collections.emptyList());
              }
 
              asyncClient = clientBuilder.buildAsyncClient();
