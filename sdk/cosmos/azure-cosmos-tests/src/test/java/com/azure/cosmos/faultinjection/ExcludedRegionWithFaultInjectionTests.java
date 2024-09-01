@@ -1784,7 +1784,7 @@ public class ExcludedRegionWithFaultInjectionTests extends FaultInjectionTestBas
                 }
             };
 
-            addBooleanFlagsToAllTestConfigs(testConfigs_batch);
+            return addBooleanFlagsToAllTestConfigs(testConfigs_batch);
         } else if (this.preferredRegions.size() == 3) {
             testConfigs_batch =  new Object[][] {
                 {
@@ -1918,10 +1918,10 @@ public class ExcludedRegionWithFaultInjectionTests extends FaultInjectionTestBas
                 }
             };
 
-            addBooleanFlagsToAllTestConfigs(testConfigs_batch);
+            return addBooleanFlagsToAllTestConfigs(testConfigs_batch);
         }
 
-        return null;
+        throw new IllegalStateException("This test suite is tested for 2 or 3 preferred regions");
     }
 
     @DataProvider(name = "regionExclusionBulkTestConfigs")
@@ -2156,7 +2156,7 @@ public class ExcludedRegionWithFaultInjectionTests extends FaultInjectionTestBas
                 }
             };
 
-            addBooleanFlagsToAllTestConfigs(testConfigs_bulk);
+            return addBooleanFlagsToAllTestConfigs(testConfigs_bulk);
 
         } else if (this.preferredRegions.size() == 3) {
             testConfigs_bulk = new Object[][] {
@@ -2286,10 +2286,10 @@ public class ExcludedRegionWithFaultInjectionTests extends FaultInjectionTestBas
                 }
             };
 
-            addBooleanFlagsToAllTestConfigs(testConfigs_bulk);
+            return addBooleanFlagsToAllTestConfigs(testConfigs_bulk);
         }
 
-        return null;
+        throw new IllegalStateException("This test suite is tested for 2 or 3 preferred regions");
     }
 
     @Test(groups = { "multi-master" }, dataProvider = "regionExclusionReadAfterCreateTestConfigs")

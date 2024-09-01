@@ -725,7 +725,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                Duration.ofSeconds(90),
                noAvailabilityStrategy,
                noRegionSwitchHint,
-                ConnectionMode.DIRECT,
+               ConnectionMode.DIRECT,
                sameDocumentIdJustCreated,
                injectInternalServerErrorIntoFirstRegionOnly,
                validateStatusCodeIsInternalServerError,
@@ -1868,8 +1868,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 injectReadSessionNotAvailableIntoFirstRegionOnly,
                 validateStatusCodeIs201Created,
                 // no hedging even with availability strategy because nonIdempotentWrites are disabled
-                validateDiagnosticsContextHasDiagnosticsForAllRegions,
-                true
+                validateDiagnosticsContextHasDiagnosticsForAllRegions
             },
 
             // 404/1022 into local region only, attempt to delete a non-existing item
@@ -2247,7 +2246,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 injectGatewayTransitTimeoutIntoFirstRegionOnly,
                 validateStatusCodeIs201Created,
                 validateDiagnosticsContextHasDiagnosticsForOneOrTwoRegionsButAlwaysContactedSecondRegion
-            },
+            }
         };
 
         return addBooleanFlagsToAllTestConfigs(testConfigs_writeAfterCreation);
