@@ -11,6 +11,7 @@ import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.CosmosExcludedRegions;
 import com.azure.cosmos.CosmosRegionSwitchHint;
+import com.azure.cosmos.FaultInjectionWithAvailabilityStrategyTests;
 import com.azure.cosmos.SessionRetryOptionsBuilder;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.DatabaseAccount;
@@ -83,8 +84,6 @@ public class ExcludedRegionWithFaultInjectionTests extends FaultInjectionTestBas
     private Function<List<String>, List<String>> chooseThirdRegion = (regions) -> chooseKthRegion(regions, 3);
     private Function<List<String>, List<String>> chooseLastRegion = (regions) -> chooseLastRegion(regions);
     private Function<List<String>, List<String>> chooseAllRegions = Function.identity();
-    private Map<String, String> readRegionMap;
-    private Map<String, String> writeRegionMap;
 
     @Factory(dataProvider = "clientBuilderSolelyDirectWithSessionConsistency")
     public ExcludedRegionWithFaultInjectionTests(CosmosClientBuilder cosmosClientBuilder) {
@@ -139,9 +138,8 @@ public class ExcludedRegionWithFaultInjectionTests extends FaultInjectionTestBas
         GlobalEndpointManager globalEndpointManager = asyncDocumentClient.getGlobalEndpointManager();
         DatabaseAccount databaseAccount = globalEndpointManager.getLatestDatabaseAccount();
 
-        this.readRegionMap = getRegionMap(databaseAccount, false);
-        this.writeRegionMap = getRegionMap(databaseAccount, true);
-        this.preferredRegions = this.writeRegionMap.keySet().stream().collect(Collectors.toList());
+        AccountLevelLocationContext accountLevelWriteableLocationContext = getAccountLevelLocationContext(databaseAccount, true);
+        this.preferredRegions = new ArrayList<>(accountLevelWriteableLocationContext.serviceOrderedWriteableRegions);
         this.regionResolvedForDefaultEndpoint = getRegionResolvedForDefaultEndpoint(this.cosmosAsyncContainer, this.preferredRegions);
     }
 
@@ -2650,17 +2648,29 @@ public class ExcludedRegionWithFaultInjectionTests extends FaultInjectionTestBas
         }
     }
 
-    private static Map<String, String> getRegionMap(DatabaseAccount databaseAccount, boolean writeOnly) {
+    private static AccountLevelLocationContext getAccountLevelLocationContext(DatabaseAccount databaseAccount, boolean writeOnly) {
         Iterator<DatabaseAccountLocation> locationIterator =
             writeOnly ? databaseAccount.getWritableLocations().iterator() : databaseAccount.getReadableLocations().iterator();
+
+        List<String> serviceOrderedReadableRegions = new ArrayList<>();
+        List<String> serviceOrderedWriteableRegions = new ArrayList<>();
         Map<String, String> regionMap = new ConcurrentHashMap<>();
 
         while (locationIterator.hasNext()) {
             DatabaseAccountLocation accountLocation = locationIterator.next();
             regionMap.put(accountLocation.getName(), accountLocation.getEndpoint());
+
+            if (writeOnly) {
+                serviceOrderedWriteableRegions.add(accountLocation.getName());
+            } else {
+                serviceOrderedReadableRegions.add(accountLocation.getName());
+            }
         }
 
-        return regionMap;
+        return new AccountLevelLocationContext(
+            serviceOrderedReadableRegions,
+            serviceOrderedWriteableRegions,
+            regionMap);
     }
 
     private static String getRegionResolvedForDefaultEndpoint(CosmosAsyncContainer container, List<String> preferredRegions) {
@@ -2884,5 +2894,21 @@ public class ExcludedRegionWithFaultInjectionTests extends FaultInjectionTestBas
         public CosmosQueryRequestOptions queryRequestOptionsForCallbackAfterMutation;
         public CosmosBulkExecutionOptions bulkExecutionOptionsForCallbackAfterMutation;
         public CosmosBatchRequestOptions batchRequestOptionsForCallbackAfterMutation;
+    }
+
+    private static class AccountLevelLocationContext {
+        private final List<String> serviceOrderedReadableRegions;
+        private final List<String> serviceOrderedWriteableRegions;
+        private final Map<String, String> regionNameToEndpoint;
+
+        public AccountLevelLocationContext(
+            List<String> serviceOrderedReadableRegions,
+            List<String> serviceOrderedWriteableRegions,
+            Map<String, String> regionNameToEndpoint) {
+
+            this.serviceOrderedReadableRegions = serviceOrderedReadableRegions;
+            this.serviceOrderedWriteableRegions = serviceOrderedWriteableRegions;
+            this.regionNameToEndpoint = regionNameToEndpoint;
+        }
     }
 }

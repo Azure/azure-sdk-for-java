@@ -227,9 +227,10 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
 
             DatabaseAccount databaseAccount = globalEndpointManager.getLatestDatabaseAccount();
 
-            Map<String, String> writeRegionMap = this.getRegionMap(databaseAccount, true);
+            AccountLevelLocationContext accountLevelWriteableLocationContext
+                = this.getAccountLevelLocationContext(databaseAccount, true);
 
-            this.writeableRegions = new ArrayList<>(writeRegionMap.keySet());
+            this.writeableRegions = new ArrayList<>(accountLevelWriteableLocationContext.serviceOrderedWriteableRegions);
             assertThat(this.writeableRegions).isNotNull();
             assertThat(this.writeableRegions.size()).isGreaterThanOrEqualTo(2);
 
@@ -5311,17 +5312,29 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         return builder.buildAsyncClient();
     }
 
-    private Map<String, String> getRegionMap(DatabaseAccount databaseAccount, boolean writeOnly) {
+    private AccountLevelLocationContext getAccountLevelLocationContext(DatabaseAccount databaseAccount, boolean writeOnly) {
         Iterator<DatabaseAccountLocation> locationIterator =
             writeOnly ? databaseAccount.getWritableLocations().iterator() : databaseAccount.getReadableLocations().iterator();
+
+        List<String> serviceOrderedReadableRegions = new ArrayList<>();
+        List<String> serviceOrderedWriteableRegions = new ArrayList<>();
         Map<String, String> regionMap = new ConcurrentHashMap<>();
 
         while (locationIterator.hasNext()) {
             DatabaseAccountLocation accountLocation = locationIterator.next();
             regionMap.put(accountLocation.getName(), accountLocation.getEndpoint());
+
+            if (writeOnly) {
+                serviceOrderedWriteableRegions.add(accountLocation.getName());
+            } else {
+                serviceOrderedReadableRegions.add(accountLocation.getName());
+            }
         }
 
-        return regionMap;
+        return new AccountLevelLocationContext(
+            serviceOrderedReadableRegions,
+            serviceOrderedWriteableRegions,
+            regionMap);
     }
 
     private Object[][] addBooleanFlagsToAllTestConfigs(Object[][] testConfigs) {
@@ -5396,5 +5409,21 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
 
         public List<Pair<String, String>> otherDocumentIdAndPkValuePairs;
         public Boolean nonIdempotentWriteRetriesEnabled;
+    }
+
+    private static class AccountLevelLocationContext {
+        private final List<String> serviceOrderedReadableRegions;
+        private final List<String> serviceOrderedWriteableRegions;
+        private final Map<String, String> regionNameToEndpoint;
+
+        public AccountLevelLocationContext(
+            List<String> serviceOrderedReadableRegions,
+            List<String> serviceOrderedWriteableRegions,
+            Map<String, String> regionNameToEndpoint) {
+
+            this.serviceOrderedReadableRegions = serviceOrderedReadableRegions;
+            this.serviceOrderedWriteableRegions = serviceOrderedWriteableRegions;
+            this.regionNameToEndpoint = regionNameToEndpoint;
+        }
     }
 }

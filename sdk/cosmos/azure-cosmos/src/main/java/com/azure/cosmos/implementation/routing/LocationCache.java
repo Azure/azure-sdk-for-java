@@ -611,11 +611,12 @@ public class LocationCache {
                         Utils.ValueHolder<URI> endpoint = Utils.ValueHolder.initialize(null);
                         if (Utils.tryGetValue(endpointsByLocation, location, endpoint)) {
 
-                            // if defaultEndpoint equals
-//                            if (this.defaultEndpoint.equals(endpoint.v)) {
-//                                endpoints = new ArrayList<>();
-//                                break;
-//                            }
+                            // if defaultEndpoint equals a regional endpoint then use
+                            // whatever the fallback endpoint is
+                            if (this.defaultEndpoint.equals(endpoint.v)) {
+                                endpoints = new ArrayList<>();
+                                break;
+                            }
 
                             if (this.isEndpointUnavailable(endpoint.v, expectedAvailableOperation)) {
                                 unavailableEndpoints.add(endpoint.v);
