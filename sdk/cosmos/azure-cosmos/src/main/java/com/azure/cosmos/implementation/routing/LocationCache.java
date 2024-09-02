@@ -651,6 +651,7 @@ public class LocationCache {
             logger.info("Effective preferred locations : {}", endpoint.getPath());
         }
 
+        System.out.println("Default endpoint : " + this.defaultEndpoint.getPath() + "blah");
         return new UnmodifiableList<URI>(endpoints);
     }
 
