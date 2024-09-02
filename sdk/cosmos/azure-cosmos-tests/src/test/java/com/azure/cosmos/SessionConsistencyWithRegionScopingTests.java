@@ -1445,11 +1445,8 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
             GlobalEndpointManager globalEndpointManager = ReflectionUtils.getGlobalEndpointManager(rxDocumentClient);
             DatabaseAccount databaseAccount = globalEndpointManager.getLatestDatabaseAccount();
 
-            Map<String, String> writeRegionMap = getRegionMap(databaseAccount, true);
-            Map<String, String> readRegionMap = getRegionMap(databaseAccount, false);
-
-            this.readRegions = new ArrayList<>(readRegionMap.keySet());
-            this.writeRegions = new ArrayList<>(writeRegionMap.keySet());
+            this.readRegions = new ArrayList<>(getAccountLevelLocationContext(databaseAccount, false).serviceOrderedReadableRegions);
+            this.writeRegions = new ArrayList<>(getAccountLevelLocationContext(databaseAccount, true).serviceOrderedWriteableRegions);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -1817,17 +1814,29 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
         return clientBuilder.buildAsyncClient();
     }
 
-    private static Map<String, String> getRegionMap(DatabaseAccount databaseAccount, boolean writeOnly) {
+    private AccountLevelLocationContext getAccountLevelLocationContext(DatabaseAccount databaseAccount, boolean writeOnly) {
         Iterator<DatabaseAccountLocation> locationIterator =
             writeOnly ? databaseAccount.getWritableLocations().iterator() : databaseAccount.getReadableLocations().iterator();
+
+        List<String> serviceOrderedReadableRegions = new ArrayList<>();
+        List<String> serviceOrderedWriteableRegions = new ArrayList<>();
         Map<String, String> regionMap = new ConcurrentHashMap<>();
 
         while (locationIterator.hasNext()) {
             DatabaseAccountLocation accountLocation = locationIterator.next();
             regionMap.put(accountLocation.getName(), accountLocation.getEndpoint());
+
+            if (writeOnly) {
+                serviceOrderedWriteableRegions.add(accountLocation.getName());
+            } else {
+                serviceOrderedReadableRegions.add(accountLocation.getName());
+            }
         }
 
-        return regionMap;
+        return new AccountLevelLocationContext(
+            serviceOrderedReadableRegions,
+            serviceOrderedWriteableRegions,
+            regionMap);
     }
 
     private static void validateTestObjectEquality(TestObject testObject1, TestObject testObject2) {
@@ -1875,6 +1884,22 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                     collectionNameBasedLink,
                     normalizedRegion))
                 .isFalse();
+        }
+    }
+
+    private static class AccountLevelLocationContext {
+        private final List<String> serviceOrderedReadableRegions;
+        private final List<String> serviceOrderedWriteableRegions;
+        private final Map<String, String> regionNameToEndpoint;
+
+        public AccountLevelLocationContext(
+            List<String> serviceOrderedReadableRegions,
+            List<String> serviceOrderedWriteableRegions,
+            Map<String, String> regionNameToEndpoint) {
+
+            this.serviceOrderedReadableRegions = serviceOrderedReadableRegions;
+            this.serviceOrderedWriteableRegions = serviceOrderedWriteableRegions;
+            this.regionNameToEndpoint = regionNameToEndpoint;
         }
     }
 }

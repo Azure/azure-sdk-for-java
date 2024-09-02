@@ -3406,10 +3406,10 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
 
         boolean shouldInjectEmptyPreferredRegions = ThreadLocalRandom.current().nextBoolean();
 
-        //if (shouldInjectEmptyPreferredRegions) {
+        if (shouldInjectEmptyPreferredRegions) {
             clientBuilder = clientBuilder
                 .preferredRegions(Collections.emptyList());
-        //}
+        }
 
         System.setProperty(
             "COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG",
