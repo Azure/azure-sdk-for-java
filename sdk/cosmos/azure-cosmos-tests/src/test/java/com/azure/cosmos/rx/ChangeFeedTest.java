@@ -3,6 +3,7 @@
 package com.azure.cosmos.rx;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
@@ -223,7 +224,8 @@ public class ChangeFeedTest extends TestSuiteBase {
         for (FeedResponse<Document> changeFeedResponse : changeFeedResultsList) {
             validateStoreResultInDiagnostics(
                 changeFeedResponse.getCosmosDiagnostics(),
-                1);
+                1,
+                this.client.getConnectionPolicy().getConnectionMode());
         }
     }
 
@@ -592,18 +594,26 @@ public class ChangeFeedTest extends TestSuiteBase {
 
     private void validateStoreResultInDiagnostics(
         CosmosDiagnostics cosmosDiagnostics,
-        int expectedStoreResultCount) {
+        int expectedResponseCount,
+        ConnectionMode connectionMode) {
         Collection<ClientSideRequestStatistics> clientSideRequestStatistics = ImplementationBridgeHelpers
             .CosmosDiagnosticsHelper
             .getCosmosDiagnosticsAccessor()
             .getClientSideRequestStatistics(cosmosDiagnostics);
         assertThat(clientSideRequestStatistics.size()).isEqualTo(1);
-        Collection<ClientSideRequestStatistics.StoreResponseStatistics> storeResponseStatistics =
-            clientSideRequestStatistics
-                .iterator()
-                .next()
-                .getResponseStatisticsList();
-        assertThat(storeResponseStatistics.size()).isEqualTo(expectedStoreResultCount);
+
+        if (connectionMode == ConnectionMode.DIRECT) {
+            Collection<ClientSideRequestStatistics.StoreResponseStatistics> storeResponseStatistics =
+                clientSideRequestStatistics
+                    .iterator()
+                    .next()
+                    .getResponseStatisticsList();
+            assertThat(storeResponseStatistics.size()).isEqualTo(expectedResponseCount);
+        } else {
+            List<ClientSideRequestStatistics.GatewayStatistics> gatewayStatistics =
+                clientSideRequestStatistics.iterator().next().getGatewayStatisticsList();
+            assertThat(gatewayStatistics.size()).isEqualTo(expectedResponseCount);
+        }
     }
 
     @Retention(java.lang.annotation.RetentionPolicy.RUNTIME)
