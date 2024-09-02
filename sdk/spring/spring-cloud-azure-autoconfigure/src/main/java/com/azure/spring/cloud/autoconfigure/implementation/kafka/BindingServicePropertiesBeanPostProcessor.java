@@ -43,13 +43,15 @@ class BindingServicePropertiesBeanPostProcessor implements BeanPostProcessor, Ap
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
         if (bean instanceof BindingServiceProperties bindingServiceProperties) {
+            // The kafka binder will be added if no binder is configured in the developer's configuration file.
             if (bindingServiceProperties.getBinders().isEmpty()) {
                 String defaultBinder = bindingServiceProperties.getDefaultBinder();
+                // No default binder name is configured, or the default binder name is kafka.
                 if (!StringUtils.hasText(defaultBinder) || DEFAULT_KAFKA_BINDER_NAME.equalsIgnoreCase(defaultBinder)) {
                     BinderTypeRegistry binderTypeRegistry = applicationContext.getBean(BinderTypeRegistry.class);
                     Map<String, BinderType> allBinders = binderTypeRegistry.getAll();
-                    if (allBinders.isEmpty()
-                        || (allBinders.containsKey(DEFAULT_KAFKA_BINDER_NAME) && allBinders.size() == 1)) {
+                    // Only kafka binder on the classpath.
+                    if (allBinders != null && allBinders.containsKey(DEFAULT_KAFKA_BINDER_NAME) && allBinders.size() == 1) {
                         Map<String, Object> environment = new HashMap<>();
                         Map<String, Object> springMainPropertiesMap = getOrCreateSpringMainPropertiesMap(environment);
                         configureSpringMainSources(springMainPropertiesMap);
