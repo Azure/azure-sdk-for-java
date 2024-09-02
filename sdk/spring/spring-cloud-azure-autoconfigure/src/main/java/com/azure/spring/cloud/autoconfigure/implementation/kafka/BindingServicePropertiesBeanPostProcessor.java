@@ -4,8 +4,13 @@ package com.azure.spring.cloud.autoconfigure.implementation.kafka;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.cloud.stream.binder.BinderType;
+import org.springframework.cloud.stream.binder.BinderTypeRegistry;
 import org.springframework.cloud.stream.config.BinderProperties;
 import org.springframework.cloud.stream.config.BindingServiceProperties;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.util.StringUtils;
 
 import java.util.HashMap;
@@ -18,7 +23,7 @@ import java.util.Map;
  *
  * @since 4.4.0
  */
-class BindingServicePropertiesBeanPostProcessor implements BeanPostProcessor {
+class BindingServicePropertiesBeanPostProcessor implements BeanPostProcessor, ApplicationContextAware {
 
     static final String SPRING_MAIN_SOURCES_PROPERTY = "spring.main.sources";
 
@@ -28,23 +33,36 @@ class BindingServicePropertiesBeanPostProcessor implements BeanPostProcessor {
     private static final String DEFAULT_KAFKA_BINDER_NAME = "kafka";
     private static final String KAFKA_BINDER_TYPE = "kafka";
 
+    private GenericApplicationContext applicationContext;
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = (GenericApplicationContext) applicationContext;
+    }
+
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
-        if (bean instanceof BindingServiceProperties) {
-            BindingServiceProperties bindingServiceProperties = (BindingServiceProperties) bean;
+        if (bean instanceof BindingServiceProperties bindingServiceProperties) {
             if (bindingServiceProperties.getBinders().isEmpty()) {
-                Map<String, Object> environment = new HashMap<>();
-                Map<String, Object> springMainPropertiesMap = getOrCreateSpringMainPropertiesMap(environment);
-                configureSpringMainSources(springMainPropertiesMap);
+                String defaultBinder = bindingServiceProperties.getDefaultBinder();
+                if (!StringUtils.hasText(defaultBinder) || DEFAULT_KAFKA_BINDER_NAME.equalsIgnoreCase(defaultBinder)) {
+                    BinderTypeRegistry binderTypeRegistry = applicationContext.getBean(BinderTypeRegistry.class);
+                    Map<String, BinderType> allBinders = binderTypeRegistry.getAll();
+                    if (allBinders.isEmpty()
+                        || (allBinders.containsKey(DEFAULT_KAFKA_BINDER_NAME) && allBinders.size() == 1)) {
+                        Map<String, Object> environment = new HashMap<>();
+                        Map<String, Object> springMainPropertiesMap = getOrCreateSpringMainPropertiesMap(environment);
+                        configureSpringMainSources(springMainPropertiesMap);
 
-                BinderProperties defaultKafkaBinder = new BinderProperties();
-                defaultKafkaBinder.setEnvironment(environment);
-                defaultKafkaBinder.setDefaultCandidate(!StringUtils.hasText(bindingServiceProperties.getDefaultBinder()));
+                        BinderProperties defaultKafkaBinder = new BinderProperties();
+                        defaultKafkaBinder.setEnvironment(environment);
 
-                Map<String, BinderProperties> binders = new HashMap<>();
-                binders.put(DEFAULT_KAFKA_BINDER_NAME, defaultKafkaBinder);
+                        Map<String, BinderProperties> binders = new HashMap<>();
+                        binders.put(DEFAULT_KAFKA_BINDER_NAME, defaultKafkaBinder);
 
-                bindingServiceProperties.setBinders(binders);
+                        bindingServiceProperties.setBinders(binders);
+                    }
+                }
             } else {
                 for (Map.Entry<String, BinderProperties> entry : bindingServiceProperties.getBinders().entrySet()) {
                     if (entry.getKey() != null && entry.getValue() != null) {
