@@ -647,6 +647,10 @@ public class LocationCache {
             endpoints.add(fallbackEndpoint);
         }
 
+        for (URI endpoint : endpoints) {
+            logger.info("Effective preferred locations : {}", endpoint.getPath());
+        }
+
         return new UnmodifiableList<URI>(endpoints);
     }
 
