@@ -10,7 +10,6 @@ import org.springframework.cloud.stream.config.BinderProperties;
 import org.springframework.cloud.stream.config.BindingServiceProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.util.StringUtils;
 
 import java.util.HashMap;
@@ -33,11 +32,11 @@ class BindingServicePropertiesBeanPostProcessor implements BeanPostProcessor, Ap
     private static final String DEFAULT_KAFKA_BINDER_NAME = "kafka";
     private static final String KAFKA_BINDER_TYPE = "kafka";
 
-    private GenericApplicationContext applicationContext;
+    private ApplicationContext applicationContext;
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.applicationContext = (GenericApplicationContext) applicationContext;
+        this.applicationContext = applicationContext;
     }
 
     @Override

@@ -111,9 +111,12 @@ class BindingServicePropertiesBeanPostProcessorTest {
     }
 
     private static Stream<Arguments> binderTypesSupplier() {
-        return Stream.of(Arguments.of(new HashMap<String, BinderType>() {{
-            put("kafka", new BinderType("kafka", null));
-        }}));
+        return Stream.of(
+            Arguments.of(new HashMap<String, BinderType>() {
+                {
+                    put("kafka", new BinderType("kafka", null));
+                }
+            }));
     }
     @Test
     void testBindKafkaWithNonKafkaByDefaultBinderProperty() {
