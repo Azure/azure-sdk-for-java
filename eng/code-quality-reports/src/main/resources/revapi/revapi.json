@@ -219,11 +219,6 @@
           "justification": "New method added to support more properties."
         },
         {
-          "code": "java.method.addedToInterface",
-          "new": "method void com.azure.spring.cloud.appconfiguration.config.AppConfigurationRefresh::refreshAsync()",
-          "justification": "Method was added to an interface."
-        },
-        {
           "regex": true,
           "code": "java.class.externalClassExposedInAPI",
           "new": "class com.azure.spring.cloud.resourcemanager.provisioning.properties.(ServiceBusTopicProperties|ServiceBusQueueProperties)",

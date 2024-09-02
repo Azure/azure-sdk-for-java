@@ -25,7 +25,9 @@ public interface AppConfigurationRefresh extends ApplicationEventPublisherAware 
      * Checks configurations to see if configurations should be reloaded. If the refresh interval has passed and a
      * trigger has been updated configuration are reloaded.
      */
-    void refreshAsync();
+    default void refreshAsync() {
+        throw new UnsupportedOperationException("AppConfiguration.refreshAsync needs to be implemented to trigger a refresh.");
+    }
 
     /**
      * Soft expires refresh interval. Sets amount of time to next refresh to be a random value between 0 and 15 seconds,
