@@ -30,6 +30,7 @@ public final class MessageTextContent extends MessageContent {
     @Generated
     public MessageTextContent(MessageTextDetails text) {
         this.text = text;
+        this.type = "text";
     }
 
     /**
@@ -42,23 +43,6 @@ public final class MessageTextContent extends MessageContent {
         return this.text;
     }
 
-    /*
-     * The object type.
-     */
-    @Generated
-    private String type = "text";
-
-    /**
-     * Get the type property: The object type.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public String getType() {
-        return this.type;
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -66,8 +50,8 @@ public final class MessageTextContent extends MessageContent {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        toJsonShared(jsonWriter);
         jsonWriter.writeJsonField("text", this.text);
-        jsonWriter.writeStringField("type", this.type);
         return jsonWriter.writeEndObject();
     }
 

@@ -22,23 +22,7 @@ public final class OnYourDataSystemAssignedManagedIdentityAuthenticationOptions
      */
     @Generated
     public OnYourDataSystemAssignedManagedIdentityAuthenticationOptions() {
-    }
-
-    /*
-     * The authentication type.
-     */
-    @Generated
-    private OnYourDataAuthenticationType type = OnYourDataAuthenticationType.SYSTEM_ASSIGNED_MANAGED_IDENTITY;
-
-    /**
-     * Get the type property: The authentication type.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public OnYourDataAuthenticationType getType() {
-        return this.type;
+        this.type = OnYourDataAuthenticationType.SYSTEM_ASSIGNED_MANAGED_IDENTITY;
     }
 
     /**
@@ -48,7 +32,7 @@ public final class OnYourDataSystemAssignedManagedIdentityAuthenticationOptions
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        toJsonShared(jsonWriter);
         return jsonWriter.writeEndObject();
     }
 
@@ -70,9 +54,9 @@ public final class OnYourDataSystemAssignedManagedIdentityAuthenticationOptions
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("type".equals(fieldName)) {
-                    deserializedOnYourDataSystemAssignedManagedIdentityAuthenticationOptions.type
-                        = OnYourDataAuthenticationType.fromString(reader.getString());
+                if (OnYourDataAuthenticationOptions.fromJsonShared(reader, fieldName,
+                    deserializedOnYourDataSystemAssignedManagedIdentityAuthenticationOptions)) {
+                    continue;
                 } else {
                     reader.skipChildren();
                 }

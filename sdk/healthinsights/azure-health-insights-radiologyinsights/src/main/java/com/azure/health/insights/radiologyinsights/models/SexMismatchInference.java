@@ -7,7 +7,6 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -20,14 +19,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("sexMismatch")
 @Immutable
 public final class SexMismatchInference extends RadiologyInsightsInference {
-
-    /*
-     * Discriminator property for RadiologyInsightsInference.
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "kind")
-    private RadiologyInsightsInferenceType kind = RadiologyInsightsInferenceType.SEX_MISMATCH;
 
     /*
      * Sex indication : SNOMED CT code for gender finding.
@@ -45,17 +36,7 @@ public final class SexMismatchInference extends RadiologyInsightsInference {
     @JsonCreator
     private SexMismatchInference(@JsonProperty(value = "sexIndication") FhirR4CodeableConcept sexIndication) {
         this.sexIndication = sexIndication;
-    }
-
-    /**
-     * Get the kind property: Discriminator property for RadiologyInsightsInference.
-     *
-     * @return the kind value.
-     */
-    @Generated
-    @Override
-    public RadiologyInsightsInferenceType getKind() {
-        return this.kind;
+        this.kind = RadiologyInsightsInferenceType.SEX_MISMATCH;
     }
 
     /**

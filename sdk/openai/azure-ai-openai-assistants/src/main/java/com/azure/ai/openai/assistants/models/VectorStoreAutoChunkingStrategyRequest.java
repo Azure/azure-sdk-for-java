@@ -16,28 +16,12 @@ import java.io.IOException;
 @Immutable
 public final class VectorStoreAutoChunkingStrategyRequest extends VectorStoreChunkingStrategyRequest {
 
-    /*
-     * The object type.
-     */
-    @Generated
-    private VectorStoreChunkingStrategyRequestType type = VectorStoreChunkingStrategyRequestType.AUTO;
-
     /**
      * Creates an instance of VectorStoreAutoChunkingStrategyRequest class.
      */
     @Generated
     public VectorStoreAutoChunkingStrategyRequest() {
-    }
-
-    /**
-     * Get the type property: The object type.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public VectorStoreChunkingStrategyRequestType getType() {
-        return this.type;
+        this.type = VectorStoreChunkingStrategyRequestType.AUTO;
     }
 
     /**
@@ -47,7 +31,7 @@ public final class VectorStoreAutoChunkingStrategyRequest extends VectorStoreChu
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        toJsonShared(jsonWriter);
         return jsonWriter.writeEndObject();
     }
 
@@ -67,9 +51,9 @@ public final class VectorStoreAutoChunkingStrategyRequest extends VectorStoreChu
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("type".equals(fieldName)) {
-                    deserializedVectorStoreAutoChunkingStrategyRequest.type
-                        = VectorStoreChunkingStrategyRequestType.fromString(reader.getString());
+                if (VectorStoreChunkingStrategyRequest.fromJsonShared(reader, fieldName,
+                    deserializedVectorStoreAutoChunkingStrategyRequest)) {
+                    continue;
                 } else {
                     reader.skipChildren();
                 }

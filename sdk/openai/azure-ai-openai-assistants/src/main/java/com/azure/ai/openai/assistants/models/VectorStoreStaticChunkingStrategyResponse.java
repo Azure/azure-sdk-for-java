@@ -17,12 +17,6 @@ import java.io.IOException;
 public final class VectorStoreStaticChunkingStrategyResponse extends VectorStoreChunkingStrategyResponse {
 
     /*
-     * The object type.
-     */
-    @Generated
-    private VectorStoreChunkingStrategyResponseType type = VectorStoreChunkingStrategyResponseType.STATIC;
-
-    /*
      * The options for the static chunking strategy.
      */
     @Generated
@@ -36,17 +30,7 @@ public final class VectorStoreStaticChunkingStrategyResponse extends VectorStore
     @Generated
     private VectorStoreStaticChunkingStrategyResponse(VectorStoreStaticChunkingStrategyOptions staticProperty) {
         this.staticProperty = staticProperty;
-    }
-
-    /**
-     * Get the type property: The object type.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public VectorStoreChunkingStrategyResponseType getType() {
-        return this.type;
+        this.type = VectorStoreChunkingStrategyResponseType.STATIC;
     }
 
     /**
@@ -66,8 +50,8 @@ public final class VectorStoreStaticChunkingStrategyResponse extends VectorStore
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        toJsonShared(jsonWriter);
         jsonWriter.writeJsonField("static", this.staticProperty);
-        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
     }
 

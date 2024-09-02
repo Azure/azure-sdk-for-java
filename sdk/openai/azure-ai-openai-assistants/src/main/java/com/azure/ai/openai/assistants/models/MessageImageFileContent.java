@@ -30,6 +30,7 @@ public final class MessageImageFileContent extends MessageContent {
     @Generated
     public MessageImageFileContent(MessageImageFileDetails imageFile) {
         this.imageFile = imageFile;
+        this.type = "image_file";
     }
 
     /**
@@ -49,8 +50,8 @@ public final class MessageImageFileContent extends MessageContent {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        toJsonShared(jsonWriter);
         jsonWriter.writeJsonField("image_file", this.imageFile);
-        jsonWriter.writeStringField("type", this.type);
         return jsonWriter.writeEndObject();
     }
 
@@ -83,22 +84,5 @@ public final class MessageImageFileContent extends MessageContent {
             deserializedMessageImageFileContent.type = type;
             return deserializedMessageImageFileContent;
         });
-    }
-
-    /*
-     * The object type.
-     */
-    @Generated
-    private String type = "image_file";
-
-    /**
-     * Get the type property: The object type.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public String getType() {
-        return this.type;
     }
 }

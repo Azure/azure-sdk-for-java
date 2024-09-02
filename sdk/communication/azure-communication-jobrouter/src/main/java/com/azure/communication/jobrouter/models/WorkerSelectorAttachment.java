@@ -24,7 +24,7 @@ public class WorkerSelectorAttachment implements JsonSerializable<WorkerSelector
      * The type discriminator describing a sub-type of WorkerSelectorAttachment.
      */
     @Generated
-    private WorkerSelectorAttachmentKind kind = WorkerSelectorAttachmentKind.fromString("WorkerSelectorAttachment");
+    WorkerSelectorAttachmentKind kind;
 
     /**
      * Stores updated model property, the value is property name, not serialized name.
@@ -63,6 +63,7 @@ public class WorkerSelectorAttachment implements JsonSerializable<WorkerSelector
      */
     @Generated
     public WorkerSelectorAttachment() {
+        this.kind = WorkerSelectorAttachmentKind.fromString("WorkerSelectorAttachment");
     }
 
     /**
@@ -147,14 +148,21 @@ public class WorkerSelectorAttachment implements JsonSerializable<WorkerSelector
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("kind".equals(fieldName)) {
-                    deserializedWorkerSelectorAttachment.kind
-                        = WorkerSelectorAttachmentKind.fromString(reader.getString());
-                } else {
+                if (!WorkerSelectorAttachment.fromJsonShared(reader, fieldName, deserializedWorkerSelectorAttachment)) {
                     reader.skipChildren();
                 }
             }
             return deserializedWorkerSelectorAttachment;
         });
+    }
+
+    @Generated
+    static boolean fromJsonShared(JsonReader reader, String fieldName,
+        WorkerSelectorAttachment deserializedWorkerSelectorAttachment) throws IOException {
+        if ("kind".equals(fieldName)) {
+            deserializedWorkerSelectorAttachment.kind = WorkerSelectorAttachmentKind.fromString(reader.getString());
+            return true;
+        }
+        return false;
     }
 }

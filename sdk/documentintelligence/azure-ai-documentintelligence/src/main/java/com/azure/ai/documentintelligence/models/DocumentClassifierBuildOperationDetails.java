@@ -12,7 +12,6 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
 /**
@@ -21,40 +20,10 @@ import java.util.Map;
 @Immutable
 public final class DocumentClassifierBuildOperationDetails extends OperationDetails {
     /*
-     * Type of operation.
-     */
-    @Generated
-    private OperationKind kind = OperationKind.DOCUMENT_CLASSIFIER_BUILD;
-
-    /*
      * Operation result upon success.
      */
     @Generated
     private DocumentClassifierDetails result;
-
-    /*
-     * Encountered error.
-     */
-    @Generated
-    private Error error;
-
-    /*
-     * List of key-value tag attributes associated with the document model.
-     */
-    @Generated
-    private Map<String, String> tags;
-
-    /*
-     * API version used to create this operation.
-     */
-    @Generated
-    private String apiVersion;
-
-    /*
-     * Operation progress (0-100).
-     */
-    @Generated
-    private Integer percentCompleted;
 
     /**
      * Creates an instance of DocumentClassifierBuildOperationDetails class.
@@ -68,17 +37,7 @@ public final class DocumentClassifierBuildOperationDetails extends OperationDeta
     private DocumentClassifierBuildOperationDetails(OperationStatus status, OffsetDateTime createdDateTime,
         OffsetDateTime lastUpdatedDateTime, String resourceLocation) {
         super(status, createdDateTime, lastUpdatedDateTime, resourceLocation);
-    }
-
-    /**
-     * Get the kind property: Type of operation.
-     * 
-     * @return the kind value.
-     */
-    @Generated
-    @Override
-    public OperationKind getKind() {
-        return this.kind;
+        this.kind = OperationKind.DOCUMENT_CLASSIFIER_BUILD;
     }
 
     /**
@@ -92,69 +51,13 @@ public final class DocumentClassifierBuildOperationDetails extends OperationDeta
     }
 
     /**
-     * Get the error property: Encountered error.
-     * 
-     * @return the error value.
-     */
-    @Generated
-    @Override
-    public Error getError() {
-        return this.error;
-    }
-
-    /**
-     * Get the tags property: List of key-value tag attributes associated with the document model.
-     * 
-     * @return the tags value.
-     */
-    @Generated
-    @Override
-    public Map<String, String> getTags() {
-        return this.tags;
-    }
-
-    /**
-     * Get the apiVersion property: API version used to create this operation.
-     * 
-     * @return the apiVersion value.
-     */
-    @Generated
-    @Override
-    public String getApiVersion() {
-        return this.apiVersion;
-    }
-
-    /**
-     * Get the percentCompleted property: Operation progress (0-100).
-     * 
-     * @return the percentCompleted value.
-     */
-    @Generated
-    @Override
-    public Integer getPercentCompleted() {
-        return this.percentCompleted;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("status", getStatus() == null ? null : getStatus().toString());
-        jsonWriter.writeStringField("createdDateTime",
-            getCreatedDateTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getCreatedDateTime()));
-        jsonWriter.writeStringField("lastUpdatedDateTime",
-            getLastUpdatedDateTime() == null
-                ? null
-                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getLastUpdatedDateTime()));
-        jsonWriter.writeStringField("resourceLocation", getResourceLocation());
-        jsonWriter.writeNumberField("percentCompleted", getPercentCompleted());
-        jsonWriter.writeStringField("apiVersion", getApiVersion());
-        jsonWriter.writeMapField("tags", getTags(), (writer, element) -> writer.writeString(element));
-        jsonWriter.writeJsonField("error", getError());
-        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        toJsonShared(jsonWriter);
         jsonWriter.writeJsonField("result", this.result);
         return jsonWriter.writeEndObject();
     }

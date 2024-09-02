@@ -21,14 +21,14 @@ public class VectorStoreChunkingStrategyResponse implements JsonSerializable<Vec
      * The object type.
      */
     @Generated
-    private VectorStoreChunkingStrategyResponseType type
-        = VectorStoreChunkingStrategyResponseType.fromString("VectorStoreChunkingStrategyResponse");
+    VectorStoreChunkingStrategyResponseType type;
 
     /**
      * Creates an instance of VectorStoreChunkingStrategyResponse class.
      */
     @Generated
     protected VectorStoreChunkingStrategyResponse() {
+        this.type = VectorStoreChunkingStrategyResponseType.fromString("VectorStoreChunkingStrategyResponse");
     }
 
     /**
@@ -48,7 +48,7 @@ public class VectorStoreChunkingStrategyResponse implements JsonSerializable<Vec
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        toJsonShared(jsonWriter);
         return jsonWriter.writeEndObject();
     }
 
@@ -97,14 +97,27 @@ public class VectorStoreChunkingStrategyResponse implements JsonSerializable<Vec
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("type".equals(fieldName)) {
-                    deserializedVectorStoreChunkingStrategyResponse.type
-                        = VectorStoreChunkingStrategyResponseType.fromString(reader.getString());
-                } else {
+                if (!VectorStoreChunkingStrategyResponse.fromJsonShared(reader, fieldName,
+                    deserializedVectorStoreChunkingStrategyResponse)) {
                     reader.skipChildren();
                 }
             }
             return deserializedVectorStoreChunkingStrategyResponse;
         });
+    }
+
+    void toJsonShared(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+    }
+
+    @Generated
+    static boolean fromJsonShared(JsonReader reader, String fieldName,
+        VectorStoreChunkingStrategyResponse deserializedVectorStoreChunkingStrategyResponse) throws IOException {
+        if ("type".equals(fieldName)) {
+            deserializedVectorStoreChunkingStrategyResponse.type
+                = VectorStoreChunkingStrategyResponseType.fromString(reader.getString());
+            return true;
+        }
+        return false;
     }
 }

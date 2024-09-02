@@ -18,12 +18,6 @@ import java.util.List;
 public final class MediaNotificationContent extends NotificationContent {
 
     /*
-     * The type discriminator describing a notification type.
-     */
-    @Generated
-    private CommunicationMessageKind kind = CommunicationMessageKind.IMAGE;
-
-    /*
      * Optional text content.
      */
     @Generated
@@ -46,17 +40,7 @@ public final class MediaNotificationContent extends NotificationContent {
     public MediaNotificationContent(String channelRegistrationId, List<String> to, String mediaUrl) {
         super(channelRegistrationId, to);
         this.mediaUrl = mediaUrl;
-    }
-
-    /**
-     * Get the kind property: The type discriminator describing a notification type.
-     *
-     * @return the kind value.
-     */
-    @Generated
-    @Override
-    public CommunicationMessageKind getKind() {
-        return this.kind;
+        this.kind = CommunicationMessageKind.IMAGE;
     }
 
     /**
@@ -99,10 +83,8 @@ public final class MediaNotificationContent extends NotificationContent {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("channelRegistrationId", getChannelRegistrationId());
-        jsonWriter.writeArrayField("to", getTo(), (writer, element) -> writer.writeString(element));
+        toJsonShared(jsonWriter);
         jsonWriter.writeStringField("mediaUri", this.mediaUrl);
-        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         jsonWriter.writeStringField("content", this.content);
         return jsonWriter.writeEndObject();
     }

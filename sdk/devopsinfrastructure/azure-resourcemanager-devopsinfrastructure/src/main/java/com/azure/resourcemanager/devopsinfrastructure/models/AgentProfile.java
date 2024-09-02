@@ -19,7 +19,7 @@ public class AgentProfile implements JsonSerializable<AgentProfile> {
     /*
      * Discriminator property for AgentProfile.
      */
-    private String kind = "AgentProfile";
+    String kind;
 
     /*
      * Defines pool buffer/stand-by agents.
@@ -35,6 +35,7 @@ public class AgentProfile implements JsonSerializable<AgentProfile> {
      * Creates an instance of AgentProfile class.
      */
     public AgentProfile() {
+        this.kind = "AgentProfile";
     }
 
     /**
@@ -106,10 +107,14 @@ public class AgentProfile implements JsonSerializable<AgentProfile> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        toJsonShared(jsonWriter);
+        return jsonWriter.writeEndObject();
+    }
+
+    void toJsonShared(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStringField("kind", this.kind);
         jsonWriter.writeJsonField("resourcePredictions", this.resourcePredictions);
         jsonWriter.writeJsonField("resourcePredictionsProfile", this.resourcePredictionsProfile);
-        return jsonWriter.writeEndObject();
     }
 
     /**
@@ -154,18 +159,27 @@ public class AgentProfile implements JsonSerializable<AgentProfile> {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("kind".equals(fieldName)) {
-                    deserializedAgentProfile.kind = reader.getString();
-                } else if ("resourcePredictions".equals(fieldName)) {
-                    deserializedAgentProfile.resourcePredictions = ResourcePredictions.fromJson(reader);
-                } else if ("resourcePredictionsProfile".equals(fieldName)) {
-                    deserializedAgentProfile.resourcePredictionsProfile = ResourcePredictionsProfile.fromJson(reader);
-                } else {
+                if (!AgentProfile.fromJsonShared(reader, fieldName, deserializedAgentProfile)) {
                     reader.skipChildren();
                 }
             }
 
             return deserializedAgentProfile;
         });
+    }
+
+    static boolean fromJsonShared(JsonReader reader, String fieldName, AgentProfile deserializedAgentProfile)
+        throws IOException {
+        if ("kind".equals(fieldName)) {
+            deserializedAgentProfile.kind = reader.getString();
+            return true;
+        } else if ("resourcePredictions".equals(fieldName)) {
+            deserializedAgentProfile.resourcePredictions = ResourcePredictions.fromJson(reader);
+            return true;
+        } else if ("resourcePredictionsProfile".equals(fieldName)) {
+            deserializedAgentProfile.resourcePredictionsProfile = ResourcePredictionsProfile.fromJson(reader);
+            return true;
+        }
+        return false;
     }
 }

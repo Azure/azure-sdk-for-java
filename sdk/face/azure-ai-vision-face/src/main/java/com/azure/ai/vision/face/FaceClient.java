@@ -5,7 +5,7 @@ package com.azure.ai.vision.face;
 
 import com.azure.ai.vision.face.implementation.FaceClientImpl;
 import com.azure.ai.vision.face.implementation.models.DetectFromUrlImplOptions;
-import com.azure.ai.vision.face.implementation.models.DetectFromUrlRequest;
+import com.azure.ai.vision.face.implementation.models.DetectFromUrlImplRequest;
 import com.azure.ai.vision.face.implementation.models.FindSimilarRequest;
 import com.azure.ai.vision.face.implementation.models.GroupRequest;
 import com.azure.ai.vision.face.implementation.models.VerifyFaceToFaceRequest;
@@ -32,6 +32,7 @@ import com.azure.core.util.serializer.TypeReference;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import com.azure.ai.vision.face.implementation.models.DetectFromUrlRequest;
 import com.azure.ai.vision.face.models.DetectOptions;
 import static com.azure.ai.vision.face.implementation.ClientUtils.addOptionalQueryParameterForDetection;
 import static com.azure.ai.vision.face.implementation.ClientUtils.addRequiredQueryParameterForDetection;
@@ -70,7 +71,7 @@ public final class FaceClient {
      * The 'recognitionModel' associated with the query faceId should be the same as the 'recognitionModel' used by the
      * target faceId array.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     faceId: String (Required)
@@ -81,9 +82,9 @@ public final class FaceClient {
      *     ]
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -119,16 +120,16 @@ public final class FaceClient {
      * &gt; * For the scenarios that are sensitive to accuracy please make your own judgment.
      * &gt; * The 'recognitionModel' associated with the both faces should be the same.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     faceId1: String (Required)
      *     faceId2: String (Required)
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     isIdentical: boolean (Required)
@@ -165,7 +166,7 @@ public final class FaceClient {
      * only have 2 candidate faces.
      * * The 'recognitionModel' associated with the query faces' faceIds should be the same.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     faceIds (Required): [
@@ -173,9 +174,9 @@ public final class FaceClient {
      *     ]
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     groups (Required): [
@@ -417,15 +418,15 @@ public final class FaceClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     url: String (Required)
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -602,13 +603,13 @@ public final class FaceClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * BinaryData
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -780,7 +781,7 @@ public final class FaceClient {
         Boolean returnFaceLandmarks = options.isReturnFaceLandmarks();
         Boolean returnRecognitionModel = options.isReturnRecognitionModel();
         Integer faceIdTimeToLive = options.getFaceIdTimeToLive();
-        DetectFromUrlRequest detectFromUrlRequestObj = new DetectFromUrlRequest(options.getUrl());
+        DetectFromUrlImplRequest detectFromUrlRequestObj = new DetectFromUrlImplRequest(options.getUrl());
         BinaryData detectFromUrlRequest = BinaryData.fromObject(detectFromUrlRequestObj);
         if (detectionModel != null) {
             requestOptions.addQueryParam("detectionModel", detectionModel.toString(), false);

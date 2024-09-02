@@ -7,7 +7,6 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -19,14 +18,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("finding")
 @Immutable
 public final class FindingInference extends RadiologyInsightsInference {
-
-    /*
-     * Discriminator property for RadiologyInsightsInference.
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "kind")
-    private RadiologyInsightsInferenceType kind = RadiologyInsightsInferenceType.FINDING;
 
     /*
      * Finding data : contains extensions, fields and components linked with the finding.
@@ -44,17 +35,7 @@ public final class FindingInference extends RadiologyInsightsInference {
     @JsonCreator
     private FindingInference(@JsonProperty(value = "finding") FhirR4Observation finding) {
         this.finding = finding;
-    }
-
-    /**
-     * Get the kind property: Discriminator property for RadiologyInsightsInference.
-     *
-     * @return the kind value.
-     */
-    @Generated
-    @Override
-    public RadiologyInsightsInferenceType getKind() {
-        return this.kind;
+        this.kind = RadiologyInsightsInferenceType.FINDING;
     }
 
     /**
