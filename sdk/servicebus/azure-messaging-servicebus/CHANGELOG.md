@@ -10,6 +10,8 @@
 
 ### Bugs Fixed
 
+- Fixes the message size computation in ServiceBusMessageSerializer to include size of delivery annotations. ([41605](https://github.com/Azure/azure-sdk-for-java/issues/41605))
+
 ### Other Changes
 
 ## 7.17.3 (2024-08-24)
