@@ -1,0 +1,17 @@
+trigger: none
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-tests.yml
+  parameters:
+    ServiceDirectory: translation
+    SupportedClouds: 'Public'
+    TimeoutInMinutes: 120 # how long to run the job before automatically cancelling
+    Location: 'eastus'
+    UseFederatedAuth: true
+    Artifacts:
+      - name: azure-ai-translation-text
+        groupId: com.azure
+        safeName: azureaitranslationtext
+      - name: azure-ai-translation-document
+        groupId: com.azure
+        safeName: azureaitranslationdocument
