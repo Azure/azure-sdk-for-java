@@ -81,7 +81,7 @@ public class KeyVaultOperationTests {
     }
 
     public void setupSecretBundle(List<String> secretKeysConfig) {
-        keyVaultOperation = new KeyVaultOperation( new DeferredLogs(),
+        keyVaultOperation = new KeyVaultOperation(new DeferredLogs(),
             "test", keyVaultClient, Duration.ZERO, secretKeysConfig, false);
     }
 
@@ -225,7 +225,7 @@ public class KeyVaultOperationTests {
         private final String keyUpdatedValue;
         private static final int SLEEP_IN_SECONDS = 3;
 
-        public SecretRefreshing(CountDownLatch latchForRefreshing,
+        SecretRefreshing(CountDownLatch latchForRefreshing,
                                 String propertySourceName,
                                 String name,
                                 String value,
@@ -259,7 +259,7 @@ public class KeyVaultOperationTests {
             when(keyClient.getSecret(secret.getName(), null)).thenReturn(secret);
             when(keyClient.listPropertiesOfSecrets())
                 .thenReturn(new PagedIterable<>(new PagedFlux<>(() -> Mono.just(secret1Response))));
-            return new KeyVaultOperation( new DeferredLogs(),
+            return new KeyVaultOperation(new DeferredLogs(),
                 propertySourceName, keyClient, Duration.ofSeconds(SLEEP_IN_SECONDS), null, false);
         }
 
