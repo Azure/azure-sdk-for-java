@@ -30,7 +30,7 @@ search for your resource. On the overview page of your resource, you will find t
 right corner.
 
 
-### Setup THE OpenTelemetry SDK to work with Azure Monitor exporter
+### Setup the OpenTelemetry SDK to work with Azure Monitor exporter
 
 The following code shows how to configure the OpenTelemetry SDK auto-configuration with the Azure Monitor exporter:
 ```java readme-sample-autoconfigure
@@ -99,7 +99,6 @@ More advanced examples with OpenTelemetry APIs:
 * [Advanced examples - 1][advanced_examples_1]
 * [Advanced examples - 2][advanced_examples_2]
 * [Event Hubs example][event_hubs_example]
-
 
 ## Key concepts
 
