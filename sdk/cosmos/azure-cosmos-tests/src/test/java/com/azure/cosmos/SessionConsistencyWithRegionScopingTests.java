@@ -1101,60 +1101,70 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
 
             deleteAllDocuments(container);
 
-            Flux<CosmosItemOperation> createOperationsFlux = Flux.range(0, createOperationCount).map(i -> {
-                String documentId = UUID.randomUUID().toString();
-                TestItem testItem = new TestItem(documentId, documentId, documentId);
+            try (CosmosAsyncClient client = buildAsyncClient(getClientBuilder(), this.writeRegions, true, shouldUsePreferredRegions)) {
 
-                idsAddedByCreates.add(documentId);
-                return CosmosBulkOperations.getCreateItemOperation(testItem, new PartitionKey(documentId));
-            });
+                Flux<CosmosItemOperation> createOperationsFlux = Flux.range(0, createOperationCount).map(i -> {
+                    String documentId = UUID.randomUUID().toString();
+                    TestItem testItem = new TestItem(documentId, documentId, documentId);
 
-            List<CosmosBulkOperationResponse<Object>> bulkCreateResponses = container
-                .executeBulkOperations(createOperationsFlux)
-                .collectList()
-                .block();
+                    idsAddedByCreates.add(documentId);
+                    return CosmosBulkOperations.getCreateItemOperation(testItem, new PartitionKey(documentId));
+                });
 
-            assertThat(bulkCreateResponses).isNotNull();
-            assertThat(bulkCreateResponses.size()).isEqualTo(createOperationCount);
+                CosmosAsyncContainer helperContainer = client.getDatabase(container.getDatabase().getId()).getContainer(container.getId());
 
-            CosmosChangeFeedRequestOptions changeFeedRequestOptions = CosmosChangeFeedRequestOptions
-                .createForProcessingFromBeginning(FeedRange.forFullRange())
-                .setExcludedRegions(ImmutableList.of(this.writeRegions.get(0)));
+                List<CosmosBulkOperationResponse<Object>> bulkCreateResponses = helperContainer
+                    .executeBulkOperations(createOperationsFlux)
+                    .collectList()
+                    .block();
 
-            Iterator<FeedResponse<JsonNode>> responseIterator = container
-                .queryChangeFeed(changeFeedRequestOptions, JsonNode.class)
-                .byPage()
-                .toIterable()
-                .iterator();
+                assertThat(bulkCreateResponses).isNotNull();
+                assertThat(bulkCreateResponses.size()).isEqualTo(createOperationCount);
 
-            List<JsonNode> results = new ArrayList<>();
+                CosmosChangeFeedRequestOptions changeFeedRequestOptions = CosmosChangeFeedRequestOptions
+                    .createForProcessingFromBeginning(FeedRange.forFullRange())
+                    .setExcludedRegions(ImmutableList.of(this.writeRegions.get(0)));
 
-            while (responseIterator.hasNext()) {
-                FeedResponse<JsonNode> response = responseIterator.next();
+                Iterator<FeedResponse<JsonNode>> responseIterator = helperContainer
+                    .queryChangeFeed(changeFeedRequestOptions, JsonNode.class)
+                    .byPage()
+                    .toIterable()
+                    .iterator();
 
-                assertThat(response).isNotNull();
-                assertThat(response.getResults()).isNotNull();
+                List<JsonNode> results = new ArrayList<>();
 
-                results.addAll(response.getResults());
+                while (responseIterator.hasNext()) {
+                    FeedResponse<JsonNode> response = responseIterator.next();
 
-                changeFeedRequestOptions = CosmosChangeFeedRequestOptions.createForProcessingFromContinuation(response.getContinuationToken());
+                    assertThat(response).isNotNull();
+                    assertThat(response.getResults()).isNotNull();
 
-                if (results.size() >= idsAddedByCreates.size()) {
-                    break;
+                    results.addAll(response.getResults());
+
+                    changeFeedRequestOptions = CosmosChangeFeedRequestOptions.createForProcessingFromContinuation(response.getContinuationToken());
+
+                    if (results.size() >= idsAddedByCreates.size()) {
+                        break;
+                    }
                 }
+
+                assertThat(results.size() >= idsAddedByCreates.size()).isTrue();
+
+                Set<String> idsReceivedFromChangeFeedRequest = new HashSet<>();
+
+                results.forEach(instanceReceivedFromChangeFeedRequest ->
+                    idsReceivedFromChangeFeedRequest.add(instanceReceivedFromChangeFeedRequest.get("id").asText()));
+
+                idsAddedByCreates.forEach(idAddedByBulkCreate ->
+                    assertThat(idsReceivedFromChangeFeedRequest.contains(idAddedByBulkCreate)).isTrue());
+
+                return idsReceivedFromChangeFeedRequest;
+            } catch (Exception ex) {
+                logger.error("Exception occurred : ", ex);
+                fail("Bulk creates or change feed operations failed!");
             }
 
-            assertThat(results.size() >= idsAddedByCreates.size()).isTrue();
-
-            Set<String> idsReceivedFromChangeFeedRequest = new HashSet<>();
-
-            results.forEach(instanceReceivedFromChangeFeedRequest ->
-                idsReceivedFromChangeFeedRequest.add(instanceReceivedFromChangeFeedRequest.get("id").asText()));
-
-            idsAddedByCreates.forEach(idAddedByBulkCreate ->
-                assertThat(idsReceivedFromChangeFeedRequest.contains(idAddedByBulkCreate)).isTrue());
-
-            return idsReceivedFromChangeFeedRequest;
+            return new HashSet<>();
         };
 
         BiFunction<CosmosAsyncContainer, Boolean, Set<String>> changeFeed_fromBeginningAndFromSecondPreferredRegion_forLogicalPartition_withCreatesOnFirstPreferredRegion_withSessionGuaranteeFunc = (container, shouldUsePreferredRegions) -> {
@@ -1162,8 +1172,6 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
             try (CosmosAsyncClient client = buildAsyncClient(getClientBuilder(), this.writeRegions, false, shouldUsePreferredRegions)) {
                 int createOperationCount = 10;
                 Set<String> idsAddedByBulkCreate = new HashSet<>();
-
-                deleteAllDocuments(container);
 
                 CosmosAsyncDatabase database = client.getDatabase(container.getDatabase().getId());
                 CosmosAsyncContainer helperContainer = database.getContainer(container.getId());
@@ -1786,7 +1794,7 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
 
     private Object[][] addBooleanFlagsToAllTestConfigs(Object[][] testConfigs) {
         List<List<Object>> intermediateTestConfigList = new ArrayList<>();
-        boolean[] possibleBooleans = new boolean[]{true, false};
+        boolean[] possibleBooleans = new boolean[]{false, true};
 
         for (boolean possibleBoolean : possibleBooleans) {
             for (Object[] testConfigForSingleTest : testConfigs) {
