@@ -1310,13 +1310,13 @@ public class ShareFileClient {
                         LOGGER.info("Retrying download due to IOException. Attempt: " + retryCount);
                     } else if (t instanceof ConcurrentModificationException) {
                         throw LOGGER.logExceptionAsError(new ConcurrentModificationException("File has been modified concurrently. Expected eTag: "
-                        + initialETag + ", Received eTag: " + currentETag));
+                        + initialETag + ", Received eTag: " + currentETag,  t));
                     } else {
                         throw LOGGER.logExceptionAsError(new RuntimeException(e));
                     }
                 }
             }
-            throw new IllegalStateException("Failed to download file. Max retry attempts reached.");
+            throw LOGGER.logExceptionAsError(new RuntimeException("Failed to download file. Max retry attempts reached."));
         };
         return sendRequest(operation, timeout, ShareStorageException.class);
     }
