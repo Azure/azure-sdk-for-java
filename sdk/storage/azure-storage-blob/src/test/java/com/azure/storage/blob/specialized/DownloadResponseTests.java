@@ -160,7 +160,7 @@ public class DownloadResponseTests extends BlobTestBase {
         BlockBlobAsyncClient blockBlobAsyncClient = cc.getBlobAsyncClient(bu.getBlobName()).getBlockBlobAsyncClient();
 
         Flux<ByteBuffer> bufferMono = blockBlobAsyncClient.downloadStreamWithResponse(null, options, null, false)
-            .flatMapMany(ResponseBase::getValue);
+            .flatMapMany(r -> r.getValue());
 
         StepVerifier.create(bufferMono.timeout(Duration.ofSeconds(1)))
             .expectSubscription()
