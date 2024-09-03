@@ -15,8 +15,10 @@ import com.azure.security.keyvault.secrets.models.SecretProperties;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.boot.logging.DeferredLogs;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -24,12 +26,16 @@ import java.io.IOException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 import static com.azure.spring.cloud.autoconfigure.implementation.keyvault.secrets.properties.AzureKeyVaultPropertySourceProperties.DEFAULT_REFRESH_INTERVAL;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class KeyVaultOperationTests {
@@ -75,12 +81,15 @@ public class KeyVaultOperationTests {
     }
 
     public void setupSecretBundle(List<String> secretKeysConfig) {
-        keyVaultOperation = new KeyVaultOperation(keyVaultClient, Duration.ZERO, secretKeysConfig, false);
+        keyVaultOperation = new KeyVaultOperation( new DeferredLogs(),
+            "test", keyVaultClient, Duration.ZERO, secretKeysConfig, false);
     }
 
     @Test
     public void caseSensitive() {
         final KeyVaultOperation keyOperation = new KeyVaultOperation(
+            new DeferredLogs(),
+            "test",
             keyVaultClient,
             DEFAULT_REFRESH_INTERVAL,
             new ArrayList<>(),
@@ -195,6 +204,71 @@ public class KeyVaultOperationTests {
         assertThat(keyVaultOperation.getProperty("key1")).isNotNull();
         assertThat(keyVaultOperation.getProperty("key2")).isNull();
 
+    }
+
+    @Test
+    @Timeout(5)
+    public void refreshTwoKeyVaultsSecrets() throws InterruptedException {
+        CountDownLatch latchForRefreshing = new CountDownLatch(2);
+        new SecretRefreshing(latchForRefreshing, "KeyVault1", "test1",
+            "value1", "value1Updated").start();
+        new SecretRefreshing(latchForRefreshing, "KeyVault2", "test2",
+            "value2", "value2Updated").start();
+        latchForRefreshing.await();
+    }
+
+    static class SecretRefreshing extends Thread {
+        private final CountDownLatch latchForRefreshing;
+        private final String propertySourceName;
+        private final SecretClient keyClient;
+        private final KeyVaultSecret secret;
+        private final String keyUpdatedValue;
+        private static final int SLEEP_IN_SECONDS = 3;
+
+        public SecretRefreshing(CountDownLatch latchForRefreshing,
+                                String propertySourceName,
+                                String name,
+                                String value,
+                                String keyUpdatedValue) {
+            this.latchForRefreshing = latchForRefreshing;
+            this.propertySourceName = propertySourceName;
+            this.keyClient = mock(SecretClient.class);
+            this.secret = new KeyVaultSecret(name, value);
+            this.secret.getProperties().setEnabled(true);
+            this.keyUpdatedValue = keyUpdatedValue;
+        }
+
+        @Override
+        public void run() {
+            KeyVaultOperation secret1Operation = getSecretOperation(propertySourceName, keyClient, secret);
+            assertThat(secret1Operation.getProperty(secret.getName())).isEqualTo(secret.getValue());
+
+            updateSecretValue(secret.getName(), keyUpdatedValue, keyClient);
+            try {
+                TimeUnit.SECONDS.sleep(SLEEP_IN_SECONDS + 1);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            assertThat(secret1Operation.getProperty(secret.getName())).isEqualTo(keyUpdatedValue);
+            latchForRefreshing.countDown();
+        }
+
+        private KeyVaultOperation getSecretOperation(String propertySourceName, SecretClient keyClient, KeyVaultSecret secret) {
+            List<SecretProperties> properties = Collections.singletonList(secret.getProperties());
+            OnePageResponse<SecretProperties> secret1Response = new OnePageResponse<>(properties);
+            when(keyClient.getSecret(secret.getName(), null)).thenReturn(secret);
+            when(keyClient.listPropertiesOfSecrets())
+                .thenReturn(new PagedIterable<>(new PagedFlux<>(() -> Mono.just(secret1Response))));
+            return new KeyVaultOperation( new DeferredLogs(),
+                propertySourceName, keyClient, Duration.ofSeconds(SLEEP_IN_SECONDS), null, false);
+        }
+
+        private static void updateSecretValue(String key1, String key1UpdatedValue, SecretClient key1Client) {
+            KeyVaultSecret secret1;
+            secret1 = new KeyVaultSecret(key1, key1UpdatedValue);
+            secret1.getProperties().setEnabled(true);
+            when(key1Client.getSecret(key1, null)).thenReturn(secret1);
+        }
     }
 
     static class OnePageResponse<T> implements PagedResponse<T> {

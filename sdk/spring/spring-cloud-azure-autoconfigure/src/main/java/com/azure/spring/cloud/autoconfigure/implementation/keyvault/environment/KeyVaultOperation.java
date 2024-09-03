@@ -8,8 +8,8 @@ import com.azure.core.util.paging.ContinuablePagedIterable;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.security.keyvault.secrets.models.SecretProperties;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.logging.Log;
+import org.springframework.boot.logging.DeferredLogFactory;
 import org.springframework.lang.NonNull;
 
 import java.time.Duration;
@@ -21,6 +21,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -32,7 +33,9 @@ import java.util.stream.StreamSupport;
  */
 public class KeyVaultOperation {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(KeyVaultOperation.class);
+    private final Log logger;
+
+    private final String propertySourceName;
 
     /**
      * Stores the case-sensitive flag.
@@ -56,20 +59,26 @@ public class KeyVaultOperation {
     /**
      * Stores the timer object to schedule refresh task.
      */
-    private static Timer timer;
+
+    private static final ConcurrentHashMap<String, Timer> TIMER_MANAGER = new ConcurrentHashMap<>();
 
     /**
      * Constructor.
+     * @param loggerFactory the deferred logger factory.
+     * @param propertySourceName the name of the property source.
      * @param secretClient the Key Vault secret client.
      * @param refreshDuration the refresh in milliseconds (0 or less disables refresh).
      * @param secretKeys the secret keys to look for.
      * @param caseSensitive the case-sensitive flag.
      */
-    public KeyVaultOperation(final SecretClient secretClient,
+    public KeyVaultOperation(DeferredLogFactory loggerFactory,
+                             String propertySourceName,
+                             final SecretClient secretClient,
                              final Duration refreshDuration,
                              List<String> secretKeys,
                              boolean caseSensitive) {
-
+        this.propertySourceName = propertySourceName;
+        this.logger = loggerFactory.getLog(KeyVaultOperation.class);
         this.caseSensitive = caseSensitive;
         this.secretClient = secretClient;
         this.secretKeys = secretKeys;
@@ -79,15 +88,19 @@ public class KeyVaultOperation {
         final long refreshInMillis = refreshDuration.toMillis();
         if (refreshInMillis > 0) {
             synchronized (KeyVaultOperation.class) {
-                if (timer != null) {
+                Timer timer;
+                if (TIMER_MANAGER.containsKey(propertySourceName)) {
+                    timer = TIMER_MANAGER.get(propertySourceName);
                     try {
                         timer.cancel();
                         timer.purge();
                     } catch (RuntimeException runtimeException) {
-                        LOGGER.error("Error of terminating Timer", runtimeException);
+                        logger.error("Error of terminating Timer", runtimeException);
                     }
                 }
-                timer = new Timer(true);
+                timer = new Timer(propertySourceName, true);
+                TIMER_MANAGER.put(propertySourceName, timer);
+
                 final TimerTask task = new TimerTask() {
                     @Override
                     public void run() {
@@ -133,6 +146,7 @@ public class KeyVaultOperation {
      * Refresh the properties by accessing key vault.
      */
     private void refreshProperties() {
+        logger.debug("Refreshing the secrets in property source '" + this.propertySourceName + "'.");
         if (secretKeys == null || secretKeys.isEmpty()) {
             properties = Optional.of(secretClient)
                 .map(SecretClient::listPropertiesOfSecrets)
@@ -158,6 +172,7 @@ public class KeyVaultOperation {
                     KeyVaultSecret::getValue
                 ));
         }
+        logger.debug("The secrets in property source '" + this.propertySourceName + "' have been refreshed.");
     }
 
     /**

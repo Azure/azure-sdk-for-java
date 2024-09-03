@@ -27,7 +27,9 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.springframework.core.env.StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME;
 
@@ -46,6 +48,7 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
 
     private static final String SKIP_CONFIGURE_REASON_FORMAT = "Skip configuring Key Vault PropertySource because %s.";
 
+    private final DeferredLogFactory loggerFactory;
     private final Log logger;
     private final ConfigurableBootstrapContext bootstrapContext;
 
@@ -56,6 +59,7 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
      * @param bootstrapContext The bootstrap context.
      */
     public KeyVaultEnvironmentPostProcessor(DeferredLogFactory loggerFactory, ConfigurableBootstrapContext bootstrapContext) {
+        this.loggerFactory = loggerFactory;
         this.logger = loggerFactory.getLog(getClass());
         this.bootstrapContext = bootstrapContext;
     }
@@ -85,6 +89,15 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
         }
 
         final List<AzureKeyVaultPropertySourceProperties> propertiesList = secretProperties.getPropertySources();
+
+        List<String> sourceNames = propertiesList.stream()
+                                                 .map(AzureKeyVaultPropertySourceProperties::getName)
+                                                 .toList();
+        Set<String> deduplicatedSourceNames = new HashSet<>(sourceNames);
+        if (propertiesList.size() != deduplicatedSourceNames.size()) {
+            throw new IllegalStateException("Duplicate property source name found: " + sourceNames);
+        }
+
         List<KeyVaultPropertySource> keyVaultPropertySources = buildKeyVaultPropertySourceList(propertiesList);
         final MutablePropertySources propertySources = environment.getPropertySources();
         // reverse iterate order making sure smaller index has higher priority.
@@ -121,6 +134,8 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
             AzureKeyVaultPropertySourceProperties properties) {
         try {
             final KeyVaultOperation keyVaultOperation = new KeyVaultOperation(
+                    this.loggerFactory,
+                    properties.getName(),
                     buildSecretClient(properties),
                     properties.getRefreshInterval(),
                     properties.getSecretKeys(),
