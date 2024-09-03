@@ -24,7 +24,7 @@ class ImageAnalysisAsyncClientTest extends ImageAnalysisClientTestBase {
     @Test
     public void testAnalyzeAsyncAllFeaturesFromFile() {
 
-        createClientForStandardAnalysis(sync);
+        createClient(true, true, sync, null);
 
         String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
         String imageSource = imageFile;
@@ -43,7 +43,7 @@ class ImageAnalysisAsyncClientTest extends ImageAnalysisClientTestBase {
     @Test
     public void testAnalyzeAsyncSingleFeatureFromUrl() {
 
-        createClientForStandardAnalysis(sync);
+        createClient(true, true, sync, null);
 
         String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
         String imageSource = imageUrl;
@@ -67,7 +67,7 @@ class ImageAnalysisAsyncClientTest extends ImageAnalysisClientTestBase {
     @Test
     public void testAnalyzeAsyncAllFeaturesFromUrlWithResponse() {
 
-        createClientForStandardAnalysis(sync);
+        createClient(true, true, sync, null);
 
         String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
         String imageSource = imageUrl;
@@ -93,7 +93,7 @@ class ImageAnalysisAsyncClientTest extends ImageAnalysisClientTestBase {
     @Test
     public void testAnalyzeAsyncSingleFeatureFromFileWithResponse() {
 
-        createClientForStandardAnalysis(sync);
+        createClient(true, true, sync, null);
 
         String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
         String imageSource = imageFile;
@@ -115,7 +115,7 @@ class ImageAnalysisAsyncClientTest extends ImageAnalysisClientTestBase {
     @Test
     public void testAnalyzeAsyncAuthenticationFailure() {
 
-        createClientForAuthenticationFailure(sync);
+        createClient(true, false, sync, null);
 
         String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
         String imageSource = imageUrl;

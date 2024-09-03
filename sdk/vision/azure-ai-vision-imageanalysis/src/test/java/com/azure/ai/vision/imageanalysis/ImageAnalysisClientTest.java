@@ -27,7 +27,7 @@ class ImageAnalysisClientTest extends ImageAnalysisClientTestBase {
     @Test
     public void testAnalyzeSyncAllFeaturesFromUrl() {
 
-        createClientForStandardAnalysis(sync);
+        createClient(true, true, sync, null);
 
         String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
         String imageSource = imageUrl;
@@ -56,7 +56,7 @@ class ImageAnalysisClientTest extends ImageAnalysisClientTestBase {
         List<Entry<String, String>> queryParams = new ArrayList<>();
         queryParams.add(new SimpleEntry<>("key1", "value1"));
         queryParams.add(new SimpleEntry<>("key2", "value2"));
-        createClientForStandardAnalysis(sync, queryParams);
+        createClient(true, true, sync, queryParams);
 
         String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
         String imageSource = imageFile;
@@ -75,7 +75,7 @@ class ImageAnalysisClientTest extends ImageAnalysisClientTestBase {
     @Test
     public void testAnalyzeSyncAllFeaturesFromFileWithResponse() {
 
-        createClientForStandardAnalysis(sync);
+        createClient(true, true, sync, null);
 
         String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
         String imageSource = imageFile;
@@ -106,7 +106,7 @@ class ImageAnalysisClientTest extends ImageAnalysisClientTestBase {
     @Test
     public void testAnalyzeSyncSingleFeatureFromUrlWithResponse() {
 
-        createClientForStandardAnalysis(sync);
+        createClient(true, true, sync, null);
 
         String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
         String imageSource = imageUrl;
@@ -124,7 +124,7 @@ class ImageAnalysisClientTest extends ImageAnalysisClientTestBase {
     @Test
     public void testAnalyzeSyncImageUrlDoesNotExist() {
 
-        createClientForStandardAnalysis(sync);
+        createClient(true, true, sync, null);
 
         String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
         String imageSource = "https://www.this.is.a.bad.url.com/for/sure.jpg";

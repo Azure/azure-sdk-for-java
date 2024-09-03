@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Objects;
 
+import com.azure.ai.vision.imageanalysis.*;
+import com.azure.ai.vision.imageanalysis.models.*;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpHeaderName;
@@ -18,8 +20,13 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
+
+import com.azure.identity.DefaultAzureCredentialBuilder;
 
 // See https://junit.org/junit5/docs/5.0.1/api/org/junit/jupiter/api/Assertions.html
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -30,10 +37,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import com.azure.ai.vision.imageanalysis.*;
-import com.azure.ai.vision.imageanalysis.models.*;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.logging.LogLevel;
 
 class ImageAnalysisClientTestBase extends TestProxyTestBase {
     private static final ClientLogger LOGGER = new ClientLogger(ImageAnalysisClientTestBase.class);
@@ -48,53 +51,65 @@ class ImageAnalysisClientTestBase extends TestProxyTestBase {
     private ImageAnalysisClient client = null;
     private ImageAnalysisAsyncClient asyncClient = null;
 
-    // Tests that use the standard Image Analysis model must call this method first
-    protected void createClientForStandardAnalysis(Boolean sync) {
-        createClient("VISION_ENDPOINT", "VISION_KEY", sync, null);
-    }
+    protected void createClient(
+        Boolean useKeyAuth,
+        Boolean useRealKey,
+        Boolean sync,
+        List<Entry<String, String>> queryParams) {
 
-    //  Tests that use the standard Image Analysis model and need to add custom query parameters must call this method first
-    protected void createClientForStandardAnalysis(Boolean sync, List<Entry<String, String>> queryParams) {
-        createClient("VISION_ENDPOINT", "VISION_KEY", sync, queryParams);
-    }
+        TestMode testMode = getTestMode();
 
-    // Tests that uses bad key to test authentication failure
-    protected void createClientForAuthenticationFailure(Boolean sync) {
-        createClient("VISION_ENDPOINT", "VISION_KEY_FAKE", sync, null);
-    }
+        // Define endpoint and auth credentials
+        String endpoint = "https://fake-resource-name.cognitiveservices.azure.com";
+        String key = "00000000000000000000000000000000";
 
-    private void createClient(String endpointEnvVar, String keyEnvVar, Boolean sync, List<Entry<String, String>> queryParams) {
+        if (testMode == TestMode.LIVE || testMode == TestMode.RECORD) {
+            endpoint = Configuration.getGlobalConfiguration().get("VISION_ENDPOINT");
+            assertTrue(endpoint != null && !endpoint.isEmpty(), "Endpoint URL is required to run live tests.");
 
-        String endpoint = Configuration.getGlobalConfiguration().get(endpointEnvVar); // Read endpoint URL from environment variable
-        if (endpoint == null) {
-            endpoint = "https://fake-resource-name.cognitiveservices.azure.com";
+            if (useKeyAuth && useRealKey) {
+                key = Configuration.getGlobalConfiguration().get("VISION_KEY"); 
+                assertTrue(endpoint != null && !endpoint.isEmpty(), "API key is required to run live tests.");
+            }
         }
 
-        String key = Configuration.getGlobalConfiguration().get(keyEnvVar); // Read real key from environment variable
-        if (key == null || Objects.equals(keyEnvVar, "VISION_KEY_FAKE")) {
-            key = "00000000000000000000000000000000";
-        }
-
+        // Create the client builder
         ImageAnalysisClientBuilder imageAnalysisClientBuilder =
                 new ImageAnalysisClientBuilder()
                         .endpoint(endpoint)
-                        .credential(new KeyCredential(key))
                         .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
 
-        // Apply any optional custom query parameters
+        // Update the client builder with optional custom query parameters
         if (queryParams != null) {
             for (Entry<String, String> queryParam : queryParams) {
                 imageAnalysisClientBuilder.addPolicy(new ImageAnalysisAddQueryParamPolicy(queryParam.getKey(), queryParam.getValue()));
             }
         }
 
-        // Handle Test Proxy recording and playback modes
-        if (getTestMode() == TestMode.PLAYBACK) {
-            imageAnalysisClientBuilder.httpClient(interceptorManager.getPlaybackClient());
+        // Updat the client building with credentials and recording/playback policies
+        if (getTestMode() == TestMode.LIVE) {
+            if (useKeyAuth) {
+                imageAnalysisClientBuilder.credential(new KeyCredential(key));
+            } else {
+                imageAnalysisClientBuilder.credential(new DefaultAzureCredentialBuilder().build());
+            }
         } else if (getTestMode() == TestMode.RECORD) {
             imageAnalysisClientBuilder.addPolicy(interceptorManager.getRecordPolicy());
+            if (useKeyAuth) {
+                imageAnalysisClientBuilder.credential(new KeyCredential(key));
+            } else {
+                imageAnalysisClientBuilder.credential(new DefaultAzureCredentialBuilder().build());
+            }
+        } else if (getTestMode() == TestMode.PLAYBACK) {
+            imageAnalysisClientBuilder.httpClient(interceptorManager.getPlaybackClient());
+            if (useKeyAuth) {
+                imageAnalysisClientBuilder.credential(new KeyCredential(key));
+            } else {
+                imageAnalysisClientBuilder.credential(new MockTokenCredential());
+            }
         }
 
+        // Set recording filters
         if (!interceptorManager.isLiveMode()) {
             // Remove `operation-location`, `id` and `name` sanitizers from the list of common sanitizers.
             interceptorManager.removeSanitizers("AZSDK2003", "AZSDK2030", "AZSDK3430", "AZSDK3493");
