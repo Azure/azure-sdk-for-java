@@ -99,12 +99,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
@@ -112,7 +110,6 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import static com.azure.storage.common.implementation.StorageImplUtils.getResultWithTimeout;
 import static com.azure.storage.common.implementation.StorageImplUtils.sendRequest;
 import static com.azure.storage.common.implementation.StorageImplUtils.sendRequestFuture;
 
@@ -2246,6 +2243,8 @@ public class ShareFileClient {
         Context finalContext = context == null ? Context.NONE : context;
 
         BinaryData binaryData = BinaryData.fromStream(options.getDataStream());
+        System.out.println(range.toString());
+        System.out.println(options.getLength());
 
         Callable<ResponseBase<FilesUploadRangeHeaders, Void>> operation = () ->
             azureFileStorageClient.getFiles().uploadRangeWithResponse(shareName, filePath, range.toString(),
