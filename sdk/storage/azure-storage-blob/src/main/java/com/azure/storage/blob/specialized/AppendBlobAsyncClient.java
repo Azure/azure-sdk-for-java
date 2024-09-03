@@ -22,6 +22,7 @@ import com.azure.storage.blob.implementation.models.AppendBlobsAppendBlockFromUr
 import com.azure.storage.blob.implementation.models.AppendBlobsAppendBlockHeaders;
 import com.azure.storage.blob.implementation.models.AppendBlobsCreateHeaders;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
+import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.AppendBlobItem;
 import com.azure.storage.blob.models.AppendBlobRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;

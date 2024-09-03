@@ -701,7 +701,7 @@ public final class ModelHelper {
             try {
                 return serviceCall.get();
             } catch (BlobStorageExceptionInternal internal) {
-                throw (BlobStorageException) mapToBlobStorageException(internal);
+                throw mapToBlobStorageException(internal);
             }
         };
     }
@@ -710,7 +710,7 @@ public final class ModelHelper {
         try {
             return serviceCall.get();
         } catch (BlobStorageExceptionInternal internal) {
-            throw (BlobStorageException) mapToBlobStorageException(internal);
+            throw mapToBlobStorageException(internal);
         }
     }
 
