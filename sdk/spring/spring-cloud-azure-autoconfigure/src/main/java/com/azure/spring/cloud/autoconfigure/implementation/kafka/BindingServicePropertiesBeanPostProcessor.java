@@ -42,7 +42,7 @@ class BindingServicePropertiesBeanPostProcessor implements BeanPostProcessor, Ap
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
         if (bean instanceof BindingServiceProperties bindingServiceProperties) {
-            // The kafka binder will be added if no binder is configured in the developer's configuration file.
+            // We need to add the Kafka configuration to the binder. So if Kafka could be the default binder, explicitly add the default binder, and add configurations.
             if (bindingServiceProperties.getBinders().isEmpty()) {
                 String defaultBinder = bindingServiceProperties.getDefaultBinder();
                 // No default binder name is configured, or the default binder name is kafka.
