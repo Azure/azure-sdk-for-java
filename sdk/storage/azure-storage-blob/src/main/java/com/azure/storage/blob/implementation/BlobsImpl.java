@@ -1906,7 +1906,7 @@ public final class BlobsImpl {
     /**
      * The Download operation reads or downloads a blob from the system, including its metadata and properties. You can
      * also call Download to read a snapshot or version.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
@@ -1965,16 +1965,20 @@ public final class BlobsImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.downloadSync(this.client.getUrl(), containerName, blob, snapshot, versionId, timeout, range,
-            leaseId, rangeGetContentMD5, rangeGetContentCRC64, encryptionKey, encryptionKeySha256, encryptionAlgorithm,
-            ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
-            this.client.getVersion(), requestId, accept, context);
+        try {
+            return service.downloadSync(this.client.getUrl(), containerName, blob, snapshot, versionId, timeout, range,
+                leaseId, rangeGetContentMD5, rangeGetContentCRC64, encryptionKey, encryptionKeySha256,
+                encryptionAlgorithm, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
+                this.client.getVersion(), requestId, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * The Download operation reads or downloads a blob from the system, including its metadata and properties. You can
      * also call Download to read a snapshot or version.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
@@ -2012,15 +2016,19 @@ public final class BlobsImpl {
         String range, String leaseId, Boolean rangeGetContentMD5, Boolean rangeGetContentCRC64,
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
         String ifTags, String requestId, CpkInfo cpkInfo) {
-        return downloadWithResponse(containerName, blob, snapshot, versionId, timeout, range, leaseId,
-            rangeGetContentMD5, rangeGetContentCRC64, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags,
-            requestId, cpkInfo, Context.NONE).getValue();
+        try {
+            return downloadWithResponse(containerName, blob, snapshot, versionId, timeout, range, leaseId,
+                rangeGetContentMD5, rangeGetContentCRC64, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch,
+                ifTags, requestId, cpkInfo, Context.NONE).getValue();
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * The Download operation reads or downloads a blob from the system, including its metadata and properties. You can
      * also call Download to read a snapshot or version.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
@@ -2079,10 +2087,14 @@ public final class BlobsImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.downloadNoCustomHeadersSync(this.client.getUrl(), containerName, blob, snapshot, versionId,
-            timeout, range, leaseId, rangeGetContentMD5, rangeGetContentCRC64, encryptionKey, encryptionKeySha256,
-            encryptionAlgorithm, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
-            this.client.getVersion(), requestId, accept, context);
+        try {
+            return service.downloadNoCustomHeadersSync(this.client.getUrl(), containerName, blob, snapshot, versionId,
+                timeout, range, leaseId, rangeGetContentMD5, rangeGetContentCRC64, encryptionKey, encryptionKeySha256,
+                encryptionAlgorithm, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
+                this.client.getVersion(), requestId, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
@@ -2429,7 +2441,7 @@ public final class BlobsImpl {
     /**
      * The Get Properties operation returns all user-defined metadata, standard HTTP properties, and system properties
      * for the blob. It does not return the content of the blob.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
@@ -2483,16 +2495,20 @@ public final class BlobsImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.getPropertiesSync(this.client.getUrl(), containerName, blob, snapshot, versionId, timeout,
-            leaseId, encryptionKey, encryptionKeySha256, encryptionAlgorithm, ifModifiedSinceConverted,
-            ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId, accept,
-            context);
+        try {
+            return service.getPropertiesSync(this.client.getUrl(), containerName, blob, snapshot, versionId, timeout,
+                leaseId, encryptionKey, encryptionKeySha256, encryptionAlgorithm, ifModifiedSinceConverted,
+                ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId, accept,
+                context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * The Get Properties operation returns all user-defined metadata, standard HTTP properties, and system properties
      * for the blob. It does not return the content of the blob.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
@@ -2530,7 +2546,7 @@ public final class BlobsImpl {
     /**
      * The Get Properties operation returns all user-defined metadata, standard HTTP properties, and system properties
      * for the blob. It does not return the content of the blob.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
@@ -2584,10 +2600,14 @@ public final class BlobsImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.getPropertiesNoCustomHeadersSync(this.client.getUrl(), containerName, blob, snapshot, versionId,
-            timeout, leaseId, encryptionKey, encryptionKeySha256, encryptionAlgorithm, ifModifiedSinceConverted,
-            ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId, accept,
-            context);
+        try {
+            return service.getPropertiesNoCustomHeadersSync(this.client.getUrl(), containerName, blob, snapshot,
+                versionId, timeout, leaseId, encryptionKey, encryptionKeySha256, encryptionAlgorithm,
+                ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
+                this.client.getVersion(), requestId, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
@@ -2987,7 +3007,7 @@ public final class BlobsImpl {
      * automatic snapshot using snapshot timestamp or version id. You can restore the blob by calling Put or Copy Blob
      * API with automatic snapshot as source. Deleting automatic snapshot requires shared key or special SAS/RBAC
      * permissions.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
@@ -3030,9 +3050,13 @@ public final class BlobsImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.deleteSync(this.client.getUrl(), containerName, blob, snapshot, versionId, timeout, leaseId,
-            deleteSnapshots, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
-            this.client.getVersion(), requestId, blobDeleteType, accept, context);
+        try {
+            return service.deleteSync(this.client.getUrl(), containerName, blob, snapshot, versionId, timeout, leaseId,
+                deleteSnapshots, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
+                this.client.getVersion(), requestId, blobDeleteType, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
@@ -3051,7 +3075,7 @@ public final class BlobsImpl {
      * automatic snapshot using snapshot timestamp or version id. You can restore the blob by calling Put or Copy Blob
      * API with automatic snapshot as source. Deleting automatic snapshot requires shared key or special SAS/RBAC
      * permissions.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
@@ -3107,7 +3131,7 @@ public final class BlobsImpl {
      * automatic snapshot using snapshot timestamp or version id. You can restore the blob by calling Put or Copy Blob
      * API with automatic snapshot as source. Deleting automatic snapshot requires shared key or special SAS/RBAC
      * permissions.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
@@ -3150,9 +3174,13 @@ public final class BlobsImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.deleteNoCustomHeadersSync(this.client.getUrl(), containerName, blob, snapshot, versionId,
-            timeout, leaseId, deleteSnapshots, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch,
-            ifNoneMatch, ifTags, this.client.getVersion(), requestId, blobDeleteType, accept, context);
+        try {
+            return service.deleteNoCustomHeadersSync(this.client.getUrl(), containerName, blob, snapshot, versionId,
+                timeout, leaseId, deleteSnapshots, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch,
+                ifNoneMatch, ifTags, this.client.getVersion(), requestId, blobDeleteType, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
@@ -3309,7 +3337,7 @@ public final class BlobsImpl {
 
     /**
      * Undelete a blob that was previously soft deleted.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -3328,13 +3356,17 @@ public final class BlobsImpl {
         Integer timeout, String requestId, Context context) {
         final String comp = "undelete";
         final String accept = "application/xml";
-        return service.undeleteSync(this.client.getUrl(), containerName, blob, comp, timeout, this.client.getVersion(),
-            requestId, accept, context);
+        try {
+            return service.undeleteSync(this.client.getUrl(), containerName, blob, comp, timeout,
+                this.client.getVersion(), requestId, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * Undelete a blob that was previously soft deleted.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -3353,7 +3385,7 @@ public final class BlobsImpl {
 
     /**
      * Undelete a blob that was previously soft deleted.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -3372,8 +3404,12 @@ public final class BlobsImpl {
         String requestId, Context context) {
         final String comp = "undelete";
         final String accept = "application/xml";
-        return service.undeleteNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, timeout,
-            this.client.getVersion(), requestId, accept, context);
+        try {
+            return service.undeleteNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, timeout,
+                this.client.getVersion(), requestId, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
@@ -3543,7 +3579,7 @@ public final class BlobsImpl {
 
     /**
      * Sets the time a blob will expire and be deleted.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param expiryOptions Required. Indicates mode of the expiry time.
@@ -3564,13 +3600,17 @@ public final class BlobsImpl {
         BlobExpiryOptions expiryOptions, Integer timeout, String requestId, String expiresOn, Context context) {
         final String comp = "expiry";
         final String accept = "application/xml";
-        return service.setExpirySync(this.client.getUrl(), containerName, blob, comp, timeout, this.client.getVersion(),
-            requestId, expiryOptions, expiresOn, accept, context);
+        try {
+            return service.setExpirySync(this.client.getUrl(), containerName, blob, comp, timeout,
+                this.client.getVersion(), requestId, expiryOptions, expiresOn, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * Sets the time a blob will expire and be deleted.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param expiryOptions Required. Indicates mode of the expiry time.
@@ -3592,7 +3632,7 @@ public final class BlobsImpl {
 
     /**
      * Sets the time a blob will expire and be deleted.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param expiryOptions Required. Indicates mode of the expiry time.
@@ -3613,8 +3653,12 @@ public final class BlobsImpl {
         BlobExpiryOptions expiryOptions, Integer timeout, String requestId, String expiresOn, Context context) {
         final String comp = "expiry";
         final String accept = "application/xml";
-        return service.setExpiryNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, timeout,
-            this.client.getVersion(), requestId, expiryOptions, expiresOn, accept, context);
+        try {
+            return service.setExpiryNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, timeout,
+                this.client.getVersion(), requestId, expiryOptions, expiresOn, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
@@ -3984,7 +4028,7 @@ public final class BlobsImpl {
 
     /**
      * The Set HTTP Headers operation sets system properties on the blob.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -4049,15 +4093,19 @@ public final class BlobsImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.setHttpHeadersSync(this.client.getUrl(), containerName, blob, comp, timeout, cacheControl,
-            contentType, contentMd5Converted, contentEncoding, contentLanguage, leaseId, ifModifiedSinceConverted,
-            ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, contentDisposition, this.client.getVersion(),
-            requestId, accept, context);
+        try {
+            return service.setHttpHeadersSync(this.client.getUrl(), containerName, blob, comp, timeout, cacheControl,
+                contentType, contentMd5Converted, contentEncoding, contentLanguage, leaseId, ifModifiedSinceConverted,
+                ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, contentDisposition, this.client.getVersion(),
+                requestId, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * The Set HTTP Headers operation sets system properties on the blob.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -4088,7 +4136,7 @@ public final class BlobsImpl {
 
     /**
      * The Set HTTP Headers operation sets system properties on the blob.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -4152,10 +4200,14 @@ public final class BlobsImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.setHttpHeadersNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, timeout,
-            cacheControl, contentType, contentMd5Converted, contentEncoding, contentLanguage, leaseId,
-            ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, contentDisposition,
-            this.client.getVersion(), requestId, accept, context);
+        try {
+            return service.setHttpHeadersNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, timeout,
+                cacheControl, contentType, contentMd5Converted, contentEncoding, contentLanguage, leaseId,
+                ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, contentDisposition,
+                this.client.getVersion(), requestId, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
@@ -4365,7 +4417,7 @@ public final class BlobsImpl {
 
     /**
      * The Set Immutability Policy operation sets the immutability policy on the blob.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -4393,14 +4445,18 @@ public final class BlobsImpl {
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         DateTimeRfc1123 immutabilityPolicyExpiryConverted
             = immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
-        return service.setImmutabilityPolicySync(this.client.getUrl(), containerName, blob, comp, timeout,
-            this.client.getVersion(), requestId, ifUnmodifiedSinceConverted, immutabilityPolicyExpiryConverted,
-            immutabilityPolicyMode, accept, context);
+        try {
+            return service.setImmutabilityPolicySync(this.client.getUrl(), containerName, blob, comp, timeout,
+                this.client.getVersion(), requestId, ifUnmodifiedSinceConverted, immutabilityPolicyExpiryConverted,
+                immutabilityPolicyMode, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * The Set Immutability Policy operation sets the immutability policy on the blob.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -4426,7 +4482,7 @@ public final class BlobsImpl {
 
     /**
      * The Set Immutability Policy operation sets the immutability policy on the blob.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -4454,9 +4510,13 @@ public final class BlobsImpl {
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         DateTimeRfc1123 immutabilityPolicyExpiryConverted
             = immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
-        return service.setImmutabilityPolicyNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp,
-            timeout, this.client.getVersion(), requestId, ifUnmodifiedSinceConverted, immutabilityPolicyExpiryConverted,
-            immutabilityPolicyMode, accept, context);
+        try {
+            return service.setImmutabilityPolicyNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp,
+                timeout, this.client.getVersion(), requestId, ifUnmodifiedSinceConverted,
+                immutabilityPolicyExpiryConverted, immutabilityPolicyMode, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
@@ -4614,7 +4674,7 @@ public final class BlobsImpl {
 
     /**
      * The Delete Immutability Policy operation deletes the immutability policy on the blob.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -4633,13 +4693,17 @@ public final class BlobsImpl {
         String containerName, String blob, Integer timeout, String requestId, Context context) {
         final String comp = "immutabilityPolicies";
         final String accept = "application/xml";
-        return service.deleteImmutabilityPolicySync(this.client.getUrl(), containerName, blob, comp, timeout,
-            this.client.getVersion(), requestId, accept, context);
+        try {
+            return service.deleteImmutabilityPolicySync(this.client.getUrl(), containerName, blob, comp, timeout,
+                this.client.getVersion(), requestId, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * The Delete Immutability Policy operation deletes the immutability policy on the blob.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -4658,7 +4722,7 @@ public final class BlobsImpl {
 
     /**
      * The Delete Immutability Policy operation deletes the immutability policy on the blob.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -4677,8 +4741,12 @@ public final class BlobsImpl {
         Integer timeout, String requestId, Context context) {
         final String comp = "immutabilityPolicies";
         final String accept = "application/xml";
-        return service.deleteImmutabilityPolicyNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp,
-            timeout, this.client.getVersion(), requestId, accept, context);
+        try {
+            return service.deleteImmutabilityPolicyNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp,
+                timeout, this.client.getVersion(), requestId, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
@@ -4842,7 +4910,7 @@ public final class BlobsImpl {
 
     /**
      * The Set Legal Hold operation sets a legal hold on the blob.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param legalHold Specified if a legal hold should be set on the blob.
@@ -4862,13 +4930,17 @@ public final class BlobsImpl {
         boolean legalHold, Integer timeout, String requestId, Context context) {
         final String comp = "legalhold";
         final String accept = "application/xml";
-        return service.setLegalHoldSync(this.client.getUrl(), containerName, blob, comp, timeout,
-            this.client.getVersion(), requestId, legalHold, accept, context);
+        try {
+            return service.setLegalHoldSync(this.client.getUrl(), containerName, blob, comp, timeout,
+                this.client.getVersion(), requestId, legalHold, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * The Set Legal Hold operation sets a legal hold on the blob.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param legalHold Specified if a legal hold should be set on the blob.
@@ -4888,7 +4960,7 @@ public final class BlobsImpl {
 
     /**
      * The Set Legal Hold operation sets a legal hold on the blob.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param legalHold Specified if a legal hold should be set on the blob.
@@ -4908,8 +4980,12 @@ public final class BlobsImpl {
         Integer timeout, String requestId, Context context) {
         final String comp = "legalhold";
         final String accept = "application/xml";
-        return service.setLegalHoldNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, timeout,
-            this.client.getVersion(), requestId, legalHold, accept, context);
+        try {
+            return service.setLegalHoldNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, timeout,
+                this.client.getVersion(), requestId, legalHold, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
@@ -5287,7 +5363,7 @@ public final class BlobsImpl {
     /**
      * The Set Blob Metadata operation sets user-defined metadata for the specified blob as one or more name-value
      * pairs.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -5348,16 +5424,20 @@ public final class BlobsImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.setMetadataSync(this.client.getUrl(), containerName, blob, comp, timeout, metadata, leaseId,
-            encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope, ifModifiedSinceConverted,
-            ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId, accept,
-            context);
+        try {
+            return service.setMetadataSync(this.client.getUrl(), containerName, blob, comp, timeout, metadata, leaseId,
+                encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope, ifModifiedSinceConverted,
+                ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId, accept,
+                context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * The Set Blob Metadata operation sets user-defined metadata for the specified blob as one or more name-value
      * pairs.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -5396,7 +5476,7 @@ public final class BlobsImpl {
     /**
      * The Set Blob Metadata operation sets user-defined metadata for the specified blob as one or more name-value
      * pairs.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -5457,10 +5537,14 @@ public final class BlobsImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.setMetadataNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, timeout,
-            metadata, leaseId, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope,
-            ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
-            this.client.getVersion(), requestId, accept, context);
+        try {
+            return service.setMetadataNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, timeout,
+                metadata, leaseId, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope,
+                ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
+                this.client.getVersion(), requestId, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
@@ -5769,14 +5853,18 @@ public final class BlobsImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.acquireLeaseSync(this.client.getUrl(), containerName, blob, comp, action, timeout, duration,
-            proposedLeaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
-            this.client.getVersion(), requestId, accept, context);
+        try {
+            return service.acquireLeaseSync(this.client.getUrl(), containerName, blob, comp, action, timeout, duration,
+                proposedLeaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
+                this.client.getVersion(), requestId, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * [Update] The Lease Blob operation establishes and manages a lock on a blob for write and delete operations.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -5811,7 +5899,7 @@ public final class BlobsImpl {
 
     /**
      * [Update] The Lease Blob operation establishes and manages a lock on a blob for write and delete operations.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -5849,14 +5937,18 @@ public final class BlobsImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.acquireLeaseNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, action, timeout,
-            duration, proposedLeaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch,
-            ifTags, this.client.getVersion(), requestId, accept, context);
+        try {
+            return service.acquireLeaseNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, action,
+                timeout, duration, proposedLeaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch,
+                ifNoneMatch, ifTags, this.client.getVersion(), requestId, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * [Update] The Lease Blob operation establishes and manages a lock on a blob for write and delete operations.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param leaseId Specifies the current lease ID on the resource.
@@ -6122,14 +6214,18 @@ public final class BlobsImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.releaseLeaseSync(this.client.getUrl(), containerName, blob, comp, action, timeout, leaseId,
-            ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
-            this.client.getVersion(), requestId, accept, context);
+        try {
+            return service.releaseLeaseSync(this.client.getUrl(), containerName, blob, comp, action, timeout, leaseId,
+                ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
+                this.client.getVersion(), requestId, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * [Update] The Lease Blob operation establishes and manages a lock on a blob for write and delete operations.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param leaseId Specifies the current lease ID on the resource.
@@ -6159,7 +6255,7 @@ public final class BlobsImpl {
 
     /**
      * [Update] The Lease Blob operation establishes and manages a lock on a blob for write and delete operations.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param leaseId Specifies the current lease ID on the resource.
@@ -6192,14 +6288,18 @@ public final class BlobsImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.releaseLeaseNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, action, timeout,
-            leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
-            this.client.getVersion(), requestId, accept, context);
+        try {
+            return service.releaseLeaseNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, action,
+                timeout, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
+                this.client.getVersion(), requestId, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * [Update] The Lease Blob operation establishes and manages a lock on a blob for write and delete operations.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param leaseId Specifies the current lease ID on the resource.
@@ -6465,14 +6565,18 @@ public final class BlobsImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.renewLeaseSync(this.client.getUrl(), containerName, blob, comp, action, timeout, leaseId,
-            ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
-            this.client.getVersion(), requestId, accept, context);
+        try {
+            return service.renewLeaseSync(this.client.getUrl(), containerName, blob, comp, action, timeout, leaseId,
+                ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
+                this.client.getVersion(), requestId, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * [Update] The Lease Blob operation establishes and manages a lock on a blob for write and delete operations.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param leaseId Specifies the current lease ID on the resource.
@@ -6502,7 +6606,7 @@ public final class BlobsImpl {
 
     /**
      * [Update] The Lease Blob operation establishes and manages a lock on a blob for write and delete operations.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param leaseId Specifies the current lease ID on the resource.
@@ -6535,14 +6639,18 @@ public final class BlobsImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.renewLeaseNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, action, timeout,
-            leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
-            this.client.getVersion(), requestId, accept, context);
+        try {
+            return service.renewLeaseNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, action,
+                timeout, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
+                this.client.getVersion(), requestId, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * [Update] The Lease Blob operation establishes and manages a lock on a blob for write and delete operations.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param leaseId Specifies the current lease ID on the resource.
@@ -6832,14 +6940,18 @@ public final class BlobsImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.changeLeaseSync(this.client.getUrl(), containerName, blob, comp, action, timeout, leaseId,
-            proposedLeaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
-            this.client.getVersion(), requestId, accept, context);
+        try {
+            return service.changeLeaseSync(this.client.getUrl(), containerName, blob, comp, action, timeout, leaseId,
+                proposedLeaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
+                this.client.getVersion(), requestId, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * [Update] The Lease Blob operation establishes and manages a lock on a blob for write and delete operations.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param leaseId Specifies the current lease ID on the resource.
@@ -6872,7 +6984,7 @@ public final class BlobsImpl {
 
     /**
      * [Update] The Lease Blob operation establishes and manages a lock on a blob for write and delete operations.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param leaseId Specifies the current lease ID on the resource.
@@ -6908,14 +7020,18 @@ public final class BlobsImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.changeLeaseNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, action, timeout,
-            leaseId, proposedLeaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch,
-            ifTags, this.client.getVersion(), requestId, accept, context);
+        try {
+            return service.changeLeaseNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, action,
+                timeout, leaseId, proposedLeaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch,
+                ifNoneMatch, ifTags, this.client.getVersion(), requestId, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * [Update] The Lease Blob operation establishes and manages a lock on a blob for write and delete operations.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -7179,7 +7295,7 @@ public final class BlobsImpl {
 
     /**
      * [Update] The Lease Blob operation establishes and manages a lock on a blob for write and delete operations.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -7217,14 +7333,18 @@ public final class BlobsImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.breakLeaseSync(this.client.getUrl(), containerName, blob, comp, action, timeout, breakPeriod,
-            ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
-            this.client.getVersion(), requestId, accept, context);
+        try {
+            return service.breakLeaseSync(this.client.getUrl(), containerName, blob, comp, action, timeout, breakPeriod,
+                ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
+                this.client.getVersion(), requestId, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * [Update] The Lease Blob operation establishes and manages a lock on a blob for write and delete operations.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -7259,7 +7379,7 @@ public final class BlobsImpl {
 
     /**
      * [Update] The Lease Blob operation establishes and manages a lock on a blob for write and delete operations.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -7297,9 +7417,13 @@ public final class BlobsImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.breakLeaseNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, action, timeout,
-            breakPeriod, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
-            this.client.getVersion(), requestId, accept, context);
+        try {
+            return service.breakLeaseNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, action,
+                timeout, breakPeriod, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch,
+                ifTags, this.client.getVersion(), requestId, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
@@ -7671,7 +7795,7 @@ public final class BlobsImpl {
 
     /**
      * The Create Snapshot operation creates a read-only snapshot of a blob.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -7732,15 +7856,19 @@ public final class BlobsImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.createSnapshotSync(this.client.getUrl(), containerName, blob, comp, timeout, metadata,
-            encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope, ifModifiedSinceConverted,
-            ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, leaseId, this.client.getVersion(), requestId,
-            accept, context);
+        try {
+            return service.createSnapshotSync(this.client.getUrl(), containerName, blob, comp, timeout, metadata,
+                encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope, ifModifiedSinceConverted,
+                ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, leaseId, this.client.getVersion(), requestId,
+                accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * The Create Snapshot operation creates a read-only snapshot of a blob.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -7778,7 +7906,7 @@ public final class BlobsImpl {
 
     /**
      * The Create Snapshot operation creates a read-only snapshot of a blob.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -7839,10 +7967,14 @@ public final class BlobsImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.createSnapshotNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, timeout,
-            metadata, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope,
-            ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, leaseId,
-            this.client.getVersion(), requestId, accept, context);
+        try {
+            return service.createSnapshotNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, timeout,
+                metadata, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope,
+                ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, leaseId,
+                this.client.getVersion(), requestId, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
@@ -8273,7 +8405,7 @@ public final class BlobsImpl {
 
     /**
      * The Start Copy From URL operation copies a blob or an internet resource to a new blob.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param copySource Specifies the name of the source page blob snapshot. This value is a URL of up to 2 KB in
@@ -8338,16 +8470,20 @@ public final class BlobsImpl {
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         DateTimeRfc1123 immutabilityPolicyExpiryConverted
             = immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
-        return service.startCopyFromURLSync(this.client.getUrl(), containerName, blob, timeout, metadata, tier,
-            rehydratePriority, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch,
-            sourceIfNoneMatch, sourceIfTags, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch,
-            ifTags, copySource, leaseId, this.client.getVersion(), requestId, blobTagsString, sealBlob,
-            immutabilityPolicyExpiryConverted, immutabilityPolicyMode, legalHold, accept, context);
+        try {
+            return service.startCopyFromURLSync(this.client.getUrl(), containerName, blob, timeout, metadata, tier,
+                rehydratePriority, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch,
+                sourceIfNoneMatch, sourceIfTags, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch,
+                ifNoneMatch, ifTags, copySource, leaseId, this.client.getVersion(), requestId, blobTagsString, sealBlob,
+                immutabilityPolicyExpiryConverted, immutabilityPolicyMode, legalHold, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * The Start Copy From URL operation copies a blob or an internet resource to a new blob.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param copySource Specifies the name of the source page blob snapshot. This value is a URL of up to 2 KB in
@@ -8406,7 +8542,7 @@ public final class BlobsImpl {
 
     /**
      * The Start Copy From URL operation copies a blob or an internet resource to a new blob.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param copySource Specifies the name of the source page blob snapshot. This value is a URL of up to 2 KB in
@@ -8471,11 +8607,15 @@ public final class BlobsImpl {
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         DateTimeRfc1123 immutabilityPolicyExpiryConverted
             = immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
-        return service.startCopyFromURLNoCustomHeadersSync(this.client.getUrl(), containerName, blob, timeout, metadata,
-            tier, rehydratePriority, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch,
-            sourceIfNoneMatch, sourceIfTags, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch,
-            ifTags, copySource, leaseId, this.client.getVersion(), requestId, blobTagsString, sealBlob,
-            immutabilityPolicyExpiryConverted, immutabilityPolicyMode, legalHold, accept, context);
+        try {
+            return service.startCopyFromURLNoCustomHeadersSync(this.client.getUrl(), containerName, blob, timeout,
+                metadata, tier, rehydratePriority, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted,
+                sourceIfMatch, sourceIfNoneMatch, sourceIfTags, ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
+                ifMatch, ifNoneMatch, ifTags, copySource, leaseId, this.client.getVersion(), requestId, blobTagsString,
+                sealBlob, immutabilityPolicyExpiryConverted, immutabilityPolicyMode, legalHold, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
@@ -8967,7 +9107,7 @@ public final class BlobsImpl {
     /**
      * The Copy From URL operation copies a blob or an internet resource to a new blob. It will not return a response
      * until the copy is complete.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param copySource Specifies the name of the source page blob snapshot. This value is a URL of up to 2 KB in
@@ -9042,18 +9182,22 @@ public final class BlobsImpl {
         String sourceContentMD5Converted = Base64Util.encodeToString(sourceContentMD5);
         DateTimeRfc1123 immutabilityPolicyExpiryConverted
             = immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
-        return service.copyFromURLSync(this.client.getUrl(), containerName, blob, xMsRequiresSync, timeout, metadata,
-            tier, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch,
-            ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, copySource, leaseId,
-            this.client.getVersion(), requestId, sourceContentMD5Converted, blobTagsString,
-            immutabilityPolicyExpiryConverted, immutabilityPolicyMode, legalHold, copySourceAuthorization,
-            encryptionScope, copySourceTags, accept, context);
+        try {
+            return service.copyFromURLSync(this.client.getUrl(), containerName, blob, xMsRequiresSync, timeout,
+                metadata, tier, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch,
+                sourceIfNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
+                copySource, leaseId, this.client.getVersion(), requestId, sourceContentMD5Converted, blobTagsString,
+                immutabilityPolicyExpiryConverted, immutabilityPolicyMode, legalHold, copySourceAuthorization,
+                encryptionScope, copySourceTags, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * The Copy From URL operation copies a blob or an internet resource to a new blob. It will not return a response
      * until the copy is complete.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param copySource Specifies the name of the source page blob snapshot. This value is a URL of up to 2 KB in
@@ -9117,7 +9261,7 @@ public final class BlobsImpl {
     /**
      * The Copy From URL operation copies a blob or an internet resource to a new blob. It will not return a response
      * until the copy is complete.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param copySource Specifies the name of the source page blob snapshot. This value is a URL of up to 2 KB in
@@ -9192,12 +9336,16 @@ public final class BlobsImpl {
         String sourceContentMD5Converted = Base64Util.encodeToString(sourceContentMD5);
         DateTimeRfc1123 immutabilityPolicyExpiryConverted
             = immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
-        return service.copyFromURLNoCustomHeadersSync(this.client.getUrl(), containerName, blob, xMsRequiresSync,
-            timeout, metadata, tier, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch,
-            sourceIfNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
-            copySource, leaseId, this.client.getVersion(), requestId, sourceContentMD5Converted, blobTagsString,
-            immutabilityPolicyExpiryConverted, immutabilityPolicyMode, legalHold, copySourceAuthorization,
-            encryptionScope, copySourceTags, accept, context);
+        try {
+            return service.copyFromURLNoCustomHeadersSync(this.client.getUrl(), containerName, blob, xMsRequiresSync,
+                timeout, metadata, tier, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted,
+                sourceIfMatch, sourceIfNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch,
+                ifNoneMatch, ifTags, copySource, leaseId, this.client.getVersion(), requestId,
+                sourceContentMD5Converted, blobTagsString, immutabilityPolicyExpiryConverted, immutabilityPolicyMode,
+                legalHold, copySourceAuthorization, encryptionScope, copySourceTags, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
@@ -9378,7 +9526,7 @@ public final class BlobsImpl {
     /**
      * The Abort Copy From URL operation aborts a pending Copy From URL operation, and leaves a destination blob with
      * zero length and full metadata.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param copyId The copy identifier provided in the x-ms-copy-id header of the original Copy Blob operation.
@@ -9400,14 +9548,19 @@ public final class BlobsImpl {
         final String comp = "copy";
         final String copyActionAbortConstant = "abort";
         final String accept = "application/xml";
-        return service.abortCopyFromURLSync(this.client.getUrl(), containerName, blob, comp, copyActionAbortConstant,
-            copyId, timeout, leaseId, this.client.getVersion(), requestId, accept, context);
+        try {
+            return service.abortCopyFromURLSync(this.client.getUrl(), containerName, blob, comp,
+                copyActionAbortConstant, copyId, timeout, leaseId, this.client.getVersion(), requestId, accept,
+                context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * The Abort Copy From URL operation aborts a pending Copy From URL operation, and leaves a destination blob with
      * zero length and full metadata.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param copyId The copy identifier provided in the x-ms-copy-id header of the original Copy Blob operation.
@@ -9430,7 +9583,7 @@ public final class BlobsImpl {
     /**
      * The Abort Copy From URL operation aborts a pending Copy From URL operation, and leaves a destination blob with
      * zero length and full metadata.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param copyId The copy identifier provided in the x-ms-copy-id header of the original Copy Blob operation.
@@ -9452,8 +9605,13 @@ public final class BlobsImpl {
         final String comp = "copy";
         final String copyActionAbortConstant = "abort";
         final String accept = "application/xml";
-        return service.abortCopyFromURLNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp,
-            copyActionAbortConstant, copyId, timeout, leaseId, this.client.getVersion(), requestId, accept, context);
+        try {
+            return service.abortCopyFromURLNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp,
+                copyActionAbortConstant, copyId, timeout, leaseId, this.client.getVersion(), requestId, accept,
+                context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
@@ -9702,7 +9860,7 @@ public final class BlobsImpl {
      * account and on a block blob in a blob storage account (locally redundant storage only). A premium page blob's
      * tier determines the allowed size, IOPS, and bandwidth of the blob. A block blob's tier determines
      * Hot/Cool/Archive storage type. This operation does not update the blob's ETag.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param tier Indicates the tier to be set on the blob.
@@ -9732,8 +9890,12 @@ public final class BlobsImpl {
         String requestId, String leaseId, String ifTags, Context context) {
         final String comp = "tier";
         final String accept = "application/xml";
-        return service.setTierSync(this.client.getUrl(), containerName, blob, comp, snapshot, versionId, timeout, tier,
-            rehydratePriority, this.client.getVersion(), requestId, leaseId, ifTags, accept, context);
+        try {
+            return service.setTierSync(this.client.getUrl(), containerName, blob, comp, snapshot, versionId, timeout,
+                tier, rehydratePriority, this.client.getVersion(), requestId, leaseId, ifTags, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
@@ -9741,7 +9903,7 @@ public final class BlobsImpl {
      * account and on a block blob in a blob storage account (locally redundant storage only). A premium page blob's
      * tier determines the allowed size, IOPS, and bandwidth of the blob. A block blob's tier determines
      * Hot/Cool/Archive storage type. This operation does not update the blob's ETag.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param tier Indicates the tier to be set on the blob.
@@ -9775,7 +9937,7 @@ public final class BlobsImpl {
      * account and on a block blob in a blob storage account (locally redundant storage only). A premium page blob's
      * tier determines the allowed size, IOPS, and bandwidth of the blob. A block blob's tier determines
      * Hot/Cool/Archive storage type. This operation does not update the blob's ETag.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param tier Indicates the tier to be set on the blob.
@@ -9805,8 +9967,13 @@ public final class BlobsImpl {
         String leaseId, String ifTags, Context context) {
         final String comp = "tier";
         final String accept = "application/xml";
-        return service.setTierNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, snapshot, versionId,
-            timeout, tier, rehydratePriority, this.client.getVersion(), requestId, leaseId, ifTags, accept, context);
+        try {
+            return service.setTierNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, snapshot,
+                versionId, timeout, tier, rehydratePriority, this.client.getVersion(), requestId, leaseId, ifTags,
+                accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
@@ -9935,7 +10102,7 @@ public final class BlobsImpl {
 
     /**
      * Returns the sku name and account kind.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param context The context to associate with this operation.
@@ -9950,13 +10117,17 @@ public final class BlobsImpl {
         final String restype = "account";
         final String comp = "properties";
         final String accept = "application/xml";
-        return service.getAccountInfoSync(this.client.getUrl(), containerName, blob, restype, comp,
-            this.client.getVersion(), accept, context);
+        try {
+            return service.getAccountInfoSync(this.client.getUrl(), containerName, blob, restype, comp,
+                this.client.getVersion(), accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * Returns the sku name and account kind.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -9970,7 +10141,7 @@ public final class BlobsImpl {
 
     /**
      * Returns the sku name and account kind.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param context The context to associate with this operation.
@@ -9985,8 +10156,12 @@ public final class BlobsImpl {
         final String restype = "account";
         final String comp = "properties";
         final String accept = "application/xml";
-        return service.getAccountInfoNoCustomHeadersSync(this.client.getUrl(), containerName, blob, restype, comp,
-            this.client.getVersion(), accept, context);
+        try {
+            return service.getAccountInfoNoCustomHeadersSync(this.client.getUrl(), containerName, blob, restype, comp,
+                this.client.getVersion(), accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
@@ -10324,7 +10499,7 @@ public final class BlobsImpl {
 
     /**
      * The Query operation enables users to select/project on blob data by providing simple query expressions.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
@@ -10378,15 +10553,19 @@ public final class BlobsImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.querySync(this.client.getUrl(), containerName, blob, comp, snapshot, timeout, leaseId,
-            encryptionKey, encryptionKeySha256, encryptionAlgorithm, ifModifiedSinceConverted,
-            ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId, queryRequest,
-            accept, context);
+        try {
+            return service.querySync(this.client.getUrl(), containerName, blob, comp, snapshot, timeout, leaseId,
+                encryptionKey, encryptionKeySha256, encryptionAlgorithm, ifModifiedSinceConverted,
+                ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId,
+                queryRequest, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * The Query operation enables users to select/project on blob data by providing simple query expressions.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
@@ -10417,13 +10596,18 @@ public final class BlobsImpl {
     public InputStream query(String containerName, String blob, String snapshot, Integer timeout, String leaseId,
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
         String ifTags, String requestId, QueryRequest queryRequest, CpkInfo cpkInfo) {
-        return queryWithResponse(containerName, blob, snapshot, timeout, leaseId, ifModifiedSince, ifUnmodifiedSince,
-            ifMatch, ifNoneMatch, ifTags, requestId, queryRequest, cpkInfo, Context.NONE).getValue();
+        try {
+            return queryWithResponse(containerName, blob, snapshot, timeout, leaseId, ifModifiedSince,
+                ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId, queryRequest, cpkInfo, Context.NONE)
+                .getValue();
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * The Query operation enables users to select/project on blob data by providing simple query expressions.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
@@ -10477,10 +10661,14 @@ public final class BlobsImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.queryNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, snapshot, timeout,
-            leaseId, encryptionKey, encryptionKeySha256, encryptionAlgorithm, ifModifiedSinceConverted,
-            ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId, queryRequest,
-            accept, context);
+        try {
+            return service.queryNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, snapshot, timeout,
+                leaseId, encryptionKey, encryptionKeySha256, encryptionAlgorithm, ifModifiedSinceConverted,
+                ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId,
+                queryRequest, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
@@ -10688,7 +10876,7 @@ public final class BlobsImpl {
 
     /**
      * The Get Tags operation enables users to get the tags associated with a blob.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -10716,13 +10904,17 @@ public final class BlobsImpl {
         Context context) {
         final String comp = "tags";
         final String accept = "application/xml";
-        return service.getTagsSync(this.client.getUrl(), containerName, blob, comp, timeout, this.client.getVersion(),
-            requestId, snapshot, versionId, ifTags, leaseId, accept, context);
+        try {
+            return service.getTagsSync(this.client.getUrl(), containerName, blob, comp, timeout,
+                this.client.getVersion(), requestId, snapshot, versionId, ifTags, leaseId, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * The Get Tags operation enables users to get the tags associated with a blob.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -10746,13 +10938,17 @@ public final class BlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BlobTags getTags(String containerName, String blob, Integer timeout, String requestId, String snapshot,
         String versionId, String ifTags, String leaseId) {
-        return getTagsWithResponse(containerName, blob, timeout, requestId, snapshot, versionId, ifTags, leaseId,
-            Context.NONE).getValue();
+        try {
+            return getTagsWithResponse(containerName, blob, timeout, requestId, snapshot, versionId, ifTags, leaseId,
+                Context.NONE).getValue();
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * The Get Tags operation enables users to get the tags associated with a blob.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -10779,8 +10975,12 @@ public final class BlobsImpl {
         String requestId, String snapshot, String versionId, String ifTags, String leaseId, Context context) {
         final String comp = "tags";
         final String accept = "application/xml";
-        return service.getTagsNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, timeout,
-            this.client.getVersion(), requestId, snapshot, versionId, ifTags, leaseId, accept, context);
+        try {
+            return service.getTagsNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, timeout,
+                this.client.getVersion(), requestId, snapshot, versionId, ifTags, leaseId, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
@@ -11000,7 +11200,7 @@ public final class BlobsImpl {
 
     /**
      * The Set Tags operation enables users to set tags on a blob.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -11029,14 +11229,18 @@ public final class BlobsImpl {
         final String accept = "application/xml";
         String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
         String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
-        return service.setTagsSync(this.client.getUrl(), containerName, blob, comp, this.client.getVersion(), timeout,
-            versionId, transactionalContentMD5Converted, transactionalContentCrc64Converted, requestId, ifTags, leaseId,
-            tags, accept, context);
+        try {
+            return service.setTagsSync(this.client.getUrl(), containerName, blob, comp, this.client.getVersion(),
+                timeout, versionId, transactionalContentMD5Converted, transactionalContentCrc64Converted, requestId,
+                ifTags, leaseId, tags, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * The Set Tags operation enables users to set tags on a blob.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -11065,7 +11269,7 @@ public final class BlobsImpl {
 
     /**
      * The Set Tags operation enables users to set tags on a blob.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -11094,8 +11298,12 @@ public final class BlobsImpl {
         final String accept = "application/xml";
         String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
         String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
-        return service.setTagsNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp,
-            this.client.getVersion(), timeout, versionId, transactionalContentMD5Converted,
-            transactionalContentCrc64Converted, requestId, ifTags, leaseId, tags, accept, context);
+        try {
+            return service.setTagsNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp,
+                this.client.getVersion(), timeout, versionId, transactionalContentMD5Converted,
+                transactionalContentCrc64Converted, requestId, ifTags, leaseId, tags, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 }

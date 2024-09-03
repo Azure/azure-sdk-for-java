@@ -1460,7 +1460,7 @@ public final class PageBlobsImpl {
 
     /**
      * The Create operation creates a new page blob.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param contentLength The length of the request.
@@ -1568,17 +1568,21 @@ public final class PageBlobsImpl {
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         DateTimeRfc1123 immutabilityPolicyExpiryConverted
             = immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
-        return service.createSync(this.client.getUrl(), containerName, blob, blobType, timeout, contentLength, tier,
-            contentType, contentEncoding, contentLanguage, contentMd5Converted, cacheControl, metadata, leaseId,
-            contentDisposition, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope,
-            ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, blobContentLength,
-            blobSequenceNumber, this.client.getVersion(), requestId, blobTagsString, immutabilityPolicyExpiryConverted,
-            immutabilityPolicyMode, legalHold, accept, context);
+        try {
+            return service.createSync(this.client.getUrl(), containerName, blob, blobType, timeout, contentLength, tier,
+                contentType, contentEncoding, contentLanguage, contentMd5Converted, cacheControl, metadata, leaseId,
+                contentDisposition, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope,
+                ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, blobContentLength,
+                blobSequenceNumber, this.client.getVersion(), requestId, blobTagsString,
+                immutabilityPolicyExpiryConverted, immutabilityPolicyMode, legalHold, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * The Create operation creates a new page blob.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param contentLength The length of the request.
@@ -1632,7 +1636,7 @@ public final class PageBlobsImpl {
 
     /**
      * The Create operation creates a new page blob.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param contentLength The length of the request.
@@ -1739,12 +1743,16 @@ public final class PageBlobsImpl {
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         DateTimeRfc1123 immutabilityPolicyExpiryConverted
             = immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
-        return service.createNoCustomHeadersSync(this.client.getUrl(), containerName, blob, blobType, timeout,
-            contentLength, tier, contentType, contentEncoding, contentLanguage, contentMd5Converted, cacheControl,
-            metadata, leaseId, contentDisposition, encryptionKey, encryptionKeySha256, encryptionAlgorithm,
-            encryptionScope, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
-            blobContentLength, blobSequenceNumber, this.client.getVersion(), requestId, blobTagsString,
-            immutabilityPolicyExpiryConverted, immutabilityPolicyMode, legalHold, accept, context);
+        try {
+            return service.createNoCustomHeadersSync(this.client.getUrl(), containerName, blob, blobType, timeout,
+                contentLength, tier, contentType, contentEncoding, contentLanguage, contentMd5Converted, cacheControl,
+                metadata, leaseId, contentDisposition, encryptionKey, encryptionKeySha256, encryptionAlgorithm,
+                encryptionScope, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
+                blobContentLength, blobSequenceNumber, this.client.getVersion(), requestId, blobTagsString,
+                immutabilityPolicyExpiryConverted, immutabilityPolicyMode, legalHold, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
@@ -2607,7 +2615,7 @@ public final class PageBlobsImpl {
 
     /**
      * The Upload Pages operation writes a range of pages to a page blob.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param contentLength The length of the request.
@@ -2678,16 +2686,21 @@ public final class PageBlobsImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.uploadPagesSync(this.client.getUrl(), containerName, blob, comp, pageWrite, contentLength,
-            transactionalContentMD5Converted, transactionalContentCrc64Converted, timeout, range, leaseId,
-            encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope, ifSequenceNumberLessThanOrEqualTo,
-            ifSequenceNumberLessThan, ifSequenceNumberEqualTo, ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
-            ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId, body, accept, context);
+        try {
+            return service.uploadPagesSync(this.client.getUrl(), containerName, blob, comp, pageWrite, contentLength,
+                transactionalContentMD5Converted, transactionalContentCrc64Converted, timeout, range, leaseId,
+                encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope,
+                ifSequenceNumberLessThanOrEqualTo, ifSequenceNumberLessThan, ifSequenceNumberEqualTo,
+                ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
+                this.client.getVersion(), requestId, body, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * The Upload Pages operation writes a range of pages to a page blob.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param contentLength The length of the request.
@@ -2734,7 +2747,7 @@ public final class PageBlobsImpl {
 
     /**
      * The Upload Pages operation writes a range of pages to a page blob.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param contentLength The length of the request.
@@ -2805,12 +2818,16 @@ public final class PageBlobsImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.uploadPagesNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, pageWrite,
-            contentLength, transactionalContentMD5Converted, transactionalContentCrc64Converted, timeout, range,
-            leaseId, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope,
-            ifSequenceNumberLessThanOrEqualTo, ifSequenceNumberLessThan, ifSequenceNumberEqualTo,
-            ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
-            this.client.getVersion(), requestId, body, accept, context);
+        try {
+            return service.uploadPagesNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, pageWrite,
+                contentLength, transactionalContentMD5Converted, transactionalContentCrc64Converted, timeout, range,
+                leaseId, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope,
+                ifSequenceNumberLessThanOrEqualTo, ifSequenceNumberLessThan, ifSequenceNumberEqualTo,
+                ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
+                this.client.getVersion(), requestId, body, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
@@ -3209,7 +3226,7 @@ public final class PageBlobsImpl {
 
     /**
      * The Clear Pages operation clears a set of pages from a page blob.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param contentLength The length of the request.
@@ -3274,16 +3291,20 @@ public final class PageBlobsImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.clearPagesSync(this.client.getUrl(), containerName, blob, comp, pageWrite, contentLength,
-            timeout, range, leaseId, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope,
-            ifSequenceNumberLessThanOrEqualTo, ifSequenceNumberLessThan, ifSequenceNumberEqualTo,
-            ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
-            this.client.getVersion(), requestId, accept, context);
+        try {
+            return service.clearPagesSync(this.client.getUrl(), containerName, blob, comp, pageWrite, contentLength,
+                timeout, range, leaseId, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope,
+                ifSequenceNumberLessThanOrEqualTo, ifSequenceNumberLessThan, ifSequenceNumberEqualTo,
+                ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
+                this.client.getVersion(), requestId, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * The Clear Pages operation clears a set of pages from a page blob.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param contentLength The length of the request.
@@ -3325,7 +3346,7 @@ public final class PageBlobsImpl {
 
     /**
      * The Clear Pages operation clears a set of pages from a page blob.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param contentLength The length of the request.
@@ -3390,11 +3411,15 @@ public final class PageBlobsImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.clearPagesNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, pageWrite,
-            contentLength, timeout, range, leaseId, encryptionKey, encryptionKeySha256, encryptionAlgorithm,
-            encryptionScope, ifSequenceNumberLessThanOrEqualTo, ifSequenceNumberLessThan, ifSequenceNumberEqualTo,
-            ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
-            this.client.getVersion(), requestId, accept, context);
+        try {
+            return service.clearPagesNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, pageWrite,
+                contentLength, timeout, range, leaseId, encryptionKey, encryptionKeySha256, encryptionAlgorithm,
+                encryptionScope, ifSequenceNumberLessThanOrEqualTo, ifSequenceNumberLessThan, ifSequenceNumberEqualTo,
+                ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
+                this.client.getVersion(), requestId, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
@@ -3936,7 +3961,7 @@ public final class PageBlobsImpl {
 
     /**
      * The Upload Pages operation writes a range of pages to a page blob where the contents are read from a URL.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param sourceUrl Specify a URL to the copy source.
@@ -4025,18 +4050,22 @@ public final class PageBlobsImpl {
             = sourceIfModifiedSince == null ? null : new DateTimeRfc1123(sourceIfModifiedSince);
         DateTimeRfc1123 sourceIfUnmodifiedSinceConverted
             = sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
-        return service.uploadPagesFromURLSync(this.client.getUrl(), containerName, blob, comp, pageWrite, sourceUrl,
-            sourceRange, sourceContentMD5Converted, sourceContentcrc64Converted, contentLength, timeout, range,
-            encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope, leaseId,
-            ifSequenceNumberLessThanOrEqualTo, ifSequenceNumberLessThan, ifSequenceNumberEqualTo,
-            ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
-            sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch,
-            this.client.getVersion(), requestId, copySourceAuthorization, accept, context);
+        try {
+            return service.uploadPagesFromURLSync(this.client.getUrl(), containerName, blob, comp, pageWrite, sourceUrl,
+                sourceRange, sourceContentMD5Converted, sourceContentcrc64Converted, contentLength, timeout, range,
+                encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope, leaseId,
+                ifSequenceNumberLessThanOrEqualTo, ifSequenceNumberLessThan, ifSequenceNumberEqualTo,
+                ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
+                sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch,
+                this.client.getVersion(), requestId, copySourceAuthorization, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * The Upload Pages operation writes a range of pages to a page blob where the contents are read from a URL.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param sourceUrl Specify a URL to the copy source.
@@ -4098,7 +4127,7 @@ public final class PageBlobsImpl {
 
     /**
      * The Upload Pages operation writes a range of pages to a page blob where the contents are read from a URL.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param sourceUrl Specify a URL to the copy source.
@@ -4187,13 +4216,17 @@ public final class PageBlobsImpl {
             = sourceIfModifiedSince == null ? null : new DateTimeRfc1123(sourceIfModifiedSince);
         DateTimeRfc1123 sourceIfUnmodifiedSinceConverted
             = sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
-        return service.uploadPagesFromURLNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, pageWrite,
-            sourceUrl, sourceRange, sourceContentMD5Converted, sourceContentcrc64Converted, contentLength, timeout,
-            range, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope, leaseId,
-            ifSequenceNumberLessThanOrEqualTo, ifSequenceNumberLessThan, ifSequenceNumberEqualTo,
-            ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
-            sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch,
-            this.client.getVersion(), requestId, copySourceAuthorization, accept, context);
+        try {
+            return service.uploadPagesFromURLNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp,
+                pageWrite, sourceUrl, sourceRange, sourceContentMD5Converted, sourceContentcrc64Converted,
+                contentLength, timeout, range, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope,
+                leaseId, ifSequenceNumberLessThanOrEqualTo, ifSequenceNumberLessThan, ifSequenceNumberEqualTo,
+                ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
+                sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch,
+                this.client.getVersion(), requestId, copySourceAuthorization, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
@@ -4528,7 +4561,7 @@ public final class PageBlobsImpl {
     /**
      * The Get Page Ranges operation returns the list of valid page ranges for a page blob, version or snapshot of a
      * page blob.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
@@ -4576,15 +4609,19 @@ public final class PageBlobsImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.getPageRangesSync(this.client.getUrl(), containerName, blob, comp, snapshot, timeout, range,
-            leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
-            this.client.getVersion(), requestId, marker, maxresults, accept, context);
+        try {
+            return service.getPageRangesSync(this.client.getUrl(), containerName, blob, comp, snapshot, timeout, range,
+                leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
+                this.client.getVersion(), requestId, marker, maxresults, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * The Get Page Ranges operation returns the list of valid page ranges for a page blob, version or snapshot of a
      * page blob.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
@@ -4624,14 +4661,19 @@ public final class PageBlobsImpl {
     public PageList getPageRanges(String containerName, String blob, String snapshot, Integer timeout, String range,
         String leaseId, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch,
         String ifNoneMatch, String ifTags, String requestId, String marker, Integer maxresults) {
-        return getPageRangesWithResponse(containerName, blob, snapshot, timeout, range, leaseId, ifModifiedSince,
-            ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId, marker, maxresults, Context.NONE).getValue();
+        try {
+            return getPageRangesWithResponse(containerName, blob, snapshot, timeout, range, leaseId, ifModifiedSince,
+                ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId, marker, maxresults, Context.NONE)
+                .getValue();
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * The Get Page Ranges operation returns the list of valid page ranges for a page blob, version or snapshot of a
      * page blob.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
@@ -4679,9 +4721,13 @@ public final class PageBlobsImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.getPageRangesNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, snapshot,
-            timeout, range, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
-            this.client.getVersion(), requestId, marker, maxresults, accept, context);
+        try {
+            return service.getPageRangesNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, snapshot,
+                timeout, range, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch,
+                ifTags, this.client.getVersion(), requestId, marker, maxresults, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
@@ -5070,7 +5116,7 @@ public final class PageBlobsImpl {
     /**
      * [Update] The Get Page Ranges Diff operation returns the list of valid page ranges for a page blob that were
      * changed between target blob and previous snapshot or version.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
@@ -5126,15 +5172,19 @@ public final class PageBlobsImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.getPageRangesDiffSync(this.client.getUrl(), containerName, blob, comp, snapshot, timeout,
-            prevsnapshot, prevSnapshotUrl, range, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
-            ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId, marker, maxresults, accept, context);
+        try {
+            return service.getPageRangesDiffSync(this.client.getUrl(), containerName, blob, comp, snapshot, timeout,
+                prevsnapshot, prevSnapshotUrl, range, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
+                ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId, marker, maxresults, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * [Update] The Get Page Ranges Diff operation returns the list of valid page ranges for a page blob that were
      * changed between target blob and previous snapshot or version.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
@@ -5183,15 +5233,19 @@ public final class PageBlobsImpl {
         String prevsnapshot, String prevSnapshotUrl, String range, String leaseId, OffsetDateTime ifModifiedSince,
         OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String ifTags, String requestId,
         String marker, Integer maxresults) {
-        return getPageRangesDiffWithResponse(containerName, blob, snapshot, timeout, prevsnapshot, prevSnapshotUrl,
-            range, leaseId, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId, marker,
-            maxresults, Context.NONE).getValue();
+        try {
+            return getPageRangesDiffWithResponse(containerName, blob, snapshot, timeout, prevsnapshot, prevSnapshotUrl,
+                range, leaseId, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId, marker,
+                maxresults, Context.NONE).getValue();
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * [Update] The Get Page Ranges Diff operation returns the list of valid page ranges for a page blob that were
      * changed between target blob and previous snapshot or version.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
@@ -5247,10 +5301,14 @@ public final class PageBlobsImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.getPageRangesDiffNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, snapshot,
-            timeout, prevsnapshot, prevSnapshotUrl, range, leaseId, ifModifiedSinceConverted,
-            ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId, marker,
-            maxresults, accept, context);
+        try {
+            return service.getPageRangesDiffNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp,
+                snapshot, timeout, prevsnapshot, prevSnapshotUrl, range, leaseId, ifModifiedSinceConverted,
+                ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId, marker,
+                maxresults, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
@@ -5597,7 +5655,7 @@ public final class PageBlobsImpl {
 
     /**
      * Resize the Blob.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param blobContentLength This header specifies the maximum size for the page blob, up to 1 TB. The page blob size
@@ -5654,15 +5712,19 @@ public final class PageBlobsImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.resizeSync(this.client.getUrl(), containerName, blob, comp, timeout, leaseId, encryptionKey,
-            encryptionKeySha256, encryptionAlgorithm, encryptionScope, ifModifiedSinceConverted,
-            ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, blobContentLength, this.client.getVersion(),
-            requestId, accept, context);
+        try {
+            return service.resizeSync(this.client.getUrl(), containerName, blob, comp, timeout, leaseId, encryptionKey,
+                encryptionKeySha256, encryptionAlgorithm, encryptionScope, ifModifiedSinceConverted,
+                ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, blobContentLength, this.client.getVersion(),
+                requestId, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * Resize the Blob.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param blobContentLength This header specifies the maximum size for the page blob, up to 1 TB. The page blob size
@@ -5696,7 +5758,7 @@ public final class PageBlobsImpl {
 
     /**
      * Resize the Blob.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param blobContentLength This header specifies the maximum size for the page blob, up to 1 TB. The page blob size
@@ -5753,10 +5815,14 @@ public final class PageBlobsImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.resizeNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, timeout, leaseId,
-            encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope, ifModifiedSinceConverted,
-            ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, blobContentLength, this.client.getVersion(),
-            requestId, accept, context);
+        try {
+            return service.resizeNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, timeout, leaseId,
+                encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope, ifModifiedSinceConverted,
+                ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, blobContentLength, this.client.getVersion(),
+                requestId, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
@@ -6027,7 +6093,7 @@ public final class PageBlobsImpl {
 
     /**
      * Update the sequence number of the blob.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param sequenceNumberAction Required if the x-ms-blob-sequence-number header is set for the request. This
@@ -6065,14 +6131,18 @@ public final class PageBlobsImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.updateSequenceNumberSync(this.client.getUrl(), containerName, blob, comp, timeout, leaseId,
-            ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, sequenceNumberAction,
-            blobSequenceNumber, this.client.getVersion(), requestId, accept, context);
+        try {
+            return service.updateSequenceNumberSync(this.client.getUrl(), containerName, blob, comp, timeout, leaseId,
+                ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
+                sequenceNumberAction, blobSequenceNumber, this.client.getVersion(), requestId, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * Update the sequence number of the blob.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param sequenceNumberAction Required if the x-ms-blob-sequence-number header is set for the request. This
@@ -6107,7 +6177,7 @@ public final class PageBlobsImpl {
 
     /**
      * Update the sequence number of the blob.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param sequenceNumberAction Required if the x-ms-blob-sequence-number header is set for the request. This
@@ -6145,9 +6215,13 @@ public final class PageBlobsImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.updateSequenceNumberNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, timeout,
-            leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
-            sequenceNumberAction, blobSequenceNumber, this.client.getVersion(), requestId, accept, context);
+        try {
+            return service.updateSequenceNumberNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp,
+                timeout, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
+                sequenceNumberAction, blobSequenceNumber, this.client.getVersion(), requestId, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
@@ -6415,7 +6489,7 @@ public final class PageBlobsImpl {
      * is copied such that only the differential changes between the previously copied snapshot are transferred to the
      * destination. The copied snapshots are complete copies of the original snapshot and can be read or copied from as
      * usual. This API is supported since REST version 2016-05-31.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param copySource Specifies the name of the source page blob snapshot. This value is a URL of up to 2 KB in
@@ -6450,9 +6524,13 @@ public final class PageBlobsImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.copyIncrementalSync(this.client.getUrl(), containerName, blob, comp, timeout,
-            ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, copySource,
-            this.client.getVersion(), requestId, accept, context);
+        try {
+            return service.copyIncrementalSync(this.client.getUrl(), containerName, blob, comp, timeout,
+                ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, copySource,
+                this.client.getVersion(), requestId, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
@@ -6460,7 +6538,7 @@ public final class PageBlobsImpl {
      * is copied such that only the differential changes between the previously copied snapshot are transferred to the
      * destination. The copied snapshots are complete copies of the original snapshot and can be read or copied from as
      * usual. This API is supported since REST version 2016-05-31.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param copySource Specifies the name of the source page blob snapshot. This value is a URL of up to 2 KB in
@@ -6495,7 +6573,7 @@ public final class PageBlobsImpl {
      * is copied such that only the differential changes between the previously copied snapshot are transferred to the
      * destination. The copied snapshots are complete copies of the original snapshot and can be read or copied from as
      * usual. This API is supported since REST version 2016-05-31.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param copySource Specifies the name of the source page blob snapshot. This value is a URL of up to 2 KB in
@@ -6529,8 +6607,12 @@ public final class PageBlobsImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.copyIncrementalNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, timeout,
-            ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, copySource,
-            this.client.getVersion(), requestId, accept, context);
+        try {
+            return service.copyIncrementalNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, timeout,
+                ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, copySource,
+                this.client.getVersion(), requestId, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 }

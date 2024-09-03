@@ -1048,7 +1048,7 @@ public final class AppendBlobsImpl {
 
     /**
      * The Create Append Blob operation creates a new append blob.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param contentLength The length of the request.
@@ -1150,17 +1150,21 @@ public final class AppendBlobsImpl {
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         DateTimeRfc1123 immutabilityPolicyExpiryConverted
             = immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
-        return service.createSync(this.client.getUrl(), containerName, blob, blobType, timeout, contentLength,
-            contentType, contentEncoding, contentLanguage, contentMd5Converted, cacheControl, metadata, leaseId,
-            contentDisposition, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope,
-            ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
-            this.client.getVersion(), requestId, blobTagsString, immutabilityPolicyExpiryConverted,
-            immutabilityPolicyMode, legalHold, accept, context);
+        try {
+            return service.createSync(this.client.getUrl(), containerName, blob, blobType, timeout, contentLength,
+                contentType, contentEncoding, contentLanguage, contentMd5Converted, cacheControl, metadata, leaseId,
+                contentDisposition, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope,
+                ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
+                this.client.getVersion(), requestId, blobTagsString, immutabilityPolicyExpiryConverted,
+                immutabilityPolicyMode, legalHold, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * The Create Append Blob operation creates a new append blob.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param contentLength The length of the request.
@@ -1207,7 +1211,7 @@ public final class AppendBlobsImpl {
 
     /**
      * The Create Append Blob operation creates a new append blob.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param contentLength The length of the request.
@@ -1309,12 +1313,16 @@ public final class AppendBlobsImpl {
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         DateTimeRfc1123 immutabilityPolicyExpiryConverted
             = immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
-        return service.createNoCustomHeadersSync(this.client.getUrl(), containerName, blob, blobType, timeout,
-            contentLength, contentType, contentEncoding, contentLanguage, contentMd5Converted, cacheControl, metadata,
-            leaseId, contentDisposition, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope,
-            ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
-            this.client.getVersion(), requestId, blobTagsString, immutabilityPolicyExpiryConverted,
-            immutabilityPolicyMode, legalHold, accept, context);
+        try {
+            return service.createNoCustomHeadersSync(this.client.getUrl(), containerName, blob, blobType, timeout,
+                contentLength, contentType, contentEncoding, contentLanguage, contentMd5Converted, cacheControl,
+                metadata, leaseId, contentDisposition, encryptionKey, encryptionKeySha256, encryptionAlgorithm,
+                encryptionScope, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
+                this.client.getVersion(), requestId, blobTagsString, immutabilityPolicyExpiryConverted,
+                immutabilityPolicyMode, legalHold, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
@@ -2189,7 +2197,7 @@ public final class AppendBlobsImpl {
      * The Append Block operation commits a new block of data to the end of an existing append blob. The Append Block
      * operation is permitted only if the blob was created with x-ms-blob-type set to AppendBlob. Append Block is
      * supported only on version 2015-02-21 version or later.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param contentLength The length of the request.
@@ -2259,18 +2267,22 @@ public final class AppendBlobsImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.appendBlockSync(this.client.getUrl(), containerName, blob, comp, timeout, contentLength,
-            transactionalContentMD5Converted, transactionalContentCrc64Converted, leaseId, maxSize, appendPosition,
-            encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope, ifModifiedSinceConverted,
-            ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId, body, accept,
-            context);
+        try {
+            return service.appendBlockSync(this.client.getUrl(), containerName, blob, comp, timeout, contentLength,
+                transactionalContentMD5Converted, transactionalContentCrc64Converted, leaseId, maxSize, appendPosition,
+                encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope, ifModifiedSinceConverted,
+                ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId, body,
+                accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * The Append Block operation commits a new block of data to the end of an existing append blob. The Append Block
      * operation is permitted only if the blob was created with x-ms-blob-type set to AppendBlob. Append Block is
      * supported only on version 2015-02-21 version or later.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param contentLength The length of the request.
@@ -2318,7 +2330,7 @@ public final class AppendBlobsImpl {
      * The Append Block operation commits a new block of data to the end of an existing append blob. The Append Block
      * operation is permitted only if the blob was created with x-ms-blob-type set to AppendBlob. Append Block is
      * supported only on version 2015-02-21 version or later.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param contentLength The length of the request.
@@ -2388,11 +2400,15 @@ public final class AppendBlobsImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.appendBlockNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, timeout,
-            contentLength, transactionalContentMD5Converted, transactionalContentCrc64Converted, leaseId, maxSize,
-            appendPosition, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope,
-            ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
-            this.client.getVersion(), requestId, body, accept, context);
+        try {
+            return service.appendBlockNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, timeout,
+                contentLength, transactionalContentMD5Converted, transactionalContentCrc64Converted, leaseId, maxSize,
+                appendPosition, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope,
+                ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
+                this.client.getVersion(), requestId, body, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
@@ -2939,7 +2955,7 @@ public final class AppendBlobsImpl {
      * The Append Block operation commits a new block of data to the end of an existing append blob where the contents
      * are read from a source url. The Append Block operation is permitted only if the blob was created with
      * x-ms-blob-type set to AppendBlob. Append Block is supported only on version 2015-02-21 version or later.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param sourceUrl Specify a URL to the copy source.
@@ -3027,19 +3043,24 @@ public final class AppendBlobsImpl {
             = sourceIfModifiedSince == null ? null : new DateTimeRfc1123(sourceIfModifiedSince);
         DateTimeRfc1123 sourceIfUnmodifiedSinceConverted
             = sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
-        return service.appendBlockFromUrlSync(this.client.getUrl(), containerName, blob, comp, sourceUrl, sourceRange,
-            sourceContentMD5Converted, sourceContentcrc64Converted, timeout, contentLength,
-            transactionalContentMD5Converted, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope,
-            leaseId, maxSize, appendPosition, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch,
-            ifNoneMatch, ifTags, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch,
-            sourceIfNoneMatch, this.client.getVersion(), requestId, copySourceAuthorization, accept, context);
+        try {
+            return service.appendBlockFromUrlSync(this.client.getUrl(), containerName, blob, comp, sourceUrl,
+                sourceRange, sourceContentMD5Converted, sourceContentcrc64Converted, timeout, contentLength,
+                transactionalContentMD5Converted, encryptionKey, encryptionKeySha256, encryptionAlgorithm,
+                encryptionScope, leaseId, maxSize, appendPosition, ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
+                ifMatch, ifNoneMatch, ifTags, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted,
+                sourceIfMatch, sourceIfNoneMatch, this.client.getVersion(), requestId, copySourceAuthorization, accept,
+                context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * The Append Block operation commits a new block of data to the end of an existing append blob where the contents
      * are read from a source url. The Append Block operation is permitted only if the blob was created with
      * x-ms-blob-type set to AppendBlob. Append Block is supported only on version 2015-02-21 version or later.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param sourceUrl Specify a URL to the copy source.
@@ -3103,7 +3124,7 @@ public final class AppendBlobsImpl {
      * The Append Block operation commits a new block of data to the end of an existing append blob where the contents
      * are read from a source url. The Append Block operation is permitted only if the blob was created with
      * x-ms-blob-type set to AppendBlob. Append Block is supported only on version 2015-02-21 version or later.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param sourceUrl Specify a URL to the copy source.
@@ -3191,12 +3212,17 @@ public final class AppendBlobsImpl {
             = sourceIfModifiedSince == null ? null : new DateTimeRfc1123(sourceIfModifiedSince);
         DateTimeRfc1123 sourceIfUnmodifiedSinceConverted
             = sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
-        return service.appendBlockFromUrlNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, sourceUrl,
-            sourceRange, sourceContentMD5Converted, sourceContentcrc64Converted, timeout, contentLength,
-            transactionalContentMD5Converted, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope,
-            leaseId, maxSize, appendPosition, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch,
-            ifNoneMatch, ifTags, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch,
-            sourceIfNoneMatch, this.client.getVersion(), requestId, copySourceAuthorization, accept, context);
+        try {
+            return service.appendBlockFromUrlNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp,
+                sourceUrl, sourceRange, sourceContentMD5Converted, sourceContentcrc64Converted, timeout, contentLength,
+                transactionalContentMD5Converted, encryptionKey, encryptionKeySha256, encryptionAlgorithm,
+                encryptionScope, leaseId, maxSize, appendPosition, ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
+                ifMatch, ifNoneMatch, ifTags, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted,
+                sourceIfMatch, sourceIfNoneMatch, this.client.getVersion(), requestId, copySourceAuthorization, accept,
+                context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
@@ -3455,7 +3481,7 @@ public final class AppendBlobsImpl {
     /**
      * The Seal operation seals the Append Blob to make it read-only. Seal is supported only on version 2019-12-12
      * version or later.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -3490,15 +3516,19 @@ public final class AppendBlobsImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.sealSync(this.client.getUrl(), containerName, blob, comp, timeout, this.client.getVersion(),
-            requestId, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch,
-            appendPosition, accept, context);
+        try {
+            return service.sealSync(this.client.getUrl(), containerName, blob, comp, timeout, this.client.getVersion(),
+                requestId, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch,
+                appendPosition, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * The Seal operation seals the Append Blob to make it read-only. Seal is supported only on version 2019-12-12
      * version or later.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -3532,7 +3562,7 @@ public final class AppendBlobsImpl {
     /**
      * The Seal operation seals the Append Blob to make it read-only. Seal is supported only on version 2019-12-12
      * version or later.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -3567,8 +3597,12 @@ public final class AppendBlobsImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.sealNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, timeout,
-            this.client.getVersion(), requestId, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch,
-            ifNoneMatch, appendPosition, accept, context);
+        try {
+            return service.sealNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, timeout,
+                this.client.getVersion(), requestId, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
+                ifMatch, ifNoneMatch, appendPosition, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 }

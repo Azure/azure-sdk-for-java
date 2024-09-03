@@ -2014,7 +2014,7 @@ public final class BlockBlobsImpl {
      * overwrites any existing metadata on the blob. Partial updates are not supported with Put Blob; the content of the
      * existing blob is overwritten with the content of the new blob. To perform a partial update of the content of a
      * block blob, use the Put Block List operation.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param contentLength The length of the request.
@@ -2123,13 +2123,17 @@ public final class BlockBlobsImpl {
         DateTimeRfc1123 immutabilityPolicyExpiryConverted
             = immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
         String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
-        return service.uploadSync(this.client.getUrl(), containerName, blob, blobType, timeout,
-            transactionalContentMD5Converted, contentLength, contentType, contentEncoding, contentLanguage,
-            contentMd5Converted, cacheControl, metadata, leaseId, contentDisposition, encryptionKey,
-            encryptionKeySha256, encryptionAlgorithm, encryptionScope, tier, ifModifiedSinceConverted,
-            ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId,
-            blobTagsString, immutabilityPolicyExpiryConverted, immutabilityPolicyMode, legalHold,
-            transactionalContentCrc64Converted, body, accept, context);
+        try {
+            return service.uploadSync(this.client.getUrl(), containerName, blob, blobType, timeout,
+                transactionalContentMD5Converted, contentLength, contentType, contentEncoding, contentLanguage,
+                contentMd5Converted, cacheControl, metadata, leaseId, contentDisposition, encryptionKey,
+                encryptionKeySha256, encryptionAlgorithm, encryptionScope, tier, ifModifiedSinceConverted,
+                ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId,
+                blobTagsString, immutabilityPolicyExpiryConverted, immutabilityPolicyMode, legalHold,
+                transactionalContentCrc64Converted, body, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
@@ -2137,7 +2141,7 @@ public final class BlockBlobsImpl {
      * overwrites any existing metadata on the blob. Partial updates are not supported with Put Blob; the content of the
      * existing blob is overwritten with the content of the new blob. To perform a partial update of the content of a
      * block blob, use the Put Block List operation.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param contentLength The length of the request.
@@ -2193,7 +2197,7 @@ public final class BlockBlobsImpl {
      * overwrites any existing metadata on the blob. Partial updates are not supported with Put Blob; the content of the
      * existing blob is overwritten with the content of the new blob. To perform a partial update of the content of a
      * block blob, use the Put Block List operation.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param contentLength The length of the request.
@@ -2302,13 +2306,17 @@ public final class BlockBlobsImpl {
         DateTimeRfc1123 immutabilityPolicyExpiryConverted
             = immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
         String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
-        return service.uploadNoCustomHeadersSync(this.client.getUrl(), containerName, blob, blobType, timeout,
-            transactionalContentMD5Converted, contentLength, contentType, contentEncoding, contentLanguage,
-            contentMd5Converted, cacheControl, metadata, leaseId, contentDisposition, encryptionKey,
-            encryptionKeySha256, encryptionAlgorithm, encryptionScope, tier, ifModifiedSinceConverted,
-            ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId,
-            blobTagsString, immutabilityPolicyExpiryConverted, immutabilityPolicyMode, legalHold,
-            transactionalContentCrc64Converted, body, accept, context);
+        try {
+            return service.uploadNoCustomHeadersSync(this.client.getUrl(), containerName, blob, blobType, timeout,
+                transactionalContentMD5Converted, contentLength, contentType, contentEncoding, contentLanguage,
+                contentMd5Converted, cacheControl, metadata, leaseId, contentDisposition, encryptionKey,
+                encryptionKeySha256, encryptionAlgorithm, encryptionScope, tier, ifModifiedSinceConverted,
+                ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId,
+                blobTagsString, immutabilityPolicyExpiryConverted, immutabilityPolicyMode, legalHold,
+                transactionalContentCrc64Converted, body, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
@@ -3036,7 +3044,7 @@ public final class BlockBlobsImpl {
      * from URL; the content of an existing blob is overwritten with the content of the new blob. To perform partial
      * updates to a block blob's contents using a source URL, use the Put Block from URL API in conjunction with Put
      * Block List.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param contentLength The length of the request.
@@ -3160,14 +3168,18 @@ public final class BlockBlobsImpl {
         DateTimeRfc1123 sourceIfUnmodifiedSinceConverted
             = sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
         String sourceContentMD5Converted = Base64Util.encodeToString(sourceContentMD5);
-        return service.putBlobFromUrlSync(this.client.getUrl(), containerName, blob, blobType, timeout,
-            transactionalContentMD5Converted, contentLength, contentType, contentEncoding, contentLanguage,
-            contentMd5Converted, cacheControl, metadata, leaseId, contentDisposition, encryptionKey,
-            encryptionKeySha256, encryptionAlgorithm, encryptionScope, tier, ifModifiedSinceConverted,
-            ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, sourceIfModifiedSinceConverted,
-            sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, sourceIfTags, this.client.getVersion(),
-            requestId, sourceContentMD5Converted, blobTagsString, copySource, copySourceBlobProperties,
-            copySourceAuthorization, copySourceTags, accept, context);
+        try {
+            return service.putBlobFromUrlSync(this.client.getUrl(), containerName, blob, blobType, timeout,
+                transactionalContentMD5Converted, contentLength, contentType, contentEncoding, contentLanguage,
+                contentMd5Converted, cacheControl, metadata, leaseId, contentDisposition, encryptionKey,
+                encryptionKeySha256, encryptionAlgorithm, encryptionScope, tier, ifModifiedSinceConverted,
+                ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, sourceIfModifiedSinceConverted,
+                sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, sourceIfTags,
+                this.client.getVersion(), requestId, sourceContentMD5Converted, blobTagsString, copySource,
+                copySourceBlobProperties, copySourceAuthorization, copySourceTags, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
@@ -3176,7 +3188,7 @@ public final class BlockBlobsImpl {
      * from URL; the content of an existing blob is overwritten with the content of the new blob. To perform partial
      * updates to a block blob's contents using a source URL, use the Put Block from URL API in conjunction with Put
      * Block List.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param contentLength The length of the request.
@@ -3248,7 +3260,7 @@ public final class BlockBlobsImpl {
      * from URL; the content of an existing blob is overwritten with the content of the new blob. To perform partial
      * updates to a block blob's contents using a source URL, use the Put Block from URL API in conjunction with Put
      * Block List.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param contentLength The length of the request.
@@ -3372,14 +3384,18 @@ public final class BlockBlobsImpl {
         DateTimeRfc1123 sourceIfUnmodifiedSinceConverted
             = sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
         String sourceContentMD5Converted = Base64Util.encodeToString(sourceContentMD5);
-        return service.putBlobFromUrlNoCustomHeadersSync(this.client.getUrl(), containerName, blob, blobType, timeout,
-            transactionalContentMD5Converted, contentLength, contentType, contentEncoding, contentLanguage,
-            contentMd5Converted, cacheControl, metadata, leaseId, contentDisposition, encryptionKey,
-            encryptionKeySha256, encryptionAlgorithm, encryptionScope, tier, ifModifiedSinceConverted,
-            ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, sourceIfModifiedSinceConverted,
-            sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, sourceIfTags, this.client.getVersion(),
-            requestId, sourceContentMD5Converted, blobTagsString, copySource, copySourceBlobProperties,
-            copySourceAuthorization, copySourceTags, accept, context);
+        try {
+            return service.putBlobFromUrlNoCustomHeadersSync(this.client.getUrl(), containerName, blob, blobType,
+                timeout, transactionalContentMD5Converted, contentLength, contentType, contentEncoding, contentLanguage,
+                contentMd5Converted, cacheControl, metadata, leaseId, contentDisposition, encryptionKey,
+                encryptionKeySha256, encryptionAlgorithm, encryptionScope, tier, ifModifiedSinceConverted,
+                ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, sourceIfModifiedSinceConverted,
+                sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, sourceIfTags,
+                this.client.getVersion(), requestId, sourceContentMD5Converted, blobTagsString, copySource,
+                copySourceBlobProperties, copySourceAuthorization, copySourceTags, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
@@ -4026,7 +4042,7 @@ public final class BlockBlobsImpl {
 
     /**
      * The Stage Block operation creates a new block to be committed as part of a blob.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param blockId A valid Base64 string value that identifies the block. Prior to encoding, the string must be less
@@ -4079,15 +4095,19 @@ public final class BlockBlobsImpl {
         String encryptionScope = encryptionScopeInternal;
         String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
         String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
-        return service.stageBlockSync(this.client.getUrl(), containerName, blob, comp, blockId, contentLength,
-            transactionalContentMD5Converted, transactionalContentCrc64Converted, timeout, leaseId, encryptionKey,
-            encryptionKeySha256, encryptionAlgorithm, encryptionScope, this.client.getVersion(), requestId, body,
-            accept, context);
+        try {
+            return service.stageBlockSync(this.client.getUrl(), containerName, blob, comp, blockId, contentLength,
+                transactionalContentMD5Converted, transactionalContentCrc64Converted, timeout, leaseId, encryptionKey,
+                encryptionKeySha256, encryptionAlgorithm, encryptionScope, this.client.getVersion(), requestId, body,
+                accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * The Stage Block operation creates a new block to be committed as part of a blob.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param blockId A valid Base64 string value that identifies the block. Prior to encoding, the string must be less
@@ -4119,7 +4139,7 @@ public final class BlockBlobsImpl {
 
     /**
      * The Stage Block operation creates a new block to be committed as part of a blob.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param blockId A valid Base64 string value that identifies the block. Prior to encoding, the string must be less
@@ -4172,10 +4192,14 @@ public final class BlockBlobsImpl {
         String encryptionScope = encryptionScopeInternal;
         String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
         String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
-        return service.stageBlockNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, blockId,
-            contentLength, transactionalContentMD5Converted, transactionalContentCrc64Converted, timeout, leaseId,
-            encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope, this.client.getVersion(),
-            requestId, body, accept, context);
+        try {
+            return service.stageBlockNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, blockId,
+                contentLength, transactionalContentMD5Converted, transactionalContentCrc64Converted, timeout, leaseId,
+                encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope, this.client.getVersion(),
+                requestId, body, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
@@ -4599,7 +4623,7 @@ public final class BlockBlobsImpl {
     /**
      * The Stage Block operation creates a new block to be committed as part of a blob where the contents are read from
      * a URL.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param blockId A valid Base64 string value that identifies the block. Prior to encoding, the string must be less
@@ -4667,17 +4691,21 @@ public final class BlockBlobsImpl {
             = sourceIfModifiedSince == null ? null : new DateTimeRfc1123(sourceIfModifiedSince);
         DateTimeRfc1123 sourceIfUnmodifiedSinceConverted
             = sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
-        return service.stageBlockFromURLSync(this.client.getUrl(), containerName, blob, comp, blockId, contentLength,
-            sourceUrl, sourceRange, sourceContentMD5Converted, sourceContentcrc64Converted, timeout, encryptionKey,
-            encryptionKeySha256, encryptionAlgorithm, encryptionScope, leaseId, sourceIfModifiedSinceConverted,
-            sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, this.client.getVersion(), requestId,
-            copySourceAuthorization, accept, context);
+        try {
+            return service.stageBlockFromURLSync(this.client.getUrl(), containerName, blob, comp, blockId,
+                contentLength, sourceUrl, sourceRange, sourceContentMD5Converted, sourceContentcrc64Converted, timeout,
+                encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope, leaseId,
+                sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch,
+                this.client.getVersion(), requestId, copySourceAuthorization, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * The Stage Block operation creates a new block to be committed as part of a blob where the contents are read from
      * a URL.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param blockId A valid Base64 string value that identifies the block. Prior to encoding, the string must be less
@@ -4724,7 +4752,7 @@ public final class BlockBlobsImpl {
     /**
      * The Stage Block operation creates a new block to be committed as part of a blob where the contents are read from
      * a URL.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param blockId A valid Base64 string value that identifies the block. Prior to encoding, the string must be less
@@ -4792,11 +4820,15 @@ public final class BlockBlobsImpl {
             = sourceIfModifiedSince == null ? null : new DateTimeRfc1123(sourceIfModifiedSince);
         DateTimeRfc1123 sourceIfUnmodifiedSinceConverted
             = sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
-        return service.stageBlockFromURLNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, blockId,
-            contentLength, sourceUrl, sourceRange, sourceContentMD5Converted, sourceContentcrc64Converted, timeout,
-            encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope, leaseId,
-            sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch,
-            this.client.getVersion(), requestId, copySourceAuthorization, accept, context);
+        try {
+            return service.stageBlockFromURLNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp,
+                blockId, contentLength, sourceUrl, sourceRange, sourceContentMD5Converted, sourceContentcrc64Converted,
+                timeout, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope, leaseId,
+                sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch,
+                this.client.getVersion(), requestId, copySourceAuthorization, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
@@ -5429,7 +5461,7 @@ public final class BlockBlobsImpl {
      * committing the new and existing blocks together. You can do this by specifying whether to commit a block from the
      * committed block list or from the uncommitted block list, or to commit the most recently uploaded version of the
      * block, whichever list it may belong to.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param blocks Blob Blocks.
@@ -5537,13 +5569,17 @@ public final class BlockBlobsImpl {
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         DateTimeRfc1123 immutabilityPolicyExpiryConverted
             = immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
-        return service.commitBlockListSync(this.client.getUrl(), containerName, blob, comp, timeout, cacheControl,
-            contentType, contentEncoding, contentLanguage, contentMd5Converted, transactionalContentMD5Converted,
-            transactionalContentCrc64Converted, metadata, leaseId, contentDisposition, encryptionKey,
-            encryptionKeySha256, encryptionAlgorithm, encryptionScope, tier, ifModifiedSinceConverted,
-            ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId,
-            blobTagsString, immutabilityPolicyExpiryConverted, immutabilityPolicyMode, legalHold, blocks, accept,
-            context);
+        try {
+            return service.commitBlockListSync(this.client.getUrl(), containerName, blob, comp, timeout, cacheControl,
+                contentType, contentEncoding, contentLanguage, contentMd5Converted, transactionalContentMD5Converted,
+                transactionalContentCrc64Converted, metadata, leaseId, contentDisposition, encryptionKey,
+                encryptionKeySha256, encryptionAlgorithm, encryptionScope, tier, ifModifiedSinceConverted,
+                ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId,
+                blobTagsString, immutabilityPolicyExpiryConverted, immutabilityPolicyMode, legalHold, blocks, accept,
+                context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
@@ -5553,7 +5589,7 @@ public final class BlockBlobsImpl {
      * committing the new and existing blocks together. You can do this by specifying whether to commit a block from the
      * committed block list or from the uncommitted block list, or to commit the most recently uploaded version of the
      * block, whichever list it may belong to.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param blocks Blob Blocks.
@@ -5610,7 +5646,7 @@ public final class BlockBlobsImpl {
      * committing the new and existing blocks together. You can do this by specifying whether to commit a block from the
      * committed block list or from the uncommitted block list, or to commit the most recently uploaded version of the
      * block, whichever list it may belong to.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param blocks Blob Blocks.
@@ -5718,13 +5754,17 @@ public final class BlockBlobsImpl {
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         DateTimeRfc1123 immutabilityPolicyExpiryConverted
             = immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
-        return service.commitBlockListNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, timeout,
-            cacheControl, contentType, contentEncoding, contentLanguage, contentMd5Converted,
-            transactionalContentMD5Converted, transactionalContentCrc64Converted, metadata, leaseId, contentDisposition,
-            encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope, tier, ifModifiedSinceConverted,
-            ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId,
-            blobTagsString, immutabilityPolicyExpiryConverted, immutabilityPolicyMode, legalHold, blocks, accept,
-            context);
+        try {
+            return service.commitBlockListNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, timeout,
+                cacheControl, contentType, contentEncoding, contentLanguage, contentMd5Converted,
+                transactionalContentMD5Converted, transactionalContentCrc64Converted, metadata, leaseId,
+                contentDisposition, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope, tier,
+                ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
+                this.client.getVersion(), requestId, blobTagsString, immutabilityPolicyExpiryConverted,
+                immutabilityPolicyMode, legalHold, blocks, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
@@ -5933,7 +5973,7 @@ public final class BlockBlobsImpl {
 
     /**
      * The Get Block List operation retrieves the list of blocks that have been uploaded as part of a block blob.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param listType Specifies whether to return the list of committed blocks, the list of uncommitted blocks, or both
@@ -5961,13 +6001,17 @@ public final class BlockBlobsImpl {
         String requestId, Context context) {
         final String comp = "blocklist";
         final String accept = "application/xml";
-        return service.getBlockListSync(this.client.getUrl(), containerName, blob, comp, snapshot, listType, timeout,
-            leaseId, ifTags, this.client.getVersion(), requestId, accept, context);
+        try {
+            return service.getBlockListSync(this.client.getUrl(), containerName, blob, comp, snapshot, listType,
+                timeout, leaseId, ifTags, this.client.getVersion(), requestId, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * The Get Block List operation retrieves the list of blocks that have been uploaded as part of a block blob.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param listType Specifies whether to return the list of committed blocks, the list of uncommitted blocks, or both
@@ -5991,13 +6035,17 @@ public final class BlockBlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BlockList getBlockList(String containerName, String blob, BlockListType listType, String snapshot,
         Integer timeout, String leaseId, String ifTags, String requestId) {
-        return getBlockListWithResponse(containerName, blob, listType, snapshot, timeout, leaseId, ifTags, requestId,
-            Context.NONE).getValue();
+        try {
+            return getBlockListWithResponse(containerName, blob, listType, snapshot, timeout, leaseId, ifTags,
+                requestId, Context.NONE).getValue();
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * The Get Block List operation retrieves the list of blocks that have been uploaded as part of a block blob.
-     * 
+     *
      * @param containerName The container name.
      * @param blob The blob name.
      * @param listType Specifies whether to return the list of committed blocks, the list of uncommitted blocks, or both
@@ -6025,7 +6073,11 @@ public final class BlockBlobsImpl {
         Context context) {
         final String comp = "blocklist";
         final String accept = "application/xml";
-        return service.getBlockListNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, snapshot,
-            listType, timeout, leaseId, ifTags, this.client.getVersion(), requestId, accept, context);
+        try {
+            return service.getBlockListNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, snapshot,
+                listType, timeout, leaseId, ifTags, this.client.getVersion(), requestId, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 }

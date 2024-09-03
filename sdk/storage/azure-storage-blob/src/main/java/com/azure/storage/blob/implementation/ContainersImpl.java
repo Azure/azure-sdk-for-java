@@ -1190,7 +1190,7 @@ public final class ContainersImpl {
     /**
      * creates a new container under the specified account. If the container with the same name already exists, the
      * operation fails.
-     * 
+     *
      * @param containerName The container name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
@@ -1228,15 +1228,19 @@ public final class ContainersImpl {
                 = blobContainerEncryptionScope.isEncryptionScopeOverridePrevented();
         }
         Boolean encryptionScopeOverridePrevented = encryptionScopeOverridePreventedInternal;
-        return service.createSync(this.client.getUrl(), containerName, restype, timeout, metadata, access,
-            this.client.getVersion(), requestId, defaultEncryptionScope, encryptionScopeOverridePrevented, accept,
-            context);
+        try {
+            return service.createSync(this.client.getUrl(), containerName, restype, timeout, metadata, access,
+                this.client.getVersion(), requestId, defaultEncryptionScope, encryptionScopeOverridePrevented, accept,
+                context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * creates a new container under the specified account. If the container with the same name already exists, the
      * operation fails.
-     * 
+     *
      * @param containerName The container name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
@@ -1265,7 +1269,7 @@ public final class ContainersImpl {
     /**
      * creates a new container under the specified account. If the container with the same name already exists, the
      * operation fails.
-     * 
+     *
      * @param containerName The container name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
@@ -1303,9 +1307,13 @@ public final class ContainersImpl {
                 = blobContainerEncryptionScope.isEncryptionScopeOverridePrevented();
         }
         Boolean encryptionScopeOverridePrevented = encryptionScopeOverridePreventedInternal;
-        return service.createNoCustomHeadersSync(this.client.getUrl(), containerName, restype, timeout, metadata,
-            access, this.client.getVersion(), requestId, defaultEncryptionScope, encryptionScopeOverridePrevented,
-            accept, context);
+        try {
+            return service.createNoCustomHeadersSync(this.client.getUrl(), containerName, restype, timeout, metadata,
+                access, this.client.getVersion(), requestId, defaultEncryptionScope, encryptionScopeOverridePrevented,
+                accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
@@ -1469,7 +1477,7 @@ public final class ContainersImpl {
     /**
      * returns all user-defined metadata and system properties for the specified container. The data returned does not
      * include the container's list of blobs.
-     * 
+     *
      * @param containerName The container name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
@@ -1488,14 +1496,18 @@ public final class ContainersImpl {
         Integer timeout, String leaseId, String requestId, Context context) {
         final String restype = "container";
         final String accept = "application/xml";
-        return service.getPropertiesSync(this.client.getUrl(), containerName, restype, timeout, leaseId,
-            this.client.getVersion(), requestId, accept, context);
+        try {
+            return service.getPropertiesSync(this.client.getUrl(), containerName, restype, timeout, leaseId,
+                this.client.getVersion(), requestId, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * returns all user-defined metadata and system properties for the specified container. The data returned does not
      * include the container's list of blobs.
-     * 
+     *
      * @param containerName The container name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
@@ -1515,7 +1527,7 @@ public final class ContainersImpl {
     /**
      * returns all user-defined metadata and system properties for the specified container. The data returned does not
      * include the container's list of blobs.
-     * 
+     *
      * @param containerName The container name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
@@ -1534,8 +1546,12 @@ public final class ContainersImpl {
         String leaseId, String requestId, Context context) {
         final String restype = "container";
         final String accept = "application/xml";
-        return service.getPropertiesNoCustomHeadersSync(this.client.getUrl(), containerName, restype, timeout, leaseId,
-            this.client.getVersion(), requestId, accept, context);
+        try {
+            return service.getPropertiesNoCustomHeadersSync(this.client.getUrl(), containerName, restype, timeout,
+                leaseId, this.client.getVersion(), requestId, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
@@ -1742,7 +1758,7 @@ public final class ContainersImpl {
     /**
      * operation marks the specified container for deletion. The container and any blobs contained within it are later
      * deleted during garbage collection.
-     * 
+     *
      * @param containerName The container name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
@@ -1770,14 +1786,19 @@ public final class ContainersImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.deleteSync(this.client.getUrl(), containerName, restype, timeout, leaseId,
-            ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.getVersion(), requestId, accept, context);
+        try {
+            return service.deleteSync(this.client.getUrl(), containerName, restype, timeout, leaseId,
+                ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.getVersion(), requestId, accept,
+                context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * operation marks the specified container for deletion. The container and any blobs contained within it are later
      * deleted during garbage collection.
-     * 
+     *
      * @param containerName The container name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
@@ -1803,7 +1824,7 @@ public final class ContainersImpl {
     /**
      * operation marks the specified container for deletion. The container and any blobs contained within it are later
      * deleted during garbage collection.
-     * 
+     *
      * @param containerName The container name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
@@ -1830,8 +1851,13 @@ public final class ContainersImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.deleteNoCustomHeadersSync(this.client.getUrl(), containerName, restype, timeout, leaseId,
-            ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.getVersion(), requestId, accept, context);
+        try {
+            return service.deleteNoCustomHeadersSync(this.client.getUrl(), containerName, restype, timeout, leaseId,
+                ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.getVersion(), requestId, accept,
+                context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
@@ -2053,7 +2079,7 @@ public final class ContainersImpl {
 
     /**
      * operation sets one or more user-defined name-value pairs for the specified container.
-     * 
+     *
      * @param containerName The container name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
@@ -2084,13 +2110,17 @@ public final class ContainersImpl {
         final String accept = "application/xml";
         DateTimeRfc1123 ifModifiedSinceConverted
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        return service.setMetadataSync(this.client.getUrl(), containerName, restype, comp, timeout, leaseId, metadata,
-            ifModifiedSinceConverted, this.client.getVersion(), requestId, accept, context);
+        try {
+            return service.setMetadataSync(this.client.getUrl(), containerName, restype, comp, timeout, leaseId,
+                metadata, ifModifiedSinceConverted, this.client.getVersion(), requestId, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * operation sets one or more user-defined name-value pairs for the specified container.
-     * 
+     *
      * @param containerName The container name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
@@ -2118,7 +2148,7 @@ public final class ContainersImpl {
 
     /**
      * operation sets one or more user-defined name-value pairs for the specified container.
-     * 
+     *
      * @param containerName The container name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
@@ -2148,8 +2178,12 @@ public final class ContainersImpl {
         final String accept = "application/xml";
         DateTimeRfc1123 ifModifiedSinceConverted
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        return service.setMetadataNoCustomHeadersSync(this.client.getUrl(), containerName, restype, comp, timeout,
-            leaseId, metadata, ifModifiedSinceConverted, this.client.getVersion(), requestId, accept, context);
+        try {
+            return service.setMetadataNoCustomHeadersSync(this.client.getUrl(), containerName, restype, comp, timeout,
+                leaseId, metadata, ifModifiedSinceConverted, this.client.getVersion(), requestId, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
@@ -2323,7 +2357,7 @@ public final class ContainersImpl {
     /**
      * gets the permissions for the specified container. The permissions indicate whether container data may be accessed
      * publicly.
-     * 
+     *
      * @param containerName The container name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
@@ -2343,14 +2377,18 @@ public final class ContainersImpl {
         final String restype = "container";
         final String comp = "acl";
         final String accept = "application/xml";
-        return service.getAccessPolicySync(this.client.getUrl(), containerName, restype, comp, timeout, leaseId,
-            this.client.getVersion(), requestId, accept, context);
+        try {
+            return service.getAccessPolicySync(this.client.getUrl(), containerName, restype, comp, timeout, leaseId,
+                this.client.getVersion(), requestId, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * gets the permissions for the specified container. The permissions indicate whether container data may be accessed
      * publicly.
-     * 
+     *
      * @param containerName The container name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
@@ -2366,13 +2404,17 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BlobSignedIdentifierWrapper getAccessPolicy(String containerName, Integer timeout, String leaseId,
         String requestId) {
-        return getAccessPolicyWithResponse(containerName, timeout, leaseId, requestId, Context.NONE).getValue();
+        try {
+            return getAccessPolicyWithResponse(containerName, timeout, leaseId, requestId, Context.NONE).getValue();
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * gets the permissions for the specified container. The permissions indicate whether container data may be accessed
      * publicly.
-     * 
+     *
      * @param containerName The container name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
@@ -2392,8 +2434,12 @@ public final class ContainersImpl {
         final String restype = "container";
         final String comp = "acl";
         final String accept = "application/xml";
-        return service.getAccessPolicyNoCustomHeadersSync(this.client.getUrl(), containerName, restype, comp, timeout,
-            leaseId, this.client.getVersion(), requestId, accept, context);
+        try {
+            return service.getAccessPolicyNoCustomHeadersSync(this.client.getUrl(), containerName, restype, comp,
+                timeout, leaseId, this.client.getVersion(), requestId, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
@@ -2630,7 +2676,7 @@ public final class ContainersImpl {
     /**
      * sets the permissions for the specified container. The permissions indicate whether blobs in a container may be
      * accessed publicly.
-     * 
+     *
      * @param containerName The container name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
@@ -2662,15 +2708,19 @@ public final class ContainersImpl {
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         BlobSignedIdentifierWrapper containerAclConverted = new BlobSignedIdentifierWrapper(containerAcl);
-        return service.setAccessPolicySync(this.client.getUrl(), containerName, restype, comp, timeout, leaseId, access,
-            ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.getVersion(), requestId,
-            containerAclConverted, accept, context);
+        try {
+            return service.setAccessPolicySync(this.client.getUrl(), containerName, restype, comp, timeout, leaseId,
+                access, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.getVersion(), requestId,
+                containerAclConverted, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * sets the permissions for the specified container. The permissions indicate whether blobs in a container may be
      * accessed publicly.
-     * 
+     *
      * @param containerName The container name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
@@ -2699,7 +2749,7 @@ public final class ContainersImpl {
     /**
      * sets the permissions for the specified container. The permissions indicate whether blobs in a container may be
      * accessed publicly.
-     * 
+     *
      * @param containerName The container name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
@@ -2731,9 +2781,13 @@ public final class ContainersImpl {
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         BlobSignedIdentifierWrapper containerAclConverted = new BlobSignedIdentifierWrapper(containerAcl);
-        return service.setAccessPolicyNoCustomHeadersSync(this.client.getUrl(), containerName, restype, comp, timeout,
-            leaseId, access, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.getVersion(), requestId,
-            containerAclConverted, accept, context);
+        try {
+            return service.setAccessPolicyNoCustomHeadersSync(this.client.getUrl(), containerName, restype, comp,
+                timeout, leaseId, access, ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
+                this.client.getVersion(), requestId, containerAclConverted, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
@@ -2916,7 +2970,7 @@ public final class ContainersImpl {
 
     /**
      * Restores a previously-deleted container.
-     * 
+     *
      * @param containerName The container name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
@@ -2939,13 +2993,17 @@ public final class ContainersImpl {
         final String restype = "container";
         final String comp = "undelete";
         final String accept = "application/xml";
-        return service.restoreSync(this.client.getUrl(), containerName, restype, comp, timeout,
-            this.client.getVersion(), requestId, deletedContainerName, deletedContainerVersion, accept, context);
+        try {
+            return service.restoreSync(this.client.getUrl(), containerName, restype, comp, timeout,
+                this.client.getVersion(), requestId, deletedContainerName, deletedContainerVersion, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * Restores a previously-deleted container.
-     * 
+     *
      * @param containerName The container name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
@@ -2969,7 +3027,7 @@ public final class ContainersImpl {
 
     /**
      * Restores a previously-deleted container.
-     * 
+     *
      * @param containerName The container name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
@@ -2992,8 +3050,12 @@ public final class ContainersImpl {
         final String restype = "container";
         final String comp = "undelete";
         final String accept = "application/xml";
-        return service.restoreNoCustomHeadersSync(this.client.getUrl(), containerName, restype, comp, timeout,
-            this.client.getVersion(), requestId, deletedContainerName, deletedContainerVersion, accept, context);
+        try {
+            return service.restoreNoCustomHeadersSync(this.client.getUrl(), containerName, restype, comp, timeout,
+                this.client.getVersion(), requestId, deletedContainerName, deletedContainerVersion, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
@@ -3167,7 +3229,7 @@ public final class ContainersImpl {
 
     /**
      * Renames an existing container.
-     * 
+     *
      * @param containerName The container name.
      * @param sourceContainerName Required. Specifies the name of the container to rename.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -3189,13 +3251,17 @@ public final class ContainersImpl {
         final String restype = "container";
         final String comp = "rename";
         final String accept = "application/xml";
-        return service.renameSync(this.client.getUrl(), containerName, restype, comp, timeout, this.client.getVersion(),
-            requestId, sourceContainerName, sourceLeaseId, accept, context);
+        try {
+            return service.renameSync(this.client.getUrl(), containerName, restype, comp, timeout,
+                this.client.getVersion(), requestId, sourceContainerName, sourceLeaseId, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * Renames an existing container.
-     * 
+     *
      * @param containerName The container name.
      * @param sourceContainerName Required. Specifies the name of the container to rename.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -3217,7 +3283,7 @@ public final class ContainersImpl {
 
     /**
      * Renames an existing container.
-     * 
+     *
      * @param containerName The container name.
      * @param sourceContainerName Required. Specifies the name of the container to rename.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -3239,8 +3305,12 @@ public final class ContainersImpl {
         final String restype = "container";
         final String comp = "rename";
         final String accept = "application/xml";
-        return service.renameNoCustomHeadersSync(this.client.getUrl(), containerName, restype, comp, timeout,
-            this.client.getVersion(), requestId, sourceContainerName, sourceLeaseId, accept, context);
+        try {
+            return service.renameNoCustomHeadersSync(this.client.getUrl(), containerName, restype, comp, timeout,
+                this.client.getVersion(), requestId, sourceContainerName, sourceLeaseId, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
@@ -3599,7 +3669,7 @@ public final class ContainersImpl {
 
     /**
      * The Batch operation allows multiple API calls to be embedded into a single HTTP request.
-     * 
+     *
      * @param containerName The container name.
      * @param contentLength The length of the request.
      * @param multipartContentType Required. The value of this header must be multipart/mixed with a batch boundary.
@@ -3623,13 +3693,17 @@ public final class ContainersImpl {
         final String restype = "container";
         final String comp = "batch";
         final String accept = "application/xml";
-        return service.submitBatchSync(this.client.getUrl(), containerName, restype, comp, contentLength,
-            multipartContentType, timeout, this.client.getVersion(), requestId, body, accept, context);
+        try {
+            return service.submitBatchSync(this.client.getUrl(), containerName, restype, comp, contentLength,
+                multipartContentType, timeout, this.client.getVersion(), requestId, body, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * The Batch operation allows multiple API calls to be embedded into a single HTTP request.
-     * 
+     *
      * @param containerName The container name.
      * @param contentLength The length of the request.
      * @param multipartContentType Required. The value of this header must be multipart/mixed with a batch boundary.
@@ -3648,13 +3722,17 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public InputStream submitBatch(String containerName, long contentLength, String multipartContentType,
         BinaryData body, Integer timeout, String requestId) {
-        return submitBatchWithResponse(containerName, contentLength, multipartContentType, body, timeout, requestId,
-            Context.NONE).getValue();
+        try {
+            return submitBatchWithResponse(containerName, contentLength, multipartContentType, body, timeout, requestId,
+                Context.NONE).getValue();
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * The Batch operation allows multiple API calls to be embedded into a single HTTP request.
-     * 
+     *
      * @param containerName The container name.
      * @param contentLength The length of the request.
      * @param multipartContentType Required. The value of this header must be multipart/mixed with a batch boundary.
@@ -3677,8 +3755,13 @@ public final class ContainersImpl {
         final String restype = "container";
         final String comp = "batch";
         final String accept = "application/xml";
-        return service.submitBatchNoCustomHeadersSync(this.client.getUrl(), containerName, restype, comp, contentLength,
-            multipartContentType, timeout, this.client.getVersion(), requestId, body, accept, context);
+        try {
+            return service.submitBatchNoCustomHeadersSync(this.client.getUrl(), containerName, restype, comp,
+                contentLength, multipartContentType, timeout, this.client.getVersion(), requestId, body, accept,
+                context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
@@ -3941,7 +4024,7 @@ public final class ContainersImpl {
     /**
      * The Filter Blobs operation enables callers to list blobs in a container whose tags match a given search
      * expression. Filter blobs searches within the given container.
-     * 
+     *
      * @param containerName The container name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
@@ -3978,14 +4061,18 @@ public final class ContainersImpl {
             : include.stream()
                 .map(paramItemValue -> Objects.toString(paramItemValue, ""))
                 .collect(Collectors.joining(","));
-        return service.filterBlobsSync(this.client.getUrl(), containerName, restype, comp, timeout,
-            this.client.getVersion(), requestId, where, marker, maxresults, includeConverted, accept, context);
+        try {
+            return service.filterBlobsSync(this.client.getUrl(), containerName, restype, comp, timeout,
+                this.client.getVersion(), requestId, where, marker, maxresults, includeConverted, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * The Filter Blobs operation enables callers to list blobs in a container whose tags match a given search
      * expression. Filter blobs searches within the given container.
-     * 
+     *
      * @param containerName The container name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
@@ -4012,14 +4099,18 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FilterBlobSegment filterBlobs(String containerName, Integer timeout, String requestId, String where,
         String marker, Integer maxresults, List<FilterBlobsIncludeItem> include) {
-        return filterBlobsWithResponse(containerName, timeout, requestId, where, marker, maxresults, include,
-            Context.NONE).getValue();
+        try {
+            return filterBlobsWithResponse(containerName, timeout, requestId, where, marker, maxresults, include,
+                Context.NONE).getValue();
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * The Filter Blobs operation enables callers to list blobs in a container whose tags match a given search
      * expression. Filter blobs searches within the given container.
-     * 
+     *
      * @param containerName The container name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
@@ -4056,8 +4147,12 @@ public final class ContainersImpl {
             : include.stream()
                 .map(paramItemValue -> Objects.toString(paramItemValue, ""))
                 .collect(Collectors.joining(","));
-        return service.filterBlobsNoCustomHeadersSync(this.client.getUrl(), containerName, restype, comp, timeout,
-            this.client.getVersion(), requestId, where, marker, maxresults, includeConverted, accept, context);
+        try {
+            return service.filterBlobsNoCustomHeadersSync(this.client.getUrl(), containerName, restype, comp, timeout,
+                this.client.getVersion(), requestId, where, marker, maxresults, includeConverted, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
@@ -4345,15 +4440,19 @@ public final class ContainersImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.acquireLeaseSync(this.client.getUrl(), containerName, comp, restype, action, timeout, duration,
-            proposedLeaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.getVersion(), requestId,
-            accept, context);
+        try {
+            return service.acquireLeaseSync(this.client.getUrl(), containerName, comp, restype, action, timeout,
+                duration, proposedLeaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
+                this.client.getVersion(), requestId, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * [Update] establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60
      * seconds, or can be infinite.
-     * 
+     *
      * @param containerName The container name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
@@ -4384,7 +4483,7 @@ public final class ContainersImpl {
     /**
      * [Update] establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60
      * seconds, or can be infinite.
-     * 
+     *
      * @param containerName The container name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
@@ -4419,15 +4518,19 @@ public final class ContainersImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.acquireLeaseNoCustomHeadersSync(this.client.getUrl(), containerName, comp, restype, action,
-            timeout, duration, proposedLeaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
-            this.client.getVersion(), requestId, accept, context);
+        try {
+            return service.acquireLeaseNoCustomHeadersSync(this.client.getUrl(), containerName, comp, restype, action,
+                timeout, duration, proposedLeaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
+                this.client.getVersion(), requestId, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * [Update] establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60
      * seconds, or can be infinite.
-     * 
+     *
      * @param containerName The container name.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -4669,14 +4772,19 @@ public final class ContainersImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.releaseLeaseSync(this.client.getUrl(), containerName, comp, restype, action, timeout, leaseId,
-            ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.getVersion(), requestId, accept, context);
+        try {
+            return service.releaseLeaseSync(this.client.getUrl(), containerName, comp, restype, action, timeout,
+                leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.getVersion(), requestId,
+                accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * [Update] establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60
      * seconds, or can be infinite.
-     * 
+     *
      * @param containerName The container name.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -4702,7 +4810,7 @@ public final class ContainersImpl {
     /**
      * [Update] establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60
      * seconds, or can be infinite.
-     * 
+     *
      * @param containerName The container name.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -4731,15 +4839,19 @@ public final class ContainersImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.releaseLeaseNoCustomHeadersSync(this.client.getUrl(), containerName, comp, restype, action,
-            timeout, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.getVersion(), requestId,
-            accept, context);
+        try {
+            return service.releaseLeaseNoCustomHeadersSync(this.client.getUrl(), containerName, comp, restype, action,
+                timeout, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.getVersion(),
+                requestId, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * [Update] establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60
      * seconds, or can be infinite.
-     * 
+     *
      * @param containerName The container name.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -4981,14 +5093,19 @@ public final class ContainersImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.renewLeaseSync(this.client.getUrl(), containerName, comp, restype, action, timeout, leaseId,
-            ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.getVersion(), requestId, accept, context);
+        try {
+            return service.renewLeaseSync(this.client.getUrl(), containerName, comp, restype, action, timeout, leaseId,
+                ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.getVersion(), requestId, accept,
+                context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * [Update] establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60
      * seconds, or can be infinite.
-     * 
+     *
      * @param containerName The container name.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -5014,7 +5131,7 @@ public final class ContainersImpl {
     /**
      * [Update] establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60
      * seconds, or can be infinite.
-     * 
+     *
      * @param containerName The container name.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -5043,15 +5160,19 @@ public final class ContainersImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.renewLeaseNoCustomHeadersSync(this.client.getUrl(), containerName, comp, restype, action,
-            timeout, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.getVersion(), requestId,
-            accept, context);
+        try {
+            return service.renewLeaseNoCustomHeadersSync(this.client.getUrl(), containerName, comp, restype, action,
+                timeout, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.getVersion(),
+                requestId, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * [Update] establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60
      * seconds, or can be infinite.
-     * 
+     *
      * @param containerName The container name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
@@ -5328,14 +5449,19 @@ public final class ContainersImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.breakLeaseSync(this.client.getUrl(), containerName, comp, restype, action, timeout, breakPeriod,
-            ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.getVersion(), requestId, accept, context);
+        try {
+            return service.breakLeaseSync(this.client.getUrl(), containerName, comp, restype, action, timeout,
+                breakPeriod, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.getVersion(), requestId,
+                accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * [Update] establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60
      * seconds, or can be infinite.
-     * 
+     *
      * @param containerName The container name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
@@ -5366,7 +5492,7 @@ public final class ContainersImpl {
     /**
      * [Update] establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60
      * seconds, or can be infinite.
-     * 
+     *
      * @param containerName The container name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
@@ -5401,15 +5527,19 @@ public final class ContainersImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.breakLeaseNoCustomHeadersSync(this.client.getUrl(), containerName, comp, restype, action,
-            timeout, breakPeriod, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.getVersion(),
-            requestId, accept, context);
+        try {
+            return service.breakLeaseNoCustomHeadersSync(this.client.getUrl(), containerName, comp, restype, action,
+                timeout, breakPeriod, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.getVersion(),
+                requestId, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * [Update] establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60
      * seconds, or can be infinite.
-     * 
+     *
      * @param containerName The container name.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param proposedLeaseId Proposed lease ID, in a GUID string format. The Blob service returns 400 (Invalid request)
@@ -5644,7 +5774,7 @@ public final class ContainersImpl {
     /**
      * [Update] establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60
      * seconds, or can be infinite.
-     * 
+     *
      * @param containerName The container name.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param proposedLeaseId Proposed lease ID, in a GUID string format. The Blob service returns 400 (Invalid request)
@@ -5677,15 +5807,19 @@ public final class ContainersImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.changeLeaseSync(this.client.getUrl(), containerName, comp, restype, action, timeout, leaseId,
-            proposedLeaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.getVersion(), requestId,
-            accept, context);
+        try {
+            return service.changeLeaseSync(this.client.getUrl(), containerName, comp, restype, action, timeout, leaseId,
+                proposedLeaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.getVersion(),
+                requestId, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * [Update] establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60
      * seconds, or can be infinite.
-     * 
+     *
      * @param containerName The container name.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param proposedLeaseId Proposed lease ID, in a GUID string format. The Blob service returns 400 (Invalid request)
@@ -5714,7 +5848,7 @@ public final class ContainersImpl {
     /**
      * [Update] establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60
      * seconds, or can be infinite.
-     * 
+     *
      * @param containerName The container name.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param proposedLeaseId Proposed lease ID, in a GUID string format. The Blob service returns 400 (Invalid request)
@@ -5747,9 +5881,13 @@ public final class ContainersImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.changeLeaseNoCustomHeadersSync(this.client.getUrl(), containerName, comp, restype, action,
-            timeout, leaseId, proposedLeaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
-            this.client.getVersion(), requestId, accept, context);
+        try {
+            return service.changeLeaseNoCustomHeadersSync(this.client.getUrl(), containerName, comp, restype, action,
+                timeout, leaseId, proposedLeaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
+                this.client.getVersion(), requestId, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
@@ -6041,13 +6179,17 @@ public final class ContainersImpl {
             : include.stream()
                 .map(paramItemValue -> Objects.toString(paramItemValue, ""))
                 .collect(Collectors.joining(","));
-        return service.listBlobFlatSegmentSync(this.client.getUrl(), containerName, restype, comp, prefix, marker,
-            maxresults, includeConverted, timeout, this.client.getVersion(), requestId, accept, context);
+        try {
+            return service.listBlobFlatSegmentSync(this.client.getUrl(), containerName, restype, comp, prefix, marker,
+                maxresults, includeConverted, timeout, this.client.getVersion(), requestId, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * [Update] The List Blobs operation returns a list of the blobs under the specified container.
-     * 
+     *
      * @param containerName The container name.
      * @param prefix Filters the results to return only containers whose name begins with the specified prefix.
      * @param marker A string value that identifies the portion of the list of containers to be returned with the next
@@ -6074,13 +6216,17 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ListBlobsFlatSegmentResponse listBlobFlatSegment(String containerName, String prefix, String marker,
         Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout, String requestId) {
-        return listBlobFlatSegmentWithResponse(containerName, prefix, marker, maxresults, include, timeout, requestId,
-            Context.NONE).getValue();
+        try {
+            return listBlobFlatSegmentWithResponse(containerName, prefix, marker, maxresults, include, timeout,
+                requestId, Context.NONE).getValue();
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * [Update] The List Blobs operation returns a list of the blobs under the specified container.
-     * 
+     *
      * @param containerName The container name.
      * @param prefix Filters the results to return only containers whose name begins with the specified prefix.
      * @param marker A string value that identifies the portion of the list of containers to be returned with the next
@@ -6117,14 +6263,18 @@ public final class ContainersImpl {
             : include.stream()
                 .map(paramItemValue -> Objects.toString(paramItemValue, ""))
                 .collect(Collectors.joining(","));
-        return service.listBlobFlatSegmentNoCustomHeadersSync(this.client.getUrl(), containerName, restype, comp,
-            prefix, marker, maxresults, includeConverted, timeout, this.client.getVersion(), requestId, accept,
-            context);
+        try {
+            return service.listBlobFlatSegmentNoCustomHeadersSync(this.client.getUrl(), containerName, restype, comp,
+                prefix, marker, maxresults, includeConverted, timeout, this.client.getVersion(), requestId, accept,
+                context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * [Update] The List Blobs operation returns a list of the blobs under the specified container.
-     * 
+     *
      * @param containerName The container name.
      * @param delimiter When the request includes this parameter, the operation returns a BlobPrefix element in the
      * response body that acts as a placeholder for all blobs whose names begin with the same substring up to the
@@ -6396,7 +6546,7 @@ public final class ContainersImpl {
 
     /**
      * [Update] The List Blobs operation returns a list of the blobs under the specified container.
-     * 
+     *
      * @param containerName The container name.
      * @param delimiter When the request includes this parameter, the operation returns a BlobPrefix element in the
      * response body that acts as a placeholder for all blobs whose names begin with the same substring up to the
@@ -6437,14 +6587,18 @@ public final class ContainersImpl {
             : include.stream()
                 .map(paramItemValue -> Objects.toString(paramItemValue, ""))
                 .collect(Collectors.joining(","));
-        return service.listBlobHierarchySegmentSync(this.client.getUrl(), containerName, restype, comp, prefix,
-            delimiter, marker, maxresults, includeConverted, timeout, this.client.getVersion(), requestId, accept,
-            context);
+        try {
+            return service.listBlobHierarchySegmentSync(this.client.getUrl(), containerName, restype, comp, prefix,
+                delimiter, marker, maxresults, includeConverted, timeout, this.client.getVersion(), requestId, accept,
+                context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * [Update] The List Blobs operation returns a list of the blobs under the specified container.
-     * 
+     *
      * @param containerName The container name.
      * @param delimiter When the request includes this parameter, the operation returns a BlobPrefix element in the
      * response body that acts as a placeholder for all blobs whose names begin with the same substring up to the
@@ -6475,13 +6629,17 @@ public final class ContainersImpl {
     public ListBlobsHierarchySegmentResponse listBlobHierarchySegment(String containerName, String delimiter,
         String prefix, String marker, Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout,
         String requestId) {
-        return listBlobHierarchySegmentWithResponse(containerName, delimiter, prefix, marker, maxresults, include,
-            timeout, requestId, Context.NONE).getValue();
+        try {
+            return listBlobHierarchySegmentWithResponse(containerName, delimiter, prefix, marker, maxresults, include,
+                timeout, requestId, Context.NONE).getValue();
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * [Update] The List Blobs operation returns a list of the blobs under the specified container.
-     * 
+     *
      * @param containerName The container name.
      * @param delimiter When the request includes this parameter, the operation returns a BlobPrefix element in the
      * response body that acts as a placeholder for all blobs whose names begin with the same substring up to the
@@ -6521,9 +6679,13 @@ public final class ContainersImpl {
             : include.stream()
                 .map(paramItemValue -> Objects.toString(paramItemValue, ""))
                 .collect(Collectors.joining(","));
-        return service.listBlobHierarchySegmentNoCustomHeadersSync(this.client.getUrl(), containerName, restype, comp,
-            prefix, delimiter, marker, maxresults, includeConverted, timeout, this.client.getVersion(), requestId,
-            accept, context);
+        try {
+            return service.listBlobHierarchySegmentNoCustomHeadersSync(this.client.getUrl(), containerName, restype,
+                comp, prefix, delimiter, marker, maxresults, includeConverted, timeout, this.client.getVersion(),
+                requestId, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
@@ -6645,7 +6807,7 @@ public final class ContainersImpl {
 
     /**
      * Returns the sku name and account kind.
-     * 
+     *
      * @param containerName The container name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -6659,13 +6821,17 @@ public final class ContainersImpl {
         final String restype = "account";
         final String comp = "properties";
         final String accept = "application/xml";
-        return service.getAccountInfoSync(this.client.getUrl(), containerName, restype, comp, this.client.getVersion(),
-            accept, context);
+        try {
+            return service.getAccountInfoSync(this.client.getUrl(), containerName, restype, comp,
+                this.client.getVersion(), accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 
     /**
      * Returns the sku name and account kind.
-     * 
+     *
      * @param containerName The container name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
@@ -6678,7 +6844,7 @@ public final class ContainersImpl {
 
     /**
      * Returns the sku name and account kind.
-     * 
+     *
      * @param containerName The container name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -6691,7 +6857,11 @@ public final class ContainersImpl {
         final String restype = "account";
         final String comp = "properties";
         final String accept = "application/xml";
-        return service.getAccountInfoNoCustomHeadersSync(this.client.getUrl(), containerName, restype, comp,
-            this.client.getVersion(), accept, context);
+        try {
+            return service.getAccountInfoNoCustomHeadersSync(this.client.getUrl(), containerName, restype, comp,
+                this.client.getVersion(), accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
     }
 }
