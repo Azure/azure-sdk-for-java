@@ -3,6 +3,7 @@
 
 package com.azure.monitor.opentelemetry.exporter;
 
+import com.azure.monitor.opentelemetry.AzureMonitor;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.Attributes;
@@ -26,9 +27,8 @@ public class AzureMonitorMetricExporterSample {
         try {
             AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
 
-            new AzureMonitorExporterBuilder()
-                .connectionString(APPINSIGHTS_CONNECTION_STRING)
-                .install(sdkBuilder);
+            new AzureMonitor(APPINSIGHTS_CONNECTION_STRING)
+                .configure(sdkBuilder);
 
             OpenTelemetry openTelemetry = sdkBuilder.build().getOpenTelemetrySdk();
             Meter meter = openTelemetry.meterBuilder("OTEL.AzureMonitor.Demo").build();
@@ -49,9 +49,8 @@ public class AzureMonitorMetricExporterSample {
         try {
             AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
 
-            new AzureMonitorExporterBuilder()
-                .connectionString(APPINSIGHTS_CONNECTION_STRING)
-                .install(sdkBuilder);
+            new AzureMonitor(APPINSIGHTS_CONNECTION_STRING)
+                .configure(sdkBuilder);
 
             OpenTelemetry openTelemetry = sdkBuilder.build().getOpenTelemetrySdk();
             Meter meter = openTelemetry.meterBuilder("OTEL.AzureMonitor.Demo").build();
@@ -75,9 +74,8 @@ public class AzureMonitorMetricExporterSample {
         try {
             AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
 
-            new AzureMonitorExporterBuilder()
-                .connectionString(APPINSIGHTS_CONNECTION_STRING)
-                .install(sdkBuilder);
+            new AzureMonitor(APPINSIGHTS_CONNECTION_STRING)
+                .configure(sdkBuilder);
 
             OpenTelemetry openTelemetry = sdkBuilder.build().getOpenTelemetrySdk();
             Meter meter = openTelemetry.getMeter("OTEL.AzureMonitor.Demo");

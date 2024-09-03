@@ -29,50 +29,160 @@ In order to export telemetry data to Azure Monitor, you will need the instrument
 search for your resource. On the overview page of your resource, you will find the instrumentation key in the top
 right corner.
 
-### Creating exporter builder for Azure Monitor
-```java readme-sample-createExporterBuilder
-AzureMonitorExporterBuilder azureMonitorExporterBuilder = new AzureMonitorExporterBuilder()
-    .connectionString("{connection-string}");
-```
 
-#### Exporting span data
+### Setup OpenTelemetry SDK to work with Azure Monitor exporter
 
-The following example shows how to export a trace data to Azure Monitor through the
- `AzureMonitorTraceExporter`
+#### Use the Azure Monitor OpenTelemetry Exporter with the OpenTelemetry SDK autoconfiguration
 
-##### Setup OpenTelemetry SDK to work with Azure Monitor exporter
-```java readme-sample-setupExporter
-// Create Azure Monitor exporter and initialize OpenTelemetry SDK
-// This should be done just once when application starts up
+The following example shows how to configure the OpenTelemetry SDK auto-configuration with the Azure Monitor exporter:
+```java readme-sample-autoconfigure
 AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
-
-new AzureMonitorExporterBuilder()
-    .connectionString("{connection-string}")
-    .install(sdkBuilder);
-
+new AzureMonitor("{connection-string}")
+    .configure(sdkBuilder);
 OpenTelemetry openTelemetry = sdkBuilder.build().getOpenTelemetrySdk();
-
-Tracer tracer = openTelemetry.getTracer("Sample");
 ```
 
-##### Create spans
+#### Use the Azure Monitor OpenTelemetry Exporter with the OpenTelemetry SDK builder
 
-```java readme-sample-createSpans
-// Make service calls by adding new parent spans
-ConfigurationClient client = new ConfigurationClientBuilder()
-    .connectionString("{app-config-connection-string}")
-    .buildClient();
+The following snippet shows how to configure the OpenTelemetry SDK with the Azure Monitor exporter:
 
-Span span = tracer.spanBuilder("user-parent-span").startSpan();
-final Scope scope = span.makeCurrent();
-try {
-    // Thread bound (sync) calls will automatically pick up the parent span and you don't need to pass it explicitly.
-    client.setConfigurationSetting("hello", "text", "World");
-} finally {
-    span.end();
-    scope.close();
+```java readme-sample-sdk-builder
+public void exporterAndOpenTelemetrySdkBuilder() {
+    SdkTracerProvider tracerProvider = buildTracerProvider();
+    SdkLoggerProvider loggerProvider = buildLoggerProvider();
+    SdkMeterProvider meterProvider = buildMeterProvider();
+    OpenTelemetry openTelemetry = OpenTelemetrySdk.builder()
+        .setTracerProvider(tracerProvider)
+        .setLoggerProvider(loggerProvider)
+        .setMeterProvider(meterProvider)
+        .build();
+}
+
+private SdkTracerProvider buildTracerProvider() {
+    SdkTracerProviderBuilder tracerProviderBuilder = SdkTracerProvider.builder();
+    SpanExporter azureSpanExporter = new AzureMonitorExporterBuilder().connectionString("{connection-string}").buildTraceExporter();
+    return tracerProviderBuilder.addSpanProcessor(BatchSpanProcessor.builder(azureSpanExporter).build()).build();
+}
+
+private SdkLoggerProvider buildLoggerProvider() {
+    SdkLoggerProviderBuilder loggerProviderBuilder = SdkLoggerProvider.builder();
+    LogRecordExporter azureLogRecordExporter = new AzureMonitorExporterBuilder()
+        .connectionString("{connection-string}")
+        .buildLogRecordExporter();
+    return loggerProviderBuilder.addLogRecordProcessor(BatchLogRecordProcessor.builder(azureLogRecordExporter).build()).build();
+}
+
+private SdkMeterProvider buildMeterProvider() {
+    MetricExporter azureMetricExporter = new AzureMonitorExporterBuilder().connectionString("{connection-string}").buildMetricExporter();
+    SdkMeterProviderBuilder meterProviderBuilder = SdkMeterProvider.builder();
+    PeriodicMetricReader periodicMetricReader = createPeriodicMetricReader(azureMetricExporter);
+    return meterProviderBuilder.registerMetricReader(periodicMetricReader).build();
+}
+
+private PeriodicMetricReader createPeriodicMetricReader(MetricExporter metricExporter) {
+    PeriodicMetricReaderBuilder metricReaderBuilder =
+        PeriodicMetricReader.builder(metricExporter);
+    Duration oneMinute = Duration.ofMinutes(1);
+    metricReaderBuilder.setInterval(oneMinute);
+    return metricReaderBuilder.build();
 }
 ```
+
+### Direct Azure exporters usage
+
+We have previously see how to configure Opentelemetry SDK to work with Azure Monitor exporter. The OpenTelemetry SDK will then export the telemetry data (OpenTelemetry spans, log records and metrics) to Azure.
+
+You can also use the Azure Monitor `SpanExporter`, `LogRecordExporter` and `MetricExporter` exporters directly to export telemetry data to Azure Monitor.
+
+The following code snippet shows how to directly export spans to Azure.
+```java readme-sample-direct-span-export
+SpanExporter azureSpanExporter = new AzureMonitorExporterBuilder()
+    .connectionString("{connection-string}")
+    .buildTraceExporter();
+
+Collection<SpanData> spanData = getSpanDataCollection();
+azureSpanExporter.export(spanData);
+```
+
+To directly export log records to Azure.
+```java readme-sample-direct-log-record-export
+LogRecordExporter azureLogRecordExporter = new AzureMonitorExporterBuilder()
+    .connectionString("{connection-string}")
+    .buildLogRecordExporter();
+
+Collection<LogRecordData> logRecords = getLogRecordCollection();
+azureLogRecordExporter.export(logRecords);
+```
+
+To directly export metrics to Azure.
+```java readme-sample-direct-metric-export
+MetricExporter azureMetricExporter = new AzureMonitorExporterBuilder()
+    .connectionString("{connection-string}")
+    .buildMetricExporter();
+
+azureMetricExporter.export(getMetricDataCollection());
+```
+
+### Use the Azure Monitor OpenTelemetry Exporter with OpenTelemetry APIs
+
+The following example shows how create a span:
+
+```java 
+AutoConfiguredOpenTelemetrySdkBuilder otelSdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
+
+new AzureMonitor("{connection-string}")
+    .configure(otelSdkBuilder);
+
+OpenTelemetry openTelemetry = otelSdkBuilder.build().getOpenTelemetrySdk();
+Tracer tracer = openTelemetry.getTracer("Sample");
+
+Span span = tracer.spanBuilder("spanName").startSpan();
+
+// Make the span the current span
+try (Scope scope = span.makeCurrent()) {
+    // Your application logic here
+} catch (Throwable t) {
+    span.recordException(t);
+    throw t;
+} finally {
+    span.end();
+}
+```
+The following example demonstrates how to add a span processor to the OpenTelemetry SDK autoconfiguration.
+
+```java readme-sample-span-processor
+AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
+
+SpanProcessor spanProcessor = new SpanProcessor() {
+    @Override
+    public void onStart(Context context, ReadWriteSpan span) {
+        span.setAttribute("random", RandomStringUtils.random(10));
+    }
+
+    @Override
+    public boolean isStartRequired() {
+        return true;
+    }
+
+    @Override
+    public void onEnd(ReadableSpan readableSpan) {
+    }
+
+    @Override
+    public boolean isEndRequired() {
+        return false;
+    }
+};
+
+sdkBuilder.addTracerProviderCustomizer(
+    (sdkTracerProviderBuilder, configProperties) -> sdkTracerProviderBuilder
+        .addSpanProcessor(spanProcessor));
+```
+More advanced examples with OpenTelemetry APIs:
+* [Advanced examples - 1][advanced_examples_1]
+* [Advanced examples - 2][advanced_examples_2]
+* [Event Hubs example][event_hubs_example]
+
 
 ## Key concepts
 
@@ -94,9 +204,6 @@ Some key concepts for the Azure Monitor exporter include:
 
 For more information on the OpenTelemetry project, please review the [OpenTelemetry Specifications][opentelemetry_specification].
 
-## Examples
-
-More examples can be found in [samples][samples_code].
 
 ## Troubleshooting
 
@@ -150,7 +257,9 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [span_processor]: https://github.com/open-telemetry/opentelemetry-specification/blob/master/specification/trace/sdk.md#span-processor
 [sampler_ref]: https://github.com/open-telemetry/opentelemetry-specification/blob/master/specification/trace/sdk.md#sampling
 [trace_concept]: https://github.com/open-telemetry/opentelemetry-specification/blob/master/specification/overview.md#trace
-[samples_code]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/monitor/azure-monitor-opentelemetry-exporter/src/samples
+[advanced_examples_1]: https://github.com/Azure-Samples/ApplicationInsights-Java-Samples/tree/main/opentelemetry-api/exporter/
+[advanced_examples_2]: https://github.com/open-telemetry/opentelemetry-java-examples/tree/main/sdk-usage/src/main/java/io/opentelemetry/sdk/example
+[event_hubs_example]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/monitor/azure-monitor-opentelemetry-exporter/src/samples/EventHubsExample.java
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
