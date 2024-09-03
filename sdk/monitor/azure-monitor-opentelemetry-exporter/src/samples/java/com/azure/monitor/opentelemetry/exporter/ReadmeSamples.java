@@ -46,16 +46,6 @@ import java.util.Collections;
 public class ReadmeSamples {
 
     /**
-     * Sample for creating Azure Monitor exporter builder.
-     */
-    public void createExporterBuilder() {
-        // BEGIN: readme-sample-createExporterBuilder
-        AzureMonitorExporterBuilder azureMonitorExporterBuilder = new AzureMonitorExporterBuilder()
-            .connectionString("{connection-string}");
-        // END: readme-sample-createExporterBuilder
-    }
-
-    /**
      * Sample for setting up exporter to export traces to Azure Monitor
      */
     public void setupExporter() {
@@ -88,15 +78,6 @@ public class ReadmeSamples {
             scope.close();
         }
         // END: readme-sample-createSpans
-    }
-
-    /**
-     * Method to make the sample compilable but is not visible in README code snippet.
-     *
-     * @return An empty collection.
-     */
-    private Collection<SpanData> getSpanDataCollection() {
-        return Collections.emptyList();
     }
 
     /**
@@ -144,99 +125,4 @@ public class ReadmeSamples {
                 .addSpanProcessor(spanProcessor));
         // END: readme-sample-span-processor
     }
-
-    /**
-     * Sample to directly export spans to Azure.
-     */
-    public void directSpanExport() {
-        // BEGIN: readme-sample-direct-span-export
-        SpanExporter azureSpanExporter = new AzureMonitorExporterBuilder()
-            .connectionString("{connection-string}")
-            .buildTraceExporter();
-
-        Collection<SpanData> spanData = getSpanDataCollection();
-        azureSpanExporter.export(spanData);
-        // END: readme-sample-direct-span-export
-    }
-
-    /**
-     * Sample to directly export spans to Azure.
-     */
-    public void directLogExport() {
-        // BEGIN: readme-sample-direct-log-record-export
-        LogRecordExporter azureLogRecordExporter = new AzureMonitorExporterBuilder()
-            .connectionString("{connection-string}")
-            .buildLogRecordExporter();
-
-        Collection<LogRecordData> logRecords = getLogRecordCollection();
-        azureLogRecordExporter.export(logRecords);
-        // END: readme-sample-direct-log-record-export
-    }
-
-    private Collection<LogRecordData> getLogRecordCollection() {
-        return Collections.emptyList();
-    }
-
-    /**
-     * Sample to directly export metrics to Azure.
-     */
-    public void directMetricExport() {
-        // BEGIN: readme-sample-direct-metric-export
-        MetricExporter azureMetricExporter = new AzureMonitorExporterBuilder()
-            .connectionString("{connection-string}")
-            .buildMetricExporter();
-
-        azureMetricExporter.export(getMetricDataCollection());
-        // END: readme-sample-direct-metric-export
-    }
-
-    private Collection<MetricData> getMetricDataCollection() {
-        return Collections.emptyList();
-    }
-
-
-    /**
-     * Sample to the Azure Monitor OpenTelemetry Exporter with the OpenTelemetry SDK builder
-     */
-    // BEGIN: readme-sample-sdk-builder
-    public void exporterAndOpenTelemetrySdkBuilder() {
-        SdkTracerProvider tracerProvider = buildTracerProvider();
-        SdkLoggerProvider loggerProvider = buildLoggerProvider();
-        SdkMeterProvider meterProvider = buildMeterProvider();
-        OpenTelemetry openTelemetry = OpenTelemetrySdk.builder()
-            .setTracerProvider(tracerProvider)
-            .setLoggerProvider(loggerProvider)
-            .setMeterProvider(meterProvider)
-            .build();
-    }
-
-    private SdkTracerProvider buildTracerProvider() {
-        SdkTracerProviderBuilder tracerProviderBuilder = SdkTracerProvider.builder();
-        SpanExporter azureSpanExporter = new AzureMonitorExporterBuilder().connectionString("{connection-string}").buildTraceExporter();
-        return tracerProviderBuilder.addSpanProcessor(BatchSpanProcessor.builder(azureSpanExporter).build()).build();
-    }
-
-    private SdkLoggerProvider buildLoggerProvider() {
-        SdkLoggerProviderBuilder loggerProviderBuilder = SdkLoggerProvider.builder();
-        LogRecordExporter azureLogRecordExporter = new AzureMonitorExporterBuilder()
-            .connectionString("{connection-string}")
-            .buildLogRecordExporter();
-        return loggerProviderBuilder.addLogRecordProcessor(BatchLogRecordProcessor.builder(azureLogRecordExporter).build()).build();
-    }
-
-    private SdkMeterProvider buildMeterProvider() {
-        MetricExporter azureMetricExporter = new AzureMonitorExporterBuilder().connectionString("{connection-string}").buildMetricExporter();
-        SdkMeterProviderBuilder meterProviderBuilder = SdkMeterProvider.builder();
-        PeriodicMetricReader periodicMetricReader = createPeriodicMetricReader(azureMetricExporter);
-        return meterProviderBuilder.registerMetricReader(periodicMetricReader).build();
-    }
-
-    private PeriodicMetricReader createPeriodicMetricReader(MetricExporter metricExporter) {
-        PeriodicMetricReaderBuilder metricReaderBuilder =
-            PeriodicMetricReader.builder(metricExporter);
-        Duration oneMinute = Duration.ofMinutes(1);
-        metricReaderBuilder.setInterval(oneMinute);
-        return metricReaderBuilder.build();
-    }
-    // END: readme-sample-sdk-builder
 }

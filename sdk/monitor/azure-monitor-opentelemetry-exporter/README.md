@@ -30,97 +30,14 @@ search for your resource. On the overview page of your resource, you will find t
 right corner.
 
 
-### Setup OpenTelemetry SDK to work with Azure Monitor exporter
+### Setup THE OpenTelemetry SDK to work with Azure Monitor exporter
 
-#### Use the Azure Monitor OpenTelemetry Exporter with the OpenTelemetry SDK autoconfiguration
-
-The following example shows how to configure the OpenTelemetry SDK auto-configuration with the Azure Monitor exporter:
+The following code shows how to configure the OpenTelemetry SDK auto-configuration with the Azure Monitor exporter:
 ```java readme-sample-autoconfigure
 AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
 new AzureMonitor("{connection-string}")
     .configure(sdkBuilder);
 OpenTelemetry openTelemetry = sdkBuilder.build().getOpenTelemetrySdk();
-```
-
-#### Use the Azure Monitor OpenTelemetry Exporter with the OpenTelemetry SDK builder
-
-The following snippet shows how to configure the OpenTelemetry SDK with the Azure Monitor exporter:
-
-```java readme-sample-sdk-builder
-public void exporterAndOpenTelemetrySdkBuilder() {
-    SdkTracerProvider tracerProvider = buildTracerProvider();
-    SdkLoggerProvider loggerProvider = buildLoggerProvider();
-    SdkMeterProvider meterProvider = buildMeterProvider();
-    OpenTelemetry openTelemetry = OpenTelemetrySdk.builder()
-        .setTracerProvider(tracerProvider)
-        .setLoggerProvider(loggerProvider)
-        .setMeterProvider(meterProvider)
-        .build();
-}
-
-private SdkTracerProvider buildTracerProvider() {
-    SdkTracerProviderBuilder tracerProviderBuilder = SdkTracerProvider.builder();
-    SpanExporter azureSpanExporter = new AzureMonitorExporterBuilder().connectionString("{connection-string}").buildTraceExporter();
-    return tracerProviderBuilder.addSpanProcessor(BatchSpanProcessor.builder(azureSpanExporter).build()).build();
-}
-
-private SdkLoggerProvider buildLoggerProvider() {
-    SdkLoggerProviderBuilder loggerProviderBuilder = SdkLoggerProvider.builder();
-    LogRecordExporter azureLogRecordExporter = new AzureMonitorExporterBuilder()
-        .connectionString("{connection-string}")
-        .buildLogRecordExporter();
-    return loggerProviderBuilder.addLogRecordProcessor(BatchLogRecordProcessor.builder(azureLogRecordExporter).build()).build();
-}
-
-private SdkMeterProvider buildMeterProvider() {
-    MetricExporter azureMetricExporter = new AzureMonitorExporterBuilder().connectionString("{connection-string}").buildMetricExporter();
-    SdkMeterProviderBuilder meterProviderBuilder = SdkMeterProvider.builder();
-    PeriodicMetricReader periodicMetricReader = createPeriodicMetricReader(azureMetricExporter);
-    return meterProviderBuilder.registerMetricReader(periodicMetricReader).build();
-}
-
-private PeriodicMetricReader createPeriodicMetricReader(MetricExporter metricExporter) {
-    PeriodicMetricReaderBuilder metricReaderBuilder =
-        PeriodicMetricReader.builder(metricExporter);
-    Duration oneMinute = Duration.ofMinutes(1);
-    metricReaderBuilder.setInterval(oneMinute);
-    return metricReaderBuilder.build();
-}
-```
-
-### Direct Azure exporters usage
-
-We have previously see how to configure Opentelemetry SDK to work with Azure Monitor exporter. The OpenTelemetry SDK will then export the telemetry data (OpenTelemetry spans, log records and metrics) to Azure.
-
-You can also use the Azure Monitor `SpanExporter`, `LogRecordExporter` and `MetricExporter` exporters directly to export telemetry data to Azure Monitor.
-
-The following code snippet shows how to directly export spans to Azure.
-```java readme-sample-direct-span-export
-SpanExporter azureSpanExporter = new AzureMonitorExporterBuilder()
-    .connectionString("{connection-string}")
-    .buildTraceExporter();
-
-Collection<SpanData> spanData = getSpanDataCollection();
-azureSpanExporter.export(spanData);
-```
-
-To directly export log records to Azure.
-```java readme-sample-direct-log-record-export
-LogRecordExporter azureLogRecordExporter = new AzureMonitorExporterBuilder()
-    .connectionString("{connection-string}")
-    .buildLogRecordExporter();
-
-Collection<LogRecordData> logRecords = getLogRecordCollection();
-azureLogRecordExporter.export(logRecords);
-```
-
-To directly export metrics to Azure.
-```java readme-sample-direct-metric-export
-MetricExporter azureMetricExporter = new AzureMonitorExporterBuilder()
-    .connectionString("{connection-string}")
-    .buildMetricExporter();
-
-azureMetricExporter.export(getMetricDataCollection());
 ```
 
 ### Use the Azure Monitor OpenTelemetry Exporter with OpenTelemetry APIs
