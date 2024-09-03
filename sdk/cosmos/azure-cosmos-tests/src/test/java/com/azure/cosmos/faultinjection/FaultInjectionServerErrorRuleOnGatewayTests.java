@@ -121,7 +121,7 @@ public class FaultInjectionServerErrorRuleOnGatewayTests extends FaultInjectionT
             { FaultInjectionServerErrorType.RETRY_WITH, false, 449, 0 },
             { FaultInjectionServerErrorType.TOO_MANY_REQUEST, true, 429, HttpConstants.SubStatusCodes.USER_REQUEST_RATE_TOO_LARGE },
             { FaultInjectionServerErrorType.READ_SESSION_NOT_AVAILABLE, true, 404, 1002 },
-            { FaultInjectionServerErrorType.SERVICE_UNAVAILABLE, false, 503, 21008 }
+            { FaultInjectionServerErrorType.SERVICE_UNAVAILABLE, true, 503, 21008 }
         };
     }
 

@@ -11,7 +11,6 @@ import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.CosmosExcludedRegions;
 import com.azure.cosmos.CosmosRegionSwitchHint;
-import com.azure.cosmos.FaultInjectionWithAvailabilityStrategyTests;
 import com.azure.cosmos.SessionRetryOptionsBuilder;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.DatabaseAccount;
@@ -66,7 +65,6 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.fail;
