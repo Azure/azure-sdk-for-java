@@ -15,9 +15,12 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.health.insights.radiologyinsights.implementation.RadiologyInsightsClientImpl;
-import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsData;
+import com.azure.health.insights.radiologyinsights.implementation.models.InferRadiologyInsightsRequest;
+import com.azure.health.insights.radiologyinsights.models.PatientRecord;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceResult;
+import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsModelConfiguration;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsResult;
+import java.util.List;
 
 /**
  * Initializes a new instance of the synchronous RadiologyInsightsClient type.
@@ -390,7 +393,7 @@ public final class RadiologyInsightsClient {
      * }
      * }</pre>
      *
-     * @param radiologyInsightsData Contains the list of patients, and configuration data.
+     * @param inferRadiologyInsightsRequest The inferRadiologyInsightsRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -400,9 +403,9 @@ public final class RadiologyInsightsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginInferRadiologyInsights(BinaryData radiologyInsightsData,
+    public SyncPoller<BinaryData, BinaryData> beginInferRadiologyInsights(BinaryData inferRadiologyInsightsRequest,
         RequestOptions requestOptions) {
-        return this.serviceClient.beginInferRadiologyInsights(radiologyInsightsData, requestOptions);
+        return this.serviceClient.beginInferRadiologyInsights(inferRadiologyInsightsRequest, requestOptions);
     }
 
     /**
@@ -410,7 +413,8 @@ public final class RadiologyInsightsClient {
      *
      * Creates a Radiology Insights job with the given request body.
      *
-     * @param radiologyInsightsData Contains the list of patients, and configuration data.
+     * @param patients The list of patients, including their clinical information and data.
+     * @param configuration Configuration affecting the Radiology Insights model's inference.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -422,10 +426,37 @@ public final class RadiologyInsightsClient {
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<RadiologyInsightsResult, RadiologyInsightsInferenceResult>
-        beginInferRadiologyInsights(RadiologyInsightsData radiologyInsightsData) {
+        beginInferRadiologyInsights(List<PatientRecord> patients, RadiologyInsightsModelConfiguration configuration) {
         // Generated convenience method for beginInferRadiologyInsightsWithModel
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.beginInferRadiologyInsightsWithModel(BinaryData.fromObject(radiologyInsightsData),
-            requestOptions);
+        InferRadiologyInsightsRequest inferRadiologyInsightsRequestObj
+            = new InferRadiologyInsightsRequest(patients).setConfiguration(configuration);
+        BinaryData inferRadiologyInsightsRequest = BinaryData.fromObject(inferRadiologyInsightsRequestObj);
+        return serviceClient.beginInferRadiologyInsightsWithModel(inferRadiologyInsightsRequest, requestOptions);
+    }
+
+    /**
+     * Create Radiology Insights job
+     *
+     * Creates a Radiology Insights job with the given request body.
+     *
+     * @param patients The list of patients, including their clinical information and data.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of provides status details for long running operations.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<RadiologyInsightsResult, RadiologyInsightsInferenceResult>
+        beginInferRadiologyInsights(List<PatientRecord> patients) {
+        // Generated convenience method for beginInferRadiologyInsightsWithModel
+        RequestOptions requestOptions = new RequestOptions();
+        InferRadiologyInsightsRequest inferRadiologyInsightsRequestObj = new InferRadiologyInsightsRequest(patients);
+        BinaryData inferRadiologyInsightsRequest = BinaryData.fromObject(inferRadiologyInsightsRequestObj);
+        return serviceClient.beginInferRadiologyInsightsWithModel(inferRadiologyInsightsRequest, requestOptions);
     }
 }
