@@ -1099,6 +1099,8 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
             int createOperationCount = 10;
             Set<String> idsAddedByCreates = new HashSet<>();
 
+            deleteAllDocuments(container);
+
             Flux<CosmosItemOperation> createOperationsFlux = Flux.range(0, createOperationCount).map(i -> {
                 String documentId = UUID.randomUUID().toString();
                 TestItem testItem = new TestItem(documentId, documentId, documentId);
@@ -1160,6 +1162,8 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
             try (CosmosAsyncClient client = buildAsyncClient(getClientBuilder(), this.writeRegions, false, shouldUsePreferredRegions)) {
                 int createOperationCount = 10;
                 Set<String> idsAddedByBulkCreate = new HashSet<>();
+
+                deleteAllDocuments(container);
 
                 CosmosAsyncDatabase database = client.getDatabase(container.getDatabase().getId());
                 CosmosAsyncContainer helperContainer = database.getContainer(container.getId());
@@ -1885,6 +1889,15 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                     normalizedRegion))
                 .isFalse();
         }
+    }
+
+    private static void deleteAllDocuments(CosmosAsyncContainer asyncContainer) {
+        asyncContainer
+            .queryItems("SELECT * FROM C", TestObject.class)
+            .collectList()
+            .flatMapMany(Flux::fromIterable)
+            .flatMap(testObject -> asyncContainer.deleteItem(testObject.getId(), new PartitionKey(testObject.getMypk())))
+            .blockLast();
     }
 
     private static class AccountLevelLocationContext {
