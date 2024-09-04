@@ -4,22 +4,22 @@
 package com.azure.perf.test.core;
 
 import com.beust.jcommander.JCommander;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
-import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.TreeMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
 /**
@@ -112,14 +112,7 @@ public class PerfStressProgram {
      */
     public static void run(Class<?> testClass, PerfStressOptions options) {
         System.out.println("=== Options ===");
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.configure(SerializationFeature.INDENT_OUTPUT, true);
-            mapper.configure(JsonGenerator.Feature.AUTO_CLOSE_TARGET, false);
-            mapper.writeValue(System.out, options);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        printOptions(options);
 
         System.out.println();
         System.out.println();
@@ -207,6 +200,52 @@ public class PerfStressProgram {
         if (cleanupStatus != null) {
             cleanupStatus.cancel();
         }
+    }
+
+    private static void printOptions(PerfStressOptions options) {
+        try {
+            Map<String, Object> parameters = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+            for (Method method : options.getClass().getMethods()) {
+                String methodName = method.getName();
+                if ((!methodName.startsWith("get") && !methodName.startsWith("is"))
+                    || methodName.equals("getClass")) {
+                    continue;
+                }
+
+                String parameterName = convertMethodName(methodName);
+                parameters.put(parameterName, method.invoke(options));
+            }
+
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append('{').append(System.lineSeparator());
+            AtomicBoolean first = new AtomicBoolean(true);
+            parameters.forEach((key, value) -> writeKeyValue(key, value, stringBuilder, first));
+            stringBuilder.append(System.lineSeparator()).append('}');
+            System.out.println(stringBuilder);
+        } catch (ReflectiveOperationException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static String convertMethodName(String methodName) {
+        return methodName.startsWith("is")
+            ? Character.toLowerCase(methodName.charAt(2)) + methodName.substring(3)
+            : Character.toLowerCase(methodName.charAt(3)) + methodName.substring(4);
+    }
+
+    private static void writeKeyValue(String key, Object value, StringBuilder sb, AtomicBoolean first) {
+        if (!first.get()) {
+            sb.append(',').append(System.lineSeparator());
+        }
+
+        sb.append("  ").append(key);
+        if (value instanceof String) {
+            sb.append(": \"").append(value).append('"');
+        } else {
+            sb.append(": ").append(value);
+        }
+
+        first.set(false);
     }
 
     /**

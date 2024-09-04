@@ -3,23 +3,18 @@
 
 package com.azure.perf.test.core;
 
-import java.net.URI;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
-
-import com.azure.core.http.netty.NettyAsyncHttpClientProvider;
 import com.azure.core.util.ExpandableStringEnum;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.converters.IParameterSplitter;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+import java.net.URI;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Represents the command line configurable options for a performance test.
  */
-@JsonPropertyOrder(alphabetic = true)
 public class PerfStressOptions {
     @Parameter(names = { "-d", "--duration" }, description = "duration of test in seconds")
     private int duration = 15;
