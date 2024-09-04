@@ -2575,7 +2575,7 @@ public class BlobClientBase {
         BlobQueryReader reader = new BlobQueryReader(null, queryOptions.getProgressConsumer(),
             queryOptions.getErrorConsumer());
         try {
-            InputStream resultStream = reader.readInputStream2(avroInputStream);
+            InputStream resultStream = reader.readInputStream(avroInputStream);
             return new SimpleResponse<>(response, resultStream);
         } catch (IOException e) {
             throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
@@ -2680,7 +2680,7 @@ public class BlobClientBase {
             InputStream avroInputStream = response.getValue();
             BlobQueryReader reader = new BlobQueryReader(null, queryOptions.getProgressConsumer(),
                 queryOptions.getErrorConsumer());
-            InputStream resultStream = reader.readInputStream2(avroInputStream);
+            InputStream resultStream = reader.readInputStream(avroInputStream);
             OutputStream outputStream = queryOptions.getOutputStream();
             byte[] buffer = new byte[4096];
             int bytesRead;

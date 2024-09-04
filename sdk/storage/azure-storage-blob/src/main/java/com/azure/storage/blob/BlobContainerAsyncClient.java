@@ -985,7 +985,7 @@ public final class BlobContainerAsyncClient {
 
         return this.azureBlobStorage.getContainers().setAccessPolicyNoCustomHeadersWithResponseAsync(containerName,
             null, requestConditions.getLeaseId(), accessType, requestConditions.getIfModifiedSince(),
-            requestConditions.getIfUnmodifiedSince(), null, identifiers, context);
+            requestConditions.getIfUnmodifiedSince(), null, finalIdentifiers, context);
     }
 
     /**
