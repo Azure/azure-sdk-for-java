@@ -6,6 +6,7 @@ package com.azure.identity.implementation;
 import com.azure.core.util.CoreUtils;
 import com.azure.identity.AzureAuthorityHosts;
 import com.azure.identity.CredentialUnavailableException;
+import com.azure.json.JsonOptions;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -54,7 +55,7 @@ public class VisualStudioCacheAccessor {
      * @return a Map containing VS Code user settings
      */
     public Map<String, String> getUserSettingsDetails() {
-        try (JsonReader jsonReader = JsonProviders.createReader(Files.readAllBytes(Paths.get(getSettingsPath())))) {
+        try (JsonReader jsonReader = JsonProviders.createReader(Files.readAllBytes(Paths.get(getSettingsPath())), new JsonOptions().setJsoncSupported(true))) {
             return jsonReader.readObject(reader -> {
                 Map<String, String> result = new HashMap<>();
                 while (reader.nextToken() != JsonToken.END_OBJECT) {
