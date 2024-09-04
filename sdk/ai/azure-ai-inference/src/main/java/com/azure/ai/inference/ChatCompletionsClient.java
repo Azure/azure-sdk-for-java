@@ -19,6 +19,7 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.ai.inference.implementation.InferenceServerSentEvents;
 import com.azure.ai.inference.models.ChatCompletionsOptions;
@@ -26,7 +27,10 @@ import com.azure.ai.inference.implementation.ChatCompletionsUtils;
 import com.azure.ai.inference.models.StreamingChatCompletionsUpdate;
 import com.azure.core.util.IterableStream;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
 import java.nio.ByteBuffer;
+import java.util.Objects;
 
 /**
  * Initializes a new instance of the synchronous ChatCompletionsClient type.
@@ -63,7 +67,7 @@ public final class ChatCompletionsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     messages (Required): [
@@ -101,9 +105,9 @@ public final class ChatCompletionsClient {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -147,17 +151,17 @@ public final class ChatCompletionsClient {
      * Completions support a wide variety of tasks and generate text that continues from or "completes"
      * provided prompt data along with {@link Response}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> completeWithResponse(BinaryData completeRequest, RequestOptions requestOptions) {
-        return this.serviceClient.completeWithResponse(completeRequest, requestOptions);
+    public Mono<Response<ChatCompletions>> completeWithResponse(BinaryData completeRequest, RequestOptions requestOptions) {
+        Response<BinaryData> response = serviceClient.completeWithResponse(completeRequest, requestOptions);
+        return Mono.just(new SimpleResponse<>(response, response.getValue().toObject(ChatCompletions.class)));
     }
 
     /**
      * Returns information about the AI model.
      * The method makes a REST API call to the `/info` route on the given endpoint.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     model_name: String (Required)
@@ -218,7 +222,7 @@ public final class ChatCompletionsClient {
         if (extraParams != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("extra-parameters"), extraParams.toString());
         }
-        return completeWithResponse(completeRequest, requestOptions).getValue().toObject(ChatCompletions.class);
+        return Objects.requireNonNull(completeWithResponse(completeRequest, requestOptions).block()).getValue();
     }
 
     /**
