@@ -35,9 +35,9 @@ right corner.
 The following code shows how to configure the OpenTelemetry SDK auto-configuration with the Azure Monitor exporter:
 ```java readme-sample-autoconfigure
 AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
-new AzureMonitor("{connection-string}")
-    .configure(sdkBuilder);
-OpenTelemetry openTelemetry = sdkBuilder.build().getOpenTelemetrySdk();
+
+OpenTelemetry openTelemetry = new AzureMonitor("{connection-string}")
+    .configure(sdkBuilder).build().getOpenTelemetrySdk();
 ```
 
 ## Examples

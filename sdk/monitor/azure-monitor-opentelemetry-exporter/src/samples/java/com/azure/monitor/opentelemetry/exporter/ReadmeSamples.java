@@ -54,10 +54,8 @@ public class ReadmeSamples {
         // This should be done just once when application starts up
         AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
 
-        new AzureMonitor("{connection-string}")
-            .configure(sdkBuilder);
-
-        OpenTelemetry openTelemetry = sdkBuilder.build().getOpenTelemetrySdk();
+        OpenTelemetry openTelemetry = new AzureMonitor("{connection-string}")
+            .configure(sdkBuilder).build().getOpenTelemetrySdk();
 
         Tracer tracer = openTelemetry.getTracer("Sample");
         // END: readme-sample-setupExporter
@@ -86,9 +84,9 @@ public class ReadmeSamples {
     public void exporterAndOpenTelemetryAutoconfiguration() {
         // BEGIN: readme-sample-autoconfigure
         AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
-        new AzureMonitor("{connection-string}")
-            .configure(sdkBuilder);
-        OpenTelemetry openTelemetry = sdkBuilder.build().getOpenTelemetrySdk();
+
+        OpenTelemetry openTelemetry = new AzureMonitor("{connection-string}")
+            .configure(sdkBuilder).build().getOpenTelemetrySdk();
         // END: readme-sample-autoconfigure
     }
 

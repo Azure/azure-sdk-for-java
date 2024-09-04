@@ -81,9 +81,7 @@ public final class TestUtils {
 
         ExportOptions exportOptions = new ExportOptions().connectionString(connectionString).httpPipeline(httpPipeline);
 
-        new AzureMonitor(exportOptions).configure(sdkBuilder);
-
-        return sdkBuilder.addPropertiesSupplier(() -> configuration).build().getOpenTelemetrySdk();
+        return new AzureMonitor(exportOptions).configure(sdkBuilder).addPropertiesSupplier(() -> configuration).build().getOpenTelemetrySdk();
     }
 
     // azure-json doesn't deserialize subtypes yet, so need to convert the abstract MonitorDomain to RemoteDependencyData

@@ -51,8 +51,10 @@ public final class AzureMonitor {
     /**
      * Configures an {@link AutoConfiguredOpenTelemetrySdkBuilder} for Azure Monitor based on the options set.
      * @param autoConfiguredOpenTelemetrySdkBuilder the {@link AutoConfiguredOpenTelemetrySdkBuilder} object.
+     * @return the {@link AutoConfiguredOpenTelemetrySdkBuilder} object given in argument.
      */
-    public void configure(AutoConfiguredOpenTelemetrySdkBuilder autoConfiguredOpenTelemetrySdkBuilder) {
+    public AutoConfiguredOpenTelemetrySdkBuilder
+        configure(AutoConfiguredOpenTelemetrySdkBuilder autoConfiguredOpenTelemetrySdkBuilder) {
         autoConfiguredOpenTelemetrySdkBuilder.addPropertiesSupplier(() -> {
             Map<String, String> props = new HashMap<>();
             props.put("otel.traces.exporter", AzureMonitorExporterProviderKeys.EXPORTER_NAME);
@@ -90,5 +92,6 @@ public final class AzureMonitor {
                     View.builder().setAggregation(Aggregation.drop()).build())
                 .registerView(InstrumentSelector.builder().setMeterName("io.opentelemetry.sdk.logs").build(),
                     View.builder().setAggregation(Aggregation.drop()).build()));
+        return autoConfiguredOpenTelemetrySdkBuilder;
     }
 }
