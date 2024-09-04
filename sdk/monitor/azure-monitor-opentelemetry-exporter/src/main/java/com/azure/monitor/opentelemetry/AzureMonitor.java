@@ -4,6 +4,7 @@
 package com.azure.monitor.opentelemetry;
 
 import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporterBuilder;
+import com.azure.monitor.opentelemetry.exporter.ExportOptions;
 import com.azure.monitor.opentelemetry.exporter.implementation.AzureMonitorExporterProviderKeys;
 import com.azure.monitor.opentelemetry.exporter.implementation.AzureMonitorLogRecordExporterProvider;
 import com.azure.monitor.opentelemetry.exporter.implementation.AzureMonitorMetricExporterProvider;
@@ -35,15 +36,16 @@ public final class AzureMonitor {
      * @param connectionString the Azure connection string to use.
      */
     public AzureMonitor(String connectionString) {
-        this.azureMonitorExporterBuilder = new AzureMonitorExporterBuilder().connectionString(connectionString);
+        ExportOptions exportOptions = new ExportOptions().connectionString(connectionString);
+        this.azureMonitorExporterBuilder = new AzureMonitorExporterBuilder(exportOptions);
     }
 
     /**
      * Construct an instance of {@link AzureMonitor}
-     * @param azureMonitorExporterBuilder to have access to advanced configuration options in addition to the connection string.
+     * @param exportOptions The export options to Azure, see{@link ExportOptions}.
      */
-    public AzureMonitor(AzureMonitorExporterBuilder azureMonitorExporterBuilder) {
-        this.azureMonitorExporterBuilder = azureMonitorExporterBuilder;
+    public AzureMonitor(ExportOptions exportOptions) {
+        this.azureMonitorExporterBuilder = new AzureMonitorExporterBuilder(exportOptions);
     }
 
     /**
