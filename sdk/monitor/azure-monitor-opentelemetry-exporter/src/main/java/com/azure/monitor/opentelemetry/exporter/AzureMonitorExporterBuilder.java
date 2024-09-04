@@ -91,7 +91,7 @@ public final class AzureMonitorExporterBuilder {
      * @param exportOptions The export options.
      */
     public AzureMonitorExporterBuilder(ExportOptions exportOptions) {
-        this.exportOptions = new ExportOptions();
+        this.exportOptions = exportOptions;
     }
 
     /**
