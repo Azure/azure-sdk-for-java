@@ -178,7 +178,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [trace_concept]: https://github.com/open-telemetry/opentelemetry-specification/blob/master/specification/overview.md#trace
 [advanced_examples_1]: https://github.com/Azure-Samples/ApplicationInsights-Java-Samples/tree/main/opentelemetry-api/exporter/
 [advanced_examples_2]: https://github.com/open-telemetry/opentelemetry-java-examples/tree/main/sdk-usage/src/main/java/io/opentelemetry/sdk/example
-[event_hubs_example]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/monitor/azure-monitor-opentelemetry-exporter/src/samples/EventHubsExample.java
+[event_hubs_example]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-opentelemetry-exporter/src/samples/java/com/azure/monitor/opentelemetry/exporter/EventHubsAzureMonitorExporterSample.java
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
