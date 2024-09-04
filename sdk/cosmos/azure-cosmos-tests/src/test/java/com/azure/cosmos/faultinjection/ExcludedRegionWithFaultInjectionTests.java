@@ -137,7 +137,10 @@ public class ExcludedRegionWithFaultInjectionTests extends FaultInjectionTestBas
         DatabaseAccount databaseAccount = globalEndpointManager.getLatestDatabaseAccount();
 
         AccountLevelLocationContext accountLevelWriteableLocationContext = getAccountLevelLocationContext(databaseAccount, true);
-        this.preferredRegions = new ArrayList<>(accountLevelWriteableLocationContext.serviceOrderedWriteableRegions);
+
+        validate(accountLevelWriteableLocationContext, true);
+
+        this.preferredRegions = accountLevelWriteableLocationContext.serviceOrderedWriteableRegions;
         this.regionResolvedForDefaultEndpoint = getRegionResolvedForDefaultEndpoint(this.cosmosAsyncContainer, this.preferredRegions);
     }
 
@@ -2781,6 +2784,19 @@ public class ExcludedRegionWithFaultInjectionTests extends FaultInjectionTestBas
             .toArray(Object[][]::new);
 
         return testConfigs;
+    }
+
+    private static void validate(AccountLevelLocationContext accountLevelLocationContext, boolean isWriteOnly) {
+
+        assertThat(accountLevelLocationContext).isNotNull();
+
+        if (isWriteOnly) {
+            assertThat(accountLevelLocationContext.serviceOrderedWriteableRegions).isNotNull();
+            assertThat(accountLevelLocationContext.serviceOrderedWriteableRegions.size()).isGreaterThanOrEqualTo(1);
+        } else {
+            assertThat(accountLevelLocationContext.serviceOrderedReadableRegions).isNotNull();
+            assertThat(accountLevelLocationContext.serviceOrderedReadableRegions.size()).isGreaterThanOrEqualTo(1);
+        }
     }
 
     private static class MutationTestConfig {

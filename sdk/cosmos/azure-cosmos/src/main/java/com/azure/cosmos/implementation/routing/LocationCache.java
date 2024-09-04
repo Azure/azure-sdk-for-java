@@ -648,11 +648,6 @@ public class LocationCache {
             endpoints.add(fallbackEndpoint);
         }
 
-        for (URI endpoint : endpoints) {
-            logger.info("Effective preferred locations : {}", endpoint.getPath());
-        }
-
-        System.out.println("Default endpoint : " + this.defaultEndpoint.getPath() + "blah");
         return new UnmodifiableList<URI>(endpoints);
     }
 

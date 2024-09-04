@@ -52,6 +52,7 @@ import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.models.ThroughputResponse;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.fasterxml.jackson.databind.JsonNode;
+import org.assertj.core.api.AssertionsForClassTypes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.BeforeClass;
@@ -506,7 +507,17 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                 "Document read should have succeeded...",
                 !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
                 !SPLIT_REQUESTED_FLAG,
-                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                true
+            },
+            {
+                pointReadYourPointCreate_BothFromFirstPreferredRegionFunc,
+                "pointReadYourPointCreate_BothFromFirstPreferredRegion",
+                "Document read should have succeeded...",
+                !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                !SPLIT_REQUESTED_FLAG,
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                false
             },
             {
                 pointReadAfterPartitionSplitAndPointCreate_BothFromFirstPreferredRegionFunc,
@@ -514,7 +525,8 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                 "Document read should have succeeded...",
                 !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
                 SPLIT_REQUESTED_FLAG,
-                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                true
             },
             {
                 pointReadYourLatestUpsert_UpsertsFromPreferredRegionReadFromPreferredRegionFunc,
@@ -522,7 +534,17 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                 "Document read should have succeeded...",
                 !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
                 !SPLIT_REQUESTED_FLAG,
-                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                true
+            },
+            {
+                pointReadYourLatestUpsert_UpsertsFromPreferredRegionReadFromPreferredRegionFunc,
+                "pointReadAfterPartitionSplitAndPointCreate_BothFromFirstPreferredRegion",
+                "Document read should have succeeded...",
+                !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                !SPLIT_REQUESTED_FLAG,
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                false
             },
             {
                 queryTargetedToLogicalPartitionFollowingCreates_queryFromFirstPreferredRegionCreateInFirstPreferredRegionFunc,
@@ -530,7 +552,17 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                 "Document query should have succeeded...",
                 !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
                 !SPLIT_REQUESTED_FLAG,
-                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                true
+            },
+            {
+                queryTargetedToLogicalPartitionFollowingCreates_queryFromFirstPreferredRegionCreateInFirstPreferredRegionFunc,
+                "queryTargetedToLogicalPartitionFollowingCreates_queryFromFirstPreferredRegionCreateInFirstPreferredRegion",
+                "Document query should have succeeded...",
+                !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                !SPLIT_REQUESTED_FLAG,
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                false
             },
             {
                 crossPartitionedQueryFollowingCreates_queryFromFirstPreferredRegionCreatesInFirstPreferredRegionFunc,
@@ -538,7 +570,17 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                 "Document query should have succeeded...",
                 !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
                 !SPLIT_REQUESTED_FLAG,
-                MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+                MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                true
+            },
+            {
+                crossPartitionedQueryFollowingCreates_queryFromFirstPreferredRegionCreatesInFirstPreferredRegionFunc,
+                "queryTargetedToLogicalPartitionFollowingCreates_queryFromFirstPreferredRegionCreateInFirstPreferredRegion",
+                "Document query should have succeeded...",
+                !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                !SPLIT_REQUESTED_FLAG,
+                MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                false
             },
             {
                 deleteYourLatestUpsert_deleteAndUpsertInFirstPreferredRegionFunc,
@@ -546,7 +588,17 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                 "Document query should have succeeded...",
                 !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
                 !SPLIT_REQUESTED_FLAG,
-                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                true
+            },
+            {
+                deleteYourLatestUpsert_deleteAndUpsertInFirstPreferredRegionFunc,
+                "deleteYourLatestUpsert_deleteAndUpsertInFirstPreferredRegion",
+                "Document query should have succeeded...",
+                !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                !SPLIT_REQUESTED_FLAG,
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                false
             },
             {
                 replaceYourLatestUpsert_replaceAndUpsertInFirstPreferredRegionFunc,
@@ -554,7 +606,17 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                 "Document replace operation should have succeeded...",
                 !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
                 !SPLIT_REQUESTED_FLAG,
-                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                true
+            },
+            {
+                replaceYourLatestUpsert_replaceAndUpsertInFirstPreferredRegionFunc,
+                "replaceYourLatestUpsert_replaceAndUpsertInFirstPreferredRegion",
+                "Document replace operation should have succeeded...",
+                !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                !SPLIT_REQUESTED_FLAG,
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                false
             },
             {
                 readYourPatchYourCreateFunc,
@@ -562,7 +624,17 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                 "Document patch operation should have succeeded...",
                 !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
                 !SPLIT_REQUESTED_FLAG,
-                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                true
+            },
+            {
+                readYourPatchYourCreateFunc,
+                "readYourPatchYourCreate",
+                "Document patch operation should have succeeded...",
+                !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                !SPLIT_REQUESTED_FLAG,
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                false
             },
             {
                 bulkReadYourBulkCreateFunc,
@@ -570,7 +642,17 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                 "Bulk operation should have succeeded...",
                 !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
                 !SPLIT_REQUESTED_FLAG,
-                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                true
+            },
+            {
+                bulkReadYourBulkCreateFunc,
+                "bulkReadYourBulkCreate",
+                "Bulk operation should have succeeded...",
+                !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                !SPLIT_REQUESTED_FLAG,
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                false
             },
             {
                 changeFeed_fromBeginning_forFullRange_withSessionGuaranteeFunc,
@@ -578,7 +660,17 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                 "Change feed operation should have succeeded...",
                 !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
                 !SPLIT_REQUESTED_FLAG,
-                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                true
+            },
+            {
+                changeFeed_fromBeginning_forFullRange_withSessionGuaranteeFunc,
+                "changeFeed_fromBeginning_forFullRange_withSessionGuarantee",
+                "Change feed operation should have succeeded...",
+                !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                !SPLIT_REQUESTED_FLAG,
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                false
             },
             {
                 changeFeed_fromBeginning_forLogicalPartition_withSessionGuaranteeFunc,
@@ -586,7 +678,17 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                 "Change feed operation should have succeeded...",
                 !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
                 !SPLIT_REQUESTED_FLAG,
-                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                true
+            },
+            {
+                changeFeed_fromBeginning_forLogicalPartition_withSessionGuaranteeFunc,
+                "changeFeed_fromBeginning_forLogicalPartition_withSessionGuarantee",
+                "Change feed operation should have succeeded...",
+                !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                !SPLIT_REQUESTED_FLAG,
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                false
             },
             {
                 readYourCreateGuaranteeWithinBatchFunc,
@@ -594,11 +696,21 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                 "Read your create within batch should have succeeded...",
                 !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
                 !SPLIT_REQUESTED_FLAG,
-                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                true
+            },
+            {
+                readYourCreateGuaranteeWithinBatchFunc,
+                "readYourCreateGuaranteeWithinBatch",
+                "Read your create within batch should have succeeded...",
+                !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                !SPLIT_REQUESTED_FLAG,
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                false
             }
         };
 
-        return addBooleanFlagsToAllTestConfigs(readYouWriteWithNoExplicitRegionSwitching_testConfigs);
+        return readYouWriteWithNoExplicitRegionSwitching_testConfigs;
     }
 
     @DataProvider(name = "readManyWithNoExplicitRegionSwitchingTestContext")
@@ -702,17 +814,33 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                 readManyWithSolelyPointReadsFunc,
                 "readManyWithSolelyPointReads",
                 "readMany operation with solely point reads should have succeeded...",
-                !BLOOM_FILTER_FORCED_ACCESSED_FLAG
+                !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                true
+            },
+            {
+                readManyWithSolelyPointReadsFunc,
+                "readManyWithSolelyPointReads",
+                "readMany operation with solely point reads should have succeeded...",
+                !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                false
             },
             {
                 readManyWithSolelyQueriesFunc,
                 "readManyWithSolelyQueries",
                 "readMany operation with solely queries should have succeeded...",
-                !BLOOM_FILTER_FORCED_ACCESSED_FLAG
+                !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                true
+            },
+            {
+                readManyWithSolelyQueriesFunc,
+                "readManyWithSolelyQueries",
+                "readMany operation with solely queries should have succeeded...",
+                !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                false
             }
         };
 
-        return addBooleanFlagsToAllTestConfigs(readManyWithNoExplicitRegionSwitching_testConfigs);
+        return readManyWithNoExplicitRegionSwitching_testConfigs;
     }
 
     @DataProvider(name = "readManyWithExplicitRegionSwitchingTestContext")
@@ -842,17 +970,33 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                 readManyWithSolelyPointReadFollowingCreates_readManyInSecondPreferredRegion_createsInFirstPreferredRegion_supportingQueriesThroughHelperContainer_Func,
                 "readManyWithSolelyPointReadFollowingCreates_readManyInSecondPreferredRegion_createsInFirstPreferredRegion_supportingQueriesThroughHelperContainer",
                 "readMany operation with solely point reads should have succeeded...",
-                BLOOM_FILTER_FORCED_ACCESSED_FLAG
+                BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                true
+            },
+            {
+                readManyWithSolelyPointReadFollowingCreates_readManyInSecondPreferredRegion_createsInFirstPreferredRegion_supportingQueriesThroughHelperContainer_Func,
+                "readManyWithSolelyPointReadFollowingCreates_readManyInSecondPreferredRegion_createsInFirstPreferredRegion_supportingQueriesThroughHelperContainer",
+                "readMany operation with solely point reads should have succeeded...",
+                BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                false
             },
             {
                 readManyWithSolelyQueriesFollowingCreates_readManyInSecondPreferredRegion_createsInFirstPreferredRegion_Func,
                 "readManyWithSolelyQueriesFollowingCreates_readManyInSecondPreferredRegion_createsInFirstPreferredRegion",
                 "readMany operation with solely queries should have succeeded...",
-                !BLOOM_FILTER_FORCED_ACCESSED_FLAG
+                !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                true
+            },
+            {
+                readManyWithSolelyQueriesFollowingCreates_readManyInSecondPreferredRegion_createsInFirstPreferredRegion_Func,
+                "readManyWithSolelyQueriesFollowingCreates_readManyInSecondPreferredRegion_createsInFirstPreferredRegion",
+                "readMany operation with solely queries should have succeeded...",
+                !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                false
             }
         };
 
-        return addBooleanFlagsToAllTestConfigs(readManyWithExplicitRegionSwitching_testConfigs);
+        return readManyWithExplicitRegionSwitching_testConfigs;
     }
 
     @DataProvider(name = "readYouWriteWithExplicitRegionSwitchingTestContext")
@@ -1353,7 +1497,17 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                 "Document read should have succeeded...",
                 BLOOM_FILTER_FORCED_ACCESSED_FLAG,
                 !SPLIT_REQUESTED_FLAG,
-                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                true
+            },
+            {
+                pointReadYourPointCreate_CreateFromFirstPreferredRegionReadFromSecondPreferredRegionFunc,
+                "pointReadYourPointCreate_CreateFromFirstPreferredRegionReadFromSecondPreferredRegion",
+                "Document read should have succeeded...",
+                BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                !SPLIT_REQUESTED_FLAG,
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                false
             },
             {
                 pointReadAfterPartitionSplitAndPointCreate_CreateFromFirstPreferredRegionReadFromSecondPreferredRegionFunc,
@@ -1361,7 +1515,8 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                 "Document read should have succeeded...",
                 BLOOM_FILTER_FORCED_ACCESSED_FLAG,
                 SPLIT_REQUESTED_FLAG,
-                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                true
             },
             {
                 deleteYourLatestUpsert_deleteInSecondPreferredRegionAndUpsertInFirstPreferredRegionFunc,
@@ -1369,7 +1524,17 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                 "Document read should have succeeded...",
                 BLOOM_FILTER_FORCED_ACCESSED_FLAG,
                 !SPLIT_REQUESTED_FLAG,
-                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                true
+            },
+            {
+                deleteYourLatestUpsert_deleteInSecondPreferredRegionAndUpsertInFirstPreferredRegionFunc,
+                "deleteYourLatestUpsert_deleteInSecondPreferredRegionAndUpsertInFirstPreferredRegion",
+                "Document read should have succeeded...",
+                BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                !SPLIT_REQUESTED_FLAG,
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                false
             },
             {
                 replaceYourLatestUpsert_replaceInSecondPreferredRegionAndUpsertInFirstPreferredRegionFunc,
@@ -1377,7 +1542,17 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                 "Document replace should have succeeded...",
                 BLOOM_FILTER_FORCED_ACCESSED_FLAG,
                 !SPLIT_REQUESTED_FLAG,
-                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                true
+            },
+            {
+                replaceYourLatestUpsert_replaceInSecondPreferredRegionAndUpsertInFirstPreferredRegionFunc,
+                "replaceYourLatestUpsert_replaceInSecondPreferredRegionAndUpsertInFirstPreferredRegion",
+                "Document replace should have succeeded...",
+                BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                !SPLIT_REQUESTED_FLAG,
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                false
             },
             {
                 readYourPatchYourCreate_createInFirstPreferredRegion_readAndPatchInSecondPreferredRegionFunc,
@@ -1385,7 +1560,17 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                 "Document patch or read should have succeeded...",
                 BLOOM_FILTER_FORCED_ACCESSED_FLAG,
                 !SPLIT_REQUESTED_FLAG,
-                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                true
+            },
+            {
+                readYourPatchYourCreate_createInFirstPreferredRegion_readAndPatchInSecondPreferredRegionFunc,
+                "readYourPatchYourCreate_createInFirstPreferredRegion_readAndPatchInSecondPreferredRegion",
+                "Document patch or read should have succeeded...",
+                BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                !SPLIT_REQUESTED_FLAG,
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                false
             },
             {
                 readYourCreate_readBatchInSecondPreferredRegion_createBatchInFirstPreferredRegionFunc,
@@ -1393,7 +1578,17 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                 "Batch with read operations should have succeeded...",
                 BLOOM_FILTER_FORCED_ACCESSED_FLAG,
                 !SPLIT_REQUESTED_FLAG,
-                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                true
+            },
+            {
+                readYourCreate_readBatchInSecondPreferredRegion_createBatchInFirstPreferredRegionFunc,
+                "readYourCreate_readBatchInSecondPreferredRegion_createBatchInFirstPreferredRegion",
+                "Batch with read operations should have succeeded...",
+                BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                !SPLIT_REQUESTED_FLAG,
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                false
             },
             {
                 bulkReadFromSecondPreferredRegionYourBulkCreateInFirstPreferredRegionFunc,
@@ -1401,7 +1596,17 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                 "Bulk execution with read operations should have succeeded...",
                 !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
                 !SPLIT_REQUESTED_FLAG,
-                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                true
+            },
+            {
+                bulkReadFromSecondPreferredRegionYourBulkCreateInFirstPreferredRegionFunc,
+                "bulkReadFromSecondPreferredRegionYourBulkCreateInFirstPreferredRegion",
+                "Bulk execution with read operations should have succeeded...",
+                !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                !SPLIT_REQUESTED_FLAG,
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                false
             },
             {
                 changeFeed_fromBeginning_fromSecondPreferredRegion_forFullRange_withCreatesOnFirstPreferredRegion_withSessionGuaranteeFunc,
@@ -1409,7 +1614,17 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                 "Change feed execution should have succeeded...",
                 !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
                 !SPLIT_REQUESTED_FLAG,
-                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                true
+            },
+            {
+                changeFeed_fromBeginning_fromSecondPreferredRegion_forFullRange_withCreatesOnFirstPreferredRegion_withSessionGuaranteeFunc,
+                "changeFeed_fromBeginning_fromSecondPreferredRegion_forFullRange_withCreatesOnFirstPreferredRegion_withSessionGuarantee",
+                "Change feed execution should have succeeded...",
+                !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                !SPLIT_REQUESTED_FLAG,
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                false
             },
             {
                 changeFeed_fromBeginningAndFromSecondPreferredRegion_forLogicalPartition_withCreatesOnFirstPreferredRegion_withSessionGuaranteeFunc,
@@ -1417,7 +1632,17 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                 "Change feed execution should have succeeded...",
                 BLOOM_FILTER_FORCED_ACCESSED_FLAG,
                 !SPLIT_REQUESTED_FLAG,
-                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                true
+            },
+            {
+                changeFeed_fromBeginningAndFromSecondPreferredRegion_forLogicalPartition_withCreatesOnFirstPreferredRegion_withSessionGuaranteeFunc,
+                "changeFeed_fromBeginningAndFromSecondPreferredRegion_forLogicalPartition_withCreatesOnFirstPreferredRegion_withSessionGuarantee",
+                "Change feed execution should have succeeded...",
+                BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                !SPLIT_REQUESTED_FLAG,
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                false
             },
             {
                 readYourCreate_readBatchInSecondPreferredRegion_createBatchInFirstPreferredRegionFunc,
@@ -1425,7 +1650,17 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                 "Batch with read operations should have succeeded...",
                 BLOOM_FILTER_FORCED_ACCESSED_FLAG,
                 !SPLIT_REQUESTED_FLAG,
-                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                true
+            },
+            {
+                readYourCreate_readBatchInSecondPreferredRegion_createBatchInFirstPreferredRegionFunc,
+                "readYourCreate_readBatchInSecondPreferredRegion_createBatchInFirstPreferredRegion",
+                "Batch with read operations should have succeeded...",
+                BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                !SPLIT_REQUESTED_FLAG,
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                false
             },
             {
                 pointReadFollowsQueryFollowsPointCreate_createInFirstPreferredRegion_pointReadAndQueryInSecondPreferredRegion_Func,
@@ -1433,7 +1668,17 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                 "Point read or query operation should have succeeded...",
                 !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
                 !SPLIT_REQUESTED_FLAG,
-                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                true
+            },
+            {
+                pointReadFollowsQueryFollowsPointCreate_createInFirstPreferredRegion_pointReadAndQueryInSecondPreferredRegion_Func,
+                "pointReadFollowsQueryFollowsPointCreate_createInFirstPreferredRegion_pointReadAndQueryInSecondPreferredRegion",
+                "Point read or query operation should have succeeded...",
+                !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                !SPLIT_REQUESTED_FLAG,
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                false
             },
             {
                 pointReadFollowsQueryOnDifferentPartitionAsPointReadFollowsPointCreate_createInFirstPreferredRegion_pointReadAndQueryInSecondPreferredRegion_Func,
@@ -1441,11 +1686,21 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                 "Point read or query should have succeeded!",
                 BLOOM_FILTER_FORCED_ACCESSED_FLAG,
                 !SPLIT_REQUESTED_FLAG,
-                MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+                MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                true
+            },
+            {
+                pointReadFollowsQueryOnDifferentPartitionAsPointReadFollowsPointCreate_createInFirstPreferredRegion_pointReadAndQueryInSecondPreferredRegion_Func,
+                "pointReadFollowsQueryOnDifferentPartitionAsPointReadFollowsPointCreate_createInFirstPreferredRegion_pointReadAndQueryInSecondPreferredRegion",
+                "Point read or query should have succeeded!",
+                BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                !SPLIT_REQUESTED_FLAG,
+                MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                false
             }
         };
 
-        return addBooleanFlagsToAllTestConfigs(pointReadYourPointCreate_CreateFromFirstPreferredRegionReadFromSecondPreferredRegion_testConfigs);
+        return pointReadYourPointCreate_CreateFromFirstPreferredRegionReadFromSecondPreferredRegion_testConfigs;
     }
 
     @BeforeClass(groups = {"multi-region", "multi-master"})
@@ -1457,8 +1712,14 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
             GlobalEndpointManager globalEndpointManager = ReflectionUtils.getGlobalEndpointManager(rxDocumentClient);
             DatabaseAccount databaseAccount = globalEndpointManager.getLatestDatabaseAccount();
 
-            this.readRegions = new ArrayList<>(getAccountLevelLocationContext(databaseAccount, false).serviceOrderedReadableRegions);
-            this.writeRegions = new ArrayList<>(getAccountLevelLocationContext(databaseAccount, true).serviceOrderedWriteableRegions);
+            AccountLevelLocationContext accountLevelReadableLocationContext = getAccountLevelLocationContext(databaseAccount, false);
+            AccountLevelLocationContext accountLevelWriteableLocationContext = getAccountLevelLocationContext(databaseAccount, false);
+
+            validate(accountLevelReadableLocationContext, false);
+            validate(accountLevelWriteableLocationContext, true);
+
+            this.readRegions = accountLevelReadableLocationContext.serviceOrderedReadableRegions;
+            this.writeRegions = accountLevelWriteableLocationContext.serviceOrderedWriteableRegions;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -1792,25 +2053,6 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
         logger.info("FPP Rate : {}", fppRate);
     }
 
-    private Object[][] addBooleanFlagsToAllTestConfigs(Object[][] testConfigs) {
-        List<List<Object>> intermediateTestConfigList = new ArrayList<>();
-        boolean[] possibleBooleans = new boolean[]{false, true};
-
-        for (boolean possibleBoolean : possibleBooleans) {
-            for (Object[] testConfigForSingleTest : testConfigs) {
-                List<Object> testConfigForSingleTestAsMutableList = new ArrayList<>(Arrays.asList(testConfigForSingleTest));
-                testConfigForSingleTestAsMutableList.add(possibleBoolean);
-                intermediateTestConfigList.add(testConfigForSingleTestAsMutableList);
-            }
-        }
-
-        testConfigs = intermediateTestConfigList.stream()
-            .map(l -> l.stream().toArray(Object[]::new))
-            .toArray(Object[][]::new);
-
-        return testConfigs;
-    }
-
     private static CosmosAsyncClient buildAsyncClient(
         CosmosClientBuilder clientBuilder,
         List<String> preferredRegions,
@@ -1906,6 +2148,19 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
             .flatMapMany(Flux::fromIterable)
             .flatMap(testObject -> asyncContainer.deleteItem(testObject.getId(), new PartitionKey(testObject.getMypk())))
             .blockLast();
+    }
+
+    private static void validate(AccountLevelLocationContext accountLevelLocationContext, boolean isWriteOnly) {
+
+        AssertionsForClassTypes.assertThat(accountLevelLocationContext).isNotNull();
+
+        if (isWriteOnly) {
+            AssertionsForClassTypes.assertThat(accountLevelLocationContext.serviceOrderedWriteableRegions).isNotNull();
+            AssertionsForClassTypes.assertThat(accountLevelLocationContext.serviceOrderedWriteableRegions.size()).isGreaterThanOrEqualTo(1);
+        } else {
+            AssertionsForClassTypes.assertThat(accountLevelLocationContext.serviceOrderedReadableRegions).isNotNull();
+            AssertionsForClassTypes.assertThat(accountLevelLocationContext.serviceOrderedReadableRegions.size()).isGreaterThanOrEqualTo(1);
+        }
     }
 
     private static class AccountLevelLocationContext {

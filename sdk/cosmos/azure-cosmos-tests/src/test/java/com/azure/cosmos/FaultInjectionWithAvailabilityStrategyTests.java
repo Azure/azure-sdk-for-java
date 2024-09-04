@@ -230,7 +230,9 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             AccountLevelLocationContext accountLevelWriteableLocationContext
                 = this.getAccountLevelLocationContext(databaseAccount, true);
 
-            this.writeableRegions = new ArrayList<>(accountLevelWriteableLocationContext.serviceOrderedWriteableRegions);
+            validate(accountLevelWriteableLocationContext, true);
+
+            this.writeableRegions = accountLevelWriteableLocationContext.serviceOrderedWriteableRegions;
             assertThat(this.writeableRegions).isNotNull();
             assertThat(this.writeableRegions.size()).isGreaterThanOrEqualTo(2);
 
@@ -5354,6 +5356,19 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             .toArray(Object[][]::new);
 
         return testConfigs;
+    }
+
+    private static void validate(AccountLevelLocationContext accountLevelLocationContext, boolean isWriteOnly) {
+
+        assertThat(accountLevelLocationContext).isNotNull();
+
+        if (isWriteOnly) {
+            assertThat(accountLevelLocationContext.serviceOrderedWriteableRegions).isNotNull();
+            assertThat(accountLevelLocationContext.serviceOrderedWriteableRegions.size()).isGreaterThanOrEqualTo(1);
+        } else {
+            assertThat(accountLevelLocationContext.serviceOrderedReadableRegions).isNotNull();
+            assertThat(accountLevelLocationContext.serviceOrderedReadableRegions.size()).isGreaterThanOrEqualTo(1);
+        }
     }
 
     private static class CosmosResponseWrapper {

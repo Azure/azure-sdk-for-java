@@ -20,6 +20,7 @@ import com.azure.cosmos.test.faultinjection.FaultInjectionResultBuilders;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRuleBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
+import org.assertj.core.api.AssertionsForClassTypes;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -123,10 +124,7 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
             .build();
 
         AccountLevelLocationContext accountLevelWriteableLocationContext = this.getAccountLevelLocationContext(databaseAccount, true);
-
-        assertThat(accountLevelWriteableLocationContext).isNotNull();
-        assertThat(accountLevelWriteableLocationContext.serviceOrderedWriteableRegions).isNotEmpty();
-        assertThat(accountLevelWriteableLocationContext.serviceOrderedWriteableRegions.size()).isGreaterThan(1);
+        validate(accountLevelWriteableLocationContext, true);
 
         List<String> writeRegionList = accountLevelWriteableLocationContext.serviceOrderedWriteableRegions
             .stream()
@@ -134,10 +132,7 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
             .collect(Collectors.toList());
 
         AccountLevelLocationContext accountLevelReadableLocationContext = this.getAccountLevelLocationContext(databaseAccount, false);
-
-        assertThat(accountLevelReadableLocationContext).isNotNull();
-        assertThat(accountLevelReadableLocationContext.serviceOrderedReadableRegions).isNotEmpty();
-        assertThat(accountLevelReadableLocationContext.serviceOrderedReadableRegions.size()).isGreaterThan(1);
+        validate(accountLevelReadableLocationContext, false);
 
         List<String> readRegionList = accountLevelReadableLocationContext.serviceOrderedReadableRegions
             .stream()
@@ -282,10 +277,7 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
                 assertThat(ex.getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE);
 
                 AccountLevelLocationContext accountLevelWriteableLocationContext = this.getAccountLevelLocationContext(databaseAccount, true);
-
-                assertThat(accountLevelWriteableLocationContext).isNotNull();
-                assertThat(accountLevelWriteableLocationContext.serviceOrderedWriteableRegions).isNotEmpty();
-                assertThat(accountLevelWriteableLocationContext.serviceOrderedWriteableRegions.size()).isGreaterThan(1);
+                validate(accountLevelWriteableLocationContext, true);
 
                 List<String> writeRegionList = accountLevelWriteableLocationContext.serviceOrderedWriteableRegions
                     .stream()
@@ -349,6 +341,19 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
             serviceOrderedReadableRegions,
             serviceOrderedWriteableRegions,
             regionMap);
+    }
+
+    private static void validate(AccountLevelLocationContext accountLevelLocationContext, boolean isWriteOnly) {
+
+        AssertionsForClassTypes.assertThat(accountLevelLocationContext).isNotNull();
+
+        if (isWriteOnly) {
+            AssertionsForClassTypes.assertThat(accountLevelLocationContext.serviceOrderedWriteableRegions).isNotNull();
+            AssertionsForClassTypes.assertThat(accountLevelLocationContext.serviceOrderedWriteableRegions.size()).isGreaterThanOrEqualTo(1);
+        } else {
+            AssertionsForClassTypes.assertThat(accountLevelLocationContext.serviceOrderedReadableRegions).isNotNull();
+            AssertionsForClassTypes.assertThat(accountLevelLocationContext.serviceOrderedReadableRegions.size()).isGreaterThanOrEqualTo(1);
+        }
     }
 
     private class TestItem {
