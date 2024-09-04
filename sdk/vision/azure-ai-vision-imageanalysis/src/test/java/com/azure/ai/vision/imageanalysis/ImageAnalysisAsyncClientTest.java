@@ -24,7 +24,7 @@ class ImageAnalysisAsyncClientTest extends ImageAnalysisClientTestBase {
     @Test
     public void testAnalyzeAsyncAllFeaturesFromFile() {
 
-        createClient(true, true, sync, null);
+        createClient(false, true, sync, null);
 
         String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
         String imageSource = imageFile;
@@ -67,7 +67,7 @@ class ImageAnalysisAsyncClientTest extends ImageAnalysisClientTestBase {
     @Test
     public void testAnalyzeAsyncAllFeaturesFromUrlWithResponse() {
 
-        createClient(true, true, sync, null);
+        createClient(false, true, sync, null);
 
         String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
         String imageSource = imageUrl;

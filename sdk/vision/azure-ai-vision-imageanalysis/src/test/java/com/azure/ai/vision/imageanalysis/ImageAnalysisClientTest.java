@@ -56,7 +56,7 @@ class ImageAnalysisClientTest extends ImageAnalysisClientTestBase {
         List<Entry<String, String>> queryParams = new ArrayList<>();
         queryParams.add(new SimpleEntry<>("key1", "value1"));
         queryParams.add(new SimpleEntry<>("key2", "value2"));
-        createClient(true, true, sync, queryParams);
+        createClient(false, true, sync, queryParams);
 
         String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
         String imageSource = imageFile;
@@ -106,7 +106,7 @@ class ImageAnalysisClientTest extends ImageAnalysisClientTestBase {
     @Test
     public void testAnalyzeSyncSingleFeatureFromUrlWithResponse() {
 
-        createClient(true, true, sync, null);
+        createClient(false, true, sync, null);
 
         String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
         String imageSource = imageUrl;
