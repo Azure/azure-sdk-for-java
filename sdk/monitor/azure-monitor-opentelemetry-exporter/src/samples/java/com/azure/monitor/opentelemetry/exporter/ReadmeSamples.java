@@ -8,6 +8,7 @@ import com.azure.data.appconfiguration.ConfigurationClient;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.monitor.opentelemetry.AzureMonitor;
 import io.opentelemetry.api.OpenTelemetry;
+import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Context;
@@ -100,7 +101,7 @@ public class ReadmeSamples {
         SpanProcessor spanProcessor = new SpanProcessor() {
             @Override
             public void onStart(Context context, ReadWriteSpan span) {
-                span.setAttribute("random", RandomStringUtils.random(10));
+                span.setAttribute(AttributeKey.stringKey("random"), RandomStringUtils.random(10));
             }
 
             @Override

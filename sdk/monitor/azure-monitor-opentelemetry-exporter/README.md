@@ -76,7 +76,7 @@ AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySd
 SpanProcessor spanProcessor = new SpanProcessor() {
     @Override
     public void onStart(Context context, ReadWriteSpan span) {
-        span.setAttribute("random", RandomStringUtils.random(10));
+        span.setAttribute(AttributeKey.stringKey("random"), RandomStringUtils.random(10));
     }
 
     @Override
