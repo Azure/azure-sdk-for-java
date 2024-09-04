@@ -1900,7 +1900,6 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
         String leaseToken = changeFeedProcessorContext.getLeaseToken();
         assertThat(leaseToken).isNotNull();
 
-        // Validate that diagnostics come through the context. Validation of the diagnostics themselves are in diagnostics tests.
         CosmosDiagnostics diagnostics = changeFeedProcessorContext.getDiagnostics();
         assertThat(diagnostics).isNotNull();
     }
