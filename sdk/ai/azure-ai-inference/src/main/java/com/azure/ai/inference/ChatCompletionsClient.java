@@ -201,7 +201,7 @@ public final class ChatCompletionsClient {
      * provided prompt data.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ChatCompletions complete(ChatCompletionsOptions options) {
+    public ChatCompletions complete(ChatCompletionsOptions options) {
         // Generated convenience method for completeWithResponse
         RequestOptions requestOptions = new RequestOptions();
         CompleteRequest completeRequestObj
