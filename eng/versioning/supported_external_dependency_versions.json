@@ -27,6 +27,10 @@
   [
     { "com.google.code.gson:gson": "2.10" }
   ],
+  "gson_2.11":
+  [
+    { "com.google.code.gson:gson": "2.11" }
+  ],
   "jackson_2.10":
   [
     { "com.fasterxml.jackson.core:jackson-annotations": "2.10.0" },
@@ -122,6 +126,18 @@
     { "com.fasterxml.jackson.datatype:jackson-datatype-jsr310": "2.17.0" },
     { "com.fasterxml.jackson.module:jackson-module-parameter-names": "2.17.0" },
     { "com.fasterxml.jackson.module:jackson-module-scala_2.12": "2.17.0" }
+  ],
+  "jackson_2.18":
+  [
+    { "com.fasterxml.jackson.core:jackson-annotations": "2.18.0-rc1" },
+    { "com.fasterxml.jackson.core:jackson-core": "2.18.0-rc1" },
+    { "com.fasterxml.jackson.core:jackson-databind": "2.18.0-rc1" },
+    { "com.fasterxml.jackson.dataformat:jackson-dataformat-avro": "2.18.0-rc1" },
+    { "com.fasterxml.jackson.dataformat:jackson-dataformat-xml": "2.18.0-rc1" },
+    { "com.fasterxml.jackson.datatype:jackson-datatype-jdk8": "2.18.0-rc1" },
+    { "com.fasterxml.jackson.datatype:jackson-datatype-jsr310": "2.18.0-rc1" },
+    { "com.fasterxml.jackson.module:jackson-module-parameter-names": "2.18.0-rc1" },
+    { "com.fasterxml.jackson.module:jackson-module-scala_2.12": "2.18.0-rc1" }
   ],
   "reactor_2023":
   [
