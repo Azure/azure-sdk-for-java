@@ -22,6 +22,7 @@ public class DefaultJsonReaderContractTests extends JsonReaderContractTests {
     private JsonReader reader;
     String jsonWithComments = "{    // single line comment\n" + "    \"single-line\": \"comment\",\n" + "    /*\n"
         + "    multi-line comment\n" + "    */\n" + "    \"multi-line\": \"comment\"}";
+
     @Override
     public JsonReader getJsonReader(String json) throws IOException {
         this.reader = DefaultJsonReader.fromString(json, new JsonOptions());
@@ -38,7 +39,8 @@ public class DefaultJsonReaderContractTests extends JsonReaderContractTests {
     @Test
     public void readJsonc() throws IOException {
 
-        try (JsonReader jsonReader = DefaultJsonReader.fromString(jsonWithComments, new JsonOptions().setJsoncSupported(true))) {
+        try (JsonReader jsonReader
+            = DefaultJsonReader.fromString(jsonWithComments, new JsonOptions().setJsoncSupported(true))) {
             jsonReader.nextToken();
             String outputJson = jsonReader.readChildren();
             assertNotNull(outputJson);

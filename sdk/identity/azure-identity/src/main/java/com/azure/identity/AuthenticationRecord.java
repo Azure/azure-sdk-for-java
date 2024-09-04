@@ -32,7 +32,7 @@ import java.io.OutputStream;
  */
 public final class AuthenticationRecord {
 
-    static ClientLogger LOGGER = new ClientLogger(AuthenticationRecord.class);
+    static final ClientLogger LOGGER = new ClientLogger(AuthenticationRecord.class);
 
     private String authority;
 

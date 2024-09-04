@@ -4,7 +4,6 @@
 package com.azure.identity;
 
 import org.junit.jupiter.api.Test;
-import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.io.ByteArrayInputStream;

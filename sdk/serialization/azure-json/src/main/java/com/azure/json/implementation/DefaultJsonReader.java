@@ -80,7 +80,8 @@ public final class DefaultJsonReader extends JsonReader {
 
     private DefaultJsonReader(JsonParser parser, boolean resetSupported, byte[] jsonBytes, String jsonString,
         JsonOptions options) {
-        this(parser, resetSupported, jsonBytes, jsonString, options.isNonNumericNumbersSupported(), options.isJsoncSupported());
+        this(parser, resetSupported, jsonBytes, jsonString, options.isNonNumericNumbersSupported(),
+            options.isJsoncSupported());
     }
 
     private DefaultJsonReader(JsonParser parser, boolean resetSupported, byte[] jsonBytes, String jsonString,
@@ -160,7 +161,8 @@ public final class DefaultJsonReader extends JsonReader {
         JsonToken currentToken = currentToken();
         if (currentToken == JsonToken.START_OBJECT || currentToken == JsonToken.FIELD_NAME) {
             String json = readRemainingFieldsAsJsonObject();
-            return new DefaultJsonReader(FACTORY.createParser(json), true, null, json, nonNumericNumbersSupported, jsoncSupported);
+            return new DefaultJsonReader(FACTORY.createParser(json), true, null, json, nonNumericNumbersSupported,
+                jsoncSupported);
         } else {
             throw new IllegalStateException("Cannot buffer a JSON object from a non-object, non-field name "
                 + "starting location. Starting location: " + currentToken());
