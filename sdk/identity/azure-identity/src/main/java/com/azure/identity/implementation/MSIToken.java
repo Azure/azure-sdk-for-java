@@ -7,9 +7,7 @@ import com.azure.core.credential.AccessToken;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -23,7 +21,7 @@ import java.util.Locale;
 /**
  * Type representing response from the local MSI token provider.
  */
-public final class MSIToken extends AccessToken implements JsonSerializable<MSIToken>  {
+public final class MSIToken extends AccessToken {
     private static final ClientLogger LOGGER = new ClientLogger(MSIToken.class);
     private static final OffsetDateTime EPOCH = OffsetDateTime.of(1970, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
 
@@ -61,21 +59,6 @@ public final class MSIToken extends AccessToken implements JsonSerializable<MSIT
     public String getToken() {
         return accessToken;
     }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("access_token", accessToken);
-        jsonWriter.writeStringField("expires_on", expiresOn);
-        jsonWriter.writeStringField("expires_in", expiresIn);
-        // the following values aren't really necessary, but keeping them matches existing behavior.
-        jsonWriter.writeStringField("token", getToken());
-        jsonWriter.writeStringField("expiresAt", getExpiresAt().toString());
-        jsonWriter.writeStringField("refreshAt", getRefreshAt() == null ? null : getRefreshAt().toString());
-        jsonWriter.writeEndObject();
-        return jsonWriter;
-    }
-
     public static MSIToken fromJson(JsonReader jsonReader) throws IOException {
 
         // a serialized MSIToken will have more fields in it, but we don't need them

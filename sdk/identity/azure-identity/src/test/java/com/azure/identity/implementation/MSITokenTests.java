@@ -62,23 +62,6 @@ public class MSITokenTests {
     }
 
     @Test
-    public void canSerialize() {
-        // this expiration is far in the future so we'll get the refreshAt value set.
-        MSIToken token = new MSIToken("fake_token", "01/10/2035 15:03:28 +00:00", "9600");
-
-        try (ByteArrayOutputStream stream = new ByteArrayOutputStream()) {
-            JsonWriter writer = JsonProviders.createWriter(stream);
-            token.toJson(writer);
-            writer.flush();
-            String json = stream.toString();
-            // refreshAt value is computed based on the inputs, so just validate it matches what the property is returning
-            assertEquals("{\"access_token\":\"fake_token\",\"expires_on\":\"01/10/2035 15:03:28 +00:00\",\"expires_in\":\"9600\",\"token\":\"fake_token\",\"expiresAt\":\"2035-01-10T15:03:28Z\",\"refreshAt\":\"" + token.getRefreshAt() + "\"}", json);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Test
     public void canParseDateTime24Hr() {
         MSIToken token = new MSIToken("fake_token", "01/10/2020 15:03:28 +00:00", null);
         MSIToken token2 = new MSIToken("fake_token", null, "01/10/2020 15:03:28 +00:00");
