@@ -18,6 +18,7 @@ import com.azure.identity.implementation.util.IdentityUtil;
 import com.azure.identity.implementation.util.LoggingUtil;
 import com.azure.identity.implementation.util.ScopeUtil;
 import com.azure.identity.implementation.util.ValidationUtil;
+import com.azure.json.JsonProviders;
 import com.microsoft.aad.msal4j.AuthorizationCodeParameters;
 import com.microsoft.aad.msal4j.AppTokenProviderParameters;
 import com.microsoft.aad.msal4j.ClaimsRequest;
@@ -979,8 +980,7 @@ public class IdentityClient extends IdentityClientBase {
                 connection.setRequestProperty("Metadata", "true");
                 connection.connect();
 
-                return SERIALIZER_ADAPTER.deserialize(connection.getInputStream(), MSIToken.class,
-                    SerializerEncoding.JSON);
+                return MSIToken.fromJson(JsonProviders.createReader(connection.getInputStream()));
             } finally {
                 if (connection != null) {
                     connection.disconnect();
@@ -1050,8 +1050,7 @@ public class IdentityClient extends IdentityClientBase {
 
                 connection.connect();
 
-                return SERIALIZER_ADAPTER.deserialize(connection.getInputStream(), MSIToken.class,
-                    SerializerEncoding.JSON);
+                return MSIToken.fromJson(JsonProviders.createReader(connection.getInputStream()));
 
             } finally {
                 if (connection != null) {
@@ -1140,8 +1139,7 @@ public class IdentityClient extends IdentityClientBase {
 
                 connection.connect();
 
-                return SERIALIZER_ADAPTER.deserialize(connection.getInputStream(), MSIToken.class,
-                    SerializerEncoding.JSON);
+                return MSIToken.fromJson(JsonProviders.createReader(connection.getInputStream()));
             } finally {
                 if (connection != null) {
                     connection.disconnect();
@@ -1193,8 +1191,7 @@ public class IdentityClient extends IdentityClientBase {
                     connection.setRequestProperty("User-Agent", userAgent);
                     connection.connect();
 
-                    return SERIALIZER_ADAPTER.deserialize(connection.getInputStream(), MSIToken.class,
-                        SerializerEncoding.JSON);
+                    return MSIToken.fromJson(JsonProviders.createReader(connection.getInputStream()));
                 } catch (IOException exception) {
                     if (connection == null) {
                         throw LOGGER.logExceptionAsError(new RuntimeException(

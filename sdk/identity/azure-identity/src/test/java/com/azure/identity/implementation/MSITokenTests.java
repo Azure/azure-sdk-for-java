@@ -5,10 +5,8 @@ package com.azure.identity.implementation;
 
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
-import com.azure.json.JsonWriter;
 import org.junit.jupiter.api.Test;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;

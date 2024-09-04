@@ -838,8 +838,7 @@ public abstract class IdentityClientBase {
             }
             connection.connect();
 
-            return SERIALIZER_ADAPTER.deserialize(connection.getInputStream(), MSIToken.class,
-                SerializerEncoding.JSON);
+            return MSIToken.fromJson(JsonProviders.createReader(connection.getInputStream()));
         } finally {
             if (connection != null) {
                 connection.disconnect();
