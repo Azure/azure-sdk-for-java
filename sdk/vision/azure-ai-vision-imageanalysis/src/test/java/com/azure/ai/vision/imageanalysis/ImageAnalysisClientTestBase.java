@@ -6,7 +6,6 @@ package com.azure.ai.vision.imageanalysis.tests;
 import java.io.File;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.Objects;
 
 import com.azure.ai.vision.imageanalysis.*;
 import com.azure.ai.vision.imageanalysis.models.*;

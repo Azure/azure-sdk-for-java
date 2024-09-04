@@ -25,13 +25,13 @@ Use the Image Analysis client library to:
 * A [Computer Vision resource](https://portal.azure.com/#create/Microsoft.CognitiveServicesComputerVision) deployed to your Azure subscription. Note that in order to run Image Analysis with the `Caption` or `Dense Captions` features, the Computer Vision resource needs to be from a GPU-supported region. See this [document][supported_regions] for a list of supported regions.
 * An endpoint URL. It can be found in the "overview" tab of your Computer Vision resource in the Azure portal, and has the form `https://your-resource-name.cognitiveservices.azure.com` where `your-resource-name` is your unique Computer Vision resource name. The samples below assume the environment variable `VISION_ENDPOINT` has been set to this value.
 * For API key authentication, you will need the key. It can be found in the "overview" tab of your Computer Vision resource in the Azure portal. It's a 32-character Hexadecimal number. The samples below assume the environment variable `VISION_KEY` has been set to this value.
-* For Entra ID authentication, you will need an object that implements the [TokenCredential](https://learn.microsoft.com/java/api/com.azure.core.credential.tokencredential) interface. Samples below use [DefaultAzureCredential](https://learn.microsoft.com/java/api/com.azure.identity.defaultazurecredential). To get that working, you will need:
+* For Entra ID authentication, your application needs an object that implements the [TokenCredential](https://learn.microsoft.com/java/api/com.azure.core.credential.tokencredential) interface. Samples below use [DefaultAzureCredential](https://learn.microsoft.com/java/api/com.azure.identity.defaultazurecredential). To get that working, you will need:
   * The role `Cognitive Services User` assigned to you. Role assigned can be done via the "Access Control (IAM)" tab of your Computer Vision resource in the Azure portal.
   * [Azure CLI](https://learn.microsoft.com/cli/azure/install-azure-cli) installed.
-  * Use `az login` to log into your account.
+  * You are logged into your Azure account by running `az login`.
   * Note that if you have multiple Azure subscriptions, the subscription that contains your Computer Vision resource must be your default subscription. Run `az account list --output table` to list all you subscription and see which one is the default. Run `az account set --subscription "Your Subscription ID or Name"` to change your default subscription.
 
-Note that the client library does not directly read the `VISION_ENDPOINT` and `VISION_KEY`environment variables at run time. The endpoint and key (for API key authentication) must be provided to the `ImageAnalysisClientBuilder` in your code. The sample code below reads environment variables to promote the practice of not hard-coding secrets in your source code.
+Also note that the client library does not directly read the `VISION_ENDPOINT` and `VISION_KEY`environment variables mentioned above at run time. The endpoint and key (for API key authentication) must be provided to the `ImageAnalysisClientBuilder` in your code. The sample code below reads environment variables to promote the practice of not hard-coding secrets in your source code.
 
 ### Adding the package to your product
 
