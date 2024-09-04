@@ -30,6 +30,29 @@ import com.azure.ai.vision.imageanalysis.models.ImageAnalysisOptions;
 
 /**
  * Initializes a new instance of the asynchronous ImageAnalysisClient type.
+ * 
+ * <!-- src_embed com.azure.ai.vision.imageanalysis.async-client-api-key-auth -->
+ * <pre>
+ * &#47;&#47;
+ * &#47;&#47; Create an asynchronous Image Analysis client with API key authentication.
+ * &#47;&#47;
+ * ImageAnalysisAsyncClient client = new ImageAnalysisClientBuilder&#40;&#41;
+ *     .endpoint&#40;endpoint&#41;
+ *     .credential&#40;new KeyCredential&#40;key&#41;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.ai.vision.imageanalysis.async-client-api-key-auth -->
+ * <!-- src_embed com.azure.ai.vision.imageanalysis.async-client-entra-id-auth -->
+ * <pre>
+ * &#47;&#47;
+ * &#47;&#47; Create an asynchronous Image Analysis client with Entra ID authentication.
+ * &#47;&#47;
+ * ImageAnalysisAsyncClient client = new ImageAnalysisClientBuilder&#40;&#41;
+ *     .endpoint&#40;endpoint&#41;
+ *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.ai.vision.imageanalysis.async-client-entra-id-auth -->
  */
 @ServiceClient(builder = ImageAnalysisClientBuilder.class, isAsync = true)
 public final class ImageAnalysisAsyncClient {
