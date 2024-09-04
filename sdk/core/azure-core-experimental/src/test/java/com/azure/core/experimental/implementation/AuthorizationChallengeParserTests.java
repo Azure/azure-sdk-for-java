@@ -12,6 +12,42 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AuthorizationChallengeParserTests {
 
+    public static void main(String[] args) {
+        String challenge = POP_CHALLENGE;
+
+        List<Challenge> parsedChallenges = new ArrayList<>();
+
+        String remainingHeaderValue = challenge.trim();
+        while (!remainingHeaderValue.isEmpty()) {
+            String scheme = AuthorizationChallengeParserV2.extractChallengeParameter(remainingHeaderValue, "", "");
+            if (scheme == null) {
+                break;
+            }
+
+            Challenge parsedChallenge = new Challenge();
+            parsedChallenge.setScheme(scheme);
+
+            String paramValue;
+            while ((paramValue = AuthorizationChallengeParserV2.extractParameter(remainingHeaderValue, "")) != null) {
+                String[] param = paramValue.split("=", 2);
+                parsedChallenge.addParameter(param[0].trim(), param.length > 1 ? param[1].trim() : "");
+            }
+
+            parsedChallenges.add(parsedChallenge);
+
+            int nextComma = remainingHeaderValue.indexOf(',');
+            if (nextComma == -1) {
+                break;
+            }
+            remainingHeaderValue = remainingHeaderValue.substring(nextComma + 1).trim();
+        }
+
+        assertEquals(2, parsedChallenges.size());
+        validateParsedChallenge(PARSED_POP_CHALLENGES[0], parsedChallenges.get(0));
+        validateParsedChallenge(PARSED_POP_CHALLENGES[1], parsedChallenges.get(1));
+    }
+
+
     private static final String CAE_INSUFFICIENT_CLAIMS_CHALLENGE
         = "Bearer realm=\"\", authorization_uri=\"https://login.microsoftonline.com/common/oauth2/authorize\", client_id=\"00000003-0000-0000-c000-000000000000\", error=\"insufficient_claims\", claims=\"eyJhY2Nlc3NfdG9rZW4iOiB7ImZvbyI6ICJiYXIifX0=\"";
     private static final Challenge PARSED_CAE_INSUFFICIENT_CLAIMS_CHALLENGE = new Challenge() {
@@ -107,7 +143,7 @@ public class AuthorizationChallengeParserTests {
 
         String remainingHeaderValue = challenge.trim();
         while (!remainingHeaderValue.isEmpty()) {
-            String scheme = AuthorizationChallengeParser.extractChallengeParameter(remainingHeaderValue, "", "");
+            String scheme = AuthorizationChallengeParserV2.extractChallengeParameter(remainingHeaderValue, "PoP", "");
             if (scheme == null) {
                 break;
             }
@@ -116,7 +152,7 @@ public class AuthorizationChallengeParserTests {
             parsedChallenge.setScheme(scheme);
 
             String paramValue;
-            while ((paramValue = AuthorizationChallengeParser.extractParameter(remainingHeaderValue, "")) != null) {
+            while ((paramValue = AuthorizationChallengeParserV2.extractParameter(remainingHeaderValue, "")) != null) {
                 String[] param = paramValue.split("=", 2);
                 parsedChallenge.addParameter(param[0].trim(), param.length > 1 ? param[1].trim() : "");
             }
@@ -139,10 +175,10 @@ public class AuthorizationChallengeParserTests {
         String remainingHeaderValue = challenge.trim();
 
         Challenge parsedChallenge = new Challenge();
-        parsedChallenge.setScheme(AuthorizationChallengeParser.extractChallengeParameter(remainingHeaderValue, "", ""));
+        parsedChallenge.setScheme(AuthorizationChallengeParserV2.extractChallengeParameter(remainingHeaderValue, "", ""));
 
         String paramValue;
-        while ((paramValue = AuthorizationChallengeParser.extractParameter(remainingHeaderValue, "")) != null) {
+        while ((paramValue = AuthorizationChallengeParserV2.extractParameter(remainingHeaderValue, "")) != null) {
             String[] param = paramValue.split("=", 2);
             parsedChallenge.addParameter(param[0].trim(), param.length > 1 ? param[1].trim() : "");
         }
@@ -150,7 +186,7 @@ public class AuthorizationChallengeParserTests {
         validateParsedChallenge(expectedChallenge, parsedChallenge);
     }
 
-    private void validateParsedChallenge(Challenge expected, Challenge actual) {
+    private static void validateParsedChallenge(Challenge expected, Challenge actual) {
         assertEquals(expected.getScheme(), actual.getScheme());
         assertEquals(expected.getParameters().size(), actual.getParameters().size());
 
