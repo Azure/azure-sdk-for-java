@@ -1300,23 +1300,36 @@ public class ShareFileClient {
                     }
                     return new ShareFileDownloadResponse(new ShareFileDownloadAsyncResponse(response.getRequest(),
                         response.getStatusCode(), response.getHeaders(), null, headers));
-                } catch (Exception e) {
-                    Throwable t = Exceptions.unwrap(e);
-                    if (t instanceof IOException) {
-                        retryCount++;
-                        if (retryCount > retryOptions.getMaxRetryRequests()) {
-                            throw LOGGER.logExceptionAsError(new RuntimeException("Failed to download file after retries: " + e.getMessage(), e));
-                        }
-                        LOGGER.info("Retrying download due to IOException. Attempt: " + retryCount);
-                    } else if (t instanceof ConcurrentModificationException) {
-                        throw LOGGER.logExceptionAsError(new ConcurrentModificationException("File has been modified concurrently. Expected eTag: "
-                        + initialETag + ", Received eTag: " + currentETag,  t));
-                    } else {
-                        throw LOGGER.logExceptionAsError(new RuntimeException(e));
+                } catch (IOException e) {
+                    retryCount++;
+                    if (retryCount > retryOptions.getMaxRetryRequests()) {
+                        throw LOGGER.logExceptionAsError(new RuntimeException("Failed to download file after retries: " + e.getMessage(), e));
                     }
+                    LOGGER.info("Retrying download due to IOException. Attempt: " + retryCount);
+                } catch (ConcurrentModificationException e) {
+                    throw LOGGER.logExceptionAsError(new ConcurrentModificationException("File has been modified concurrently. Expected eTag: " + initialETag + ", Received eTag: " + currentETag,  e));
+                } catch (Exception e) { // General exception catch
+                    throw LOGGER.logExceptionAsError(new RuntimeException("An unexpected error occurred during file download", e));
                 }
             }
-            throw LOGGER.logExceptionAsError(new RuntimeException("Failed to download file. Max retry attempts reached."));
+            throw new IllegalStateException("Failed to download file. Max retry attempts reached.");
+//                } catch (Exception e) {
+//                    Throwable t = Exceptions.unwrap(e);
+//                    if (t instanceof IOException) {
+//                        retryCount++;
+//                        if (retryCount > retryOptions.getMaxRetryRequests()) {
+//                            throw LOGGER.logExceptionAsError(new RuntimeException("Failed to download file after retries: " + e.getMessage(), e));
+//                        }
+//                        LOGGER.info("Retrying download due to IOException. Attempt: " + retryCount);
+//                    } else if (t instanceof ConcurrentModificationException) {
+//                        throw LOGGER.logExceptionAsError(new ConcurrentModificationException("File has been modified concurrently. Expected eTag: "
+//                        + initialETag + ", Received eTag: " + currentETag,  t));
+//                    } else {
+//                        throw LOGGER.logExceptionAsError(new RuntimeException(e));
+//                    }
+//                }
+//            }
+//            throw LOGGER.logExceptionAsError(new RuntimeException("Failed to download file. Max retry attempts reached."));
         };
         return sendRequest(operation, timeout, ShareStorageException.class);
     }
