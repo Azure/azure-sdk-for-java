@@ -864,7 +864,7 @@
 /common/perf-test-core/                              @alzimmermsft @srnagar @g2vinay
 
 # PRLabel: %common
-/.vscode/                                            @alzimmermsft @srnagar @g2vinay @conniey
+/.vscode/                                            @alzimmermsft @srnagar @g2vinay @conniey @rujche @netyyyy @saragluna @moarychan
 
 # ServiceLabel: %common
 # AzureSdkOwners:                                    @alzimmermsft @srnagar
@@ -888,7 +888,7 @@
 /eng/                                                @hallipr @weshaggard @benbp @JimSuplizio
 /eng/automation/                                     @weidongxu-microsoft @haolingdong-msft @XiaofeiCao @arthurma1978 @hallipr @weshaggard @benbp @JimSuplizio
 /eng/bomgenerator/                                   @vcolin7 @alzimmermsft @srnagar @jonathangiles
-/eng/code-quality-reports/                           @mssfang @JonathanGiles @alzimmermsft @srnagar
+/eng/code-quality-reports/                           @mssfang @JonathanGiles @alzimmermsft @srnagar @rujche @netyyyy @saragluna @moarychan
 /eng/common/                                         @Azure/azure-sdk-eng
 /eng/spotbugs-aggregate-report/                      @srnagar @JonathanGiles
 /eng/versioning/                                     @alzimmermsft @samvaity @g2vinay @JimSuplizio
