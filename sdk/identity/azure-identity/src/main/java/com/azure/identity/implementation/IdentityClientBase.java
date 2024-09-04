@@ -26,9 +26,6 @@ import com.azure.core.util.UserAgentUtil;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.identity.BrowserCustomizationOptions;
 import com.azure.identity.CredentialUnavailableException;
 import com.azure.identity.DeviceCodeInfo;
@@ -103,7 +100,6 @@ import java.util.regex.Pattern;
 import static com.azure.identity.implementation.util.IdentityUtil.isWindowsPlatform;
 
 public abstract class IdentityClientBase {
-    static final SerializerAdapter SERIALIZER_ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
     static final String WINDOWS_STARTER = "cmd.exe";
     static final String LINUX_MAC_STARTER = "/bin/sh";
     static final String WINDOWS_SWITCHER = "/c";
@@ -787,21 +783,21 @@ public abstract class IdentityClientBase {
                     "Azure Developer CLI Authentication => A token response was received from Azure Developer CLI, deserializing the"
                             +
                             " response into an Access Token.");
-            Map<String, String> objectMap = SERIALIZER_ADAPTER.deserialize(
-                    processOutput,
-                    Map.class,
-                    SerializerEncoding.JSON);
-            String accessToken = objectMap.get("token");
-            String time = objectMap.get("expiresOn");
-            // az expiresOn format = "2022-11-30 02:38:42.000000" vs
-            // azd expiresOn format = "2022-11-30T02:05:08Z"
-            String standardTime = time.substring(0, time.indexOf("Z"));
-            OffsetDateTime expiresOn = LocalDateTime
-                    .parse(standardTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
-                    .atZone(ZoneId.of("Z"))
-                    .toOffsetDateTime()
-                    .withOffsetSameInstant(ZoneOffset.UTC);
-            token = new AccessToken(accessToken, expiresOn);
+            try (JsonReader reader = JsonProviders.createReader(processOutput)) {
+                reader.nextToken();
+                Map<String, String> objectMap = reader.readMap(JsonReader::getString);
+                String accessToken = objectMap.get("token");
+                String time = objectMap.get("expiresOn");
+                // az expiresOn format = "2022-11-30 02:38:42.000000" vs
+                // azd expiresOn format = "2022-11-30T02:05:08Z"
+                String standardTime = time.substring(0, time.indexOf("Z"));
+                OffsetDateTime expiresOn = LocalDateTime
+                        .parse(standardTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+                        .atZone(ZoneId.of("Z"))
+                        .toOffsetDateTime()
+                        .withOffsetSameInstant(ZoneOffset.UTC);
+                token = new AccessToken(accessToken, expiresOn);
+            }
         } catch (IOException | InterruptedException e) {
             IllegalStateException ex = new IllegalStateException(redactInfo(e.getMessage()));
             ex.setStackTrace(e.getStackTrace());

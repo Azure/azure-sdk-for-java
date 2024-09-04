@@ -19,6 +19,7 @@ import com.azure.identity.implementation.util.LoggingUtil;
 import com.azure.identity.implementation.util.ScopeUtil;
 import com.azure.identity.implementation.util.ValidationUtil;
 import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
 import com.microsoft.aad.msal4j.AuthorizationCodeParameters;
 import com.microsoft.aad.msal4j.AppTokenProviderParameters;
 import com.microsoft.aad.msal4j.ClaimsRequest;
@@ -469,9 +470,9 @@ public class IdentityClient extends IdentityClientBase {
                 }
 
 
-                try {
-                    Map<String, String> objectMap = SERIALIZER_ADAPTER.deserialize(output, Map.class,
-                        SerializerEncoding.JSON);
+                try (JsonReader reader = JsonProviders.createReader(output)) {
+                    reader.nextToken();
+                    Map<String, String> objectMap = reader.readMap(JsonReader::getString);
                     String accessToken = objectMap.get("Token");
                     String time = objectMap.get("ExpiresOn");
                     OffsetDateTime expiresOn = OffsetDateTime.parse(time).withOffsetSameInstant(ZoneOffset.UTC);
