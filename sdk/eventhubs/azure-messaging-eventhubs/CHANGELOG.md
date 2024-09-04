@@ -4,9 +4,13 @@
 
 ### Features Added
 
+- Integrated RequestResponseChannelCache (CBS, Management channel cache) and ReactorSessionCache, these caches are activated when V2 stack is opted-in using the configuration `com.azure.messaging.eventhubs.v2`. ([39107](https://github.com/Azure/azure-sdk-for-java/pull/39107))
+
 ### Breaking Changes
 
 ### Bugs Fixed
+
+- Fixes the event size computation in EventHubSerializer to include size of delivery annotations. ([41605](https://github.com/Azure/azure-sdk-for-java/issues/41605))
 
 ### Other Changes
 
@@ -14,7 +18,7 @@
 
 ### Features Added
 
-- Enabling V2 stack support for Event Hubs, which can be opt-in using the configuration ` com.azure.messaging.eventhubs.v2`.
+- Enabling V2 stack support for Event Hubs, which can be opt-in using the configuration ` com.azure.messaging.eventhubs.v2`. ([40435](https://github.com/Azure/azure-sdk-for-java/pull/40435))
 
 ### Other Changes
 
