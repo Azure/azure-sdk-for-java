@@ -40,7 +40,10 @@ new AzureMonitor("{connection-string}")
 OpenTelemetry openTelemetry = sdkBuilder.build().getOpenTelemetrySdk();
 ```
 
-### Use the Azure Monitor OpenTelemetry Exporter with OpenTelemetry APIs
+## Examples
+
+The following sections provide code samples using the OpenTelemetry Azure Monitor Exporter client library and OpenTelemetry API.
+
 
 The following example shows how create a span:
 
