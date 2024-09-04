@@ -40,7 +40,7 @@ public class ChatCompletionsSyncClientTest extends ChatCompletionsClientTestBase
         client = getChatCompletionsClient(httpClient);
         getChatCompletionsRunner((prompt) -> {
             List<ChatRequestMessage> chatMessages = new ArrayList<>();
-            chatMessages.add(ChatRequestUserMessage.fromString(prompt));
+            chatMessages.add(new ChatRequestUserMessage(prompt));
             IterableStream<StreamingChatCompletionsUpdate> resultCompletions = client.completeStreaming(new ChatCompletionsOptions(chatMessages));
             assertTrue(resultCompletions.stream().toArray().length > 1);
             resultCompletions.forEach(ChatCompletionsClientTestBase::assertCompletionsStream);

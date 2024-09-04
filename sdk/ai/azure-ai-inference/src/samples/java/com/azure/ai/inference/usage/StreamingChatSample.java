@@ -30,9 +30,9 @@ public final class StreamingChatSample {
 
         List<ChatRequestMessage> chatMessages = new ArrayList<>();
         chatMessages.add(new ChatRequestSystemMessage("You are a helpful assistant. You will talk like a pirate."));
-        chatMessages.add(ChatRequestUserMessage.fromString("Can you help me?"));
+        chatMessages.add(new ChatRequestUserMessage("Can you help me?"));
         chatMessages.add(new ChatRequestAssistantMessage("Of course, me hearty! What can I do for ye?"));
-        chatMessages.add(ChatRequestUserMessage.fromString("What's the best way to train a parrot?"));
+        chatMessages.add(new ChatRequestUserMessage("What's the best way to train a parrot?"));
 
         IterableStream<StreamingChatCompletionsUpdate> chatCompletionsStream = client.completeStreaming(
             new ChatCompletionsOptions(chatMessages));

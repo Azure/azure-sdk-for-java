@@ -42,6 +42,16 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
     }
 
     /**
+     * Creates an instance of ChatRequestUserMessage class.
+     *
+     * @param content the string content value to set.
+     */
+    public ChatRequestUserMessage(String content) {
+        String jsonPrompt = "{" + "\"content\":\"%s\"" + "}";
+        String contentString = String.format(jsonPrompt, content);
+        this.content = BinaryData.fromString(contentString);
+    }
+    /**
      * Get the role property: The chat role associated with this message.
      *
      * @return the role value.

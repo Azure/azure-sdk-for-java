@@ -26,7 +26,7 @@ public final class ChatCompletionsUtils {
      * */
     public static ChatCompletionsOptions defaultCompleteOptions(String prompt) {
         List<ChatRequestMessage> messages = new ArrayList<>();
-        messages.add(ChatRequestUserMessage.fromString(prompt));
+        messages.add(new ChatRequestUserMessage(prompt));
         return new ChatCompletionsOptions(messages);
     }
 
