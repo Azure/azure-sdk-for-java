@@ -56,22 +56,26 @@
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-autoconfigure</artifactId>
       <version>5.16.0-beta.1</version>  <!-- {x-version-update;com.azure.spring:spring-cloud-azure-autoconfigure;current} -->
+      <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-spring-data-cosmos</artifactId>
       <version>5.16.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;current} -->
+      <optional>true</optional>
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
       <version>12.27.1</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+      <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-queue</artifactId>
       <version>12.22.1</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
+      <optional>true</optional>
     </dependency>
 
     <dependency>
@@ -83,6 +87,7 @@
       <groupId>org.testcontainers</groupId>
       <artifactId>azure</artifactId>
       <version>1.19.8</version> <!-- {x-version-update;springboot3_org.testcontainers:azure;external_dependency} -->
+      <optional>true</optional>
     </dependency>
     <!-- Added this dependency to include necessary annotations used by reactor core.
         Without this dependency, javadoc throws a warning as it cannot find enum When.MAYBE
