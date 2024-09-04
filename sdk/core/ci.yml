@@ -190,6 +190,7 @@ extends:
                 - jackson_2.15
                 - jackson_2.16
                 - jackson_2.17
+                - jackson_2.18
                 - reactor_2020
                 - reactor_2022
                 - reactor_2023
