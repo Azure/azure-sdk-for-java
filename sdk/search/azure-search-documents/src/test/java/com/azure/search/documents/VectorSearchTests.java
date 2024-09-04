@@ -11,6 +11,7 @@ import com.azure.search.documents.implementation.util.SearchPagedResponseAccessH
 import com.azure.search.documents.indexes.SearchIndexAsyncClient;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
+import com.azure.search.documents.indexes.models.BinaryQuantizationCompression;
 import com.azure.search.documents.indexes.models.DistanceScoringFunction;
 import com.azure.search.documents.indexes.models.DistanceScoringParameters;
 import com.azure.search.documents.indexes.models.HnswAlgorithmConfiguration;
@@ -26,6 +27,7 @@ import com.azure.search.documents.indexes.models.SemanticField;
 import com.azure.search.documents.indexes.models.SemanticPrioritizedFields;
 import com.azure.search.documents.indexes.models.SemanticSearch;
 import com.azure.search.documents.indexes.models.VectorSearch;
+import com.azure.search.documents.indexes.models.VectorSearchCompression;
 import com.azure.search.documents.indexes.models.VectorSearchProfile;
 import com.azure.search.documents.models.QueryAnswer;
 import com.azure.search.documents.models.QueryAnswerType;
@@ -87,7 +89,7 @@ public class VectorSearchTests extends SearchTestBase {
 
         searchIndexClient = new SearchIndexClientBuilder()
             .endpoint(ENDPOINT)
-            .serviceVersion(SearchServiceVersion.V2023_11_01)
+            .serviceVersion(SearchServiceVersion.V2024_09_01_PREVIEW)
             .credential(TestHelpers.getTestTokenCredential())
             .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY)
             .buildClient();
@@ -487,6 +489,197 @@ public class VectorSearchTests extends SearchTestBase {
             (List<Number>) responseDocument.get("DescriptionVector"));
     }
 
+    // create a test that synchronously tests the ability to use VectorSearchCompression.truncationDimension to reduce the dimensionality of the vector
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testVectorSearchCompressionTruncationDimensionSync() {
+        // create a new index with a vector field
+        String indexName = randomIndexName("compressiontruncationdimension");
+        SearchIndex searchIndex = new SearchIndex(indexName)
+            .setFields(
+                new SearchField("Id", SearchFieldDataType.STRING)
+                    .setKey(true),
+                new SearchField("Name", SearchFieldDataType.STRING)
+                    .setSearchable(true)
+                    .setFilterable(true),
+                new SearchField("DescriptionVector", SearchFieldDataType.collection(SearchFieldDataType.SINGLE))
+                    .setSearchable(true)
+                    .setHidden(false)
+                    .setVectorSearchDimensions(1536)
+                    .setVectorSearchProfileName("my-vector-profile"))
+            .setVectorSearch(new VectorSearch()
+                .setCompressions(new VectorSearchCompression("vector-compression-100").setTruncationDimension(100)));
+
+        searchIndexClient.createIndex(searchIndex);
+        indexesToDelete.add(indexName);
+
+        // Upload data
+        SearchDocument document = new SearchDocument();
+        document.put("Id", "1");
+        document.put("Name", "name");
+        document.put("DescriptionVector", VectorSearchEmbeddings.DEFAULT_VECTORIZE_DESCRIPTION);
+
+        SearchClient searchClient = searchIndexClient.getSearchClient(indexName);
+        searchClient.uploadDocuments(Collections.singletonList(document));
+        waitForIndexing();
+
+        // Get the document
+        SearchDocument responseDocument = searchClient.getDocument("1", SearchDocument.class);
+
+        // check that the vector field has been truncated to 100 dimensions
+        assertNotNull(responseDocument.get("DescriptionVector"));
+        List<Number> truncatedVector = (List<Number>) responseDocument.get("DescriptionVector");
+        assertEquals(100, truncatedVector.size());
+
+    }
+
+    // write a test that asynchronously tests the ability to upload a vector field to an index using BinaryQuantizationCompression
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testVectorSearchCompressionBinaryQuantizationAsync() {
+        // create a new index with a vector field
+        String indexName = randomIndexName("compressionbinaryquantizationasync");
+        SearchIndex searchIndex = new SearchIndex(indexName)
+            .setFields(
+                new SearchField("Id", SearchFieldDataType.STRING)
+                    .setKey(true),
+                new SearchField("Name", SearchFieldDataType.STRING)
+                    .setSearchable(true)
+                    .setFilterable(true),
+                new SearchField("DescriptionVector", SearchFieldDataType.collection(SearchFieldDataType.SINGLE))
+                    .setSearchable(true)
+                    .setHidden(false)
+                    .setVectorSearchDimensions(1536)
+                    .setVectorSearchProfileName("my-vector-profile"))
+            .setVectorSearch(new VectorSearch()
+                .setCompressions(new BinaryQuantizationCompression("binary-vector-compression")));
+
+        SearchIndexAsyncClient searchIndexAsyncClient = getSearchIndexClientBuilder(false).buildAsyncClient();
+        searchIndexAsyncClient.createIndex(searchIndex).block();
+        indexesToDelete.add(indexName);
+
+        // Upload data
+        SearchDocument document = new SearchDocument();
+        document.put("Id", "1");
+        document.put("Name", "name");
+        document.put("DescriptionVector", VectorSearchEmbeddings.DEFAULT_VECTORIZE_DESCRIPTION);
+
+        SearchAsyncClient searchClient = searchIndexAsyncClient.getSearchAsyncClient(indexName);
+        searchClient.uploadDocuments(Collections.singletonList(document)).block();
+        waitForIndexing();
+
+        // Get the document
+        StepVerifier.create(searchClient.getDocument("1", SearchDocument.class))
+            .assertNext(response -> {
+                // check that the vector field has been compressed using binary quantization
+                assertNotNull(response.get("DescriptionVector"));
+                List<Number> compressedVector = (List<Number>) response.get("DescriptionVector");
+                assertEquals(1536, compressedVector.size());
+                for (Number number : compressedVector) {
+                    assert number.floatValue() < 1 && number.floatValue() > -1;
+                }
+            })
+            .verifyComplete();
+    }
+
+    // create a test that asynchronously tests the ability to use VectorSearchCompression.truncationDimension to reduce the dimensionality of the vector
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testVectorSearchCompressionTruncationDimensionAsync() {
+        // create a new index with a vector field
+        String indexName = randomIndexName("compressiontruncationdimensionasync");
+        SearchIndex searchIndex = new SearchIndex(indexName)
+            .setFields(
+                new SearchField("Id", SearchFieldDataType.STRING)
+                    .setKey(true),
+                new SearchField("Name", SearchFieldDataType.STRING)
+                    .setSearchable(true)
+                    .setFilterable(true),
+                new SearchField("DescriptionVector", SearchFieldDataType.collection(SearchFieldDataType.SINGLE))
+                    .setSearchable(true)
+                    .setHidden(false)
+                    .setVectorSearchDimensions(1536)
+                    .setVectorSearchProfileName("my-vector-profile"))
+            .setVectorSearch(new VectorSearch()
+                .setCompressions(new VectorSearchCompression("vector-compression-100").setTruncationDimension(100)));
+
+        SearchIndexAsyncClient searchIndexAsyncClient = getSearchIndexClientBuilder(false).buildAsyncClient();
+        searchIndexAsyncClient.createIndex(searchIndex).block();
+        waitForIndexing();
+        indexesToDelete.add(indexName);
+
+        // Upload data
+        SearchDocument document = new SearchDocument();
+        document.put("Id", "1");
+        document.put("Name", "name");
+        document.put("DescriptionVector", VectorSearchEmbeddings.DEFAULT_VECTORIZE_DESCRIPTION);
+
+        SearchAsyncClient searchClient = searchIndexAsyncClient.getSearchAsyncClient(indexName);
+        searchClient.uploadDocuments(Collections.singletonList(document)).block();
+        waitForIndexing();
+
+        // Get the document
+        StepVerifier.create(searchClient.getDocument("1", SearchDocument.class))
+            .assertNext(response -> {
+                // check that the vector field has been truncated to 100 dimensions
+                assertNotNull(response.get("DescriptionVector"));
+                List<Number> truncatedVector = (List<Number>) response.get("DescriptionVector");
+                assertEquals(100, truncatedVector.size());
+            })
+            .verifyComplete();
+    }
+
+    // a test that creates a hybrid search query with a vector search query and a regular search query, and utilizes the vector query
+    // fiter override to filter the vector search results
+    @Test
+    public void testHybridSearchWithVectorFilterOverride() {
+        // create a new index with a vector field
+        String indexName = randomIndexName("hybridsearchwithvectorfilteroverride");
+        SearchIndex searchIndex = new SearchIndex(indexName)
+            .setFields(
+                new SearchField("Id", SearchFieldDataType.STRING)
+                    .setKey(true),
+                new SearchField("Name", SearchFieldDataType.STRING)
+                    .setSearchable(true)
+                    .setFilterable(true),
+                new SearchField("DescriptionVector", SearchFieldDataType.collection(SearchFieldDataType.SINGLE))
+                    .setSearchable(true)
+                    .setHidden(false)
+                    .setVectorSearchDimensions(1536)
+                    .setVectorSearchProfileName("my-vector-profile"));
+
+        searchIndexClient.createIndex(searchIndex);
+        indexesToDelete.add(indexName);
+
+        // Upload data
+        SearchDocument document = new SearchDocument();
+        document.put("Id", "1");
+        document.put("Name", "name");
+        document.put("DescriptionVector", VectorSearchEmbeddings.DEFAULT_VECTORIZE_DESCRIPTION);
+
+        SearchClient searchClient = searchIndexClient.getSearchClient(indexName);
+        searchClient.uploadDocuments(Collections.singletonList(document));
+        waitForIndexing();
+
+        // create a hybrid search query with a vector search query and a regular search query
+        SearchOptions searchOptions = new SearchOptions()
+            .setSearchFields("Name")
+            .setFilter("Name eq 'name'")
+            .setSelect("Id", "Name")
+            .setVectorSearchOptions(new VectorSearchOptions()
+                .setQueries(new VectorizedQuery(VectorSearchEmbeddings.DEFAULT_VECTORIZE_DESCRIPTION)
+                    .setKNearestNeighborsCount(1)
+                    .setFilterOverride("Id eq '1'")));
+
+        // run the hybrid search query
+        List<SearchResult> results = searchClient.search("name", searchOptions, Context.NONE)
+            .stream().collect(Collectors.toList());
+
+        // check that the results are as expected
+        assertKeysEqual(results, r -> (String) r.getDocument(SearchDocument.class).get("Id"), new String[]{"1"});
+    }
+
+
     private static void compareFloatListToDeserializedFloatList(List<Float> expected, List<Number> actual) {
         if (actual == null) {
             assertNull(expected);
@@ -505,6 +698,8 @@ public class VectorSearchTests extends SearchTestBase {
                 + obj.getClass().getName());
         }
     }
+
+
 
     private static SearchIndex getVectorIndex() {
         return new SearchIndex(HOTEL_INDEX_NAME)
