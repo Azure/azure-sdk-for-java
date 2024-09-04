@@ -16,7 +16,11 @@ import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdkBuilder;
 import io.opentelemetry.sdk.resources.Resource;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public final class TestUtils {
 
@@ -81,7 +85,10 @@ public final class TestUtils {
 
         ExportOptions exportOptions = new ExportOptions().connectionString(connectionString).httpPipeline(httpPipeline);
 
-        return new AzureMonitor(exportOptions).configure(sdkBuilder).addPropertiesSupplier(() -> configuration).build().getOpenTelemetrySdk();
+        return new AzureMonitor(exportOptions).configure(sdkBuilder)
+            .addPropertiesSupplier(() -> configuration)
+            .build()
+            .getOpenTelemetrySdk();
     }
 
     // azure-json doesn't deserialize subtypes yet, so need to convert the abstract MonitorDomain to RemoteDependencyData
