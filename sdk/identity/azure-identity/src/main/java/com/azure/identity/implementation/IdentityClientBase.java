@@ -110,9 +110,6 @@ public abstract class IdentityClientBase {
     static final String LINUX_MAC_SWITCHER = "-c";
     static final Pattern WINDOWS_PROCESS_ERROR_MESSAGE = Pattern.compile("'azd?' is not recognized");
     static final Pattern SH_PROCESS_ERROR_MESSAGE = Pattern.compile("azd?:.*not found");
-    static final String DEFAULT_WINDOWS_PS_EXECUTABLE = "pwsh.exe";
-    static final String LEGACY_WINDOWS_PS_EXECUTABLE = "powershell.exe";
-    static final String DEFAULT_LINUX_PS_EXECUTABLE = "pwsh";
     static final String DEFAULT_MAC_LINUX_PATH = "/bin/";
     static final Duration REFRESH_OFFSET = Duration.ofMinutes(5);
     static final String IDENTITY_ENDPOINT_VERSION = "2019-08-01";
