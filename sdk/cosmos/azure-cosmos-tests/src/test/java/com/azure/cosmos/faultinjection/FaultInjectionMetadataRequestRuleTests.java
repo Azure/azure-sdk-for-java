@@ -120,7 +120,7 @@ public class FaultInjectionMetadataRequestRuleTests extends FaultInjectionTestBa
             = getAccountLevelLocationContext(databaseAccount, true);
 
         validate(accountLevelReadableLocationContext, false);
-        validate(accountLevelReadableLocationContext, true);
+        validate(accountLevelWriteableLocationContext, true);
 
         this.cosmosAsyncContainer = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(this.client);
 

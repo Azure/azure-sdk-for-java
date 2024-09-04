@@ -17,7 +17,6 @@ import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.SessionContainer;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.guava25.base.Charsets;
-import com.azure.cosmos.implementation.guava25.base.Function;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableSet;
 import com.azure.cosmos.implementation.guava25.hash.BloomFilter;
@@ -63,7 +62,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -1713,7 +1711,7 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
             DatabaseAccount databaseAccount = globalEndpointManager.getLatestDatabaseAccount();
 
             AccountLevelLocationContext accountLevelReadableLocationContext = getAccountLevelLocationContext(databaseAccount, false);
-            AccountLevelLocationContext accountLevelWriteableLocationContext = getAccountLevelLocationContext(databaseAccount, false);
+            AccountLevelLocationContext accountLevelWriteableLocationContext = getAccountLevelLocationContext(databaseAccount, true);
 
             validate(accountLevelReadableLocationContext, false);
             validate(accountLevelWriteableLocationContext, true);
