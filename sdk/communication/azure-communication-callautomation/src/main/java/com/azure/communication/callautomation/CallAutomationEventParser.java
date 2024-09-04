@@ -16,6 +16,7 @@ import com.azure.communication.callautomation.models.events.ConnectFailed;
 import com.azure.communication.callautomation.models.events.ContinuousDtmfRecognitionStopped;
 import com.azure.communication.callautomation.models.events.ContinuousDtmfRecognitionToneFailed;
 import com.azure.communication.callautomation.models.events.ContinuousDtmfRecognitionToneReceived;
+import com.azure.communication.callautomation.models.events.CreateCallFailed;
 import com.azure.communication.callautomation.models.events.HoldFailed;
 import com.azure.communication.callautomation.models.events.ParticipantsUpdated;
 import com.azure.communication.callautomation.models.events.PlayCanceled;
@@ -145,6 +146,8 @@ public final class CallAutomationEventParser {
                 ret = CancelAddParticipantFailed.fromJson(jsonReader);
             }  else if (Objects.equals(eventType, "Microsoft.Communication.ConnectFailed")) {
                 ret = ConnectFailed.fromJson(jsonReader);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.CreateCallFailed")) {
+                ret = CreateCallFailed.fromJson(jsonReader);
             } else if (Objects.equals(eventType, "Microsoft.Communication.TranscriptionStarted")) {
                 ret = TranscriptionStarted.fromJson(jsonReader);
             } else if (Objects.equals(eventType, "Microsoft.Communication.TranscriptionFailed")) {
