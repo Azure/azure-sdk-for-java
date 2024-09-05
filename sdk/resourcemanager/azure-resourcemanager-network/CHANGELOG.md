@@ -4,6 +4,10 @@
 
 ### Features Added
 
+- Add `VirtualWans` and `VirtualWan` support in `NetworkManager`.
+
+- Add `VpnSites` and `VpnSite` support in `NetworkManage`.
+
 ### Breaking Changes
 
 ### Bugs Fixed
