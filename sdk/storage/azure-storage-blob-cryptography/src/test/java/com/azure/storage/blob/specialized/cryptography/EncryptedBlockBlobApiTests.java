@@ -1728,6 +1728,22 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
         compareFiles(file, outFile, 0, file.length());
     }
 
+    @Test
+    public void uploadAndDownloadDifferentRegionLength(int regionLength) {
+        int dataSize =
+        ByteBuffer data = getRandomData(dataSize);
+        beac = mockAesKey(getEncryptedClientBuilder(fakeKey, null, ENV.getPrimaryAccount().getCredential(),
+            cc.getBlobContainerUrl(), EncryptionVersion.V2)
+            .blobName(generateBlobName())
+            .buildEncryptedBlobAsyncClient());
+        beac.uploadWithResponse(new BlobParallelUploadOptions(Flux.just(data.duplicate()))).block();
+        ByteArrayOutputStream plaintextOut = new ByteArrayOutputStream();
+
+        new EncryptedBlobClient(beac).downloadStream(plaintextOut);
+
+        assertArraysEqual(data.array(), plaintextOut.toByteArray());
+    }
+
     private static Stream<Arguments> encryptionDataCaseInsensitivitySupplier() {
         return Stream.of(
             Arguments.of("ENCRYPTIONDATA", EncryptionVersion.V1),
