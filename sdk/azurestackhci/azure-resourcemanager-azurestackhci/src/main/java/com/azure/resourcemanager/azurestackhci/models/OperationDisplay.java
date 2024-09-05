@@ -5,46 +5,50 @@
 package com.azure.resourcemanager.azurestackhci.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Localized display information for this particular operation. */
+/**
+ * Localized display information for this particular operation.
+ */
 @Immutable
-public final class OperationDisplay {
+public final class OperationDisplay implements JsonSerializable<OperationDisplay> {
     /*
-     * The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft
-     * Compute".
+     * The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or
+     * "Microsoft Compute".
      */
-    @JsonProperty(value = "provider", access = JsonProperty.Access.WRITE_ONLY)
     private String provider;
 
     /*
-     * The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job
-     * Schedule Collections".
+     * The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or
+     * "Job Schedule Collections".
      */
-    @JsonProperty(value = "resource", access = JsonProperty.Access.WRITE_ONLY)
     private String resource;
 
     /*
-     * The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual
-     * Machine", "Restart Virtual Machine".
+     * The concise, localized friendly name for the operation; suitable for dropdowns. E.g.
+     * "Create or Update Virtual Machine", "Restart Virtual Machine".
      */
-    @JsonProperty(value = "operation", access = JsonProperty.Access.WRITE_ONLY)
     private String operation;
 
     /*
      * The short, localized friendly description of the operation; suitable for tool tips and detailed views.
      */
-    @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
-    /** Creates an instance of OperationDisplay class. */
+    /**
+     * Creates an instance of OperationDisplay class.
+     */
     public OperationDisplay() {
     }
 
     /**
      * Get the provider property: The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring
      * Insights" or "Microsoft Compute".
-     *
+     * 
      * @return the provider value.
      */
     public String provider() {
@@ -54,7 +58,7 @@ public final class OperationDisplay {
     /**
      * Get the resource property: The localized friendly name of the resource type related to this operation. E.g.
      * "Virtual Machines" or "Job Schedule Collections".
-     *
+     * 
      * @return the resource value.
      */
     public String resource() {
@@ -64,7 +68,7 @@ public final class OperationDisplay {
     /**
      * Get the operation property: The concise, localized friendly name for the operation; suitable for dropdowns. E.g.
      * "Create or Update Virtual Machine", "Restart Virtual Machine".
-     *
+     * 
      * @return the operation value.
      */
     public String operation() {
@@ -74,7 +78,7 @@ public final class OperationDisplay {
     /**
      * Get the description property: The short, localized friendly description of the operation; suitable for tool tips
      * and detailed views.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -83,9 +87,50 @@ public final class OperationDisplay {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationDisplay from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationDisplay if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OperationDisplay.
+     */
+    public static OperationDisplay fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationDisplay deserializedOperationDisplay = new OperationDisplay();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provider".equals(fieldName)) {
+                    deserializedOperationDisplay.provider = reader.getString();
+                } else if ("resource".equals(fieldName)) {
+                    deserializedOperationDisplay.resource = reader.getString();
+                } else if ("operation".equals(fieldName)) {
+                    deserializedOperationDisplay.operation = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedOperationDisplay.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationDisplay;
+        });
     }
 }

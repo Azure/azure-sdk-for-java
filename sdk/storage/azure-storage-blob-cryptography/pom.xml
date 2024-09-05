@@ -87,6 +87,12 @@
       <artifactId>azure-core-test</artifactId>
       <version>1.26.2</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>com.fasterxml.jackson.dataformat</groupId>
+          <artifactId>jackson-dataformats-xml</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <!-- The following two dependencies are to test for
@@ -131,7 +137,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-keys</artifactId>
-      <version>4.8.6</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;dependency} -->
+      <version>4.8.7</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

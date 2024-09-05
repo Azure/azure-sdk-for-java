@@ -59,6 +59,15 @@ public class DeployType extends ExpandableStringEnum<DeployType> {
     public static final DeployType ZIP = fromString("zip");
 
     /**
+     * Creates a new instance of DeployType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DeployType() {
+    }
+
+    /**
      * Creates or finds a DeployType from its string representation.
      * @param name a name to look for
      * @return the corresponding DeployType

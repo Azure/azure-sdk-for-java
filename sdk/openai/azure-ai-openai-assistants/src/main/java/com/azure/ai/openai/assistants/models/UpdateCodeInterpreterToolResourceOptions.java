@@ -61,7 +61,7 @@ public final class UpdateCodeInterpreterToolResourceOptions
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("fileIds", this.fileIds, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("file_ids", this.fileIds, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -81,7 +81,7 @@ public final class UpdateCodeInterpreterToolResourceOptions
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("fileIds".equals(fieldName)) {
+                if ("file_ids".equals(fieldName)) {
                     List<String> fileIds = reader.readArray(reader1 -> reader1.getString());
                     deserializedUpdateCodeInterpreterToolResourceOptions.fileIds = fileIds;
                 } else {

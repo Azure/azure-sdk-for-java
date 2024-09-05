@@ -6,6 +6,7 @@ package com.azure.resourcemanager.machinelearning.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.JobService;
+import com.azure.resourcemanager.machinelearning.models.Nodes;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -13,41 +14,30 @@ import org.junit.jupiter.api.Assertions;
 public final class JobServiceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        JobService model =
-            BinaryData
-                .fromString(
-                    "{\"endpoint\":\"oaimlnw\",\"errorMessage\":\"aomylwea\",\"jobServiceType\":\"lcsethwwnpj\",\"port\":307378678,\"properties\":{\"ousnfepgfewe\":\"wpchwahf\",\"hdjhlimmbcx\":\"wlyxgncxyk\",\"cporxvxcjz\":\"h\",\"juhdqazkmtgguwpi\":\"qizxfpxtgqscjavf\"},\"status\":\"ajc\"}")
-                .toObject(JobService.class);
-        Assertions.assertEquals("oaimlnw", model.endpoint());
-        Assertions.assertEquals("lcsethwwnpj", model.jobServiceType());
-        Assertions.assertEquals(307378678, model.port());
-        Assertions.assertEquals("wpchwahf", model.properties().get("ousnfepgfewe"));
+        JobService model = BinaryData.fromString(
+            "{\"jobServiceType\":\"wuowhlxlnwy\",\"port\":1884184924,\"endpoint\":\"vblgmokzk\",\"status\":\"rfowtdvrfmvlih\",\"errorMessage\":\"jdrqcrjidhftu\",\"properties\":{\"kfnjyixhafrat\":\"dxlwyojbfqz\",\"znv\":\"xmbjroum\"},\"nodes\":{\"nodesValueType\":\"Nodes\"}}")
+            .toObject(JobService.class);
+        Assertions.assertEquals("wuowhlxlnwy", model.jobServiceType());
+        Assertions.assertEquals(1884184924, model.port());
+        Assertions.assertEquals("vblgmokzk", model.endpoint());
+        Assertions.assertEquals("dxlwyojbfqz", model.properties().get("kfnjyixhafrat"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JobService model =
-            new JobService()
-                .withEndpoint("oaimlnw")
-                .withJobServiceType("lcsethwwnpj")
-                .withPort(307378678)
-                .withProperties(
-                    mapOf(
-                        "ousnfepgfewe",
-                        "wpchwahf",
-                        "hdjhlimmbcx",
-                        "wlyxgncxyk",
-                        "cporxvxcjz",
-                        "h",
-                        "juhdqazkmtgguwpi",
-                        "qizxfpxtgqscjavf"));
+        JobService model = new JobService().withJobServiceType("wuowhlxlnwy")
+            .withPort(1884184924)
+            .withEndpoint("vblgmokzk")
+            .withProperties(mapOf("kfnjyixhafrat", "dxlwyojbfqz", "znv", "xmbjroum"))
+            .withNodes(new Nodes());
         model = BinaryData.fromObject(model).toObject(JobService.class);
-        Assertions.assertEquals("oaimlnw", model.endpoint());
-        Assertions.assertEquals("lcsethwwnpj", model.jobServiceType());
-        Assertions.assertEquals(307378678, model.port());
-        Assertions.assertEquals("wpchwahf", model.properties().get("ousnfepgfewe"));
+        Assertions.assertEquals("wuowhlxlnwy", model.jobServiceType());
+        Assertions.assertEquals(1884184924, model.port());
+        Assertions.assertEquals("vblgmokzk", model.endpoint());
+        Assertions.assertEquals("dxlwyojbfqz", model.properties().get("kfnjyixhafrat"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

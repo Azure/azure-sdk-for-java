@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Collection of logs to be enabled or disabled for log analytics.
  */
 @Fluent
-public final class ClusterLogAnalyticsApplicationLogs {
+public final class ClusterLogAnalyticsApplicationLogs implements JsonSerializable<ClusterLogAnalyticsApplicationLogs> {
     /*
      * True if stdout is enabled, otherwise false.
      */
-    @JsonProperty(value = "stdOutEnabled")
     private Boolean stdOutEnabled;
 
     /*
      * True if stderror is enabled, otherwise false.
      */
-    @JsonProperty(value = "stdErrorEnabled")
     private Boolean stdErrorEnabled;
 
     /**
@@ -76,5 +78,47 @@ public final class ClusterLogAnalyticsApplicationLogs {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("stdOutEnabled", this.stdOutEnabled);
+        jsonWriter.writeBooleanField("stdErrorEnabled", this.stdErrorEnabled);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterLogAnalyticsApplicationLogs from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterLogAnalyticsApplicationLogs if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ClusterLogAnalyticsApplicationLogs.
+     */
+    public static ClusterLogAnalyticsApplicationLogs fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterLogAnalyticsApplicationLogs deserializedClusterLogAnalyticsApplicationLogs
+                = new ClusterLogAnalyticsApplicationLogs();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("stdOutEnabled".equals(fieldName)) {
+                    deserializedClusterLogAnalyticsApplicationLogs.stdOutEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("stdErrorEnabled".equals(fieldName)) {
+                    deserializedClusterLogAnalyticsApplicationLogs.stdErrorEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterLogAnalyticsApplicationLogs;
+        });
     }
 }

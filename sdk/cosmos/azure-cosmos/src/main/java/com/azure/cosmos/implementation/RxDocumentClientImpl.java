@@ -4493,9 +4493,25 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                                          boolean disableAutomaticIdGeneration) {
         DocumentClientRetryPolicy documentClientRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy(null);
         AtomicReference<RxDocumentServiceRequest> requestReference = new AtomicReference<>();
-        return handleCircuitBreakingFeedbackForPointOperation(ObservableHelper
-            .inlineIfPossibleAsObs(() -> executeBatchRequestInternal(
-                collectionLink, serverBatchRequest, options, documentClientRetryPolicy, disableAutomaticIdGeneration, requestReference), documentClientRetryPolicy), requestReference);
+        RequestOptions nonNullRequestOptions = options != null ? options : new RequestOptions();
+        CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig =
+            getEndToEndOperationLatencyPolicyConfig(nonNullRequestOptions, ResourceType.Document, OperationType.Batch);
+        ScopedDiagnosticsFactory scopedDiagnosticsFactory = new ScopedDiagnosticsFactory(this, false);
+        return handleCircuitBreakingFeedbackForPointOperation(
+            getPointOperationResponseMonoWithE2ETimeout(
+                nonNullRequestOptions,
+                endToEndPolicyConfig,
+                ObservableHelper
+                    .inlineIfPossibleAsObs(() -> executeBatchRequestInternal(
+                        collectionLink,
+                        serverBatchRequest,
+                        options,
+                        documentClientRetryPolicy,
+                        disableAutomaticIdGeneration,
+                        requestReference), documentClientRetryPolicy),
+                scopedDiagnosticsFactory
+            ),
+            requestReference);
     }
 
     private Mono<StoredProcedureResponse> executeStoredProcedureInternal(String storedProcedureLink,
@@ -5748,6 +5764,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         if (!closed.getAndSet(true)) {
             activeClientsCnt.decrementAndGet();
             logger.info("Shutting down ...");
+
+            if (this.globalPartitionEndpointManagerForCircuitBreaker != null) {
+                logger.info("Closing globalPartitionEndpointManagerForCircuitBreaker...");
+                LifeCycleUtils.closeQuietly(this.globalPartitionEndpointManagerForCircuitBreaker);
+            }
+
             logger.info("Closing Global Endpoint Manager ...");
             LifeCycleUtils.closeQuietly(this.globalEndpointManager);
             logger.info("Closing StoreClientFactory ...");
@@ -5968,24 +5990,39 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             checkNotNull(options.getPartitionKeyDefinition(), "Argument 'partitionKeyDefinition' within options cannot be null!");
             checkNotNull(collectionRoutingMap, "Argument 'collectionRoutingMap' cannot be null!");
 
+            PartitionKeyRange resolvedPartitionKeyRange = null;
+
             PartitionKeyDefinition partitionKeyDefinition = options.getPartitionKeyDefinition();
             PartitionKeyInternal partitionKeyInternal = request.getPartitionKeyInternal();
 
-            String effectivePartitionKeyString = PartitionKeyInternalHelper.getEffectivePartitionKeyString(partitionKeyInternal, partitionKeyDefinition);
-            PartitionKeyRange partitionKeyRange = collectionRoutingMap.getRangeByEffectivePartitionKey(effectivePartitionKeyString);
+            if (partitionKeyInternal != null) {
+                String effectivePartitionKeyString = PartitionKeyInternalHelper.getEffectivePartitionKeyString(partitionKeyInternal, partitionKeyDefinition);
+                resolvedPartitionKeyRange = collectionRoutingMap.getRangeByEffectivePartitionKey(effectivePartitionKeyString);
 
-            checkNotNull(partitionKeyRange, "partitionKeyRange cannot be null!");
+                // cache the effective partition key if possible - can be a bottleneck,
+                // since it is also recomputed in AddressResolver
+                request.setEffectivePartitionKey(effectivePartitionKeyString);
+            } else if (request.getPartitionKeyRangeIdentity() != null) {
+                resolvedPartitionKeyRange = collectionRoutingMap.getRangeByPartitionKeyRangeId(request.getPartitionKeyRangeIdentity().getPartitionKeyRangeId());
+            }
+
+            checkNotNull(resolvedPartitionKeyRange, "resolvedPartitionKeyRange cannot be null!");
             checkNotNull(this.globalPartitionEndpointManagerForCircuitBreaker, "globalPartitionEndpointManagerForCircuitBreaker cannot be null!");
+
+            // setting it here in case request.requestContext.resolvedPartitionKeyRange
+            // is not assigned in either GlobalAddressResolver / RxGatewayStoreModel (possible if there are Gateway timeouts)
+            // and circuit breaker also kicks in to mark a failure resolvedPartitionKeyRange (will result in NullPointerException and will
+            // help failover as well)
+            // also resolvedPartitionKeyRange will be overridden in GlobalAddressResolver / RxGatewayStoreModel irrespective
+            // so staleness is not an issue (after doing a validation of parent-child relationship b/w initial and new partitionKeyRange)
+            request.requestContext.resolvedPartitionKeyRange = resolvedPartitionKeyRange;
 
             List<String> unavailableRegionsForPartition
                 = this.globalPartitionEndpointManagerForCircuitBreaker.getUnavailableRegionsForPartitionKeyRange(
                 request.getResourceId(),
-                partitionKeyRange,
+                resolvedPartitionKeyRange,
                 request.getOperationType());
 
-            // cache the effective partition key if possible - can be a bottleneck,
-            // since it is also recomputed in AddressResolver
-            request.setEffectivePartitionKey(effectivePartitionKeyString);
             request.requestContext.setUnavailableRegionsForPartition(unavailableRegionsForPartition);
 
             // onBeforeSendRequest uses excluded regions to know the next location endpoint
@@ -6025,6 +6062,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         checkNotNull(resolvedPartitionKeyRange, "resolvedPartitionKeyRange cannot be null!");
+
+        // setting it here in case request.requestContext.resolvedPartitionKeyRange
+        // is not assigned in either GlobalAddressResolver / RxGatewayStoreModel (possible if there are Gateway timeouts)
+        // and circuit breaker also kicks in to mark a failure resolvedPartitionKeyRange (will result in NullPointerException and will
+        // help failover as well)
+        // also resolvedPartitionKeyRange will be overridden in GlobalAddressResolver / RxGatewayStoreModel irrespective
+        // so staleness is not an issue (after doing a validation of parent-child relationship b/w initial and new partitionKeyRange)
+        request.requestContext.resolvedPartitionKeyRange = resolvedPartitionKeyRange;
 
         if (this.globalPartitionEndpointManagerForCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(request)) {
             checkNotNull(globalPartitionEndpointManagerForCircuitBreaker, "globalPartitionEndpointManagerForCircuitBreaker cannot be null!");

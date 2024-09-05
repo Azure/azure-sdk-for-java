@@ -11,19 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class TrinoDebugConfigTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TrinoDebugConfig model = BinaryData.fromString("{\"enable\":true,\"port\":726916833,\"suspend\":true}")
+        TrinoDebugConfig model = BinaryData.fromString("{\"enable\":true,\"port\":1319718925,\"suspend\":true}")
             .toObject(TrinoDebugConfig.class);
         Assertions.assertEquals(true, model.enable());
-        Assertions.assertEquals(726916833, model.port());
+        Assertions.assertEquals(1319718925, model.port());
         Assertions.assertEquals(true, model.suspend());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TrinoDebugConfig model = new TrinoDebugConfig().withEnable(true).withPort(726916833).withSuspend(true);
+        TrinoDebugConfig model = new TrinoDebugConfig().withEnable(true).withPort(1319718925).withSuspend(true);
         model = BinaryData.fromObject(model).toObject(TrinoDebugConfig.class);
         Assertions.assertEquals(true, model.enable());
-        Assertions.assertEquals(726916833, model.port());
+        Assertions.assertEquals(1319718925, model.port());
         Assertions.assertEquals(true, model.suspend());
     }
 }

@@ -57,6 +57,7 @@
           <Class name="com.azure.core.amqp.implementation.ReactorDispatcher" />
           <Class name="com.azure.core.amqp.implementation.ReactorSession" />
           <Class name="com.azure.core.amqp.implementation.ReceiveLinkHandlerWrapper" />
+          <Class name="com.azure.core.amqp.implementation.RequestResponseChannelCache" />
         </Or>
         <Method name="&lt;init&gt;" />
       </And>
@@ -119,5 +120,15 @@
   <Match>
     <Bug pattern="SE_NO_SERIALVERSIONID" />
     <Class name="com.azure.core.amqp.implementation.handler.ReceiverUnsettledDeliveries$DispositionWork" />
+  </Match>
+
+  <Match>
+    <Bug pattern="SE_BAD_FIELD" />
+    <Class name="com.azure.core.amqp.implementation.ReactorSessionCache$Entry" />
+  </Match>
+
+  <Match>
+    <Bug pattern="SE_NO_SERIALVERSIONID" />
+    <Class name="com.azure.core.amqp.implementation.ReactorSessionCache$Entry" />
   </Match>
 </FindBugsFilter>

@@ -17,7 +17,7 @@ import org.junit.jupiter.api.Test;
 
 public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
     private String rgName = "";
-    private final Region region = Region.US_EAST;
+    private final Region region = Region.US_WEST2;
     private final String vmName = "javavm";
 
     @Override

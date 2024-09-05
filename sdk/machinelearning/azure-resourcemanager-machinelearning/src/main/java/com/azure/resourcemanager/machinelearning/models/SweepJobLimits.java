@@ -5,61 +5,57 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.Duration;
 
-/** Sweep Job limit class. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "jobLimitsType")
-@JsonTypeName("Sweep")
+/**
+ * Sweep Job limit class.
+ */
 @Fluent
 public final class SweepJobLimits extends JobLimits {
     /*
-     * Sweep Job max concurrent trials.
+     * [Required] JobLimit type.
      */
-    @JsonProperty(value = "maxConcurrentTrials")
-    private Integer maxConcurrentTrials;
+    private JobLimitsType jobLimitsType = JobLimitsType.SWEEP;
 
     /*
      * Sweep Job max total trials.
      */
-    @JsonProperty(value = "maxTotalTrials")
     private Integer maxTotalTrials;
+
+    /*
+     * Sweep Job max concurrent trials.
+     */
+    private Integer maxConcurrentTrials;
 
     /*
      * Sweep Job Trial timeout value.
      */
-    @JsonProperty(value = "trialTimeout")
     private Duration trialTimeout;
 
-    /** Creates an instance of SweepJobLimits class. */
+    /**
+     * Creates an instance of SweepJobLimits class.
+     */
     public SweepJobLimits() {
     }
 
     /**
-     * Get the maxConcurrentTrials property: Sweep Job max concurrent trials.
-     *
-     * @return the maxConcurrentTrials value.
+     * Get the jobLimitsType property: [Required] JobLimit type.
+     * 
+     * @return the jobLimitsType value.
      */
-    public Integer maxConcurrentTrials() {
-        return this.maxConcurrentTrials;
-    }
-
-    /**
-     * Set the maxConcurrentTrials property: Sweep Job max concurrent trials.
-     *
-     * @param maxConcurrentTrials the maxConcurrentTrials value to set.
-     * @return the SweepJobLimits object itself.
-     */
-    public SweepJobLimits withMaxConcurrentTrials(Integer maxConcurrentTrials) {
-        this.maxConcurrentTrials = maxConcurrentTrials;
-        return this;
+    @Override
+    public JobLimitsType jobLimitsType() {
+        return this.jobLimitsType;
     }
 
     /**
      * Get the maxTotalTrials property: Sweep Job max total trials.
-     *
+     * 
      * @return the maxTotalTrials value.
      */
     public Integer maxTotalTrials() {
@@ -68,7 +64,7 @@ public final class SweepJobLimits extends JobLimits {
 
     /**
      * Set the maxTotalTrials property: Sweep Job max total trials.
-     *
+     * 
      * @param maxTotalTrials the maxTotalTrials value to set.
      * @return the SweepJobLimits object itself.
      */
@@ -78,8 +74,28 @@ public final class SweepJobLimits extends JobLimits {
     }
 
     /**
+     * Get the maxConcurrentTrials property: Sweep Job max concurrent trials.
+     * 
+     * @return the maxConcurrentTrials value.
+     */
+    public Integer maxConcurrentTrials() {
+        return this.maxConcurrentTrials;
+    }
+
+    /**
+     * Set the maxConcurrentTrials property: Sweep Job max concurrent trials.
+     * 
+     * @param maxConcurrentTrials the maxConcurrentTrials value to set.
+     * @return the SweepJobLimits object itself.
+     */
+    public SweepJobLimits withMaxConcurrentTrials(Integer maxConcurrentTrials) {
+        this.maxConcurrentTrials = maxConcurrentTrials;
+        return this;
+    }
+
+    /**
      * Get the trialTimeout property: Sweep Job Trial timeout value.
-     *
+     * 
      * @return the trialTimeout value.
      */
     public Duration trialTimeout() {
@@ -88,7 +104,7 @@ public final class SweepJobLimits extends JobLimits {
 
     /**
      * Set the trialTimeout property: Sweep Job Trial timeout value.
-     *
+     * 
      * @param trialTimeout the trialTimeout value to set.
      * @return the SweepJobLimits object itself.
      */
@@ -97,7 +113,9 @@ public final class SweepJobLimits extends JobLimits {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SweepJobLimits withTimeout(Duration timeout) {
         super.withTimeout(timeout);
@@ -106,11 +124,61 @@ public final class SweepJobLimits extends JobLimits {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("timeout", CoreUtils.durationToStringWithDays(timeout()));
+        jsonWriter.writeStringField("jobLimitsType", this.jobLimitsType == null ? null : this.jobLimitsType.toString());
+        jsonWriter.writeNumberField("maxTotalTrials", this.maxTotalTrials);
+        jsonWriter.writeNumberField("maxConcurrentTrials", this.maxConcurrentTrials);
+        jsonWriter.writeStringField("trialTimeout", CoreUtils.durationToStringWithDays(this.trialTimeout));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SweepJobLimits from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SweepJobLimits if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SweepJobLimits.
+     */
+    public static SweepJobLimits fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SweepJobLimits deserializedSweepJobLimits = new SweepJobLimits();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("timeout".equals(fieldName)) {
+                    deserializedSweepJobLimits
+                        .withTimeout(reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString())));
+                } else if ("jobLimitsType".equals(fieldName)) {
+                    deserializedSweepJobLimits.jobLimitsType = JobLimitsType.fromString(reader.getString());
+                } else if ("maxTotalTrials".equals(fieldName)) {
+                    deserializedSweepJobLimits.maxTotalTrials = reader.getNullable(JsonReader::getInt);
+                } else if ("maxConcurrentTrials".equals(fieldName)) {
+                    deserializedSweepJobLimits.maxConcurrentTrials = reader.getNullable(JsonReader::getInt);
+                } else if ("trialTimeout".equals(fieldName)) {
+                    deserializedSweepJobLimits.trialTimeout
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSweepJobLimits;
+        });
     }
 }

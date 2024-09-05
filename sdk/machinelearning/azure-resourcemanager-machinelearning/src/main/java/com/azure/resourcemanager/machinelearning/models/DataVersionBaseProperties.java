@@ -6,41 +6,45 @@ package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** Data version base definition. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "dataType",
-    defaultImpl = DataVersionBaseProperties.class)
-@JsonTypeName("DataVersionBaseProperties")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "mltable", value = MLTableData.class),
-    @JsonSubTypes.Type(name = "uri_file", value = UriFileDataVersion.class),
-    @JsonSubTypes.Type(name = "uri_folder", value = UriFolderDataVersion.class)
-})
+/**
+ * Data version base definition.
+ */
 @Fluent
 public class DataVersionBaseProperties extends AssetBase {
     /*
-     * [Required] Uri of the data. Usage/meaning depends on
-     * Microsoft.MachineLearning.ManagementFrontEnd.Contracts.V20221001.Assets.DataVersionBase.DataType
+     * [Required] Specifies the type of data.
      */
-    @JsonProperty(value = "dataUri", required = true)
+    private DataType dataType = DataType.fromString("DataVersionBaseProperties");
+
+    /*
+     * [Required] Uri of the data. Example: https://go.microsoft.com/fwlink/?linkid=2202330
+     */
     private String dataUri;
 
-    /** Creates an instance of DataVersionBaseProperties class. */
+    /**
+     * Creates an instance of DataVersionBaseProperties class.
+     */
     public DataVersionBaseProperties() {
     }
 
     /**
-     * Get the dataUri property: [Required] Uri of the data. Usage/meaning depends on
-     * Microsoft.MachineLearning.ManagementFrontEnd.Contracts.V20221001.Assets.DataVersionBase.DataType.
-     *
+     * Get the dataType property: [Required] Specifies the type of data.
+     * 
+     * @return the dataType value.
+     */
+    public DataType dataType() {
+        return this.dataType;
+    }
+
+    /**
+     * Get the dataUri property: [Required] Uri of the data. Example: https://go.microsoft.com/fwlink/?linkid=2202330.
+     * 
      * @return the dataUri value.
      */
     public String dataUri() {
@@ -48,9 +52,8 @@ public class DataVersionBaseProperties extends AssetBase {
     }
 
     /**
-     * Set the dataUri property: [Required] Uri of the data. Usage/meaning depends on
-     * Microsoft.MachineLearning.ManagementFrontEnd.Contracts.V20221001.Assets.DataVersionBase.DataType.
-     *
+     * Set the dataUri property: [Required] Uri of the data. Example: https://go.microsoft.com/fwlink/?linkid=2202330.
+     * 
      * @param dataUri the dataUri value to set.
      * @return the DataVersionBaseProperties object itself.
      */
@@ -59,35 +62,36 @@ public class DataVersionBaseProperties extends AssetBase {
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public DataVersionBaseProperties withIsAnonymous(Boolean isAnonymous) {
-        super.withIsAnonymous(isAnonymous);
-        return this;
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataVersionBaseProperties withIsArchived(Boolean isArchived) {
         super.withIsArchived(isArchived);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DataVersionBaseProperties withIsAnonymous(Boolean isAnonymous) {
+        super.withIsAnonymous(isAnonymous);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataVersionBaseProperties withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public DataVersionBaseProperties withProperties(Map<String, String> properties) {
-        super.withProperties(properties);
-        return this;
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataVersionBaseProperties withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -95,20 +99,114 @@ public class DataVersionBaseProperties extends AssetBase {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DataVersionBaseProperties withProperties(Map<String, String> properties) {
+        super.withProperties(properties);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (dataUri() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property dataUri in model DataVersionBaseProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property dataUri in model DataVersionBaseProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DataVersionBaseProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("properties", properties(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("isArchived", isArchived());
+        jsonWriter.writeBooleanField("isAnonymous", isAnonymous());
+        jsonWriter.writeStringField("dataUri", this.dataUri);
+        jsonWriter.writeStringField("dataType", this.dataType == null ? null : this.dataType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataVersionBaseProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataVersionBaseProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DataVersionBaseProperties.
+     */
+    public static DataVersionBaseProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("dataType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("mltable".equals(discriminatorValue)) {
+                    return MLTableData.fromJson(readerToUse.reset());
+                } else if ("uri_file".equals(discriminatorValue)) {
+                    return UriFileDataVersion.fromJson(readerToUse.reset());
+                } else if ("uri_folder".equals(discriminatorValue)) {
+                    return UriFolderDataVersion.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static DataVersionBaseProperties fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataVersionBaseProperties deserializedDataVersionBaseProperties = new DataVersionBaseProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedDataVersionBaseProperties.withDescription(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedDataVersionBaseProperties.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    Map<String, String> properties = reader.readMap(reader1 -> reader1.getString());
+                    deserializedDataVersionBaseProperties.withProperties(properties);
+                } else if ("isArchived".equals(fieldName)) {
+                    deserializedDataVersionBaseProperties.withIsArchived(reader.getNullable(JsonReader::getBoolean));
+                } else if ("isAnonymous".equals(fieldName)) {
+                    deserializedDataVersionBaseProperties.withIsAnonymous(reader.getNullable(JsonReader::getBoolean));
+                } else if ("dataUri".equals(fieldName)) {
+                    deserializedDataVersionBaseProperties.dataUri = reader.getString();
+                } else if ("dataType".equals(fieldName)) {
+                    deserializedDataVersionBaseProperties.dataType = DataType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataVersionBaseProperties;
+        });
+    }
 }

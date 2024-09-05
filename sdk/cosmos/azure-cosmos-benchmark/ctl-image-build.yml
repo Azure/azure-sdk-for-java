@@ -22,7 +22,7 @@ extends:
             os: $(LINUXOS)
 
           steps:
-          - task: Maven@3
+          - task: Maven@4
             displayName: 'Build Cosmos and Benchmark'
             inputs:
               mavenPomFile: pom.xml

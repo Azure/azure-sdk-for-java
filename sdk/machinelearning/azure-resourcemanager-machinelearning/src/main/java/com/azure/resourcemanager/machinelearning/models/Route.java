@@ -6,30 +6,36 @@ package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The Route model. */
+/**
+ * The Route model.
+ */
 @Fluent
-public final class Route {
+public final class Route implements JsonSerializable<Route> {
     /*
      * [Required] The path for the route.
      */
-    @JsonProperty(value = "path", required = true)
     private String path;
 
     /*
      * [Required] The port for the route.
      */
-    @JsonProperty(value = "port", required = true)
     private int port;
 
-    /** Creates an instance of Route class. */
+    /**
+     * Creates an instance of Route class.
+     */
     public Route() {
     }
 
     /**
      * Get the path property: [Required] The path for the route.
-     *
+     * 
      * @return the path value.
      */
     public String path() {
@@ -38,7 +44,7 @@ public final class Route {
 
     /**
      * Set the path property: [Required] The path for the route.
-     *
+     * 
      * @param path the path value to set.
      * @return the Route object itself.
      */
@@ -49,7 +55,7 @@ public final class Route {
 
     /**
      * Get the port property: [Required] The port for the route.
-     *
+     * 
      * @return the port value.
      */
     public int port() {
@@ -58,7 +64,7 @@ public final class Route {
 
     /**
      * Set the port property: [Required] The port for the route.
-     *
+     * 
      * @param port the port value to set.
      * @return the Route object itself.
      */
@@ -69,15 +75,54 @@ public final class Route {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (path() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property path in model Route"));
+            throw LOGGER.atError().log(new IllegalArgumentException("Missing required property path in model Route"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(Route.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("path", this.path);
+        jsonWriter.writeIntField("port", this.port);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Route from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Route if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the Route.
+     */
+    public static Route fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Route deserializedRoute = new Route();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("path".equals(fieldName)) {
+                    deserializedRoute.path = reader.getString();
+                } else if ("port".equals(fieldName)) {
+                    deserializedRoute.port = reader.getInt();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRoute;
+        });
+    }
 }

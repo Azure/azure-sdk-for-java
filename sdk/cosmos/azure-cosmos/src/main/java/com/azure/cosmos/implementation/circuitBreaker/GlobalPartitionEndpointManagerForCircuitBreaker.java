@@ -4,7 +4,6 @@
 package com.azure.cosmos.implementation.circuitBreaker;
 
 import com.azure.cosmos.implementation.Configs;
-import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.FeedOperationContextForCircuitBreaker;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
@@ -22,6 +21,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
 
 import java.net.URI;
 import java.time.Duration;
@@ -36,7 +37,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
-public class GlobalPartitionEndpointManagerForCircuitBreaker {
+public class GlobalPartitionEndpointManagerForCircuitBreaker implements AutoCloseable {
 
     private static final Logger logger = LoggerFactory.getLogger(GlobalPartitionEndpointManagerForCircuitBreaker.class);
 
@@ -49,6 +50,8 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
     private final ConsecutiveExceptionBasedCircuitBreaker consecutiveExceptionBasedCircuitBreaker;
     private final AtomicReference<GlobalAddressResolver> globalAddressResolverSnapshot;
     private final ConcurrentHashMap<URI, String> locationToRegion;
+    private final AtomicBoolean isClosed = new AtomicBoolean(false);
+    private final Scheduler partitionRecoveryScheduler = Schedulers.newSingle("partition-availability-staleness-check");
 
     public GlobalPartitionEndpointManagerForCircuitBreaker(GlobalEndpointManager globalEndpointManager) {
         this.partitionKeyRangeToLocationSpecificUnavailabilityInfo = new ConcurrentHashMap<>();
@@ -65,7 +68,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
 
     public void init() {
         if (this.consecutiveExceptionBasedCircuitBreaker.isPartitionLevelCircuitBreakerEnabled()) {
-            this.updateStaleLocationInfo().subscribeOn(CosmosSchedulers.PARTITION_AVAILABILITY_STALENESS_CHECK_SINGLE).subscribe();
+            this.updateStaleLocationInfo().subscribeOn(this.partitionRecoveryScheduler).subscribe();
         }
     }
 
@@ -85,8 +88,6 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
 
         AtomicBoolean isFailoverPossible = new AtomicBoolean(true);
         AtomicBoolean isFailureThresholdBreached = new AtomicBoolean(false);
-
-        String collectionLink = getCollectionLink(request);
 
         this.partitionKeyRangeToLocationSpecificUnavailabilityInfo.compute(partitionKeyRangeWrapper, (partitionKeyRangeWrapperAsKey, partitionLevelLocationUnavailabilityInfoAsVal) -> {
 
@@ -199,9 +200,9 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
     private Flux<?> updateStaleLocationInfo() {
         return Mono.just(1)
             .delayElement(Duration.ofSeconds(Configs.getStalePartitionUnavailabilityRefreshIntervalInSeconds()))
-            .repeat()
+            .repeat(() -> !this.isClosed.get())
             .flatMap(ignore -> Flux.fromIterable(this.partitionKeyRangesWithPossibleUnavailableRegions.entrySet()))
-            .publishOn(CosmosSchedulers.PARTITION_AVAILABILITY_STALENESS_CHECK_SINGLE)
+            .publishOn(this.partitionRecoveryScheduler)
             .flatMap(partitionKeyRangeWrapperToPartitionKeyRangeWrapperPair -> {
 
                 logger.debug("Background updateStaleLocationInfo kicking in...");
@@ -258,7 +259,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
 
                             return gatewayAddressCache
                                 .submitOpenConnectionTasks(partitionKeyRangeWrapper.getPartitionKeyRange(), partitionKeyRangeWrapper.getCollectionResourceId())
-                                .publishOn(CosmosSchedulers.PARTITION_AVAILABILITY_STALENESS_CHECK_SINGLE)
+                                .publishOn(this.partitionRecoveryScheduler)
                                 .timeout(Duration.ofSeconds(Configs.getConnectionEstablishmentTimeoutForPartitionRecoveryInSeconds()))
                                 .doOnComplete(() -> {
 
@@ -346,6 +347,12 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
 
     public void setGlobalAddressResolver(GlobalAddressResolver globalAddressResolver) {
         this.globalAddressResolverSnapshot.set(globalAddressResolver);
+    }
+
+    @Override
+    public void close() {
+        this.isClosed.set(true);
+        this.partitionRecoveryScheduler.dispose();
     }
 
     private class PartitionLevelLocationUnavailabilityInfo {
