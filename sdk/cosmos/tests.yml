@@ -30,7 +30,7 @@ extends:
               groupId: com.azure
             - name: azure-cosmos-benchmark
               groupId: com.azure
-          TimeoutInMinutes: 240
+          TimeoutInMinutes: 180
           MaxParallel: 20
           PreSteps:
             - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
