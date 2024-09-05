@@ -166,8 +166,8 @@ public class OpenAIServerSentEventsTest {
                 ByteBuffer.wrap("data: {\"choices\":[{\"content_filter_results\":{\"hate\":{\"filtered\":false,\"severity\":\"safe\"},\"self_harm\":{\"filtered\":false,\"severity\":\"safe\"}".getBytes(StandardCharsets.UTF_8)),
                 ByteBuffer.wrap(",\"sexual\":{\"filtered\":false,\"severity\":\"safe\"},\"violence\":{\"filtered\":false,\"severity\":\"safe\"}},\"delta\":{\"content\":\" par\"},\"finish_reason\":null,\"index\":0,\"logprobs\":null}],\"created\":1724446441,\"id\":\"id\",\"model\":\"model\",\"object\":\"chat.completion.chunk\",\"system_fingerprint\":\"fingerprint\"}".getBytes(StandardCharsets.UTF_8))));
         BinaryData fullJson = BinaryData.fromString(
-                "{\"choices\":[{\"content_filter_results\":{\"hate\":{\"filtered\":false,\"severity\":\"safe\"},\"self_harm\":{\"filtered\":false,\"severity\":\"safe\"}" +
-                        ",\"sexual\":{\"filtered\":false,\"severity\":\"safe\"},\"violence\":{\"filtered\":false,\"severity\":\"safe\"}},\"delta\":{\"content\":\" par\"},\"finish_reason\":null,\"index\":0,\"logprobs\":null}],\"created\":1724446441,\"id\":\"id\",\"model\":\"model\",\"object\":\"chat.completion.chunk\",\"system_fingerprint\":\"fingerprint\"}");
+                "{\"choices\":[{\"content_filter_results\":{\"hate\":{\"filtered\":false,\"severity\":\"safe\"},\"self_harm\":{\"filtered\":false,\"severity\":\"safe\"}"
+                        + ",\"sexual\":{\"filtered\":false,\"severity\":\"safe\"},\"violence\":{\"filtered\":false,\"severity\":\"safe\"}},\"delta\":{\"content\":\" par\"},\"finish_reason\":null,\"index\":0,\"logprobs\":null}],\"created\":1724446441,\"id\":\"id\",\"model\":\"model\",\"object\":\"chat.completion.chunk\",\"system_fingerprint\":\"fingerprint\"}");
 
         ChatCompletions expected = fullJson.toObject(ChatCompletions.class);
         OpenAIServerSentEvents<ChatCompletions> parser = new OpenAIServerSentEvents<>(source, ChatCompletions.class);
