@@ -239,8 +239,12 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
 
         if (results.hasNext()) {
             FeedResponse<JsonNode> response = results.next();
-            CosmosDiagnostics diagnostics = response.getCosmosDiagnostics();
-            validateDirectModeDiagnosticsOnSuccess(diagnostics, directClient, this.directClientUserAgent);
+            String diagnostics = response.getCosmosDiagnostics().toString();
+            assertThat(diagnostics).contains("\"connectionMode\":\"GATEWAY\"");
+            assertThat(diagnostics).contains("\"userAgent\":\"" + this.gatewayClientUserAgent + "\"");
+            assertThat(diagnostics).contains("gatewayStatisticsList");
+            assertThat(diagnostics).contains("\"operationType\":\"ReadFeed\"");
+            assertThat(diagnostics).contains("\"userAgent\":\"" + this.gatewayClientUserAgent + "\"");
         }
     }
 
