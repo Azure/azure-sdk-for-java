@@ -4,7 +4,8 @@
 
 ### Features Added
 
-Add support for Entra ID authentication.
+* Add support for Entra ID authentication.
+* Migrate to stream-style serialization using the `azure-json` package. This is a new dependency introduced by `azure-core`.
 
 ## 1.0.0-beta.2 (2024-02-09)
 
