@@ -1729,12 +1729,14 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
     }
 
     @Test
-    public void uploadAndDownloadDifferentRegionLength(int regionLength) {
-        int dataSize =
+    public void uploadAndDownloadDifferentRegionLength() {
+        int regionLength = 4 * Constants.KB;
+        int dataSize = 4 * Constants.MB;
         ByteBuffer data = getRandomData(dataSize);
         beac = mockAesKey(getEncryptedClientBuilder(fakeKey, null, ENV.getPrimaryAccount().getCredential(),
             cc.getBlobContainerUrl(), EncryptionVersion.V2)
             .blobName(generateBlobName())
+            .gcmEncryptionRegionLength(regionLength)
             .buildEncryptedBlobAsyncClient());
         beac.uploadWithResponse(new BlobParallelUploadOptions(Flux.just(data.duplicate()))).block();
         ByteArrayOutputStream plaintextOut = new ByteArrayOutputStream();
