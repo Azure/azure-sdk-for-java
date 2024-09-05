@@ -133,6 +133,10 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
         return requiresEncryption;
     }
 
+    int getGcmEncryptionRegionLength() {
+        return gcmEncryptionRegionLength;
+    }
+
     /**
      * Package-private constructor for use by {@link EncryptedBlobClientBuilder}.
      *
@@ -451,7 +455,6 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
             data = UploadUtils.extractByteBuffer(data, options.getOptionalLength(),
                 parallelTransferOptions.getBlockSizeLong(), options.getDataStream());
 
-            // here is where encryptBlob is called and grabs the GCM_ENCRYPTION_REGION_LENGTH value
             Flux<ByteBuffer> dataFinal = prepareToSendEncryptedRequest(data, metadataFinal);
             return super.uploadWithResponse(new BlobParallelUploadOptions(dataFinal)
                 .setParallelTransferOptions(options.getParallelTransferOptions()).setHeaders(options.getHeaders())
@@ -652,7 +655,6 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
                     EncryptionData encryptionData;
                     Flux<ByteBuffer> encryptedTextFlux;
                     try {
-                        // buildEncryptionData based on V1/V2
                         encryptionData = encryptor.buildEncryptionData(keyWrappingMetadata, wrappedKey);
                         encryptedTextFlux = encryptor.encrypt(plainTextFlux);
                     } catch (GeneralSecurityException e) {
@@ -834,9 +836,5 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
         // This is eagerly thrown instead of waiting for the subscription to happen.
         throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
             "Cannot query data encrypted on client side"));
-    }
-
-    public int getGcmEncryptionRegionLength() {
-        return this.gcmEncryptionRegionLength;
     }
 }

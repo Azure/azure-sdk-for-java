@@ -31,6 +31,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -277,6 +278,13 @@ public class EncryptedBlobClientBuilderTests {
         // see if the blob name will be properly encoded in the url
         String encodedName = Utility.urlEncode(originalBlobName);
         assertTrue(encryptedBlobClient.getBlobUrl().contains(encodedName));
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = { 0, -1 })
+    public void illegalRegionLength() {
+        // should we have a test for checking whether length > 4MB?
+        assertThrows(IllegalArgumentException.class, () -> new EncryptedBlobClientBuilder(EncryptionVersion.V2).gcmEncryptionRegionLength(0).buildEncryptedBlobClient());
     }
 
     private static void sendAndValidateUserAgentHeader(HttpPipeline pipeline, String url) {
