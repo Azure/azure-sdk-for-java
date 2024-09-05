@@ -6,15 +6,15 @@ import com.azure.ai.vision.imageanalysis.ImageAnalysisClientBuilder;
 import com.azure.ai.vision.imageanalysis.models.ImageAnalysisOptions;
 import com.azure.ai.vision.imageanalysis.models.ImageAnalysisResult;
 import com.azure.ai.vision.imageanalysis.models.VisualFeatures;
-import com.azure.core.credential.KeyCredential;
 import com.azure.core.util.BinaryData;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.io.File;
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 /**
  *  This sample demonstrates how to generate a human-readable sentence that describes the content
- *  of the image file sample.jpg, using an asynchronous client.
+ *  of the image file sample.jpg, using an asynchronous client authenticated with Entra ID.
  *
  *  By default the caption may contain gender terms such as "man", "woman", or "boy", "girl".
  *  You have the option to request gender-neutral terms such as "person" or "child" by setting
@@ -26,31 +26,33 @@ import java.util.concurrent.TimeUnit;
  *  - A confidence score in the range [0, 1], with higher values indicating greater confidences in
  *    the caption.
  *
- *  Set these two environment variables before running the sample:
- *  1) VISION_ENDPOINT - Your endpoint URL, in the form https://your-resource-name.cognitiveservices.azure.com
- *                       where `your-resource-name` is your unique Azure Computer Vision resource name.
- *  2) VISION_KEY - Your Computer Vision key (a 32-character Hexadecimal number)
+ *  Set this environment variables before running the sample:
+ *  VISION_ENDPOINT - Your endpoint URL, in the form https://your-resource-name.cognitiveservices.azure.com
+ *  where `your-resource-name` is your unique Azure Computer Vision resource name.
+ * 
+ *  You also need to set up your environment for Entra ID authentication. See the Prerequisites
+ *  section of the package README.md file:
+ *  https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/vision/azure-ai-vision-imageanalysis#prerequisites
  */
-public class SampleCaptionImageFileAsync {
+public class SampleCaptionImageFileEntraIdAuthAsync {
 
     public static void main(String[] args) throws InterruptedException {
 
         String endpoint = System.getenv("VISION_ENDPOINT");
-        String key = System.getenv("VISION_KEY");
 
-        if (endpoint == null || key == null) {
-            System.out.println("Missing environment variable 'VISION_ENDPOINT' or 'VISION_KEY'.");
-            System.out.println("Set them before running this sample.");
+        if (endpoint == null) {
+            System.out.println("Missing environment variable 'VISION_ENDPOINT'.");
+            System.out.println("Set it before running this sample.");
             System.exit(1);
         }
 
-        // BEGIN: create-async-client-snippet
-        // Create an asynchronous client using API key authentication.
+        // BEGIN: create-async-client-entra-id-snippet
+        // Create an asynchronous client using Entra ID authentication.
         ImageAnalysisAsyncClient client = new ImageAnalysisClientBuilder()
             .endpoint(endpoint)
-            .credential(new KeyCredential(key))
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
-        // END: create-async-client-snippet
+        // END: create-async-client-entra-id-snippet
 
         // Generate a caption for an input image buffer. This is an asynchronous (non-blocking) call.
         client.analyze(
