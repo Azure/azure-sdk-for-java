@@ -18,9 +18,13 @@ import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.ProgressListener;
+import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
+import com.azure.security.keyvault.keys.KeyClient;
+import com.azure.security.keyvault.keys.KeyClientBuilder;
+import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobContainerClient;
@@ -80,20 +84,10 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
-import java.nio.file.FileAlreadyExistsException;
-import java.nio.file.Files;
-import java.nio.file.OpenOption;
-import java.nio.file.StandardOpenOption;
+import java.nio.file.*;
 import java.security.GeneralSecurityException;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
@@ -1782,14 +1776,68 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
 
     @Test
     public void sampleTest() throws IOException {
+        fakeKey = new FakeKey(KEY_ID, getRandomByteArray(256));
+
+        EncryptedBlobClient bec2 = new EncryptedBlobClientBuilder(EncryptionVersion.V2)
+            .key(fakeKey, KeyWrapAlgorithm.RSA_OAEP_256.toString())
+            .credential(ENV.getPrimaryAccount().getCredential())
+            .endpoint(cc.getBlobContainerUrl())
+            .blobName(generateBlobName())
+            .buildEncryptedBlobClient();
+
         File file = File.createTempFile(CoreUtils.randomUuid().toString(), ".txt");
         file.deleteOnExit();
         Files.write(file.toPath(), getRandomByteArray(33554432));
 
-        bec.uploadFromFile(file.toPath().toString());
+        bec2.uploadFromFile(file.toPath().toString());
 
         ByteArrayOutputStream outStream = new ByteArrayOutputStream();
-        bec.downloadStream(outStream);
+        bec2.downloadStream(outStream);
+    }
+
+    @Test
+    public void brokenTest() throws IOException {
+        String blobName = generateBlobName();
+        String containerName = cc.getBlobContainerName();
+        String endpoint = cc.getBlobContainerUrl();
+
+        DefaultAzureCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
+        AsyncKeyEncryptionKey akek = new LocalAsyncEncryptionKey();
+
+        EncryptedBlobClient client = new EncryptedBlobClientBuilder(EncryptionVersion.V2)
+            .key(akek, KeyWrapAlgorithm.RSA_OAEP.toString())
+            .credential(tokenCredential)
+            .endpoint(endpoint)
+            .containerName(containerName)
+            .blobName(blobName)
+            .buildEncryptedBlobClient();
+
+        File file = File.createTempFile(CoreUtils.randomUuid().toString(), ".txt");
+        File outfile = File.createTempFile(CoreUtils.randomUuid().toString(), ".txt");
+        file.deleteOnExit();
+        Files.write(file.toPath(), getRandomByteArray(33554432));
+
+        client.uploadFromFile(file.toPath().toString());
+        client.downloadToFile(outfile.toPath().toString(), true);
+    }
+
+    class LocalAsyncEncryptionKey implements AsyncKeyEncryptionKey {
+        @Override
+        public Mono<String> getKeyId() {
+            return Mono.just("/keys/keyId");
+        }
+
+        // this will be used while encryption process
+        @Override
+        public Mono<byte[]> wrapKey(String s, byte[] bytes) {
+            return Mono.fromCallable(() -> bytes);
+        }
+
+        // this will be used while decryption process
+        @Override
+        public Mono<byte[]> unwrapKey(String s, byte[] bytes) {
+            return Mono.fromCallable(() -> bytes);
+        }
     }
 
 }
