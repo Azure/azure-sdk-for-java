@@ -3,6 +3,7 @@
 
 package com.azure.ai.openai.implementation;
 
+import com.azure.ai.openai.models.ChatCompletions;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
@@ -13,6 +14,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Unit tests for {@link OpenAIServerSentEvents}
@@ -156,6 +158,43 @@ public class OpenAIServerSentEventsTest {
                 assertEquals("Switzerland", testModel.getValue());
             })
             .verifyComplete();
+    }
+
+    @Test
+    public void segmentedEvent() {
+        Flux<ByteBuffer> source = Flux.fromIterable(Arrays.asList(
+                ByteBuffer.wrap("data: {\"choices\":[{\"content_filter_results\":{\"hate\":{\"filtered\":false,\"severity\":\"safe\"},\"self_harm\":{\"filtered\":false,\"severity\":\"safe\"}".getBytes(StandardCharsets.UTF_8)),
+                ByteBuffer.wrap(",\"sexual\":{\"filtered\":false,\"severity\":\"safe\"},\"violence\":{\"filtered\":false,\"severity\":\"safe\"}},\"delta\":{\"content\":\" par\"},\"finish_reason\":null,\"index\":0,\"logprobs\":null}],\"created\":1724446441,\"id\":\"id\",\"model\":\"model\",\"object\":\"chat.completion.chunk\",\"system_fingerprint\":\"fingerprint\"}".getBytes(StandardCharsets.UTF_8))));
+        BinaryData fullJson = BinaryData.fromString(
+                "{\"choices\":[{\"content_filter_results\":{\"hate\":{\"filtered\":false,\"severity\":\"safe\"},\"self_harm\":{\"filtered\":false,\"severity\":\"safe\"}" +
+                        ",\"sexual\":{\"filtered\":false,\"severity\":\"safe\"},\"violence\":{\"filtered\":false,\"severity\":\"safe\"}},\"delta\":{\"content\":\" par\"},\"finish_reason\":null,\"index\":0,\"logprobs\":null}],\"created\":1724446441,\"id\":\"id\",\"model\":\"model\",\"object\":\"chat.completion.chunk\",\"system_fingerprint\":\"fingerprint\"}");
+
+        ChatCompletions expected = fullJson.toObject(ChatCompletions.class);
+        OpenAIServerSentEvents<ChatCompletions> parser = new OpenAIServerSentEvents<>(source, ChatCompletions.class);
+        ChatCompletions actual = parser.getEvents().blockLast();
+        assertNotNull(actual);
+
+        assertEquals(expected.getId(), actual.getId());
+        assertEquals(expected.getModel(), actual.getModel());
+        assertEquals(expected.getUsage(), actual.getUsage());
+        assertEquals(expected.getCreatedAt(), actual.getCreatedAt());
+        assertEquals(expected.getSystemFingerprint(), actual.getSystemFingerprint());
+        assertEquals(expected.getChoices().size(), actual.getChoices().size());
+
+        for (int i = 0; i < expected.getChoices().size(); i++) {
+            assertEquals(expected.getChoices().get(i).getIndex(), actual.getChoices().get(i).getIndex());
+            assertEquals(expected.getChoices().get(i).getFinishReason(), actual.getChoices().get(i).getFinishReason());
+            assertEquals(expected.getChoices().get(i).getLogprobs(), actual.getChoices().get(i).getLogprobs());
+            assertEquals(expected.getChoices().get(i).getDelta().getContent(), actual.getChoices().get(i).getDelta().getContent());
+            assertEquals(expected.getChoices().get(i).getContentFilterResults().getHate().isFiltered(), actual.getChoices().get(i).getContentFilterResults().getHate().isFiltered());
+            assertEquals(expected.getChoices().get(i).getContentFilterResults().getHate().getSeverity(), actual.getChoices().get(i).getContentFilterResults().getHate().getSeverity());
+            assertEquals(expected.getChoices().get(i).getContentFilterResults().getSelfHarm().isFiltered(), actual.getChoices().get(i).getContentFilterResults().getSelfHarm().isFiltered());
+            assertEquals(expected.getChoices().get(i).getContentFilterResults().getSelfHarm().getSeverity(), actual.getChoices().get(i).getContentFilterResults().getSelfHarm().getSeverity());
+            assertEquals(expected.getChoices().get(i).getContentFilterResults().getSexual().isFiltered(), actual.getChoices().get(i).getContentFilterResults().getSexual().isFiltered());
+            assertEquals(expected.getChoices().get(i).getContentFilterResults().getSexual().getSeverity(), actual.getChoices().get(i).getContentFilterResults().getSexual().getSeverity());
+            assertEquals(expected.getChoices().get(i).getContentFilterResults().getViolence().isFiltered(), actual.getChoices().get(i).getContentFilterResults().getViolence().isFiltered());
+            assertEquals(expected.getChoices().get(i).getContentFilterResults().getViolence().getSeverity(), actual.getChoices().get(i).getContentFilterResults().getViolence().getSeverity());
+        }
     }
 
 }
