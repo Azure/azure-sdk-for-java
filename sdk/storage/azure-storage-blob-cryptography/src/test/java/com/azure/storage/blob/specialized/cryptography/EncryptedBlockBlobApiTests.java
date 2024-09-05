@@ -1776,49 +1776,27 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
 
     @Test
     public void sampleTest() throws IOException {
-        fakeKey = new FakeKey(KEY_ID, getRandomByteArray(256));
-
-        EncryptedBlobClient bec2 = new EncryptedBlobClientBuilder(EncryptionVersion.V2)
-            .key(fakeKey, KeyWrapAlgorithm.RSA_OAEP_256.toString())
-            .credential(ENV.getPrimaryAccount().getCredential())
-            .endpoint(cc.getBlobContainerUrl())
-            .blobName(generateBlobName())
-            .buildEncryptedBlobClient();
-
         File file = File.createTempFile(CoreUtils.randomUuid().toString(), ".txt");
         file.deleteOnExit();
         Files.write(file.toPath(), getRandomByteArray(33554432));
 
-        bec2.uploadFromFile(file.toPath().toString());
-
         ByteArrayOutputStream outStream = new ByteArrayOutputStream();
-        bec2.downloadStream(outStream);
+
+        bec.uploadFromFile(file.toPath().toString());
+        bec.downloadStream(outStream);
     }
 
     @Test
     public void brokenTest() throws IOException {
-        String blobName = generateBlobName();
-        String containerName = cc.getBlobContainerName();
-        String endpoint = cc.getBlobContainerUrl();
-
-        DefaultAzureCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
-        AsyncKeyEncryptionKey akek = new LocalAsyncEncryptionKey();
-
-        EncryptedBlobClient client = new EncryptedBlobClientBuilder(EncryptionVersion.V2)
-            .key(akek, KeyWrapAlgorithm.RSA_OAEP.toString())
-            .credential(tokenCredential)
-            .endpoint(endpoint)
-            .containerName(containerName)
-            .blobName(blobName)
-            .buildEncryptedBlobClient();
-
         File file = File.createTempFile(CoreUtils.randomUuid().toString(), ".txt");
-        File outfile = File.createTempFile(CoreUtils.randomUuid().toString(), ".txt");
-        file.deleteOnExit();
-        Files.write(file.toPath(), getRandomByteArray(33554432));
+        File outFile = File.createTempFile(CoreUtils.randomUuid().toString(), ".txt");
 
-        client.uploadFromFile(file.toPath().toString());
-        client.downloadToFile(outfile.toPath().toString(), true);
+        file.deleteOnExit();
+        outFile.deleteOnExit();
+        Files.write(file.toPath(), getRandomByteArray(4194304));
+
+        bec.uploadFromFile(file.toPath().toString());
+        bec.downloadToFile(outFile.toPath().toString(), true);
     }
 
     class LocalAsyncEncryptionKey implements AsyncKeyEncryptionKey {
