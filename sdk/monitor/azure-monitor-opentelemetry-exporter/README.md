@@ -47,13 +47,11 @@ The following sections provide code samples using the OpenTelemetry Azure Monito
 
 The following example shows how create a span:
 
-```java 
+```java readme-sample-create-span
 AutoConfiguredOpenTelemetrySdkBuilder otelSdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
 
-new AzureMonitor("{connection-string}")
-    .configure(otelSdkBuilder);
-
-OpenTelemetry openTelemetry = otelSdkBuilder.build().getOpenTelemetrySdk();
+OpenTelemetry openTelemetry = new AzureMonitor("{connection-string}")
+    .configure(otelSdkBuilder).build().getOpenTelemetrySdk();
 Tracer tracer = openTelemetry.getTracer("Sample");
 
 Span span = tracer.spanBuilder("spanName").startSpan();

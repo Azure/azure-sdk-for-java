@@ -92,6 +92,32 @@ public class ReadmeSamples {
     }
 
     /**
+     * Sample to create a span.
+     */
+    @SuppressWarnings("try")
+    public void createSpan() {
+        // BEGIN: readme-sample-create-span
+        AutoConfiguredOpenTelemetrySdkBuilder otelSdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
+
+        OpenTelemetry openTelemetry = new AzureMonitor("{connection-string}")
+            .configure(otelSdkBuilder).build().getOpenTelemetrySdk();
+        Tracer tracer = openTelemetry.getTracer("Sample");
+
+        Span span = tracer.spanBuilder("spanName").startSpan();
+
+        // Make the span the current span
+        try (Scope scope = span.makeCurrent()) {
+            // Your application logic here
+        } catch (Throwable t) {
+            span.recordException(t);
+            throw t;
+        } finally {
+            span.end();
+        }
+        // END: readme-sample-create-span
+    }
+
+    /**
      * Sample to add a span processor to the OpenTelemetry SDK auto-configuration
      */
     public void spanProcessor() {
