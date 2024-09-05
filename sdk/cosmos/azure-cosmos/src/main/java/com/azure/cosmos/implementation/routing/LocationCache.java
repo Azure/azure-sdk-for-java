@@ -16,6 +16,7 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.apachecommons.collections.map.CaseInsensitiveMap;
 import com.azure.cosmos.implementation.apachecommons.collections.map.UnmodifiableMap;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -332,6 +333,15 @@ public class LocationCache {
         DatabaseAccountLocationsInfo currentLocationInfo = this.locationInfo;
         String mostPreferredLocation = Utils.firstOrDefault(currentLocationInfo.preferredLocations);
 
+        if (StringUtils.isEmpty(mostPreferredLocation)) {
+            URI firstAccountLevelReadRegion = Utils.firstOrDefault(currentLocationInfo.readEndpoints);
+
+            if (currentLocationInfo.regionNameByReadEndpoint != null) {
+                mostPreferredLocation
+                    = currentLocationInfo.regionNameByReadEndpoint.getOrDefault(firstAccountLevelReadRegion, StringUtils.EMPTY);
+            }
+        }
+
         // we should schedule refresh in background if we are unable to target the user's most preferredLocation.
         if (this.enableEndpointDiscovery) {
 
@@ -340,7 +350,7 @@ public class LocationCache {
             if (this.isEndpointUnavailable(readLocationEndpoints.get(0), OperationType.Read)) {
                 // Since most preferred read endpoint is unavailable, we can only refresh in background if
                 // we have an alternate read endpoint
-                canRefreshInBackground.v = anyEndpointsAvailable(readLocationEndpoints,OperationType.Read);
+                canRefreshInBackground.v = anyEndpointsAvailable(readLocationEndpoints, OperationType.Read);
                 logger.debug("shouldRefreshEndpoints = true,  since the first read endpoint " +
                         "[{}] is not available for read. canRefreshInBackground = [{}]",
                     readLocationEndpoints.get(0),
@@ -350,6 +360,8 @@ public class LocationCache {
 
             if (!Strings.isNullOrEmpty(mostPreferredLocation)) {
                 Utils.ValueHolder<URI> mostPreferredReadEndpointHolder = new Utils.ValueHolder<>();
+                Utils.ValueHolder<URI> firstAccountLevelReadEndpointHolder = new Utils.ValueHolder<>();
+
                 logger.debug("getReadEndpoints [{}]", readLocationEndpoints);
 
                 if (Utils.tryGetValue(currentLocationInfo.availableReadEndpointByLocation, mostPreferredLocation, mostPreferredReadEndpointHolder)) {
@@ -361,6 +373,17 @@ public class LocationCache {
                         logger.debug("shouldRefreshEndpoints = true, most preferred location [{}]" +
                                 " is not available for read.", mostPreferredLocation);
                         return true;
+                    } else if (currentLocationInfo.preferredLocations == null || currentLocationInfo.preferredLocations.isEmpty()) {
+
+                        List<String> accountLevelReadRegions = currentLocationInfo.availableReadLocations;
+                        String firstAccountLevelReadRegion = Utils.firstOrDefault(accountLevelReadRegions);
+
+                        if (Utils.tryGetValue(currentLocationInfo.availableReadEndpointByLocation, firstAccountLevelReadRegion, firstAccountLevelReadEndpointHolder)) {
+
+                            if (!areEqual(mostPreferredReadEndpointHolder.v, firstAccountLevelReadEndpointHolder.v)) {
+                                return true;
+                            }
+                        }
                     }
 
                     logger.debug("most preferred is [{}], and most preferred available [{}] are the same",
@@ -395,7 +418,21 @@ public class LocationCache {
                 }
             } else if (!Strings.isNullOrEmpty(mostPreferredLocation)) {
                 if (Utils.tryGetValue(currentLocationInfo.availableWriteEndpointByLocation, mostPreferredLocation, mostPreferredWriteEndpointHolder)) {
-                    shouldRefresh = ! areEqual(mostPreferredWriteEndpointHolder.v,writeLocationEndpoints.get(0));
+                    shouldRefresh = ! areEqual(mostPreferredWriteEndpointHolder.v, writeLocationEndpoints.get(0));
+
+                    if (currentLocationInfo.preferredLocations == null || currentLocationInfo.preferredLocations.isEmpty()) {
+
+                        List<String> accountLevelWriteRegions = currentLocationInfo.availableWriteLocations;
+                        String firstAccountLevelWriteRegion = Utils.firstOrDefault(accountLevelWriteRegions);
+                        Utils.ValueHolder<URI> firstAccountLevelWriteEndpointHolder = new Utils.ValueHolder<>();
+
+                        if (Utils.tryGetValue(currentLocationInfo.availableReadEndpointByLocation, firstAccountLevelWriteRegion, firstAccountLevelWriteEndpointHolder)) {
+
+                            if (!areEqual(mostPreferredWriteEndpointHolder.v, firstAccountLevelWriteEndpointHolder.v)) {
+                                shouldRefresh = !areEqual(mostPreferredWriteEndpointHolder.v, writeLocationEndpoints.get(0));
+                            }
+                        }
+                    }
 
                     if (shouldRefresh) {
                         logger.debug("shouldRefreshEndpoints: true, write endpoint [{}] is not the same as most preferred [{}]",
@@ -607,7 +644,6 @@ public class LocationCache {
                     }
                 } else {
                     for (String location : orderedLocations) {
-
                         Utils.ValueHolder<URI> endpoint = Utils.ValueHolder.initialize(null);
                         if (Utils.tryGetValue(endpointsByLocation, location, endpoint)) {
 
