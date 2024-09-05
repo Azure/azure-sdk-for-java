@@ -7,6 +7,8 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.azure.batch.protocol.models.BatchErrorException;
 import com.microsoft.azure.batch.protocol.models.ComputeNode;
 import com.microsoft.azure.batch.protocol.models.ComputeNodeAddUserOptions;
+import com.microsoft.azure.batch.protocol.models.ComputeNodeDeallocateOption;
+import com.microsoft.azure.batch.protocol.models.ComputeNodeDeallocateOptions;
 import com.microsoft.azure.batch.protocol.models.ComputeNodeDeleteUserOptions;
 import com.microsoft.azure.batch.protocol.models.ComputeNodeDisableSchedulingOptions;
 import com.microsoft.azure.batch.protocol.models.ComputeNodeEnableSchedulingOptions;
@@ -18,6 +20,7 @@ import com.microsoft.azure.batch.protocol.models.ComputeNodeRebootOption;
 import com.microsoft.azure.batch.protocol.models.ComputeNodeRebootOptions;
 import com.microsoft.azure.batch.protocol.models.ComputeNodeReimageOption;
 import com.microsoft.azure.batch.protocol.models.ComputeNodeReimageOptions;
+import com.microsoft.azure.batch.protocol.models.ComputeNodeStartOptions;
 import com.microsoft.azure.batch.protocol.models.ComputeNodeUpdateUserOptions;
 import com.microsoft.azure.batch.protocol.models.ComputeNodeUploadBatchServiceLogsOptions;
 import com.microsoft.azure.batch.protocol.models.ComputeNodeUser;
@@ -545,4 +548,83 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
 
         return this.parentBatchClient.protocolLayer().computeNodes().uploadBatchServiceLogs(poolId, nodeId, configuration, options);
     }
+
+    /**
+     * Deallocates the specified compute node.
+     * <p>You can deallocate a compute node only when it is in the {@link com.microsoft.azure.batch.protocol.models.ComputeNodeState#IDLE Idle} or {@link com.microsoft.azure.batch.protocol.models.ComputeNodeState#RUNNING Running} state.</p>
+     *
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node to deallocate.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
+     */
+    public void deallocateComputeNode(String poolId, String nodeId) throws BatchErrorException, IOException {
+        deallocateComputeNode(poolId, nodeId, null, null);
+    }
+
+    /**
+     * Deallocates the specified compute node.
+     * <p>You can deallocate a compute node only when it is in the {@link com.microsoft.azure.batch.protocol.models.ComputeNodeState#IDLE Idle} or {@link com.microsoft.azure.batch.protocol.models.ComputeNodeState#RUNNING Running} state.</p>
+     *
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node to deallocate.
+     * @param nodeDeallocateOption Specifies when to deallocate the node and what to do with currently running tasks.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
+     */
+    public void deallocateComputeNode(String poolId, String nodeId, ComputeNodeDeallocateOption nodeDeallocateOption) throws BatchErrorException, IOException {
+        deallocateComputeNode(poolId, nodeId, nodeDeallocateOption, null);
+    }
+
+    /**
+     * Deallocates the specified compute node.
+     * <p>You can deallocate a compute node only when it is in the {@link com.microsoft.azure.batch.protocol.models.ComputeNodeState#IDLE Idle} or {@link com.microsoft.azure.batch.protocol.models.ComputeNodeState#RUNNING Running} state.</p>
+     *
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node to deallocate.
+     * @param nodeDeallocateOption Specifies when to deallocate the node and what to do with currently running tasks.
+     * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
+     */
+    public void deallocateComputeNode(String poolId, String nodeId, ComputeNodeDeallocateOption nodeDeallocateOption, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
+        ComputeNodeDeallocateOptions options = new ComputeNodeDeallocateOptions();
+        BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
+        bhMgr.applyRequestBehaviors(options);
+
+        this.parentBatchClient.protocolLayer().computeNodes().deallocate(poolId, nodeId, nodeDeallocateOption, options);
+    }
+
+    /**
+     * Starts the specified compute node.
+     * <p>You can start a compute node only if it has been deallocated.</p>
+     *
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node to start.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
+     */
+    public void startComputeNode(String poolId, String nodeId) throws BatchErrorException, IOException {
+        startComputeNode(poolId, nodeId, null);
+    }
+
+    /**
+     * Starts the specified compute node.
+     * <p>You can start a compute node only if it has been deallocated.</p>
+     *
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node to start.
+     * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
+     */
+    public void startComputeNode(String poolId, String nodeId, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
+        ComputeNodeStartOptions options = new ComputeNodeStartOptions();
+        BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
+        bhMgr.applyRequestBehaviors(options);
+
+        this.parentBatchClient.protocolLayer().computeNodes().start(poolId, nodeId, options);
+    }
+
+
 }
