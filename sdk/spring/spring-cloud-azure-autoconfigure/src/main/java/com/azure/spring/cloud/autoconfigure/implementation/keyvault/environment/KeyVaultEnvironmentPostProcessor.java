@@ -48,10 +48,9 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
 
     private static final String SKIP_CONFIGURE_REASON_FORMAT = "Skip configuring Key Vault PropertySource because %s.";
 
-    private final DeferredLogFactory loggerFactory;
     private final Log logger;
-    private final ConfigurableBootstrapContext bootstrapContext;
 
+    private final ConfigurableBootstrapContext bootstrapContext;
 
     /**
      * Creates a new instance of {@link KeyVaultEnvironmentPostProcessor}.
@@ -59,7 +58,6 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
      * @param bootstrapContext The bootstrap context.
      */
     public KeyVaultEnvironmentPostProcessor(DeferredLogFactory loggerFactory, ConfigurableBootstrapContext bootstrapContext) {
-        this.loggerFactory = loggerFactory;
         this.logger = loggerFactory.getLog(getClass());
         this.bootstrapContext = bootstrapContext;
     }
@@ -134,15 +132,16 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
             AzureKeyVaultPropertySourceProperties properties) {
         try {
             final KeyVaultOperation keyVaultOperation = new KeyVaultOperation(
-                    this.loggerFactory,
-                    properties.getName(),
-                    buildSecretClient(properties),
-                    properties.getRefreshInterval(),
-                    properties.getSecretKeys(),
-                    properties.isCaseSensitive());
-            return new KeyVaultPropertySource(properties.getName(), keyVaultOperation);
+                buildSecretClient(properties),
+                properties.getSecretKeys(),
+                properties.isCaseSensitive());
+            return new KeyVaultPropertySource(
+                properties.getName(),
+                properties.getRefreshInterval(),
+                keyVaultOperation,
+                properties.isCaseSensitive());
         } catch (final Exception exception) {
-            throw new IllegalStateException("Failed to configure KeyVault property source", exception);
+            throw new IllegalStateException("Failed to configure KeyVault property source '" + properties.getName() + "'", exception);
         }
     }
 

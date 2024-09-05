@@ -18,23 +18,20 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.boot.logging.DeferredLogs;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
-import java.time.Duration;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import static com.azure.spring.cloud.autoconfigure.implementation.keyvault.secrets.properties.AzureKeyVaultPropertySourceProperties.DEFAULT_REFRESH_INTERVAL;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -46,22 +43,7 @@ public class KeyVaultOperationTests {
 
     private static final String SECRET_KEY_1 = "key1";
 
-    private static final String TEST_SPRING_RELAXED_BINDING_NAME_0 = "acme.my-project.person.first-name";
-
-    private static final String TEST_SPRING_RELAXED_BINDING_NAME_1 = "acme.myProject.person.firstName";
-
-    private static final String TEST_SPRING_RELAXED_BINDING_NAME_2 = "acme.my_project.person.first_name";
-
-    private static final String TEST_SPRING_RELAXED_BINDING_NAME_3 = "ACME_MYPROJECT_PERSON_FIRSTNAME";
-
-    private static final String TEST_AZURE_KEYVAULT_NAME = "acme-myproject-person-firstname";
-
-    private static final List<String> TEST_SPRING_RELAXED_BINDING_NAMES = Arrays.asList(
-        TEST_SPRING_RELAXED_BINDING_NAME_0,
-        TEST_SPRING_RELAXED_BINDING_NAME_1,
-        TEST_SPRING_RELAXED_BINDING_NAME_2,
-        TEST_SPRING_RELAXED_BINDING_NAME_3
-    );
+    private static final String SECRET_VALUE_1 = "value1";
 
     @Mock
     private SecretClient keyVaultClient;
@@ -81,109 +63,99 @@ public class KeyVaultOperationTests {
     }
 
     public void setupSecretBundle(List<String> secretKeysConfig) {
-        keyVaultOperation = new KeyVaultOperation(new DeferredLogs(),
-            "test", keyVaultClient, Duration.ZERO, secretKeysConfig, false);
+        keyVaultOperation = new KeyVaultOperation(keyVaultClient, secretKeysConfig, false);
     }
 
     @Test
     public void caseSensitive() {
-        final KeyVaultOperation keyOperation = new KeyVaultOperation(
-            new DeferredLogs(),
-            "test",
-            keyVaultClient,
-            DEFAULT_REFRESH_INTERVAL,
-            new ArrayList<>(),
-            true);
-        final LinkedHashMap<String, String> properties = new LinkedHashMap<>();
-        properties.put("key1", "value1");
-        properties.put("Key2", "Value2");
-        keyOperation.setProperties(properties);
+        String key1 = "KEY1";
+        String value1 = "value1";
+        String key2 = "Key2";
+        String value2 = "value2";
+        KeyVaultSecret key1Secret = new KeyVaultSecret(key1, value1);
+        key1Secret.getProperties().setEnabled(true);
+        KeyVaultSecret key2Secret = new KeyVaultSecret(key2, value2);
+        key2Secret.getProperties().setEnabled(true);
 
-        assertEquals("value1", keyOperation.getProperty("key1"));
-        assertEquals("Value2", keyOperation.getProperty("Key2"));
+        List<SecretProperties> properties = Arrays.asList(key1Secret.getProperties(), key2Secret.getProperties());
+        OnePageResponse<SecretProperties> secretResponse = new OnePageResponse<>(properties);
+        when(keyVaultClient.getSecret(key1, null)).thenReturn(key1Secret);
+        when(keyVaultClient.getSecret(key2, null)).thenReturn(key2Secret);
+        when(keyVaultClient.listPropertiesOfSecrets())
+            .thenReturn(new PagedIterable<>(new PagedFlux<>(() -> Mono.just(secretResponse))));
+        KeyVaultOperation operation = new KeyVaultOperation(keyVaultClient, null, true);
+        Map<String, String> refreshedProperties = operation.refreshProperties();
+        assertEquals(value1, refreshedProperties.get(key1));
+        assertEquals(value2, refreshedProperties.get(key2));
     }
 
     @Test
     public void testGetWithNoSpecificSecretKeys() {
+        KeyVaultSecret key1Secret = new KeyVaultSecret(SECRET_KEY_1, SECRET_VALUE_1);
+        key1Secret.getProperties().setEnabled(true);
+        List<SecretProperties> properties = Arrays.asList(key1Secret.getProperties());
+        OnePageResponse<SecretProperties> secretResponse = new OnePageResponse<>(properties);
+        when(keyVaultClient.getSecret(key1Secret.getName(), null)).thenReturn(key1Secret);
+        when(keyVaultClient.listPropertiesOfSecrets())
+            .thenReturn(new PagedIterable<>(new PagedFlux<>(() -> Mono.just(secretResponse))));
         setupSecretBundle(null);
-
-        final LinkedHashMap<String, String> properties = new LinkedHashMap<>();
-        properties.put("testpropertyname1", TEST_PROPERTY_NAME_1);
-        keyVaultOperation.setProperties(properties);
-
-        assertThat(keyVaultOperation.getProperty(TEST_PROPERTY_NAME_1)).isEqualToIgnoringCase(TEST_PROPERTY_NAME_1);
+        Map<String, String> refreshedProperties = keyVaultOperation.refreshProperties();
+        assertThat(refreshedProperties.get(SECRET_KEY_1)).isEqualToIgnoringCase(SECRET_VALUE_1);
     }
 
     @Test
     public void testGetAndMissWhenSecretsProvided() {
+        KeyVaultSecret key1Secret = new KeyVaultSecret(SECRET_KEY_1, SECRET_VALUE_1);
+        KeyVaultSecret key2Secret = new KeyVaultSecret("key2", "value2");
+        KeyVaultSecret key3Secret = new KeyVaultSecret("key3", "value3");
+        when(keyVaultClient.getSecret(key1Secret.getName())).thenReturn(key1Secret);
+        when(keyVaultClient.getSecret(key2Secret.getName())).thenReturn(key2Secret);
+        when(keyVaultClient.getSecret(key3Secret.getName())).thenReturn(key3Secret);
         setupSecretBundle(SECRET_KEYS_CONFIG);
-
-        final LinkedHashMap<String, String> properties = new LinkedHashMap<>();
-        properties.put("key1", "value1");
-        properties.put("key2", "value2");
-        properties.put("key3", "value3");
-        keyVaultOperation.setProperties(properties);
-
-        assertThat(keyVaultOperation.getProperty(TEST_PROPERTY_NAME_1)).isEqualToIgnoringCase(null);
+        Map<String, String> refreshedProperties = keyVaultOperation.refreshProperties();
+        assertThat(refreshedProperties.get(TEST_PROPERTY_NAME_1)).isEqualToIgnoringCase(null);
     }
 
     @Test
     public void testGetAndHitWhenSecretsProvided() {
-        when(keyVaultClient.getSecret("key1")).thenReturn(new KeyVaultSecret("key1", "key1"));
-        when(keyVaultClient.getSecret("key2")).thenReturn(new KeyVaultSecret("key2", "key2"));
-        when(keyVaultClient.getSecret("key3")).thenReturn(new KeyVaultSecret("key3", "key3"));
-
+        KeyVaultSecret key1Secret = new KeyVaultSecret(SECRET_KEY_1, SECRET_VALUE_1);
+        KeyVaultSecret key2Secret = new KeyVaultSecret("key2", "value2");
+        KeyVaultSecret key3Secret = new KeyVaultSecret("key3", "value3");
+        when(keyVaultClient.getSecret(key1Secret.getName())).thenReturn(key1Secret);
+        when(keyVaultClient.getSecret(key2Secret.getName())).thenReturn(key2Secret);
+        when(keyVaultClient.getSecret(key3Secret.getName())).thenReturn(key3Secret);
         setupSecretBundle(SECRET_KEYS_CONFIG);
-
-        assertThat(keyVaultOperation.getProperty(SECRET_KEY_1)).isEqualToIgnoringCase(SECRET_KEY_1);
+        Map<String, String> refreshedProperties = keyVaultOperation.refreshProperties();
+        assertThat(refreshedProperties.get(SECRET_KEY_1)).isEqualToIgnoringCase(SECRET_VALUE_1);
     }
 
     @Test
     public void testList() {
         //test list with no specific secret keys
         setupSecretBundle(null);
-        final LinkedHashMap<String, String> properties = new LinkedHashMap<>();
-        properties.put(TEST_PROPERTY_NAME_1, TEST_PROPERTY_NAME_1);
-        keyVaultOperation.setProperties(properties);
-        final String[] result = keyVaultOperation.getPropertyNames();
-        assertThat(result.length).isEqualTo(1);
-        assertThat(result[0]).isEqualToIgnoringCase(TEST_PROPERTY_NAME_1);
+        KeyVaultSecret test1Secret = new KeyVaultSecret(TEST_PROPERTY_NAME_1, TEST_PROPERTY_NAME_1);
+        test1Secret.getProperties().setEnabled(true);
+        List<SecretProperties> properties = Collections.singletonList(test1Secret.getProperties());
+        OnePageResponse<SecretProperties> secretResponse = new OnePageResponse<>(properties);
+        when(keyVaultClient.getSecret(test1Secret.getName(), null)).thenReturn(test1Secret);
+        when(keyVaultClient.listPropertiesOfSecrets())
+            .thenReturn(new PagedIterable<>(new PagedFlux<>(() -> Mono.just(secretResponse))));
+        Map<String, String> refreshedProperties = keyVaultOperation.refreshProperties();
+        assertThat(refreshedProperties.size()).isEqualTo(1);
+        String propertyKey = refreshedProperties.keySet().iterator().next();
+        assertTrue(propertyKey.equalsIgnoreCase(TEST_PROPERTY_NAME_1));
 
         //test list with specific secret key configs
-        when(keyVaultClient.getSecret("key1")).thenReturn(new KeyVaultSecret("key1", "key1"));
-        when(keyVaultClient.getSecret("key2")).thenReturn(new KeyVaultSecret("key2", "key2"));
-        when(keyVaultClient.getSecret("key3")).thenReturn(new KeyVaultSecret("key3", "key3"));
+        KeyVaultSecret key1Secret = new KeyVaultSecret(SECRET_KEY_1, SECRET_VALUE_1);
+        KeyVaultSecret key2Secret = new KeyVaultSecret("key2", "value2");
+        KeyVaultSecret key3Secret = new KeyVaultSecret("key3", "value3");
+        when(keyVaultClient.getSecret(key1Secret.getName())).thenReturn(key1Secret);
+        when(keyVaultClient.getSecret(key2Secret.getName())).thenReturn(key2Secret);
+        when(keyVaultClient.getSecret(key3Secret.getName())).thenReturn(key3Secret);
         setupSecretBundle(SECRET_KEYS_CONFIG);
-        final String[] specificResult = keyVaultOperation.getPropertyNames();
-        assertThat(specificResult.length).isEqualTo(3);
-        assertThat(specificResult[0]).isEqualTo(SECRET_KEYS_CONFIG.get(0));
-    }
-
-    @Test
-    public void setTestSpringRelaxedBindingNames() {
-        //test list with no specific secret keys
-        setupSecretBundle(null);
-        LinkedHashMap<String, String> properties = new LinkedHashMap<>();
-        properties.put("acme-myproject-person-firstname", TEST_AZURE_KEYVAULT_NAME);
-        keyVaultOperation.setProperties(properties);
-        TEST_SPRING_RELAXED_BINDING_NAMES
-            .forEach(n -> assertThat(keyVaultOperation.getProperty(n)).isEqualTo(TEST_AZURE_KEYVAULT_NAME));
-
-        //test list with specific secret key configs
-        setupSecretBundle(Arrays.asList(TEST_AZURE_KEYVAULT_NAME));
-        properties = new LinkedHashMap<>();
-        properties.put(TEST_AZURE_KEYVAULT_NAME, TEST_AZURE_KEYVAULT_NAME);
-        keyVaultOperation.setProperties(properties);
-        TEST_SPRING_RELAXED_BINDING_NAMES
-            .forEach(n -> assertThat(keyVaultOperation.getProperty(n)).isEqualTo(TEST_AZURE_KEYVAULT_NAME));
-
-        setupSecretBundle(SECRET_KEYS_CONFIG);
-        properties = new LinkedHashMap<>();
-        properties.put("key1", "key1");
-        properties.put("key2", "key2");
-        properties.put("key3", "key3");
-        keyVaultOperation.setProperties(properties);
-        TEST_SPRING_RELAXED_BINDING_NAMES.forEach(n -> assertThat(keyVaultOperation.getProperty(n)).isEqualTo(null));
+        refreshedProperties = keyVaultOperation.refreshProperties();
+        assertThat(refreshedProperties.size()).isEqualTo(3);
+        assertTrue(refreshedProperties.containsKey(SECRET_KEYS_CONFIG.get(0)));
     }
 
     @Test
@@ -200,38 +172,35 @@ public class KeyVaultOperationTests {
         when(keyVaultClient.listPropertiesOfSecrets())
             .thenReturn(new PagedIterable<>(new PagedFlux<>(() -> Mono.just(secretResponse))));
         setupSecretBundle(null);
-        assertThat(keyVaultOperation.getPropertyNames().length == 1);
-        assertThat(keyVaultOperation.getProperty("key1")).isNotNull();
-        assertThat(keyVaultOperation.getProperty("key2")).isNull();
-
+        Map<String, String> refreshedProperties = keyVaultOperation.refreshProperties();
+        assertEquals(1, refreshedProperties.size());
+        assertThat(refreshedProperties.get("key1")).isNotNull();
+        assertThat(refreshedProperties.get("key2")).isNull();
     }
 
     @Test
     @Timeout(5)
     public void refreshTwoKeyVaultsSecrets() throws InterruptedException {
         CountDownLatch latchForRefreshing = new CountDownLatch(2);
-        new SecretRefreshing(latchForRefreshing, "KeyVault1", "test1",
+        new SecretRefreshing(latchForRefreshing, "test1",
             "value1", "value1Updated").start();
-        new SecretRefreshing(latchForRefreshing, "KeyVault2", "test2",
+        new SecretRefreshing(latchForRefreshing, "test2",
             "value2", "value2Updated").start();
         latchForRefreshing.await();
     }
 
     static class SecretRefreshing extends Thread {
         private final CountDownLatch latchForRefreshing;
-        private final String propertySourceName;
         private final SecretClient keyClient;
         private final KeyVaultSecret secret;
         private final String keyUpdatedValue;
-        private static final int SLEEP_IN_SECONDS = 3;
+        private static final int REFRESH_IN_SECONDS = 3;
 
         SecretRefreshing(CountDownLatch latchForRefreshing,
-                                String propertySourceName,
                                 String name,
                                 String value,
                                 String keyUpdatedValue) {
             this.latchForRefreshing = latchForRefreshing;
-            this.propertySourceName = propertySourceName;
             this.keyClient = mock(SecretClient.class);
             this.secret = new KeyVaultSecret(name, value);
             this.secret.getProperties().setEnabled(true);
@@ -240,30 +209,31 @@ public class KeyVaultOperationTests {
 
         @Override
         public void run() {
-            KeyVaultOperation secret1Operation = getSecretOperation(propertySourceName, keyClient, secret);
-            assertThat(secret1Operation.getProperty(secret.getName())).isEqualTo(secret.getValue());
+            KeyVaultOperation secretOperation = getSecretOperation(keyClient, secret);
+            Map<String, String> properties = secretOperation.refreshProperties();
+            assertThat(properties.get(secret.getName())).isEqualTo(secret.getValue());
 
             updateSecretValue(secret.getName(), keyUpdatedValue, keyClient);
             try {
-                TimeUnit.SECONDS.sleep(SLEEP_IN_SECONDS + 1);
+                TimeUnit.SECONDS.sleep(REFRESH_IN_SECONDS + 1);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            assertThat(secret1Operation.getProperty(secret.getName())).isEqualTo(keyUpdatedValue);
+            properties = secretOperation.refreshProperties();
+            assertThat(properties.get(secret.getName())).isEqualTo(keyUpdatedValue);
             latchForRefreshing.countDown();
         }
 
-        private KeyVaultOperation getSecretOperation(String propertySourceName, SecretClient keyClient, KeyVaultSecret secret) {
+        private KeyVaultOperation getSecretOperation(SecretClient keyClient, KeyVaultSecret secret) {
             List<SecretProperties> properties = Collections.singletonList(secret.getProperties());
             OnePageResponse<SecretProperties> secret1Response = new OnePageResponse<>(properties);
             when(keyClient.getSecret(secret.getName(), null)).thenReturn(secret);
             when(keyClient.listPropertiesOfSecrets())
                 .thenReturn(new PagedIterable<>(new PagedFlux<>(() -> Mono.just(secret1Response))));
-            return new KeyVaultOperation(new DeferredLogs(),
-                propertySourceName, keyClient, Duration.ofSeconds(SLEEP_IN_SECONDS), null, false);
+            return new KeyVaultOperation(keyClient, null, false);
         }
 
-        private static void updateSecretValue(String key1, String key1UpdatedValue, SecretClient key1Client) {
+        private void updateSecretValue(String key1, String key1UpdatedValue, SecretClient key1Client) {
             KeyVaultSecret secret1;
             secret1 = new KeyVaultSecret(key1, key1UpdatedValue);
             secret1.getProperties().setEnabled(true);

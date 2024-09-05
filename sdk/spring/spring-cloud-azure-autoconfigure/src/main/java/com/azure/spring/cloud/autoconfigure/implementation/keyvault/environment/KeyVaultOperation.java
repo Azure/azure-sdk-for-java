@@ -8,23 +8,16 @@ import com.azure.core.util.paging.ContinuablePagedIterable;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.security.keyvault.secrets.models.SecretProperties;
-import org.apache.commons.logging.Log;
-import org.springframework.boot.logging.DeferredLogFactory;
-import org.springframework.lang.NonNull;
 
-import java.time.Duration;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+
+import static com.azure.spring.cloud.autoconfigure.implementation.keyvault.environment.utils.KeyVaultPropertySourceUtils.toKeyVaultSecretName;
 
 /**
  * KeyVaultOperation wraps the operations to access Key Vault.
@@ -33,19 +26,10 @@ import java.util.stream.StreamSupport;
  */
 public class KeyVaultOperation {
 
-    private final Log logger;
-
-    private final String propertySourceName;
-
     /**
      * Stores the case-sensitive flag.
      */
     private final boolean caseSensitive;
-
-    /**
-     * Stores the properties.
-     */
-    private Map<String, String> properties = new HashMap<>();
 
     /**
      * Stores the secret client.
@@ -56,166 +40,51 @@ public class KeyVaultOperation {
      * Stores the secret keys.
      */
     private final List<String> secretKeys;
-    /**
-     * Stores the timer object to schedule refresh task.
-     */
-
-    private static final ConcurrentHashMap<String, Timer> TIMER_MANAGER = new ConcurrentHashMap<>();
 
     /**
      * Constructor.
-     * @param loggerFactory the deferred logger factory.
-     * @param propertySourceName the name of the property source.
      * @param secretClient the Key Vault secret client.
-     * @param refreshDuration the refresh in milliseconds (0 or less disables refresh).
      * @param secretKeys the secret keys to look for.
      * @param caseSensitive the case-sensitive flag.
      */
-    public KeyVaultOperation(DeferredLogFactory loggerFactory,
-                             String propertySourceName,
-                             final SecretClient secretClient,
-                             final Duration refreshDuration,
+    public KeyVaultOperation(final SecretClient secretClient,
                              List<String> secretKeys,
                              boolean caseSensitive) {
-        this.propertySourceName = propertySourceName;
-        this.logger = loggerFactory.getLog(KeyVaultOperation.class);
         this.caseSensitive = caseSensitive;
         this.secretClient = secretClient;
         this.secretKeys = secretKeys;
-
-        refreshProperties();
-
-        final long refreshInMillis = refreshDuration.toMillis();
-        if (refreshInMillis > 0) {
-            synchronized (KeyVaultOperation.class) {
-                Timer timer;
-                if (TIMER_MANAGER.containsKey(propertySourceName)) {
-                    timer = TIMER_MANAGER.get(propertySourceName);
-                    try {
-                        timer.cancel();
-                        timer.purge();
-                    } catch (RuntimeException runtimeException) {
-                        logger.error("Error of terminating Timer", runtimeException);
-                    }
-                }
-                timer = new Timer(propertySourceName, true);
-                TIMER_MANAGER.put(propertySourceName, timer);
-
-                final TimerTask task = new TimerTask() {
-                    @Override
-                    public void run() {
-                        refreshProperties();
-                    }
-                };
-                timer.scheduleAtFixedRate(task, refreshInMillis, refreshInMillis);
-            }
-        }
-    }
-
-    /**
-     * Get the property.
-     *
-     * @param property the property to get.
-     * @return the property value.
-     */
-    public String getProperty(String property) {
-        return properties.get(toKeyVaultSecretName(property));
-    }
-
-    /**
-     * Get the property names.
-     *
-     * @return the property names.
-     */
-    public String[] getPropertyNames() {
-        if (!caseSensitive) {
-            return properties
-                .keySet()
-                .stream()
-                .flatMap(p -> Stream.of(p, p.replace("-", ".")))
-                .distinct()
-                .toArray(String[]::new);
-        } else {
-            return properties
-                .keySet()
-                .toArray(new String[0]);
-        }
     }
 
     /**
      * Refresh the properties by accessing key vault.
      */
-    private void refreshProperties() {
-        logger.debug("Refreshing the secrets in property source '" + this.propertySourceName + "'.");
+    Map<String, String> refreshProperties() {
+        Map<String, String> properties;
         if (secretKeys == null || secretKeys.isEmpty()) {
             properties = Optional.of(secretClient)
-                .map(SecretClient::listPropertiesOfSecrets)
-                .map(ContinuablePagedIterable::iterableByPage)
-                .map(i -> StreamSupport.stream(i.spliterator(), false))
-                .orElseGet(Stream::empty)
-                .map(PagedResponse::getElements)
-                .flatMap(i -> StreamSupport.stream(i.spliterator(), false))
-                .filter(SecretProperties::isEnabled)
-                .map(p -> secretClient.getSecret(p.getName(), p.getVersion()))
-                .filter(Objects::nonNull)
-                .collect(Collectors.toMap(
-                    s -> toKeyVaultSecretName(s.getName()),
-                    KeyVaultSecret::getValue
-                ));
+                                 .map(SecretClient::listPropertiesOfSecrets)
+                                 .map(ContinuablePagedIterable::iterableByPage)
+                                 .map(i -> StreamSupport.stream(i.spliterator(), false))
+                                 .orElseGet(Stream::empty)
+                                 .map(PagedResponse::getElements)
+                                 .flatMap(i -> StreamSupport.stream(i.spliterator(), false))
+                                 .filter(SecretProperties::isEnabled)
+                                 .map(p -> secretClient.getSecret(p.getName(), p.getVersion()))
+                                 .filter(Objects::nonNull)
+                                 .collect(Collectors.toMap(
+                                     s -> toKeyVaultSecretName(this.caseSensitive, s.getName()),
+                                     KeyVaultSecret::getValue
+                                 ));
         } else {
             properties = secretKeys.stream()
-                .map(this::toKeyVaultSecretName)
-                .map(secretClient::getSecret)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toMap(
-                    s -> toKeyVaultSecretName(s.getName()),
-                    KeyVaultSecret::getValue
-                ));
+                                   .map(key -> toKeyVaultSecretName(this.caseSensitive, key))
+                                   .map(secretClient::getSecret)
+                                   .filter(Objects::nonNull)
+                                   .collect(Collectors.toMap(
+                                       s -> toKeyVaultSecretName(this.caseSensitive, s.getName()),
+                                       KeyVaultSecret::getValue
+                                   ));
         }
-        logger.debug("The secrets in property source '" + this.propertySourceName + "' have been refreshed.");
+        return properties;
     }
-
-    /**
-     * For convention, we need to support all relaxed binding format from spring, these may include:
-     * <table>
-     * <tr><td>Spring relaxed binding names</td></tr>
-     * <tr><td>acme.my-project.person.first-name</td></tr>
-     * <tr><td>acme.myProject.person.firstName</td></tr>
-     * <tr><td>acme.my_project.person.first_name</td></tr>
-     * <tr><td>ACME_MYPROJECT_PERSON_FIRSTNAME</td></tr>
-     * </table>
-     * But azure key vault only allows ^[0-9a-zA-Z-]+$ and case-insensitive, so
-     * there must be some conversion between spring names and azure key vault
-     * names. For example, the 4 properties stated above should be converted to
-     * acme-myproject-person-firstname in key vault.
-     *
-     * @param property of secret instance.
-     * @return the value of secret with given name or null.
-     */
-    private String toKeyVaultSecretName(@NonNull String property) {
-        if (!caseSensitive) {
-            if (property.matches("[a-z0-9A-Z-]+")) {
-                return property.toLowerCase(Locale.US);
-            } else if (property.matches("[A-Z0-9_]+")) {
-                return property.toLowerCase(Locale.US).replace("_", "-");
-            } else {
-                return property.toLowerCase(Locale.US)
-                    .replace("-", "") // my-project -> myproject
-                    .replace("_", "") // my_project -> myproject
-                    .replace(".", "-"); // acme.myproject -> acme-myproject
-            }
-        } else {
-            return property;
-        }
-    }
-
-    /**
-     * Set the properties.
-     *
-     * @param properties the properties.
-     */
-    void setProperties(HashMap<String, String> properties) {
-        this.properties = properties;
-    }
-
 }
