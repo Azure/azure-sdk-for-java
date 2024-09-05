@@ -83,12 +83,6 @@
       <version>3.3.3</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-starter-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-configuration-processor</artifactId>
-      <version>3.3.3</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
-      <optional>true</optional>
-    </dependency>
 
     <!-- Add mockito-core 4.11.0 to work with Java 21 -->
     <dependency>

@@ -87,6 +87,12 @@
       <artifactId>azure-core-test</artifactId>
       <version>1.26.2</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>com.fasterxml.jackson.dataformat</groupId>
+          <artifactId>jackson-dataformats-xml</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <!-- The following two dependencies are to test for

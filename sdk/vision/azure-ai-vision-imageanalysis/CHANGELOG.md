@@ -1,14 +1,11 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.0.0-beta.3 (2024-09-06)
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+* Add support for Entra ID authentication.
+* Migrate to stream-style serialization using the `azure-json` package. This is a new dependency introduced by `azure-core`.
 
 ## 1.0.0-beta.2 (2024-02-09)
 
