@@ -4,56 +4,61 @@
 
 package com.azure.resourcemanager.billing.models;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.billing.fluent.models.BillingRoleDefinitionInner;
-import java.util.List;
+import java.util.Map;
 
-/** An immutable client-side representation of BillingRoleDefinition. */
+/**
+ * An immutable client-side representation of BillingRoleDefinition.
+ */
 public interface BillingRoleDefinition {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
-     * Gets the description property: The role description.
-     *
-     * @return the description value.
+     * Gets the tags property: Dictionary of metadata associated with the resource. It may not be populated for all
+     * resource types. Maximum key/value length supported of 256 characters. Keys/value should not empty value nor null.
+     * Keys can not contain &lt; &gt; % &amp; \ ? /.
+     * 
+     * @return the tags value.
      */
-    String description();
+    Map<String, String> tags();
 
     /**
-     * Gets the permissions property: The billingPermissions the role has.
-     *
-     * @return the permissions value.
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
      */
-    List<BillingPermissionsProperties> permissions();
+    SystemData systemData();
 
     /**
-     * Gets the roleName property: The name of the role.
-     *
-     * @return the roleName value.
+     * Gets the properties property: The properties of a role definition.
+     * 
+     * @return the properties value.
      */
-    String roleName();
+    BillingRoleDefinitionProperties properties();
 
     /**
      * Gets the inner com.azure.resourcemanager.billing.fluent.models.BillingRoleDefinitionInner object.
-     *
+     * 
      * @return the inner object.
      */
     BillingRoleDefinitionInner innerModel();
