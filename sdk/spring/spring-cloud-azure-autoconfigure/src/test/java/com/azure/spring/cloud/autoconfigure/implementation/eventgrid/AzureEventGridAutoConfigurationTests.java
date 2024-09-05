@@ -156,12 +156,10 @@ class AzureEventGridAutoConfigurationTests extends AbstractAzureServiceConfigura
                 assertThat(context).hasSingleBean(EventGridPublisherAsyncClient.class);
 
                 assertThat(context).hasBean("myCustomClient");
+                assertThat(context.getBean("myCustomClient")).isSameAs(myCustomClient);
 
-                EventGridEvent eventGridEvent = new EventGridEvent("test", "Example.EventType",
-                    BinaryData.fromObject(String.class), "0.1");
-                assertDoesNotThrow(() -> context.getBean(EventGridPublisherAsyncClient.class).sendEvent(eventGridEvent));
-                assertThrows(ClassCastException.class,
-                    () -> context.getBean(EventGridPublisherClient.class).sendEvent(eventGridEvent));
+                assertThat(context.getBean(EventGridPublisherClient.class)).isSameAs(myCustomClient);
+
             });
     }
 
