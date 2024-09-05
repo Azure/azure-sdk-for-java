@@ -1902,6 +1902,11 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
 
         CosmosDiagnostics diagnostics = changeFeedProcessorContext.getDiagnostics();
         assertThat(diagnostics).isNotNull();
+        String diagnosticsString = diagnostics.toString();
+        // Validate a few basic diagnostics properties
+        assertThat(diagnosticsString).contains("\"connectionMode\":\"GATEWAY\"");
+        assertThat(diagnosticsString).contains("gatewayStatisticsList");
+        assertThat(diagnosticsString).contains("\"operationType\":\"ReadFeed\"");
     }
 
     private Consumer<List<ChangeFeedProcessorItem>> fullFidelityChangeFeedProcessorHandler(Map<String, ChangeFeedProcessorItem> receivedDocuments) {
