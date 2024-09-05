@@ -121,12 +121,12 @@ public class FaultInjectionServerErrorRuleOnGatewayTests extends FaultInjectionT
     @DataProvider(name = "faultInjectionServerErrorResponseProvider")
     public static Object[][] faultInjectionServerErrorResponseProvider() {
         return new Object[][]{
-            // faultInjectionServerError, will SDK retry, errorStatusCode, errorSubStatusCode
-            { FaultInjectionServerErrorType.INTERNAL_SERVER_ERROR, false, 500, 0 },
-            { FaultInjectionServerErrorType.RETRY_WITH, false, 449, 0 },
-            { FaultInjectionServerErrorType.TOO_MANY_REQUEST, true, 429, HttpConstants.SubStatusCodes.USER_REQUEST_RATE_TOO_LARGE },
-            { FaultInjectionServerErrorType.READ_SESSION_NOT_AVAILABLE, true, 404, 1002 },
-            { FaultInjectionServerErrorType.SERVICE_UNAVAILABLE, true, 503, 21008 }
+            // faultInjectionServerError, will SDK retry, check for multi-region setup, errorStatusCode, errorSubStatusCode
+            { FaultInjectionServerErrorType.INTERNAL_SERVER_ERROR, false, false, 500, 0 },
+            { FaultInjectionServerErrorType.RETRY_WITH, false, false, 449, 0 },
+            { FaultInjectionServerErrorType.TOO_MANY_REQUEST, true, false, 429, HttpConstants.SubStatusCodes.USER_REQUEST_RATE_TOO_LARGE },
+            { FaultInjectionServerErrorType.READ_SESSION_NOT_AVAILABLE, true, false, 404, 1002 },
+            { FaultInjectionServerErrorType.SERVICE_UNAVAILABLE, true, true, 503, 21008 }
         };
     }
 
@@ -419,8 +419,15 @@ public class FaultInjectionServerErrorRuleOnGatewayTests extends FaultInjectionT
     public void faultInjectionServerErrorRuleTests_ServerErrorResponse(
         FaultInjectionServerErrorType serverErrorType,
         boolean canRetry,
+        boolean isMultiRegionCheckRequired,
         int errorStatusCode,
         int errorSubStatusCode) throws JsonProcessingException {
+
+        if (isMultiRegionCheckRequired) {
+            if (this.preferredReadRegions.size() == 1) {
+                canRetry = false;
+            }
+        }
 
         // simulate high channel acquisition/connectionTimeout
         String ruleId = "serverErrorRule-" + serverErrorType + "-" + UUID.randomUUID();

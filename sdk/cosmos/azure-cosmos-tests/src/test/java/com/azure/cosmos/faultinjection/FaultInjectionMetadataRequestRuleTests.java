@@ -324,7 +324,7 @@ public class FaultInjectionMetadataRequestRuleTests extends FaultInjectionTestBa
         }
     }
 
-    @Test(groups = { "multi-region" }, dataProvider = "preferredRegionsConfig", timeOut = 4 * TIMEOUT)
+    @Test(groups = { "multi-region" }, dataProvider = "preferredRegionsConfigProvider", timeOut = 4 * TIMEOUT)
     public void faultInjectionServerErrorRuleTests_AddressRefresh_byPartition(boolean shouldInjectPreferredRegionsOnClient) {
 
         // We need to create a new client because client may have marked region unavailable in other tests
@@ -434,7 +434,7 @@ public class FaultInjectionMetadataRequestRuleTests extends FaultInjectionTestBa
         }
     }
 
-    @Test(groups = { "multi-region" }, dataProvider = "preferredRegionsConfig", timeOut = 4 * TIMEOUT)
+    @Test(groups = { "multi-region" }, dataProvider = "preferredRegionsConfigProvider", timeOut = 4 * TIMEOUT)
     public void faultInjectionServerErrorRuleTests_AddressRefresh_TooManyRequest(boolean shouldInjectPreferredRegionsOnClient) throws JsonProcessingException {
 
         // We need to create a new client because client may have marked region unavailable in other tests
@@ -616,7 +616,7 @@ public class FaultInjectionMetadataRequestRuleTests extends FaultInjectionTestBa
         }
     }
 
-    @Test(groups = { "multi-master" }, dataProvider = "preferredRegionsConfig", timeOut = 40 * TIMEOUT)
+    @Test(groups = { "multi-master" }, dataProvider = "preferredRegionsConfigProvider", timeOut = 40 * TIMEOUT)
     public void faultInjectionServerErrorRuleTests_CollectionRead_ConnectionDelay(boolean shouldInjectPreferredRegionsOnClient) throws JsonProcessingException {
 
         // We need to create a new client because client may have marked region unavailable in other tests
