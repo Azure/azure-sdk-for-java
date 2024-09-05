@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.FeedOperationContextForCircuitBreaker;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
@@ -86,11 +87,11 @@ abstract class Fetcher<T> {
     }
 
     public Mono<FeedResponse<T>> nextPage() {
-        return this.nextPageCore();
+        return this.nextPageCore(null);
     }
 
-    protected final Mono<FeedResponse<T>> nextPageCore() {
-        RxDocumentServiceRequest request = createRequest();
+    protected final Mono<FeedResponse<T>> nextPageCore(DocumentClientRetryPolicy documentClientRetryPolicy) {
+        RxDocumentServiceRequest request = createRequest(documentClientRetryPolicy);
         return nextPage(request);
     }
 
@@ -146,7 +147,7 @@ abstract class Fetcher<T> {
         this.shouldFetchMore.set(true);
     }
 
-    private RxDocumentServiceRequest createRequest() {
+    protected RxDocumentServiceRequest createRequest(DocumentClientRetryPolicy documentClientRetryPolicy) {
         if (!shouldFetchMore.get()) {
             // this should never happen
             logger.error(
@@ -155,10 +156,12 @@ abstract class Fetcher<T> {
             throw new IllegalStateException("INVALID state, trying to fetch more after completion");
         }
 
-        return this.createRequest(maxItemCount.get());
+        return this.createRequest(maxItemCount.get(), documentClientRetryPolicy);
     }
 
-    protected abstract RxDocumentServiceRequest createRequest(int maxItemCount);
+    protected abstract RxDocumentServiceRequest createRequest(
+        int maxItemCount,
+        DocumentClientRetryPolicy documentClientRetryPolicy);
 
     private Mono<FeedResponse<T>> nextPage(RxDocumentServiceRequest request) {
         AtomicBoolean completed = new AtomicBoolean(false);
