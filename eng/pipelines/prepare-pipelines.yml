@@ -2,9 +2,3 @@ trigger: none
 
 extends:
   template: /eng/common/pipelines/templates/jobs/prepare-pipelines.yml
-  parameters:
-    Repository: $(Build.Repository.Name)
-    Prefix: java
-    CIConventionOptions: ''
-    UPConventionOptions: '--variablegroups 1 58 76 93'
-    TestsConventionOptions: '--variablegroups 64'
