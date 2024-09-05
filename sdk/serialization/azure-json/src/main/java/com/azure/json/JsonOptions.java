@@ -13,6 +13,7 @@ package com.azure.json;
 public final class JsonOptions {
 
     private boolean nonNumericNumbersSupported = true;
+    private boolean isJsoncSupported;
 
     /**
      * Creates an instance of {@link JsonOptions}.
@@ -43,4 +44,27 @@ public final class JsonOptions {
         this.nonNumericNumbersSupported = nonNumericNumbersSupported;
         return this;
     }
+
+    /**
+     * Whether JSONC (JSON with comments) is supported.
+     * By default, this is configured to false.
+     *
+     * @return Whether JSONC is supported.
+     */
+    public boolean isJsoncSupported() {
+        return isJsoncSupported;
+    }
+
+    /**
+     * Sets whether JSONC (JSON with comments) is supported.
+     * By default, this is configured to false.
+     *
+     * @param jsoncSupported Whether JSONC is supported.
+     * @return The updated JsonOptions object.
+     */
+    public JsonOptions setJsoncSupported(boolean jsoncSupported) {
+        this.isJsoncSupported = jsoncSupported;
+        return this;
+    }
+
 }

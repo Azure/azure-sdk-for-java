@@ -1,46 +1,50 @@
 {
   "$schema": "https://json.schemastore.org/component-detection-manifest.json",
-  "Registrations": [
+  "version": 1,
+  "registrations": [
     {
-      "Component": {
-        "Type": "Maven",
-        "Maven": {
-          "ArtifactId": "guava",
-          "GroupId": "com.google.guava",
-          "Version": "33.0.0-jre"
+      "developmentDependency": false,
+      "component": {
+        "type": "maven",
+        "maven": {
+          "groupId": "com.google.guava",
+          "artifactId": "guava",
+          "version": "33.0.0-jre"
         }
       }
     },
     {
-      "Component": {
-        "Type": "Maven",
-        "Maven": {
-          "ArtifactId": "KeePassJava2",
-          "GroupId": "org.linguafranca.pwdb",
-          "Version": "2.1.4"
+      "developmentDependency": false,
+      "component": {
+        "type": "maven",
+        "maven": {
+          "groupId": "org.linguafranca.pwdb",
+          "artifactId": "KeePassJava2",
+          "version": "2.1.4"
         }
       }
     },
     {
-      "Component": {
-        "Type": "Maven",
-        "Maven": {
-          "ArtifactId": "bcprov-jdk15on",
-          "GroupId": "org.bouncycastle",
-          "Version": "1.67"
+      "developmentDependency": false,
+      "component": {
+        "type": "maven",
+        "maven": {
+          "groupId": "org.bouncycastle",
+          "artifactId": "bcprov-jdk15on",
+          "version": "1.67"
         }
       }
     },
     {
-      "Component": {
-        "Type": "Maven",
-        "Maven": {
-          "ArtifactId": "de.slackspace",
-          "GroupId": "openkeepass",
-          "Version": "0.8.1"
+      "developmentDependency": false,
+      "component": {
+        "type": "maven",
+        "maven": {
+          "groupId": "openkeepass",
+          "artifactId": "de.slackspace",
+          "version": "0.8.1"
         }
       }
     }
-  ],
-  "Version": 1
+  ]
 }
