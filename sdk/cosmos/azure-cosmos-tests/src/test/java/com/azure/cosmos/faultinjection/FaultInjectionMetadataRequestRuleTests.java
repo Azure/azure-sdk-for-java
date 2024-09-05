@@ -101,8 +101,9 @@ public class FaultInjectionMetadataRequestRuleTests extends FaultInjectionTestBa
         };
     }
 
-    @DataProvider(name = "preferredRegionsConfig")
-    public static Object[] preferredRegionsConfig() {
+    @DataProvider(name = "preferredRegionsConfigProvider")
+    public static Object[] preferredRegionsConfigProvider() {
+        // shouldInjectPreferredRegionsOnClient
         return new Object[] {false, true};
     }
 
@@ -136,7 +137,7 @@ public class FaultInjectionMetadataRequestRuleTests extends FaultInjectionTestBa
         this.writePreferredLocations = accountLevelWriteableLocationContext.serviceOrderedWriteableRegions;
     }
 
-    @Test(groups = { "multi-region" }, dataProvider = "preferredRegionsConfig", timeOut = 20 * TIMEOUT)
+    @Test(groups = { "multi-region" }, dataProvider = "preferredRegionsConfigProvider", timeOut = 20 * TIMEOUT)
     public void faultInjectionServerErrorRuleTests_AddressRefresh_ConnectionDelay(boolean shouldInjectPreferredRegionsOnClient) throws JsonProcessingException {
 
         // Test to validate if there is http connection exception for address refresh,
@@ -250,7 +251,7 @@ public class FaultInjectionMetadataRequestRuleTests extends FaultInjectionTestBa
         // which can impact the test result
         CosmosAsyncClient testClient = getClientBuilder()
             .contentResponseOnWriteEnabled(true)
-            .preferredRegions(shouldInjectPreferredRegionsOnClient ? this.readPreferredLocations : Collections.emptyList())
+            .preferredRegions(shouldInjectPreferredRegionsOnClient ? this.writePreferredLocations : Collections.emptyList())
             .buildAsyncClient();
 
         CosmosAsyncContainer container =
