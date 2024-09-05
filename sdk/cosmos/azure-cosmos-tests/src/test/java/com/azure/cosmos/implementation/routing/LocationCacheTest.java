@@ -106,6 +106,8 @@ public class LocationCacheTest {
     //      d) list with excludedRegions which is not a sub-list of preferredRegions and has duplicates
     //      e) list which is null
     //      f) list which is empty
+    //      g) whether exclude region works well when preferred region list is empty - in such a case, region exclusion
+    //         should apply to account-level regions
     //  2. todo: the dataProvider hard codes the list of available read and available write regions - this can be avoided
     //        a) according to the hardcoding - available read regions: location1, location2; available write regions: location1, location2, location3
     @DataProvider(name = "excludedRegionsTestConfigs")
@@ -349,9 +351,23 @@ public class LocationCacheTest {
     public void validateAsync(boolean useMultipleWriteEndpoints,
                               boolean endpointDiscoveryEnabled,
                               boolean isPreferredListEmpty) throws Exception {
+
+        List<URI> accountLevelWriteEndpoints
+            = new ArrayList<>(Arrays.asList(Location1Endpoint, Location2Endpoint, Location3Endpoint));
+        List<URI> accountLevelReadEndpoints
+            = new ArrayList<>(Arrays.asList(Location1Endpoint, Location2Endpoint, Location4Endpoint));
+        List<URI> preferredWriteRegionsIfPreferredLocationsIsntEmpty
+            = new ArrayList<>(Arrays.asList(Location1Endpoint, Location2Endpoint, Location3Endpoint));
+        List<URI> preferredReadRegionsIfPreferredLocationsIsntEmpty
+            = new ArrayList<>(Arrays.asList(Location1Endpoint, Location2Endpoint));
+
         validateLocationCacheAsync(useMultipleWriteEndpoints,
-                endpointDiscoveryEnabled,
-                isPreferredListEmpty);
+            endpointDiscoveryEnabled,
+            isPreferredListEmpty,
+            preferredReadRegionsIfPreferredLocationsIsntEmpty,
+            preferredWriteRegionsIfPreferredLocationsIsntEmpty,
+            accountLevelReadEndpoints,
+            accountLevelWriteEndpoints);
     }
 
     @Test(groups = "long")
@@ -527,11 +543,18 @@ public class LocationCacheTest {
     private void validateLocationCacheAsync(
             boolean useMultipleWriteLocations,
             boolean endpointDiscoveryEnabled,
-            boolean isPreferredListEmpty) throws Exception {
+            boolean isPreferredListEmpty,
+            List<URI> preferredReadEndpointsIfPreferredRegionsSetOnClient,
+            List<URI> preferredWriteEndpointsIfPreferredRegionsSetOnClient,
+            List<URI> accountLevelReadEndpoints,
+            List<URI> accountLevelWriteEndpoints) throws Exception {
 
-        int maxReadLocationIndex = isPreferredListEmpty ? 3 : 2;
+        int maxReadLocationIndex = isPreferredListEmpty ?
+            accountLevelReadEndpoints.size() : preferredReadEndpointsIfPreferredRegionsSetOnClient.size();
+        int maxWriteLocationIndex = isPreferredListEmpty ?
+            accountLevelWriteEndpoints.size() : preferredWriteEndpointsIfPreferredRegionsSetOnClient.size();
 
-        for (int writeLocationIndex = 0; writeLocationIndex < 3; writeLocationIndex++) {
+        for (int writeLocationIndex = 0; writeLocationIndex < maxWriteLocationIndex; writeLocationIndex++) {
             for (int readLocationIndex = 0; readLocationIndex < maxReadLocationIndex; readLocationIndex++) {
                 this.initialize(
                         useMultipleWriteLocations,
@@ -558,11 +581,11 @@ public class LocationCacheTest {
                 Map<URI, String> readLocationByEndpoint = toStream(this.databaseAccount.getReadableLocations())
                     .collect(Collectors.toMap(i -> createUrl(i.getEndpoint()), i -> i.getName()));
 
-                List<URI> accountLevelWriteEndpoints = toStream(this.databaseAccount.getWritableLocations())
+                accountLevelWriteEndpoints = toStream(this.databaseAccount.getWritableLocations())
                     .map(databaseAccountLocation -> writeEndpointByLocation.get(databaseAccountLocation.getName()))
                     .collect(Collectors.toList());
 
-                List<URI> accountLevelReadEndpoints = toStream(this.databaseAccount.getReadableLocations())
+                accountLevelReadEndpoints = toStream(this.databaseAccount.getReadableLocations())
                     .map(databaseAccountLocation -> readEndpointByLocation.get(databaseAccountLocation.getName()))
                     .collect(Collectors.toList());
 

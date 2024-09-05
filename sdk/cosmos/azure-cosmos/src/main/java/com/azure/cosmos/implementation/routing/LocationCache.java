@@ -373,7 +373,11 @@ public class LocationCache {
                         logger.debug("shouldRefreshEndpoints = true, most preferred location [{}]" +
                                 " is not available for read.", mostPreferredLocation);
                         return true;
-                    } else if (currentLocationInfo.preferredLocations == null || currentLocationInfo.preferredLocations.isEmpty()) {
+                    }
+
+                    // if first account level available read region is not same as first effective preferred read region
+                    // then do a refresh (specific to cases where preferred regions on client is empty or null)
+                    else if (currentLocationInfo.preferredLocations == null || currentLocationInfo.preferredLocations.isEmpty()) {
 
                         List<String> accountLevelReadRegions = currentLocationInfo.availableReadLocations;
                         String firstAccountLevelReadRegion = Utils.firstOrDefault(accountLevelReadRegions);
@@ -381,6 +385,8 @@ public class LocationCache {
                         if (Utils.tryGetValue(currentLocationInfo.availableReadEndpointByLocation, firstAccountLevelReadRegion, firstAccountLevelReadEndpointHolder)) {
 
                             if (!areEqual(mostPreferredReadEndpointHolder.v, firstAccountLevelReadEndpointHolder.v)) {
+                                logger.debug("shouldRefreshEndpoints = true, preferredRegions on client is empty and first account-level read region [{}]" +
+                                    " is not available for read.", firstAccountLevelReadRegion);
                                 return true;
                             }
                         }
@@ -420,16 +426,20 @@ public class LocationCache {
                 if (Utils.tryGetValue(currentLocationInfo.availableWriteEndpointByLocation, mostPreferredLocation, mostPreferredWriteEndpointHolder)) {
                     shouldRefresh = ! areEqual(mostPreferredWriteEndpointHolder.v, writeLocationEndpoints.get(0));
 
+                    // if first account level available write region is not same as first effective preferred write region
+                    // then do a refresh (specific to cases where preferred regions on client is empty or null)
                     if (currentLocationInfo.preferredLocations == null || currentLocationInfo.preferredLocations.isEmpty()) {
 
                         List<String> accountLevelWriteRegions = currentLocationInfo.availableWriteLocations;
                         String firstAccountLevelWriteRegion = Utils.firstOrDefault(accountLevelWriteRegions);
                         Utils.ValueHolder<URI> firstAccountLevelWriteEndpointHolder = new Utils.ValueHolder<>();
 
-                        if (Utils.tryGetValue(currentLocationInfo.availableReadEndpointByLocation, firstAccountLevelWriteRegion, firstAccountLevelWriteEndpointHolder)) {
+                        if (Utils.tryGetValue(currentLocationInfo.availableWriteEndpointByLocation, firstAccountLevelWriteRegion, firstAccountLevelWriteEndpointHolder)) {
 
                             if (!areEqual(mostPreferredWriteEndpointHolder.v, firstAccountLevelWriteEndpointHolder.v)) {
-                                shouldRefresh = !areEqual(mostPreferredWriteEndpointHolder.v, writeLocationEndpoints.get(0));
+                                logger.debug("shouldRefreshEndpoints = true, preferredRegions on client is empty and first account-level write region [{}]" +
+                                    " is not available for write.", firstAccountLevelWriteRegion);
+                                shouldRefresh = true;
                             }
                         }
                     }
