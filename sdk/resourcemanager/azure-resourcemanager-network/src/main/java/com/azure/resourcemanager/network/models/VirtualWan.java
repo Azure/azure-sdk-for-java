@@ -18,7 +18,8 @@ import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
  */
 @Fluent
 public interface VirtualWan
-    extends GroupableResource<NetworkManager, VirtualWanInner>, Refreshable<VirtualWan>, Updatable<VirtualWan.Update> {
+    extends GroupableResource<NetworkManager, VirtualWanInner>,
+    Refreshable<VirtualWan>, Updatable<VirtualWan.Update> {
 
     /** @return returns true if current virtual wan is a security vpn. */
     Boolean disabledVpnEncryption();

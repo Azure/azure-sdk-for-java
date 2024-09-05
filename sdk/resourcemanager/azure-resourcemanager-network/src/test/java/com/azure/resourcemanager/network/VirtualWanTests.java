@@ -3,25 +3,17 @@
 
 package com.azure.resourcemanager.network;
 
-import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.Region;
-import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.network.models.VirtualWan;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class VirtualWanTests extends NetworkManagementTest {
     private final Region region = Region.US_WEST;
-    private String vwName = "";
-
-    @Override
-    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
-        vwName = generateRandomResourceName("vw", 12);
-        super.initializeClients(httpPipeline, profile);
-    }
 
     @Test
     public void testCreateAndUpdateVirtualWan() {
+        String vwName = generateRandomResourceName("vw", 12);
         VirtualWan virtualWan = networkManager.virtualWans()
             .define(vwName)
             .withRegion(region)

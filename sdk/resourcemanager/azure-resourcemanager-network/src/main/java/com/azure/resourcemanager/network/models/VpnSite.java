@@ -6,9 +6,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.fluent.models.VpnSiteInner;
-import com.azure.resourcemanager.network.fluent.models.VpnSiteLinkInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
+import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
@@ -21,10 +21,13 @@ import java.util.List;
  */
 @Fluent
 public interface VpnSite
-    extends GroupableResource<NetworkManager, VpnSiteInner>, Refreshable<VpnSite>, Updatable<VpnSite.Update> {
+    extends GroupableResource<NetworkManager, VpnSiteInner>,
+    Refreshable<VpnSite>,
+    Updatable<VpnSite.Update>,
+    UpdatableWithTags<VpnSite> {
 
     /** @return returns true if current VPN site is a security site. */
-    boolean isSecuritySite();
+    boolean isSecuritySiteEnabled();
 
     /** @return the AddressPrefixes value of VPN site. */
     List<String> addressPrefixes();
@@ -33,7 +36,7 @@ public interface VpnSite
     VirtualWan virtualWan();
 
     /** @return the vpnSiteLinks property of VPN site. */
-    List<VpnSiteLinkInner> vpnSiteLinks();
+    List<VpnSiteLink> vpnSiteLinks();
 
     /** @return the o365Policy property of VPN site. */
     O365PolicyProperties o365Policy();
@@ -41,7 +44,7 @@ public interface VpnSite
     /** @return the device property of VPN site. */
     DeviceProperties device();
 
-    /** The entirety of a VPN definition. */
+    /** The entirety of the virtual network definition. */
     interface Definition
         extends DefinitionStages.Blank,
         DefinitionStages.WithGroup,
@@ -59,112 +62,219 @@ public interface VpnSite
         /**
          * The stage of the VPN definition allowing to specify the resource group.
          */
-        interface WithGroup extends GroupableResource.DefinitionStages.WithGroup<DefinitionStages.WithCreate> {
+        interface WithGroup extends GroupableResource.DefinitionStages.WithGroup<WithAddressSpace> {
         }
 
         /**
-         * The stage of a route VPN definition which contains all the minimum required inputs for the resource to be
-         * created (via {@link VpnSite.DefinitionStages.WithCreate#create()}), but also allows for any other optional settings to be specified.
+         * The stage of the address space definition allowing to specify the VPNSite configuration.
          */
-        interface WithCreate extends Creatable<VpnSite>, DefinitionWithTags<WithCreate> {
-
-            /**
-             * Set the virtualWan property: The id of VirtualWAN to which the vpn belongs.
-             *
-             * @param subResourceId the id of virtualWan value to set.
-             * @return the next stage of the definition
-             */
-            WithCreate withVirtualWan(String subResourceId);
-
+        interface WithAddressSpace {
             /**
              * Set the addressSpace property: The AddressSpace that contains an array of IP address ranges.
              *
              * @param cidr the addressSpace value to set.
              * @return the next stage of the definition
              */
-            WithCreate withAddressSpace(String cidr);
+            WithVirtualWan withAddressSpace(String cidr);
+        }
 
+        /**
+         * The stage of the virtual wan definition allowing to specify the VPNSite configuration.
+         */
+        interface WithVirtualWan {
             /**
-             * Set the isSecuritySite property: IsSecuritySite flag.
+             * Set the virtualWan property: The id of VirtualWAN to which the vpn belongs.
              *
-             * @param isSecuritySite the isSecuritySite value to set.
+             * @param virtualWanId the id of virtualWan to set.
              * @return the next stage of the definition
              */
-            WithCreate withIsSecuritySite(Boolean isSecuritySite);
+            WithVpnSiteLinks withVirtualWan(String virtualWanId);
 
             /**
-             * Set the vpnSiteLinks property: List of all vpn site links.
+             * Set the virtualWan property: The instance of VirtualWAN to which the vpn belongs.
              *
-             * @param vpnSiteLinks the vpnSiteLinks value to set.
+             * @param virtualWan the instance of virtualWan to set.
              * @return the next stage of the definition
              */
-            WithCreate withVpnSiteLinks(List<VpnSiteLinkInner> vpnSiteLinks);
+            WithVpnSiteLinks withVirtualWan(VirtualWan virtualWan);
 
             /**
-             * Set the o365Policy property: Office365 Policy.
+             * Set the virtualWan property: The creatable of VirtualWAN to which the vpn belongs.
              *
-             * @param o365Policy the o365Policy value to set.
+             * @param creatable the creatable of virtualWan to set.
              * @return the next stage of the definition
              */
-            WithCreate withO365Policy(O365PolicyProperties o365Policy);
+            WithVpnSiteLinks withVirtualWan(Creatable<VirtualWan> creatable);
 
+        }
+
+        /**
+         * The stage of the vpn site links definition allowing to specify the VPNSite configuration.
+         */
+        interface WithVpnSiteLinks {
+            /**
+             * Starts the definition of a new vpn site link.
+             *
+             * @param name the name for the new vpn site link.
+             * @return the first stage of the vpn site link definition
+             */
+            VpnSiteLink.DefinitionStages.Blank<WithCreate> defineVpnSiteLink(String name);
+        }
+
+        /**
+         * The stage of the site security definition allowing to specify the VPNSite configuration.
+         */
+        interface WithSecuritySite {
+            /**
+             * Enables security vpn site.
+             *
+             * @return the next stage of the definition
+             */
+            WithCreate enableSecuritySite();
+        }
+
+        /**
+         * The stage of the O365Policy definition allowing to specify the VPNSite configuration.
+         */
+        interface WithO365Policy {
+            /**
+             * Starts the definition of a new O365Policy.
+             *
+             * @return the next stage of the definition
+             */
+            O365Policy.DefinitionStages.Blank<WithCreate> defineO365Policy();
+        }
+
+        /**
+         * The stage of the vpn device definition allowing to specify the VPNSite configuration.
+         */
+        interface WithDevice {
             /**
              * Set the deviceProperties property: VPN device properties.
              *
-             * @param deviceProperties the deviceProperties value to set.
              * @return the next stage of the definition
              */
-            WithCreate withDevice(DeviceProperties deviceProperties);
+            Device.DefinitionStages.Blank<WithCreate> defineDevice();
+        }
+
+        /** The entirety of a vpn site update as part of a vpn site update. */
+        interface WithCreate
+            extends Creatable<VpnSite>,
+            Resource.DefinitionWithTags<WithCreate>,
+            DefinitionStages.WithAddressSpace,
+            DefinitionStages.WithVirtualWan,
+            DefinitionStages.WithVpnSiteLinks,
+            DefinitionStages.WithSecuritySite,
+            DefinitionStages.WithO365Policy,
+            DefinitionStages.WithDevice {
+
+            /**
+             * Begins creating the vpn site resource.
+             *
+             * @return the accepted create operation
+             */
+            Accepted<VpnSite> beginCreate();
         }
     }
 
-    /**
-     * The template for a VPN update operation, containing all the settings that can be modified.
-     *
-     * <p>Call {@link VpnSite.Update#apply()} to apply the changes to the resource in Azure.
-     */
+    /** Grouping of vpn site update stages. */
+    interface UpdateStages {
+        /**
+         * The stage of the virtual wan definition allowing to specify the VPNSite configuration.
+         */
+        interface WithVirtualWan {
+            /**
+             * Set the virtualWan property: The id of VirtualWAN to which the vpn belongs.
+             *
+             * @param virtualWanId the id of virtualWan to set.
+             * @return the next stage of the definition
+             */
+            Update withVirtualWan(String virtualWanId);
+
+            /**
+             * Set the virtualWan property: The instance of VirtualWAN to which the vpn belongs.
+             *
+             * @param virtualWan the instance of virtualWan to set.
+             * @return the next stage of the definition
+             */
+            Update withVirtualWan(VirtualWan virtualWan);
+
+            /**
+             * Set the virtualWan property: The creatable of VirtualWAN to which the vpn belongs.
+             *
+             * @param creatable the creatable of virtualWan to set.
+             * @return the next stage of the definition
+             */
+            Update withVirtualWan(Creatable<VirtualWan> creatable);
+        }
+
+        /**
+         * The stage of the vpn site links definition allowing to specify the VPNSite configuration.
+         */
+        interface WithVpnSiteLinks {
+            /**
+             * Begins the definition of a new vpn site link to be added to this vpn site.
+             *
+             * @param name the name of the new vpn site link
+             * @return the first stage of the new vpn site link definition
+             */
+            VpnSiteLink.UpdateDefinitionStages.Blank<Update> defineVpnSiteLink(String name);
+
+            /**
+             * Begins the description of an update of an existing vpn site link of this vpn site.
+             *
+             * @param name the name of an existing vpn site link
+             * @return the first stage of the vpn site link update description
+             */
+            VpnSiteLink.Update updateVpnSiteLink(String name);
+        }
+
+        /**
+         * The stage of the address space definition allowing to specify the VPNSite configuration.
+         */
+        interface WithAddressSpace {
+            /**
+             * Set the addressSpace property: The AddressSpace that contains an array of IP address ranges.
+             *
+             * @param cidr the addressSpace value to set.
+             * @return the next stage of the definition
+             */
+            Update withAddressSpace(String cidr);
+        }
+
+        /**
+         * The stage of the O365Policy definition allowing to specify the VPNSite configuration.
+         */
+        interface WithO365Policy {
+            /**
+             * Set the O365Policy: VPN O365Policy properties.
+             *
+             * @return the next stage of the update
+             */
+            O365Policy.Update updateO365Policy();
+        }
+
+        /**
+         * The stage of the vpn device definition allowing to specify the VPNSite configuration.
+         */
+        interface WithDevice {
+            /**
+             * Set the deviceProperties property: VPN device properties.
+             *
+             * @return the next stage of the update
+             */
+            Device.Update updateDevice();
+        }
+    }
+
+    /** The template for a virtual network update operation, containing all the settings that can be modified. */
     interface Update
         extends Appliable<VpnSite>,
-            Resource.UpdateWithTags<VpnSite.Update> {
-
-        /**
-         * Set the virtualWan property: The id of VirtualWAN to which the vpnSite belongs.
-         *
-         * @param subResourceId the id of virtualWan value to set.
-         * @return the next stage of the vpn update
-         */
-        Update withVirtualWan(String subResourceId);
-
-        /**
-         * Set the addressSpace property: The AddressSpace that contains an array of IP address ranges.
-         *
-         * @param cidr the addressSpace value to set.
-         * @return the next stage of the vpn update
-         */
-        Update withAddressSpace(String cidr);
-
-        /**
-         * Set the vpnSiteLinks property: List of all vpn site links.
-         *
-         * @param vpnSiteLinks the vpnSiteLinks value to set.
-         * @return the next stage of the vpn update
-         */
-        Update withVpnSiteLinks(List<VpnSiteLinkInner> vpnSiteLinks);
-
-        /**
-         * Set the o365Policy property: Office365 Policy.
-         *
-         * @param o365Policy the o365Policy value to set.
-         * @return the next stage of the vpn update
-         */
-        Update withO365Policy(O365PolicyProperties o365Policy);
-
-        /**
-         * Set the deviceProperties property: VPN device properties.
-         *
-         * @param deviceProperties the deviceProperties value to set.
-         * @return the next stage of the vpn update
-         */
-        Update withDevice(DeviceProperties deviceProperties);
+        Resource.UpdateWithTags<Update>,
+        UpdateStages.WithVirtualWan,
+        UpdateStages.WithVpnSiteLinks,
+        UpdateStages.WithAddressSpace,
+        UpdateStages.WithO365Policy,
+        UpdateStages.WithDevice {
     }
 }

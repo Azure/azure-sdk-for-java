@@ -3,78 +3,63 @@
 
 package com.azure.resourcemanager.network;
 
-import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.Region;
-import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.network.fluent.models.VpnSiteLinkInner;
-import com.azure.resourcemanager.network.models.DeviceProperties;
-import com.azure.resourcemanager.network.models.O365BreakOutCategoryPolicies;
-import com.azure.resourcemanager.network.models.O365PolicyProperties;
 import com.azure.resourcemanager.network.models.VirtualWan;
-import com.azure.resourcemanager.network.models.VpnLinkBgpSettings;
-import com.azure.resourcemanager.network.models.VpnLinkProviderProperties;
 import com.azure.resourcemanager.network.models.VpnSite;
+import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
-
 public class VpnSiteTests extends NetworkManagementTest {
     private final Region region = Region.US_WEST;
-    private String vpnName = "";
-    private String vwName1 = "";
-    private String vwName2 = "";
-    private String vslName1 = "";
-    private String vslName2 = "";
-
-    @Override
-    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
-        vpnName = generateRandomResourceName("vpn", 8);
-        vwName1 = generateRandomResourceName("vw1", 8);
-        vwName2 = generateRandomResourceName("vw2", 8);
-        vslName1 = generateRandomResourceName("vsl1", 8);
-        vslName2 = generateRandomResourceName("vsl2", 8);
-        super.initializeClients(httpPipeline, profile);
-        resourceManager.resourceGroups().define(rgName).withRegion(region).create();
-    }
 
     private VirtualWan createVirtualWan(String vwName, String virtualWanType) {
-        return  networkManager.virtualWans()
+        return networkManager.virtualWans()
             .define(vwName)
             .withRegion(region)
             .withExistingResourceGroup(rgName)
             .enableVpnEncryption()
             .withAllowBranchToBranchTraffic(true)
-            .withVirtualWanType("Basic")
+            .withVirtualWanType(virtualWanType)
             .create();
+    }
+
+    private Creatable<VirtualWan> createVirtualWanCreatable(String vwName, String virtualWanType) {
+        return networkManager.virtualWans()
+            .define(vwName)
+            .withRegion(region)
+            .withExistingResourceGroup(rgName)
+            .enableVpnEncryption()
+            .withAllowBranchToBranchTraffic(true)
+            .withVirtualWanType(virtualWanType);
     }
 
     @Test
     public void canCreateAndUpdateVpnSiteByMinimumParametersWithLinkIpAddress() {
-        VirtualWan virtualWanForCreate = createVirtualWan(vwName1,"Basic");
+        String vwName1 = generateRandomResourceName("vw1", 8);
+        String vwName2 = generateRandomResourceName("vw2", 8);
+        String vpnName = generateRandomResourceName("vpn", 8);
+        String vslName1 = generateRandomResourceName("vsl1", 8);
+        String vslName2 = generateRandomResourceName("vsl2", 8);
+        resourceManager.resourceGroups().define(rgName).withRegion(region).create();
+        VirtualWan virtualWanForCreate = createVirtualWan(vwName1, "Basic");
         VpnSite vpnSite = networkManager.vpnSites()
             .define(vpnName)
             .withRegion(region)
             .withExistingResourceGroup(rgName)
-            .withVirtualWan(virtualWanForCreate.id())
             .withAddressSpace("10.0.0.0/16")
-            .withVpnSiteLinks(Arrays.asList(
-                new VpnSiteLinkInner()
-                    .withName(vslName1)
-                    .withIpAddress("50.50.50.56")
-                    .withLinkProperties(
-                        new VpnLinkProviderProperties()
-                            .withLinkProviderName("vendor1")
-                            .withLinkSpeedInMbps(10))
-                    .withBgpProperties(
-                        new VpnLinkBgpSettings()
-                            .withBgpPeeringAddress("192.168.0.0")
-                            .withAsn(1234L))
-            ))
+            .withVirtualWan(virtualWanForCreate.id())
+            .defineVpnSiteLink(vslName1)
+                .withIpAddress("50.50.50.56")
+                .withLinkProperties("vendor1", 10)
+                .withBgpProperties("192.168.0.0", 1234L)
+                .attach()
             .create();
 
         Assertions.assertNotNull(vpnSite.virtualWan());
         Assertions.assertEquals(virtualWanForCreate.id(), vpnSite.virtualWan().id());
+        Assertions.assertEquals(vwName1, vpnSite.virtualWan().name());
+        Assertions.assertEquals("Basic", vpnSite.virtualWan().virtualWanType());
 
         Assertions.assertNotNull(vpnSite.addressPrefixes());
         Assertions.assertEquals(1, vpnSite.addressPrefixes().size());
@@ -89,27 +74,26 @@ public class VpnSiteTests extends NetworkManagementTest {
         Assertions.assertEquals("192.168.0.0", vpnSite.vpnSiteLinks().get(0).bgpProperties().bgpPeeringAddress());
         Assertions.assertEquals(1234L, vpnSite.vpnSiteLinks().get(0).bgpProperties().asn());
 
-        VirtualWan virtualWanForUpdate = createVirtualWan(vwName2, "Basic");
+        VirtualWan virtualWanForUpdate = createVirtualWan(vwName2, "Standard");
         vpnSite.update()
             .withVirtualWan(virtualWanForUpdate.id())
             .withAddressSpace("20.0.0.0/16")
-            .withVpnSiteLinks(Arrays.asList(
-                new VpnSiteLinkInner()
-                    .withName(vslName2)
-                    .withIpAddress("60.60.60.67")
-                    .withLinkProperties(
-                        new VpnLinkProviderProperties()
-                            .withLinkProviderName("vendor2")
-                            .withLinkSpeedInMbps(100))
-                    .withBgpProperties(
-                        new VpnLinkBgpSettings()
-                            .withBgpPeeringAddress("172.19.0.0")
-                            .withAsn(2345L))
-            ))
+            .updateVpnSiteLink(vslName1)
+                .withIpAddress("55.55.55.56")
+                .withLinkProperties("vendor3", 50)
+                .withBgpProperties("196.198.0.0", 3456L)
+                .parent()
+            .defineVpnSiteLink(vslName2)
+                .withIpAddress("60.60.60.67")
+                .withLinkProperties("vendor2", 100)
+                .withBgpProperties("172.19.0.0", 2345L)
+                .attach()
             .apply();
 
         Assertions.assertNotNull(vpnSite.virtualWan());
         Assertions.assertEquals(virtualWanForUpdate.id(), vpnSite.virtualWan().id());
+        Assertions.assertEquals(vwName2, vpnSite.virtualWan().name());
+        Assertions.assertEquals("Standard", vpnSite.virtualWan().virtualWanType());
 
         Assertions.assertNotNull(vpnSite.addressPrefixes());
         Assertions.assertEquals(1, vpnSite.addressPrefixes().size());
@@ -118,11 +102,11 @@ public class VpnSiteTests extends NetworkManagementTest {
         Assertions.assertNotNull(vpnSite.vpnSiteLinks());
         Assertions.assertEquals(2, vpnSite.vpnSiteLinks().size());
         Assertions.assertEquals(vslName1, vpnSite.vpnSiteLinks().get(0).name());
-        Assertions.assertEquals("50.50.50.56", vpnSite.vpnSiteLinks().get(0).ipAddress());
-        Assertions.assertEquals("vendor1", vpnSite.vpnSiteLinks().get(0).linkProperties().linkProviderName());
-        Assertions.assertEquals(10, vpnSite.vpnSiteLinks().get(0).linkProperties().linkSpeedInMbps());
-        Assertions.assertEquals("192.168.0.0", vpnSite.vpnSiteLinks().get(0).bgpProperties().bgpPeeringAddress());
-        Assertions.assertEquals(1234L, vpnSite.vpnSiteLinks().get(0).bgpProperties().asn());
+        Assertions.assertEquals("55.55.55.56", vpnSite.vpnSiteLinks().get(0).ipAddress());
+        Assertions.assertEquals("vendor3", vpnSite.vpnSiteLinks().get(0).linkProperties().linkProviderName());
+        Assertions.assertEquals(50, vpnSite.vpnSiteLinks().get(0).linkProperties().linkSpeedInMbps());
+        Assertions.assertEquals("196.198.0.0", vpnSite.vpnSiteLinks().get(0).bgpProperties().bgpPeeringAddress());
+        Assertions.assertEquals(3456L, vpnSite.vpnSiteLinks().get(0).bgpProperties().asn());
 
         Assertions.assertEquals(vslName2, vpnSite.vpnSiteLinks().get(1).name());
         Assertions.assertEquals("60.60.60.67", vpnSite.vpnSiteLinks().get(1).ipAddress());
@@ -134,30 +118,29 @@ public class VpnSiteTests extends NetworkManagementTest {
 
     @Test
     public void canCreateAndUpdateVpnSiteByMinimumParametersWithFqdn() {
-        VirtualWan virtualWanForCreate = createVirtualWan(vwName1,  "Basic");
+        String vwName1 = generateRandomResourceName("vw1", 8);
+        String vwName2 = generateRandomResourceName("vw2", 8);
+        String vpnName = generateRandomResourceName("vpn", 8);
+        String vslName1 = generateRandomResourceName("vsl1", 8);
+        String vslName2 = generateRandomResourceName("vsl2", 8);
+        resourceManager.resourceGroups().define(rgName).withRegion(region).create();
+
         VpnSite vpnSite = networkManager.vpnSites()
             .define(vpnName)
             .withRegion(region)
             .withExistingResourceGroup(rgName)
-            .withVirtualWan(virtualWanForCreate.id())
             .withAddressSpace("10.0.0.0/16")
-            .withVpnSiteLinks(Arrays.asList(
-                new VpnSiteLinkInner()
-                    .withName(vslName1)
-                    .withFqdn("link1." + vpnName + ".contoso.com")
-                    .withLinkProperties(
-                        new VpnLinkProviderProperties()
-                            .withLinkProviderName("vendor1")
-                            .withLinkSpeedInMbps(10))
-                    .withBgpProperties(
-                        new VpnLinkBgpSettings()
-                            .withBgpPeeringAddress("192.168.0.0")
-                            .withAsn(1234L))
-            ))
+            .withVirtualWan(createVirtualWanCreatable(vwName1,  "Basic"))
+            .defineVpnSiteLink(vslName1)
+                .withFqdn("link1." + vpnName + ".contoso.com")
+                .withLinkProperties("vendor1", 10)
+                .withBgpProperties("192.168.0.0", 1234L)
+                .attach()
             .create();
 
         Assertions.assertNotNull(vpnSite.virtualWan());
-        Assertions.assertEquals(virtualWanForCreate.id(), vpnSite.virtualWan().id());
+        Assertions.assertEquals(vwName1, vpnSite.virtualWan().name());
+        Assertions.assertEquals("Basic", vpnSite.virtualWan().virtualWanType());
 
         Assertions.assertNotNull(vpnSite.addressPrefixes());
         Assertions.assertEquals(1, vpnSite.addressPrefixes().size());
@@ -172,28 +155,24 @@ public class VpnSiteTests extends NetworkManagementTest {
         Assertions.assertEquals("192.168.0.0", vpnSite.vpnSiteLinks().get(0).bgpProperties().bgpPeeringAddress());
         Assertions.assertEquals(1234L, vpnSite.vpnSiteLinks().get(0).bgpProperties().asn());
 
-
-        VirtualWan virtualWanForUpdate = createVirtualWan(vwName2, "Basic");
         vpnSite.update()
-            .withVirtualWan(virtualWanForUpdate.id())
+            .withVirtualWan(createVirtualWanCreatable(vwName2, "Standard"))
             .withAddressSpace("20.0.0.0/16")
-            .withVpnSiteLinks(Arrays.asList(
-                new VpnSiteLinkInner()
-                    .withName(vslName2)
-                    .withFqdn("link2." + vpnName + ".contoso.com")
-                    .withLinkProperties(
-                        new VpnLinkProviderProperties()
-                            .withLinkProviderName("vendor2")
-                            .withLinkSpeedInMbps(100))
-                    .withBgpProperties(
-                        new VpnLinkBgpSettings()
-                            .withBgpPeeringAddress("172.19.0.0")
-                            .withAsn(2345L))
-            ))
+            .updateVpnSiteLink(vslName1)
+                .withFqdn("link3." + vpnName + ".contoso.com")
+                .withLinkProperties("vendor3", 50)
+                .withBgpProperties("196.198.0.0", 3456L)
+                .parent()
+            .defineVpnSiteLink(vslName2)
+                .withFqdn("link2." + vpnName + ".contoso.com")
+                .withLinkProperties("vendor2", 100)
+                .withBgpProperties("172.19.0.0", 2345L)
+                .attach()
             .apply();
 
         Assertions.assertNotNull(vpnSite.virtualWan());
-        Assertions.assertEquals(virtualWanForUpdate.id(), vpnSite.virtualWan().id());
+        Assertions.assertEquals(vwName2, vpnSite.virtualWan().name());
+        Assertions.assertEquals("Standard", vpnSite.virtualWan().virtualWanType());
 
         Assertions.assertNotNull(vpnSite.addressPrefixes());
         Assertions.assertEquals(1, vpnSite.addressPrefixes().size());
@@ -203,11 +182,11 @@ public class VpnSiteTests extends NetworkManagementTest {
         Assertions.assertEquals(2, vpnSite.vpnSiteLinks().size());
 
         Assertions.assertEquals(vslName1, vpnSite.vpnSiteLinks().get(0).name());
-        Assertions.assertEquals("link1." + vpnName + ".contoso.com", vpnSite.vpnSiteLinks().get(0).fqdn());
-        Assertions.assertEquals("vendor1", vpnSite.vpnSiteLinks().get(0).linkProperties().linkProviderName());
-        Assertions.assertEquals(10, vpnSite.vpnSiteLinks().get(0).linkProperties().linkSpeedInMbps());
-        Assertions.assertEquals("192.168.0.0", vpnSite.vpnSiteLinks().get(0).bgpProperties().bgpPeeringAddress());
-        Assertions.assertEquals(1234L, vpnSite.vpnSiteLinks().get(0).bgpProperties().asn());
+        Assertions.assertEquals("link3." + vpnName + ".contoso.com", vpnSite.vpnSiteLinks().get(0).fqdn());
+        Assertions.assertEquals("vendor3", vpnSite.vpnSiteLinks().get(0).linkProperties().linkProviderName());
+        Assertions.assertEquals(50, vpnSite.vpnSiteLinks().get(0).linkProperties().linkSpeedInMbps());
+        Assertions.assertEquals("196.198.0.0", vpnSite.vpnSiteLinks().get(0).bgpProperties().bgpPeeringAddress());
+        Assertions.assertEquals(3456L, vpnSite.vpnSiteLinks().get(0).bgpProperties().asn());
 
         Assertions.assertEquals(vslName2, vpnSite.vpnSiteLinks().get(1).name());
         Assertions.assertEquals("link2." + vpnName + ".contoso.com", vpnSite.vpnSiteLinks().get(1).fqdn());
@@ -219,43 +198,37 @@ public class VpnSiteTests extends NetworkManagementTest {
 
     @Test
     public void canCreateAndUpdateVpnSiteByOtherParameters() {
-        VirtualWan virtualWanForCreate = createVirtualWan(vwName1,  "Basic");
+        String vwName1 = generateRandomResourceName("vw1", 8);
+        String vpnName = generateRandomResourceName("vpn", 8);
+        String vslName1 = generateRandomResourceName("vsl1", 8);
 
+        resourceManager.resourceGroups().define(rgName).withRegion(region).create();
+        VirtualWan virtualWanForCreate = createVirtualWan(vwName1,  "Basic");
         VpnSite vpnSite = networkManager.vpnSites()
             .define(vpnName)
             .withRegion(region)
             .withExistingResourceGroup(rgName)
-            .withVirtualWan(virtualWanForCreate.id())
             .withAddressSpace("10.0.0.0/16")
-            .withVpnSiteLinks(Arrays.asList(
-                new VpnSiteLinkInner()
-                    .withName(vslName1)
-                    .withFqdn("link1." + vpnName + ".contoso.com")
-                    .withLinkProperties(
-                        new VpnLinkProviderProperties()
-                            .withLinkProviderName("vendor1")
-                            .withLinkSpeedInMbps(10))
-                    .withBgpProperties(
-                        new VpnLinkBgpSettings()
-                            .withBgpPeeringAddress("192.168.0.0")
-                            .withAsn(1234L))
-            ))
-            .withIsSecuritySite(true)
-            .withDevice(
-                new DeviceProperties()
-                    .withDeviceVendor("device1")
-                    .withDeviceModel("Basic")
-                    .withLinkSpeedInMbps(10))
-            .withO365Policy(
-                new O365PolicyProperties()
-                    .withBreakOutCategories(
-                        new O365BreakOutCategoryPolicies()
-                            .withAllow(false)
-                            .withOptimize(false)
-                            .withDefaultProperty(false)))
+            .withVirtualWan(virtualWanForCreate)
+            .defineVpnSiteLink(vslName1)
+                .withFqdn("link1." + vpnName + ".contoso.com")
+                .withLinkProperties("vendor1", 10)
+                .withBgpProperties("192.168.0.0", 1234L)
+                .attach()
+            .enableSecuritySite()
+            .defineDevice()
+                .withDeviceVendor("device1")
+                .withDeviceModel("Basic")
+                .withLinkSpeedInMbps(10)
+                .attach()
+            .defineO365Policy()
+                .withAllow(false)
+                .withOptimize(false)
+                .withDefaultProperty(false)
+                .attach()
             .create();
 
-        Assertions.assertTrue(vpnSite.isSecuritySite());
+        Assertions.assertTrue(vpnSite.isSecuritySiteEnabled());
         Assertions.assertNotNull(vpnSite.device());
         Assertions.assertEquals("device1", vpnSite.device().deviceVendor());
         Assertions.assertEquals("Basic", vpnSite.device().deviceModel());
@@ -266,18 +239,16 @@ public class VpnSiteTests extends NetworkManagementTest {
         Assertions.assertFalse(vpnSite.o365Policy().breakOutCategories().defaultProperty());
 
         vpnSite.update()
-            .withDevice(
-                new DeviceProperties()
-                    .withDeviceVendor("device2")
-                    .withDeviceModel("Plus")
-                    .withLinkSpeedInMbps(100))
-            .withO365Policy(
-                new O365PolicyProperties()
-                    .withBreakOutCategories(
-                        new O365BreakOutCategoryPolicies()
-                            .withAllow(true)
-                            .withOptimize(true)
-                            .withDefaultProperty(true)))
+            .updateDevice()
+                .withDeviceVendor("device2")
+                .withDeviceModel("Plus")
+                .withLinkSpeedInMbps(100)
+                .parent()
+            .updateO365Policy()
+                .withAllow(true)
+                .withOptimize(true)
+                .withDefaultProperty(true)
+                .parent()
             .apply();
         Assertions.assertNotNull(vpnSite.device());
         Assertions.assertEquals("device2", vpnSite.device().deviceVendor());
