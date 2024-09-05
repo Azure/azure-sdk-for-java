@@ -135,7 +135,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
         cc.create();
 
         beac = getEncryptionAsyncClient(EncryptionVersion.V1);
-        bec = getEncryptionClient(EncryptionVersion.V1);
+        bec = getEncryptionClient(EncryptionVersion.V2);
 
         String blobName = generateBlobName();
 
@@ -1779,4 +1779,17 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
     public static boolean hasServiceVersion() {
         return ENV.getServiceVersion() != null;
     }
+
+    @Test
+    public void sampleTest() throws IOException {
+        File file = File.createTempFile(CoreUtils.randomUuid().toString(), ".txt");
+        file.deleteOnExit();
+        Files.write(file.toPath(), getRandomByteArray(33554432));
+
+        bec.uploadFromFile(file.toPath().toString());
+
+        ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+        bec.downloadStream(outStream);
+    }
+
 }
