@@ -27,7 +27,7 @@ public class AzureMonitorMetricExporterSample {
         try {
             AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
 
-            OpenTelemetry openTelemetry = new AzureMonitor(APPINSIGHTS_CONNECTION_STRING)
+            OpenTelemetry openTelemetry = new AzureMonitor().connectionString(APPINSIGHTS_CONNECTION_STRING)
                 .configure(sdkBuilder).build().getOpenTelemetrySdk();
             Meter meter = openTelemetry.meterBuilder("OTEL.AzureMonitor.Demo").build();
             DoubleHistogram histogram = meter.histogramBuilder("histogram").build();
@@ -47,7 +47,7 @@ public class AzureMonitorMetricExporterSample {
         try {
             AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
 
-            OpenTelemetry openTelemetry = new AzureMonitor(APPINSIGHTS_CONNECTION_STRING).configure(sdkBuilder).build().getOpenTelemetrySdk();
+            OpenTelemetry openTelemetry = new AzureMonitor().connectionString(APPINSIGHTS_CONNECTION_STRING).configure(sdkBuilder).build().getOpenTelemetrySdk();
             Meter meter = openTelemetry.meterBuilder("OTEL.AzureMonitor.Demo").build();
             LongCounter myFruitCounter = meter.counterBuilder("MyFruitCounter").build();
 
@@ -69,7 +69,7 @@ public class AzureMonitorMetricExporterSample {
         try {
             AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
 
-            OpenTelemetry openTelemetry = new AzureMonitor(APPINSIGHTS_CONNECTION_STRING)
+            OpenTelemetry openTelemetry = new AzureMonitor().connectionString(APPINSIGHTS_CONNECTION_STRING)
                 .configure(sdkBuilder).build().getOpenTelemetrySdk();
             Meter meter = openTelemetry.getMeter("OTEL.AzureMonitor.Demo");
 

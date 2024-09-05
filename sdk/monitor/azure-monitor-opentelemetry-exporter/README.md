@@ -36,7 +36,7 @@ The following code shows how to configure the OpenTelemetry SDK auto-configurati
 ```java readme-sample-autoconfigure
 AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
 
-OpenTelemetry openTelemetry = new AzureMonitor("{connection-string}")
+OpenTelemetry openTelemetry = new AzureMonitor().connectionString("{connection-string}")
     .configure(sdkBuilder).build().getOpenTelemetrySdk();
 ```
 
@@ -50,7 +50,7 @@ The following example shows how create a span:
 ```java readme-sample-create-span
 AutoConfiguredOpenTelemetrySdkBuilder otelSdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
 
-OpenTelemetry openTelemetry = new AzureMonitor("{connection-string}")
+OpenTelemetry openTelemetry = new AzureMonitor().connectionString("{connection-string}")
     .configure(otelSdkBuilder).build().getOpenTelemetrySdk();
 Tracer tracer = openTelemetry.getTracer("Sample");
 

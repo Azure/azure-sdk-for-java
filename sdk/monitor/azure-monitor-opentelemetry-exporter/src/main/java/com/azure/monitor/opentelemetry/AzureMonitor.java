@@ -3,8 +3,15 @@
 
 package com.azure.monitor.opentelemetry;
 
+import com.azure.core.annotation.Fluent;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.util.ClientOptions;
 import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporterBuilder;
-import com.azure.monitor.opentelemetry.exporter.ExportOptions;
 import com.azure.monitor.opentelemetry.exporter.implementation.AzureMonitorExporterProviderKeys;
 import com.azure.monitor.opentelemetry.exporter.implementation.AzureMonitorLogRecordExporterProvider;
 import com.azure.monitor.opentelemetry.exporter.implementation.AzureMonitorMetricExporterProvider;
@@ -18,34 +25,96 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Class to configure OpenTelemetry for Azure Monitor.
+ * Class to enable Azure Monitor for OpenTelemetry autoconfiguration.
  */
+@Fluent
 public final class AzureMonitor {
 
-    private final AzureMonitorExporterBuilder azureMonitorExporterBuilder;
+    private final AzureMonitorExporterBuilder azureMonitorExporterBuilder = new AzureMonitorExporterBuilder();
 
     /**
-     * Construct an instance of {@link AzureMonitor}
+     * Sets the HTTP pipeline to use for the service client. If {@code httpPipeline} is set, all other
+     * settings are ignored.
+     *
+     * @param httpPipeline The HTTP pipeline to use for sending service requests and receiving
+     *                     responses.
+     * @return The updated {@link AzureMonitor} object.
      */
-    public AzureMonitor() {
-        this.azureMonitorExporterBuilder = new AzureMonitorExporterBuilder();
+    public AzureMonitor httpPipeline(HttpPipeline httpPipeline) {
+        azureMonitorExporterBuilder.httpPipeline(httpPipeline);
+        return this;
     }
 
     /**
-     * Construct an instance of {@link AzureMonitor}
-     * @param connectionString the Azure connection string to use.
+     * Sets the HTTP client to use for sending and receiving requests to and from the service.
+     *
+     * @param httpClient The HTTP client to use for requests.
+     * @return The updated {@link AzureMonitor} object.
      */
-    public AzureMonitor(String connectionString) {
-        ExportOptions exportOptions = new ExportOptions().connectionString(connectionString);
-        this.azureMonitorExporterBuilder = new AzureMonitorExporterBuilder(exportOptions);
+    public AzureMonitor httpClient(HttpClient httpClient) {
+        azureMonitorExporterBuilder.httpClient(httpClient);
+        return this;
     }
 
     /**
-     * Construct an instance of {@link AzureMonitor}
-     * @param exportOptions The export options to Azure, see{@link ExportOptions}.
+     * Sets the logging configuration for HTTP requests and responses.
+     *
+     * <p>If logLevel is not provided, default value of {@link HttpLogDetailLevel#NONE} is set.
+     *
+     * @param httpLogOptions The logging configuration to use when sending and receiving HTTP
+     *                       requests/responses.
+     * @return The updated {@link AzureMonitor} object.
      */
-    public AzureMonitor(ExportOptions exportOptions) {
-        this.azureMonitorExporterBuilder = new AzureMonitorExporterBuilder(exportOptions);
+    public AzureMonitor httpLogOptions(HttpLogOptions httpLogOptions) {
+        azureMonitorExporterBuilder.httpLogOptions(httpLogOptions);
+        return this;
+    }
+
+    /**
+     * Adds a policy to the set of existing policies that are executed after required policies.
+     *
+     * @param httpPipelinePolicy a policy to be added to the http pipeline.
+     * @return The updated {@link AzureMonitorExporterBuilder} object.
+     * @throws NullPointerException If {@code policy} is {@code null}.
+     */
+    public AzureMonitor addHttpPipelinePolicy(HttpPipelinePolicy httpPipelinePolicy) {
+        azureMonitorExporterBuilder.addHttpPipelinePolicy(httpPipelinePolicy);
+        return this;
+    }
+
+    /**
+     * Sets the client options such as application ID and custom headers to set on a request.
+     *
+     * @param clientOptions The client options.
+     * @return The updated {@link AzureMonitorExporterBuilder} object.
+     */
+    public AzureMonitor clientOptions(ClientOptions clientOptions) {
+        azureMonitorExporterBuilder.clientOptions(clientOptions);
+        return this;
+    }
+
+    /**
+     * Sets the connection string to use for exporting telemetry events to Azure Monitor.
+     *
+     * @param connectionString The connection string for the Azure Monitor resource.
+     * @return The updated {@link AzureMonitorExporterBuilder} object.
+     * @throws NullPointerException If the connection string is {@code null}.
+     * @throws IllegalArgumentException If the connection string is invalid.
+     */
+    public AzureMonitor connectionString(String connectionString) {
+        azureMonitorExporterBuilder.connectionString(connectionString);
+        return this;
+    }
+
+    /**
+     * Sets the token credential required for authentication with the ingestion endpoint service.
+     *
+     * @param credential The Azure Identity TokenCredential.
+     * @return The updated {@link AzureMonitorExporterBuilder} object.
+     */
+    public AzureMonitor credential(TokenCredential credential) {
+        azureMonitorExporterBuilder.credential(credential);
+        return this;
     }
 
     /**
