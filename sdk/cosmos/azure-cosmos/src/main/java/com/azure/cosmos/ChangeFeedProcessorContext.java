@@ -28,7 +28,8 @@ public interface ChangeFeedProcessorContext {
 
     /**
      * Get the diagnostics from the underlying feed response.
-     * @return
+     *
+     * @return The diagnostics object.
      */
     CosmosDiagnostics getDiagnostics();
 }
