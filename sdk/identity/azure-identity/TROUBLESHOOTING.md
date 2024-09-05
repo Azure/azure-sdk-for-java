@@ -285,6 +285,8 @@ Get-AzAccessToken -ResourceUrl "https://management.core.windows.net"
 |---|---|---|
 |`CredentialUnavailableException` raised with message. "IntelliJ Authentication not available. Please log in with Azure Tools for IntelliJ plugin in the IDE."| The Credential was not able to locate the cached token to use for authentication. | Ensure that you login on the  Azure Tools for IntelliJ plugin, that will populate the cache for the credential to pick up.
 
+> Note: Azure Toolkit for IntelliJ version 3.53 and higher are supported by this credential. If you are using an older version, please update to the latest version.
+
 ## Troubleshoot `AzurePipelinesCredential` authentication issues
 
 ## Troubleshoot multi-tenant authentication issues
