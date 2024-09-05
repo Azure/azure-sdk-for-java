@@ -5,10 +5,13 @@
 ### Features Added
 
 - Added runtime inspection for cores, pool size and Processor concurrency and a log statement linking to troubleshooting guideline on resourcing. This is based on the discussion here ([41489](https://github.com/Azure/azure-sdk-for-java/issues/41489))
+- Integrated RequestResponseChannelCache (CBS, Management channel cache) and ReactorSessionCache, these caches are activated when the configuration `com.azure.core.amqp.cache` is opted-in. ([39107](https://github.com/Azure/azure-sdk-for-java/pull/39107))
 
 ### Breaking Changes
 
 ### Bugs Fixed
+
+- Fixes the message size computation in ServiceBusMessageSerializer to include size of delivery annotations. ([41605](https://github.com/Azure/azure-sdk-for-java/issues/41605))
 
 ### Other Changes
 
