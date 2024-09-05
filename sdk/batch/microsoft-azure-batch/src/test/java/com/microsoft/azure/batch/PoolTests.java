@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
+import com.microsoft.azure.batch.BatchIntegrationTestBase.AuthMode;
 import com.microsoft.azure.batch.protocol.models.*;
 
 public class PoolTests extends BatchIntegrationTestBase {
@@ -916,6 +917,155 @@ public class PoolTests extends BatchIntegrationTestBase {
             Assert.assertEquals(Integer.valueOf(50), disk.diskSizeGB());
             Assert.assertTrue(disk.writeAcceleratorEnabled());
         } finally {
+            try {
+                if (batchClient.poolOperations().existsPool(poolId)) {
+                    batchClient.poolOperations().deletePool(poolId);
+                }
+            } catch (Exception e) {
+                // Ignore exception
+            }
+        }
+    }
+
+    @Test
+    public void canCreatePoolWithConfidentialVM() throws Exception {
+        String poolId = getStringIdWithUserNamePrefix("ConfidentialVMPool");
+
+        if (!batchClient.poolOperations().existsPool(poolId)) {
+            ImageReference imageReference = new ImageReference()
+                .withPublisher("Canonical")
+                .withOffer("0001-com-ubuntu-server-jammy")
+                .withSku("22_04-lts");
+
+            SecurityProfile securityProfile = new SecurityProfile()
+                .withSecurityType(SecurityTypes.CONFIDENTIAL_VM)
+                .withEncryptionAtHost(true)
+                .withUefiSettings(new UefiSettings()
+                    .withSecureBootEnabled(true)
+                    .withVTpmEnabled(true));
+
+            VMDiskSecurityProfile diskSecurityProfile = new VMDiskSecurityProfile()
+                .withSecurityEncryptionType(SecurityEncryptionTypes.VMGUEST_STATE_ONLY);
+
+            ManagedDisk managedDisk = new ManagedDisk()
+                .withSecurityProfile(diskSecurityProfile);
+
+            OSDisk osDisk = new OSDisk()
+                .withManagedDisk(managedDisk);
+
+            VirtualMachineConfiguration vmConfiguration = new VirtualMachineConfiguration()
+                .withImageReference(imageReference)
+                .withNodeAgentSKUId("batch.node.ubuntu 22.04")
+                .withSecurityProfile(securityProfile)
+                .withOsDisk(osDisk);
+
+            PoolAddParameter poolAddParameter = new PoolAddParameter()
+                .withId(poolId)
+                .withVmSize("STANDARD_D2S_V3")
+                .withVirtualMachineConfiguration(vmConfiguration)
+                .withTargetDedicatedNodes(0);
+
+            batchClient.poolOperations().createPool(poolAddParameter);
+        }
+
+        try {
+            CloudPool pool = batchClient.poolOperations().getPool(poolId);
+            Assert.assertNotNull(pool);
+
+            SecurityProfile sp = pool.virtualMachineConfiguration().securityProfile();
+            Assert.assertEquals(SecurityTypes.CONFIDENTIAL_VM, sp.securityType());
+            Assert.assertTrue(sp.encryptionAtHost());
+            Assert.assertTrue(sp.uefiSettings().secureBootEnabled());
+            Assert.assertTrue(sp.uefiSettings().vTpmEnabled());
+
+            OSDisk disk = pool.virtualMachineConfiguration().osDisk();
+            Assert.assertEquals(SecurityEncryptionTypes.VMGUEST_STATE_ONLY, disk.managedDisk().securityProfile().securityEncryptionType());
+
+        } finally {
+            try {
+                if (batchClient.poolOperations().existsPool(poolId)) {
+                    batchClient.poolOperations().deletePool(poolId);
+                }
+            } catch (Exception e) {
+                // Ignore exception
+            }
+        }
+    }
+
+    @Test
+    public void canDeallocateAndStartComputeNode() throws Exception {
+        String poolId = getStringIdWithUserNamePrefix("-deallocateStartNodePool");
+
+        // Create a pool with 1 Small VM
+        String POOL_VM_SIZE = "STANDARD_D1_V2";
+        int POOL_VM_COUNT = 1;
+
+        // Check if the pool exists, if not, create it
+        if (!batchClient.poolOperations().existsPool(poolId)) {
+            ImageReference imgRef = new ImageReference()
+                .withPublisher("Canonical")
+                .withOffer("UbuntuServer")
+                .withSku("18.04-LTS")
+                .withVersion("latest");
+
+            VirtualMachineConfiguration configuration = new VirtualMachineConfiguration()
+                .withNodeAgentSKUId("batch.node.ubuntu 18.04")
+                .withImageReference(imgRef);
+
+            PoolAddParameter addParameter = new PoolAddParameter()
+                .withId(poolId)
+                .withVmSize(POOL_VM_SIZE)
+                .withTargetDedicatedNodes(POOL_VM_COUNT)
+                .withVirtualMachineConfiguration(configuration);
+
+            batchClient.poolOperations().createPool(addParameter);
+        }
+
+        try {
+            // Wait for the pool to be steady and nodes to be idle
+            CloudPool pool = waitForPoolState(poolId, AllocationState.STEADY, 15 * 60 * 1000);
+            Assert.assertNotNull(pool);  // Assert that pool is not null
+            Assert.assertEquals(AllocationState.STEADY, pool.allocationState());  // Ensure pool is steady
+
+            List<ComputeNode> nodes = batchClient.computeNodeOperations().listComputeNodes(poolId);
+            Assert.assertFalse(nodes.isEmpty());  // Assert that there is at least one compute node
+
+            String nodeId = nodes.get(0).id();
+            ComputeNode computeNode = batchClient.computeNodeOperations().getComputeNode(poolId, nodeId);
+            Assert.assertEquals(ComputeNodeState.IDLE, computeNode.state());  // Assert the node is initially idle
+
+            // Deallocate the node using the compute node operations
+            batchClient.computeNodeOperations().deallocateComputeNode(poolId, nodeId, ComputeNodeDeallocateOption.TERMINATE);
+
+            // Wait until the node is deallocated
+            boolean isDeallocated = false;
+            while (!isDeallocated) {
+                computeNode = batchClient.computeNodeOperations().getComputeNode(poolId, nodeId);
+                if (computeNode.state() == ComputeNodeState.DEALLOCATED) {
+                    isDeallocated = true;
+                } else {
+                    threadSleepInRecordMode(15 * 1000);
+                }
+            }
+            Assert.assertEquals(ComputeNodeState.DEALLOCATED, computeNode.state());  // Assert that node is deallocated
+
+            // Start the node again using compute node operations
+            batchClient.computeNodeOperations().startComputeNode(poolId, nodeId);
+
+            // Wait until the node is idle again
+            boolean isIdle = false;
+            while (!isIdle) {
+                computeNode = batchClient.computeNodeOperations().getComputeNode(poolId, nodeId);
+                if (computeNode.state() == ComputeNodeState.IDLE) {
+                    isIdle = true;
+                } else {
+                    threadSleepInRecordMode(15 * 1000);
+                }
+            }
+            Assert.assertEquals(ComputeNodeState.IDLE, computeNode.state());  // Assert the node is idle again
+
+        } finally {
+            // Clean up
             try {
                 if (batchClient.poolOperations().existsPool(poolId)) {
                     batchClient.poolOperations().deletePool(poolId);
