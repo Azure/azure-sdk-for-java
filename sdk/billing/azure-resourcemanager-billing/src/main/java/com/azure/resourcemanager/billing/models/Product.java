@@ -4,191 +4,61 @@
 
 package com.azure.resourcemanager.billing.models;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.billing.fluent.models.ProductInner;
-import java.time.OffsetDateTime;
+import java.util.Map;
 
-/** An immutable client-side representation of Product. */
+/**
+ * An immutable client-side representation of Product.
+ */
 public interface Product {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
-     * Gets the autoRenew property: Indicates whether auto renewal is turned on or off for a product.
-     *
-     * @return the autoRenew value.
+     * Gets the tags property: Dictionary of metadata associated with the resource. It may not be populated for all
+     * resource types. Maximum key/value length supported of 256 characters. Keys/value should not empty value nor null.
+     * Keys can not contain &lt; &gt; % &amp; \ ? /.
+     * 
+     * @return the tags value.
      */
-    AutoRenew autoRenew();
+    Map<String, String> tags();
 
     /**
-     * Gets the displayName property: The display name of the product.
-     *
-     * @return the displayName value.
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
      */
-    String displayName();
+    SystemData systemData();
 
     /**
-     * Gets the purchaseDate property: The date when the product was purchased.
-     *
-     * @return the purchaseDate value.
+     * Gets the properties property: A product.
+     * 
+     * @return the properties value.
      */
-    OffsetDateTime purchaseDate();
-
-    /**
-     * Gets the productTypeId property: The ID of the type of product.
-     *
-     * @return the productTypeId value.
-     */
-    String productTypeId();
-
-    /**
-     * Gets the productType property: The description of the type of product.
-     *
-     * @return the productType value.
-     */
-    String productType();
-
-    /**
-     * Gets the status property: The current status of the product.
-     *
-     * @return the status value.
-     */
-    ProductStatusType status();
-
-    /**
-     * Gets the endDate property: The date when the product will be renewed or canceled.
-     *
-     * @return the endDate value.
-     */
-    OffsetDateTime endDate();
-
-    /**
-     * Gets the billingFrequency property: The frequency at which the product will be billed.
-     *
-     * @return the billingFrequency value.
-     */
-    BillingFrequency billingFrequency();
-
-    /**
-     * Gets the lastCharge property: The last month charges.
-     *
-     * @return the lastCharge value.
-     */
-    Amount lastCharge();
-
-    /**
-     * Gets the lastChargeDate property: The date of the last charge.
-     *
-     * @return the lastChargeDate value.
-     */
-    OffsetDateTime lastChargeDate();
-
-    /**
-     * Gets the quantity property: The quantity purchased for the product.
-     *
-     * @return the quantity value.
-     */
-    Float quantity();
-
-    /**
-     * Gets the skuId property: The sku ID of the product.
-     *
-     * @return the skuId value.
-     */
-    String skuId();
-
-    /**
-     * Gets the skuDescription property: The sku description of the product.
-     *
-     * @return the skuDescription value.
-     */
-    String skuDescription();
-
-    /**
-     * Gets the tenantId property: The id of the tenant in which the product is used.
-     *
-     * @return the tenantId value.
-     */
-    String tenantId();
-
-    /**
-     * Gets the availabilityId property: The availability of the product.
-     *
-     * @return the availabilityId value.
-     */
-    String availabilityId();
-
-    /**
-     * Gets the invoiceSectionId property: The ID of the invoice section to which the product is billed.
-     *
-     * @return the invoiceSectionId value.
-     */
-    String invoiceSectionId();
-
-    /**
-     * Gets the invoiceSectionDisplayName property: The name of the invoice section to which the product is billed.
-     *
-     * @return the invoiceSectionDisplayName value.
-     */
-    String invoiceSectionDisplayName();
-
-    /**
-     * Gets the billingProfileId property: The ID of the billing profile to which the product is billed.
-     *
-     * @return the billingProfileId value.
-     */
-    String billingProfileId();
-
-    /**
-     * Gets the billingProfileDisplayName property: The name of the billing profile to which the product is billed.
-     *
-     * @return the billingProfileDisplayName value.
-     */
-    String billingProfileDisplayName();
-
-    /**
-     * Gets the customerId property: The ID of the customer for whom the product was purchased. The field is applicable
-     * only for Microsoft Partner Agreement billing account.
-     *
-     * @return the customerId value.
-     */
-    String customerId();
-
-    /**
-     * Gets the customerDisplayName property: The name of the customer for whom the product was purchased. The field is
-     * applicable only for Microsoft Partner Agreement billing account.
-     *
-     * @return the customerDisplayName value.
-     */
-    String customerDisplayName();
-
-    /**
-     * Gets the reseller property: Reseller for this product.
-     *
-     * @return the reseller value.
-     */
-    Reseller reseller();
+    ProductProperties properties();
 
     /**
      * Gets the inner com.azure.resourcemanager.billing.fluent.models.ProductInner object.
-     *
+     * 
      * @return the inner object.
      */
     ProductInner innerModel();
