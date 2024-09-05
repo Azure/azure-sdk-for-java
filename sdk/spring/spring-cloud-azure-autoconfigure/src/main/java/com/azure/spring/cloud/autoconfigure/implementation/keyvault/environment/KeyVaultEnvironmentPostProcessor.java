@@ -131,14 +131,12 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
     private KeyVaultPropertySource buildKeyVaultPropertySource(
             AzureKeyVaultPropertySourceProperties properties) {
         try {
-            final KeyVaultOperation keyVaultOperation = new KeyVaultOperation(
-                buildSecretClient(properties),
-                properties.getSecretKeys(),
-                properties.isCaseSensitive());
+            final KeyVaultOperation keyVaultOperation = new KeyVaultOperation(buildSecretClient(properties));
             return new KeyVaultPropertySource(
                 properties.getName(),
                 properties.getRefreshInterval(),
                 keyVaultOperation,
+                properties.getSecretKeys(),
                 properties.isCaseSensitive());
         } catch (final Exception exception) {
             throw new IllegalStateException("Failed to configure KeyVault property source '" + properties.getName() + "'", exception);

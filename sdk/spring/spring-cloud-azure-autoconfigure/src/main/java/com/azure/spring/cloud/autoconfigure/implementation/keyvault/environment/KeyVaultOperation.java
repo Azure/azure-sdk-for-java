@@ -10,26 +10,18 @@ import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.security.keyvault.secrets.models.SecretProperties;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import static com.azure.spring.cloud.autoconfigure.implementation.keyvault.environment.utils.KeyVaultPropertySourceUtils.toKeyVaultSecretName;
-
 /**
  * KeyVaultOperation wraps the operations to access Key Vault.
+ * This operation can list secrets with given filter, and convert it to spring property name and value.
  *
  * @since 4.0.0
  */
 public class KeyVaultOperation {
-
-    /**
-     * Stores the case-sensitive flag.
-     */
-    private final boolean caseSensitive;
 
     /**
      * Stores the secret client.
@@ -37,31 +29,21 @@ public class KeyVaultOperation {
     private final SecretClient secretClient;
 
     /**
-     * Stores the secret keys.
-     */
-    private final List<String> secretKeys;
-
-    /**
      * Constructor.
      * @param secretClient the Key Vault secret client.
-     * @param secretKeys the secret keys to look for.
-     * @param caseSensitive the case-sensitive flag.
      */
-    public KeyVaultOperation(final SecretClient secretClient,
-                             List<String> secretKeys,
-                             boolean caseSensitive) {
-        this.caseSensitive = caseSensitive;
+    public KeyVaultOperation(final SecretClient secretClient) {
         this.secretClient = secretClient;
-        this.secretKeys = secretKeys;
     }
 
     /**
-     * Refresh the properties by accessing key vault.
+     * Get the Key Vault secrets filtered by given secret keys.
+     * If the secret keys is empty, return all the secrets in Key Vault.
      */
-    Map<String, String> refreshProperties() {
-        Map<String, String> properties;
+    List<KeyVaultSecret> listSecrets(List<String> secretKeys) {
+        List<KeyVaultSecret> keyVaultSecrets;
         if (secretKeys == null || secretKeys.isEmpty()) {
-            properties = Optional.of(secretClient)
+            keyVaultSecrets = Optional.of(secretClient)
                                  .map(SecretClient::listPropertiesOfSecrets)
                                  .map(ContinuablePagedIterable::iterableByPage)
                                  .map(i -> StreamSupport.stream(i.spliterator(), false))
@@ -71,20 +53,13 @@ public class KeyVaultOperation {
                                  .filter(SecretProperties::isEnabled)
                                  .map(p -> secretClient.getSecret(p.getName(), p.getVersion()))
                                  .filter(Objects::nonNull)
-                                 .collect(Collectors.toMap(
-                                     s -> toKeyVaultSecretName(this.caseSensitive, s.getName()),
-                                     KeyVaultSecret::getValue
-                                 ));
+                                 .toList();
         } else {
-            properties = secretKeys.stream()
-                                   .map(key -> toKeyVaultSecretName(this.caseSensitive, key))
+            keyVaultSecrets = secretKeys.stream()
                                    .map(secretClient::getSecret)
                                    .filter(Objects::nonNull)
-                                   .collect(Collectors.toMap(
-                                       s -> toKeyVaultSecretName(this.caseSensitive, s.getName()),
-                                       KeyVaultSecret::getValue
-                                   ));
+                                   .toList();
         }
-        return properties;
+        return keyVaultSecrets;
     }
 }
