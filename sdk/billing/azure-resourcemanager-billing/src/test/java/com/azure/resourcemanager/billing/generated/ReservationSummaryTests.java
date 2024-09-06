@@ -10,11 +10,9 @@ import com.azure.resourcemanager.billing.models.ReservationSummary;
 public final class ReservationSummaryTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ReservationSummary model =
-            BinaryData
-                .fromString(
-                    "{\"succeededCount\":29.918415,\"failedCount\":93.61522,\"expiringCount\":44.341938,\"expiredCount\":23.334568,\"pendingCount\":75.85746,\"cancelledCount\":61.311485}")
-                .toObject(ReservationSummary.class);
+        ReservationSummary model = BinaryData.fromString(
+            "{\"cancelledCount\":42.73576,\"expiredCount\":29.428112,\"expiringCount\":51.64282,\"failedCount\":86.84235,\"pendingCount\":82.57944,\"succeededCount\":63.314163,\"noBenefitCount\":60.028564,\"warningCount\":94.05625,\"processingCount\":49.30765}")
+            .toObject(ReservationSummary.class);
     }
 
     @org.junit.jupiter.api.Test

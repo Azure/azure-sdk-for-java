@@ -108,7 +108,7 @@ public class IOContext {
 
     /**
      * Main constructor to use.
-     * 
+     *
      * @param br BufferRecycler to use, if any ({@code null} if none)
      * @param contentRef Input source reference for location reporting
      * @param managedResource Whether input source is managed (owned) by Jackson library
@@ -131,11 +131,6 @@ public class IOContext {
         _encoding = enc;
     }
 
-    public IOContext withEncoding(JsonEncoding enc) {
-        _encoding = enc;
-        return this;
-    }
-
     /*
      * /**********************************************************************
      * /* Public API, accessors
@@ -153,7 +148,7 @@ public class IOContext {
     /**
      * Accessor for getting (some) information about input source, mostly
      * usable for error reporting purposes.
-     * 
+     *
      * @return Reference to input source
      *
      * @since 2.13
@@ -195,21 +190,6 @@ public class IOContext {
     }
 
     /**
-     * Variant of {@link #allocReadIOBuffer()} that specifies smallest acceptable
-     * buffer size.
-     *
-     * @param minSize Minimum size of the buffer to recycle or allocate
-     *
-     * @return Allocated or recycled byte buffer
-     *
-     * @since 2.4
-     */
-    public byte[] allocReadIOBuffer(int minSize) {
-        _verifyAlloc(_readIOBuffer);
-        return (_readIOBuffer = _bufferRecycler.allocByteBuffer(BufferRecycler.BYTE_READ_IO_BUFFER, minSize));
-    }
-
-    /**
      * Method for recycling or allocation byte buffer of "write encoding" type.
      *<p>
      * Note: the method can only be called once during its life cycle.
@@ -223,22 +203,6 @@ public class IOContext {
     }
 
     /**
-     * Variant of {@link #allocWriteEncodingBuffer()} that specifies smallest acceptable
-     * buffer size.
-     *
-     * @param minSize Minimum size of the buffer to recycle or allocate
-     *
-     * @return Allocated or recycled byte buffer
-     *
-     * @since 2.4
-     */
-    public byte[] allocWriteEncodingBuffer(int minSize) {
-        _verifyAlloc(_writeEncodingBuffer);
-        return (_writeEncodingBuffer
-            = _bufferRecycler.allocByteBuffer(BufferRecycler.BYTE_WRITE_ENCODING_BUFFER, minSize));
-    }
-
-    /**
      * Method for recycling or allocation byte buffer of "base 64 encode/decode" type.
      *<p>
      * Note: the method can only be called once during its life cycle.
@@ -249,21 +213,6 @@ public class IOContext {
     public byte[] allocBase64Buffer() {
         _verifyAlloc(_base64Buffer);
         return (_base64Buffer = _bufferRecycler.allocByteBuffer(BufferRecycler.BYTE_BASE64_CODEC_BUFFER));
-    }
-
-    /**
-     * Variant of {@link #allocBase64Buffer()} that specifies smallest acceptable
-     * buffer size.
-     *
-     * @param minSize Minimum size of the buffer to recycle or allocate
-     *
-     * @return Allocated or recycled byte buffer
-     *
-     * @since 2.9
-     */
-    public byte[] allocBase64Buffer(int minSize) {
-        _verifyAlloc(_base64Buffer);
-        return (_base64Buffer = _bufferRecycler.allocByteBuffer(BufferRecycler.BYTE_BASE64_CODEC_BUFFER, minSize));
     }
 
     public char[] allocTokenBuffer() {

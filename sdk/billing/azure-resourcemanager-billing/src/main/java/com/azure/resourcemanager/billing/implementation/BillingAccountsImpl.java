@@ -12,10 +12,17 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.fluent.BillingAccountsClient;
 import com.azure.resourcemanager.billing.fluent.models.BillingAccountInner;
 import com.azure.resourcemanager.billing.fluent.models.InvoiceSectionWithCreateSubPermissionInner;
+import com.azure.resourcemanager.billing.fluent.models.PaymentTermsEligibilityResultInner;
+import com.azure.resourcemanager.billing.fluent.models.TransitionDetailsInner;
 import com.azure.resourcemanager.billing.models.BillingAccount;
-import com.azure.resourcemanager.billing.models.BillingAccountUpdateRequest;
+import com.azure.resourcemanager.billing.models.BillingAccountPatch;
 import com.azure.resourcemanager.billing.models.BillingAccounts;
 import com.azure.resourcemanager.billing.models.InvoiceSectionWithCreateSubPermission;
+import com.azure.resourcemanager.billing.models.PaymentTerm;
+import com.azure.resourcemanager.billing.models.PaymentTermsEligibilityResult;
+import com.azure.resourcemanager.billing.models.TransitionDetails;
+import java.time.OffsetDateTime;
+import java.util.List;
 
 public final class BillingAccountsImpl implements BillingAccounts {
     private static final ClientLogger LOGGER = new ClientLogger(BillingAccountsImpl.class);
@@ -24,29 +31,110 @@ public final class BillingAccountsImpl implements BillingAccounts {
 
     private final com.azure.resourcemanager.billing.BillingManager serviceManager;
 
-    public BillingAccountsImpl(
-        BillingAccountsClient innerClient, com.azure.resourcemanager.billing.BillingManager serviceManager) {
+    public BillingAccountsImpl(BillingAccountsClient innerClient,
+        com.azure.resourcemanager.billing.BillingManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<BillingAccount> list() {
-        PagedIterable<BillingAccountInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new BillingAccountImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<BillingAccount> list(String expand, Context context) {
-        PagedIterable<BillingAccountInner> inner = this.serviceClient().list(expand, context);
-        return Utils.mapPage(inner, inner1 -> new BillingAccountImpl(inner1, this.manager()));
-    }
-
-    public Response<BillingAccount> getWithResponse(String billingAccountName, String expand, Context context) {
-        Response<BillingAccountInner> inner = this.serviceClient().getWithResponse(billingAccountName, expand, context);
+    public BillingAccount addPaymentTerms(String billingAccountName, List<PaymentTerm> parameters) {
+        BillingAccountInner inner = this.serviceClient().addPaymentTerms(billingAccountName, parameters);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new BillingAccountImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public BillingAccount addPaymentTerms(String billingAccountName, List<PaymentTerm> parameters, Context context) {
+        BillingAccountInner inner = this.serviceClient().addPaymentTerms(billingAccountName, parameters, context);
+        if (inner != null) {
+            return new BillingAccountImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public BillingAccount cancelPaymentTerms(String billingAccountName, OffsetDateTime parameters) {
+        BillingAccountInner inner = this.serviceClient().cancelPaymentTerms(billingAccountName, parameters);
+        if (inner != null) {
+            return new BillingAccountImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public BillingAccount cancelPaymentTerms(String billingAccountName, OffsetDateTime parameters, Context context) {
+        BillingAccountInner inner = this.serviceClient().cancelPaymentTerms(billingAccountName, parameters, context);
+        if (inner != null) {
+            return new BillingAccountImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<TransitionDetails> confirmTransitionWithResponse(String billingAccountName, Context context) {
+        Response<TransitionDetailsInner> inner
+            = this.serviceClient().confirmTransitionWithResponse(billingAccountName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new TransitionDetailsImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public TransitionDetails confirmTransition(String billingAccountName) {
+        TransitionDetailsInner inner = this.serviceClient().confirmTransition(billingAccountName);
+        if (inner != null) {
+            return new TransitionDetailsImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public PagedIterable<InvoiceSectionWithCreateSubPermission>
+        listInvoiceSectionsByCreateSubscriptionPermission(String billingAccountName) {
+        PagedIterable<InvoiceSectionWithCreateSubPermissionInner> inner
+            = this.serviceClient().listInvoiceSectionsByCreateSubscriptionPermission(billingAccountName);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new InvoiceSectionWithCreateSubPermissionImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<InvoiceSectionWithCreateSubPermission>
+        listInvoiceSectionsByCreateSubscriptionPermission(String billingAccountName, String filter, Context context) {
+        PagedIterable<InvoiceSectionWithCreateSubPermissionInner> inner = this.serviceClient()
+            .listInvoiceSectionsByCreateSubscriptionPermission(billingAccountName, filter, context);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new InvoiceSectionWithCreateSubPermissionImpl(inner1, this.manager()));
+    }
+
+    public Response<PaymentTermsEligibilityResult> validatePaymentTermsWithResponse(String billingAccountName,
+        List<PaymentTerm> parameters, Context context) {
+        Response<PaymentTermsEligibilityResultInner> inner
+            = this.serviceClient().validatePaymentTermsWithResponse(billingAccountName, parameters, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new PaymentTermsEligibilityResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public PaymentTermsEligibilityResult validatePaymentTerms(String billingAccountName, List<PaymentTerm> parameters) {
+        PaymentTermsEligibilityResultInner inner
+            = this.serviceClient().validatePaymentTerms(billingAccountName, parameters);
+        if (inner != null) {
+            return new PaymentTermsEligibilityResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<BillingAccount> getWithResponse(String billingAccountName, Context context) {
+        Response<BillingAccountInner> inner = this.serviceClient().getWithResponse(billingAccountName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new BillingAccountImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -62,7 +150,7 @@ public final class BillingAccountsImpl implements BillingAccounts {
         }
     }
 
-    public BillingAccount update(String billingAccountName, BillingAccountUpdateRequest parameters) {
+    public BillingAccount update(String billingAccountName, BillingAccountPatch parameters) {
         BillingAccountInner inner = this.serviceClient().update(billingAccountName, parameters);
         if (inner != null) {
             return new BillingAccountImpl(inner, this.manager());
@@ -71,7 +159,7 @@ public final class BillingAccountsImpl implements BillingAccounts {
         }
     }
 
-    public BillingAccount update(String billingAccountName, BillingAccountUpdateRequest parameters, Context context) {
+    public BillingAccount update(String billingAccountName, BillingAccountPatch parameters, Context context) {
         BillingAccountInner inner = this.serviceClient().update(billingAccountName, parameters, context);
         if (inner != null) {
             return new BillingAccountImpl(inner, this.manager());
@@ -80,18 +168,18 @@ public final class BillingAccountsImpl implements BillingAccounts {
         }
     }
 
-    public PagedIterable<InvoiceSectionWithCreateSubPermission> listInvoiceSectionsByCreateSubscriptionPermission(
-        String billingAccountName) {
-        PagedIterable<InvoiceSectionWithCreateSubPermissionInner> inner =
-            this.serviceClient().listInvoiceSectionsByCreateSubscriptionPermission(billingAccountName);
-        return Utils.mapPage(inner, inner1 -> new InvoiceSectionWithCreateSubPermissionImpl(inner1, this.manager()));
+    public PagedIterable<BillingAccount> list() {
+        PagedIterable<BillingAccountInner> inner = this.serviceClient().list();
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new BillingAccountImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<InvoiceSectionWithCreateSubPermission> listInvoiceSectionsByCreateSubscriptionPermission(
-        String billingAccountName, Context context) {
-        PagedIterable<InvoiceSectionWithCreateSubPermissionInner> inner =
-            this.serviceClient().listInvoiceSectionsByCreateSubscriptionPermission(billingAccountName, context);
-        return Utils.mapPage(inner, inner1 -> new InvoiceSectionWithCreateSubPermissionImpl(inner1, this.manager()));
+    public PagedIterable<BillingAccount> list(Boolean includeAll, Boolean includeAllWithoutBillingProfiles,
+        Boolean includeDeleted, Boolean includePendingAgreement, Boolean includeResellee, String legalOwnerTid,
+        String legalOwnerOid, String filter, String expand, Long top, Long skip, String search, Context context) {
+        PagedIterable<BillingAccountInner> inner = this.serviceClient()
+            .list(includeAll, includeAllWithoutBillingProfiles, includeDeleted, includePendingAgreement,
+                includeResellee, legalOwnerTid, legalOwnerOid, filter, expand, top, skip, search, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new BillingAccountImpl(inner1, this.manager()));
     }
 
     private BillingAccountsClient serviceClient() {

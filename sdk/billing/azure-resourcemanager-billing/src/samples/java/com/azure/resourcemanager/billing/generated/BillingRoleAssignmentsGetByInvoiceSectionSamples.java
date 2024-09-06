@@ -4,24 +4,26 @@
 
 package com.azure.resourcemanager.billing.generated;
 
-/** Samples for BillingRoleAssignments GetByInvoiceSection. */
+/**
+ * Samples for BillingRoleAssignments GetByInvoiceSection.
+ */
 public final class BillingRoleAssignmentsGetByInvoiceSectionSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/InvoiceSectionRoleAssignment.json
+     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
+     * billingRoleAssignmentGetByInvoiceSection.json
      */
     /**
-     * Sample code: InvoiceSectionRoleAssignment.
-     *
+     * Sample code: BillingRoleAssignmentGetByInvoiceSection.
+     * 
      * @param manager Entry point to BillingManager.
      */
-    public static void invoiceSectionRoleAssignment(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager
-            .billingRoleAssignments()
+    public static void
+        billingRoleAssignmentGetByInvoiceSection(com.azure.resourcemanager.billing.BillingManager manager) {
+        manager.billingRoleAssignments()
             .getByInvoiceSectionWithResponse(
-                "{billingAccountName}",
-                "{billingProfileName}",
-                "{invoiceSectionName}",
-                "{billingRoleAssignmentName}",
+                "00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30",
+                "BKM6-54VH-BG7-PGB", "xxxx-xxxx-xxx-xxx",
+                "10000000-aaaa-bbbb-cccc-100000000000_6fd330f6-7d26-4aff-b9cf-7bd699f965b9",
                 com.azure.core.util.Context.NONE);
     }
 }
