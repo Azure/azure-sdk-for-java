@@ -1,16 +1,17 @@
 {
   "$schema": "https://json.schemastore.org/component-detection-manifest.json",
-  "Registrations": [
+  "version": 1,
+  "registrations": [
     {
-      "Component": {
-        "Type": "Maven",
-        "Maven": {
-          "ArtifactId": "jackson-core",
-          "GroupId": "com.fasterxml.jackson.core",
-          "Version": "2.13.3"
+      "developmentDependency": false,
+      "component": {
+        "type": "maven",
+        "maven": {
+          "groupId": "com.fasterxml.jackson.core",
+          "artifactId": "jackson-core",
+          "version": "2.13.3"
         }
       }
     }
-  ],
-  "Version": 1
+  ]
 }

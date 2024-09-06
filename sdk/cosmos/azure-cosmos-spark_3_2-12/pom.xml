@@ -84,7 +84,7 @@
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-cosmos</artifactId>
-      <version>2.42.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-cosmos;dependency} -->
+      <version>2.41.0</version> <!-- {x-version-update;cosmos_com.azure.resourcemanager:azure-resourcemanager-cosmos;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>

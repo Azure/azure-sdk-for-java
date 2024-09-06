@@ -12,7 +12,12 @@ import com.azure.identity.implementation.util.IdentityUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.util.Arrays;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class IdentityUtilTests {
 
@@ -40,6 +45,48 @@ public class IdentityUtilTests {
 
         Assertions.assertThrows(ClientAuthenticationException.class,
             () -> IdentityUtil.resolveTenantId(currentTenant, trc, options));
+    }
+
+    @Test
+    public void testParseJsonIntoMap() throws IOException {
+        String json = "{\n"
+            + "    \"string\": \"string_value\",\n"
+            + "    \"boolean\": true,\n"
+            + "    \"number\": 1,\n"
+            + "    \"array\": [\"an\",\"array\"],\n"
+            + "    \"object\": {\n"
+            + "        \"a\": \"nested\",\n"
+            + "        \"b\": \"object\"\n"
+            + "    }\n"
+            + "}";
+        Map<String, String> map = IdentityUtil.parseJsonIntoMap(json);
+        assertTrue(map.containsKey("string"));
+        assertTrue(map.containsKey("boolean"));
+        assertTrue(map.containsKey("number"));
+        assertTrue(map.containsKey("array"));
+        assertTrue(map.containsKey("object"));
+        assertEquals("string_value", map.get("string"));
+        assertEquals("true", map.get("boolean"));
+        assertEquals("1", map.get("number"));
+        assertEquals("[\"an\",\"array\"]", map.get("array"));
+        assertEquals("{\"a\":\"nested\",\"b\":\"object\"}", map.get("object"));
+    }
+
+    @Test
+    public void testGetAccessToken() throws IOException {
+        String json = "{\n"
+            + "  \"token_type\": \"fake_token_type\",\n"
+            + "  \"scope\": \"fake_scope\",\n"
+            + "  \"expires_in\": 4986,\n"
+            + "  \"ext_expires_in\": 4986,\n"
+            + "  \"access_token\": \"fake_access_token\",\n"
+            + "  \"refresh_token\": \"fake_refresh_token\",\n"
+            + "  \"foci\": \"1\",\n"
+            + "  \"id_token\": \"fake_id_token\",\n"
+            + "  \"client_info\": \"fake_client_info\",\n"
+            + "}";
+        String result = IdentityUtil.getAccessToken(json);
+        assertEquals("fake_access_token", result);
     }
 
     @Test
