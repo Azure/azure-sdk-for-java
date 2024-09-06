@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<FindBugsFilter xmlns="https://github.com/spotbugs/filter/3.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="https://github.com/spotbugs/filter/3.0.0 https://raw.githubusercontent.com/spotbugs/spotbugs/3.1.0/spotbugs/etc/findbugsfilter.xsd">
+  <Match>
+    <Bug pattern="EI_EXPOSE_REP" />
+    <Or>
+      <And>
+        <Or>
+          <Class name="com.azure.core.http.test.common.models.HttpBinFormDataJson" />
+          <Class name="com.azure.core.http.test.common.models.HttpBinJson" />
+        </Or>
+        <Method name="headers" />
+      </And>
+      <And>
+        <Class name="com.azure.core.http.test.common.models.HttpBinFormDataJson$Form" />
+        <Method name="toppings" />
+      </And>
+      <And>
+        <Class name="com.azure.core.http.test.common.models.TestConfigurationSource" />
+        <Method name="getProperties" />
+      </And>
+    </Or>
+  </Match>
+
+  <Match>
+    <Bug pattern="EI_EXPOSE_REP2" />
+    <Or>
+      <And>
+        <Or>
+          <Class name="com.azure.core.http.test.common.models.HttpBinFormDataJson" />
+          <Class name="com.azure.core.http.test.common.models.HttpBinJson" />
+        </Or>
+        <Method name="headers" />
+      </And>
+      <And>
+        <Class name="com.azure.core.http.test.common.models.HttpBinFormDataJson$Form" />
+        <Method name="toppings" />
+      </And>
+    </Or>
+  </Match>
+
+  <Match>
+    <Bug pattern="SE_BAD_FIELD,SE_NO_SERIALVERSIONID" />
+    <Class name="com.azure.core.http.test.common.LocalTestServer$AzureTestHttpServlet" />
+  </Match>
+</FindBugsFilter>

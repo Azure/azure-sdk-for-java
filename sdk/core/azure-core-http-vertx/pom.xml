@@ -106,15 +106,8 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-core-test</artifactId>
-      <version>1.27.0-beta.1</version>  <!-- {x-version-update;com.azure:azure-core-test;current} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core-test</artifactId>
-      <version>1.27.0-beta.1</version>  <!-- {x-version-update;com.azure:azure-core-test;current} -->
-      <type>test-jar</type>
+      <artifactId>azure-core-http-test-common</artifactId>
+      <version>1.0.0-beta.1</version>  <!-- {x-version-update;com.azure:azure-core-http-test-common;current} -->
       <scope>test</scope>
     </dependency>
     <dependency>

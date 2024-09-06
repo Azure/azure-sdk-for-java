@@ -6,7 +6,7 @@ package com.azure.core.http.okhttp;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
-import com.azure.core.test.utils.TestUtils;
+import com.azure.core.http.test.common.HttpTestUtils;
 import com.azure.core.util.FluxUtil;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
@@ -45,7 +45,7 @@ public class DeadlockTests {
 
         for (Tuple2<byte[], Integer> result : results) {
             assertEquals(200, result.getT2());
-            TestUtils.assertArraysEqual(EXPECTED_GET_BYTES, result.getT1());
+            HttpTestUtils.assertArraysEqual(EXPECTED_GET_BYTES, result.getT1());
         }
     }
 }

@@ -8,6 +8,7 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.test.common.HttpTestUtils;
 import com.azure.core.implementation.util.HttpUtils;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
@@ -57,7 +58,6 @@ import java.util.stream.Collectors;
 import static com.azure.core.http.jdk.httpclient.JdkHttpClientLocalTestServer.LONG_BODY;
 import static com.azure.core.http.jdk.httpclient.JdkHttpClientLocalTestServer.SHORT_BODY;
 import static com.azure.core.http.jdk.httpclient.JdkHttpClientLocalTestServer.TIMEOUT;
-import static com.azure.core.test.utils.TestUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -97,7 +97,7 @@ public class JdkHttpClientTests {
     public void testBufferResponseSync() {
         HttpClient client = new JdkHttpClientBuilder().build();
         try (HttpResponse response = doRequestSync(client, "/long").buffer()) {
-            assertArraysEqual(LONG_BODY, response.getBodyAsBinaryData().toBytes());
+            HttpTestUtils.assertArraysEqual(LONG_BODY, response.getBodyAsBinaryData().toBytes());
         }
     }
 
@@ -106,7 +106,7 @@ public class JdkHttpClientTests {
         HttpClient client = new JdkHttpClientBuilder().build();
         HttpRequest request = new HttpRequest(HttpMethod.GET, url("/long"));
         try (HttpResponse response = client.sendSync(request, new Context("azure-eagerly-read-response", true))) {
-            assertArraysEqual(LONG_BODY, response.getBodyAsBinaryData().toBytes());
+            HttpTestUtils.assertArraysEqual(LONG_BODY, response.getBodyAsBinaryData().toBytes());
         }
     }
 
@@ -157,8 +157,8 @@ public class JdkHttpClientTests {
     public void testMultipleGetBinaryDataSync() {
         HttpClient client = new JdkHttpClientBuilder().build();
         try (HttpResponse response = doRequestSync(client, "/short")) {
-            assertArraysEqual(SHORT_BODY, response.getBodyAsBinaryData().toBytes());
-            assertArraysEqual(SHORT_BODY, response.getBodyAsBinaryData().toBytes());
+            HttpTestUtils.assertArraysEqual(SHORT_BODY, response.getBodyAsBinaryData().toBytes());
+            HttpTestUtils.assertArraysEqual(SHORT_BODY, response.getBodyAsBinaryData().toBytes());
         }
     }
 
@@ -348,7 +348,7 @@ public class JdkHttpClientTests {
             .flatMap(response -> Mono.using(() -> response, HttpResponse::getBodyAsByteArray, HttpResponse::close));
 
         StepVerifier.create(responses).thenConsumeWhile(response -> {
-            assertArraysEqual(LONG_BODY, response);
+            HttpTestUtils.assertArraysEqual(LONG_BODY, response);
             return true;
         }).expectComplete().verify(Duration.ofSeconds(60));
     }
@@ -364,7 +364,7 @@ public class JdkHttpClientTests {
             requests.add(() -> {
                 try (HttpResponse response = doRequestSync(client, "/long")) {
                     byte[] body = response.getBodyAsBinaryData().toBytes();
-                    assertArraysEqual(LONG_BODY, body);
+                    HttpTestUtils.assertArraysEqual(LONG_BODY, body);
                     return null;
                 }
             });
@@ -419,7 +419,7 @@ public class JdkHttpClientTests {
 
         RuntimeException ex = assertThrows(RuntimeException.class, () -> assertTimeout(Duration.ofSeconds(5), () -> {
             try (HttpResponse response = doRequestSync(client, "/slowResponse")) {
-                assertArraysEqual(SHORT_BODY, response.getBodyAsBinaryData().toBytes());
+                HttpTestUtils.assertArraysEqual(SHORT_BODY, response.getBodyAsBinaryData().toBytes());
             }
         }));
 
@@ -450,7 +450,7 @@ public class JdkHttpClientTests {
         RuntimeException ex = assertThrows(RuntimeException.class, () -> assertTimeout(Duration.ofSeconds(5), () -> {
             try (HttpResponse response
                 = doRequestSync(client, "/slowResponse", new Context("azure-eagerly-read-response", true))) {
-                assertArraysEqual(SHORT_BODY, response.getBodyAsBinaryData().toBytes());
+                HttpTestUtils.assertArraysEqual(SHORT_BODY, response.getBodyAsBinaryData().toBytes());
             }
         }));
 
@@ -487,7 +487,7 @@ public class JdkHttpClientTests {
             .flatMap(response -> Mono.zip(FluxUtil.collectBytesInByteBufferStream(response.getBody()),
                 Mono.just(response.getStatusCode()))))
             .assertNext(tuple -> {
-                assertArraysEqual(SHORT_BODY, tuple.getT1());
+                HttpTestUtils.assertArraysEqual(SHORT_BODY, tuple.getT1());
                 assertEquals(200, tuple.getT2());
             })
             .verifyComplete();
@@ -507,7 +507,7 @@ public class JdkHttpClientTests {
         // Then verify not setting a timeout through Context does not time out the request.
         try (HttpResponse response = client.sendSync(request, Context.NONE)) {
             assertEquals(200, response.getStatusCode());
-            assertArraysEqual(SHORT_BODY, response.getBodyAsBinaryData().toBytes());
+            HttpTestUtils.assertArraysEqual(SHORT_BODY, response.getBodyAsBinaryData().toBytes());
         }
     }
 
@@ -538,7 +538,7 @@ public class JdkHttpClientTests {
     private static void checkBodyReceived(byte[] expectedBody, String path) {
         HttpClient client = new JdkHttpClientBuilder().build();
         StepVerifier.create(doRequest(client, path).flatMap(HttpResponse::getBodyAsByteArray))
-            .assertNext(bytes -> assertArraysEqual(expectedBody, bytes))
+            .assertNext(bytes -> HttpTestUtils.assertArraysEqual(expectedBody, bytes))
             .verifyComplete();
     }
 
@@ -548,7 +548,7 @@ public class JdkHttpClientTests {
             ByteArrayOutputStream outStream = new ByteArrayOutputStream();
             WritableByteChannel body = Channels.newChannel(outStream);
             response.writeBodyTo(body);
-            assertArraysEqual(expectedBody, outStream.toByteArray());
+            HttpTestUtils.assertArraysEqual(expectedBody, outStream.toByteArray());
         }
     }
 

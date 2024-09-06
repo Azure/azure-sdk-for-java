@@ -74,6 +74,26 @@
       <artifactId>azure-core</artifactId>
       <version>1.52.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-http-jdk-httpclient</artifactId>
+      <version>1.0.0-beta.16</version> <!-- {x-version-update;com.azure:azure-core-http-jdk-httpclient;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-http-netty</artifactId>
+      <version>1.16.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-http-okhttp</artifactId>
+      <version>1.13.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-http-vertx</artifactId>
+      <version>1.0.0-beta.21</version> <!-- {x-version-update;com.azure:azure-core-http-vertx;current} -->
+    </dependency>
 
     <dependency>
       <groupId>io.projectreactor</groupId>
@@ -93,22 +113,10 @@
     </dependency>
 
     <dependency>
-      <groupId>org.eclipse.jetty</groupId>
-      <artifactId>jetty-server</artifactId>
-      <version>9.4.54.v20240208</version> <!-- {x-version-update;org.eclipse.jetty:jetty-server;external_dependency} -->
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.jetty</groupId>
-      <artifactId>jetty-servlet</artifactId>
-      <version>9.4.54.v20240208</version> <!-- {x-version-update;org.eclipse.jetty:jetty-servlet;external_dependency} -->
-    </dependency>
-
-    <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
       <version>5.9.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
     </dependency>
-
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-params</artifactId>

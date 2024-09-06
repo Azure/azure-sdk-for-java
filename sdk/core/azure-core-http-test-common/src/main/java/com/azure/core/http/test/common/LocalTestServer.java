@@ -1,9 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+package com.azure.core.http.test.common;
 
-package com.azure.core.test.http;
-
-import com.azure.core.test.implementation.TestingHelpers;
 import org.eclipse.jetty.server.HttpConfiguration;
 import org.eclipse.jetty.server.HttpConnectionFactory;
 import org.eclipse.jetty.server.Request;
@@ -191,7 +189,7 @@ public class LocalTestServer {
 
     private static byte[] fullyReadRequest(InputStream requestBody) throws IOException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        TestingHelpers.copy(requestBody, outputStream);
+        HttpTestUtils.copy(requestBody, outputStream);
         return outputStream.toByteArray();
     }
 }

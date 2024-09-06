@@ -28,17 +28,6 @@
         <Method name="getHeaders" />
       </And>
       <And>
-        <Or>
-          <Class name="com.azure.core.test.implementation.entities.HttpBinFormDataJson" />
-          <Class name="com.azure.core.test.implementation.entities.HttpBinJson" />
-        </Or>
-        <Method name="headers" />
-      </And>
-      <And>
-        <Class name="com.azure.core.test.implementation.entities.HttpBinFormDataJson$Form" />
-        <Method name="toppings" />
-      </And>
-      <And>
         <Class name="com.azure.core.test.models.CustomMatcher" />
         <Or>
           <Method name="getExcludedHeaders" />
@@ -90,17 +79,6 @@
           <Class name="com.azure.core.test.policy.RecordNetworkCallPolicy" />
         </Or>
         <Method name="&lt;init&gt;" />
-      </And>
-      <And>
-        <Or>
-          <Class name="com.azure.core.test.implementation.entities.HttpBinFormDataJson" />
-          <Class name="com.azure.core.test.implementation.entities.HttpBinJson" />
-        </Or>
-        <Method name="headers" />
-      </And>
-      <And>
-        <Class name="com.azure.core.test.implementation.entities.HttpBinFormDataJson$Form" />
-        <Method name="toppings" />
       </And>
       <And>
         <Class name="com.azure.core.test.models.CustomMatcher" />
@@ -158,12 +136,6 @@
   </Match>
 
   <Match>
-    <Bug pattern="REC_CATCH_EXCEPTION" />
-    <Class name="com.azure.core.test.http.MockHttpClient" />
-    <Method name="send" />
-  </Match>
-
-  <Match>
     <Bug pattern="MC_OVERRIDABLE_METHOD_CALL_IN_CONSTRUCTOR" />
     <Class name="com.azure.core.test.http.TestProxyTestServer" />
   </Match>
@@ -172,11 +144,6 @@
     <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE" />
     <Class name="com.azure.core.test.implementation.AzureMethodSourceArgumentsProvider" />
     <Method name="getServiceVersions" />
-  </Match>
-
-  <Match>
-    <Bug pattern="SE_BAD_FIELD,SE_NO_SERIALVERSIONID" />
-    <Class name="com.azure.core.test.http.LocalTestServer$AzureTestHttpServlet" />
   </Match>
 
   <Match>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suppressions PUBLIC
+    "-//Checkstyle//DTD SuppressionFilter Configuration 1.2//EN"
+    "https://checkstyle.org/dtds/suppressions_1_2.dtd">
+
+<suppressions>
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.core.http.test.common.HttpClientTests.java" />
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.core.http.test.common.LocalTestServer.java" />
+
+  <suppress checks="com.azure.tools.checkstyle.checks.JavadocThrows" files="com.azure.core.http.test.common.HttpClientTestsServer.java" />
+
+  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposed" files="com.azure.core.http.test.common.junitextensions.SyncAsyncExtension.java" />
+</suppressions>

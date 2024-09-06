@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.core.http.vertx;
 
-import com.azure.core.test.http.LocalTestServer;
+import com.azure.core.http.test.common.LocalTestServer;
 import org.eclipse.jetty.util.Callback;
 
 import javax.servlet.ServletException;

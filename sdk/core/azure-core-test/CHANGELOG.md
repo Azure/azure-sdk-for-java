@@ -4,7 +4,12 @@
 
 ### Features Added
 
+- Added dependencies on HTTP client implementations. Packages using `azure-core-test` as a testing dependency no longer
+  need to add dependencies on HTTP client implementations to enable using different HTTP clients in testing.
+
 ### Breaking Changes
+
+- Moved code related to testing HTTP client implementations to `azure-core-http-test-common`.
 
 ### Bugs Fixed
 
