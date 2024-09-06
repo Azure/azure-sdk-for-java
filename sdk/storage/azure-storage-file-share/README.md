@@ -552,7 +552,7 @@ When you interact with file using this Java client library, errors returned by t
 ### Default HTTP Client
 All client libraries by default use the Netty HTTP client. Adding the above dependency will automatically configure
 the client library to use the Netty HTTP client. Configuring or changing the HTTP client is detailed in the
-[HTTP clients wiki](https://github.com/Azure/azure-sdk-for-java/wiki/HTTP-clients).
+[HTTP clients wiki](https://learn.microsoft.com/azure/developer/java/sdk/http-client-pipeline#http-clients).
 
 ### Default SSL library
 All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL

@@ -592,7 +592,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [entraid_doc]: https://learn.microsoft.com/entra/identity/
 [javadoc]: https://learn.microsoft.com/java/api/com.azure.identity?view=azure-java-stable
 [jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
-[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
+[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-in-Azure-SDK
 [secrets_client_library]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault/azure-security-keyvault-secrets
 [source]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity
 
