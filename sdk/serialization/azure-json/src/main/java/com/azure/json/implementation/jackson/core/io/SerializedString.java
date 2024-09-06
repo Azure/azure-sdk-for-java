@@ -2,7 +2,6 @@
 package com.azure.json.implementation.jackson.core.io;
 
 import java.io.*;
-import java.nio.ByteBuffer;
 
 import com.azure.json.implementation.jackson.core.SerializableString;
 
@@ -15,7 +14,7 @@ import com.azure.json.implementation.jackson.core.SerializableString;
  * Class is final for performance reasons and since this is not designed to
  * be extensible or customizable (customizations would occur in calling code)
  */
-public class SerializedString implements SerializableString, java.io.Serializable {
+public class SerializedString implements SerializableString, Serializable {
     private static final long serialVersionUID = 1L;
 
     private static final JsonStringEncoder JSON_ENCODER = JsonStringEncoder.getInstance();
@@ -64,7 +63,7 @@ public class SerializedString implements SerializableString, java.io.Serializabl
     /**
      * Ugly hack, to work through the requirement that _value is indeed final,
      * and that JDK serialization won't call ctor(s).
-     * 
+     *
      * @since 2.1
      */
     protected transient String _jdkSerializeValue;
@@ -90,14 +89,6 @@ public class SerializedString implements SerializableString, java.io.Serializabl
     @Override
     public final String getValue() {
         return _value;
-    }
-
-    /**
-     * Returns length of the String as characters
-     */
-    @Override
-    public final int charLength() {
-        return _value.length();
     }
 
     /**
@@ -196,56 +187,6 @@ public class SerializedString implements SerializableString, java.io.Serializabl
             return -1;
         }
         System.arraycopy(result, 0, buffer, offset, length);
-        return length;
-    }
-
-    @Override
-    public int writeQuotedUTF8(OutputStream out) throws IOException {
-        byte[] result = _quotedUTF8Ref;
-        if (result == null) {
-            _quotedUTF8Ref = result = JSON_ENCODER.quoteAsUTF8(_value);
-        }
-        final int length = result.length;
-        out.write(result, 0, length);
-        return length;
-    }
-
-    @Override
-    public int writeUnquotedUTF8(OutputStream out) throws IOException {
-        byte[] result = _unquotedUTF8Ref;
-        if (result == null) {
-            _unquotedUTF8Ref = result = JSON_ENCODER.encodeAsUTF8(_value);
-        }
-        final int length = result.length;
-        out.write(result, 0, length);
-        return length;
-    }
-
-    @Override
-    public int putQuotedUTF8(ByteBuffer buffer) {
-        byte[] result = _quotedUTF8Ref;
-        if (result == null) {
-            _quotedUTF8Ref = result = JSON_ENCODER.quoteAsUTF8(_value);
-        }
-        final int length = result.length;
-        if (length > buffer.remaining()) {
-            return -1;
-        }
-        buffer.put(result, 0, length);
-        return length;
-    }
-
-    @Override
-    public int putUnquotedUTF8(ByteBuffer buffer) {
-        byte[] result = _unquotedUTF8Ref;
-        if (result == null) {
-            _unquotedUTF8Ref = result = JSON_ENCODER.encodeAsUTF8(_value);
-        }
-        final int length = result.length;
-        if (length > buffer.remaining()) {
-            return -1;
-        }
-        buffer.put(result, 0, length);
         return length;
     }
 

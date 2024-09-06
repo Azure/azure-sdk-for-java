@@ -155,12 +155,12 @@
   </build>
 
   <profiles>
-    <!-- This profile is used to generate a sources JAR with jackson-core shaded into com.azure.core.implementation.jackson.core -->
+    <!-- This profile is used to generate a sources JAR with jackson-core shaded into com.azure.json.implementation.jackson.core -->
     <!-- DO NOT run this profile with release, it is only meant to be run locally when the shaded jackson-core code needs to be updated. -->
     <!-- -->
     <!-- To update the shaded jackson-core code, run Maven build with '-Dshade-jackson-core' included in the command. -->
-    <!-- In the target folder, extract the sources azure-core JAR, the path com/azure/core/implementation/jackson/core will contain the jackson-core source code. -->
-    <!-- Copy this code into the com.azure.core.implementation.jackson.core package in the azure-core project and overwrite the existing files. -->
+    <!-- In the target folder, extract the sources azure-json JAR, the path com/azure/json/implementation/jackson/core will contain the jackson-core source code. -->
+    <!-- Copy this code into the com.azure.json.implementation.jackson.core package in the azure-json project and overwrite the existing files. -->
     <!-- -->
     <!-- After following the steps above the project should be rebuilt with the 'add-license-comment' profile enable to add a comment about the shaded code's license. -->
     <!-- This serves as another way to attribute the shaded code to Jackson Core. -->

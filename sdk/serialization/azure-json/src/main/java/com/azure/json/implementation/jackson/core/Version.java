@@ -81,7 +81,7 @@ public class Version implements Comparable<Version>, java.io.Serializable {
     }
 
     public boolean isSnapshot() {
-        return (_snapshotInfo != null && _snapshotInfo.length() > 0);
+        return (_snapshotInfo != null && !_snapshotInfo.isEmpty());
     }
 
     /**
@@ -93,30 +93,6 @@ public class Version implements Comparable<Version>, java.io.Serializable {
     @Deprecated
     public boolean isUknownVersion() {
         return isUnknownVersion();
-    }
-
-    public int getMajorVersion() {
-        return _majorVersion;
-    }
-
-    public int getMinorVersion() {
-        return _minorVersion;
-    }
-
-    public int getPatchLevel() {
-        return _patchLevel;
-    }
-
-    public String getGroupId() {
-        return _groupId;
-    }
-
-    public String getArtifactId() {
-        return _artifactId;
-    }
-
-    public String toFullString() {
-        return _groupId + '/' + _artifactId + '/' + toString();
     }
 
     @Override
