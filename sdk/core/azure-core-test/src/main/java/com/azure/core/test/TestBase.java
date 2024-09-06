@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.ServiceConfigurationError;
 import java.util.ServiceLoader;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
@@ -67,8 +68,8 @@ public abstract class TestBase {
     private static boolean enableTestProxy;
 
     private static final Duration PLAYBACK_POLL_INTERVAL = Duration.ofMillis(1);
-    private static final String CONFIGURED_HTTP_CLIENTS_TO_TEST
-        = Configuration.getGlobalConfiguration().get(AZURE_TEST_HTTP_CLIENTS);
+    private static final String CONFIGURED_HTTP_CLIENTS_TO_TEST = Configuration.getGlobalConfiguration()
+        .get(AZURE_TEST_HTTP_CLIENTS);
     private static final boolean DEFAULT_TO_NETTY = CoreUtils.isNullOrEmpty(CONFIGURED_HTTP_CLIENTS_TO_TEST);
     private static final List<String> CONFIGURED_HTTP_CLIENTS;
 
@@ -186,8 +187,8 @@ public abstract class TestBase {
         if (shouldLogExecutionStatus()) {
             if (testStartTimeMillis > 0) {
                 long duration = System.currentTimeMillis() - testStartTimeMillis;
-                System.out
-                    .println("Finished test " + testContextManager.getTrackerTestName() + " in " + duration + " ms.");
+                System.out.println(
+                    "Finished test " + testContextManager.getTrackerTestName() + " in " + duration + " ms.");
             } else {
                 System.out.println("Finished test " + testContextManager.getTrackerTestName() + ", duration unknown.");
             }
@@ -267,9 +268,8 @@ public abstract class TestBase {
                     httpClientProvider.getClass().getSimpleName().toLowerCase(Locale.ROOT))) {
                     httpClientsToTest.add(httpClientProvider.createInstance());
                 }
-            } catch (UnsupportedClassVersionError error) {
-                LOGGER.atWarning()
-                    .log(() -> "Skipping HttpClientProvider due to UnsupportedClassVersionError.", error);
+            } catch (ServiceConfigurationError | UnsupportedClassVersionError error) {
+                LOGGER.atWarning().log(() -> "Skipping HttpClientProvider due to UnsupportedClassVersionError.", error);
             }
         }
 
@@ -317,6 +317,7 @@ public abstract class TestBase {
 
     /**
      * Indicates whether the out of process test recording proxy is in use.
+     *
      * @return true if test proxy is to be used.
      */
     public static boolean isTestProxyEnabled() {
