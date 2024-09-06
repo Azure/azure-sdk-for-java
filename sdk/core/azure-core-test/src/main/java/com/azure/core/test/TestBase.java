@@ -25,6 +25,7 @@ import java.io.UncheckedIOException;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.ServiceLoader;
@@ -38,6 +39,8 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
  */
 @ExtendWith(TestContextManagerParameterResolver.class)
 public abstract class TestBase {
+    private static final ClientLogger LOGGER = new ClientLogger(TestBase.class);
+
     private static final String AZURE_TEST_DEBUG = "AZURE_TEST_DEBUG";
 
     // Environment variable name used to determine the TestMode.
@@ -256,10 +259,17 @@ public abstract class TestBase {
         }
 
         List<HttpClient> httpClientsToTest = new ArrayList<>();
-        for (HttpClientProvider httpClientProvider : ServiceLoader.load(HttpClientProvider.class)) {
-            if (includeHttpClientOrHttpClientProvider(
-                httpClientProvider.getClass().getSimpleName().toLowerCase(Locale.ROOT))) {
-                httpClientsToTest.add(httpClientProvider.createInstance());
+        Iterator<HttpClientProvider> iterator = ServiceLoader.load(HttpClientProvider.class).iterator();
+        while (iterator.hasNext()) {
+            try {
+                HttpClientProvider httpClientProvider = iterator.next();
+                if (includeHttpClientOrHttpClientProvider(
+                    httpClientProvider.getClass().getSimpleName().toLowerCase(Locale.ROOT))) {
+                    httpClientsToTest.add(httpClientProvider.createInstance());
+                }
+            } catch (UnsupportedClassVersionError error) {
+                LOGGER.atWarning()
+                    .log(() -> "Skipping HttpClientProvider due to UnsupportedClassVersionError.", error);
             }
         }
 
