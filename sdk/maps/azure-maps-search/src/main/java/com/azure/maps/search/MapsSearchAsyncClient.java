@@ -7,7 +7,6 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
@@ -15,11 +14,21 @@ import com.azure.core.models.GeoBoundingBox;
 import com.azure.core.models.GeoPosition;
 import com.azure.core.util.Context;
 import com.azure.maps.search.implementation.SearchesImpl;
-import com.azure.maps.search.implementation.models.*;
-import com.azure.maps.search.models.*;
+import com.azure.maps.search.implementation.models.Boundary;
+import com.azure.maps.search.implementation.models.BoundaryResultTypeEnum;
+import com.azure.maps.search.implementation.models.ErrorResponseException;
+import com.azure.maps.search.implementation.models.GeocodingBatchRequestBody;
+import com.azure.maps.search.implementation.models.GeocodingResponse;
+import com.azure.maps.search.implementation.models.ResolutionEnum;
+import com.azure.maps.search.implementation.models.ReverseGeocodingBatchRequestBody;
+import com.azure.maps.search.implementation.models.ReverseGeocodingResultTypeEnum;
+import com.azure.maps.search.implementation.models.SearchesGetGeocodingHeaders;
+import com.azure.maps.search.implementation.models.GeocodingBatchResponse;
+import com.azure.maps.search.models.BaseSearchOptions;
 import reactor.core.publisher.Mono;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.azure.core.util.FluxUtil.withContext;
 
@@ -132,7 +141,7 @@ public final class MapsSearchAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return `GeoJSON GeocodingFeature` object that describe the boundaries of a geographical area along with
+     * @return {@link Boundary} object that describe the boundaries of a geographical area along with
      * {@link Response} on successful completion of {@link Mono}.
      */
     public Mono<Response<Boundary>> getPolygonsWithResponse(GeoPosition coordinates, String view, BoundaryResultTypeEnum resultType, ResolutionEnum resolution, Context context) {
@@ -360,7 +369,7 @@ public final class MapsSearchAsyncClient {
      * and states. The response also returns detailed address properties such as street, postal code, municipality, and
      * country/region information.
      *
-     * @param options base search options..
+     * @param options base search options.
      *
      * **If query is given, should not use this parameter.**.
      * @param context The context to associate with this operation.
@@ -605,7 +614,7 @@ public final class MapsSearchAsyncClient {
      * successful completion of {@link Mono}.
      */
     Mono<Response<GeocodingBatchResponse>> getGeocodingBatchWithResponse(GeocodingBatchRequestBody geocodingBatchRequestBody,
-        Context context) {
+                                                                         Context context) {
         return serviceClient.getGeocodingBatchWithResponseAsync(geocodingBatchRequestBody, context)
             .onErrorMap(MapsSearchAsyncClient::mapThrowable);
     }

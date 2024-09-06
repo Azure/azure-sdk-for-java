@@ -46,7 +46,7 @@ public class GetPolygonSample {
         //with response
         Response<Boundary> response = client.getPolygonsWithResponse(coordinates, null, BoundaryResultTypeEnum.LOCALITY, ResolutionEnum.SMALL, Context.NONE);
 
-        // END: com.azure.maps.search.sync.get_polygon
+        // END: sync.get_polygon
 
         MapsSearchClientBuilder asyncClientbuilder = new MapsSearchClientBuilder();
 

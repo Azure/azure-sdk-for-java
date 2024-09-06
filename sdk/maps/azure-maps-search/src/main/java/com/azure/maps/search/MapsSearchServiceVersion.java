@@ -10,7 +10,7 @@ import com.azure.core.util.ServiceVersion;
  */
 public enum MapsSearchServiceVersion implements ServiceVersion {
     /**
-     * Service version {@code 1.0}.
+     * Service version {@code 2.0}.
      */
     V2_0("2023-06-01");
 

@@ -11,9 +11,17 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.models.GeoPosition;
 import com.azure.core.util.Context;
-import com.azure.core.util.polling.SyncPoller;
-import com.azure.maps.search.implementation.models.*;
-import com.azure.maps.search.models.*;
+import com.azure.maps.search.implementation.models.Boundary;
+import com.azure.maps.search.implementation.models.BoundaryResultTypeEnum;
+import com.azure.maps.search.implementation.models.ErrorResponseException;
+import com.azure.maps.search.implementation.models.GeocodingBatchRequestBody;
+import com.azure.maps.search.implementation.models.GeocodingBatchResponse;
+import com.azure.maps.search.implementation.models.GeocodingResponse;
+import com.azure.maps.search.implementation.models.ResolutionEnum;
+import com.azure.maps.search.implementation.models.ReverseGeocodingBatchRequestBody;
+import com.azure.maps.search.implementation.models.ReverseGeocodingResultTypeEnum;
+import com.azure.maps.search.implementation.models.SearchesGetGeocodingHeaders;
+import com.azure.maps.search.models.BaseSearchOptions;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -77,7 +85,7 @@ public final class MapsSearchClient {
 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Boundary getPolygons(GeoPosition coordinates, String view,
-                                      BoundaryResultTypeEnum resultType, ResolutionEnum resolution) {
+                                BoundaryResultTypeEnum resultType, ResolutionEnum resolution) {
         return this.asyncClient.getPolygons(coordinates, view, resultType, resolution).block();
     }
 

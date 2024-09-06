@@ -8,14 +8,26 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
 import com.azure.core.models.GeoPosition;
 import com.azure.core.util.Context;
-import com.azure.maps.search.implementation.models.*;
-import com.azure.maps.search.models.*;
+import com.azure.maps.search.implementation.models.Boundary;
+import com.azure.maps.search.implementation.models.BoundaryResultTypeEnum;
+import com.azure.maps.search.implementation.models.GeoJsonGeometryCollection;
+import com.azure.maps.search.implementation.models.GeocodingBatchRequestBody;
+import com.azure.maps.search.implementation.models.GeocodingBatchRequestItem;
+import com.azure.maps.search.implementation.models.GeocodingBatchResponse;
+import com.azure.maps.search.implementation.models.GeocodingResponse;
+import com.azure.maps.search.implementation.models.ResolutionEnum;
+import com.azure.maps.search.implementation.models.ReverseGeocodingBatchRequestBody;
+import com.azure.maps.search.implementation.models.ReverseGeocodingBatchRequestItem;
+import com.azure.maps.search.implementation.models.ReverseGeocodingResultTypeEnum;
+import com.azure.maps.search.models.BaseSearchOptions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class MapsSearchClientTest extends MapsSearchClientTestBase {
 

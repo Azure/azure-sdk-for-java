@@ -82,6 +82,7 @@ Boundary result = client.getPolygons(coordinates, null, BoundaryResultTypeEnum.L
 
 //with response
 Response<Boundary> response = client.getPolygonsWithResponse(coordinates, null, BoundaryResultTypeEnum.LOCALITY, ResolutionEnum.SMALL, Context.NONE);
+
 ```
 
 ### Get Geocoding
@@ -150,6 +151,7 @@ GeocodingBatchResponse result = client.getReverseGeocodingBatch(body);
 
 // with response
 Response<GeocodingBatchResponse> response = client.getReverseGeocodingBatchWithResponse(body, Context.NONE);
+
 ```
 
 
