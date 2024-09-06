@@ -5,26 +5,46 @@
 package com.azure.resourcemanager.billing.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Identifies which services and purchases are paid by a billing profile. */
+/**
+ * Identifies the billing relationships represented by a billing account or billing profile. The billing relationship
+ * may be between Microsoft, the customer, and/or a third-party.
+ */
 public final class BillingRelationshipType extends ExpandableStringEnum<BillingRelationshipType> {
-    /** Static value Direct for BillingRelationshipType. */
+    /**
+     * Static value Other for BillingRelationshipType.
+     */
+    public static final BillingRelationshipType OTHER = fromString("Other");
+
+    /**
+     * Static value Direct for BillingRelationshipType.
+     */
     public static final BillingRelationshipType DIRECT = fromString("Direct");
 
-    /** Static value IndirectCustomer for BillingRelationshipType. */
+    /**
+     * Static value IndirectCustomer for BillingRelationshipType.
+     */
     public static final BillingRelationshipType INDIRECT_CUSTOMER = fromString("IndirectCustomer");
 
-    /** Static value IndirectPartner for BillingRelationshipType. */
+    /**
+     * Static value IndirectPartner for BillingRelationshipType.
+     */
     public static final BillingRelationshipType INDIRECT_PARTNER = fromString("IndirectPartner");
 
-    /** Static value CSPPartner for BillingRelationshipType. */
+    /**
+     * Static value CSPPartner for BillingRelationshipType.
+     */
     public static final BillingRelationshipType CSPPARTNER = fromString("CSPPartner");
 
     /**
+     * Static value CSPCustomer for BillingRelationshipType.
+     */
+    public static final BillingRelationshipType CSPCUSTOMER = fromString("CSPCustomer");
+
+    /**
      * Creates a new instance of BillingRelationshipType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +53,17 @@ public final class BillingRelationshipType extends ExpandableStringEnum<BillingR
 
     /**
      * Creates or finds a BillingRelationshipType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding BillingRelationshipType.
      */
-    @JsonCreator
     public static BillingRelationshipType fromString(String name) {
         return fromString(name, BillingRelationshipType.class);
     }
 
     /**
      * Gets known BillingRelationshipType values.
-     *
+     * 
      * @return known BillingRelationshipType values.
      */
     public static Collection<BillingRelationshipType> values() {

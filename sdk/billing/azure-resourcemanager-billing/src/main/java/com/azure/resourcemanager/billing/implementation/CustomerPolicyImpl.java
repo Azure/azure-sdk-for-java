@@ -4,17 +4,20 @@
 
 package com.azure.resourcemanager.billing.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.billing.fluent.models.CustomerPolicyInner;
 import com.azure.resourcemanager.billing.models.CustomerPolicy;
-import com.azure.resourcemanager.billing.models.ViewCharges;
+import com.azure.resourcemanager.billing.models.CustomerPolicyProperties;
+import java.util.Collections;
+import java.util.Map;
 
 public final class CustomerPolicyImpl implements CustomerPolicy {
     private CustomerPolicyInner innerObject;
 
     private final com.azure.resourcemanager.billing.BillingManager serviceManager;
 
-    CustomerPolicyImpl(
-        CustomerPolicyInner innerObject, com.azure.resourcemanager.billing.BillingManager serviceManager) {
+    CustomerPolicyImpl(CustomerPolicyInner innerObject,
+        com.azure.resourcemanager.billing.BillingManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -31,8 +34,21 @@ public final class CustomerPolicyImpl implements CustomerPolicy {
         return this.innerModel().type();
     }
 
-    public ViewCharges viewCharges() {
-        return this.innerModel().viewCharges();
+    public Map<String, String> tags() {
+        Map<String, String> inner = this.innerModel().tags();
+        if (inner != null) {
+            return Collections.unmodifiableMap(inner);
+        } else {
+            return Collections.emptyMap();
+        }
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
+    }
+
+    public CustomerPolicyProperties properties() {
+        return this.innerModel().properties();
     }
 
     public CustomerPolicyInner innerModel() {

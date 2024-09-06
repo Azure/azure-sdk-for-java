@@ -10,11 +10,9 @@ import com.azure.resourcemanager.billing.models.EnrollmentAccountListResult;
 public final class EnrollmentAccountListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EnrollmentAccountListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"principalName\":\"f\"},\"id\":\"fcjnaeoisrvhmgor\",\"name\":\"fukiscvwmzhw\",\"type\":\"lefaxvxilcbtgn\"},{\"properties\":{\"principalName\":\"eyqxtjjfzql\"},\"id\":\"hycav\",\"name\":\"dggxdbeesmi\",\"type\":\"knlrariaawiuagy\"},{\"properties\":{\"principalName\":\"fbylyrfg\"},\"id\":\"agt\",\"name\":\"ojocqwogf\",\"type\":\"zjvusfzldmo\"}],\"nextLink\":\"xylfsb\"}")
-                .toObject(EnrollmentAccountListResult.class);
+        EnrollmentAccountListResult model = BinaryData.fromString(
+            "{\"nextLink\":\"qwqul\",\"value\":[{\"properties\":{\"costCenter\":\"bhxykfhyqezvqqug\",\"displayName\":\"ftbcvexreuquow\",\"departmentDisplayName\":\"jv\",\"departmentId\":\"hreagk\",\"isDevTestEnabled\":false,\"accountOwner\":\"rqtvbczsulmdgglm\",\"authType\":\"jpfseykg\",\"status\":\"ngpszngafpg\",\"startDate\":\"2021-02-13T15:02:43Z\",\"endDate\":\"2021-07-27T16:28:59Z\"},\"tags\":{\"dyedmzrgjfo\":\"ujcngo\",\"oitpkpztrgdgx\":\"nub\",\"wugyx\":\"coqra\"},\"id\":\"itweialwvskbuh\",\"name\":\"acaqtyltcoqcu\",\"type\":\"pdsxzakuejkm\"},{\"properties\":{\"costCenter\":\"ztjofqcvovjufyc\",\"displayName\":\"mlbemy\",\"departmentDisplayName\":\"iriuxegthortu\",\"departmentId\":\"wlpjfelqerppt\",\"isDevTestEnabled\":false,\"accountOwner\":\"nzmnhiilia\",\"authType\":\"cjgckbbcccgzpra\",\"status\":\"nyuffat\",\"startDate\":\"2021-10-10T05:31:28Z\",\"endDate\":\"2021-10-04T17:21:41Z\"},\"tags\":{\"ubhiqdxyur\":\"cxb\",\"iig\":\"pnuhzafccnu\",\"ui\":\"yl\",\"vcrk\":\"vxva\"},\"id\":\"b\",\"name\":\"bqxvhcsyhzlwxae\",\"type\":\"ov\"},{\"properties\":{\"costCenter\":\"xdndsbdweaderzm\",\"displayName\":\"t\",\"departmentDisplayName\":\"agttm\",\"departmentId\":\"magoaqylkjz\",\"isDevTestEnabled\":false,\"accountOwner\":\"azjcgmxitpfin\",\"authType\":\"pdltkrlg\",\"status\":\"tbdrvcqgue\",\"startDate\":\"2021-05-18T02:25:41Z\",\"endDate\":\"2021-08-13T12:33:46Z\"},\"tags\":{\"ckyeclcdigpta\":\"eqdurelyujlfyoum\",\"utgjcyz\":\"brzmqxucycijoclx\",\"r\":\"zjd\",\"xjeaoqaqbzgyh\":\"jb\"},\"id\":\"wvua\",\"name\":\"bwbqamt\",\"type\":\"uliyslpkcv\"}]}")
+            .toObject(EnrollmentAccountListResult.class);
     }
 
     @org.junit.jupiter.api.Test
