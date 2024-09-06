@@ -280,7 +280,7 @@ public final class MapsSearchAsyncClient {
         List<Double> boundingBox = null;
         if (options.getBoundingBox().isPresent()) {
             boundingBox = new ArrayList<>();
-            GeoBoundingBox boundingBoxObj = (GeoBoundingBox)options.getBoundingBox().get();
+            GeoBoundingBox boundingBoxObj = options.getBoundingBox().get();
             boundingBox.add(boundingBoxObj.getNorth());
             boundingBox.add(boundingBoxObj.getWest());
             boundingBox.add(boundingBoxObj.getSouth());
@@ -332,7 +332,7 @@ public final class MapsSearchAsyncClient {
         List<Double> boundingBox = null;
         if (options.getBoundingBox().isPresent()) {
             boundingBox = new ArrayList<>();
-            GeoBoundingBox boundingBoxObj = (GeoBoundingBox)options.getBoundingBox().get();
+            GeoBoundingBox boundingBoxObj = options.getBoundingBox().get();
             boundingBox.add(boundingBoxObj.getNorth());
             boundingBox.add(boundingBoxObj.getWest());
             boundingBox.add(boundingBoxObj.getSouth());
@@ -383,7 +383,7 @@ public final class MapsSearchAsyncClient {
         List<Double> boundingBox = null;
         if (options.getBoundingBox().isPresent()) {
             boundingBox = new ArrayList<>();
-            GeoBoundingBox boundingBoxObj = (GeoBoundingBox)options.getBoundingBox().get();
+            GeoBoundingBox boundingBoxObj = options.getBoundingBox().get();
             boundingBox.add(boundingBoxObj.getNorth());
             boundingBox.add(boundingBoxObj.getWest());
             boundingBox.add(boundingBoxObj.getSouth());
