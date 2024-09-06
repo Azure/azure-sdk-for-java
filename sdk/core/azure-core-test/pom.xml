@@ -96,11 +96,6 @@
     </dependency>
 
     <dependency>
-      <groupId>io.projectreactor.netty</groupId>
-      <artifactId>reactor-netty-http</artifactId>
-      <version>1.0.45</version>  <!-- {x-version-update;io.projectreactor.netty:reactor-netty-http;external_dependency} -->
-    </dependency>
-    <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-compress</artifactId>
       <version>1.26.0</version>  <!-- {x-version-update;org.apache.commons:commons-compress;external_dependency} -->
