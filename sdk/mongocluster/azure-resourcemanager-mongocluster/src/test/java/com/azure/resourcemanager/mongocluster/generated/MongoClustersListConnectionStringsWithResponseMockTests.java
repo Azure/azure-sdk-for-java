@@ -20,7 +20,7 @@ public final class MongoClustersListConnectionStringsWithResponseMockTests {
     @Test
     public void testListConnectionStringsWithResponse() throws Exception {
         String responseStr
-            = "{\"connectionStrings\":[{\"connectionString\":\"dnvowg\",\"description\":\"jugwdkcglhsl\"},{\"connectionString\":\"jdyggdtji\",\"description\":\"b\"}]}";
+            = "{\"connectionStrings\":[{\"connectionString\":\"hbkuofqwey\",\"description\":\"menevfyexfwh\",\"name\":\"cibvyvdcsitynn\"},{\"connectionString\":\"mdectehfiqscjey\",\"description\":\"hezrkgq\",\"name\":\"jrefovgmkqsle\"},{\"connectionString\":\"vxyqjpkcattpngjc\",\"description\":\"czsqpjhvm\",\"name\":\"jvnysounqe\"},{\"connectionString\":\"noae\",\"description\":\"fhyhltrpmopjmcma\",\"name\":\"okth\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class MongoClustersListConnectionStringsWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ListConnectionStringsResult response = manager.mongoClusters()
-            .listConnectionStringsWithResponse("ppusuesnzwdejba", "orxzdmohctbqvud", com.azure.core.util.Context.NONE)
+            .listConnectionStringsWithResponse("owgujjugwdkcglhs", "azjdyggd", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

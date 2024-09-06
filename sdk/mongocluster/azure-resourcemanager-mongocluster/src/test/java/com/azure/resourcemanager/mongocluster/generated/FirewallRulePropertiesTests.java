@@ -12,17 +12,19 @@ public final class FirewallRulePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FirewallRuleProperties model = BinaryData
-            .fromString("{\"provisioningState\":\"Canceled\",\"startIpAddress\":\"duuji\",\"endIpAddress\":\"c\"}")
+            .fromString(
+                "{\"provisioningState\":\"Updating\",\"startIpAddress\":\"mutduqktaps\",\"endIpAddress\":\"wgcu\"}")
             .toObject(FirewallRuleProperties.class);
-        Assertions.assertEquals("duuji", model.startIpAddress());
-        Assertions.assertEquals("c", model.endIpAddress());
+        Assertions.assertEquals("mutduqktaps", model.startIpAddress());
+        Assertions.assertEquals("wgcu", model.endIpAddress());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FirewallRuleProperties model = new FirewallRuleProperties().withStartIpAddress("duuji").withEndIpAddress("c");
+        FirewallRuleProperties model
+            = new FirewallRuleProperties().withStartIpAddress("mutduqktaps").withEndIpAddress("wgcu");
         model = BinaryData.fromObject(model).toObject(FirewallRuleProperties.class);
-        Assertions.assertEquals("duuji", model.startIpAddress());
-        Assertions.assertEquals("c", model.endIpAddress());
+        Assertions.assertEquals("mutduqktaps", model.startIpAddress());
+        Assertions.assertEquals("wgcu", model.endIpAddress());
     }
 }
