@@ -37,7 +37,6 @@ import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.health.insights.radiologyinsights.RadiologyInsightsServiceVersion;
-import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsData;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceResult;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsJob;
 import java.time.Duration;
@@ -169,8 +168,8 @@ public final class RadiologyInsightsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> inferRadiologyInsights(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("id") String id,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData resource,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData resource, RequestOptions requestOptions, Context context);
 
         @Put("/radiology-insights/jobs/{id}")
         @ExpectedResponses({ 200, 201 })
@@ -180,8 +179,8 @@ public final class RadiologyInsightsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> inferRadiologyInsightsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("id") String id,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData resource,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData resource, RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -679,9 +678,10 @@ public final class RadiologyInsightsClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BinaryData>> inferRadiologyInsightsWithResponseAsync(String id, BinaryData resource,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.inferRadiologyInsights(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), id, accept, resource, requestOptions, context));
+            this.getServiceVersion().getVersion(), id, contentType, accept, resource, requestOptions, context));
     }
 
     /**
@@ -1178,9 +1178,10 @@ public final class RadiologyInsightsClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> inferRadiologyInsightsWithResponse(String id, BinaryData resource,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return service.inferRadiologyInsightsSync(this.getEndpoint(), this.getServiceVersion().getVersion(), id, accept,
-            resource, requestOptions, Context.NONE);
+        return service.inferRadiologyInsightsSync(this.getEndpoint(), this.getServiceVersion().getVersion(), id,
+            contentType, accept, resource, requestOptions, Context.NONE);
     }
 
     /**
@@ -2689,7 +2690,7 @@ public final class RadiologyInsightsClientImpl {
      * @return the {@link PollerFlux} for polling of response for the Radiology Insights request.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<RadiologyInsightsData, RadiologyInsightsInferenceResult>
+    public PollerFlux<RadiologyInsightsJob, RadiologyInsightsInferenceResult>
         beginInferRadiologyInsightsWithModelAsync(String id, BinaryData resource, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
             () -> this.inferRadiologyInsightsWithResponseAsync(id, resource, requestOptions),
@@ -2701,7 +2702,7 @@ public final class RadiologyInsightsClientImpl {
                         : Context.NONE)
                     .setServiceVersion(this.getServiceVersion().getVersion()),
                 "result"),
-            TypeReference.createInstance(RadiologyInsightsData.class),
+            TypeReference.createInstance(RadiologyInsightsJob.class),
             TypeReference.createInstance(RadiologyInsightsInferenceResult.class));
     }
 
@@ -3197,7 +3198,7 @@ public final class RadiologyInsightsClientImpl {
      * @return the {@link SyncPoller} for polling of response for the Radiology Insights request.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<RadiologyInsightsData, RadiologyInsightsInferenceResult>
+    public SyncPoller<RadiologyInsightsJob, RadiologyInsightsInferenceResult>
         beginInferRadiologyInsightsWithModel(String id, BinaryData resource, RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
             () -> this.inferRadiologyInsightsWithResponse(id, resource, requestOptions),
@@ -3209,7 +3210,7 @@ public final class RadiologyInsightsClientImpl {
                         : Context.NONE)
                     .setServiceVersion(this.getServiceVersion().getVersion()),
                 "result"),
-            TypeReference.createInstance(RadiologyInsightsData.class),
+            TypeReference.createInstance(RadiologyInsightsJob.class),
             TypeReference.createInstance(RadiologyInsightsInferenceResult.class));
     }
 }

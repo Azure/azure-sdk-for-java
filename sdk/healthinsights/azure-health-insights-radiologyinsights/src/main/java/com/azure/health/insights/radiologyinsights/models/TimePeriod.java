@@ -5,27 +5,31 @@ package com.azure.health.insights.radiologyinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * A duration of time during which an event is happening.
  */
 @Fluent
-public final class TimePeriod {
+public final class TimePeriod implements JsonSerializable<TimePeriod> {
 
     /*
      * Starting time with inclusive boundary
      */
     @Generated
-    @JsonProperty(value = "start")
     private OffsetDateTime start;
 
     /*
      * End time with inclusive boundary, if not ongoing
      */
     @Generated
-    @JsonProperty(value = "end")
     private OffsetDateTime end;
 
     /**
@@ -77,5 +81,48 @@ public final class TimePeriod {
     public TimePeriod setEnd(OffsetDateTime end) {
         this.end = end;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("start",
+            this.start == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.start));
+        jsonWriter.writeStringField("end",
+            this.end == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.end));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TimePeriod from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TimePeriod if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the TimePeriod.
+     */
+    @Generated
+    public static TimePeriod fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TimePeriod deserializedTimePeriod = new TimePeriod();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("start".equals(fieldName)) {
+                    deserializedTimePeriod.start = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("end".equals(fieldName)) {
+                    deserializedTimePeriod.end = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedTimePeriod;
+        });
     }
 }

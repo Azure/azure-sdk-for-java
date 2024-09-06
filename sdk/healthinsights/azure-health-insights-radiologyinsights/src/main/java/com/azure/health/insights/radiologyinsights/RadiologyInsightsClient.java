@@ -559,7 +559,7 @@ public final class RadiologyInsightsClient {
         // Generated convenience method for beginInferRadiologyInsightsWithModel
         RequestOptions requestOptions = new RequestOptions();
         RadiologyInsightsJob job = new RadiologyInsightsJob();
-    	job.setJobData(resource);
+        job.setJobData(resource);
         if (expand != null) {
             for (String paramItemValue : expand) {
                 if (paramItemValue != null) {
@@ -589,8 +589,8 @@ public final class RadiologyInsightsClient {
     public SyncPoller<RadiologyInsightsData, RadiologyInsightsInferenceResult> beginInferRadiologyInsights(String id,
         RadiologyInsightsData resource) {
         // Generated convenience method for beginInferRadiologyInsightsWithModel
-    	RadiologyInsightsJob job = new RadiologyInsightsJob();
-    	job.setJobData(resource);
+        RadiologyInsightsJob job = new RadiologyInsightsJob();
+        job.setJobData(resource);
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.beginInferRadiologyInsightsWithModel(id, BinaryData.fromObject(job), requestOptions);
     }

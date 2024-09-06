@@ -537,29 +537,12 @@ public final class RadiologyInsightsAsyncClient {
         return this.serviceClient.beginInferRadiologyInsightsAsync(id, resource, requestOptions);
     }
 
-    /**
-     * Create Radiology Insights job
-     *
-     * Creates a Radiology Insights job with the given request body.
-     *
-     * @param id The unique ID of the job.
-     * @param resource The resource instance.
-     * @param expand Expand the indicated resources into the response.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of response for the Radiology Insights request.
-     */
-    
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<RadiologyInsightsData, RadiologyInsightsInferenceResult> beginInferRadiologyInsights(String id,
         RadiologyInsightsData resource, List<String> expand) {
         // Generated convenience method for beginInferRadiologyInsightsWithModel
-    	RadiologyInsightsJob job = new RadiologyInsightsJob();
-    	job.setJobData(resource);
+        RadiologyInsightsJob job = new RadiologyInsightsJob();
+        job.setJobData(resource);
         RequestOptions requestOptions = new RequestOptions();
         if (expand != null) {
             for (String paramItemValue : expand) {
@@ -568,8 +551,7 @@ public final class RadiologyInsightsAsyncClient {
                 }
             }
         }
-        return serviceClient.beginInferRadiologyInsightsWithModelAsync(id, BinaryData.fromObject(job),
-            requestOptions);
+        return serviceClient.beginInferRadiologyInsightsWithModelAsync(id, BinaryData.fromObject(job), requestOptions);
     }
 
     /**
@@ -591,10 +573,9 @@ public final class RadiologyInsightsAsyncClient {
     public PollerFlux<RadiologyInsightsData, RadiologyInsightsInferenceResult> beginInferRadiologyInsights(String id,
         RadiologyInsightsData resource) {
         // Generated convenience method for beginInferRadiologyInsightsWithModel
-    	RadiologyInsightsJob job = new RadiologyInsightsJob();
-    	job.setJobData(resource);
+        RadiologyInsightsJob job = new RadiologyInsightsJob();
+        job.setJobData(resource);
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.beginInferRadiologyInsightsWithModelAsync(id, BinaryData.fromObject(job),
-            requestOptions);
+        return serviceClient.beginInferRadiologyInsightsWithModelAsync(id, BinaryData.fromObject(job), requestOptions);
     }
 }

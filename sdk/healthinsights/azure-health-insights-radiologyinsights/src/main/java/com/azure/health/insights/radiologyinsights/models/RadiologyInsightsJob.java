@@ -6,69 +6,66 @@ package com.azure.health.insights.radiologyinsights.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.core.models.ResponseError;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
  * Response for the Radiology Insights request.
  */
 @Fluent
-public final class RadiologyInsightsJob {
+public final class RadiologyInsightsJob implements JsonSerializable<RadiologyInsightsJob> {
 
     /*
      * The request data for the operation.
      */
     @Generated
-    @JsonProperty(value = "jobData")
     private RadiologyInsightsData jobData;
 
     /*
      * The result of the operation.
      */
     @Generated
-    @JsonProperty(value = "result", access = JsonProperty.Access.WRITE_ONLY)
     private RadiologyInsightsInferenceResult result;
 
     /*
      * The unique ID of the job.
      */
     @Generated
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * The status of the job.
      */
     @Generated
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private JobStatus status;
 
     /*
      * The date and time when the processing job was created.
      */
     @Generated
-    @JsonProperty(value = "createdAt", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdAt;
 
     /*
      * The date and time when the processing job is set to expire.
      */
     @Generated
-    @JsonProperty(value = "expiresAt", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime expiresAt;
 
     /*
      * The date and time when the processing job was last updated.
      */
     @Generated
-    @JsonProperty(value = "updatedAt", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime updatedAt;
 
     /*
      * Error object that describes the error when status is "Failed".
      */
     @Generated
-    @JsonProperty(value = "error", access = JsonProperty.Access.WRITE_ONLY)
     private ResponseError error;
 
     /**
@@ -168,5 +165,59 @@ public final class RadiologyInsightsJob {
     @Generated
     public ResponseError getError() {
         return this.error;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("jobData", this.jobData);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RadiologyInsightsJob from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RadiologyInsightsJob if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RadiologyInsightsJob.
+     */
+    @Generated
+    public static RadiologyInsightsJob fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RadiologyInsightsJob deserializedRadiologyInsightsJob = new RadiologyInsightsJob();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("id".equals(fieldName)) {
+                    deserializedRadiologyInsightsJob.id = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedRadiologyInsightsJob.status = JobStatus.fromString(reader.getString());
+                } else if ("jobData".equals(fieldName)) {
+                    deserializedRadiologyInsightsJob.jobData = RadiologyInsightsData.fromJson(reader);
+                } else if ("result".equals(fieldName)) {
+                    deserializedRadiologyInsightsJob.result = RadiologyInsightsInferenceResult.fromJson(reader);
+                } else if ("createdAt".equals(fieldName)) {
+                    deserializedRadiologyInsightsJob.createdAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("expiresAt".equals(fieldName)) {
+                    deserializedRadiologyInsightsJob.expiresAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("updatedAt".equals(fieldName)) {
+                    deserializedRadiologyInsightsJob.updatedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("error".equals(fieldName)) {
+                    deserializedRadiologyInsightsJob.error = ResponseError.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedRadiologyInsightsJob;
+        });
     }
 }

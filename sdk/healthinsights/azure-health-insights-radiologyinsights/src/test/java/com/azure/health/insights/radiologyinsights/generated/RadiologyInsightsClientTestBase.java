@@ -8,18 +8,16 @@ package com.azure.health.insights.radiologyinsights.generated;
 // If you wish to modify these files, please copy them out of the 'generated' package, and modify there.
 // See https://aka.ms/azsdk/dpg/java/tests for guide on adding a test.
 
-import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.health.insights.radiologyinsights.RadiologyInsightsClient;
 import com.azure.health.insights.radiologyinsights.RadiologyInsightsClientBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import java.time.OffsetDateTime;
-import reactor.core.publisher.Mono;
 
 class RadiologyInsightsClientTestBase extends TestProxyTestBase {
     protected RadiologyInsightsClient radiologyInsightsClient;
@@ -32,7 +30,7 @@ class RadiologyInsightsClientTestBase extends TestProxyTestBase {
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
             radiologyInsightsClientbuilder.httpClient(interceptorManager.getPlaybackClient())
-                .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
+                .credential(new MockTokenCredential());
         } else if (getTestMode() == TestMode.RECORD) {
             radiologyInsightsClientbuilder.addPolicy(interceptorManager.getRecordPolicy())
                 .credential(new DefaultAzureCredentialBuilder().build());
