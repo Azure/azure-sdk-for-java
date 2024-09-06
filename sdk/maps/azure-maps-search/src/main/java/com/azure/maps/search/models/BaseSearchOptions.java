@@ -36,7 +36,7 @@ public  class BaseSearchOptions {
 
     /**
      *
-     * @param top
+     * @param top Maximum number of responses that will be returned. Default: 5, minimum: 1 and maximum: 20.
      * @return {@link BaseSearchOptions}
      */
     public BaseSearchOptions setTop(Integer top) {
@@ -46,7 +46,7 @@ public  class BaseSearchOptions {
 
     /**
      *
-     * @return {@link BaseSearchOptions}
+     * @return query
      */
     public String getQuery() {
         return query;
@@ -54,7 +54,7 @@ public  class BaseSearchOptions {
 
     /**
      *
-     * @param query
+     * @param query A string that contains information about a location, such as an address or landmark name.
      * @return {@link BaseSearchOptions}
      */
     public BaseSearchOptions setQuery(String query) {
@@ -64,7 +64,7 @@ public  class BaseSearchOptions {
 
     /**
      *
-     * @return {@link BaseSearchOptions}
+     * @return addressLine
      */
     public String getAddressLine() {
         return addressLine;
@@ -72,7 +72,8 @@ public  class BaseSearchOptions {
 
     /**
      *
-     * @param addressLine
+     * @param addressLine The official street line of an address relative to the area, as specified by the locality, or
+     * postalCode, properties. Typical use of this element would be to provide a street address or any official address.
      * @return {@link BaseSearchOptions}
      */
     public BaseSearchOptions setAddressLine(String addressLine) {
@@ -82,7 +83,7 @@ public  class BaseSearchOptions {
 
     /**
      *
-     * @return {@link BaseSearchOptions}
+     * @return view
      */
     public String getView() {
         return view;
@@ -90,7 +91,10 @@ public  class BaseSearchOptions {
 
     /**
      *
-     * @param view
+     * @param view A string that represents an [ISO 3166-1 Alpha-2 region/country
+     * code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2). This will alter Geopolitical disputed borders and labels
+     * to align with the specified user region. By default, the View parameter is set to “Auto” even if you haven’t
+     * defined it in the request.
      * @return {@link BaseSearchOptions}
      */
     public BaseSearchOptions setView(String view) {
@@ -100,7 +104,9 @@ public  class BaseSearchOptions {
 
     /**
      *
-     * @param boundingBox
+     * @param boundingBox A rectangular area on the earth defined as a bounding box object. The sides of the rectangles are
+     * defined by longitude and latitude values. When you specify this parameter, the geographical area is taken into
+     * account when computing the results of a location query.
      * @return {@link BaseSearchOptions}
      */
     public BaseSearchOptions setBoundingBox(GeoBoundingBox boundingBox) {
@@ -110,7 +116,7 @@ public  class BaseSearchOptions {
 
     /**
      *
-     * @return {@link BaseSearchOptions}
+     * @return countryRegion
      */
     public String getCountryRegion() {
         return countryRegion;
@@ -118,7 +124,8 @@ public  class BaseSearchOptions {
 
     /**
      *
-     * @param countryRegion
+     * @param countryRegion Signal for the geocoding result to an [ISO 3166-1 Alpha-2 region/country
+     * code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) that is specified e.g. FR./
      * @return {@link BaseSearchOptions}
      */
     public BaseSearchOptions setCountryRegion(String countryRegion) {
@@ -128,7 +135,7 @@ public  class BaseSearchOptions {
 
     /**
      *
-     * @return {@link BaseSearchOptions}
+     * @return adminDistrict2
      */
     public String getAdminDistrict2() {
         return adminDistrict2;
@@ -136,7 +143,7 @@ public  class BaseSearchOptions {
 
     /**
      *
-     * @param adminDistrict2
+     * @param adminDistrict2 The county for the structured address, such as King.
      * @return {@link BaseSearchOptions}
      */
     public BaseSearchOptions setAdminDistrict2(String adminDistrict2) {
@@ -146,7 +153,7 @@ public  class BaseSearchOptions {
 
     /**
      *
-     * @return {@link BaseSearchOptions}
+     * @return locality
      */
     public String getLocality() {
         return locality;
@@ -154,7 +161,7 @@ public  class BaseSearchOptions {
 
     /**
      *
-     * @param locality
+     * @param locality The locality portion of an address, such as Seattle.
      * @return {@link BaseSearchOptions}
      */
     public BaseSearchOptions setLocality(String locality) {
@@ -164,7 +171,7 @@ public  class BaseSearchOptions {
 
     /**
      *
-     * @return {@link BaseSearchOptions}
+     * @return postalCode
      */
     public String getPostalCode() {
         return postalCode;
@@ -172,7 +179,7 @@ public  class BaseSearchOptions {
 
     /**
      *
-     * @param postalCode
+     * @param postalCode The postal code portion of an address.
      * @return {@link BaseSearchOptions}
      */
     public BaseSearchOptions setPostalCode(String postalCode) {
@@ -182,7 +189,7 @@ public  class BaseSearchOptions {
 
     /**
      *
-     * @return {@link BaseSearchOptions}
+     * @return adminDistrict3
      */
     public String getAdminDistrict3() {
         return adminDistrict3;
@@ -190,7 +197,7 @@ public  class BaseSearchOptions {
 
     /**
      *
-     * @param adminDistrict3
+     * @param adminDistrict3 The named area for the structured address.
      * @return {@link BaseSearchOptions}
      */
     public BaseSearchOptions setAdminDistrict3(String adminDistrict3) {
@@ -200,7 +207,7 @@ public  class BaseSearchOptions {
 
     /**
      *
-     * @return {@link BaseSearchOptions}
+     * @return adminDistrict
      */
     public String getAdminDistrict() {
         return adminDistrict;
@@ -208,7 +215,7 @@ public  class BaseSearchOptions {
 
     /**
      *
-     * @param adminDistrict
+     * @param adminDistrict The country subdivision portion of an address, such as WA.
      * @return {@link BaseSearchOptions}
      */
     public BaseSearchOptions setAdminDistrict(String adminDistrict) {
@@ -218,7 +225,7 @@ public  class BaseSearchOptions {
 
     /**
      *
-     * @return {@link BaseSearchOptions}
+     * @return coordinates
      */
     public GeoPosition getCoordinates() {
         return coordinates;
@@ -226,7 +233,9 @@ public  class BaseSearchOptions {
 
     /**
      *
-     * @param coordinates
+     * @param coordinates A point on the earth specified as a longitude and latitude. When you specify this parameter,
+     * the user’s location is taken into account and the results returned may be more relevant to the user. Example:
+     * &amp;coordinates=lon,lat.
      * @return {@link BaseSearchOptions}
      */
     public BaseSearchOptions setCoordinates(GeoPosition coordinates) {
