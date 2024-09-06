@@ -5,8 +5,10 @@ package com.azure.health.insights.radiologyinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -20,49 +22,42 @@ public final class FhirR4SampledData extends FhirR4Element {
      * Zero value and units
      */
     @Generated
-    @JsonProperty(value = "origin")
     private final FhirR4Quantity origin;
 
     /*
      * Number of milliseconds between samples
      */
     @Generated
-    @JsonProperty(value = "period")
     private final double period;
 
     /*
      * Multiply data by this before adding to origin
      */
     @Generated
-    @JsonProperty(value = "factor")
     private Double factor;
 
     /*
      * Lower limit of detection
      */
     @Generated
-    @JsonProperty(value = "lowerLimit")
     private Double lowerLimit;
 
     /*
      * Upper limit of detection
      */
     @Generated
-    @JsonProperty(value = "upperLimit")
     private Double upperLimit;
 
     /*
      * Number of sample points at each time point
      */
     @Generated
-    @JsonProperty(value = "dimensions")
     private final int dimensions;
 
     /*
      * Decimal values with spaces, or "E" | "U" | "L"
      */
     @Generated
-    @JsonProperty(value = "data")
     private String data;
 
     /**
@@ -73,9 +68,7 @@ public final class FhirR4SampledData extends FhirR4Element {
      * @param dimensions the dimensions value to set.
      */
     @Generated
-    @JsonCreator
-    public FhirR4SampledData(@JsonProperty(value = "origin") FhirR4Quantity origin,
-        @JsonProperty(value = "period") double period, @JsonProperty(value = "dimensions") int dimensions) {
+    public FhirR4SampledData(FhirR4Quantity origin, double period, int dimensions) {
         this.origin = origin;
         this.period = period;
         this.dimensions = dimensions;
@@ -217,5 +210,81 @@ public final class FhirR4SampledData extends FhirR4Element {
     public FhirR4SampledData setExtension(List<FhirR4Extension> extension) {
         super.setExtension(extension);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", getId());
+        jsonWriter.writeArrayField("extension", getExtension(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("origin", this.origin);
+        jsonWriter.writeDoubleField("period", this.period);
+        jsonWriter.writeIntField("dimensions", this.dimensions);
+        jsonWriter.writeNumberField("factor", this.factor);
+        jsonWriter.writeNumberField("lowerLimit", this.lowerLimit);
+        jsonWriter.writeNumberField("upperLimit", this.upperLimit);
+        jsonWriter.writeStringField("data", this.data);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FhirR4SampledData from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FhirR4SampledData if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FhirR4SampledData.
+     */
+    @Generated
+    public static FhirR4SampledData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String id = null;
+            List<FhirR4Extension> extension = null;
+            FhirR4Quantity origin = null;
+            double period = 0.0;
+            int dimensions = 0;
+            Double factor = null;
+            Double lowerLimit = null;
+            Double upperLimit = null;
+            String data = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("id".equals(fieldName)) {
+                    id = reader.getString();
+                } else if ("extension".equals(fieldName)) {
+                    extension = reader.readArray(reader1 -> FhirR4Extension.fromJson(reader1));
+                } else if ("origin".equals(fieldName)) {
+                    origin = FhirR4Quantity.fromJson(reader);
+                } else if ("period".equals(fieldName)) {
+                    period = reader.getDouble();
+                } else if ("dimensions".equals(fieldName)) {
+                    dimensions = reader.getInt();
+                } else if ("factor".equals(fieldName)) {
+                    factor = reader.getNullable(JsonReader::getDouble);
+                } else if ("lowerLimit".equals(fieldName)) {
+                    lowerLimit = reader.getNullable(JsonReader::getDouble);
+                } else if ("upperLimit".equals(fieldName)) {
+                    upperLimit = reader.getNullable(JsonReader::getDouble);
+                } else if ("data".equals(fieldName)) {
+                    data = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            FhirR4SampledData deserializedFhirR4SampledData = new FhirR4SampledData(origin, period, dimensions);
+            deserializedFhirR4SampledData.setId(id);
+            deserializedFhirR4SampledData.setExtension(extension);
+            deserializedFhirR4SampledData.factor = factor;
+            deserializedFhirR4SampledData.lowerLimit = lowerLimit;
+            deserializedFhirR4SampledData.upperLimit = upperLimit;
+            deserializedFhirR4SampledData.data = data;
+            return deserializedFhirR4SampledData;
+        });
     }
 }

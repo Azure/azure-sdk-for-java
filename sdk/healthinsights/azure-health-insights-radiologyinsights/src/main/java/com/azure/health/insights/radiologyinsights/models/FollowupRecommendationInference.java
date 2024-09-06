@@ -5,23 +5,16 @@ package com.azure.health.insights.radiologyinsights.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Follow-up recommendations offer guidance to healthcare providers on managing and monitoring patients based on the
  * findings of imaging studies.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "kind",
-    defaultImpl = FollowupRecommendationInference.class,
-    visible = true)
-@JsonTypeName("followupRecommendation")
 @Immutable
 public final class FollowupRecommendationInference extends RadiologyInsightsInference {
 
@@ -29,29 +22,18 @@ public final class FollowupRecommendationInference extends RadiologyInsightsInfe
      * Discriminator property for RadiologyInsightsInference.
      */
     @Generated
-    @JsonTypeId
-    @JsonProperty(value = "kind")
     private RadiologyInsightsInferenceType kind = RadiologyInsightsInferenceType.FOLLOWUP_RECOMMENDATION;
-
-    /*
-     * Date and time are displayed when the procedure is recommended to be done at a specific point in time.
-     */
-    @Generated
-    @JsonProperty(value = "effectiveDateTime")
-    private String effectiveDateTime;
 
     /*
      * The period is shown if a specific period is mentioned, with a start and end date-time.
      */
     @Generated
-    @JsonProperty(value = "effectivePeriod")
     private FhirR4Period effectivePeriod;
 
     /*
      * Findings related to the recommendation.
      */
     @Generated
-    @JsonProperty(value = "findings")
     private List<RecommendationFinding> findings;
 
     /*
@@ -59,7 +41,6 @@ public final class FollowupRecommendationInference extends RadiologyInsightsInfe
      * statement. Keywords for conditional statements include 'if', 'when', 'unless', and so on.
      */
     @Generated
-    @JsonProperty(value = "isConditional")
     private final boolean isConditional;
 
     /*
@@ -67,7 +48,6 @@ public final class FollowupRecommendationInference extends RadiologyInsightsInfe
      * statement. Keywords for optional statements include 'recommend', 'consider', and so on.
      */
     @Generated
-    @JsonProperty(value = "isOption")
     private final boolean isOption;
 
     /*
@@ -75,7 +55,6 @@ public final class FollowupRecommendationInference extends RadiologyInsightsInfe
      * recommendations applicable to various findings.
      */
     @Generated
-    @JsonProperty(value = "isGuideline")
     private final boolean isGuideline;
 
     /*
@@ -83,14 +62,12 @@ public final class FollowupRecommendationInference extends RadiologyInsightsInfe
      * hedging are 'can be','may be',and so on.
      */
     @Generated
-    @JsonProperty(value = "isHedging")
     private final boolean isHedging;
 
     /*
      * The procedure recommendation can be a generic procedure or an imaging procedure.
      */
     @Generated
-    @JsonProperty(value = "recommendedProcedure")
     private final ProcedureRecommendation recommendedProcedure;
 
     /**
@@ -103,11 +80,8 @@ public final class FollowupRecommendationInference extends RadiologyInsightsInfe
      * @param recommendedProcedure the recommendedProcedure value to set.
      */
     @Generated
-    @JsonCreator
-    private FollowupRecommendationInference(@JsonProperty(value = "isConditional") boolean isConditional,
-        @JsonProperty(value = "isOption") boolean isOption, @JsonProperty(value = "isGuideline") boolean isGuideline,
-        @JsonProperty(value = "isHedging") boolean isHedging,
-        @JsonProperty(value = "recommendedProcedure") ProcedureRecommendation recommendedProcedure) {
+    private FollowupRecommendationInference(boolean isConditional, boolean isOption, boolean isGuideline,
+        boolean isHedging, ProcedureRecommendation recommendedProcedure) {
         this.isConditional = isConditional;
         this.isOption = isOption;
         this.isGuideline = isGuideline;
@@ -124,17 +98,6 @@ public final class FollowupRecommendationInference extends RadiologyInsightsInfe
     @Override
     public RadiologyInsightsInferenceType getKind() {
         return this.kind;
-    }
-
-    /**
-     * Get the effectiveDateTime property: Date and time are displayed when the procedure is recommended to be done at a
-     * specific point in time.
-     *
-     * @return the effectiveDateTime value.
-     */
-    @Generated
-    public String getEffectiveDateTime() {
-        return this.effectiveDateTime;
     }
 
     /**
@@ -212,5 +175,120 @@ public final class FollowupRecommendationInference extends RadiologyInsightsInfe
     @Generated
     public ProcedureRecommendation getRecommendedProcedure() {
         return this.recommendedProcedure;
+    }
+
+    /*
+     * Date and time are displayed when the procedure is recommended to be done at a specific point in time.
+     */
+    @Generated
+    private String effectiveAt;
+
+    /*
+     * Additional Content defined by implementations
+     */
+    @Generated
+    private List<FhirR4Extension> extension;
+
+    /**
+     * Get the effectiveAt property: Date and time are displayed when the procedure is recommended to be done at a
+     * specific point in time.
+     *
+     * @return the effectiveAt value.
+     */
+    @Generated
+    public String getEffectiveAt() {
+        return this.effectiveAt;
+    }
+
+    /**
+     * Get the extension property: Additional Content defined by implementations.
+     *
+     * @return the extension value.
+     */
+    @Generated
+    @Override
+    public List<FhirR4Extension> getExtension() {
+        return this.extension;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("extension", getExtension(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("isConditional", this.isConditional);
+        jsonWriter.writeBooleanField("isOption", this.isOption);
+        jsonWriter.writeBooleanField("isGuideline", this.isGuideline);
+        jsonWriter.writeBooleanField("isHedging", this.isHedging);
+        jsonWriter.writeJsonField("recommendedProcedure", this.recommendedProcedure);
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeStringField("effectiveAt", this.effectiveAt);
+        jsonWriter.writeJsonField("effectivePeriod", this.effectivePeriod);
+        jsonWriter.writeArrayField("findings", this.findings, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FollowupRecommendationInference from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FollowupRecommendationInference if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FollowupRecommendationInference.
+     */
+    @Generated
+    public static FollowupRecommendationInference fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            List<FhirR4Extension> extension = null;
+            boolean isConditional = false;
+            boolean isOption = false;
+            boolean isGuideline = false;
+            boolean isHedging = false;
+            ProcedureRecommendation recommendedProcedure = null;
+            RadiologyInsightsInferenceType kind = RadiologyInsightsInferenceType.FOLLOWUP_RECOMMENDATION;
+            String effectiveAt = null;
+            FhirR4Period effectivePeriod = null;
+            List<RecommendationFinding> findings = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("extension".equals(fieldName)) {
+                    extension = reader.readArray(reader1 -> FhirR4Extension.fromJson(reader1));
+                } else if ("isConditional".equals(fieldName)) {
+                    isConditional = reader.getBoolean();
+                } else if ("isOption".equals(fieldName)) {
+                    isOption = reader.getBoolean();
+                } else if ("isGuideline".equals(fieldName)) {
+                    isGuideline = reader.getBoolean();
+                } else if ("isHedging".equals(fieldName)) {
+                    isHedging = reader.getBoolean();
+                } else if ("recommendedProcedure".equals(fieldName)) {
+                    recommendedProcedure = ProcedureRecommendation.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    kind = RadiologyInsightsInferenceType.fromString(reader.getString());
+                } else if ("effectiveAt".equals(fieldName)) {
+                    effectiveAt = reader.getString();
+                } else if ("effectivePeriod".equals(fieldName)) {
+                    effectivePeriod = FhirR4Period.fromJson(reader);
+                } else if ("findings".equals(fieldName)) {
+                    findings = reader.readArray(reader1 -> RecommendationFinding.fromJson(reader1));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            FollowupRecommendationInference deserializedFollowupRecommendationInference
+                = new FollowupRecommendationInference(isConditional, isOption, isGuideline, isHedging,
+                    recommendedProcedure);
+            deserializedFollowupRecommendationInference.extension = extension;
+            deserializedFollowupRecommendationInference.kind = kind;
+            deserializedFollowupRecommendationInference.effectiveAt = effectiveAt;
+            deserializedFollowupRecommendationInference.effectivePeriod = effectivePeriod;
+            deserializedFollowupRecommendationInference.findings = findings;
+            return deserializedFollowupRecommendationInference;
+        });
     }
 }

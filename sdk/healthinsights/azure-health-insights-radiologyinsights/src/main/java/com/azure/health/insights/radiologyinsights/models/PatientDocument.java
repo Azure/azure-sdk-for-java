@@ -5,78 +5,68 @@ package com.azure.health.insights.radiologyinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
  * A clinical document related to a patient. Document here is in the wide sense - not just a text document (note).
  */
 @Fluent
-public final class PatientDocument {
+public final class PatientDocument implements JsonSerializable<PatientDocument> {
 
     /*
      * The type of the patient document, such as 'note' (text document) or 'fhirBundle' (FHIR JSON document).
      */
     @Generated
-    @JsonProperty(value = "type")
     private final DocumentType type;
 
     /*
      * The type of the clinical document.
      */
     @Generated
-    @JsonProperty(value = "clinicalType")
     private ClinicalDocumentType clinicalType;
 
     /*
      * A given identifier for the document. Has to be unique across all documents for a single patient.
      */
     @Generated
-    @JsonProperty(value = "id")
     private final String id;
 
     /*
      * A 2 letter ISO 639-1 representation of the language of the document.
      */
     @Generated
-    @JsonProperty(value = "language")
     private String language;
-
-    /*
-     * The date and time when the document was created.
-     */
-    @Generated
-    @JsonProperty(value = "createdDateTime")
-    private OffsetDateTime createdDateTime;
 
     /*
      * Document author(s)
      */
     @Generated
-    @JsonProperty(value = "authors")
     private List<DocumentAuthor> authors;
 
     /*
      * specialty type the document
      */
     @Generated
-    @JsonProperty(value = "specialtyType")
     private SpecialtyType specialtyType;
 
     /*
      * Administrative metadata for the document.
      */
     @Generated
-    @JsonProperty(value = "administrativeMetadata")
     private DocumentAdministrativeMetadata administrativeMetadata;
 
     /*
      * The content of the patient document.
      */
     @Generated
-    @JsonProperty(value = "content")
     private final DocumentContent content;
 
     /**
@@ -87,9 +77,7 @@ public final class PatientDocument {
      * @param content the content value to set.
      */
     @Generated
-    @JsonCreator
-    public PatientDocument(@JsonProperty(value = "type") DocumentType type, @JsonProperty(value = "id") String id,
-        @JsonProperty(value = "content") DocumentContent content) {
+    public PatientDocument(DocumentType type, String id, DocumentContent content) {
         this.type = type;
         this.id = id;
         this.content = content;
@@ -158,28 +146,6 @@ public final class PatientDocument {
     @Generated
     public PatientDocument setLanguage(String language) {
         this.language = language;
-        return this;
-    }
-
-    /**
-     * Get the createdDateTime property: The date and time when the document was created.
-     *
-     * @return the createdDateTime value.
-     */
-    @Generated
-    public OffsetDateTime getCreatedDateTime() {
-        return this.createdDateTime;
-    }
-
-    /**
-     * Set the createdDateTime property: The date and time when the document was created.
-     *
-     * @param createdDateTime the createdDateTime value to set.
-     * @return the PatientDocument object itself.
-     */
-    @Generated
-    public PatientDocument setCreatedDateTime(OffsetDateTime createdDateTime) {
-        this.createdDateTime = createdDateTime;
         return this;
     }
 
@@ -257,5 +223,111 @@ public final class PatientDocument {
     @Generated
     public DocumentContent getContent() {
         return this.content;
+    }
+
+    /*
+     * The date and time when the document was created.
+     */
+    @Generated
+    private OffsetDateTime createdAt;
+
+    /**
+     * Get the createdAt property: The date and time when the document was created.
+     *
+     * @return the createdAt value.
+     */
+    @Generated
+    public OffsetDateTime getCreatedAt() {
+        return this.createdAt;
+    }
+
+    /**
+     * Set the createdAt property: The date and time when the document was created.
+     *
+     * @param createdAt the createdAt value to set.
+     * @return the PatientDocument object itself.
+     */
+    @Generated
+    public PatientDocument setCreatedAt(OffsetDateTime createdAt) {
+        this.createdAt = createdAt;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeJsonField("content", this.content);
+        jsonWriter.writeStringField("clinicalType", this.clinicalType == null ? null : this.clinicalType.toString());
+        jsonWriter.writeStringField("language", this.language);
+        jsonWriter.writeStringField("createdAt",
+            this.createdAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdAt));
+        jsonWriter.writeArrayField("authors", this.authors, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("specialtyType", this.specialtyType == null ? null : this.specialtyType.toString());
+        jsonWriter.writeJsonField("administrativeMetadata", this.administrativeMetadata);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PatientDocument from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PatientDocument if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PatientDocument.
+     */
+    @Generated
+    public static PatientDocument fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DocumentType type = null;
+            String id = null;
+            DocumentContent content = null;
+            ClinicalDocumentType clinicalType = null;
+            String language = null;
+            OffsetDateTime createdAt = null;
+            List<DocumentAuthor> authors = null;
+            SpecialtyType specialtyType = null;
+            DocumentAdministrativeMetadata administrativeMetadata = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("type".equals(fieldName)) {
+                    type = DocumentType.fromString(reader.getString());
+                } else if ("id".equals(fieldName)) {
+                    id = reader.getString();
+                } else if ("content".equals(fieldName)) {
+                    content = DocumentContent.fromJson(reader);
+                } else if ("clinicalType".equals(fieldName)) {
+                    clinicalType = ClinicalDocumentType.fromString(reader.getString());
+                } else if ("language".equals(fieldName)) {
+                    language = reader.getString();
+                } else if ("createdAt".equals(fieldName)) {
+                    createdAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("authors".equals(fieldName)) {
+                    authors = reader.readArray(reader1 -> DocumentAuthor.fromJson(reader1));
+                } else if ("specialtyType".equals(fieldName)) {
+                    specialtyType = SpecialtyType.fromString(reader.getString());
+                } else if ("administrativeMetadata".equals(fieldName)) {
+                    administrativeMetadata = DocumentAdministrativeMetadata.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            PatientDocument deserializedPatientDocument = new PatientDocument(type, id, content);
+            deserializedPatientDocument.clinicalType = clinicalType;
+            deserializedPatientDocument.language = language;
+            deserializedPatientDocument.createdAt = createdAt;
+            deserializedPatientDocument.authors = authors;
+            deserializedPatientDocument.specialtyType = specialtyType;
+            deserializedPatientDocument.administrativeMetadata = administrativeMetadata;
+            return deserializedPatientDocument;
+        });
     }
 }

@@ -5,23 +5,18 @@ package com.azure.health.insights.radiologyinsights.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Detailed information about Research Study
  * Based on [FHIR ResearchStudy](https://www.hl7.org/fhir/R4/researchstudy.html).
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "resourceType",
-    defaultImpl = FhirR4ResearchStudy.class,
-    visible = true)
-@JsonTypeName("ResearchStudy")
 @Immutable
 public final class FhirR4ResearchStudy extends FhirR4DomainResource {
 
@@ -29,36 +24,30 @@ public final class FhirR4ResearchStudy extends FhirR4DomainResource {
      * Discriminator property for Fhir_R4_DomainResource.
      */
     @Generated
-    @JsonTypeId
-    @JsonProperty(value = "resourceType")
     private String resourceType = "ResearchStudy";
 
     /*
      * Business Identifier for study
      */
     @Generated
-    @JsonProperty(value = "identifier")
     private List<FhirR4Identifier> identifier;
 
     /*
      * Name for this study
      */
     @Generated
-    @JsonProperty(value = "title")
     private String title;
 
     /*
      * Steps followed in executing study
      */
     @Generated
-    @JsonProperty(value = "protocol")
     private List<FhirR4Reference> protocol;
 
     /*
      * Part of larger study
      */
     @Generated
-    @JsonProperty(value = "partOf")
     private List<FhirR4Reference> partOf;
 
     /*
@@ -67,7 +56,6 @@ public final class FhirR4ResearchStudy extends FhirR4DomainResource {
      * temporarily-closed-to-accrual-and-intervention | withdrawn
      */
     @Generated
-    @JsonProperty(value = "status")
     private final ResearchStudyStatusCodeType status;
 
     /*
@@ -75,98 +63,84 @@ public final class FhirR4ResearchStudy extends FhirR4DomainResource {
      * device-feasibility
      */
     @Generated
-    @JsonProperty(value = "primaryPurposeType")
     private FhirR4CodeableConcept primaryPurposeType;
 
     /*
      * n-a | early-phase-1 | phase-1 | phase-1-phase-2 | phase-2 | phase-2-phase-3 | phase-3 | phase-4
      */
     @Generated
-    @JsonProperty(value = "phase")
     private FhirR4CodeableConcept phase;
 
     /*
      * Classifications for the study
      */
     @Generated
-    @JsonProperty(value = "category")
     private List<FhirR4CodeableConcept> category;
 
     /*
      * Drugs, devices, etc. under study
      */
     @Generated
-    @JsonProperty(value = "focus")
     private List<FhirR4CodeableConcept> focus;
 
     /*
      * Condition being studied
      */
     @Generated
-    @JsonProperty(value = "condition")
     private List<FhirR4CodeableConcept> condition;
 
     /*
      * Contact details for the study
      */
     @Generated
-    @JsonProperty(value = "contact")
     private List<FhirR4ContactDetail> contact;
 
     /*
      * Used to search for the study
      */
     @Generated
-    @JsonProperty(value = "keyword")
     private List<FhirR4CodeableConcept> keyword;
 
     /*
      * Geographic region(s) for study
      */
     @Generated
-    @JsonProperty(value = "location")
     private List<FhirR4CodeableConcept> location;
 
     /*
      * What this is study doing
      */
     @Generated
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Inclusion & exclusion criteria
      */
     @Generated
-    @JsonProperty(value = "enrollment")
     private List<FhirR4Reference> enrollment;
 
     /*
      * When the study began and ended
      */
     @Generated
-    @JsonProperty(value = "period")
     private FhirR4Period period;
 
     /*
      * Organization that initiates and is legally responsible for the study
      */
     @Generated
-    @JsonProperty(value = "sponsor")
     private FhirR4Reference sponsor;
 
     /*
      * Researcher who oversees multiple aspects of the study
      */
     @Generated
-    @JsonProperty(value = "principalInvestigator")
     private FhirR4Reference principalInvestigator;
 
     /*
      * Facility where study activities are conducted
      */
     @Generated
-    @JsonProperty(value = "site")
     private List<FhirR4Reference> site;
 
     /*
@@ -174,28 +148,24 @@ public final class FhirR4ResearchStudy extends FhirR4DomainResource {
      * temporarily-closed-per-study-design
      */
     @Generated
-    @JsonProperty(value = "reasonStopped")
     private FhirR4CodeableConcept reasonStopped;
 
     /*
      * Comments made about the study
      */
     @Generated
-    @JsonProperty(value = "note")
     private List<FhirR4Annotation> note;
 
     /*
      * Defined path through the study for a subject
      */
     @Generated
-    @JsonProperty(value = "arm")
     private List<ResearchStudyArm> arm;
 
     /*
      * A goal for the study
      */
     @Generated
-    @JsonProperty(value = "objective")
     private List<ResearchStudyObjective> objective;
 
     /**
@@ -205,9 +175,7 @@ public final class FhirR4ResearchStudy extends FhirR4DomainResource {
      * @param status the status value to set.
      */
     @Generated
-    @JsonCreator
-    private FhirR4ResearchStudy(@JsonProperty(value = "resourceType") String resourceType,
-        @JsonProperty(value = "status") ResearchStudyStatusCodeType status) {
+    private FhirR4ResearchStudy(String resourceType, ResearchStudyStatusCodeType status) {
         super(resourceType);
         this.status = status;
     }
@@ -456,5 +424,279 @@ public final class FhirR4ResearchStudy extends FhirR4DomainResource {
     @Generated
     public List<ResearchStudyObjective> getObjective() {
         return this.objective;
+    }
+
+    /*
+     * Extensions that cannot be ignored
+     */
+    @Generated
+    private List<FhirR4Extension> modifierExtension;
+
+    /*
+     * Additional Content defined by implementations
+     */
+    @Generated
+    private List<FhirR4Extension> extension;
+
+    /*
+     * Contained, inline Resources
+     */
+    @Generated
+    private List<FhirR4Resource> contained;
+
+    /*
+     * Text summary of the resource, for human interpretation
+     */
+    @Generated
+    private FhirR4Narrative text;
+
+    /**
+     * Get the modifierExtension property: Extensions that cannot be ignored.
+     *
+     * @return the modifierExtension value.
+     */
+    @Generated
+    @Override
+    public List<FhirR4Extension> getModifierExtension() {
+        return this.modifierExtension;
+    }
+
+    /**
+     * Get the extension property: Additional Content defined by implementations.
+     *
+     * @return the extension value.
+     */
+    @Generated
+    @Override
+    public List<FhirR4Extension> getExtension() {
+        return this.extension;
+    }
+
+    /**
+     * Get the contained property: Contained, inline Resources.
+     *
+     * @return the contained value.
+     */
+    @Generated
+    @Override
+    public List<FhirR4Resource> getContained() {
+        return this.contained;
+    }
+
+    /**
+     * Get the text property: Text summary of the resource, for human interpretation.
+     *
+     * @return the text value.
+     */
+    @Generated
+    @Override
+    public FhirR4Narrative getText() {
+        return this.text;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceType", getResourceType());
+        jsonWriter.writeStringField("id", getId());
+        jsonWriter.writeJsonField("meta", getMeta());
+        jsonWriter.writeStringField("implicitRules", getImplicitRules());
+        jsonWriter.writeStringField("language", getLanguage());
+        jsonWriter.writeJsonField("text", getText());
+        jsonWriter.writeArrayField("contained", getContained(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("extension", getExtension(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("modifierExtension", getModifierExtension(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeStringField("resourceType", this.resourceType);
+        jsonWriter.writeArrayField("identifier", this.identifier, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("title", this.title);
+        jsonWriter.writeArrayField("protocol", this.protocol, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("partOf", this.partOf, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("primaryPurposeType", this.primaryPurposeType);
+        jsonWriter.writeJsonField("phase", this.phase);
+        jsonWriter.writeArrayField("category", this.category, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("focus", this.focus, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("condition", this.condition, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("contact", this.contact, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("keyword", this.keyword, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("location", this.location, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeArrayField("enrollment", this.enrollment, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("period", this.period);
+        jsonWriter.writeJsonField("sponsor", this.sponsor);
+        jsonWriter.writeJsonField("principalInvestigator", this.principalInvestigator);
+        jsonWriter.writeArrayField("site", this.site, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("reasonStopped", this.reasonStopped);
+        jsonWriter.writeArrayField("note", this.note, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("arm", this.arm, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("objective", this.objective, (writer, element) -> writer.writeJson(element));
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FhirR4ResearchStudy from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FhirR4ResearchStudy if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FhirR4ResearchStudy.
+     */
+    @Generated
+    public static FhirR4ResearchStudy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String resourceType = null;
+            String id = null;
+            FhirR4Meta meta = null;
+            String implicitRules = null;
+            String language = null;
+            FhirR4Narrative text = null;
+            List<FhirR4Resource> contained = null;
+            List<FhirR4Extension> extension = null;
+            List<FhirR4Extension> modifierExtension = null;
+            ResearchStudyStatusCodeType status = null;
+            String resourceType = "ResearchStudy";
+            List<FhirR4Identifier> identifier = null;
+            String title = null;
+            List<FhirR4Reference> protocol = null;
+            List<FhirR4Reference> partOf = null;
+            FhirR4CodeableConcept primaryPurposeType = null;
+            FhirR4CodeableConcept phase = null;
+            List<FhirR4CodeableConcept> category = null;
+            List<FhirR4CodeableConcept> focus = null;
+            List<FhirR4CodeableConcept> condition = null;
+            List<FhirR4ContactDetail> contact = null;
+            List<FhirR4CodeableConcept> keyword = null;
+            List<FhirR4CodeableConcept> location = null;
+            String description = null;
+            List<FhirR4Reference> enrollment = null;
+            FhirR4Period period = null;
+            FhirR4Reference sponsor = null;
+            FhirR4Reference principalInvestigator = null;
+            List<FhirR4Reference> site = null;
+            FhirR4CodeableConcept reasonStopped = null;
+            List<FhirR4Annotation> note = null;
+            List<ResearchStudyArm> arm = null;
+            List<ResearchStudyObjective> objective = null;
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("id".equals(fieldName)) {
+                    id = reader.getString();
+                } else if ("meta".equals(fieldName)) {
+                    meta = FhirR4Meta.fromJson(reader);
+                } else if ("implicitRules".equals(fieldName)) {
+                    implicitRules = reader.getString();
+                } else if ("language".equals(fieldName)) {
+                    language = reader.getString();
+                } else if ("text".equals(fieldName)) {
+                    text = FhirR4Narrative.fromJson(reader);
+                } else if ("contained".equals(fieldName)) {
+                    contained = reader.readArray(reader1 -> FhirR4Resource.fromJson(reader1));
+                } else if ("extension".equals(fieldName)) {
+                    extension = reader.readArray(reader1 -> FhirR4Extension.fromJson(reader1));
+                } else if ("modifierExtension".equals(fieldName)) {
+                    modifierExtension = reader.readArray(reader1 -> FhirR4Extension.fromJson(reader1));
+                } else if ("status".equals(fieldName)) {
+                    status = ResearchStudyStatusCodeType.fromString(reader.getString());
+                } else if ("resourceType".equals(fieldName)) {
+                    resourceType = reader.getString();
+                } else if ("identifier".equals(fieldName)) {
+                    identifier = reader.readArray(reader1 -> FhirR4Identifier.fromJson(reader1));
+                } else if ("title".equals(fieldName)) {
+                    title = reader.getString();
+                } else if ("protocol".equals(fieldName)) {
+                    protocol = reader.readArray(reader1 -> FhirR4Reference.fromJson(reader1));
+                } else if ("partOf".equals(fieldName)) {
+                    partOf = reader.readArray(reader1 -> FhirR4Reference.fromJson(reader1));
+                } else if ("primaryPurposeType".equals(fieldName)) {
+                    primaryPurposeType = FhirR4CodeableConcept.fromJson(reader);
+                } else if ("phase".equals(fieldName)) {
+                    phase = FhirR4CodeableConcept.fromJson(reader);
+                } else if ("category".equals(fieldName)) {
+                    category = reader.readArray(reader1 -> FhirR4CodeableConcept.fromJson(reader1));
+                } else if ("focus".equals(fieldName)) {
+                    focus = reader.readArray(reader1 -> FhirR4CodeableConcept.fromJson(reader1));
+                } else if ("condition".equals(fieldName)) {
+                    condition = reader.readArray(reader1 -> FhirR4CodeableConcept.fromJson(reader1));
+                } else if ("contact".equals(fieldName)) {
+                    contact = reader.readArray(reader1 -> FhirR4ContactDetail.fromJson(reader1));
+                } else if ("keyword".equals(fieldName)) {
+                    keyword = reader.readArray(reader1 -> FhirR4CodeableConcept.fromJson(reader1));
+                } else if ("location".equals(fieldName)) {
+                    location = reader.readArray(reader1 -> FhirR4CodeableConcept.fromJson(reader1));
+                } else if ("description".equals(fieldName)) {
+                    description = reader.getString();
+                } else if ("enrollment".equals(fieldName)) {
+                    enrollment = reader.readArray(reader1 -> FhirR4Reference.fromJson(reader1));
+                } else if ("period".equals(fieldName)) {
+                    period = FhirR4Period.fromJson(reader);
+                } else if ("sponsor".equals(fieldName)) {
+                    sponsor = FhirR4Reference.fromJson(reader);
+                } else if ("principalInvestigator".equals(fieldName)) {
+                    principalInvestigator = FhirR4Reference.fromJson(reader);
+                } else if ("site".equals(fieldName)) {
+                    site = reader.readArray(reader1 -> FhirR4Reference.fromJson(reader1));
+                } else if ("reasonStopped".equals(fieldName)) {
+                    reasonStopped = FhirR4CodeableConcept.fromJson(reader);
+                } else if ("note".equals(fieldName)) {
+                    note = reader.readArray(reader1 -> FhirR4Annotation.fromJson(reader1));
+                } else if ("arm".equals(fieldName)) {
+                    arm = reader.readArray(reader1 -> ResearchStudyArm.fromJson(reader1));
+                } else if ("objective".equals(fieldName)) {
+                    objective = reader.readArray(reader1 -> ResearchStudyObjective.fromJson(reader1));
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            FhirR4ResearchStudy deserializedFhirR4ResearchStudy = new FhirR4ResearchStudy(resourceType, status);
+            deserializedFhirR4ResearchStudy.setId(id);
+            deserializedFhirR4ResearchStudy.setMeta(meta);
+            deserializedFhirR4ResearchStudy.setImplicitRules(implicitRules);
+            deserializedFhirR4ResearchStudy.setLanguage(language);
+            deserializedFhirR4ResearchStudy.text = text;
+            deserializedFhirR4ResearchStudy.contained = contained;
+            deserializedFhirR4ResearchStudy.extension = extension;
+            deserializedFhirR4ResearchStudy.modifierExtension = modifierExtension;
+            deserializedFhirR4ResearchStudy.resourceType = resourceType;
+            deserializedFhirR4ResearchStudy.identifier = identifier;
+            deserializedFhirR4ResearchStudy.title = title;
+            deserializedFhirR4ResearchStudy.protocol = protocol;
+            deserializedFhirR4ResearchStudy.partOf = partOf;
+            deserializedFhirR4ResearchStudy.primaryPurposeType = primaryPurposeType;
+            deserializedFhirR4ResearchStudy.phase = phase;
+            deserializedFhirR4ResearchStudy.category = category;
+            deserializedFhirR4ResearchStudy.focus = focus;
+            deserializedFhirR4ResearchStudy.condition = condition;
+            deserializedFhirR4ResearchStudy.contact = contact;
+            deserializedFhirR4ResearchStudy.keyword = keyword;
+            deserializedFhirR4ResearchStudy.location = location;
+            deserializedFhirR4ResearchStudy.description = description;
+            deserializedFhirR4ResearchStudy.enrollment = enrollment;
+            deserializedFhirR4ResearchStudy.period = period;
+            deserializedFhirR4ResearchStudy.sponsor = sponsor;
+            deserializedFhirR4ResearchStudy.principalInvestigator = principalInvestigator;
+            deserializedFhirR4ResearchStudy.site = site;
+            deserializedFhirR4ResearchStudy.reasonStopped = reasonStopped;
+            deserializedFhirR4ResearchStudy.note = note;
+            deserializedFhirR4ResearchStudy.arm = arm;
+            deserializedFhirR4ResearchStudy.objective = objective;
+            deserializedFhirR4ResearchStudy.setAdditionalProperties(additionalProperties);
+            return deserializedFhirR4ResearchStudy;
+        });
     }
 }

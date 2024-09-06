@@ -5,34 +5,35 @@ package com.azure.health.insights.radiologyinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Procedure information.
  */
 @Fluent
-public final class OrderedProcedure {
+public final class OrderedProcedure implements JsonSerializable<OrderedProcedure> {
 
     /*
      * Additional Content defined by implementations
      */
     @Generated
-    @JsonProperty(value = "extension")
     private List<FhirR4Extension> extension;
 
     /*
      * Procedure code
      */
     @Generated
-    @JsonProperty(value = "code")
     private FhirR4CodeableConcept code;
 
     /*
      * Procedure description
      */
     @Generated
-    @JsonProperty(value = "description")
     private String description;
 
     /**
@@ -106,5 +107,48 @@ public final class OrderedProcedure {
     public OrderedProcedure setDescription(String description) {
         this.description = description;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("code", this.code);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeArrayField("extension", this.extension, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OrderedProcedure from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OrderedProcedure if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OrderedProcedure.
+     */
+    @Generated
+    public static OrderedProcedure fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OrderedProcedure deserializedOrderedProcedure = new OrderedProcedure();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("code".equals(fieldName)) {
+                    deserializedOrderedProcedure.code = FhirR4CodeableConcept.fromJson(reader);
+                } else if ("description".equals(fieldName)) {
+                    deserializedOrderedProcedure.description = reader.getString();
+                } else if ("extension".equals(fieldName)) {
+                    List<FhirR4Extension> extension = reader.readArray(reader1 -> FhirR4Extension.fromJson(reader1));
+                    deserializedOrderedProcedure.extension = extension;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedOrderedProcedure;
+        });
     }
 }

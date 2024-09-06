@@ -5,17 +5,16 @@ package com.azure.health.insights.radiologyinsights.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * A notification for age mismatch is displayed when the age mentioned in a document for a specific patient does not
  * match the age specified in the patient information.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "kind", defaultImpl = AgeMismatchInference.class, visible = true)
-@JsonTypeName("ageMismatch")
 @Immutable
 public final class AgeMismatchInference extends RadiologyInsightsInference {
 
@@ -23,8 +22,6 @@ public final class AgeMismatchInference extends RadiologyInsightsInference {
      * Discriminator property for RadiologyInsightsInference.
      */
     @Generated
-    @JsonTypeId
-    @JsonProperty(value = "kind")
     private RadiologyInsightsInferenceType kind = RadiologyInsightsInferenceType.AGE_MISMATCH;
 
     /**
@@ -43,5 +40,63 @@ public final class AgeMismatchInference extends RadiologyInsightsInference {
     @Override
     public RadiologyInsightsInferenceType getKind() {
         return this.kind;
+    }
+
+    /*
+     * Additional Content defined by implementations
+     */
+    @Generated
+    private List<FhirR4Extension> extension;
+
+    /**
+     * Get the extension property: Additional Content defined by implementations.
+     *
+     * @return the extension value.
+     */
+    @Generated
+    @Override
+    public List<FhirR4Extension> getExtension() {
+        return this.extension;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("extension", getExtension(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AgeMismatchInference from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AgeMismatchInference if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AgeMismatchInference.
+     */
+    @Generated
+    public static AgeMismatchInference fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AgeMismatchInference deserializedAgeMismatchInference = new AgeMismatchInference();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("extension".equals(fieldName)) {
+                    List<FhirR4Extension> extension = reader.readArray(reader1 -> FhirR4Extension.fromJson(reader1));
+                    deserializedAgeMismatchInference.extension = extension;
+                } else if ("kind".equals(fieldName)) {
+                    deserializedAgeMismatchInference.kind
+                        = RadiologyInsightsInferenceType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedAgeMismatchInference;
+        });
     }
 }

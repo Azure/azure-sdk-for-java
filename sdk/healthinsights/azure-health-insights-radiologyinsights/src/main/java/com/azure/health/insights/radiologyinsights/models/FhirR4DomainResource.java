@@ -5,28 +5,18 @@ package com.azure.health.insights.radiologyinsights.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A resource with narrative, extensions, and contained resources
  * Based on [FHIR DomainResource](https://www.hl7.org/fhir/domainresource.html).
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "resourceType",
-    defaultImpl = FhirR4DomainResource.class,
-    visible = true)
-@JsonTypeName("Fhir_R4_DomainResource")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "Condition", value = FhirR4Condition.class),
-    @JsonSubTypes.Type(name = "ResearchStudy", value = FhirR4ResearchStudy.class),
-    @JsonSubTypes.Type(name = "Observation", value = FhirR4Observation.class) })
 @Immutable
 public class FhirR4DomainResource extends FhirR4Resource {
 
@@ -34,36 +24,30 @@ public class FhirR4DomainResource extends FhirR4Resource {
      * Discriminator property for Fhir_R4_DomainResource.
      */
     @Generated
-    @JsonTypeId
-    @JsonProperty(value = "resourceType")
     private String resourceType = "Fhir_R4_DomainResource";
 
     /*
      * Text summary of the resource, for human interpretation
      */
     @Generated
-    @JsonProperty(value = "text")
     private FhirR4Narrative text;
 
     /*
      * Contained, inline Resources
      */
     @Generated
-    @JsonProperty(value = "contained")
     private List<FhirR4Resource> contained;
 
     /*
      * Additional Content defined by implementations
      */
     @Generated
-    @JsonProperty(value = "extension")
     private List<FhirR4Extension> extension;
 
     /*
      * Extensions that cannot be ignored
      */
     @Generated
-    @JsonProperty(value = "modifierExtension")
     private List<FhirR4Extension> modifierExtension;
 
     /**
@@ -72,8 +56,7 @@ public class FhirR4DomainResource extends FhirR4Resource {
      * @param resourceType the resourceType value to set.
      */
     @Generated
-    @JsonCreator
-    protected FhirR4DomainResource(@JsonProperty(value = "resourceType") String resourceType) {
+    protected FhirR4DomainResource(String resourceType) {
         super(resourceType);
     }
 
@@ -126,5 +109,176 @@ public class FhirR4DomainResource extends FhirR4Resource {
     @Generated
     public List<FhirR4Extension> getModifierExtension() {
         return this.modifierExtension;
+    }
+
+    /**
+     * Set the text property: Text summary of the resource, for human interpretation.
+     *
+     * @param text the text value to set.
+     * @return the FhirR4DomainResource object itself.
+     */
+    @Generated
+    FhirR4DomainResource setText(FhirR4Narrative text) {
+        this.text = text;
+        return this;
+    }
+
+    /**
+     * Set the contained property: Contained, inline Resources.
+     *
+     * @param contained the contained value to set.
+     * @return the FhirR4DomainResource object itself.
+     */
+    @Generated
+    FhirR4DomainResource setContained(List<FhirR4Resource> contained) {
+        this.contained = contained;
+        return this;
+    }
+
+    /**
+     * Set the extension property: Additional Content defined by implementations.
+     *
+     * @param extension the extension value to set.
+     * @return the FhirR4DomainResource object itself.
+     */
+    @Generated
+    FhirR4DomainResource setExtension(List<FhirR4Extension> extension) {
+        this.extension = extension;
+        return this;
+    }
+
+    /**
+     * Set the modifierExtension property: Extensions that cannot be ignored.
+     *
+     * @param modifierExtension the modifierExtension value to set.
+     * @return the FhirR4DomainResource object itself.
+     */
+    @Generated
+    FhirR4DomainResource setModifierExtension(List<FhirR4Extension> modifierExtension) {
+        this.modifierExtension = modifierExtension;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceType", getResourceType());
+        jsonWriter.writeStringField("id", getId());
+        jsonWriter.writeJsonField("meta", getMeta());
+        jsonWriter.writeStringField("implicitRules", getImplicitRules());
+        jsonWriter.writeStringField("language", getLanguage());
+        jsonWriter.writeStringField("resourceType", this.resourceType);
+        jsonWriter.writeJsonField("text", this.text);
+        jsonWriter.writeArrayField("contained", this.contained, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("extension", this.extension, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("modifierExtension", this.modifierExtension,
+            (writer, element) -> writer.writeJson(element));
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FhirR4DomainResource from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FhirR4DomainResource if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FhirR4DomainResource.
+     */
+    @Generated
+    public static FhirR4DomainResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                // Prepare for reading
+                readerToUse.nextToken();
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("resourceType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("Condition".equals(discriminatorValue)) {
+                    return FhirR4Condition.fromJson(readerToUse.reset());
+                } else if ("ResearchStudy".equals(discriminatorValue)) {
+                    return FhirR4ResearchStudy.fromJson(readerToUse.reset());
+                } else if ("Observation".equals(discriminatorValue)) {
+                    return FhirR4Observation.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    @Generated
+    static FhirR4DomainResource fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String resourceType = null;
+            String id = null;
+            FhirR4Meta meta = null;
+            String implicitRules = null;
+            String language = null;
+            String resourceType = null;
+            FhirR4Narrative text = null;
+            List<FhirR4Resource> contained = null;
+            List<FhirR4Extension> extension = null;
+            List<FhirR4Extension> modifierExtension = null;
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("id".equals(fieldName)) {
+                    id = reader.getString();
+                } else if ("meta".equals(fieldName)) {
+                    meta = FhirR4Meta.fromJson(reader);
+                } else if ("implicitRules".equals(fieldName)) {
+                    implicitRules = reader.getString();
+                } else if ("language".equals(fieldName)) {
+                    language = reader.getString();
+                } else if ("resourceType".equals(fieldName)) {
+                    resourceType = reader.getString();
+                } else if ("text".equals(fieldName)) {
+                    text = FhirR4Narrative.fromJson(reader);
+                } else if ("contained".equals(fieldName)) {
+                    contained = reader.readArray(reader1 -> FhirR4Resource.fromJson(reader1));
+                } else if ("extension".equals(fieldName)) {
+                    extension = reader.readArray(reader1 -> FhirR4Extension.fromJson(reader1));
+                } else if ("modifierExtension".equals(fieldName)) {
+                    modifierExtension = reader.readArray(reader1 -> FhirR4Extension.fromJson(reader1));
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            FhirR4DomainResource deserializedFhirR4DomainResource = new FhirR4DomainResource(resourceType);
+            deserializedFhirR4DomainResource.setId(id);
+            deserializedFhirR4DomainResource.setMeta(meta);
+            deserializedFhirR4DomainResource.setImplicitRules(implicitRules);
+            deserializedFhirR4DomainResource.setLanguage(language);
+            deserializedFhirR4DomainResource.resourceType = resourceType;
+            deserializedFhirR4DomainResource.text = text;
+            deserializedFhirR4DomainResource.contained = contained;
+            deserializedFhirR4DomainResource.extension = extension;
+            deserializedFhirR4DomainResource.modifierExtension = modifierExtension;
+            deserializedFhirR4DomainResource.setAdditionalProperties(additionalProperties);
+            return deserializedFhirR4DomainResource;
+        });
     }
 }
