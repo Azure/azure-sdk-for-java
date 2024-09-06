@@ -24,3 +24,16 @@ matrix:
       processorInstancesCount: 2
       processorFailureRatio: 0.000003125
       messageSizeInBytes: 1024
+    idleSender:
+      imageBuildDir: ..\..\..\
+      testDurationMin: 2160
+      senderTestClass: EventSender
+      sendRate: 5000
+      sendBatchSize: 25
+      sendConcurrency: 5
+      receiverTestClass: EventProcessor
+      processorBatchSize: 32
+      processorInstancesCount: 2
+      processorFailureRatio: 0.000003125
+      messageSizeInBytes: 1024
+      idleDurationMinutes: 40
