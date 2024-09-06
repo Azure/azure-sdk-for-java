@@ -142,7 +142,7 @@ public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationA
         named = "SKIP_LIVE_TEST",
         matches = "(?i)(true)",
         disabledReason = "Requires environment to be set up")
-    public void createVOIPCallAndRejectCallDisconnectedAutomatedTest(HttpClient httpClient) {
+    public void createVOIPCallAndRejectAutomatedTest(HttpClient httpClient) {
         /* Test case: ACS to ACS call but rejected
          * 1. create a CallAutomationClient.
          * 2. Reject
@@ -195,70 +195,11 @@ public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationA
             CallDisconnected callDisconnected = waitForEvent(CallDisconnected.class, callerConnectionId, Duration.ofSeconds(10));
             assertNotNull(callDisconnected);
             assertThrows(RuntimeException.class, () -> createCallResult.getCallConnection().getCallProperties());
-        } catch (Exception ex) {
-            fail("Unexpected exception received", ex);
-        }
-    }
 
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(
-        named = "SKIP_LIVE_TEST",
-        matches = "(?i)(true)",
-        disabledReason = "Requires environment to be set up")
-    public void createVOIPCallAndRejectCreateCallFailedAutomatedTest(HttpClient httpClient) {
-        /* Test case: ACS to ACS call but rejected
-         * 1. create a CallAutomationClient.
-         * 2. Reject
-         * 3. See if call is not established
-         */
-
-        CommunicationIdentityAsyncClient identityAsyncClient = getCommunicationIdentityClientUsingConnectionString(httpClient)
-            .addPolicy((context, next) -> logHeaders("createVOIPCallAndRejectAutomatedTest", next))
-            .buildAsyncClient();
-
-        try {
-            // create caller and receiver
-            CommunicationUserIdentifier caller = identityAsyncClient.createUser().block();
-            CommunicationIdentifier target = identityAsyncClient.createUser().block();
-
-            // Create call automation client and use source as the caller.
-            CallAutomationAsyncClient callerAsyncClient = getCallAutomationClientUsingConnectionString(httpClient)
-                    .addPolicy((context, next) -> logHeaders("createVOIPCallAndRejectAutomatedTest", next))
-                    .sourceIdentity(caller)
-                    .buildAsyncClient();
-            // Create call automation client for receivers.
-            CallAutomationAsyncClient receiverAsyncClient = getCallAutomationClientUsingConnectionString(httpClient)
-                .addPolicy((context, next) -> logHeaders("createVOIPCallAndRejectAutomatedTest", next))
-                .buildAsyncClient();
-
-            String uniqueId = serviceBusWithNewCall(caller, target);
-
-            // create a call
-            List<CommunicationIdentifier> targets = new ArrayList<>(Collections.singletonList(target));
-            CreateGroupCallOptions createCallOptions = new CreateGroupCallOptions(targets,
-                DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
-            Response<CreateCallResult> createCallResultResponse = callerAsyncClient.createGroupCallWithResponse(createCallOptions).block();
-
-            assertNotNull(createCallResultResponse);
-            CreateCallResult createCallResult = createCallResultResponse.getValue();
-            assertNotNull(createCallResult);
-            assertNotNull(createCallResult.getCallConnectionProperties());
-            String callerConnectionId = createCallResult.getCallConnectionProperties().getCallConnectionId();
-            assertNotNull(callerConnectionId);
-
-            // wait for the incomingCallContext
-            String incomingCallContext = waitForIncomingCallContext(uniqueId, Duration.ofSeconds(10));
-            assertNotNull(incomingCallContext);
-
-            // rejet the call
-            RejectCallOptions rejectCallOptions = new RejectCallOptions(incomingCallContext);
-            receiverAsyncClient.rejectCallWithResponse(rejectCallOptions).block();
-
-            // check events
             CreateCallFailed createCallFailed = waitForEvent(CreateCallFailed.class, callerConnectionId, Duration.ofSeconds(10));
             assertNotNull(createCallFailed);
             assertThrows(RuntimeException.class, () -> createCallResult.getCallConnection().getCallProperties());
+
         } catch (Exception ex) {
             fail("Unexpected exception received", ex);
         }
