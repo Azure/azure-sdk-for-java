@@ -7,8 +7,10 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed an issue where `CosmosDiagnostics` being accumulated across all requests for `queryChangeFeed` - See [PR 41698](https://github.com/Azure/azure-sdk-for-java/pull/41698)
 
 #### Other Changes
+# Changed diagnostic handler implementations to use weak references to `CosmosAsyncClient` to allow GC to earlier clean them up. - See [PR 41710](https://github.com/Azure/azure-sdk-for-java/pull/41710)
 
 ### 4.63.2 (2024-08-23)
 

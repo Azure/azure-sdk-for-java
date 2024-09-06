@@ -433,7 +433,7 @@ public class ReactorConnectionCacheTest {
 
             final ReactorConnection connection = new ReactorConnection(id, connectionOptions, reactorProvider,
                 handlerProvider, mock(AmqpLinkProvider.class), mock(TokenManagerProvider.class),
-                mock(MessageSerializer.class), SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST, true);
+                mock(MessageSerializer.class), SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST, true, false);
             return connection;
         }
     }
