@@ -35,6 +35,10 @@ parameters:
   displayName: 'spring-cloud-azure-core'
   type: boolean
   default: true
+- name: release_springcloudazuredockercompose
+  displayName: 'spring-cloud-azure-docker-compose'
+  type: boolean
+  default: true
 - name: release_springcloudazureservice
   displayName: 'spring-cloud-azure-service'
   type: boolean
@@ -249,6 +253,12 @@ extends:
         skipPublishDocMs: true
         skipVerifyChangelog: true
         releaseInBatch: ${{ parameters.release_springcloudazurecore }}
+      - name: spring-cloud-azure-docker-compose
+        groupId: com.azure.spring
+        safeName: springcloudazuredockercompose
+        skipPublishDocMs: true
+        skipVerifyChangelog: true
+        releaseInBatch: ${{ parameters.release_springcloudazuredockercompose }}
       - name: spring-cloud-azure-service
         groupId: com.azure.spring
         safeName: springcloudazureservice
