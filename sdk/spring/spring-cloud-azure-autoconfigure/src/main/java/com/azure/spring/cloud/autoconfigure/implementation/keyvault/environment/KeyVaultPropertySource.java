@@ -69,7 +69,7 @@ public class KeyVaultPropertySource extends EnumerablePropertySource<KeyVaultOpe
         this.keyVaultSecretKeys = convertToKeyVaultSecretNames(secretKeys, caseSensitive);
         this.keyVaultOperation = keyVaultOperation;
         loadProperties();
-        enableAutoRefreshProperties(refreshDuration);
+        enablePropertiesAutoRefresh(refreshDuration);
     }
 
     void loadProperties() {
@@ -83,7 +83,7 @@ public class KeyVaultPropertySource extends EnumerablePropertySource<KeyVaultOpe
         logger.debug("The secrets loading in property source '" + name + "' has finished.");
     }
 
-    void enableAutoRefreshProperties(Duration refreshDuration) {
+    void enablePropertiesAutoRefresh(Duration refreshDuration) {
         final long refreshInMillis = refreshDuration.toMillis();
         if (refreshInMillis > 0) {
             synchronized (KeyVaultPropertySource.class) {
