@@ -118,6 +118,13 @@
       <version>5.9.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
       <scope>test</scope>
     </dependency>
+
+    <dependency>
+      <groupId>io.projectreactor</groupId>
+      <artifactId>reactor-test</artifactId>
+      <version>3.4.38</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>
