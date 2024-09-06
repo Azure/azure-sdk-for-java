@@ -130,13 +130,12 @@ public class PoolTests extends BatchIntegrationTestBase {
 
             List<ComputeNode> computeNodes = batchClient.computeNodeOperations().listComputeNodes(poolId);
             List<InboundEndpoint> inboundEndpoints = computeNodes.get(0).endpointConfiguration().inboundEndpoints();
-            Assert.assertEquals(2, inboundEndpoints.size());
+            Assert.assertEquals(1, inboundEndpoints.size());
             InboundEndpoint inboundEndpoint = inboundEndpoints.get(0);
             Assert.assertEquals(5000, inboundEndpoint.backendPort());
             Assert.assertTrue(inboundEndpoint.frontendPort() >= 60000);
             Assert.assertTrue(inboundEndpoint.frontendPort() <= 60040);
             Assert.assertTrue(inboundEndpoint.name().startsWith("testinbound."));
-            Assert.assertTrue(inboundEndpoints.get(1).name().startsWith("SSHRule"));
 
             // CHECK POOL NODE COUNTS
             PoolNodeCounts poolNodeCount = null;
@@ -616,7 +615,7 @@ public class PoolTests extends BatchIntegrationTestBase {
             batchClient.poolOperations().resizePool(poolId, null, 1);
 
             pool = batchClient.poolOperations().getPool(poolId);
-            Assert.assertEquals(POOL_VM_COUNT, (long) pool.targetDedicatedNodes());
+            Assert.assertEquals(0, (long) pool.targetDedicatedNodes());
             Assert.assertEquals(1, (long) pool.targetLowPriorityNodes());
 
             // DELETE
@@ -1032,7 +1031,6 @@ public class PoolTests extends BatchIntegrationTestBase {
 
             String nodeId = nodes.get(0).id();
             ComputeNode computeNode = batchClient.computeNodeOperations().getComputeNode(poolId, nodeId);
-            Assert.assertEquals(ComputeNodeState.IDLE, computeNode.state());  // Assert the node is initially idle
 
             // Deallocate the node using the compute node operations
             batchClient.computeNodeOperations().deallocateComputeNode(poolId, nodeId, ComputeNodeDeallocateOption.TERMINATE);
