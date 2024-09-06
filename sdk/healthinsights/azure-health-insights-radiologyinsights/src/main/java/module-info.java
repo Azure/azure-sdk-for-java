@@ -4,6 +4,7 @@
 
 module com.azure.health.insights.radiologyinsights {
     requires transitive com.azure.core;
+	requires reactor.core;
     exports com.azure.health.insights.radiologyinsights;
     exports com.azure.health.insights.radiologyinsights.models;
     opens com.azure.health.insights.radiologyinsights.models to com.azure.core, com.fasterxml.jackson.databind;

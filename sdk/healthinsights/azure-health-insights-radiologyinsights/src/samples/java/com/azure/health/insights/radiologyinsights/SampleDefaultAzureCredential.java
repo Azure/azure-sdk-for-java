@@ -124,20 +124,18 @@ public class SampleDefaultAzureCredential {
     }
 
     /**
-     * Creates a RadiologyInsightsJob object to use in the Radiology Insights job
+     * Creates a RadiologyInsightsData object to use in the Radiology Insights job
      * request.
      *
-     * @return A RadiologyInsightsJob object with the created patient records and
+     * @return A RadiologyInsightsData object with the created patient records and
      *         model configuration.
      */
-    private static RadiologyInsightsJob createRadiologyInsightsJob() {
+    private static RadiologyInsightsData createRadiologyInsightsJob() {
         List<PatientRecord> patientRecords = createPatientRecords();
         RadiologyInsightsData radiologyInsightsData = new RadiologyInsightsData(patientRecords);
         RadiologyInsightsModelConfiguration modelConfiguration = createRadiologyInsightsModelConfig();
         radiologyInsightsData.setConfiguration(modelConfiguration);
-        RadiologyInsightsJob radiologyInsightsJob = new RadiologyInsightsJob();
-        radiologyInsightsJob.setJobData(radiologyInsightsData);
-        return radiologyInsightsJob;
+        return radiologyInsightsData;
     }
 
     /**

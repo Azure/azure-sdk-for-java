@@ -98,21 +98,19 @@ Infer radiology insights from a patient's radiology report using an **asynchrono
 - [SampleCriticalResultInferenceAsync.java][ri_async_sample]
 
 ```java com.azure.health.insights.radiologyinsights.inferradiologyinsights
-PollerFlux<RadiologyInsightsJob, RadiologyInsightsInferenceResult> asyncPoller = radiologyInsightsAsyncClient
+PollerFlux<RadiologyInsightsData, RadiologyInsightsInferenceResult> asyncPoller = radiologyInsightsAsyncClient
         .beginInferRadiologyInsights(UUID.randomUUID().toString(), createRadiologyInsightsJob());
 ```
 
 Create the request.
 
 ```java com.azure.health.insights.radiologyinsights.createrequest
-private static RadiologyInsightsJob createRadiologyInsightsJob() {
+private static RadiologyInsightsData createRadiologyInsightsJob() {
     List<PatientRecord> patientRecords = createPatientRecords();
     RadiologyInsightsData radiologyInsightsData = new RadiologyInsightsData(patientRecords);
     RadiologyInsightsModelConfiguration modelConfiguration = createRadiologyInsightsModelConfig();
     radiologyInsightsData.setConfiguration(modelConfiguration);
-    RadiologyInsightsJob radiologyInsightsJob = new RadiologyInsightsJob();
-    radiologyInsightsJob.setJobData(radiologyInsightsData);
-    return radiologyInsightsJob;
+    return radiologyInsightsData;
 }
 
 /**
@@ -220,6 +218,8 @@ private static RadiologyInsightsModelConfiguration createRadiologyInsightsModelC
     configuration.setIncludeEvidence(true);
     return configuration;
 }
+
+private static Mono<RadiologyInsightsInferenceResult> mono = null;
 
 /**
  * Retrieves the RadiologyInsightsInferenceOptions object with the specified

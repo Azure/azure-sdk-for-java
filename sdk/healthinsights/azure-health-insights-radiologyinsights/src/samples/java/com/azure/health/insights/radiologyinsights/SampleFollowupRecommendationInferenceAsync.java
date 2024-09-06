@@ -53,6 +53,8 @@ import com.azure.health.insights.radiologyinsights.models.TimePeriod;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
+import reactor.core.publisher.Mono;
+
 /**
  * The SampleCriticalResultInferenceAsync class processes a sample radiology document 
  * with the Radiology Insights service. It will initialize an asynchronous 
@@ -99,7 +101,7 @@ public class SampleFollowupRecommendationInferenceAsync {
                 .credential(credential);
         RadiologyInsightsAsyncClient radiologyInsightsAsyncClient = clientBuilder.buildAsyncClient();
 
-        PollerFlux<RadiologyInsightsJob, RadiologyInsightsInferenceResult> asyncPoller = radiologyInsightsAsyncClient
+        PollerFlux<RadiologyInsightsData, RadiologyInsightsInferenceResult> asyncPoller = radiologyInsightsAsyncClient
                 .beginInferRadiologyInsights(UUID.randomUUID().toString(), createRadiologyInsightsJob());
         
         CountDownLatch latch = new CountDownLatch(1);
@@ -112,7 +114,8 @@ public class SampleFollowupRecommendationInferenceAsync {
             .subscribe(completedResult -> {
                 if (completedResult.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
                     System.out.println("Completed poll response, status: " + completedResult.getStatus());
-                    displayFollowUpRecommendations(completedResult.getValue().getResult());
+                    mono = completedResult.getFinalResult();
+                    displayFollowUpRecommendations(mono.block());
                 }
             }, error -> {
                 System.err.println(error.getMessage());
@@ -122,6 +125,8 @@ public class SampleFollowupRecommendationInferenceAsync {
         latch.await();
     }
 
+    private static Mono<RadiologyInsightsInferenceResult> mono = null;
+    
     /**
      * Display the critical results of the Radiology Insights request.
      *
@@ -238,14 +243,12 @@ public class SampleFollowupRecommendationInferenceAsync {
      * @return A RadiologyInsightsJob object with the created patient records and
      *         model configuration.
      */
-    private static RadiologyInsightsJob createRadiologyInsightsJob() {
+    private static RadiologyInsightsData createRadiologyInsightsJob() {
         List<PatientRecord> patientRecords = createPatientRecords();
         RadiologyInsightsData radiologyInsightsData = new RadiologyInsightsData(patientRecords);
         RadiologyInsightsModelConfiguration modelConfiguration = createRadiologyInsightsModelConfig();
         radiologyInsightsData.setConfiguration(modelConfiguration);
-        RadiologyInsightsJob radiologyInsightsJob = new RadiologyInsightsJob();
-        radiologyInsightsJob.setJobData(radiologyInsightsData);
-        return radiologyInsightsJob;
+        return radiologyInsightsData;
     }
 
     /**
@@ -378,7 +381,7 @@ public class SampleFollowupRecommendationInferenceAsync {
         return inferenceOptions;
     }
 
-    private static Predicate<AsyncPollResponse<RadiologyInsightsJob, RadiologyInsightsInferenceResult>> isComplete = response -> {
+    private static Predicate<AsyncPollResponse<RadiologyInsightsData, RadiologyInsightsInferenceResult>> isComplete = response -> {
         return response.getStatus() != LongRunningOperationStatus.IN_PROGRESS
             && response.getStatus() != LongRunningOperationStatus.NOT_STARTED;
     };

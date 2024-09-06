@@ -49,6 +49,8 @@ import com.azure.health.insights.radiologyinsights.models.TimePeriod;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
+import reactor.core.publisher.Mono;
+
 /**
  * The SampleCriticalResultInferenceAsync class processes a sample radiology document 
  * with the Radiology Insights service. It will initialize an asynchronous 
@@ -109,7 +111,8 @@ public class SampleAgeMismatchInferenceAsync {
             .subscribe(completedResult -> {
                 if (completedResult.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
                     System.out.println("Completed poll response, status: " + completedResult.getStatus());
-                    displayAgeMismatches(completedResult.getValue().getResult());
+                    mono = completedResult.getFinalResult();
+                    displayAgeMismatches(mono.block());
                 }
             }, error -> {
                 System.err.println(error.getMessage());
@@ -118,7 +121,9 @@ public class SampleAgeMismatchInferenceAsync {
 
         latch.await();
     }
-
+    
+    private static Mono<RadiologyInsightsInferenceResult> mono = null;
+    
     /**
      * Display the critical results of the Radiology Insights request.
      *

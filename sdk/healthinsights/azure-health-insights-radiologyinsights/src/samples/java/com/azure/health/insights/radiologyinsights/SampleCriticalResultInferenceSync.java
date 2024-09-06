@@ -125,14 +125,12 @@ public class SampleCriticalResultInferenceSync {
      * @return A RadiologyInsightsJob object with the created patient records and
      *         model configuration.
      */
-    private static RadiologyInsightsJob createRadiologyInsightsJob() {
+    private static RadiologyInsightsData createRadiologyInsightsJob() {
         List<PatientRecord> patientRecords = createPatientRecords();
         RadiologyInsightsData radiologyInsightsData = new RadiologyInsightsData(patientRecords);
         RadiologyInsightsModelConfiguration modelConfiguration = createRadiologyInsightsModelConfig();
         radiologyInsightsData.setConfiguration(modelConfiguration);
-        RadiologyInsightsJob radiologyInsightsJob = new RadiologyInsightsJob();
-        radiologyInsightsJob.setJobData(radiologyInsightsData);
-        return radiologyInsightsJob;
+        return radiologyInsightsData;
     }
 
     /**

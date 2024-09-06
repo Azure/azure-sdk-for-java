@@ -48,6 +48,8 @@ import com.azure.health.insights.radiologyinsights.models.TimePeriod;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
+import reactor.core.publisher.Mono;
+
 /**
  * The SampleCriticalResultInferenceAsync class processes a sample radiology document 
  * with the Radiology Insights service. It will initialize an asynchronous 
@@ -97,7 +99,7 @@ public class SampleCriticalResultInferenceAsync {
         // END: com.azure.health.insights.radiologyinsights.buildasyncclient
 
         // BEGIN: com.azure.health.insights.radiologyinsights.inferradiologyinsights
-        PollerFlux<RadiologyInsightsJob, RadiologyInsightsInferenceResult> asyncPoller = radiologyInsightsAsyncClient
+        PollerFlux<RadiologyInsightsData, RadiologyInsightsInferenceResult> asyncPoller = radiologyInsightsAsyncClient
                 .beginInferRadiologyInsights(UUID.randomUUID().toString(), createRadiologyInsightsJob());
         // END: com.azure.health.insights.radiologyinsights.inferradiologyinsights
         
@@ -111,7 +113,8 @@ public class SampleCriticalResultInferenceAsync {
             .subscribe(completedResult -> {
                 if (completedResult.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
                     System.out.println("Completed poll response, status: " + completedResult.getStatus());
-                    displayCriticalResults(completedResult.getValue().getResult());
+                    mono = completedResult.getFinalResult();
+                    displayCriticalResults(mono.block());
                 }
             }, error -> {
                 System.err.println(error.getMessage());
@@ -151,14 +154,12 @@ public class SampleCriticalResultInferenceAsync {
      *         model configuration.
      */
     // BEGIN: com.azure.health.insights.radiologyinsights.createrequest
-    private static RadiologyInsightsJob createRadiologyInsightsJob() {
+    private static RadiologyInsightsData createRadiologyInsightsJob() {
         List<PatientRecord> patientRecords = createPatientRecords();
         RadiologyInsightsData radiologyInsightsData = new RadiologyInsightsData(patientRecords);
         RadiologyInsightsModelConfiguration modelConfiguration = createRadiologyInsightsModelConfig();
         radiologyInsightsData.setConfiguration(modelConfiguration);
-        RadiologyInsightsJob radiologyInsightsJob = new RadiologyInsightsJob();
-        radiologyInsightsJob.setJobData(radiologyInsightsData);
-        return radiologyInsightsJob;
+        return radiologyInsightsData;
     }
 
     /**
@@ -267,6 +268,8 @@ public class SampleCriticalResultInferenceAsync {
         return configuration;
     }
 
+    private static Mono<RadiologyInsightsInferenceResult> mono = null;
+    
     /**
      * Retrieves the RadiologyInsightsInferenceOptions object with the specified
      * options.
@@ -288,7 +291,7 @@ public class SampleCriticalResultInferenceAsync {
     }
     // END: com.azure.health.insights.radiologyinsights.createrequest
     
-    private static Predicate<AsyncPollResponse<RadiologyInsightsJob, RadiologyInsightsInferenceResult>> isComplete = response -> {
+    private static Predicate<AsyncPollResponse<RadiologyInsightsData, RadiologyInsightsInferenceResult>> isComplete = response -> {
         return response.getStatus() != LongRunningOperationStatus.IN_PROGRESS
             && response.getStatus() != LongRunningOperationStatus.NOT_STARTED;
     };
