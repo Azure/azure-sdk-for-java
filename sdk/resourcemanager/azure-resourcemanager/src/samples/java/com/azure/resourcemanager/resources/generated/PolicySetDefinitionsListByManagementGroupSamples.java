@@ -9,7 +9,8 @@ package com.azure.resourcemanager.resources.generated;
  */
 public final class PolicySetDefinitionsListByManagementGroupSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/listPolicySetDefinitionsByManagementGroup.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/
+     * listPolicySetDefinitionsByManagementGroup.json
      */
     /**
      * Sample code: List policy set definitions at management group level.

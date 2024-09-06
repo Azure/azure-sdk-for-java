@@ -5,41 +5,33 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Base class for all triggers that support one to many model for trigger to pipeline.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "type",
-    defaultImpl = MultiplePipelineTrigger.class,
-    visible = true)
-@JsonTypeName("MultiplePipelineTrigger")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "ScheduleTrigger", value = ScheduleTrigger.class),
-    @JsonSubTypes.Type(name = "BlobTrigger", value = BlobTrigger.class),
-    @JsonSubTypes.Type(name = "BlobEventsTrigger", value = BlobEventsTrigger.class),
-    @JsonSubTypes.Type(name = "CustomEventsTrigger", value = CustomEventsTrigger.class) })
 @Fluent
 public class MultiplePipelineTrigger extends Trigger {
     /*
      * Trigger type.
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private String type = "MultiplePipelineTrigger";
 
     /*
      * Pipelines that need to be started.
      */
-    @JsonProperty(value = "pipelines")
     private List<TriggerPipelineReference> pipelines;
+
+    /*
+     * Indicates if trigger is running or not. Updated when Start/Stop APIs are called on the Trigger.
+     */
+    private TriggerRuntimeState runtimeState;
 
     /**
      * Creates an instance of MultiplePipelineTrigger class.
@@ -78,6 +70,17 @@ public class MultiplePipelineTrigger extends Trigger {
     }
 
     /**
+     * Get the runtimeState property: Indicates if trigger is running or not. Updated when Start/Stop APIs are called on
+     * the Trigger.
+     * 
+     * @return the runtimeState value.
+     */
+    @Override
+    public TriggerRuntimeState runtimeState() {
+        return this.runtimeState;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -106,5 +109,98 @@ public class MultiplePipelineTrigger extends Trigger {
         if (pipelines() != null) {
             pipelines().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeArrayField("annotations", annotations(), (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeArrayField("pipelines", this.pipelines, (writer, element) -> writer.writeJson(element));
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MultiplePipelineTrigger from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MultiplePipelineTrigger if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MultiplePipelineTrigger.
+     */
+    public static MultiplePipelineTrigger fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("type".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("ScheduleTrigger".equals(discriminatorValue)) {
+                    return ScheduleTrigger.fromJson(readerToUse.reset());
+                } else if ("BlobTrigger".equals(discriminatorValue)) {
+                    return BlobTrigger.fromJson(readerToUse.reset());
+                } else if ("BlobEventsTrigger".equals(discriminatorValue)) {
+                    return BlobEventsTrigger.fromJson(readerToUse.reset());
+                } else if ("CustomEventsTrigger".equals(discriminatorValue)) {
+                    return CustomEventsTrigger.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static MultiplePipelineTrigger fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MultiplePipelineTrigger deserializedMultiplePipelineTrigger = new MultiplePipelineTrigger();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedMultiplePipelineTrigger.withDescription(reader.getString());
+                } else if ("runtimeState".equals(fieldName)) {
+                    deserializedMultiplePipelineTrigger.runtimeState
+                        = TriggerRuntimeState.fromString(reader.getString());
+                } else if ("annotations".equals(fieldName)) {
+                    List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedMultiplePipelineTrigger.withAnnotations(annotations);
+                } else if ("type".equals(fieldName)) {
+                    deserializedMultiplePipelineTrigger.type = reader.getString();
+                } else if ("pipelines".equals(fieldName)) {
+                    List<TriggerPipelineReference> pipelines
+                        = reader.readArray(reader1 -> TriggerPipelineReference.fromJson(reader1));
+                    deserializedMultiplePipelineTrigger.pipelines = pipelines;
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMultiplePipelineTrigger.withAdditionalProperties(additionalProperties);
+
+            return deserializedMultiplePipelineTrigger;
+        });
     }
 }

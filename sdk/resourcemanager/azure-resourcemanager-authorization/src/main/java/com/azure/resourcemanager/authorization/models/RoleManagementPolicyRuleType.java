@@ -5,34 +5,45 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The type of rule. */
+/**
+ * The type of rule.
+ */
 public final class RoleManagementPolicyRuleType extends ExpandableStringEnum<RoleManagementPolicyRuleType> {
-    /** Static value RoleManagementPolicyApprovalRule for RoleManagementPolicyRuleType. */
-    public static final RoleManagementPolicyRuleType ROLE_MANAGEMENT_POLICY_APPROVAL_RULE =
-        fromString("RoleManagementPolicyApprovalRule");
+    /**
+     * Static value RoleManagementPolicyApprovalRule for RoleManagementPolicyRuleType.
+     */
+    public static final RoleManagementPolicyRuleType ROLE_MANAGEMENT_POLICY_APPROVAL_RULE
+        = fromString("RoleManagementPolicyApprovalRule");
 
-    /** Static value RoleManagementPolicyAuthenticationContextRule for RoleManagementPolicyRuleType. */
-    public static final RoleManagementPolicyRuleType ROLE_MANAGEMENT_POLICY_AUTHENTICATION_CONTEXT_RULE =
-        fromString("RoleManagementPolicyAuthenticationContextRule");
+    /**
+     * Static value RoleManagementPolicyAuthenticationContextRule for RoleManagementPolicyRuleType.
+     */
+    public static final RoleManagementPolicyRuleType ROLE_MANAGEMENT_POLICY_AUTHENTICATION_CONTEXT_RULE
+        = fromString("RoleManagementPolicyAuthenticationContextRule");
 
-    /** Static value RoleManagementPolicyEnablementRule for RoleManagementPolicyRuleType. */
-    public static final RoleManagementPolicyRuleType ROLE_MANAGEMENT_POLICY_ENABLEMENT_RULE =
-        fromString("RoleManagementPolicyEnablementRule");
+    /**
+     * Static value RoleManagementPolicyEnablementRule for RoleManagementPolicyRuleType.
+     */
+    public static final RoleManagementPolicyRuleType ROLE_MANAGEMENT_POLICY_ENABLEMENT_RULE
+        = fromString("RoleManagementPolicyEnablementRule");
 
-    /** Static value RoleManagementPolicyExpirationRule for RoleManagementPolicyRuleType. */
-    public static final RoleManagementPolicyRuleType ROLE_MANAGEMENT_POLICY_EXPIRATION_RULE =
-        fromString("RoleManagementPolicyExpirationRule");
+    /**
+     * Static value RoleManagementPolicyExpirationRule for RoleManagementPolicyRuleType.
+     */
+    public static final RoleManagementPolicyRuleType ROLE_MANAGEMENT_POLICY_EXPIRATION_RULE
+        = fromString("RoleManagementPolicyExpirationRule");
 
-    /** Static value RoleManagementPolicyNotificationRule for RoleManagementPolicyRuleType. */
-    public static final RoleManagementPolicyRuleType ROLE_MANAGEMENT_POLICY_NOTIFICATION_RULE =
-        fromString("RoleManagementPolicyNotificationRule");
+    /**
+     * Static value RoleManagementPolicyNotificationRule for RoleManagementPolicyRuleType.
+     */
+    public static final RoleManagementPolicyRuleType ROLE_MANAGEMENT_POLICY_NOTIFICATION_RULE
+        = fromString("RoleManagementPolicyNotificationRule");
 
     /**
      * Creates a new instance of RoleManagementPolicyRuleType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -41,18 +52,17 @@ public final class RoleManagementPolicyRuleType extends ExpandableStringEnum<Rol
 
     /**
      * Creates or finds a RoleManagementPolicyRuleType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RoleManagementPolicyRuleType.
      */
-    @JsonCreator
     public static RoleManagementPolicyRuleType fromString(String name) {
         return fromString(name, RoleManagementPolicyRuleType.class);
     }
 
     /**
      * Gets known RoleManagementPolicyRuleType values.
-     *
+     * 
      * @return known RoleManagementPolicyRuleType values.
      */
     public static Collection<RoleManagementPolicyRuleType> values() {

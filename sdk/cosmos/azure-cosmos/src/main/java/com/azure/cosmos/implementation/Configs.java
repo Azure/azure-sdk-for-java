@@ -242,6 +242,13 @@ public class Configs {
     private static final int DEFAULT_CONNECTION_ESTABLISHMENT_TIMEOUT_FOR_PARTITION_RECOVERY_IN_SECONDS = 10;
     private static final String CONNECTION_ESTABLISHMENT_TIMEOUT_FOR_PARTITION_RECOVERY_IN_SECONDS = "COSMOS.CONNECTION_ESTABLISHMENT_TIMEOUT_FOR_PARTITION_RECOVERY_IN_SECONDS";
 
+    private static final boolean DEFAULT_SHOULD_LOG_INCORRECTLY_MAPPED_SESSION_TOKEN = true;
+    private static final String SHOULD_LOG_INCORRECTLY_MAPPED_SESSION_TOKEN = "COSMOS.SHOULD_LOG_INCORRECTLY_MAPPED_USER_SESSION_TOKEN";
+
+    private static final boolean DEFAULT_PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN = false;
+    private static final String PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN = "COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN";
+
+
     public Configs() {
         this.sslContext = sslContextInit();
     }
@@ -641,6 +648,29 @@ public class Configs {
                     String.valueOf(DEFAULT_DIAGNOSTICS_PROVIDER_SYSTEM_EXIT_ON_ERROR)));
 
         return Boolean.parseBoolean(shouldSystemExit);
+    }
+
+    public static boolean shouldLogIncorrectlyMappedSessionToken() {
+        String shouldSystemExit =
+            System.getProperty(
+                SHOULD_LOG_INCORRECTLY_MAPPED_SESSION_TOKEN,
+                firstNonNull(
+                    emptyToNull(System.getenv().get(SHOULD_LOG_INCORRECTLY_MAPPED_SESSION_TOKEN)),
+                    String.valueOf(DEFAULT_SHOULD_LOG_INCORRECTLY_MAPPED_SESSION_TOKEN)));
+
+        return Boolean.parseBoolean(shouldSystemExit);
+    }
+
+    public static boolean shouldOptInDefaultCircuitBreakerConfig() {
+
+        String shouldOptInDefaultPartitionLevelCircuitBreakerConfig =
+            System.getProperty(
+                PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN,
+                firstNonNull(
+                    emptyToNull(System.getenv().get(PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN)),
+                    String.valueOf(DEFAULT_PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN)));
+
+        return Boolean.parseBoolean(shouldOptInDefaultPartitionLevelCircuitBreakerConfig);
     }
 
     public static CosmosMicrometerMetricsConfig getMetricsConfig() {

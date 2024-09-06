@@ -5,36 +5,36 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * A object which contains list of tables and connection details for a target connection.
  */
 @Fluent
-public final class MapperTargetConnectionsInfo {
+public final class MapperTargetConnectionsInfo implements JsonSerializable<MapperTargetConnectionsInfo> {
     /*
      * List of source tables for a target connection.
      */
-    @JsonProperty(value = "targetEntities")
     private List<MapperTable> targetEntities;
 
     /*
      * Source connection details.
      */
-    @JsonProperty(value = "connection")
     private MapperConnection connection;
 
     /*
      * List of table mappings.
      */
-    @JsonProperty(value = "dataMapperMappings")
     private List<DataMapperMapping> dataMapperMappings;
 
     /*
      * List of relationship info among the tables.
      */
-    @JsonProperty(value = "relationships")
     private List<Object> relationships;
 
     /**
@@ -138,5 +138,57 @@ public final class MapperTargetConnectionsInfo {
         if (dataMapperMappings() != null) {
             dataMapperMappings().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("targetEntities", this.targetEntities,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("connection", this.connection);
+        jsonWriter.writeArrayField("dataMapperMappings", this.dataMapperMappings,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("relationships", this.relationships,
+            (writer, element) -> writer.writeUntyped(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MapperTargetConnectionsInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MapperTargetConnectionsInfo if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MapperTargetConnectionsInfo.
+     */
+    public static MapperTargetConnectionsInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MapperTargetConnectionsInfo deserializedMapperTargetConnectionsInfo = new MapperTargetConnectionsInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("targetEntities".equals(fieldName)) {
+                    List<MapperTable> targetEntities = reader.readArray(reader1 -> MapperTable.fromJson(reader1));
+                    deserializedMapperTargetConnectionsInfo.targetEntities = targetEntities;
+                } else if ("connection".equals(fieldName)) {
+                    deserializedMapperTargetConnectionsInfo.connection = MapperConnection.fromJson(reader);
+                } else if ("dataMapperMappings".equals(fieldName)) {
+                    List<DataMapperMapping> dataMapperMappings
+                        = reader.readArray(reader1 -> DataMapperMapping.fromJson(reader1));
+                    deserializedMapperTargetConnectionsInfo.dataMapperMappings = dataMapperMappings;
+                } else if ("relationships".equals(fieldName)) {
+                    List<Object> relationships = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedMapperTargetConnectionsInfo.relationships = relationships;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMapperTargetConnectionsInfo;
+        });
     }
 }

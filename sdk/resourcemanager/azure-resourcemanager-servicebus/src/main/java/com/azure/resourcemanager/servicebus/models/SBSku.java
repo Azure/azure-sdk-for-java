@@ -6,32 +6,41 @@ package com.azure.resourcemanager.servicebus.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** SKU of the namespace. */
+/**
+ * SKU of the namespace.
+ */
 @Fluent
-public final class SBSku {
+public final class SBSku implements JsonSerializable<SBSku> {
     /*
      * Name of this SKU.
      */
-    @JsonProperty(value = "name", required = true)
     private SkuName name;
 
     /*
      * The billing tier of this particular SKU.
      */
-    @JsonProperty(value = "tier")
     private SkuTier tier;
 
     /*
      * The specified messaging units for the tier. For Premium tier, capacity are 1,2 and 4.
      */
-    @JsonProperty(value = "capacity")
     private Integer capacity;
 
     /**
+     * Creates an instance of SBSku class.
+     */
+    public SBSku() {
+    }
+
+    /**
      * Get the name property: Name of this SKU.
-     *
+     * 
      * @return the name value.
      */
     public SkuName name() {
@@ -40,7 +49,7 @@ public final class SBSku {
 
     /**
      * Set the name property: Name of this SKU.
-     *
+     * 
      * @param name the name value to set.
      * @return the SBSku object itself.
      */
@@ -51,7 +60,7 @@ public final class SBSku {
 
     /**
      * Get the tier property: The billing tier of this particular SKU.
-     *
+     * 
      * @return the tier value.
      */
     public SkuTier tier() {
@@ -60,7 +69,7 @@ public final class SBSku {
 
     /**
      * Set the tier property: The billing tier of this particular SKU.
-     *
+     * 
      * @param tier the tier value to set.
      * @return the SBSku object itself.
      */
@@ -71,7 +80,7 @@ public final class SBSku {
 
     /**
      * Get the capacity property: The specified messaging units for the tier. For Premium tier, capacity are 1,2 and 4.
-     *
+     * 
      * @return the capacity value.
      */
     public Integer capacity() {
@@ -80,7 +89,7 @@ public final class SBSku {
 
     /**
      * Set the capacity property: The specified messaging units for the tier. For Premium tier, capacity are 1,2 and 4.
-     *
+     * 
      * @param capacity the capacity value to set.
      * @return the SBSku object itself.
      */
@@ -91,15 +100,57 @@ public final class SBSku {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property name in model SBSku"));
+            throw LOGGER.atError().log(new IllegalArgumentException("Missing required property name in model SBSku"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SBSku.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name == null ? null : this.name.toString());
+        jsonWriter.writeStringField("tier", this.tier == null ? null : this.tier.toString());
+        jsonWriter.writeNumberField("capacity", this.capacity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SBSku from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SBSku if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SBSku.
+     */
+    public static SBSku fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SBSku deserializedSBSku = new SBSku();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedSBSku.name = SkuName.fromString(reader.getString());
+                } else if ("tier".equals(fieldName)) {
+                    deserializedSBSku.tier = SkuTier.fromString(reader.getString());
+                } else if ("capacity".equals(fieldName)) {
+                    deserializedSBSku.capacity = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSBSku;
+        });
+    }
 }

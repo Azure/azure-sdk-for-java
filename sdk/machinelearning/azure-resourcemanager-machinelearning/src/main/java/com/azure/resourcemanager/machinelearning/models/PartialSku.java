@@ -5,95 +5,54 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Common SKU definition. */
+/**
+ * Common SKU definition.
+ */
 @Fluent
-public final class PartialSku {
-    /*
-     * If the SKU supports scale out/in then the capacity integer should be included. If scale out/in is not possible
-     * for the resource this may be omitted.
-     */
-    @JsonProperty(value = "capacity")
-    private Integer capacity;
-
-    /*
-     * If the service has different generations of hardware, for the same SKU, then that can be captured here.
-     */
-    @JsonProperty(value = "family")
-    private String family;
-
+public final class PartialSku implements JsonSerializable<PartialSku> {
     /*
      * The name of the SKU. Ex - P3. It is typically a letter+number code.
      */
-    @JsonProperty(value = "name")
     private String name;
-
-    /*
-     * The SKU size. When the name field is the combination of tier and some other value, this would be the standalone
-     * code.
-     */
-    @JsonProperty(value = "size")
-    private String size;
 
     /*
      * This field is required to be implemented by the Resource Provider if the service has more than one tier, but is
      * not required on a PUT.
      */
-    @JsonProperty(value = "tier")
     private SkuTier tier;
 
-    /** Creates an instance of PartialSku class. */
+    /*
+     * The SKU size. When the name field is the combination of tier and some other value, this would be the standalone
+     * code.
+     */
+    private String size;
+
+    /*
+     * If the service has different generations of hardware, for the same SKU, then that can be captured here.
+     */
+    private String family;
+
+    /*
+     * If the SKU supports scale out/in then the capacity integer should be included. If scale out/in is not possible
+     * for the resource this may be omitted.
+     */
+    private Integer capacity;
+
+    /**
+     * Creates an instance of PartialSku class.
+     */
     public PartialSku() {
     }
 
     /**
-     * Get the capacity property: If the SKU supports scale out/in then the capacity integer should be included. If
-     * scale out/in is not possible for the resource this may be omitted.
-     *
-     * @return the capacity value.
-     */
-    public Integer capacity() {
-        return this.capacity;
-    }
-
-    /**
-     * Set the capacity property: If the SKU supports scale out/in then the capacity integer should be included. If
-     * scale out/in is not possible for the resource this may be omitted.
-     *
-     * @param capacity the capacity value to set.
-     * @return the PartialSku object itself.
-     */
-    public PartialSku withCapacity(Integer capacity) {
-        this.capacity = capacity;
-        return this;
-    }
-
-    /**
-     * Get the family property: If the service has different generations of hardware, for the same SKU, then that can be
-     * captured here.
-     *
-     * @return the family value.
-     */
-    public String family() {
-        return this.family;
-    }
-
-    /**
-     * Set the family property: If the service has different generations of hardware, for the same SKU, then that can be
-     * captured here.
-     *
-     * @param family the family value to set.
-     * @return the PartialSku object itself.
-     */
-    public PartialSku withFamily(String family) {
-        this.family = family;
-        return this;
-    }
-
-    /**
      * Get the name property: The name of the SKU. Ex - P3. It is typically a letter+number code.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -102,7 +61,7 @@ public final class PartialSku {
 
     /**
      * Set the name property: The name of the SKU. Ex - P3. It is typically a letter+number code.
-     *
+     * 
      * @param name the name value to set.
      * @return the PartialSku object itself.
      */
@@ -112,31 +71,9 @@ public final class PartialSku {
     }
 
     /**
-     * Get the size property: The SKU size. When the name field is the combination of tier and some other value, this
-     * would be the standalone code.
-     *
-     * @return the size value.
-     */
-    public String size() {
-        return this.size;
-    }
-
-    /**
-     * Set the size property: The SKU size. When the name field is the combination of tier and some other value, this
-     * would be the standalone code.
-     *
-     * @param size the size value to set.
-     * @return the PartialSku object itself.
-     */
-    public PartialSku withSize(String size) {
-        this.size = size;
-        return this;
-    }
-
-    /**
      * Get the tier property: This field is required to be implemented by the Resource Provider if the service has more
      * than one tier, but is not required on a PUT.
-     *
+     * 
      * @return the tier value.
      */
     public SkuTier tier() {
@@ -146,7 +83,7 @@ public final class PartialSku {
     /**
      * Set the tier property: This field is required to be implemented by the Resource Provider if the service has more
      * than one tier, but is not required on a PUT.
-     *
+     * 
      * @param tier the tier value to set.
      * @return the PartialSku object itself.
      */
@@ -156,10 +93,124 @@ public final class PartialSku {
     }
 
     /**
+     * Get the size property: The SKU size. When the name field is the combination of tier and some other value, this
+     * would be the standalone code.
+     * 
+     * @return the size value.
+     */
+    public String size() {
+        return this.size;
+    }
+
+    /**
+     * Set the size property: The SKU size. When the name field is the combination of tier and some other value, this
+     * would be the standalone code.
+     * 
+     * @param size the size value to set.
+     * @return the PartialSku object itself.
+     */
+    public PartialSku withSize(String size) {
+        this.size = size;
+        return this;
+    }
+
+    /**
+     * Get the family property: If the service has different generations of hardware, for the same SKU, then that can be
+     * captured here.
+     * 
+     * @return the family value.
+     */
+    public String family() {
+        return this.family;
+    }
+
+    /**
+     * Set the family property: If the service has different generations of hardware, for the same SKU, then that can be
+     * captured here.
+     * 
+     * @param family the family value to set.
+     * @return the PartialSku object itself.
+     */
+    public PartialSku withFamily(String family) {
+        this.family = family;
+        return this;
+    }
+
+    /**
+     * Get the capacity property: If the SKU supports scale out/in then the capacity integer should be included. If
+     * scale out/in is not possible for the resource this may be omitted.
+     * 
+     * @return the capacity value.
+     */
+    public Integer capacity() {
+        return this.capacity;
+    }
+
+    /**
+     * Set the capacity property: If the SKU supports scale out/in then the capacity integer should be included. If
+     * scale out/in is not possible for the resource this may be omitted.
+     * 
+     * @param capacity the capacity value to set.
+     * @return the PartialSku object itself.
+     */
+    public PartialSku withCapacity(Integer capacity) {
+        this.capacity = capacity;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("tier", this.tier == null ? null : this.tier.toString());
+        jsonWriter.writeStringField("size", this.size);
+        jsonWriter.writeStringField("family", this.family);
+        jsonWriter.writeNumberField("capacity", this.capacity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PartialSku from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PartialSku if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the PartialSku.
+     */
+    public static PartialSku fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PartialSku deserializedPartialSku = new PartialSku();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedPartialSku.name = reader.getString();
+                } else if ("tier".equals(fieldName)) {
+                    deserializedPartialSku.tier = SkuTier.fromString(reader.getString());
+                } else if ("size".equals(fieldName)) {
+                    deserializedPartialSku.size = reader.getString();
+                } else if ("family".equals(fieldName)) {
+                    deserializedPartialSku.family = reader.getString();
+                } else if ("capacity".equals(fieldName)) {
+                    deserializedPartialSku.capacity = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPartialSku;
+        });
     }
 }

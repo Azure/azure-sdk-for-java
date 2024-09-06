@@ -5,37 +5,37 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * DeletedAppRestoreRequest resource specific properties.
  */
 @Fluent
-public final class DeletedAppRestoreRequestProperties {
+public final class DeletedAppRestoreRequestProperties implements JsonSerializable<DeletedAppRestoreRequestProperties> {
     /*
      * ARM resource ID of the deleted app. Example:
      * /subscriptions/{subId}/providers/Microsoft.Web/deletedSites/{deletedSiteId}
      */
-    @JsonProperty(value = "deletedSiteId")
     private String deletedSiteId;
 
     /*
      * If true, deleted site configuration, in addition to content, will be restored.
      */
-    @JsonProperty(value = "recoverConfiguration")
     private Boolean recoverConfiguration;
 
     /*
-     * Point in time to restore the deleted app from, formatted as a DateTime string. 
+     * Point in time to restore the deleted app from, formatted as a DateTime string.
      * If unspecified, default value is the time that the app was deleted.
      */
-    @JsonProperty(value = "snapshotTime")
     private String snapshotTime;
 
     /*
      * If true, the snapshot is retrieved from DRSecondary endpoint.
      */
-    @JsonProperty(value = "useDRSecondary")
     private Boolean useDRSecondary;
 
     /**
@@ -136,5 +136,53 @@ public final class DeletedAppRestoreRequestProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("deletedSiteId", this.deletedSiteId);
+        jsonWriter.writeBooleanField("recoverConfiguration", this.recoverConfiguration);
+        jsonWriter.writeStringField("snapshotTime", this.snapshotTime);
+        jsonWriter.writeBooleanField("useDRSecondary", this.useDRSecondary);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeletedAppRestoreRequestProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeletedAppRestoreRequestProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DeletedAppRestoreRequestProperties.
+     */
+    public static DeletedAppRestoreRequestProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeletedAppRestoreRequestProperties deserializedDeletedAppRestoreRequestProperties
+                = new DeletedAppRestoreRequestProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("deletedSiteId".equals(fieldName)) {
+                    deserializedDeletedAppRestoreRequestProperties.deletedSiteId = reader.getString();
+                } else if ("recoverConfiguration".equals(fieldName)) {
+                    deserializedDeletedAppRestoreRequestProperties.recoverConfiguration
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("snapshotTime".equals(fieldName)) {
+                    deserializedDeletedAppRestoreRequestProperties.snapshotTime = reader.getString();
+                } else if ("useDRSecondary".equals(fieldName)) {
+                    deserializedDeletedAppRestoreRequestProperties.useDRSecondary
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeletedAppRestoreRequestProperties;
+        });
     }
 }

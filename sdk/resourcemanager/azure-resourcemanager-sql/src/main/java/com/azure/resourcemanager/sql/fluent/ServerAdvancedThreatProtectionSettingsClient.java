@@ -26,9 +26,9 @@ import reactor.core.publisher.Mono;
 public interface ServerAdvancedThreatProtectionSettingsClient {
     /**
      * Get a list of the server's Advanced Threat Protection states.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -40,58 +40,58 @@ public interface ServerAdvancedThreatProtectionSettingsClient {
 
     /**
      * Get a list of the server's Advanced Threat Protection states.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of the server's Advanced Threat Protection states as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of the server's Advanced Threat Protection states as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ServerAdvancedThreatProtectionInner> listByServer(String resourceGroupName, String serverName);
 
     /**
      * Get a list of the server's Advanced Threat Protection states.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of the server's Advanced Threat Protection states as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of the server's Advanced Threat Protection states as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ServerAdvancedThreatProtectionInner> listByServer(
-        String resourceGroupName, String serverName, Context context);
+    PagedIterable<ServerAdvancedThreatProtectionInner> listByServer(String resourceGroupName, String serverName,
+        Context context);
 
     /**
      * Get a server's Advanced Threat Protection state.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param advancedThreatProtectionName The name of the Advanced Threat Protection state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a server's Advanced Threat Protection state along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ServerAdvancedThreatProtectionInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, AdvancedThreatProtectionName advancedThreatProtectionName);
+    Mono<Response<ServerAdvancedThreatProtectionInner>> getWithResponseAsync(String resourceGroupName,
+        String serverName, AdvancedThreatProtectionName advancedThreatProtectionName);
 
     /**
      * Get a server's Advanced Threat Protection state.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param advancedThreatProtectionName The name of the Advanced Threat Protection state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -100,14 +100,14 @@ public interface ServerAdvancedThreatProtectionSettingsClient {
      * @return a server's Advanced Threat Protection state on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ServerAdvancedThreatProtectionInner> getAsync(
-        String resourceGroupName, String serverName, AdvancedThreatProtectionName advancedThreatProtectionName);
+    Mono<ServerAdvancedThreatProtectionInner> getAsync(String resourceGroupName, String serverName,
+        AdvancedThreatProtectionName advancedThreatProtectionName);
 
     /**
      * Get a server's Advanced Threat Protection state.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param advancedThreatProtectionName The name of the Advanced Threat Protection state.
      * @param context The context to associate with this operation.
@@ -117,17 +117,14 @@ public interface ServerAdvancedThreatProtectionSettingsClient {
      * @return a server's Advanced Threat Protection state along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ServerAdvancedThreatProtectionInner> getWithResponse(
-        String resourceGroupName,
-        String serverName,
-        AdvancedThreatProtectionName advancedThreatProtectionName,
-        Context context);
+    Response<ServerAdvancedThreatProtectionInner> getWithResponse(String resourceGroupName, String serverName,
+        AdvancedThreatProtectionName advancedThreatProtectionName, Context context);
 
     /**
      * Get a server's Advanced Threat Protection state.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param advancedThreatProtectionName The name of the Advanced Threat Protection state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -136,14 +133,14 @@ public interface ServerAdvancedThreatProtectionSettingsClient {
      * @return a server's Advanced Threat Protection state.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ServerAdvancedThreatProtectionInner get(
-        String resourceGroupName, String serverName, AdvancedThreatProtectionName advancedThreatProtectionName);
+    ServerAdvancedThreatProtectionInner get(String resourceGroupName, String serverName,
+        AdvancedThreatProtectionName advancedThreatProtectionName);
 
     /**
      * Creates or updates an Advanced Threat Protection state.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param advancedThreatProtectionName The name of the Advanced Threat Protection state.
      * @param parameters The server Advanced Threat Protection state.
@@ -153,17 +150,14 @@ public interface ServerAdvancedThreatProtectionSettingsClient {
      * @return a server Advanced Threat Protection along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        AdvancedThreatProtectionName advancedThreatProtectionName,
-        ServerAdvancedThreatProtectionInner parameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String serverName,
+        AdvancedThreatProtectionName advancedThreatProtectionName, ServerAdvancedThreatProtectionInner parameters);
 
     /**
      * Creates or updates an Advanced Threat Protection state.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param advancedThreatProtectionName The name of the Advanced Threat Protection state.
      * @param parameters The server Advanced Threat Protection state.
@@ -174,17 +168,14 @@ public interface ServerAdvancedThreatProtectionSettingsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ServerAdvancedThreatProtectionInner>, ServerAdvancedThreatProtectionInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String serverName,
-            AdvancedThreatProtectionName advancedThreatProtectionName,
-            ServerAdvancedThreatProtectionInner parameters);
+        beginCreateOrUpdateAsync(String resourceGroupName, String serverName,
+            AdvancedThreatProtectionName advancedThreatProtectionName, ServerAdvancedThreatProtectionInner parameters);
 
     /**
      * Creates or updates an Advanced Threat Protection state.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param advancedThreatProtectionName The name of the Advanced Threat Protection state.
      * @param parameters The server Advanced Threat Protection state.
@@ -195,17 +186,14 @@ public interface ServerAdvancedThreatProtectionSettingsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ServerAdvancedThreatProtectionInner>, ServerAdvancedThreatProtectionInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String serverName,
-            AdvancedThreatProtectionName advancedThreatProtectionName,
-            ServerAdvancedThreatProtectionInner parameters);
+        beginCreateOrUpdate(String resourceGroupName, String serverName,
+            AdvancedThreatProtectionName advancedThreatProtectionName, ServerAdvancedThreatProtectionInner parameters);
 
     /**
      * Creates or updates an Advanced Threat Protection state.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param advancedThreatProtectionName The name of the Advanced Threat Protection state.
      * @param parameters The server Advanced Threat Protection state.
@@ -217,18 +205,15 @@ public interface ServerAdvancedThreatProtectionSettingsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ServerAdvancedThreatProtectionInner>, ServerAdvancedThreatProtectionInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String serverName,
-            AdvancedThreatProtectionName advancedThreatProtectionName,
-            ServerAdvancedThreatProtectionInner parameters,
+        beginCreateOrUpdate(String resourceGroupName, String serverName,
+            AdvancedThreatProtectionName advancedThreatProtectionName, ServerAdvancedThreatProtectionInner parameters,
             Context context);
 
     /**
      * Creates or updates an Advanced Threat Protection state.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param advancedThreatProtectionName The name of the Advanced Threat Protection state.
      * @param parameters The server Advanced Threat Protection state.
@@ -238,17 +223,14 @@ public interface ServerAdvancedThreatProtectionSettingsClient {
      * @return a server Advanced Threat Protection on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ServerAdvancedThreatProtectionInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serverName,
-        AdvancedThreatProtectionName advancedThreatProtectionName,
-        ServerAdvancedThreatProtectionInner parameters);
+    Mono<ServerAdvancedThreatProtectionInner> createOrUpdateAsync(String resourceGroupName, String serverName,
+        AdvancedThreatProtectionName advancedThreatProtectionName, ServerAdvancedThreatProtectionInner parameters);
 
     /**
      * Creates or updates an Advanced Threat Protection state.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param advancedThreatProtectionName The name of the Advanced Threat Protection state.
      * @param parameters The server Advanced Threat Protection state.
@@ -258,17 +240,14 @@ public interface ServerAdvancedThreatProtectionSettingsClient {
      * @return a server Advanced Threat Protection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ServerAdvancedThreatProtectionInner createOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        AdvancedThreatProtectionName advancedThreatProtectionName,
-        ServerAdvancedThreatProtectionInner parameters);
+    ServerAdvancedThreatProtectionInner createOrUpdate(String resourceGroupName, String serverName,
+        AdvancedThreatProtectionName advancedThreatProtectionName, ServerAdvancedThreatProtectionInner parameters);
 
     /**
      * Creates or updates an Advanced Threat Protection state.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param advancedThreatProtectionName The name of the Advanced Threat Protection state.
      * @param parameters The server Advanced Threat Protection state.
@@ -279,10 +258,7 @@ public interface ServerAdvancedThreatProtectionSettingsClient {
      * @return a server Advanced Threat Protection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ServerAdvancedThreatProtectionInner createOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        AdvancedThreatProtectionName advancedThreatProtectionName,
-        ServerAdvancedThreatProtectionInner parameters,
+    ServerAdvancedThreatProtectionInner createOrUpdate(String resourceGroupName, String serverName,
+        AdvancedThreatProtectionName advancedThreatProtectionName, ServerAdvancedThreatProtectionInner parameters,
         Context context);
 }

@@ -4,301 +4,61 @@
 
 package com.azure.resourcemanager.billing.models;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.billing.fluent.models.TransactionInner;
-import java.time.OffsetDateTime;
+import java.util.Map;
 
-/** An immutable client-side representation of Transaction. */
+/**
+ * An immutable client-side representation of Transaction.
+ */
 public interface Transaction {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
-     * Gets the kind property: The kind of transaction. Options are all or reservation.
-     *
-     * @return the kind value.
+     * Gets the tags property: Dictionary of metadata associated with the resource. It may not be populated for all
+     * resource types. Maximum key/value length supported of 256 characters. Keys/value should not empty value nor null.
+     * Keys can not contain &lt; &gt; % &amp; \ ? /.
+     * 
+     * @return the tags value.
      */
-    TransactionTypeKind kind();
+    Map<String, String> tags();
 
     /**
-     * Gets the date property: The date of transaction.
-     *
-     * @return the date value.
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
      */
-    OffsetDateTime date();
+    SystemData systemData();
 
     /**
-     * Gets the invoice property: Invoice on which the transaction was billed or 'pending' if the transaction is not
-     * billed.
-     *
-     * @return the invoice value.
+     * Gets the properties property: A transaction.
+     * 
+     * @return the properties value.
      */
-    String invoice();
-
-    /**
-     * Gets the invoiceId property: The ID of the invoice on which the transaction was billed. This field is only
-     * applicable for transactions which are billed.
-     *
-     * @return the invoiceId value.
-     */
-    String invoiceId();
-
-    /**
-     * Gets the orderId property: The order ID of the reservation. The field is only applicable for transaction of kind
-     * reservation.
-     *
-     * @return the orderId value.
-     */
-    String orderId();
-
-    /**
-     * Gets the orderName property: The name of the reservation order. The field is only applicable for transactions of
-     * kind reservation.
-     *
-     * @return the orderName value.
-     */
-    String orderName();
-
-    /**
-     * Gets the productFamily property: The family of the product for which the transaction took place.
-     *
-     * @return the productFamily value.
-     */
-    String productFamily();
-
-    /**
-     * Gets the productTypeId property: The ID of the product type for which the transaction took place.
-     *
-     * @return the productTypeId value.
-     */
-    String productTypeId();
-
-    /**
-     * Gets the productType property: The type of the product for which the transaction took place.
-     *
-     * @return the productType value.
-     */
-    String productType();
-
-    /**
-     * Gets the productDescription property: The description of the product for which the transaction took place.
-     *
-     * @return the productDescription value.
-     */
-    String productDescription();
-
-    /**
-     * Gets the transactionType property: The type of transaction.
-     *
-     * @return the transactionType value.
-     */
-    ReservationType transactionType();
-
-    /**
-     * Gets the transactionAmount property: The charge associated with the transaction.
-     *
-     * @return the transactionAmount value.
-     */
-    Amount transactionAmount();
-
-    /**
-     * Gets the quantity property: The quantity purchased in the transaction.
-     *
-     * @return the quantity value.
-     */
-    Integer quantity();
-
-    /**
-     * Gets the invoiceSectionId property: The ID of the invoice section which will be billed for the transaction.
-     *
-     * @return the invoiceSectionId value.
-     */
-    String invoiceSectionId();
-
-    /**
-     * Gets the invoiceSectionDisplayName property: The name of the invoice section which will be billed for the
-     * transaction.
-     *
-     * @return the invoiceSectionDisplayName value.
-     */
-    String invoiceSectionDisplayName();
-
-    /**
-     * Gets the billingProfileId property: The ID of the billing profile which will be billed for the transaction.
-     *
-     * @return the billingProfileId value.
-     */
-    String billingProfileId();
-
-    /**
-     * Gets the billingProfileDisplayName property: The name of the billing profile which will be billed for the
-     * transaction.
-     *
-     * @return the billingProfileDisplayName value.
-     */
-    String billingProfileDisplayName();
-
-    /**
-     * Gets the customerId property: The ID of the customer for which the transaction took place. The field is
-     * applicable only for Microsoft Partner Agreement billing account.
-     *
-     * @return the customerId value.
-     */
-    String customerId();
-
-    /**
-     * Gets the customerDisplayName property: The name of the customer for which the transaction took place. The field
-     * is applicable only for Microsoft Partner Agreement billing account.
-     *
-     * @return the customerDisplayName value.
-     */
-    String customerDisplayName();
-
-    /**
-     * Gets the subscriptionId property: The ID of the subscription that was used for the transaction. The field is only
-     * applicable for transaction of kind reservation.
-     *
-     * @return the subscriptionId value.
-     */
-    String subscriptionId();
-
-    /**
-     * Gets the subscriptionName property: The name of the subscription that was used for the transaction. The field is
-     * only applicable for transaction of kind reservation.
-     *
-     * @return the subscriptionName value.
-     */
-    String subscriptionName();
-
-    /**
-     * Gets the azurePlan property: The type of azure plan of the subscription that was used for the transaction.
-     *
-     * @return the azurePlan value.
-     */
-    String azurePlan();
-
-    /**
-     * Gets the azureCreditApplied property: The amount of any Azure credits automatically applied to this transaction.
-     *
-     * @return the azureCreditApplied value.
-     */
-    Amount azureCreditApplied();
-
-    /**
-     * Gets the billingCurrency property: The ISO 4217 code for the currency in which this transaction is billed.
-     *
-     * @return the billingCurrency value.
-     */
-    String billingCurrency();
-
-    /**
-     * Gets the discount property: The percentage discount, if any, applied to this transaction.
-     *
-     * @return the discount value.
-     */
-    Float discount();
-
-    /**
-     * Gets the effectivePrice property: The price of the product after applying any discounts.
-     *
-     * @return the effectivePrice value.
-     */
-    Amount effectivePrice();
-
-    /**
-     * Gets the exchangeRate property: The exchange rate used to convert charged amount to billing currency, if
-     * applicable.
-     *
-     * @return the exchangeRate value.
-     */
-    Float exchangeRate();
-
-    /**
-     * Gets the marketPrice property: The retail price of the product.
-     *
-     * @return the marketPrice value.
-     */
-    Amount marketPrice();
-
-    /**
-     * Gets the pricingCurrency property: The ISO 4217 code for the currency in which the product is priced.
-     *
-     * @return the pricingCurrency value.
-     */
-    String pricingCurrency();
-
-    /**
-     * Gets the servicePeriodStartDate property: The date of the purchase of the product, or the start date of the month
-     * in which usage started.
-     *
-     * @return the servicePeriodStartDate value.
-     */
-    OffsetDateTime servicePeriodStartDate();
-
-    /**
-     * Gets the servicePeriodEndDate property: The end date of the product term, or the end date of the month in which
-     * usage ended.
-     *
-     * @return the servicePeriodEndDate value.
-     */
-    OffsetDateTime servicePeriodEndDate();
-
-    /**
-     * Gets the subTotal property: The pre-tax charged amount for the transaction.
-     *
-     * @return the subTotal value.
-     */
-    Amount subTotal();
-
-    /**
-     * Gets the tax property: The tax amount applied to the transaction.
-     *
-     * @return the tax value.
-     */
-    Amount tax();
-
-    /**
-     * Gets the unitOfMeasure property: The unit of measure used to bill for the product. For example, compute services
-     * are billed per hour.
-     *
-     * @return the unitOfMeasure value.
-     */
-    String unitOfMeasure();
-
-    /**
-     * Gets the units property: The number of units used for a given product.
-     *
-     * @return the units value.
-     */
-    Float units();
-
-    /**
-     * Gets the unitType property: The description for the unit of measure for a given product.
-     *
-     * @return the unitType value.
-     */
-    String unitType();
+    TransactionProperties properties();
 
     /**
      * Gets the inner com.azure.resourcemanager.billing.fluent.models.TransactionInner object.
-     *
+     * 
      * @return the inner object.
      */
     TransactionInner innerModel();

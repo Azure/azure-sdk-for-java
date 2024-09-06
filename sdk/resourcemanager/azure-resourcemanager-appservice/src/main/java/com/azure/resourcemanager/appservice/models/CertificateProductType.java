@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.appservice.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Certificate product type.
  */
@@ -36,7 +33,6 @@ public enum CertificateProductType {
      * @param value the serialized value to parse.
      * @return the parsed CertificateProductType object, or null if unable to parse.
      */
-    @JsonCreator
     public static CertificateProductType fromString(String value) {
         if (value == null) {
             return null;
@@ -53,7 +49,6 @@ public enum CertificateProductType {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

@@ -11,7 +11,8 @@ import com.azure.resourcemanager.appservice.fluent.models.DatabaseConnectionInne
  */
 public final class StaticSitesCreateOrUpdateBuildDatabaseConnectionSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/CreateOrUpdateStaticSiteBuildDatabaseConnection.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/
+     * CreateOrUpdateStaticSiteBuildDatabaseConnection.json
      */
     /**
      * Sample code: Create or update a database connection for a static site build.

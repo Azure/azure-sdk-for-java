@@ -23,7 +23,7 @@ import java.util.function.Consumer;
  * A long indicating the size in bytes of the serialized objects in the current block.
  * The serialized objects. If a codec is specified, this is compressed by that codec.
  * The file's 16-byte sync marker.
- *
+ * <p>
  * Long Long Object Object Object .... Object SyncMarker
  */
 public class AvroBlockSchema extends AvroCompositeSchema {
@@ -35,7 +35,7 @@ public class AvroBlockSchema extends AvroCompositeSchema {
     private Long blockCount;
     private final Long beginObjectIndex;
     private long objectIndex;
-    private long blockOffset;
+    private final long blockOffset;
     private final byte[] syncMarker;
 
     /**
@@ -64,10 +64,7 @@ public class AvroBlockSchema extends AvroCompositeSchema {
         this.state.pushToStack(this);
 
         /* Read the block count, call onBlockCount. */
-        AvroLongSchema blockCountSchema = new AvroLongSchema(
-            this.state,
-            this::onBlockCount
-        );
+        AvroLongSchema blockCountSchema = new AvroLongSchema(this.state, this::onBlockCount);
         blockCountSchema.pushToStack();
     }
 
@@ -80,25 +77,19 @@ public class AvroBlockSchema extends AvroCompositeSchema {
         checkType("blockCount", blockCount, Long.class);
         this.blockCount = (Long) blockCount;
         /* Read the block size, call onBlockSize. */
-        AvroLongSchema blockSizeSchema = new AvroLongSchema(
-            this.state,
-            this::onBlockSize
-        );
+        AvroLongSchema blockSizeSchema = new AvroLongSchema(this.state, this::onBlockSize);
         blockSizeSchema.pushToStack();
     }
 
     /**
      * Block size handler.
      * On reading the block size, ignore it and read an object.
+     *
      * @param blockSize The block size.
      */
     private void onBlockSize(Object blockSize) {
         /* Read the object, call onObject. */
-        AvroSchema objectSchema = AvroSchema.getSchema(
-            this.objectType,
-            this.state,
-            this::onObject
-        );
+        AvroSchema objectSchema = AvroSchema.getSchema(this.objectType, this.state, this::onObject);
         objectSchema.pushToStack();
     }
 
@@ -129,25 +120,18 @@ public class AvroBlockSchema extends AvroCompositeSchema {
                 nextObjectIndex = 0;
             }
             /* Call the object handler to store this object in the AvroParser. */
-            this.onAvroObject.accept(new AvroObject(this.blockOffset, this.objectIndex++, nextBlockOffset,
-                nextObjectIndex, schema));
+            this.onAvroObject.accept(
+                new AvroObject(this.blockOffset, this.objectIndex++, nextBlockOffset, nextObjectIndex, schema));
         }
 
         if (this.hasNext()) {
             /* If the block has another object, read another object and call onObject. */
-            AvroSchema objectSchema = AvroSchema.getSchema(
-                this.objectType,
-                this.state,
-                this::onObject
-            );
+            AvroSchema objectSchema = AvroSchema.getSchema(this.objectType, this.state, this::onObject);
             objectSchema.pushToStack();
         } else {
             /* Otherwise, read the sync marker, call validateSync. */
-            AvroFixedSchema syncSchema = new AvroFixedSchema(
-                AvroConstants.SYNC_MARKER_SIZE,
-                this.state,
-                this::validateSync
-            );
+            AvroFixedSchema syncSchema = new AvroFixedSchema(AvroConstants.SYNC_MARKER_SIZE, this.state,
+                this::validateSync);
             syncSchema.pushToStack();
         }
     }

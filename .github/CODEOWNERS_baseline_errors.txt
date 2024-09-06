@@ -231,8 +231,6 @@ shankarsama is not a public member of Azure.
 QingChenmsft is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.
 vaishnavk is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.
 juhacket is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.
-sffamily is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.
-chenkennt is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.
 azureSQLGitHub is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.
 ibrahimrabab is not a public member of Azure.
 ibrandes is not a public member of Azure.

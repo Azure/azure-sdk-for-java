@@ -24,13 +24,19 @@ public final class LogProfilesUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void patchALogProfile(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getLogProfiles().updateWithResponse("Rac46PostSwapRG",
-            new LogProfileResourcePatch().withTags(mapOf("key1", "fakeTokenPlaceholder")).withStorageAccountId(
-                "/subscriptions/df602c9c-7aa0-407d-a6fb-eb20c8bd1192/resourceGroups/JohnKemTest/providers/Microsoft.Storage/storageAccounts/johnkemtest8162")
-                .withServiceBusRuleId("").withLocations(Arrays.asList("global"))
-                .withCategories(Arrays.asList("Write", "Delete", "Action")).withRetentionPolicy(
-                    new RetentionPolicy().withEnabled(true).withDays(3)),
-            com.azure.core.util.Context.NONE);
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getLogProfiles()
+            .updateWithResponse("Rac46PostSwapRG", new LogProfileResourcePatch()
+                .withTags(mapOf("key1", "fakeTokenPlaceholder"))
+                .withStorageAccountId(
+                    "/subscriptions/df602c9c-7aa0-407d-a6fb-eb20c8bd1192/resourceGroups/JohnKemTest/providers/Microsoft.Storage/storageAccounts/johnkemtest8162")
+                .withServiceBusRuleId("")
+                .withLocations(Arrays.asList("global"))
+                .withCategories(Arrays.asList("Write", "Delete", "Action"))
+                .withRetentionPolicy(new RetentionPolicy().withEnabled(true).withDays(3)),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

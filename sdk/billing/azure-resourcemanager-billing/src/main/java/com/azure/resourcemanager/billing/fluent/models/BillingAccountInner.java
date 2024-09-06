@@ -5,236 +5,178 @@
 package com.azure.resourcemanager.billing.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.ProxyResource;
-import com.azure.resourcemanager.billing.models.AccountStatus;
-import com.azure.resourcemanager.billing.models.AccountType;
-import com.azure.resourcemanager.billing.models.AddressDetails;
-import com.azure.resourcemanager.billing.models.AgreementType;
-import com.azure.resourcemanager.billing.models.BillingProfilesOnExpand;
-import com.azure.resourcemanager.billing.models.Department;
-import com.azure.resourcemanager.billing.models.Enrollment;
-import com.azure.resourcemanager.billing.models.EnrollmentAccount;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
+import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.billing.models.BillingAccountProperties;
+import com.azure.resourcemanager.billing.models.ProxyResourceWithTags;
+import java.io.IOException;
+import java.util.Map;
 
-/** A billing account. */
+/**
+ * A billing account.
+ */
 @Fluent
-public final class BillingAccountInner extends ProxyResource {
+public final class BillingAccountInner extends ProxyResourceWithTags {
     /*
-     * The properties of the billing account.
+     * A billing account.
      */
-    @JsonProperty(value = "properties")
-    private BillingAccountProperties innerProperties;
+    private BillingAccountProperties properties;
 
-    /** Creates an instance of BillingAccountInner class. */
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of BillingAccountInner class.
+     */
     public BillingAccountInner() {
     }
 
     /**
-     * Get the innerProperties property: The properties of the billing account.
-     *
-     * @return the innerProperties value.
+     * Get the properties property: A billing account.
+     * 
+     * @return the properties value.
      */
-    private BillingAccountProperties innerProperties() {
-        return this.innerProperties;
+    public BillingAccountProperties properties() {
+        return this.properties;
     }
 
     /**
-     * Get the displayName property: The billing account name.
-     *
-     * @return the displayName value.
-     */
-    public String displayName() {
-        return this.innerProperties() == null ? null : this.innerProperties().displayName();
-    }
-
-    /**
-     * Set the displayName property: The billing account name.
-     *
-     * @param displayName the displayName value to set.
+     * Set the properties property: A billing account.
+     * 
+     * @param properties the properties value to set.
      * @return the BillingAccountInner object itself.
      */
-    public BillingAccountInner withDisplayName(String displayName) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new BillingAccountProperties();
-        }
-        this.innerProperties().withDisplayName(displayName);
+    public BillingAccountInner withProperties(BillingAccountProperties properties) {
+        this.properties = properties;
         return this;
     }
 
     /**
-     * Get the soldTo property: The address of the individual or organization that is responsible for the billing
-     * account.
-     *
-     * @return the soldTo value.
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
      */
-    public AddressDetails soldTo() {
-        return this.innerProperties() == null ? null : this.innerProperties().soldTo();
+    @Override
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
-     * Set the soldTo property: The address of the individual or organization that is responsible for the billing
-     * account.
-     *
-     * @param soldTo the soldTo value to set.
-     * @return the BillingAccountInner object itself.
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
      */
-    public BillingAccountInner withSoldTo(AddressDetails soldTo) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new BillingAccountProperties();
-        }
-        this.innerProperties().withSoldTo(soldTo);
-        return this;
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
-     * Get the agreementType property: The type of agreement.
-     *
-     * @return the agreementType value.
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
      */
-    public AgreementType agreementType() {
-        return this.innerProperties() == null ? null : this.innerProperties().agreementType();
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
-     * Get the accountType property: The type of customer.
-     *
-     * @return the accountType value.
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
      */
-    public AccountType accountType() {
-        return this.innerProperties() == null ? null : this.innerProperties().accountType();
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
-     * Get the accountStatus property: The current status of the billing account.
-     *
-     * @return the accountStatus value.
+     * {@inheritDoc}
      */
-    public AccountStatus accountStatus() {
-        return this.innerProperties() == null ? null : this.innerProperties().accountStatus();
-    }
-
-    /**
-     * Get the billingProfiles property: The billing profiles associated with the billing account. By default this is
-     * not populated, unless it's specified in $expand.
-     *
-     * @return the billingProfiles value.
-     */
-    public BillingProfilesOnExpand billingProfiles() {
-        return this.innerProperties() == null ? null : this.innerProperties().billingProfiles();
-    }
-
-    /**
-     * Set the billingProfiles property: The billing profiles associated with the billing account. By default this is
-     * not populated, unless it's specified in $expand.
-     *
-     * @param billingProfiles the billingProfiles value to set.
-     * @return the BillingAccountInner object itself.
-     */
-    public BillingAccountInner withBillingProfiles(BillingProfilesOnExpand billingProfiles) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new BillingAccountProperties();
-        }
-        this.innerProperties().withBillingProfiles(billingProfiles);
-        return this;
-    }
-
-    /**
-     * Get the enrollmentDetails property: The details about the associated legacy enrollment. By default this is not
-     * populated, unless it's specified in $expand.
-     *
-     * @return the enrollmentDetails value.
-     */
-    public Enrollment enrollmentDetails() {
-        return this.innerProperties() == null ? null : this.innerProperties().enrollmentDetails();
-    }
-
-    /**
-     * Get the departments property: The departments associated to the enrollment.
-     *
-     * @return the departments value.
-     */
-    public List<Department> departments() {
-        return this.innerProperties() == null ? null : this.innerProperties().departments();
-    }
-
-    /**
-     * Set the departments property: The departments associated to the enrollment.
-     *
-     * @param departments the departments value to set.
-     * @return the BillingAccountInner object itself.
-     */
-    public BillingAccountInner withDepartments(List<Department> departments) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new BillingAccountProperties();
-        }
-        this.innerProperties().withDepartments(departments);
-        return this;
-    }
-
-    /**
-     * Get the enrollmentAccounts property: The accounts associated to the enrollment.
-     *
-     * @return the enrollmentAccounts value.
-     */
-    public List<EnrollmentAccount> enrollmentAccounts() {
-        return this.innerProperties() == null ? null : this.innerProperties().enrollmentAccounts();
-    }
-
-    /**
-     * Set the enrollmentAccounts property: The accounts associated to the enrollment.
-     *
-     * @param enrollmentAccounts the enrollmentAccounts value to set.
-     * @return the BillingAccountInner object itself.
-     */
-    public BillingAccountInner withEnrollmentAccounts(List<EnrollmentAccount> enrollmentAccounts) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new BillingAccountProperties();
-        }
-        this.innerProperties().withEnrollmentAccounts(enrollmentAccounts);
-        return this;
-    }
-
-    /**
-     * Get the hasReadAccess property: Indicates whether user has read access to the billing account.
-     *
-     * @return the hasReadAccess value.
-     */
-    public Boolean hasReadAccess() {
-        return this.innerProperties() == null ? null : this.innerProperties().hasReadAccess();
-    }
-
-    /**
-     * Get the notificationEmailAddress property: Notification email address, only for legacy accounts.
-     *
-     * @return the notificationEmailAddress value.
-     */
-    public String notificationEmailAddress() {
-        return this.innerProperties() == null ? null : this.innerProperties().notificationEmailAddress();
-    }
-
-    /**
-     * Set the notificationEmailAddress property: Notification email address, only for legacy accounts.
-     *
-     * @param notificationEmailAddress the notificationEmailAddress value to set.
-     * @return the BillingAccountInner object itself.
-     */
-    public BillingAccountInner withNotificationEmailAddress(String notificationEmailAddress) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new BillingAccountProperties();
-        }
-        this.innerProperties().withNotificationEmailAddress(notificationEmailAddress);
+    @Override
+    public BillingAccountInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
+        if (properties() != null) {
+            properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BillingAccountInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BillingAccountInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BillingAccountInner.
+     */
+    public static BillingAccountInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BillingAccountInner deserializedBillingAccountInner = new BillingAccountInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedBillingAccountInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedBillingAccountInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedBillingAccountInner.type = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedBillingAccountInner.withTags(tags);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedBillingAccountInner.systemData = SystemData.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedBillingAccountInner.properties = BillingAccountProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBillingAccountInner;
+        });
     }
 }

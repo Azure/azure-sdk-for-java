@@ -7,12 +7,14 @@ package com.azure.resourcemanager.compute.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.DedicatedHostInstanceView;
 import com.azure.resourcemanager.compute.models.DedicatedHostLicenseTypes;
 import com.azure.resourcemanager.compute.models.Sku;
 import com.azure.resourcemanager.compute.models.SubResourceReadOnly;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
@@ -25,15 +27,28 @@ public final class DedicatedHostInner extends Resource {
     /*
      * Properties of the dedicated host.
      */
-    @JsonProperty(value = "properties")
     private DedicatedHostProperties innerProperties;
 
     /*
      * SKU of the dedicated host for Hardware Generation and VM family. Only name is required to be set. List
      * Microsoft.Compute SKUs for a list of possible values.
      */
-    @JsonProperty(value = "sku", required = true)
     private Sku sku;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
 
     /**
      * Creates an instance of DedicatedHostInner class.
@@ -43,7 +58,7 @@ public final class DedicatedHostInner extends Resource {
 
     /**
      * Get the innerProperties property: Properties of the dedicated host.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DedicatedHostProperties innerProperties() {
@@ -53,7 +68,7 @@ public final class DedicatedHostInner extends Resource {
     /**
      * Get the sku property: SKU of the dedicated host for Hardware Generation and VM family. Only name is required to
      * be set. List Microsoft.Compute SKUs for a list of possible values.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -63,13 +78,43 @@ public final class DedicatedHostInner extends Resource {
     /**
      * Set the sku property: SKU of the dedicated host for Hardware Generation and VM family. Only name is required to
      * be set. List Microsoft.Compute SKUs for a list of possible values.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the DedicatedHostInner object itself.
      */
     public DedicatedHostInner withSku(Sku sku) {
         this.sku = sku;
         return this;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -92,7 +137,7 @@ public final class DedicatedHostInner extends Resource {
 
     /**
      * Get the platformFaultDomain property: Fault domain of the dedicated host within a dedicated host group.
-     *
+     * 
      * @return the platformFaultDomain value.
      */
     public Integer platformFaultDomain() {
@@ -101,7 +146,7 @@ public final class DedicatedHostInner extends Resource {
 
     /**
      * Set the platformFaultDomain property: Fault domain of the dedicated host within a dedicated host group.
-     *
+     * 
      * @param platformFaultDomain the platformFaultDomain value to set.
      * @return the DedicatedHostInner object itself.
      */
@@ -116,7 +161,7 @@ public final class DedicatedHostInner extends Resource {
     /**
      * Get the autoReplaceOnFailure property: Specifies whether the dedicated host should be replaced automatically in
      * case of a failure. The value is defaulted to 'true' when not provided.
-     *
+     * 
      * @return the autoReplaceOnFailure value.
      */
     public Boolean autoReplaceOnFailure() {
@@ -126,7 +171,7 @@ public final class DedicatedHostInner extends Resource {
     /**
      * Set the autoReplaceOnFailure property: Specifies whether the dedicated host should be replaced automatically in
      * case of a failure. The value is defaulted to 'true' when not provided.
-     *
+     * 
      * @param autoReplaceOnFailure the autoReplaceOnFailure value to set.
      * @return the DedicatedHostInner object itself.
      */
@@ -141,7 +186,7 @@ public final class DedicatedHostInner extends Resource {
     /**
      * Get the hostId property: A unique id generated and assigned to the dedicated host by the platform. Does not
      * change throughout the lifetime of the host.
-     *
+     * 
      * @return the hostId value.
      */
     public String hostId() {
@@ -150,7 +195,7 @@ public final class DedicatedHostInner extends Resource {
 
     /**
      * Get the virtualMachines property: A list of references to all virtual machines in the Dedicated Host.
-     *
+     * 
      * @return the virtualMachines value.
      */
     public List<SubResourceReadOnly> virtualMachines() {
@@ -161,7 +206,7 @@ public final class DedicatedHostInner extends Resource {
      * Get the licenseType property: Specifies the software license type that will be applied to the VMs deployed on the
      * dedicated host. Possible values are: **None,** **Windows_Server_Hybrid,** **Windows_Server_Perpetual.** The
      * default value is: **None.**.
-     *
+     * 
      * @return the licenseType value.
      */
     public DedicatedHostLicenseTypes licenseType() {
@@ -172,7 +217,7 @@ public final class DedicatedHostInner extends Resource {
      * Set the licenseType property: Specifies the software license type that will be applied to the VMs deployed on the
      * dedicated host. Possible values are: **None,** **Windows_Server_Hybrid,** **Windows_Server_Perpetual.** The
      * default value is: **None.**.
-     *
+     * 
      * @param licenseType the licenseType value to set.
      * @return the DedicatedHostInner object itself.
      */
@@ -186,7 +231,7 @@ public final class DedicatedHostInner extends Resource {
 
     /**
      * Get the provisioningTime property: The date when the host was first provisioned.
-     *
+     * 
      * @return the provisioningTime value.
      */
     public OffsetDateTime provisioningTime() {
@@ -195,7 +240,7 @@ public final class DedicatedHostInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state, which only appears in the response.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -204,7 +249,7 @@ public final class DedicatedHostInner extends Resource {
 
     /**
      * Get the instanceView property: The dedicated host instance view.
-     *
+     * 
      * @return the instanceView value.
      */
     public DedicatedHostInstanceView instanceView() {
@@ -214,7 +259,7 @@ public final class DedicatedHostInner extends Resource {
     /**
      * Get the timeCreated property: Specifies the time at which the Dedicated Host resource was created. Minimum
      * api-version: 2021-11-01.
-     *
+     * 
      * @return the timeCreated value.
      */
     public OffsetDateTime timeCreated() {
@@ -223,7 +268,7 @@ public final class DedicatedHostInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -239,4 +284,57 @@ public final class DedicatedHostInner extends Resource {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DedicatedHostInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DedicatedHostInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DedicatedHostInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DedicatedHostInner.
+     */
+    public static DedicatedHostInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DedicatedHostInner deserializedDedicatedHostInner = new DedicatedHostInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedDedicatedHostInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedDedicatedHostInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedDedicatedHostInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedDedicatedHostInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedDedicatedHostInner.withTags(tags);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedDedicatedHostInner.sku = Sku.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDedicatedHostInner.innerProperties = DedicatedHostProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDedicatedHostInner;
+        });
+    }
 }

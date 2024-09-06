@@ -28,7 +28,7 @@ public final class DaprComponentsDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.daprComponents()
-            .deleteWithResponse("ruozkgyfp", "oehgfmqmskkixvlz", "xplhpeva", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("xlb", "xomeikjclwzacn", "wpfsuqtaaz", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -5,7 +5,7 @@ jobs:
       MaxParallel: 2
 
       TestTask:
-        task: Maven@3
+        task: Maven@4
         displayName: 'Run Smoke Test Samples'
         inputs:
           mavenPomFile: $(PomFile)

@@ -29,7 +29,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 
-import static com.azure.core.http.vertx.VertxAsyncClientTestHelper.getVertxInternalProxyFilter;
+import static com.azure.core.http.vertx.VertxClientTestHelper.getVertxInternalProxyFilter;
 import static com.azure.core.http.vertx.VertxHttpClientLocalTestServer.PROXY_PASSWORD;
 import static com.azure.core.http.vertx.VertxHttpClientLocalTestServer.PROXY_USERNAME;
 import static com.azure.core.http.vertx.VertxHttpClientLocalTestServer.SERVICE_ENDPOINT;

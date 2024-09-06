@@ -5,174 +5,158 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.RecommendedActionErrorInfo;
 import com.azure.resourcemanager.sql.models.RecommendedActionImpactRecord;
 import com.azure.resourcemanager.sql.models.RecommendedActionImplementationInfo;
 import com.azure.resourcemanager.sql.models.RecommendedActionInitiatedBy;
 import com.azure.resourcemanager.sql.models.RecommendedActionMetricInfo;
 import com.azure.resourcemanager.sql.models.RecommendedActionStateInfo;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** Properties for a Database, Server or Elastic Pool Recommended Action. */
+/**
+ * Properties for a Database, Server or Elastic Pool Recommended Action.
+ */
 @Fluent
-public final class RecommendedActionProperties {
+public final class RecommendedActionProperties implements JsonSerializable<RecommendedActionProperties> {
     /*
      * Gets the reason for recommending this action. e.g., DuplicateIndex
      */
-    @JsonProperty(value = "recommendationReason", access = JsonProperty.Access.WRITE_ONLY)
     private String recommendationReason;
 
     /*
      * Gets the time since when this recommended action is valid.
      */
-    @JsonProperty(value = "validSince", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime validSince;
 
     /*
      * Gets time when this recommended action was last refreshed.
      */
-    @JsonProperty(value = "lastRefresh", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastRefresh;
 
     /*
      * Gets the info of the current state the recommended action is in.
      */
-    @JsonProperty(value = "state", required = true)
     private RecommendedActionStateInfo state;
 
     /*
      * Gets if this recommended action is actionable by user
      */
-    @JsonProperty(value = "isExecutableAction", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isExecutableAction;
 
     /*
      * Gets if changes applied by this recommended action can be reverted by user
      */
-    @JsonProperty(value = "isRevertableAction", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isRevertableAction;
 
     /*
      * Gets if this recommended action was suggested some time ago but user chose to ignore this and system added a new
      * recommended action again.
      */
-    @JsonProperty(value = "isArchivedAction", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isArchivedAction;
 
     /*
      * Gets the time when system started applying this recommended action on the user resource. e.g., index creation
      * start time
      */
-    @JsonProperty(value = "executeActionStartTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime executeActionStartTime;
 
     /*
      * Gets the time taken for applying this recommended action on user resource. e.g., time taken for index creation
      */
-    @JsonProperty(value = "executeActionDuration", access = JsonProperty.Access.WRITE_ONLY)
     private Duration executeActionDuration;
 
     /*
      * Gets the time when system started reverting changes of this recommended action on user resource. e.g., time when
      * index drop is executed.
      */
-    @JsonProperty(value = "revertActionStartTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime revertActionStartTime;
 
     /*
      * Gets the time taken for reverting changes of this recommended action on user resource. e.g., time taken for
      * dropping the created index.
      */
-    @JsonProperty(value = "revertActionDuration", access = JsonProperty.Access.WRITE_ONLY)
     private Duration revertActionDuration;
 
     /*
      * Gets if approval for applying this recommended action was given by user/system.
      */
-    @JsonProperty(value = "executeActionInitiatedBy", access = JsonProperty.Access.WRITE_ONLY)
     private RecommendedActionInitiatedBy executeActionInitiatedBy;
 
     /*
      * Gets the time when this recommended action was approved for execution.
      */
-    @JsonProperty(value = "executeActionInitiatedTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime executeActionInitiatedTime;
 
     /*
      * Gets if approval for reverting this recommended action was given by user/system.
      */
-    @JsonProperty(value = "revertActionInitiatedBy", access = JsonProperty.Access.WRITE_ONLY)
     private RecommendedActionInitiatedBy revertActionInitiatedBy;
 
     /*
      * Gets the time when this recommended action was approved for revert.
      */
-    @JsonProperty(value = "revertActionInitiatedTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime revertActionInitiatedTime;
 
     /*
      * Gets the impact of this recommended action. Possible values are 1 - Low impact, 2 - Medium Impact and 3 - High
      * Impact
      */
-    @JsonProperty(value = "score", access = JsonProperty.Access.WRITE_ONLY)
     private Integer score;
 
     /*
      * Gets the implementation details of this recommended action for user to apply it manually.
      */
-    @JsonProperty(value = "implementationDetails", access = JsonProperty.Access.WRITE_ONLY)
     private RecommendedActionImplementationInfo implementationDetails;
 
     /*
      * Gets the error details if and why this recommended action is put to error state.
      */
-    @JsonProperty(value = "errorDetails", access = JsonProperty.Access.WRITE_ONLY)
     private RecommendedActionErrorInfo errorDetails;
 
     /*
      * Gets the estimated impact info for this recommended action e.g., Estimated CPU gain, Estimated Disk Space change
      */
-    @JsonProperty(value = "estimatedImpact", access = JsonProperty.Access.WRITE_ONLY)
     private List<RecommendedActionImpactRecord> estimatedImpact;
 
     /*
      * Gets the observed/actual impact info for this recommended action e.g., Actual CPU gain, Actual Disk Space change
      */
-    @JsonProperty(value = "observedImpact", access = JsonProperty.Access.WRITE_ONLY)
     private List<RecommendedActionImpactRecord> observedImpact;
 
     /*
      * Gets the time series info of metrics for this recommended action e.g., CPU consumption time series
      */
-    @JsonProperty(value = "timeSeries", access = JsonProperty.Access.WRITE_ONLY)
     private List<RecommendedActionMetricInfo> timeSeries;
 
     /*
      * Gets the linked objects, if any.
      */
-    @JsonProperty(value = "linkedObjects", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> linkedObjects;
 
     /*
      * Gets additional details specific to this recommended action.
      */
-    @JsonProperty(value = "details", access = JsonProperty.Access.WRITE_ONLY)
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> details;
 
-    /** Creates an instance of RecommendedActionProperties class. */
+    /**
+     * Creates an instance of RecommendedActionProperties class.
+     */
     public RecommendedActionProperties() {
     }
 
     /**
      * Get the recommendationReason property: Gets the reason for recommending this action. e.g., DuplicateIndex.
-     *
+     * 
      * @return the recommendationReason value.
      */
     public String recommendationReason() {
@@ -181,7 +165,7 @@ public final class RecommendedActionProperties {
 
     /**
      * Get the validSince property: Gets the time since when this recommended action is valid.
-     *
+     * 
      * @return the validSince value.
      */
     public OffsetDateTime validSince() {
@@ -190,7 +174,7 @@ public final class RecommendedActionProperties {
 
     /**
      * Get the lastRefresh property: Gets time when this recommended action was last refreshed.
-     *
+     * 
      * @return the lastRefresh value.
      */
     public OffsetDateTime lastRefresh() {
@@ -199,7 +183,7 @@ public final class RecommendedActionProperties {
 
     /**
      * Get the state property: Gets the info of the current state the recommended action is in.
-     *
+     * 
      * @return the state value.
      */
     public RecommendedActionStateInfo state() {
@@ -208,7 +192,7 @@ public final class RecommendedActionProperties {
 
     /**
      * Set the state property: Gets the info of the current state the recommended action is in.
-     *
+     * 
      * @param state the state value to set.
      * @return the RecommendedActionProperties object itself.
      */
@@ -219,7 +203,7 @@ public final class RecommendedActionProperties {
 
     /**
      * Get the isExecutableAction property: Gets if this recommended action is actionable by user.
-     *
+     * 
      * @return the isExecutableAction value.
      */
     public Boolean isExecutableAction() {
@@ -228,7 +212,7 @@ public final class RecommendedActionProperties {
 
     /**
      * Get the isRevertableAction property: Gets if changes applied by this recommended action can be reverted by user.
-     *
+     * 
      * @return the isRevertableAction value.
      */
     public Boolean isRevertableAction() {
@@ -238,7 +222,7 @@ public final class RecommendedActionProperties {
     /**
      * Get the isArchivedAction property: Gets if this recommended action was suggested some time ago but user chose to
      * ignore this and system added a new recommended action again.
-     *
+     * 
      * @return the isArchivedAction value.
      */
     public Boolean isArchivedAction() {
@@ -248,7 +232,7 @@ public final class RecommendedActionProperties {
     /**
      * Get the executeActionStartTime property: Gets the time when system started applying this recommended action on
      * the user resource. e.g., index creation start time.
-     *
+     * 
      * @return the executeActionStartTime value.
      */
     public OffsetDateTime executeActionStartTime() {
@@ -258,7 +242,7 @@ public final class RecommendedActionProperties {
     /**
      * Get the executeActionDuration property: Gets the time taken for applying this recommended action on user
      * resource. e.g., time taken for index creation.
-     *
+     * 
      * @return the executeActionDuration value.
      */
     public Duration executeActionDuration() {
@@ -268,7 +252,7 @@ public final class RecommendedActionProperties {
     /**
      * Get the revertActionStartTime property: Gets the time when system started reverting changes of this recommended
      * action on user resource. e.g., time when index drop is executed.
-     *
+     * 
      * @return the revertActionStartTime value.
      */
     public OffsetDateTime revertActionStartTime() {
@@ -278,7 +262,7 @@ public final class RecommendedActionProperties {
     /**
      * Get the revertActionDuration property: Gets the time taken for reverting changes of this recommended action on
      * user resource. e.g., time taken for dropping the created index.
-     *
+     * 
      * @return the revertActionDuration value.
      */
     public Duration revertActionDuration() {
@@ -288,7 +272,7 @@ public final class RecommendedActionProperties {
     /**
      * Get the executeActionInitiatedBy property: Gets if approval for applying this recommended action was given by
      * user/system.
-     *
+     * 
      * @return the executeActionInitiatedBy value.
      */
     public RecommendedActionInitiatedBy executeActionInitiatedBy() {
@@ -298,7 +282,7 @@ public final class RecommendedActionProperties {
     /**
      * Get the executeActionInitiatedTime property: Gets the time when this recommended action was approved for
      * execution.
-     *
+     * 
      * @return the executeActionInitiatedTime value.
      */
     public OffsetDateTime executeActionInitiatedTime() {
@@ -308,7 +292,7 @@ public final class RecommendedActionProperties {
     /**
      * Get the revertActionInitiatedBy property: Gets if approval for reverting this recommended action was given by
      * user/system.
-     *
+     * 
      * @return the revertActionInitiatedBy value.
      */
     public RecommendedActionInitiatedBy revertActionInitiatedBy() {
@@ -317,7 +301,7 @@ public final class RecommendedActionProperties {
 
     /**
      * Get the revertActionInitiatedTime property: Gets the time when this recommended action was approved for revert.
-     *
+     * 
      * @return the revertActionInitiatedTime value.
      */
     public OffsetDateTime revertActionInitiatedTime() {
@@ -327,7 +311,7 @@ public final class RecommendedActionProperties {
     /**
      * Get the score property: Gets the impact of this recommended action. Possible values are 1 - Low impact, 2 -
      * Medium Impact and 3 - High Impact.
-     *
+     * 
      * @return the score value.
      */
     public Integer score() {
@@ -337,7 +321,7 @@ public final class RecommendedActionProperties {
     /**
      * Get the implementationDetails property: Gets the implementation details of this recommended action for user to
      * apply it manually.
-     *
+     * 
      * @return the implementationDetails value.
      */
     public RecommendedActionImplementationInfo implementationDetails() {
@@ -346,7 +330,7 @@ public final class RecommendedActionProperties {
 
     /**
      * Get the errorDetails property: Gets the error details if and why this recommended action is put to error state.
-     *
+     * 
      * @return the errorDetails value.
      */
     public RecommendedActionErrorInfo errorDetails() {
@@ -356,7 +340,7 @@ public final class RecommendedActionProperties {
     /**
      * Get the estimatedImpact property: Gets the estimated impact info for this recommended action e.g., Estimated CPU
      * gain, Estimated Disk Space change.
-     *
+     * 
      * @return the estimatedImpact value.
      */
     public List<RecommendedActionImpactRecord> estimatedImpact() {
@@ -366,7 +350,7 @@ public final class RecommendedActionProperties {
     /**
      * Get the observedImpact property: Gets the observed/actual impact info for this recommended action e.g., Actual
      * CPU gain, Actual Disk Space change.
-     *
+     * 
      * @return the observedImpact value.
      */
     public List<RecommendedActionImpactRecord> observedImpact() {
@@ -376,7 +360,7 @@ public final class RecommendedActionProperties {
     /**
      * Get the timeSeries property: Gets the time series info of metrics for this recommended action e.g., CPU
      * consumption time series.
-     *
+     * 
      * @return the timeSeries value.
      */
     public List<RecommendedActionMetricInfo> timeSeries() {
@@ -385,7 +369,7 @@ public final class RecommendedActionProperties {
 
     /**
      * Get the linkedObjects property: Gets the linked objects, if any.
-     *
+     * 
      * @return the linkedObjects value.
      */
     public List<String> linkedObjects() {
@@ -394,7 +378,7 @@ public final class RecommendedActionProperties {
 
     /**
      * Get the details property: Gets additional details specific to this recommended action.
-     *
+     * 
      * @return the details value.
      */
     public Map<String, Object> details() {
@@ -403,15 +387,14 @@ public final class RecommendedActionProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (state() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property state in model RecommendedActionProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property state in model RecommendedActionProperties"));
         } else {
             state().validate();
         }
@@ -433,4 +416,107 @@ public final class RecommendedActionProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RecommendedActionProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("state", this.state);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RecommendedActionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RecommendedActionProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RecommendedActionProperties.
+     */
+    public static RecommendedActionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RecommendedActionProperties deserializedRecommendedActionProperties = new RecommendedActionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("state".equals(fieldName)) {
+                    deserializedRecommendedActionProperties.state = RecommendedActionStateInfo.fromJson(reader);
+                } else if ("recommendationReason".equals(fieldName)) {
+                    deserializedRecommendedActionProperties.recommendationReason = reader.getString();
+                } else if ("validSince".equals(fieldName)) {
+                    deserializedRecommendedActionProperties.validSince = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastRefresh".equals(fieldName)) {
+                    deserializedRecommendedActionProperties.lastRefresh = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("isExecutableAction".equals(fieldName)) {
+                    deserializedRecommendedActionProperties.isExecutableAction
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isRevertableAction".equals(fieldName)) {
+                    deserializedRecommendedActionProperties.isRevertableAction
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isArchivedAction".equals(fieldName)) {
+                    deserializedRecommendedActionProperties.isArchivedAction
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("executeActionStartTime".equals(fieldName)) {
+                    deserializedRecommendedActionProperties.executeActionStartTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("executeActionDuration".equals(fieldName)) {
+                    deserializedRecommendedActionProperties.executeActionDuration
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("revertActionStartTime".equals(fieldName)) {
+                    deserializedRecommendedActionProperties.revertActionStartTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("revertActionDuration".equals(fieldName)) {
+                    deserializedRecommendedActionProperties.revertActionDuration
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("executeActionInitiatedBy".equals(fieldName)) {
+                    deserializedRecommendedActionProperties.executeActionInitiatedBy
+                        = RecommendedActionInitiatedBy.fromString(reader.getString());
+                } else if ("executeActionInitiatedTime".equals(fieldName)) {
+                    deserializedRecommendedActionProperties.executeActionInitiatedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("revertActionInitiatedBy".equals(fieldName)) {
+                    deserializedRecommendedActionProperties.revertActionInitiatedBy
+                        = RecommendedActionInitiatedBy.fromString(reader.getString());
+                } else if ("revertActionInitiatedTime".equals(fieldName)) {
+                    deserializedRecommendedActionProperties.revertActionInitiatedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("score".equals(fieldName)) {
+                    deserializedRecommendedActionProperties.score = reader.getNullable(JsonReader::getInt);
+                } else if ("implementationDetails".equals(fieldName)) {
+                    deserializedRecommendedActionProperties.implementationDetails
+                        = RecommendedActionImplementationInfo.fromJson(reader);
+                } else if ("errorDetails".equals(fieldName)) {
+                    deserializedRecommendedActionProperties.errorDetails = RecommendedActionErrorInfo.fromJson(reader);
+                } else if ("estimatedImpact".equals(fieldName)) {
+                    List<RecommendedActionImpactRecord> estimatedImpact
+                        = reader.readArray(reader1 -> RecommendedActionImpactRecord.fromJson(reader1));
+                    deserializedRecommendedActionProperties.estimatedImpact = estimatedImpact;
+                } else if ("observedImpact".equals(fieldName)) {
+                    List<RecommendedActionImpactRecord> observedImpact
+                        = reader.readArray(reader1 -> RecommendedActionImpactRecord.fromJson(reader1));
+                    deserializedRecommendedActionProperties.observedImpact = observedImpact;
+                } else if ("timeSeries".equals(fieldName)) {
+                    List<RecommendedActionMetricInfo> timeSeries
+                        = reader.readArray(reader1 -> RecommendedActionMetricInfo.fromJson(reader1));
+                    deserializedRecommendedActionProperties.timeSeries = timeSeries;
+                } else if ("linkedObjects".equals(fieldName)) {
+                    List<String> linkedObjects = reader.readArray(reader1 -> reader1.getString());
+                    deserializedRecommendedActionProperties.linkedObjects = linkedObjects;
+                } else if ("details".equals(fieldName)) {
+                    Map<String, Object> details = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedRecommendedActionProperties.details = details;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRecommendedActionProperties;
+        });
+    }
 }

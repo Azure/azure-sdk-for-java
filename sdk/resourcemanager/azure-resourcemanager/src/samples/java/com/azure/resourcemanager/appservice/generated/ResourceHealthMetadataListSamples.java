@@ -9,7 +9,8 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class ResourceHealthMetadataListSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/ListResourceHealthMetadataBySubscription.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/
+     * ListResourceHealthMetadataBySubscription.json
      */
     /**
      * Sample code: List ResourceHealthMetadata for a subscription.

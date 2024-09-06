@@ -20,7 +20,6 @@ import com.azure.resourcemanager.containerservice.models.ScaleSetEvictionPolicy;
 import com.azure.resourcemanager.containerservice.models.ScaleSetPriority;
 import com.azure.resourcemanager.containerservice.models.SysctlConfig;
 import com.azure.resourcemanager.containerservice.models.WorkloadRuntime;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -36,7 +35,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
      */
     /**
      * Sample code: Create Agent Pool with FIPS enabled OS.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createAgentPoolWithFIPSEnabledOS(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -60,7 +59,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
      */
     /**
      * Sample code: Update Agent Pool.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateAgentPool(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -89,7 +88,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
      */
     /**
      * Sample code: Create Agent Pool with GPUMIG.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createAgentPoolWithGPUMIG(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -129,7 +128,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
      */
     /**
      * Sample code: Create Agent Pool with Windows OSSKU.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createAgentPoolWithWindowsOSSKU(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -153,7 +152,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
      */
     /**
      * Sample code: Create Agent Pool with Dedicated Host Group.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createAgentPoolWithDedicatedHostGroup(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -177,7 +176,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
      */
     /**
      * Sample code: Create/Update Agent Pool.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createUpdateAgentPool(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -206,7 +205,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
      */
     /**
      * Sample code: Create Windows Agent Pool with disabling OutboundNAT.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
@@ -232,7 +231,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
      */
     /**
      * Sample code: Start Agent Pool.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void startAgentPool(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -252,7 +251,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
      */
     /**
      * Sample code: Create Spot Agent Pool.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createSpotAgentPool(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -280,7 +279,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
      */
     /**
      * Sample code: Create Agent Pool with Ephemeral OS Disk.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createAgentPoolWithEphemeralOSDisk(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -305,7 +304,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
      */
     /**
      * Sample code: Create Agent Pool with EncryptionAtHost enabled.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
@@ -330,7 +329,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
      */
     /**
      * Sample code: Create Agent Pool with UltraSSD enabled.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createAgentPoolWithUltraSSDEnabled(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -354,7 +353,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
      */
     /**
      * Sample code: Create Agent Pool with Krustlet and the WASI runtime.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
@@ -381,7 +380,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
      */
     /**
      * Sample code: Create Agent Pool using an agent pool snapshot.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createAgentPoolUsingAnAgentPoolSnapshot(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -406,7 +405,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
      */
     /**
      * Sample code: Create Agent Pool with PPG.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createAgentPoolWithPPG(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -430,7 +429,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
      */
     /**
      * Sample code: Create Agent Pool with KubeletConfig and LinuxOSConfig.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
@@ -470,7 +469,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
      */
     /**
      * Sample code: Stop Agent Pool.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void stopAgentPool(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -490,7 +489,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
      */
     /**
      * Sample code: Create Agent Pool with Capacity Reservation Group.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
@@ -515,7 +514,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
      */
     /**
      * Sample code: Create Agent Pool with OSSKU.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createAgentPoolWithOSSKU(com.azure.resourcemanager.AzureResourceManager azure) {

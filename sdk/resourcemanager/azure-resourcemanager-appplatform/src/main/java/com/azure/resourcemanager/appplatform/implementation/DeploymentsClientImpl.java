@@ -608,8 +608,10 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     public SyncPoller<PollResult<DeploymentResourceInner>, DeploymentResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String serviceName, String appName, String deploymentName,
         DeploymentResourceInner deploymentResource, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, serviceName, appName, deploymentName,
-            deploymentResource, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serviceName, appName, deploymentName, deploymentResource,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -630,7 +632,8 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     public Mono<DeploymentResourceInner> createOrUpdateAsync(String resourceGroupName, String serviceName,
         String appName, String deploymentName, DeploymentResourceInner deploymentResource) {
         return beginCreateOrUpdateAsync(resourceGroupName, serviceName, appName, deploymentName, deploymentResource)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1185,7 +1188,8 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     private Mono<DeploymentResourceInner> updateAsync(String resourceGroupName, String serviceName, String appName,
         String deploymentName, DeploymentResourceInner deploymentResource, Context context) {
         return beginUpdateAsync(resourceGroupName, serviceName, appName, deploymentName, deploymentResource, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1266,7 +1270,8 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
         }
         final String accept = "application/json";
-        List<String> versionConverted = (version == null) ? new ArrayList<>()
+        List<String> versionConverted = (version == null)
+            ? new ArrayList<>()
             : version.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1314,7 +1319,8 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
         }
         final String accept = "application/json";
-        List<String> versionConverted = (version == null) ? new ArrayList<>()
+        List<String> versionConverted = (version == null)
+            ? new ArrayList<>()
             : version.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         context = this.client.mergeContext(context);
         return service
@@ -1460,7 +1466,8 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         final String accept = "application/json";
-        List<String> versionConverted = (version == null) ? new ArrayList<>()
+        List<String> versionConverted = (version == null)
+            ? new ArrayList<>()
             : version.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         return FluxUtil
             .withContext(context -> service.listForCluster(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1505,7 +1512,8 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         final String accept = "application/json";
-        List<String> versionConverted = (version == null) ? new ArrayList<>()
+        List<String> versionConverted = (version == null)
+            ? new ArrayList<>()
             : version.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         context = this.client.mergeContext(context);
         return service
@@ -2553,8 +2561,10 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     public SyncPoller<PollResult<RemoteDebuggingInner>, RemoteDebuggingInner> beginEnableRemoteDebugging(
         String resourceGroupName, String serviceName, String appName, String deploymentName) {
         final RemoteDebuggingPayload remoteDebuggingPayload = null;
-        return this.beginEnableRemoteDebuggingAsync(resourceGroupName, serviceName, appName, deploymentName,
-            remoteDebuggingPayload).getSyncPoller();
+        return this
+            .beginEnableRemoteDebuggingAsync(resourceGroupName, serviceName, appName, deploymentName,
+                remoteDebuggingPayload)
+            .getSyncPoller();
     }
 
     /**
@@ -2576,8 +2586,10 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     public SyncPoller<PollResult<RemoteDebuggingInner>, RemoteDebuggingInner> beginEnableRemoteDebugging(
         String resourceGroupName, String serviceName, String appName, String deploymentName,
         RemoteDebuggingPayload remoteDebuggingPayload, Context context) {
-        return this.beginEnableRemoteDebuggingAsync(resourceGroupName, serviceName, appName, deploymentName,
-            remoteDebuggingPayload, context).getSyncPoller();
+        return this
+            .beginEnableRemoteDebuggingAsync(resourceGroupName, serviceName, appName, deploymentName,
+                remoteDebuggingPayload, context)
+            .getSyncPoller();
     }
 
     /**
@@ -3435,8 +3447,10 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginGenerateHeapDump(String resourceGroupName, String serviceName,
         String appName, String deploymentName, DiagnosticParameters diagnosticParameters, Context context) {
-        return this.beginGenerateHeapDumpAsync(resourceGroupName, serviceName, appName, deploymentName,
-            diagnosticParameters, context).getSyncPoller();
+        return this
+            .beginGenerateHeapDumpAsync(resourceGroupName, serviceName, appName, deploymentName, diagnosticParameters,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -3457,7 +3471,8 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     public Mono<Void> generateHeapDumpAsync(String resourceGroupName, String serviceName, String appName,
         String deploymentName, DiagnosticParameters diagnosticParameters) {
         return beginGenerateHeapDumpAsync(resourceGroupName, serviceName, appName, deploymentName, diagnosticParameters)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -3716,8 +3731,10 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginGenerateThreadDump(String resourceGroupName, String serviceName,
         String appName, String deploymentName, DiagnosticParameters diagnosticParameters, Context context) {
-        return this.beginGenerateThreadDumpAsync(resourceGroupName, serviceName, appName, deploymentName,
-            diagnosticParameters, context).getSyncPoller();
+        return this
+            .beginGenerateThreadDumpAsync(resourceGroupName, serviceName, appName, deploymentName, diagnosticParameters,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -4083,9 +4100,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4111,9 +4126,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -4140,9 +4153,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4169,9 +4180,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

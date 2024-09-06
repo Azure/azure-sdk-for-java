@@ -5,56 +5,49 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * A copy activity Microsoft Fabric Warehouse sink.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = WarehouseSink.class, visible = true)
-@JsonTypeName("WarehouseSink")
 @Fluent
 public final class WarehouseSink extends CopySink {
     /*
      * Copy sink type.
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private String type = "WarehouseSink";
 
     /*
      * SQL pre-copy script. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "preCopyScript")
     private Object preCopyScript;
 
     /*
      * Indicates to use Copy Command to copy data into SQL Data Warehouse. Type: boolean (or Expression with resultType
      * boolean).
      */
-    @JsonProperty(value = "allowCopyCommand")
     private Object allowCopyCommand;
 
     /*
      * Specifies Copy Command related settings when allowCopyCommand is true.
      */
-    @JsonProperty(value = "copyCommandSettings")
     private DWCopyCommandSettings copyCommandSettings;
 
     /*
      * The option to handle sink table, such as autoCreate. For now only 'autoCreate' value is supported. Type: string
      * (or Expression with resultType string).
      */
-    @JsonProperty(value = "tableOption")
     private Object tableOption;
 
     /*
      * Write behavior when copying data into azure Microsoft Fabric Data Warehouse. Type: DWWriteBehaviorEnum (or
      * Expression with resultType DWWriteBehaviorEnum)
      */
-    @JsonProperty(value = "writeBehavior")
     private Object writeBehavior;
 
     /**
@@ -244,5 +237,85 @@ public final class WarehouseSink extends CopySink {
         if (copyCommandSettings() != null) {
             copyCommandSettings().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("writeBatchSize", writeBatchSize());
+        jsonWriter.writeUntypedField("writeBatchTimeout", writeBatchTimeout());
+        jsonWriter.writeUntypedField("sinkRetryCount", sinkRetryCount());
+        jsonWriter.writeUntypedField("sinkRetryWait", sinkRetryWait());
+        jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
+        jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeUntypedField("preCopyScript", this.preCopyScript);
+        jsonWriter.writeUntypedField("allowCopyCommand", this.allowCopyCommand);
+        jsonWriter.writeJsonField("copyCommandSettings", this.copyCommandSettings);
+        jsonWriter.writeUntypedField("tableOption", this.tableOption);
+        jsonWriter.writeUntypedField("writeBehavior", this.writeBehavior);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WarehouseSink from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WarehouseSink if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WarehouseSink.
+     */
+    public static WarehouseSink fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WarehouseSink deserializedWarehouseSink = new WarehouseSink();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("writeBatchSize".equals(fieldName)) {
+                    deserializedWarehouseSink.withWriteBatchSize(reader.readUntyped());
+                } else if ("writeBatchTimeout".equals(fieldName)) {
+                    deserializedWarehouseSink.withWriteBatchTimeout(reader.readUntyped());
+                } else if ("sinkRetryCount".equals(fieldName)) {
+                    deserializedWarehouseSink.withSinkRetryCount(reader.readUntyped());
+                } else if ("sinkRetryWait".equals(fieldName)) {
+                    deserializedWarehouseSink.withSinkRetryWait(reader.readUntyped());
+                } else if ("maxConcurrentConnections".equals(fieldName)) {
+                    deserializedWarehouseSink.withMaxConcurrentConnections(reader.readUntyped());
+                } else if ("disableMetricsCollection".equals(fieldName)) {
+                    deserializedWarehouseSink.withDisableMetricsCollection(reader.readUntyped());
+                } else if ("type".equals(fieldName)) {
+                    deserializedWarehouseSink.type = reader.getString();
+                } else if ("preCopyScript".equals(fieldName)) {
+                    deserializedWarehouseSink.preCopyScript = reader.readUntyped();
+                } else if ("allowCopyCommand".equals(fieldName)) {
+                    deserializedWarehouseSink.allowCopyCommand = reader.readUntyped();
+                } else if ("copyCommandSettings".equals(fieldName)) {
+                    deserializedWarehouseSink.copyCommandSettings = DWCopyCommandSettings.fromJson(reader);
+                } else if ("tableOption".equals(fieldName)) {
+                    deserializedWarehouseSink.tableOption = reader.readUntyped();
+                } else if ("writeBehavior".equals(fieldName)) {
+                    deserializedWarehouseSink.writeBehavior = reader.readUntyped();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedWarehouseSink.withAdditionalProperties(additionalProperties);
+
+            return deserializedWarehouseSink;
+        });
     }
 }

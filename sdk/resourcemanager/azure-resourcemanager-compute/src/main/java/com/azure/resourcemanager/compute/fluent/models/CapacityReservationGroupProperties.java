@@ -5,45 +5,44 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.CapacityReservationGroupInstanceView;
 import com.azure.resourcemanager.compute.models.ResourceSharingProfile;
 import com.azure.resourcemanager.compute.models.SubResourceReadOnly;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import java.io.IOException;
 import java.util.List;
 
 /**
  * capacity reservation group Properties.
  */
 @Fluent
-public final class CapacityReservationGroupProperties {
+public final class CapacityReservationGroupProperties implements JsonSerializable<CapacityReservationGroupProperties> {
     /*
      * A list of all capacity reservation resource ids that belong to capacity reservation group.
      */
-    @JsonProperty(value = "capacityReservations", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResourceReadOnly> capacityReservations;
 
     /*
      * A list of references to all virtual machines associated to the capacity reservation group.
      */
-    @JsonProperty(value = "virtualMachinesAssociated", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResourceReadOnly> virtualMachinesAssociated;
 
     /*
      * The capacity reservation group instance view which has the list of instance views for all the capacity
      * reservations that belong to the capacity reservation group.
      */
-    @JsonProperty(value = "instanceView", access = JsonProperty.Access.WRITE_ONLY)
     private CapacityReservationGroupInstanceView instanceView;
 
     /*
      * Specifies the settings to enable sharing across subscriptions for the capacity reservation group resource. Pls.
      * keep in mind the capacity reservation group resource generally can be shared across subscriptions belonging to a
      * single azure AAD tenant or cross AAD tenant if there is a trust relationship established between the AAD tenants.
-     * **Note:** Minimum api-version: 2024-03-01. Please refer to https://aka.ms/computereservationsharing for more
+     * **Note:** Minimum api-version: 2023-09-01. Please refer to https://aka.ms/computereservationsharing for more
      * details.
      */
-    @JsonProperty(value = "sharingProfile")
     private ResourceSharingProfile sharingProfile;
 
     /**
@@ -55,7 +54,7 @@ public final class CapacityReservationGroupProperties {
     /**
      * Get the capacityReservations property: A list of all capacity reservation resource ids that belong to capacity
      * reservation group.
-     *
+     * 
      * @return the capacityReservations value.
      */
     public List<SubResourceReadOnly> capacityReservations() {
@@ -65,7 +64,7 @@ public final class CapacityReservationGroupProperties {
     /**
      * Get the virtualMachinesAssociated property: A list of references to all virtual machines associated to the
      * capacity reservation group.
-     *
+     * 
      * @return the virtualMachinesAssociated value.
      */
     public List<SubResourceReadOnly> virtualMachinesAssociated() {
@@ -75,7 +74,7 @@ public final class CapacityReservationGroupProperties {
     /**
      * Get the instanceView property: The capacity reservation group instance view which has the list of instance views
      * for all the capacity reservations that belong to the capacity reservation group.
-     *
+     * 
      * @return the instanceView value.
      */
     public CapacityReservationGroupInstanceView instanceView() {
@@ -86,9 +85,9 @@ public final class CapacityReservationGroupProperties {
      * Get the sharingProfile property: Specifies the settings to enable sharing across subscriptions for the capacity
      * reservation group resource. Pls. keep in mind the capacity reservation group resource generally can be shared
      * across subscriptions belonging to a single azure AAD tenant or cross AAD tenant if there is a trust relationship
-     * established between the AAD tenants. **Note:** Minimum api-version: 2024-03-01. Please refer to
+     * established between the AAD tenants. **Note:** Minimum api-version: 2023-09-01. Please refer to
      * https://aka.ms/computereservationsharing for more details.
-     *
+     * 
      * @return the sharingProfile value.
      */
     public ResourceSharingProfile sharingProfile() {
@@ -99,9 +98,9 @@ public final class CapacityReservationGroupProperties {
      * Set the sharingProfile property: Specifies the settings to enable sharing across subscriptions for the capacity
      * reservation group resource. Pls. keep in mind the capacity reservation group resource generally can be shared
      * across subscriptions belonging to a single azure AAD tenant or cross AAD tenant if there is a trust relationship
-     * established between the AAD tenants. **Note:** Minimum api-version: 2024-03-01. Please refer to
+     * established between the AAD tenants. **Note:** Minimum api-version: 2023-09-01. Please refer to
      * https://aka.ms/computereservationsharing for more details.
-     *
+     * 
      * @param sharingProfile the sharingProfile value to set.
      * @return the CapacityReservationGroupProperties object itself.
      */
@@ -112,7 +111,7 @@ public final class CapacityReservationGroupProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -128,5 +127,55 @@ public final class CapacityReservationGroupProperties {
         if (sharingProfile() != null) {
             sharingProfile().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("sharingProfile", this.sharingProfile);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CapacityReservationGroupProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CapacityReservationGroupProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CapacityReservationGroupProperties.
+     */
+    public static CapacityReservationGroupProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CapacityReservationGroupProperties deserializedCapacityReservationGroupProperties
+                = new CapacityReservationGroupProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("capacityReservations".equals(fieldName)) {
+                    List<SubResourceReadOnly> capacityReservations
+                        = reader.readArray(reader1 -> SubResourceReadOnly.fromJson(reader1));
+                    deserializedCapacityReservationGroupProperties.capacityReservations = capacityReservations;
+                } else if ("virtualMachinesAssociated".equals(fieldName)) {
+                    List<SubResourceReadOnly> virtualMachinesAssociated
+                        = reader.readArray(reader1 -> SubResourceReadOnly.fromJson(reader1));
+                    deserializedCapacityReservationGroupProperties.virtualMachinesAssociated
+                        = virtualMachinesAssociated;
+                } else if ("instanceView".equals(fieldName)) {
+                    deserializedCapacityReservationGroupProperties.instanceView
+                        = CapacityReservationGroupInstanceView.fromJson(reader);
+                } else if ("sharingProfile".equals(fieldName)) {
+                    deserializedCapacityReservationGroupProperties.sharingProfile
+                        = ResourceSharingProfile.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCapacityReservationGroupProperties;
+        });
     }
 }

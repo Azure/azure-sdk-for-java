@@ -40,7 +40,7 @@ public class ModelsAsyncTest extends ModelsTestBase {
         List<DigitalTwinsModelData> createdModels = new ArrayList<>();
         createModelsRunner(asyncClient, (modelsList) -> StepVerifier.create(asyncClient.createModels(modelsList))
             .assertNext(createdModelsResponseList -> {
-                createdModelsResponseList.forEach(item -> createdModels.add(item));
+                createdModelsResponseList.forEach(createdModels::add);
                 logger.info("Created {} models successfully");
             })
             .verifyComplete());
@@ -57,8 +57,7 @@ public class ModelsAsyncTest extends ModelsTestBase {
             // Decommission the model
             decommissionModelRunner(expected.getModelId(), (modelId) -> {
                 logger.info("Decommissioning model {}", modelId);
-                StepVerifier.create(asyncClient.decommissionModel(modelId))
-                    .verifyComplete();
+                StepVerifier.create(asyncClient.decommissionModel(modelId)).verifyComplete();
             });
 
             // Get the model again to see if it was decommissioned as expected
@@ -72,8 +71,7 @@ public class ModelsAsyncTest extends ModelsTestBase {
             // Delete the model
             deleteModelRunner(expected.getModelId(), (modelId) -> {
                 logger.info("Deleting model {}", modelId);
-                StepVerifier.create(asyncClient.deleteModel(modelId))
-                    .verifyComplete();
+                StepVerifier.create(asyncClient.deleteModel(modelId)).verifyComplete();
             });
         }
     }
@@ -91,11 +89,13 @@ public class ModelsAsyncTest extends ModelsTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.digitaltwins.core.TestHelper#getTestParameters")
     @Override
-    public void createModelThrowsIfModelAlreadyExists(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) {
+    public void createModelThrowsIfModelAlreadyExists(HttpClient httpClient,
+        DigitalTwinsServiceVersion serviceVersion) {
         DigitalTwinsAsyncClient asyncClient = getAsyncClient(httpClient, serviceVersion);
 
         final List<String> modelsToCreate = new ArrayList<>();
-        final String wardModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.WARD_MODEL_ID, asyncClient, getRandomIntegerStringGenerator());
+        final String wardModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.WARD_MODEL_ID, asyncClient,
+            getRandomIntegerStringGenerator());
         final String wardModelPayload = TestAssetsHelper.getWardModelPayload(wardModelId);
         modelsToCreate.add(wardModelPayload);
 
@@ -114,29 +114,25 @@ public class ModelsAsyncTest extends ModelsTestBase {
         DigitalTwinsAsyncClient asyncClient = getAsyncClient(httpClient, serviceVersion);
 
         // Create some models
-        List<DigitalTwinsModelData> createdModels = new ArrayList<>();
         createModelsRunner(asyncClient, (modelsList) -> StepVerifier.create(asyncClient.createModels(modelsList))
             .assertNext(createdModelsResponseList -> {
-                createdModelsResponseList.forEach(item -> createdModels.add(item));
+                createdModelsResponseList.forEach(Assertions::assertNotNull);
                 logger.info("Created models successfully");
             })
             .verifyComplete());
-
-        createdModels.forEach(Assertions::assertNotNull);
 
         AtomicInteger pageCount = new AtomicInteger();
 
         // List models in multiple pages and verify more than one page was viewed.
         StepVerifier.create(asyncClient.listModels(new ListModelsOptions().setMaxItemsPerPage(2)).byPage())
-            .thenConsumeWhile(
-                page -> {
-                    pageCount.getAndIncrement();
-                    logger.info("content for this page " + pageCount);
-                    for (DigitalTwinsModelData model : page.getValue()) {
-                        logger.info(model.getModelId());
-                    }
-                    return true;
-                })
+            .thenConsumeWhile(page -> {
+                pageCount.getAndIncrement();
+                logger.info("content for this page " + pageCount);
+                for (DigitalTwinsModelData model : page.getValue()) {
+                    logger.info(model.getModelId());
+                }
+                return true;
+            })
             .verifyComplete();
 
         int finalPageCount = pageCount.get();
@@ -154,11 +150,16 @@ public class ModelsAsyncTest extends ModelsTestBase {
             .verifyErrorSatisfies(ex -> assertRestException(ex, HttpURLConnection.HTTP_BAD_REQUEST));
     }
 
-    private void createModelsRunner(DigitalTwinsAsyncClient asyncClient, Consumer<List<String>> createModelsTestRunner) {
-        String buildingModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.BUILDING_MODEL_ID, asyncClient, getRandomIntegerStringGenerator());
-        String floorModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.FLOOR_MODEL_ID, asyncClient, getRandomIntegerStringGenerator());
-        String hvacModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.HVAC_MODEL_ID, asyncClient, getRandomIntegerStringGenerator());
-        String wardModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.WARD_MODEL_ID, asyncClient, getRandomIntegerStringGenerator());
+    private void createModelsRunner(DigitalTwinsAsyncClient asyncClient,
+        Consumer<List<String>> createModelsTestRunner) {
+        String buildingModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.BUILDING_MODEL_ID, asyncClient,
+            getRandomIntegerStringGenerator());
+        String floorModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.FLOOR_MODEL_ID, asyncClient,
+            getRandomIntegerStringGenerator());
+        String hvacModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.HVAC_MODEL_ID, asyncClient,
+            getRandomIntegerStringGenerator());
+        String wardModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.WARD_MODEL_ID, asyncClient,
+            getRandomIntegerStringGenerator());
 
         createModelsRunner(buildingModelId, floorModelId, hvacModelId, wardModelId, createModelsTestRunner);
     }

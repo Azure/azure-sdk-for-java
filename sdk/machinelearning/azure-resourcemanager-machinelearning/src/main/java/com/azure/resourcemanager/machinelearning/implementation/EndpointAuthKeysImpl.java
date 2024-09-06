@@ -12,8 +12,7 @@ public final class EndpointAuthKeysImpl implements EndpointAuthKeys {
 
     private final com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager;
 
-    EndpointAuthKeysImpl(
-        EndpointAuthKeysInner innerObject,
+    EndpointAuthKeysImpl(EndpointAuthKeysInner innerObject,
         com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

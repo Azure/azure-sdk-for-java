@@ -41,10 +41,7 @@ public class MockLogData implements LogRecordData {
 
     @Override
     public SpanContext getSpanContext() {
-        return SpanContext.create(
-            TraceId.fromLongs(10L, 2L),
-            SpanId.fromLong(1),
-            TraceFlags.getDefault(),
+        return SpanContext.create(TraceId.fromLongs(10L, 2L), SpanId.fromLong(1), TraceFlags.getDefault(),
             TraceState.builder().build());
     }
 

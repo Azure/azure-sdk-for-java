@@ -40,7 +40,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-tracing-opentelemetry</artifactId>
-      <version>1.0.0-beta.48</version> <!-- {x-version-update;com.azure:azure-core-tracing-opentelemetry;current} -->
+      <version>1.0.0-beta.49</version> <!-- {x-version-update;com.azure:azure-core-tracing-opentelemetry;current} -->
     </dependency>
 
     <!--samples dependencies -->
@@ -53,31 +53,31 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-data-appconfiguration</artifactId>
-      <version>1.6.2</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
+      <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-exporter-logging</artifactId>
-      <version>1.40.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-exporter-logging;external_dependency} -->
+      <version>1.41.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-exporter-logging;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-sdk-extension-autoconfigure</artifactId>
-      <version>1.40.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk-extension-autoconfigure;external_dependency} -->
+      <version>1.41.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk-extension-autoconfigure;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-secrets</artifactId>
-      <version>4.8.4</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
+      <version>4.8.6</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.13.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.13.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

@@ -8,6 +8,7 @@ import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.exception.SessionErrorContext;
+import com.azure.core.amqp.implementation.ChannelCacheWrapper;
 import com.azure.core.amqp.implementation.ExceptionUtil;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RequestResponseChannel;
@@ -75,16 +76,16 @@ public class ManagementChannel implements ServiceBusManagementNode {
     private final MessageSerializer messageSerializer;
     private final TokenManager tokenManager;
     private final Duration operationTimeout;
-    private final Mono<RequestResponseChannel> createChannel;
+    private final ChannelCacheWrapper channelCache;
     private final String fullyQualifiedNamespace;
     private final ClientLogger logger;
     private final String entityPath;
 
     private volatile boolean isDisposed;
 
-    ManagementChannel(Mono<RequestResponseChannel> createChannel, String fullyQualifiedNamespace, String entityPath,
+    ManagementChannel(ChannelCacheWrapper channelCache, String fullyQualifiedNamespace, String entityPath,
         TokenManager tokenManager, MessageSerializer messageSerializer, Duration operationTimeout) {
-        this.createChannel = Objects.requireNonNull(createChannel, "'createChannel' cannot be null.");
+        this.channelCache = Objects.requireNonNull(channelCache, "'channelCache' cannot be null.");
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null.");
         this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
@@ -111,7 +112,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
         }
 
         return isAuthorized(ManagementConstants.OPERATION_CANCEL_SCHEDULED_MESSAGE)
-            .then(createChannel.flatMap(channel -> {
+            .then(channelCache.get().flatMap(channel -> {
                 final Message requestMessage = createManagementMessage(
                     ManagementConstants.OPERATION_CANCEL_SCHEDULED_MESSAGE, associatedLinkName);
 
@@ -134,7 +135,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
             return monoError(logger, new IllegalArgumentException("'sessionId' cannot be blank."));
         }
 
-        return isAuthorized(OPERATION_GET_SESSION_STATE).then(createChannel.flatMap(channel -> {
+        return isAuthorized(OPERATION_GET_SESSION_STATE).then(channelCache.get().flatMap(channel -> {
             final Message message = createManagementMessage(OPERATION_GET_SESSION_STATE, associatedLinkName);
 
             final Map<String, Object> body = new HashMap<>();
@@ -182,7 +183,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
     @Override
     public Flux<ServiceBusReceivedMessage> peek(long fromSequenceNumber, String sessionId, String associatedLinkName,
         int maxMessages) {
-        return isAuthorized(OPERATION_PEEK).thenMany(createChannel.flatMap(channel -> {
+        return isAuthorized(OPERATION_PEEK).thenMany(channelCache.get().flatMap(channel -> {
             final Message message = createManagementMessage(OPERATION_PEEK, associatedLinkName);
 
             // set mandatory properties on AMQP message body
@@ -223,7 +224,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
         }
 
         return isAuthorized(ManagementConstants.OPERATION_RECEIVE_BY_SEQUENCE_NUMBER)
-            .thenMany(createChannel.flatMap(channel -> {
+            .thenMany(channelCache.get().flatMap(channel -> {
                 final Message message = createManagementMessage(
                     ManagementConstants.OPERATION_RECEIVE_BY_SEQUENCE_NUMBER, associatedLinkName);
 
@@ -263,7 +264,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
      */
     @Override
     public Mono<OffsetDateTime> renewMessageLock(String lockToken, String associatedLinkName) {
-        return isAuthorized(ManagementConstants.OPERATION_RENEW_LOCK).then(createChannel.flatMap(channel -> {
+        return isAuthorized(ManagementConstants.OPERATION_RENEW_LOCK).then(channelCache.get().flatMap(channel -> {
             final Message requestMessage = createManagementMessage(ManagementConstants.OPERATION_RENEW_LOCK,
                 associatedLinkName);
             final Map<String, Object> requestBody = new HashMap<>();
@@ -292,7 +293,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
             return monoError(logger, new IllegalArgumentException("'sessionId' cannot be blank."));
         }
 
-        return isAuthorized(OPERATION_RENEW_SESSION_LOCK).then(createChannel.flatMap(channel -> {
+        return isAuthorized(OPERATION_RENEW_SESSION_LOCK).then(channelCache.get().flatMap(channel -> {
             final Message message = createManagementMessage(OPERATION_RENEW_SESSION_LOCK, associatedLinkName);
 
             final Map<String, Object> body = new HashMap<>();
@@ -329,7 +330,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
     public Flux<Long> schedule(List<ServiceBusMessage> messages, OffsetDateTime scheduledEnqueueTime,
         int maxLinkSize, String associatedLinkName, ServiceBusTransactionContext transactionContext) {
 
-        return isAuthorized(OPERATION_SCHEDULE_MESSAGE).thenMany(createChannel.flatMap(channel -> {
+        return isAuthorized(OPERATION_SCHEDULE_MESSAGE).thenMany(channelCache.get().flatMap(channel -> {
 
             final Collection<Map<String, Object>> messageList = new LinkedList<>();
 
@@ -406,7 +407,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
             return monoError(logger, new IllegalArgumentException("'sessionId' cannot be blank."));
         }
 
-        return isAuthorized(OPERATION_SET_SESSION_STATE).then(createChannel.flatMap(channel -> {
+        return isAuthorized(OPERATION_SET_SESSION_STATE).then(channelCache.get().flatMap(channel -> {
             final Message message = createManagementMessage(OPERATION_SET_SESSION_STATE, associatedLinkName);
 
             final Map<String, Object> body = new HashMap<>();
@@ -424,7 +425,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
         String deadLetterErrorDescription, Map<String, Object> propertiesToModify, String sessionId,
         String associatedLinkName, ServiceBusTransactionContext transactionContext) {
 
-        return isAuthorized(OPERATION_UPDATE_DISPOSITION).then(createChannel.flatMap(channel -> {
+        return isAuthorized(OPERATION_UPDATE_DISPOSITION).then(channelCache.get().flatMap(channel -> {
             logger.atVerbose()
                 .addKeyValue(ServiceBusConstants.LOCK_TOKEN_KEY, lockToken)
                 .addKeyValue(DISPOSITION_STATUS_KEY, dispositionStatus)
@@ -470,7 +471,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
      */
     @Override
     public Mono<Void> createRule(String ruleName, CreateRuleOptions ruleOptions) {
-        return isAuthorized(OPERATION_ADD_RULE).then(createChannel.flatMap(channel -> {
+        return isAuthorized(OPERATION_ADD_RULE).then(channelCache.get().flatMap(channel -> {
             final Message message = createManagementMessage(OPERATION_ADD_RULE, null);
 
             final Map<String, Object> body = new HashMap<>(2);
@@ -488,7 +489,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
      */
     @Override
     public Mono<Void> deleteRule(String ruleName) {
-        return isAuthorized(OPERATION_REMOVE_RULE).then(createChannel.flatMap(channel -> {
+        return isAuthorized(OPERATION_REMOVE_RULE).then(channelCache.get().flatMap(channel -> {
             final Message message = createManagementMessage(OPERATION_REMOVE_RULE, null);
 
             final Map<String, Object> body = new HashMap<>(1);
@@ -505,7 +506,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
      */
     @Override
     public Flux<RuleProperties> listRules() {
-        return isAuthorized(OPERATION_GET_RULES).then(createChannel.flatMap(channel -> {
+        return isAuthorized(OPERATION_GET_RULES).then(channelCache.get().flatMap(channel -> {
             final Message message = createManagementMessage(OPERATION_GET_RULES, null);
 
             final Map<String, Object> body = new HashMap<>(2);

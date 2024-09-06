@@ -12,23 +12,24 @@ public final class ClusterHotfixUpgradePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterHotfixUpgradeProperties model = BinaryData.fromString(
-            "{\"upgradeType\":\"HotfixUpgrade\",\"targetOssVersion\":\"doiwi\",\"targetClusterVersion\":\"htywubxcbihwq\",\"targetBuildNumber\":\"fdntwjchrdgoih\",\"componentName\":\"mwctondzjluudfd\"}")
+            "{\"upgradeType\":\"HotfixUpgrade\",\"targetOssVersion\":\"ydvfvfcjnae\",\"targetClusterVersion\":\"srvhmgorffuki\",\"targetBuildNumber\":\"vwmzhwplefaxvxil\",\"componentName\":\"tg\"}")
             .toObject(ClusterHotfixUpgradeProperties.class);
-        Assertions.assertEquals("doiwi", model.targetOssVersion());
-        Assertions.assertEquals("htywubxcbihwq", model.targetClusterVersion());
-        Assertions.assertEquals("fdntwjchrdgoih", model.targetBuildNumber());
-        Assertions.assertEquals("mwctondzjluudfd", model.componentName());
+        Assertions.assertEquals("ydvfvfcjnae", model.targetOssVersion());
+        Assertions.assertEquals("srvhmgorffuki", model.targetClusterVersion());
+        Assertions.assertEquals("vwmzhwplefaxvxil", model.targetBuildNumber());
+        Assertions.assertEquals("tg", model.componentName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterHotfixUpgradeProperties model = new ClusterHotfixUpgradeProperties().withTargetOssVersion("doiwi")
-            .withTargetClusterVersion("htywubxcbihwq").withTargetBuildNumber("fdntwjchrdgoih")
-            .withComponentName("mwctondzjluudfd");
+        ClusterHotfixUpgradeProperties model = new ClusterHotfixUpgradeProperties().withTargetOssVersion("ydvfvfcjnae")
+            .withTargetClusterVersion("srvhmgorffuki")
+            .withTargetBuildNumber("vwmzhwplefaxvxil")
+            .withComponentName("tg");
         model = BinaryData.fromObject(model).toObject(ClusterHotfixUpgradeProperties.class);
-        Assertions.assertEquals("doiwi", model.targetOssVersion());
-        Assertions.assertEquals("htywubxcbihwq", model.targetClusterVersion());
-        Assertions.assertEquals("fdntwjchrdgoih", model.targetBuildNumber());
-        Assertions.assertEquals("mwctondzjluudfd", model.componentName());
+        Assertions.assertEquals("ydvfvfcjnae", model.targetOssVersion());
+        Assertions.assertEquals("srvhmgorffuki", model.targetClusterVersion());
+        Assertions.assertEquals("vwmzhwplefaxvxil", model.targetBuildNumber());
+        Assertions.assertEquals("tg", model.componentName());
     }
 }

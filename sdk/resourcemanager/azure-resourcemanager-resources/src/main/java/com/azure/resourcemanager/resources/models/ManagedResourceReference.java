@@ -5,7 +5,10 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The managed resource model.
@@ -15,14 +18,17 @@ public final class ManagedResourceReference extends ResourceReference {
     /*
      * Current management state of the resource in the deployment stack.
      */
-    @JsonProperty(value = "status")
     private ResourceStatusMode status;
 
     /*
      * denyAssignment settings applied to the resource.
      */
-    @JsonProperty(value = "denyStatus")
     private DenyStatusMode denyStatus;
+
+    /*
+     * The resourceId of a resource managed by the deployment stack.
+     */
+    private String id;
 
     /**
      * Creates an instance of ManagedResourceReference class.
@@ -71,6 +77,16 @@ public final class ManagedResourceReference extends ResourceReference {
     }
 
     /**
+     * Get the id property: The resourceId of a resource managed by the deployment stack.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -78,5 +94,46 @@ public final class ManagedResourceReference extends ResourceReference {
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeStringField("denyStatus", this.denyStatus == null ? null : this.denyStatus.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedResourceReference from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedResourceReference if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedResourceReference.
+     */
+    public static ManagedResourceReference fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedResourceReference deserializedManagedResourceReference = new ManagedResourceReference();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedManagedResourceReference.id = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedManagedResourceReference.status = ResourceStatusMode.fromString(reader.getString());
+                } else if ("denyStatus".equals(fieldName)) {
+                    deserializedManagedResourceReference.denyStatus = DenyStatusMode.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedResourceReference;
+        });
     }
 }

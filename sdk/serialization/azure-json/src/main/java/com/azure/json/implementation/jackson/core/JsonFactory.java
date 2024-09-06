@@ -6,21 +6,37 @@
  */
 package com.azure.json.implementation.jackson.core;
 
-import java.io.*;
-import java.lang.ref.SoftReference;
-import java.net.URL;
-
-import com.azure.json.implementation.jackson.core.format.InputAccessor;
-import com.azure.json.implementation.jackson.core.format.MatchStrength;
-import com.azure.json.implementation.jackson.core.io.*;
-import com.azure.json.implementation.jackson.core.json.*;
-import com.azure.json.implementation.jackson.core.json.async.NonBlockingJsonParser;
+import com.azure.json.implementation.jackson.core.io.CharacterEscapes;
+import com.azure.json.implementation.jackson.core.io.ContentReference;
+import com.azure.json.implementation.jackson.core.io.IOContext;
+import com.azure.json.implementation.jackson.core.io.InputDecorator;
+import com.azure.json.implementation.jackson.core.io.OutputDecorator;
+import com.azure.json.implementation.jackson.core.io.SerializedString;
+import com.azure.json.implementation.jackson.core.io.UTF8Writer;
+import com.azure.json.implementation.jackson.core.json.ByteSourceJsonBootstrapper;
+import com.azure.json.implementation.jackson.core.json.JsonWriteFeature;
+import com.azure.json.implementation.jackson.core.json.PackageVersion;
+import com.azure.json.implementation.jackson.core.json.ReaderBasedJsonParser;
+import com.azure.json.implementation.jackson.core.json.UTF8JsonGenerator;
+import com.azure.json.implementation.jackson.core.json.WriterBasedJsonGenerator;
 import com.azure.json.implementation.jackson.core.sym.ByteQuadsCanonicalizer;
 import com.azure.json.implementation.jackson.core.sym.CharsToNameCanonicalizer;
 import com.azure.json.implementation.jackson.core.util.BufferRecycler;
 import com.azure.json.implementation.jackson.core.util.BufferRecyclers;
-import com.azure.json.implementation.jackson.core.util.DefaultPrettyPrinter;
 import com.azure.json.implementation.jackson.core.util.JacksonFeature;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Reader;
+import java.io.Serializable;
+import java.io.StringReader;
+import java.io.Writer;
+import java.lang.ref.SoftReference;
+import java.net.URL;
 
 /**
  * The main factory class of Jackson package, used to configure and
@@ -43,8 +59,8 @@ import com.azure.json.implementation.jackson.core.util.JacksonFeature;
  * @author Tatu Saloranta
  */
 @SuppressWarnings("resource")
-public class JsonFactory extends TokenStreamFactory implements Versioned, java.io.Serializable // since 2.1 (for
-                                                                                              // Android, mostly)
+public class JsonFactory extends TokenStreamFactory implements Versioned, Serializable // since 2.1 (for
+                                                                                      // Android, mostly)
 {
     private static final long serialVersionUID = 2;
 
@@ -100,7 +116,7 @@ public class JsonFactory extends TokenStreamFactory implements Versioned, java.i
          * measure.
          *<p>
          * This setting is enabled by default.
-         * 
+         *
          * @since 2.4
          */
         FAIL_ON_SYMBOL_HASH_OVERFLOW(true),
@@ -145,7 +161,7 @@ public class JsonFactory extends TokenStreamFactory implements Versioned, java.i
             return flags;
         }
 
-        private Feature(boolean defaultState) {
+        Feature(boolean defaultState) {
             _defaultState = defaultState;
         }
 
@@ -180,7 +196,7 @@ public class JsonFactory extends TokenStreamFactory implements Versioned, java.i
     /**
      * Bitfield (set of flags) of all factory features that are enabled by default.
      */
-    protected final static int DEFAULT_FACTORY_FEATURE_FLAGS = JsonFactory.Feature.collectDefaults();
+    protected final static int DEFAULT_FACTORY_FEATURE_FLAGS = Feature.collectDefaults();
 
     /**
      * Bitfield (set of flags) of all parser features that are enabled
@@ -194,8 +210,7 @@ public class JsonFactory extends TokenStreamFactory implements Versioned, java.i
      */
     protected final static int DEFAULT_GENERATOR_FEATURE_FLAGS = JsonGenerator.Feature.collectDefaults();
 
-    public final static SerializableString DEFAULT_ROOT_VALUE_SEPARATOR
-        = DefaultPrettyPrinter.DEFAULT_ROOT_VALUE_SEPARATOR;
+    public final static SerializableString DEFAULT_ROOT_VALUE_SEPARATOR = new SerializedString(" ");
 
     /**
      * @since 2.10
@@ -285,7 +300,7 @@ public class JsonFactory extends TokenStreamFactory implements Versioned, java.i
      * Separator used between root-level values, if any; null indicates
      * "do not add separator".
      * Default separator is a single space character.
-     * 
+     *
      * @since 2.1
      */
     protected SerializableString _rootValueSeparator = DEFAULT_ROOT_VALUE_SEPARATOR;
@@ -385,7 +400,7 @@ public class JsonFactory extends TokenStreamFactory implements Versioned, java.i
      * Constructor for subtypes; needed to work around the fact that before 3.0,
      * this factory has cumbersome dual role as generic type as well as actual
      * implementation for json.
-     * 
+     *
      * @param b Builder that contains settings to use
      * @param bogus Argument only needed to separate constructor signature; ignored
      */
@@ -403,20 +418,6 @@ public class JsonFactory extends TokenStreamFactory implements Versioned, java.i
         _rootValueSeparator = null;
         _maximumNonEscapedChar = 0;
         _quoteChar = DEFAULT_QUOTE_CHAR;
-    }
-
-    /**
-     * Method that allows construction of differently configured factory, starting
-     * with settings of this factory.
-     *
-     * @return Builder instance to use
-     *
-     * @since 2.10
-     */
-    public TSFBuilder<?, ?> rebuild() {
-        // 13-Jun-2018, tatu: Verify sub-classing to prevent strange bugs in format impls
-        _requireJSONFactory("Factory implementation for format (%s) MUST override `rebuild()` method");
-        return new JsonFactoryBuilder(this);
     }
 
     /**
@@ -490,29 +491,6 @@ public class JsonFactory extends TokenStreamFactory implements Versioned, java.i
 
     /**
      * Introspection method that higher-level functionality may call
-     * to see whether underlying data format requires a stable ordering
-     * of object properties or not.
-     * This is usually used for determining
-     * whether to force a stable ordering (like alphabetic ordering by name)
-     * if no ordering if explicitly specified.
-     *<p>
-     * Default implementation returns <code>false</code> as JSON does NOT
-     * require stable ordering. Formats that require ordering include positional
-     * textual formats like <code>CSV</code>, and schema-based binary formats
-     * like <code>Avro</code>.
-     *
-     * @return Whether format supported by this factory
-     *   requires Object properties to be ordered.
-     *
-     * @since 2.3
-     */
-    @Override
-    public boolean requiresPropertyOrdering() {
-        return false;
-    }
-
-    /**
-     * Introspection method that higher-level functionality may call
      * to see whether underlying data format can read and write binary
      * data natively; that is, embeded it as-is without using encodings
      * such as Base64.
@@ -535,47 +513,19 @@ public class JsonFactory extends TokenStreamFactory implements Versioned, java.i
      * Introspection method that can be used by base factory to check
      * whether access using <code>char[]</code> is something that actual
      * parser implementations can take advantage of, over having to
-     * use {@link java.io.Reader}. Sub-types are expected to override
+     * use {@link Reader}. Sub-types are expected to override
      * definition; default implementation (suitable for JSON) alleges
      * that optimization are possible; and thereby is likely to try
-     * to access {@link java.lang.String} content by first copying it into
+     * to access {@link String} content by first copying it into
      * recyclable intermediate buffer.
      *
      * @return Whether access to decoded textual content can be efficiently
      *   accessed using parser method {@code getTextCharacters()}.
-     * 
+     *
      * @since 2.4
      */
     public boolean canUseCharArrays() {
         return true;
-    }
-
-    /**
-     * Introspection method that can be used to check whether this
-     * factory can create non-blocking parsers: parsers that do not
-     * use blocking I/O abstractions but instead use a
-     * {@link com.azure.json.implementation.jackson.core.async.NonBlockingInputFeeder}.
-     *
-     * @return Whether this factory supports non-blocking ("async") parsing or
-     *    not (and consequently whether {@code createNonBlockingXxx()} method(s) work)
-     *
-     * @since 2.9
-     */
-    @Override
-    public boolean canParseAsync() {
-        // 31-May-2017, tatu: Jackson 2.9 does support async parsing for JSON,
-        // but not all other formats, so need to do this:
-        return _isJSONFactory();
-    }
-
-    @Override
-    public Class<? extends FormatFeature> getFormatReadFeatureType() {
-        return null;
-    }
-
-    @Override
-    public Class<? extends FormatFeature> getFormatWriteFeatureType() {
-        return null;
     }
 
     /*
@@ -583,28 +533,6 @@ public class JsonFactory extends TokenStreamFactory implements Versioned, java.i
      * /* Format detection functionality
      * /**********************************************************
      */
-
-    /**
-     * Method that can be used to quickly check whether given schema
-     * is something that parsers and/or generators constructed by this
-     * factory could use. Note that this means possible use, at the level
-     * of data format (i.e. schema is for same data format as parsers and
-     * generators this factory constructs); individual schema instances
-     * may have further usage restrictions.
-     *
-     * @param schema Schema instance to check
-     *
-     * @return Whether parsers and generators constructed by this factory
-     *   can use specified format schema instance
-     */
-    @Override
-    public boolean canUseSchema(FormatSchema schema) {
-        if (schema == null) {
-            return false;
-        }
-        String ourFormat = getFormatName();
-        return (ourFormat != null) && ourFormat.equals(schema.getSchemaType());
-    }
 
     /**
      * Method that returns short textual id identifying format
@@ -626,35 +554,6 @@ public class JsonFactory extends TokenStreamFactory implements Versioned, java.i
             return FORMAT_NAME_JSON;
         }
         return null;
-    }
-
-    public MatchStrength hasFormat(InputAccessor acc) throws IOException {
-        // since we can't keep this abstract, only implement for "vanilla" instance
-        if (getClass() == JsonFactory.class) {
-            return hasJSONFormat(acc);
-        }
-        return null;
-    }
-
-    /**
-     * Method that can be called to determine if a custom
-     * {@link ObjectCodec} is needed for binding data parsed
-     * using {@link JsonParser} constructed by this factory
-     * (which typically also implies the same for serialization
-     * with {@link JsonGenerator}).
-     * 
-     * @return True if custom codec is needed with parsers and
-     *   generators created by this factory; false if a general
-     *   {@link ObjectCodec} is enough
-     * 
-     * @since 2.1
-     */
-    public boolean requiresCustomCodec() {
-        return false;
-    }
-
-    protected MatchStrength hasJSONFormat(InputAccessor acc) throws IOException {
-        return ByteSourceJsonBootstrapper.hasJSONFormat(acc);
     }
 
     /*
@@ -683,41 +582,41 @@ public class JsonFactory extends TokenStreamFactory implements Versioned, java.i
      *
      * @return This factory instance (to allow call chaining)
      *
-     * @deprecated since 2.10 use {@link JsonFactoryBuilder#configure(JsonFactory.Feature, boolean)} instead
+     * @deprecated since 2.10 use {@link JsonFactoryBuilder#configure(Feature, boolean)} instead
      */
     @Deprecated
-    public final JsonFactory configure(JsonFactory.Feature f, boolean state) {
+    public final JsonFactory configure(Feature f, boolean state) {
         return state ? enable(f) : disable(f);
     }
 
     /**
      * Method for enabling specified parser feature
-     * (check {@link JsonFactory.Feature} for list of features)
+     * (check {@link Feature} for list of features)
      *
      * @param f Feature to enable
      *
      * @return This factory instance (to allow call chaining)
      *
-     * @deprecated since 2.10 use {@link JsonFactoryBuilder#configure(JsonFactory.Feature, boolean)} instead
+     * @deprecated since 2.10 use {@link JsonFactoryBuilder#configure(Feature, boolean)} instead
      */
     @Deprecated
-    public JsonFactory enable(JsonFactory.Feature f) {
+    public JsonFactory enable(Feature f) {
         _factoryFeatures |= f.getMask();
         return this;
     }
 
     /**
      * Method for disabling specified parser features
-     * (check {@link JsonFactory.Feature} for list of features)
+     * (check {@link Feature} for list of features)
      *
      * @param f Feature to disable
      *
      * @return This factory instance (to allow call chaining)
      *
-     * @deprecated since 2.10 use {@link JsonFactoryBuilder#configure(JsonFactory.Feature, boolean)} instead
+     * @deprecated since 2.10 use {@link JsonFactoryBuilder#configure(Feature, boolean)} instead
      */
     @Deprecated
-    public JsonFactory disable(JsonFactory.Feature f) {
+    public JsonFactory disable(Feature f) {
         _factoryFeatures &= ~f.getMask();
         return this;
     }
@@ -729,30 +628,8 @@ public class JsonFactory extends TokenStreamFactory implements Versioned, java.i
      *
      * @return True if the specified feature is enabled
      */
-    public final boolean isEnabled(JsonFactory.Feature f) {
+    public final boolean isEnabled(Feature f) {
         return (_factoryFeatures & f.getMask()) != 0;
-    }
-
-    @Override
-    public final int getParserFeatures() {
-        return _parserFeatures;
-    }
-
-    @Override
-    public final int getGeneratorFeatures() {
-        return _generatorFeatures;
-    }
-
-    // MUST be overridden by sub-classes that support format-specific parser features
-    @Override
-    public int getFormatParserFeatures() {
-        return 0;
-    }
-
-    // MUST be overridden by sub-classes that support format-specific generator features
-    @Override
-    public int getFormatGeneratorFeatures() {
-        return 0;
     }
 
     /*
@@ -826,22 +703,12 @@ public class JsonFactory extends TokenStreamFactory implements Versioned, java.i
     }
 
     /**
-     * Method for getting currently configured input decorator (if any;
-     * there is no default decorator).
-     *
-     * @return InputDecorator configured, if any
-     */
-    public InputDecorator getInputDecorator() {
-        return _inputDecorator;
-    }
-
-    /**
      * Method for overriding currently configured input decorator
      *
      * @param d Decorator to configure for this factory, if any ({@code null} if none)
      *
      * @return This factory instance (to allow call chaining)
-     * 
+     *
      * @deprecated Since 2.10 use {@link JsonFactoryBuilder#inputDecorator(InputDecorator)} instead
      */
     @Deprecated
@@ -872,7 +739,7 @@ public class JsonFactory extends TokenStreamFactory implements Versioned, java.i
     /**
      * Method for enabling specified generator features
      * (check {@link JsonGenerator.Feature} for list of features)
-     * 
+     *
      * @param f Feature to enable
      *
      * @return This factory instance (to allow call chaining)
@@ -921,40 +788,6 @@ public class JsonFactory extends TokenStreamFactory implements Versioned, java.i
     }
 
     /**
-     * Method for accessing custom escapes factory uses for {@link JsonGenerator}s
-     * it creates.
-     *
-     * @return Configured {@code CharacterEscapes}, if any; {@code null} if none
-     */
-    public CharacterEscapes getCharacterEscapes() {
-        return _characterEscapes;
-    }
-
-    /**
-     * Method for defining custom escapes factory uses for {@link JsonGenerator}s
-     * it creates.
-     *
-     * @param esc CharaterEscapes to set (or {@code null} for "none")
-     *
-     * @return This factory instance (to allow call chaining)
-     */
-    public JsonFactory setCharacterEscapes(CharacterEscapes esc) {
-        _characterEscapes = esc;
-        return this;
-    }
-
-    /**
-     * Method for getting currently configured output decorator (if any;
-     * there is no default decorator).
-     *
-     * @return OutputDecorator configured for generators factory creates, if any;
-     *    {@code null} if none.
-     */
-    public OutputDecorator getOutputDecorator() {
-        return _outputDecorator;
-    }
-
-    /**
      * Method for overriding currently configured output decorator
      *
      * @return This factory instance (to allow call chaining)
@@ -967,27 +800,6 @@ public class JsonFactory extends TokenStreamFactory implements Versioned, java.i
     public JsonFactory setOutputDecorator(OutputDecorator d) {
         _outputDecorator = d;
         return this;
-    }
-
-    /**
-     * Method that allows overriding String used for separating root-level
-     * JSON values (default is single space character)
-     * 
-     * @param sep Separator to use, if any; null means that no separator is
-     *   automatically added
-     *
-     * @return This factory instance (to allow call chaining)
-     */
-    public JsonFactory setRootValueSeparator(String sep) {
-        _rootValueSeparator = (sep == null) ? null : new SerializedString(sep);
-        return this;
-    }
-
-    /**
-     * @return Root value separator configured, if any
-     */
-    public String getRootValueSeparator() {
-        return (_rootValueSeparator == null) ? null : _rootValueSeparator.getValue();
     }
 
     /*
@@ -1031,7 +843,7 @@ public class JsonFactory extends TokenStreamFactory implements Versioned, java.i
      * specification recommended mechanism. Json specification
      * supports only UTF-8, UTF-16 and UTF-32 as valid encodings,
      * so auto-detection implemented only for this charsets.
-     * For other charsets use {@link #createParser(java.io.Reader)}.
+     * For other charsets use {@link #createParser(Reader)}.
      *
      *<p>
      * Underlying input stream (needed for reading contents)
@@ -1039,11 +851,11 @@ public class JsonFactory extends TokenStreamFactory implements Versioned, java.i
      * the parser, since caller has no access to it.
      *
      * @param f File that contains JSON content to parse
-     * 
+     *
      * @since 2.1
      */
     @Override
-    public JsonParser createParser(File f) throws IOException, JsonParseException {
+    public JsonParser createParser(File f) throws IOException {
         // true, since we create InputStream from File
         IOContext ctxt = _createContext(_createContentReference(f), true);
         InputStream in = new FileInputStream(f);
@@ -1058,18 +870,18 @@ public class JsonFactory extends TokenStreamFactory implements Versioned, java.i
      * specification recommended mechanism. Json specification
      * supports only UTF-8, UTF-16 and UTF-32 as valid encodings,
      * so auto-detection implemented only for this charsets.
-     * For other charsets use {@link #createParser(java.io.Reader)}.
+     * For other charsets use {@link #createParser(Reader)}.
      *<p>
      * Underlying input stream (needed for reading contents)
      * will be <b>owned</b> (and managed, i.e. closed as need be) by
      * the parser, since caller has no access to it.
      *
      * @param url URL pointing to resource that contains JSON content to parse
-     * 
+     *
      * @since 2.1
      */
     @Override
-    public JsonParser createParser(URL url) throws IOException, JsonParseException {
+    public JsonParser createParser(URL url) throws IOException {
         // true, since we create InputStream from URL
         IOContext ctxt = _createContext(_createContentReference(url), true);
         InputStream in = _optimizedStreamFromURL(url);
@@ -1083,7 +895,7 @@ public class JsonFactory extends TokenStreamFactory implements Versioned, java.i
      * The input stream will <b>not be owned</b> by
      * the parser, it will still be managed (i.e. closed if
      * end-of-stream is reacher, or parser close method called)
-     * if (and only if) {@link com.azure.json.implementation.jackson.core.StreamReadFeature#AUTO_CLOSE_SOURCE}
+     * if (and only if) {@link StreamReadFeature#AUTO_CLOSE_SOURCE}
      * is enabled.
      *<p>
      *
@@ -1091,14 +903,14 @@ public class JsonFactory extends TokenStreamFactory implements Versioned, java.i
      * auto-detected as suggested by JSON RFC. Json specification
      * supports only UTF-8, UTF-16 and UTF-32 as valid encodings,
      * so auto-detection implemented only for this charsets.
-     * For other charsets use {@link #createParser(java.io.Reader)}.
+     * For other charsets use {@link #createParser(Reader)}.
      *
      * @param in InputStream to use for reading JSON content to parse
-     * 
+     *
      * @since 2.1
      */
     @Override
-    public JsonParser createParser(InputStream in) throws IOException, JsonParseException {
+    public JsonParser createParser(InputStream in) throws IOException {
         IOContext ctxt = _createContext(_createContentReference(in), false);
         return _createParser(_decorate(in, ctxt), ctxt);
     }
@@ -1110,15 +922,15 @@ public class JsonFactory extends TokenStreamFactory implements Versioned, java.i
      * The read stream will <b>not be owned</b> by
      * the parser, it will still be managed (i.e. closed if
      * end-of-stream is reacher, or parser close method called)
-     * if (and only if) {@link com.azure.json.implementation.jackson.core.StreamReadFeature#AUTO_CLOSE_SOURCE}
+     * if (and only if) {@link StreamReadFeature#AUTO_CLOSE_SOURCE}
      * is enabled.
      *
      * @param r Reader to use for reading JSON content to parse
-     * 
+     *
      * @since 2.1
      */
     @Override
-    public JsonParser createParser(Reader r) throws IOException, JsonParseException {
+    public JsonParser createParser(Reader r) throws IOException {
         // false -> we do NOT own Reader (did not create it)
         IOContext ctxt = _createContext(_createContentReference(r), false);
         return _createParser(_decorate(r, ctxt), ctxt);
@@ -1127,11 +939,11 @@ public class JsonFactory extends TokenStreamFactory implements Versioned, java.i
     /**
      * Method for constructing parser for parsing
      * the contents of given byte array.
-     * 
+     *
      * @since 2.1
      */
     @Override
-    public JsonParser createParser(byte[] data) throws IOException, JsonParseException {
+    public JsonParser createParser(byte[] data) throws IOException {
         IOContext ctxt = _createContext(_createContentReference(data), true);
         if (_inputDecorator != null) {
             InputStream in = _inputDecorator.decorate(ctxt, data, 0, data.length);
@@ -1145,15 +957,15 @@ public class JsonFactory extends TokenStreamFactory implements Versioned, java.i
     /**
      * Method for constructing parser for parsing
      * the contents of given byte array.
-     * 
+     *
      * @param data Buffer that contains data to parse
      * @param offset Offset of the first data byte within buffer
      * @param len Length of contents to parse within buffer
-     * 
+     *
      * @since 2.1
      */
     @Override
-    public JsonParser createParser(byte[] data, int offset, int len) throws IOException, JsonParseException {
+    public JsonParser createParser(byte[] data, int offset, int len) throws IOException {
         IOContext ctxt = _createContext(_createContentReference(data, offset, len), true);
         // [JACKSON-512]: allow wrapping with InputDecorator
         if (_inputDecorator != null) {
@@ -1168,11 +980,11 @@ public class JsonFactory extends TokenStreamFactory implements Versioned, java.i
     /**
      * Method for constructing parser for parsing
      * contents of given String.
-     * 
+     *
      * @since 2.1
      */
     @Override
-    public JsonParser createParser(String content) throws IOException, JsonParseException {
+    public JsonParser createParser(String content) throws IOException {
         final int strLen = content.length();
         // Actually, let's use this for medium-sized content, up to 64kB chunk (32kb char)
         if ((_inputDecorator != null) || (strLen > 0x8000) || !canUseCharArrays()) {
@@ -1186,78 +998,11 @@ public class JsonFactory extends TokenStreamFactory implements Versioned, java.i
         return _createParser(buf, 0, strLen, ctxt, true);
     }
 
-    /**
-     * Method for constructing parser for parsing
-     * contents of given char array.
-     * 
-     * @since 2.4
-     */
-    @Override
-    public JsonParser createParser(char[] content) throws IOException {
-        return createParser(content, 0, content.length);
-    }
-
-    /**
-     * Method for constructing parser for parsing contents of given char array.
-     * 
-     * @since 2.4
-     */
-    @Override
-    public JsonParser createParser(char[] content, int offset, int len) throws IOException {
-        if (_inputDecorator != null) { // easier to just wrap in a Reader than extend InputDecorator
-            return createParser(new CharArrayReader(content, offset, len));
-        }
-        return _createParser(content, offset, len, _createContext(_createContentReference(content, offset, len), true),
-            // important: buffer is NOT recyclable, as it's from caller
-            false);
-    }
-
-    /**
-     * Optional method for constructing parser for reading contents from specified {@link DataInput}
-     * instance.
-     *<p>
-     * If this factory does not support {@link DataInput} as source,
-     * will throw {@link UnsupportedOperationException}
-     *
-     * @since 2.8
-     */
-    @Override
-    public JsonParser createParser(DataInput in) throws IOException {
-        IOContext ctxt = _createContext(_createContentReference(in), false);
-        return _createParser(_decorate(in, ctxt), ctxt);
-    }
-
     /*
      * /**********************************************************
      * /* Parser factories, non-blocking (async) sources
      * /**********************************************************
      */
-
-    /**
-     * Optional method for constructing parser for non-blocking parsing
-     * via {@link com.azure.json.implementation.jackson.core.async.ByteArrayFeeder}
-     * interface (accessed using {@link JsonParser#getNonBlockingInputFeeder()}
-     * from constructed instance).
-     *<p>
-     * If this factory does not support non-blocking parsing (either at all,
-     * or from byte array),
-     * will throw {@link UnsupportedOperationException}.
-     *<p>
-     * Note that JSON-backed factory only supports parsing of UTF-8 encoded JSON content
-     * (and US-ASCII since it is proper subset); other encodings are not supported
-     * at this point.
-     *
-     * @since 2.9
-     */
-    @Override
-    public JsonParser createNonBlockingByteArrayParser() throws IOException {
-        // 17-May-2017, tatu: Need to take care not to accidentally create JSON parser
-        // for non-JSON input:
-        _requireJSONFactory("Non-blocking source not (yet?) supported for this format (%s)");
-        IOContext ctxt = _createNonBlockingContext(null);
-        ByteQuadsCanonicalizer can = _byteSymbolCanonicalizer.makeChild(_factoryFeatures);
-        return new NonBlockingJsonParser(ctxt, _parserFeatures, can);
-    }
 
     /*
      * /**********************************************************
@@ -1275,16 +1020,16 @@ public class JsonFactory extends TokenStreamFactory implements Versioned, java.i
      * so that generator will NOT close the output stream when
      * {@link JsonGenerator#close} is called (unless auto-closing
      * feature,
-     * {@link com.azure.json.implementation.jackson.core.JsonGenerator.Feature#AUTO_CLOSE_TARGET}
+     * {@link JsonGenerator.Feature#AUTO_CLOSE_TARGET}
      * is enabled).
      * Using application needs to close it explicitly if this is the case.
      *<p>
      * Note: there are formats that use fixed encoding (like most binary data formats)
      * and that ignore passed in encoding.
      *
-     * @param out OutputStream to use for writing JSON content 
+     * @param out OutputStream to use for writing JSON content
      * @param enc Character encoding to use
-     * 
+     *
      * @since 2.1
      */
     @Override
@@ -1304,7 +1049,7 @@ public class JsonFactory extends TokenStreamFactory implements Versioned, java.i
      * encoding of the format (UTF-8 for JSON and most other data formats).
      *<p>
      * Note: there are formats that use fixed encoding (like most binary data formats).
-     * 
+     *
      * @since 2.1
      */
     @Override
@@ -1320,70 +1065,17 @@ public class JsonFactory extends TokenStreamFactory implements Versioned, java.i
      * so that generator will NOT close the Reader when
      * {@link JsonGenerator#close} is called (unless auto-closing
      * feature,
-     * {@link com.azure.json.implementation.jackson.core.JsonGenerator.Feature#AUTO_CLOSE_TARGET} is enabled).
+     * {@link JsonGenerator.Feature#AUTO_CLOSE_TARGET} is enabled).
      * Using application needs to close it explicitly.
-     * 
+     *
      * @since 2.1
      *
-     * @param w Writer to use for writing JSON content 
+     * @param w Writer to use for writing JSON content
      */
     @Override
     public JsonGenerator createGenerator(Writer w) throws IOException {
         IOContext ctxt = _createContext(_createContentReference(w), false);
         return _createGenerator(_decorate(w, ctxt), ctxt);
-    }
-
-    /**
-     * Method for constructing JSON generator for writing JSON content
-     * to specified file, overwriting contents it might have (or creating
-     * it if such file does not yet exist).
-     * Encoding to use must be specified, and needs to be one of available
-     * types (as per JSON specification).
-     *<p>
-     * Underlying stream <b>is owned</b> by the generator constructed,
-     * i.e. generator will handle closing of file when
-     * {@link JsonGenerator#close} is called.
-     *
-     * @param f File to write contents to
-     * @param enc Character encoding to use
-     * 
-     * @since 2.1
-     */
-    @Override
-    public JsonGenerator createGenerator(File f, JsonEncoding enc) throws IOException {
-        OutputStream out = new FileOutputStream(f);
-        // true -> yes, we have to manage the stream since we created it
-        IOContext ctxt = _createContext(_createContentReference(out), true);
-        ctxt.setEncoding(enc);
-        if (enc == JsonEncoding.UTF8) {
-            return _createUTF8Generator(_decorate(out, ctxt), ctxt);
-        }
-        Writer w = _createWriter(out, enc, ctxt);
-        return _createGenerator(_decorate(w, ctxt), ctxt);
-    }
-
-    /**
-     * Method for constructing generator for writing content using specified
-     * {@link DataOutput} instance.
-     * 
-     * @since 2.8
-     */
-    @Override
-    public JsonGenerator createGenerator(DataOutput out, JsonEncoding enc) throws IOException {
-        return createGenerator(_createDataOutputWrapper(out), enc);
-    }
-
-    /**
-     * Convenience method for constructing generator that uses default
-     * encoding of the format (UTF-8 for JSON and most other data formats).
-     *<p>
-     * Note: there are formats that use fixed encoding (like most binary data formats).
-     * 
-     * @since 2.8
-     */
-    @Override
-    public JsonGenerator createGenerator(DataOutput out) throws IOException {
-        return createGenerator(_createDataOutputWrapper(out), JsonEncoding.UTF8);
     }
 
     /*
@@ -1400,7 +1092,7 @@ public class JsonFactory extends TokenStreamFactory implements Versioned, java.i
      * specification recommended mechanism. Json specification
      * supports only UTF-8, UTF-16 and UTF-32 as valid encodings,
      * so auto-detection implemented only for this charsets.
-     * For other charsets use {@link #createParser(java.io.Reader)}.
+     * For other charsets use {@link #createParser(Reader)}.
      *
      *<p>
      * Underlying input stream (needed for reading contents)
@@ -1410,14 +1102,12 @@ public class JsonFactory extends TokenStreamFactory implements Versioned, java.i
      * @param f File that contains JSON content to parse
      *
      * @return Parser constructed
-     * 
-     * @throws IOException if parser initialization fails due to I/O (read) problem
-     * @throws JsonParseException if parser initialization fails due to content decoding problem
      *
+     * @throws IOException if parser initialization fails due to I/O (read) problem
      * @deprecated Since 2.2, use {@link #createParser(File)} instead.
      */
     @Deprecated
-    public JsonParser createJsonParser(File f) throws IOException, JsonParseException {
+    public JsonParser createJsonParser(File f) throws IOException {
         return createParser(f);
     }
 
@@ -1429,7 +1119,7 @@ public class JsonFactory extends TokenStreamFactory implements Versioned, java.i
      * specification recommended mechanism. Json specification
      * supports only UTF-8, UTF-16 and UTF-32 as valid encodings,
      * so auto-detection implemented only for this charsets.
-     * For other charsets use {@link #createParser(java.io.Reader)}.
+     * For other charsets use {@link #createParser(Reader)}.
      *<p>
      * Underlying input stream (needed for reading contents)
      * will be <b>owned</b> (and managed, i.e. closed as need be) by
@@ -1440,12 +1130,10 @@ public class JsonFactory extends TokenStreamFactory implements Versioned, java.i
      * @return Parser constructed
      *
      * @throws IOException if parser initialization fails due to I/O (read) problem
-     * @throws JsonParseException if parser initialization fails due to content decoding problem
-     *
      * @deprecated Since 2.2, use {@link #createParser(URL)} instead.
      */
     @Deprecated
-    public JsonParser createJsonParser(URL url) throws IOException, JsonParseException {
+    public JsonParser createJsonParser(URL url) throws IOException {
         return createParser(url);
     }
 
@@ -1456,7 +1144,7 @@ public class JsonFactory extends TokenStreamFactory implements Versioned, java.i
      * The input stream will <b>not be owned</b> by
      * the parser, it will still be managed (i.e. closed if
      * end-of-stream is reacher, or parser close method called)
-     * if (and only if) {@link com.azure.json.implementation.jackson.core.JsonParser.Feature#AUTO_CLOSE_SOURCE}
+     * if (and only if) {@link JsonParser.Feature#AUTO_CLOSE_SOURCE}
      * is enabled.
      *<p>
      *
@@ -1464,19 +1152,17 @@ public class JsonFactory extends TokenStreamFactory implements Versioned, java.i
      * auto-detected as suggested by JSON RFC. Json specification
      * supports only UTF-8, UTF-16 and UTF-32 as valid encodings,
      * so auto-detection implemented only for this charsets.
-     * For other charsets use {@link #createParser(java.io.Reader)}.
+     * For other charsets use {@link #createParser(Reader)}.
      *
      * @param in InputStream to use for reading JSON content to parse
      *
      * @return Parser constructed
      *
      * @throws IOException if parser initialization fails due to I/O (read) problem
-     * @throws JsonParseException if parser initialization fails due to content decoding problem
-     *
      * @deprecated Since 2.2, use {@link #createParser(InputStream)} instead.
      */
     @Deprecated
-    public JsonParser createJsonParser(InputStream in) throws IOException, JsonParseException {
+    public JsonParser createJsonParser(InputStream in) throws IOException {
         return createParser(in);
     }
 
@@ -1487,7 +1173,7 @@ public class JsonFactory extends TokenStreamFactory implements Versioned, java.i
      * The read stream will <b>not be owned</b> by
      * the parser, it will still be managed (i.e. closed if
      * end-of-stream is reacher, or parser close method called)
-     * if (and only if) {@link com.azure.json.implementation.jackson.core.JsonParser.Feature#AUTO_CLOSE_SOURCE}
+     * if (and only if) {@link JsonParser.Feature#AUTO_CLOSE_SOURCE}
      * is enabled.
      *
      * @param r Reader to use for reading JSON content to parse
@@ -1495,12 +1181,10 @@ public class JsonFactory extends TokenStreamFactory implements Versioned, java.i
      * @return Parser constructed
      *
      * @throws IOException if parser initialization fails due to I/O (read) problem
-     * @throws JsonParseException if parser initialization fails due to content decoding problem
-     *
      * @deprecated Since 2.2, use {@link #createParser(Reader)} instead.
      */
     @Deprecated
-    public JsonParser createJsonParser(Reader r) throws IOException, JsonParseException {
+    public JsonParser createJsonParser(Reader r) throws IOException {
         return createParser(r);
     }
 
@@ -1512,32 +1196,28 @@ public class JsonFactory extends TokenStreamFactory implements Versioned, java.i
      * @return Parser constructed
      *
      * @throws IOException if parser initialization fails due to I/O (read) problem
-     * @throws JsonParseException if parser initialization fails due to content decoding problem
-     *
      * @deprecated Since 2.2, use {@link #createParser(byte[])} instead.
      */
     @Deprecated
-    public JsonParser createJsonParser(byte[] data) throws IOException, JsonParseException {
+    public JsonParser createJsonParser(byte[] data) throws IOException {
         return createParser(data);
     }
 
     /**
      * Method for constructing parser for parsing
      * the contents of given byte array.
-     * 
+     *
      * @param data Buffer that contains data to parse
      * @param offset Offset of the first data byte within buffer
      * @param len Length of contents to parse within buffer
      *
      * @return Parser constructed
-     * 
-     * @throws IOException if parser initialization fails due to I/O (read) problem
-     * @throws JsonParseException if parser initialization fails due to content decoding problem
      *
+     * @throws IOException if parser initialization fails due to I/O (read) problem
      * @deprecated Since 2.2, use {@link #createParser(byte[],int,int)} instead.
      */
     @Deprecated
-    public JsonParser createJsonParser(byte[] data, int offset, int len) throws IOException, JsonParseException {
+    public JsonParser createJsonParser(byte[] data, int offset, int len) throws IOException {
         return createParser(data, offset, len);
     }
 
@@ -1550,12 +1230,10 @@ public class JsonFactory extends TokenStreamFactory implements Versioned, java.i
      * @return Parser constructed
      *
      * @throws IOException if parser initialization fails due to I/O (read) problem
-     * @throws JsonParseException if parser initialization fails due to content decoding problem
-     *
      * @deprecated Since 2.2, use {@link #createParser(String)} instead.
      */
     @Deprecated
-    public JsonParser createJsonParser(String content) throws IOException, JsonParseException {
+    public JsonParser createJsonParser(String content) throws IOException {
         return createParser(content);
     }
 
@@ -1575,14 +1253,14 @@ public class JsonFactory extends TokenStreamFactory implements Versioned, java.i
      * so that generator will NOT close the output stream when
      * {@link JsonGenerator#close} is called (unless auto-closing
      * feature,
-     * {@link com.azure.json.implementation.jackson.core.JsonGenerator.Feature#AUTO_CLOSE_TARGET}
+     * {@link JsonGenerator.Feature#AUTO_CLOSE_TARGET}
      * is enabled).
      * Using application needs to close it explicitly if this is the case.
      *<p>
      * Note: there are formats that use fixed encoding (like most binary data formats)
      * and that ignore passed in encoding.
      *
-     * @param out OutputStream to use for writing JSON content 
+     * @param out OutputStream to use for writing JSON content
      * @param enc Character encoding to use
      *
      * @return Generator constructed
@@ -1604,10 +1282,10 @@ public class JsonFactory extends TokenStreamFactory implements Versioned, java.i
      * so that generator will NOT close the Reader when
      * {@link JsonGenerator#close} is called (unless auto-closing
      * feature,
-     * {@link com.azure.json.implementation.jackson.core.JsonGenerator.Feature#AUTO_CLOSE_TARGET} is enabled).
+     * {@link JsonGenerator.Feature#AUTO_CLOSE_TARGET} is enabled).
      * Using application needs to close it explicitly.
      *
-     * @param out Writer to use for writing JSON content 
+     * @param out Writer to use for writing JSON content
      *
      * @return Generator constructed
      *
@@ -1626,7 +1304,7 @@ public class JsonFactory extends TokenStreamFactory implements Versioned, java.i
      *<p>
      * Note: there are formats that use fixed encoding (like most binary data formats).
      *
-     * @param out OutputStream to use for writing JSON content 
+     * @param out OutputStream to use for writing JSON content
      *
      * @return Generator constructed
      *
@@ -1686,11 +1364,9 @@ public class JsonFactory extends TokenStreamFactory implements Versioned, java.i
      *
      * @return Actual parser to use
      *
-     * @throws IOException if parser initialization fails due to I/O (read) problem
-     * 
      * @since 2.1
      */
-    protected JsonParser _createParser(Reader r, IOContext ctxt) throws IOException {
+    protected JsonParser _createParser(Reader r, IOContext ctxt) {
         return new ReaderBasedJsonParser(ctxt, _parserFeatures, r, _objectCodec,
             _rootCharSymbols.makeChild(_factoryFeatures));
     }
@@ -1707,12 +1383,9 @@ public class JsonFactory extends TokenStreamFactory implements Versioned, java.i
      *
      * @return Actual parser to use
      *
-     * @throws IOException if parser initialization fails due to I/O (read) problem
-     *
      * @since 2.4
      */
-    protected JsonParser _createParser(char[] data, int offset, int len, IOContext ctxt, boolean recyclable)
-        throws IOException {
+    protected JsonParser _createParser(char[] data, int offset, int len, IOContext ctxt, boolean recyclable) {
         return new ReaderBasedJsonParser(ctxt, _parserFeatures, null, _objectCodec,
             _rootCharSymbols.makeChild(_factoryFeatures), data, offset, offset + len, recyclable);
     }
@@ -1742,29 +1415,6 @@ public class JsonFactory extends TokenStreamFactory implements Versioned, java.i
             _byteSymbolCanonicalizer, _rootCharSymbols, _factoryFeatures);
     }
 
-    /**
-     * Optional factory method, expected to be overridden
-     *
-     * @param input DataInput to use for reading content to parse
-     * @param ctxt I/O context to use for parsing
-     *
-     * @return Actual parser to use
-     *
-     * @throws IOException if parser initialization fails due to I/O (read) problem
-     *
-     * @since 2.8
-     */
-    protected JsonParser _createParser(DataInput input, IOContext ctxt) throws IOException {
-        // 13-May-2016, tatu: Need to take care not to accidentally create JSON parser for
-        // non-JSON input.
-        _requireJSONFactory("InputData source not (yet?) supported for this format (%s)");
-        // Also: while we can't do full bootstrapping (due to read-ahead limitations), should
-        // at least handle possible UTF-8 BOM
-        int firstByte = ByteSourceJsonBootstrapper.skipUTF8BOM(input);
-        ByteQuadsCanonicalizer can = _byteSymbolCanonicalizer.makeChild(_factoryFeatures);
-        return new UTF8DataInputJsonParser(ctxt, _parserFeatures, input, _objectCodec, can, firstByte);
-    }
-
     /*
      * /**********************************************************
      * /* Factory methods used by factory for creating generator instances,
@@ -1787,9 +1437,8 @@ public class JsonFactory extends TokenStreamFactory implements Versioned, java.i
      *
      * @return This factory instance (to allow call chaining)
      *
-     * @throws IOException if parser initialization fails due to I/O (write) problem
      */
-    protected JsonGenerator _createGenerator(Writer out, IOContext ctxt) throws IOException {
+    protected JsonGenerator _createGenerator(Writer out, IOContext ctxt) {
         WriterBasedJsonGenerator gen
             = new WriterBasedJsonGenerator(ctxt, _generatorFeatures, _objectCodec, out, _quoteChar);
         if (_maximumNonEscapedChar > 0) {
@@ -1820,9 +1469,8 @@ public class JsonFactory extends TokenStreamFactory implements Versioned, java.i
      *
      * @return This factory instance (to allow call chaining)
      *
-     * @throws IOException if parser initialization fails due to I/O (write) problem
      */
-    protected JsonGenerator _createUTF8Generator(OutputStream out, IOContext ctxt) throws IOException {
+    protected JsonGenerator _createUTF8Generator(OutputStream out, IOContext ctxt) {
         UTF8JsonGenerator gen = new UTF8JsonGenerator(ctxt, _generatorFeatures, _objectCodec, out, _quoteChar);
         if (_maximumNonEscapedChar > 0) {
             gen.setHighestNonEscapedChar(_maximumNonEscapedChar);
@@ -1865,17 +1513,6 @@ public class JsonFactory extends TokenStreamFactory implements Versioned, java.i
     protected final Reader _decorate(Reader in, IOContext ctxt) throws IOException {
         if (_inputDecorator != null) {
             Reader in2 = _inputDecorator.decorate(ctxt, in);
-            if (in2 != null) {
-                return in2;
-            }
-        }
-        return in;
-    }
-
-    // @since 2.8
-    protected final DataInput _decorate(DataInput in, IOContext ctxt) throws IOException {
-        if (_inputDecorator != null) {
-            DataInput in2 = _inputDecorator.decorate(ctxt, in);
             if (in2 != null) {
                 return in2;
             }
@@ -1960,22 +1597,6 @@ public class JsonFactory extends TokenStreamFactory implements Versioned, java.i
     }
 
     /**
-     * Overridable factory method that actually instantiates desired
-     * context object for async (non-blocking) parsing
-     *
-     * @param srcRef Source reference to use for diagnostics, exception messages
-     *
-     * @return I/O context created
-     *
-     * @since 2.9.7
-     */
-    protected IOContext _createNonBlockingContext(Object srcRef) {
-        // [jackson-core#479]: allow recycling for non-blocking parser again
-        // now that access is thread-safe
-        return new IOContext(_getBufferRecycler(), _createContentReference(srcRef), false);
-    }
-
-    /**
      * Overridable factory method for constructing {@link ContentReference}
      * to pass to parser or generator being created; used in cases where no offset
      * or length is applicable (either irrelevant, or full contents assumed).
@@ -2020,29 +1641,4 @@ public class JsonFactory extends TokenStreamFactory implements Versioned, java.i
      * /**********************************************************
      */
 
-    /**
-     * Helper method called to work around the problem of this class both defining
-     * general API for constructing parsers+generators AND implementing the API
-     * for JSON handling. Problem here is that when adding new functionality
-     * via factory methods, it is not possible to leave these methods abstract
-     * (because we are implementing them for JSON); but there is risk that
-     * sub-classes do not override them all (plus older version can not implement).
-     * So a work-around is to add a check to ensure that factory is still one
-     * used for JSON; and if not, make base implementation of a factory method fail.
-     *
-     * @param msg Message template to use for reporting problem (if necessary)
-     *
-     * @since 2.9
-     */
-    private final void _requireJSONFactory(String msg) {
-        if (!_isJSONFactory()) {
-            throw new UnsupportedOperationException(String.format(msg, getFormatName()));
-        }
-    }
-
-    private final boolean _isJSONFactory() {
-        // NOTE: since we only really care about whether this is standard JSON-backed factory,
-        // or its sub-class / delegated to one, no need to check for equality, identity is enough
-        return getFormatName() == FORMAT_NAME_JSON;
-    }
 }

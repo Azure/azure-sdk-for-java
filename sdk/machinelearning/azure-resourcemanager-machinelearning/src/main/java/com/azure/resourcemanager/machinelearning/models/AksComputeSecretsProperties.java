@@ -5,37 +5,42 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Properties of AksComputeSecrets. */
+/**
+ * Properties of AksComputeSecrets.
+ */
 @Fluent
-public class AksComputeSecretsProperties {
+public class AksComputeSecretsProperties implements JsonSerializable<AksComputeSecretsProperties> {
     /*
      * Content of kubeconfig file that can be used to connect to the Kubernetes cluster.
      */
-    @JsonProperty(value = "userKubeConfig")
     private String userKubeConfig;
 
     /*
      * Content of kubeconfig file that can be used to connect to the Kubernetes cluster.
      */
-    @JsonProperty(value = "adminKubeConfig")
     private String adminKubeConfig;
 
     /*
      * Image registry pull secret.
      */
-    @JsonProperty(value = "imagePullSecretName")
     private String imagePullSecretName;
 
-    /** Creates an instance of AksComputeSecretsProperties class. */
+    /**
+     * Creates an instance of AksComputeSecretsProperties class.
+     */
     public AksComputeSecretsProperties() {
     }
 
     /**
      * Get the userKubeConfig property: Content of kubeconfig file that can be used to connect to the Kubernetes
      * cluster.
-     *
+     * 
      * @return the userKubeConfig value.
      */
     public String userKubeConfig() {
@@ -45,7 +50,7 @@ public class AksComputeSecretsProperties {
     /**
      * Set the userKubeConfig property: Content of kubeconfig file that can be used to connect to the Kubernetes
      * cluster.
-     *
+     * 
      * @param userKubeConfig the userKubeConfig value to set.
      * @return the AksComputeSecretsProperties object itself.
      */
@@ -57,7 +62,7 @@ public class AksComputeSecretsProperties {
     /**
      * Get the adminKubeConfig property: Content of kubeconfig file that can be used to connect to the Kubernetes
      * cluster.
-     *
+     * 
      * @return the adminKubeConfig value.
      */
     public String adminKubeConfig() {
@@ -67,7 +72,7 @@ public class AksComputeSecretsProperties {
     /**
      * Set the adminKubeConfig property: Content of kubeconfig file that can be used to connect to the Kubernetes
      * cluster.
-     *
+     * 
      * @param adminKubeConfig the adminKubeConfig value to set.
      * @return the AksComputeSecretsProperties object itself.
      */
@@ -78,7 +83,7 @@ public class AksComputeSecretsProperties {
 
     /**
      * Get the imagePullSecretName property: Image registry pull secret.
-     *
+     * 
      * @return the imagePullSecretName value.
      */
     public String imagePullSecretName() {
@@ -87,7 +92,7 @@ public class AksComputeSecretsProperties {
 
     /**
      * Set the imagePullSecretName property: Image registry pull secret.
-     *
+     * 
      * @param imagePullSecretName the imagePullSecretName value to set.
      * @return the AksComputeSecretsProperties object itself.
      */
@@ -98,9 +103,51 @@ public class AksComputeSecretsProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("userKubeConfig", this.userKubeConfig);
+        jsonWriter.writeStringField("adminKubeConfig", this.adminKubeConfig);
+        jsonWriter.writeStringField("imagePullSecretName", this.imagePullSecretName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AksComputeSecretsProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AksComputeSecretsProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AksComputeSecretsProperties.
+     */
+    public static AksComputeSecretsProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AksComputeSecretsProperties deserializedAksComputeSecretsProperties = new AksComputeSecretsProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("userKubeConfig".equals(fieldName)) {
+                    deserializedAksComputeSecretsProperties.userKubeConfig = reader.getString();
+                } else if ("adminKubeConfig".equals(fieldName)) {
+                    deserializedAksComputeSecretsProperties.adminKubeConfig = reader.getString();
+                } else if ("imagePullSecretName".equals(fieldName)) {
+                    deserializedAksComputeSecretsProperties.imagePullSecretName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAksComputeSecretsProperties;
+        });
     }
 }

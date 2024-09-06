@@ -5,33 +5,45 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Uploaded Jar binary for a deployment.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("Jar")
 @Fluent
 public final class JarUploadedUserSourceInfo extends UploadedUserSourceInfo {
     /*
+     * Type of the source uploaded
+     */
+    private String type = "Jar";
+
+    /*
      * Runtime version of the Jar file
      */
-    @JsonProperty(value = "runtimeVersion")
     private String runtimeVersion;
 
     /*
      * JVM parameter
      */
-    @JsonProperty(value = "jvmOptions")
     private String jvmOptions;
 
     /**
      * Creates an instance of JarUploadedUserSourceInfo class.
      */
     public JarUploadedUserSourceInfo() {
+    }
+
+    /**
+     * Get the type property: Type of the source uploaded.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -100,5 +112,53 @@ public final class JarUploadedUserSourceInfo extends UploadedUserSourceInfo {
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", version());
+        jsonWriter.writeStringField("relativePath", relativePath());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("runtimeVersion", this.runtimeVersion);
+        jsonWriter.writeStringField("jvmOptions", this.jvmOptions);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JarUploadedUserSourceInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JarUploadedUserSourceInfo if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the JarUploadedUserSourceInfo.
+     */
+    public static JarUploadedUserSourceInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JarUploadedUserSourceInfo deserializedJarUploadedUserSourceInfo = new JarUploadedUserSourceInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("version".equals(fieldName)) {
+                    deserializedJarUploadedUserSourceInfo.withVersion(reader.getString());
+                } else if ("relativePath".equals(fieldName)) {
+                    deserializedJarUploadedUserSourceInfo.withRelativePath(reader.getString());
+                } else if ("type".equals(fieldName)) {
+                    deserializedJarUploadedUserSourceInfo.type = reader.getString();
+                } else if ("runtimeVersion".equals(fieldName)) {
+                    deserializedJarUploadedUserSourceInfo.runtimeVersion = reader.getString();
+                } else if ("jvmOptions".equals(fieldName)) {
+                    deserializedJarUploadedUserSourceInfo.jvmOptions = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJarUploadedUserSourceInfo;
+        });
     }
 }

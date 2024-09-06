@@ -9,8 +9,20 @@ package com.azure.resourcemanager.deviceregistry.generated;
  */
 public final class AssetsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/deviceregistry/DeviceRegistry.Management/examples/2023-11-01-preview/Get_Asset.json
+     * x-ms-original-file: 2023-11-01-preview/Get_Asset_With_SyncStatus.json
+     */
+    /**
+     * Sample code: Get_Asset_With_SyncStatus.
+     * 
+     * @param manager Entry point to DeviceRegistryManager.
+     */
+    public static void getAssetWithSyncStatus(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        manager.assets()
+            .getByResourceGroupWithResponse("myResourceGroup", "my-asset", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2023-11-01-preview/Get_Asset.json
      */
     /**
      * Sample code: Get_Asset.

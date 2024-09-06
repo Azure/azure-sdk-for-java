@@ -11,13 +11,13 @@ public final class SftpLocationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SftpLocation model = BinaryData.fromString(
-            "{\"type\":\"SftpLocation\",\"folderPath\":\"datalisolntfxxc\",\"fileName\":\"datamipfjw\",\"\":{\"nvgskjtoxjd\":\"datagizmshxxbaizabu\",\"xqqm\":\"datajsjznv\",\"aydhf\":\"datai\"}}")
+            "{\"type\":\"SftpLocation\",\"folderPath\":\"dataclbtxl\",\"fileName\":\"datavsolzwil\",\"\":{\"jx\":\"dataojfsqebuu\",\"kktpmbmxbmbr\":\"datafxfjwp\"}}")
             .toObject(SftpLocation.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SftpLocation model = new SftpLocation().withFolderPath("datalisolntfxxc").withFileName("datamipfjw");
+        SftpLocation model = new SftpLocation().withFolderPath("dataclbtxl").withFileName("datavsolzwil");
         model = BinaryData.fromObject(model).toObject(SftpLocation.class);
     }
 }

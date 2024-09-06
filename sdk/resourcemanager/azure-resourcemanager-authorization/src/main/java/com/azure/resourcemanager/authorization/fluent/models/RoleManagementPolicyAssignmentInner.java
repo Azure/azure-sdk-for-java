@@ -5,45 +5,50 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.authorization.models.PolicyAssignmentProperties;
 import com.azure.resourcemanager.authorization.models.RoleManagementPolicyRule;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Role management policy. */
+/**
+ * Role management policy.
+ */
 @Fluent
-public final class RoleManagementPolicyAssignmentInner {
+public final class RoleManagementPolicyAssignmentInner
+    implements JsonSerializable<RoleManagementPolicyAssignmentInner> {
     /*
      * The role management policy Id.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * The role management policy name.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The role management policy type.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
      * Role management policy properties.
      */
-    @JsonProperty(value = "properties")
     private RoleManagementPolicyAssignmentProperties innerProperties;
 
-    /** Creates an instance of RoleManagementPolicyAssignmentInner class. */
+    /**
+     * Creates an instance of RoleManagementPolicyAssignmentInner class.
+     */
     public RoleManagementPolicyAssignmentInner() {
     }
 
     /**
      * Get the id property: The role management policy Id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -52,7 +57,7 @@ public final class RoleManagementPolicyAssignmentInner {
 
     /**
      * Get the name property: The role management policy name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -61,7 +66,7 @@ public final class RoleManagementPolicyAssignmentInner {
 
     /**
      * Get the type property: The role management policy type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -70,7 +75,7 @@ public final class RoleManagementPolicyAssignmentInner {
 
     /**
      * Get the innerProperties property: Role management policy properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private RoleManagementPolicyAssignmentProperties innerProperties() {
@@ -79,7 +84,7 @@ public final class RoleManagementPolicyAssignmentInner {
 
     /**
      * Get the scope property: The role management policy scope.
-     *
+     * 
      * @return the scope value.
      */
     public String scope() {
@@ -88,7 +93,7 @@ public final class RoleManagementPolicyAssignmentInner {
 
     /**
      * Set the scope property: The role management policy scope.
-     *
+     * 
      * @param scope the scope value to set.
      * @return the RoleManagementPolicyAssignmentInner object itself.
      */
@@ -102,7 +107,7 @@ public final class RoleManagementPolicyAssignmentInner {
 
     /**
      * Get the roleDefinitionId property: The role definition of management policy assignment.
-     *
+     * 
      * @return the roleDefinitionId value.
      */
     public String roleDefinitionId() {
@@ -111,7 +116,7 @@ public final class RoleManagementPolicyAssignmentInner {
 
     /**
      * Set the roleDefinitionId property: The role definition of management policy assignment.
-     *
+     * 
      * @param roleDefinitionId the roleDefinitionId value to set.
      * @return the RoleManagementPolicyAssignmentInner object itself.
      */
@@ -125,7 +130,7 @@ public final class RoleManagementPolicyAssignmentInner {
 
     /**
      * Get the policyId property: The policy id role management policy assignment.
-     *
+     * 
      * @return the policyId value.
      */
     public String policyId() {
@@ -134,7 +139,7 @@ public final class RoleManagementPolicyAssignmentInner {
 
     /**
      * Set the policyId property: The policy id role management policy assignment.
-     *
+     * 
      * @param policyId the policyId value to set.
      * @return the RoleManagementPolicyAssignmentInner object itself.
      */
@@ -148,7 +153,7 @@ public final class RoleManagementPolicyAssignmentInner {
 
     /**
      * Get the effectiveRules property: The readonly computed rule applied to the policy.
-     *
+     * 
      * @return the effectiveRules value.
      */
     public List<RoleManagementPolicyRule> effectiveRules() {
@@ -157,7 +162,7 @@ public final class RoleManagementPolicyAssignmentInner {
 
     /**
      * Get the policyAssignmentProperties property: Additional properties of scope, role definition and policy.
-     *
+     * 
      * @return the policyAssignmentProperties value.
      */
     public PolicyAssignmentProperties policyAssignmentProperties() {
@@ -166,12 +171,56 @@ public final class RoleManagementPolicyAssignmentInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RoleManagementPolicyAssignmentInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RoleManagementPolicyAssignmentInner if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RoleManagementPolicyAssignmentInner.
+     */
+    public static RoleManagementPolicyAssignmentInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RoleManagementPolicyAssignmentInner deserializedRoleManagementPolicyAssignmentInner
+                = new RoleManagementPolicyAssignmentInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedRoleManagementPolicyAssignmentInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedRoleManagementPolicyAssignmentInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedRoleManagementPolicyAssignmentInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedRoleManagementPolicyAssignmentInner.innerProperties
+                        = RoleManagementPolicyAssignmentProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRoleManagementPolicyAssignmentInner;
+        });
     }
 }

@@ -3,7 +3,6 @@ trigger: none
 extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
   parameters:
-    UseFederatedAuth: true
     ServiceDirectory: formrecognizer
     timeoutInMinutes: 150 # how long to run the job before automatically cancelling
     Artifacts:
@@ -12,8 +11,8 @@ extends:
         safeName: azureaiformrecognizer
     CloudConfig:
       Public:
-        SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
-        Location: 'centraluseuap'
         ServiceConnection: azure-sdk-tests
-        SubscriptionConfigurationFilePath: eng/common/TestResources/sub-config/AzurePublicMsft.json
+        SubscriptionConfigurationFilePaths:
+          - eng/common/TestResources/sub-config/AzurePublicMsft.json
+        Location: 'centraluseuap'
     SupportedClouds: 'Public'

@@ -5,40 +5,43 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** itemBody. */
+/**
+ * itemBody.
+ */
 @Fluent
-public final class MicrosoftGraphItemBody {
+public final class MicrosoftGraphItemBody implements JsonSerializable<MicrosoftGraphItemBody> {
     /*
      * The content of the item.
      */
-    @JsonProperty(value = "content")
     private String content;
 
     /*
      * bodyType
      */
-    @JsonProperty(value = "contentType")
     private MicrosoftGraphBodyType contentType;
 
     /*
      * itemBody
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphItemBody class. */
+    /**
+     * Creates an instance of MicrosoftGraphItemBody class.
+     */
     public MicrosoftGraphItemBody() {
     }
 
     /**
      * Get the content property: The content of the item.
-     *
+     * 
      * @return the content value.
      */
     public String content() {
@@ -47,7 +50,7 @@ public final class MicrosoftGraphItemBody {
 
     /**
      * Set the content property: The content of the item.
-     *
+     * 
      * @param content the content value to set.
      * @return the MicrosoftGraphItemBody object itself.
      */
@@ -58,7 +61,7 @@ public final class MicrosoftGraphItemBody {
 
     /**
      * Get the contentType property: bodyType.
-     *
+     * 
      * @return the contentType value.
      */
     public MicrosoftGraphBodyType contentType() {
@@ -67,7 +70,7 @@ public final class MicrosoftGraphItemBody {
 
     /**
      * Set the contentType property: bodyType.
-     *
+     * 
      * @param contentType the contentType value to set.
      * @return the MicrosoftGraphItemBody object itself.
      */
@@ -78,17 +81,16 @@ public final class MicrosoftGraphItemBody {
 
     /**
      * Get the additionalProperties property: itemBody.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: itemBody.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphItemBody object itself.
      */
@@ -97,19 +99,62 @@ public final class MicrosoftGraphItemBody {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("content", this.content);
+        jsonWriter.writeStringField("contentType", this.contentType == null ? null : this.contentType.toString());
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphItemBody from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphItemBody if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphItemBody.
+     */
+    public static MicrosoftGraphItemBody fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphItemBody deserializedMicrosoftGraphItemBody = new MicrosoftGraphItemBody();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("content".equals(fieldName)) {
+                    deserializedMicrosoftGraphItemBody.content = reader.getString();
+                } else if ("contentType".equals(fieldName)) {
+                    deserializedMicrosoftGraphItemBody.contentType
+                        = MicrosoftGraphBodyType.fromString(reader.getString());
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphItemBody.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphItemBody;
+        });
     }
 }

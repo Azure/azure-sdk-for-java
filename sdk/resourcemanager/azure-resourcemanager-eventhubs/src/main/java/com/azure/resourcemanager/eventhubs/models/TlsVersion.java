@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.util.Collection;
 
 /**
@@ -30,7 +28,7 @@ public final class TlsVersion extends ExpandableStringEnum<TlsVersion> {
 
     /**
      * Creates a new instance of TlsVersion value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -39,18 +37,17 @@ public final class TlsVersion extends ExpandableStringEnum<TlsVersion> {
 
     /**
      * Creates or finds a TlsVersion from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding TlsVersion.
      */
-    @JsonCreator
     public static TlsVersion fromString(String name) {
         return fromString(name, TlsVersion.class);
     }
 
     /**
      * Gets known TlsVersion values.
-     *
+     * 
      * @return known TlsVersion values.
      */
     public static Collection<TlsVersion> values() {

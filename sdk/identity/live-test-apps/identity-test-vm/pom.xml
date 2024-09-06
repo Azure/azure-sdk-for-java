@@ -4,7 +4,7 @@
 
     <groupId>com.azure</groupId>
     <artifactId>identity-test-vm</artifactId>
-    <version>1.0-SNAPSHOT</version> <!-- {x-version-update;com.azure:identity-test-vm;current} -->
+    <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:identity-test-vm;current} -->
     <packaging>jar</packaging>
 
     <name>Azure Identity Java Test VM</name>
@@ -18,7 +18,7 @@
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-identity</artifactId>
-            <version>1.14.0-beta.1</version> <!-- {x-version-update;com.azure:azure-identity;current} -->
+            <version>1.14.0-beta.2</version> <!-- {x-version-update;com.azure:azure-identity;current} -->
         </dependency>
     </dependencies>
 

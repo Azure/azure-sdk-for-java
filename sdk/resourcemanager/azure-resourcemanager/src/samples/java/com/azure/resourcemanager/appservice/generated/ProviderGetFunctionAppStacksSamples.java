@@ -9,7 +9,8 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class ProviderGetFunctionAppStacksSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/GetFunctionAppStacks.json
+     * x-ms-original-file:
+     * specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/GetFunctionAppStacks.json
      */
     /**
      * Sample code: Get Function App Stacks.

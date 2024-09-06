@@ -5,8 +5,11 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.MSDeployCore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -18,7 +21,6 @@ public final class MSDeployProperties extends MSDeployCore {
     /*
      * List of Add-On packages. Add-On packages implicitly enable the Do Not Delete MSDeploy rule.
      */
-    @JsonProperty(value = "addOnPackages")
     private List<MSDeployCore> addOnPackages;
 
     /**
@@ -123,5 +125,64 @@ public final class MSDeployProperties extends MSDeployCore {
         if (addOnPackages() != null) {
             addOnPackages().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("packageUri", packageUri());
+        jsonWriter.writeStringField("connectionString", connectionString());
+        jsonWriter.writeStringField("dbType", dbType());
+        jsonWriter.writeStringField("setParametersXmlFileUri", setParametersXmlFileUri());
+        jsonWriter.writeMapField("setParameters", setParameters(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("skipAppData", skipAppData());
+        jsonWriter.writeBooleanField("appOffline", appOffline());
+        jsonWriter.writeArrayField("addOnPackages", this.addOnPackages, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MSDeployProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MSDeployProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MSDeployProperties.
+     */
+    public static MSDeployProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MSDeployProperties deserializedMSDeployProperties = new MSDeployProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("packageUri".equals(fieldName)) {
+                    deserializedMSDeployProperties.withPackageUri(reader.getString());
+                } else if ("connectionString".equals(fieldName)) {
+                    deserializedMSDeployProperties.withConnectionString(reader.getString());
+                } else if ("dbType".equals(fieldName)) {
+                    deserializedMSDeployProperties.withDbType(reader.getString());
+                } else if ("setParametersXmlFileUri".equals(fieldName)) {
+                    deserializedMSDeployProperties.withSetParametersXmlFileUri(reader.getString());
+                } else if ("setParameters".equals(fieldName)) {
+                    Map<String, String> setParameters = reader.readMap(reader1 -> reader1.getString());
+                    deserializedMSDeployProperties.withSetParameters(setParameters);
+                } else if ("skipAppData".equals(fieldName)) {
+                    deserializedMSDeployProperties.withSkipAppData(reader.getNullable(JsonReader::getBoolean));
+                } else if ("appOffline".equals(fieldName)) {
+                    deserializedMSDeployProperties.withAppOffline(reader.getNullable(JsonReader::getBoolean));
+                } else if ("addOnPackages".equals(fieldName)) {
+                    List<MSDeployCore> addOnPackages = reader.readArray(reader1 -> MSDeployCore.fromJson(reader1));
+                    deserializedMSDeployProperties.addOnPackages = addOnPackages;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMSDeployProperties;
+        });
     }
 }

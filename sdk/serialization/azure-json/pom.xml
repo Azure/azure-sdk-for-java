@@ -15,7 +15,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-json</artifactId>
   <packaging>jar</packaging>
-  <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-json;current} -->
+  <version>1.3.0-beta.1</version> <!-- {x-version-update;com.azure:azure-json;current} -->
 
   <name>Microsoft Azure Java JSON Library</name>
   <description>This package provides interfaces for reading and writing JSON.</description>
@@ -155,12 +155,12 @@
   </build>
 
   <profiles>
-    <!-- This profile is used to generate a sources JAR with jackson-core shaded into com.azure.core.implementation.jackson.core -->
+    <!-- This profile is used to generate a sources JAR with jackson-core shaded into com.azure.json.implementation.jackson.core -->
     <!-- DO NOT run this profile with release, it is only meant to be run locally when the shaded jackson-core code needs to be updated. -->
     <!-- -->
     <!-- To update the shaded jackson-core code, run Maven build with '-Dshade-jackson-core' included in the command. -->
-    <!-- In the target folder, extract the sources azure-core JAR, the path com/azure/core/implementation/jackson/core will contain the jackson-core source code. -->
-    <!-- Copy this code into the com.azure.core.implementation.jackson.core package in the azure-core project and overwrite the existing files. -->
+    <!-- In the target folder, extract the sources azure-json JAR, the path com/azure/json/implementation/jackson/core will contain the jackson-core source code. -->
+    <!-- Copy this code into the com.azure.json.implementation.jackson.core package in the azure-json project and overwrite the existing files. -->
     <!-- -->
     <!-- After following the steps above the project should be rebuilt with the 'add-license-comment' profile enable to add a comment about the shaded code's license. -->
     <!-- This serves as another way to attribute the shaded code to Jackson Core. -->
@@ -176,7 +176,7 @@
         <dependency>
           <groupId>com.fasterxml.jackson.core</groupId>
           <artifactId>jackson-core</artifactId>
-          <version>2.13.5</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
+          <version>2.17.2</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
         </dependency>
       </dependencies>
 
@@ -224,7 +224,7 @@
               <rules>
                 <bannedDependencies>
                   <includes>
-                    <include>com.fasterxml.jackson.core:jackson-core:[2.13.5]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
+                    <include>com.fasterxml.jackson.core:jackson-core:[2.17.2]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
                   </includes>
                 </bannedDependencies>
               </rules>

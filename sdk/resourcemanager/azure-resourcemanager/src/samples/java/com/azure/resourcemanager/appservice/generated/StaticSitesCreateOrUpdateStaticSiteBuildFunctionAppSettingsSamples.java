@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appservice.generated;
 
 import com.azure.resourcemanager.appservice.fluent.models.StringDictionaryInner;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,11 +13,12 @@ import java.util.Map;
  */
 public final class StaticSitesCreateOrUpdateStaticSiteBuildFunctionAppSettingsSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/CreateOrUpdateStaticSiteBuildFunctionAppSettings.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/
+     * CreateOrUpdateStaticSiteBuildFunctionAppSettings.json
      */
     /**
      * Sample code: Creates or updates the function app settings of a static site build.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void

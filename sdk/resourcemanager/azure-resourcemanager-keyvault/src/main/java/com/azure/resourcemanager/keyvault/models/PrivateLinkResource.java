@@ -6,41 +6,96 @@ package com.azure.resourcemanager.keyvault.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.keyvault.fluent.models.PrivateLinkResourceProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** A private link resource. */
+/**
+ * A private link resource.
+ */
 @Fluent
 public final class PrivateLinkResource extends Resource {
     /*
      * Resource properties.
      */
-    @JsonProperty(value = "properties")
     private PrivateLinkResourceProperties innerProperties;
 
-    /** Creates an instance of PrivateLinkResource class. */
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /**
+     * Creates an instance of PrivateLinkResource class.
+     */
     public PrivateLinkResource() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private PrivateLinkResourceProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PrivateLinkResource withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PrivateLinkResource withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -49,7 +104,7 @@ public final class PrivateLinkResource extends Resource {
 
     /**
      * Get the groupId property: Group identifier of private link resource.
-     *
+     * 
      * @return the groupId value.
      */
     public String groupId() {
@@ -58,7 +113,7 @@ public final class PrivateLinkResource extends Resource {
 
     /**
      * Get the requiredMembers property: Required member names of private link resource.
-     *
+     * 
      * @return the requiredMembers value.
      */
     public List<String> requiredMembers() {
@@ -67,7 +122,7 @@ public final class PrivateLinkResource extends Resource {
 
     /**
      * Get the requiredZoneNames property: Required DNS zone names of the the private link resource.
-     *
+     * 
      * @return the requiredZoneNames value.
      */
     public List<String> requiredZoneNames() {
@@ -76,7 +131,7 @@ public final class PrivateLinkResource extends Resource {
 
     /**
      * Set the requiredZoneNames property: Required DNS zone names of the the private link resource.
-     *
+     * 
      * @param requiredZoneNames the requiredZoneNames value to set.
      * @return the PrivateLinkResource object itself.
      */
@@ -90,12 +145,62 @@ public final class PrivateLinkResource extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PrivateLinkResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PrivateLinkResource if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PrivateLinkResource.
+     */
+    public static PrivateLinkResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PrivateLinkResource deserializedPrivateLinkResource = new PrivateLinkResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedPrivateLinkResource.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedPrivateLinkResource.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedPrivateLinkResource.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedPrivateLinkResource.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedPrivateLinkResource.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedPrivateLinkResource.innerProperties = PrivateLinkResourceProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPrivateLinkResource;
+        });
     }
 }

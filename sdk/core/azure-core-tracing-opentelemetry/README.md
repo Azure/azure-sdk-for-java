@@ -52,7 +52,7 @@ To enable Azure SDK tracing, add the latest `com.azure:azure-core-tracing-opente
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-tracing-opentelemetry</artifactId>
-  <version>1.0.0-beta.47</version>
+  <version>1.0.0-beta.48</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

@@ -5,8 +5,9 @@ package com.azure.resourcemanager.compute;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.test.annotation.LiveOnly;
+import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.authorization.models.RoleAssignment;
 import com.azure.resourcemanager.compute.models.CachingTypes;
@@ -14,7 +15,6 @@ import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.ResourceIdentityType;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
-import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import org.junit.jupiter.api.Assertions;
@@ -22,7 +22,7 @@ import org.junit.jupiter.api.Test;
 
 public class VirtualMachineManagedServiceIdentityOperationsTests extends ComputeManagementTest {
     private String rgName = "";
-    private final Region region = Region.US_EAST;
+    private final Region region = Region.US_WEST2;
     private final String vmName = "javavm";
 
     @Override
@@ -37,9 +37,10 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
     }
 
     @Test
-    @LiveOnly
+    @DoNotRecord(skipInPlayback = true)
     public void canSetMSIOnNewOrExistingVMWithoutRoleAssignment() throws Exception {
         // LiveOnly because test needs to be refactored for storing/evaluating PrincipalId
+        // and "test timing out after latest test proxy update"
         // Create a virtual machine with just MSI enabled without role and scope.
         //
         VirtualMachine virtualMachine =
@@ -247,9 +248,10 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
     }
 
     @Test
-    @LiveOnly
+    @DoNotRecord(skipInPlayback = true)
     public void canSetMSIOnExistingVMWithRoleAssignments() throws Exception {
         // LiveOnly because test needs to be refactored for storing/evaluating PrincipalId
+        // and "test timing out after latest test proxy update"
         VirtualMachine virtualMachine =
             computeManager
                 .virtualMachines()

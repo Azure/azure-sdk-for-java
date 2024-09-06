@@ -5,54 +5,37 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
  * Integration runtime status.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "type",
-    defaultImpl = IntegrationRuntimeStatus.class,
-    visible = true)
-@JsonTypeName("IntegrationRuntimeStatus")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "Managed", value = ManagedIntegrationRuntimeStatus.class),
-    @JsonSubTypes.Type(name = "SelfHosted", value = SelfHostedIntegrationRuntimeStatus.class) })
 @Fluent
-public class IntegrationRuntimeStatus {
+public class IntegrationRuntimeStatus implements JsonSerializable<IntegrationRuntimeStatus> {
     /*
      * Type of integration runtime.
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private IntegrationRuntimeType type = IntegrationRuntimeType.fromString("IntegrationRuntimeStatus");
 
     /*
      * The data factory name which the integration runtime belong to.
      */
-    @JsonProperty(value = "dataFactoryName", access = JsonProperty.Access.WRITE_ONLY)
     private String dataFactoryName;
 
     /*
      * The state of integration runtime.
      */
-    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private IntegrationRuntimeState state;
 
     /*
      * Integration runtime status.
      */
-    @JsonIgnore
     private Map<String, Object> additionalProperties;
 
     /**
@@ -80,6 +63,17 @@ public class IntegrationRuntimeStatus {
     }
 
     /**
+     * Set the dataFactoryName property: The data factory name which the integration runtime belong to.
+     * 
+     * @param dataFactoryName the dataFactoryName value to set.
+     * @return the IntegrationRuntimeStatus object itself.
+     */
+    IntegrationRuntimeStatus withDataFactoryName(String dataFactoryName) {
+        this.dataFactoryName = dataFactoryName;
+        return this;
+    }
+
+    /**
      * Get the state property: The state of integration runtime.
      * 
      * @return the state value.
@@ -89,11 +83,21 @@ public class IntegrationRuntimeStatus {
     }
 
     /**
+     * Set the state property: The state of integration runtime.
+     * 
+     * @param state the state value to set.
+     * @return the IntegrationRuntimeStatus object itself.
+     */
+    IntegrationRuntimeStatus withState(IntegrationRuntimeState state) {
+        this.state = state;
+        return this;
+    }
+
+    /**
      * Get the additionalProperties property: Integration runtime status.
      * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
@@ -109,19 +113,89 @@ public class IntegrationRuntimeStatus {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new LinkedHashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IntegrationRuntimeStatus from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IntegrationRuntimeStatus if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IntegrationRuntimeStatus.
+     */
+    public static IntegrationRuntimeStatus fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("type".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("Managed".equals(discriminatorValue)) {
+                    return ManagedIntegrationRuntimeStatus.fromJson(readerToUse.reset());
+                } else if ("SelfHosted".equals(discriminatorValue)) {
+                    return SelfHostedIntegrationRuntimeStatus.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static IntegrationRuntimeStatus fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IntegrationRuntimeStatus deserializedIntegrationRuntimeStatus = new IntegrationRuntimeStatus();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedIntegrationRuntimeStatus.type = IntegrationRuntimeType.fromString(reader.getString());
+                } else if ("dataFactoryName".equals(fieldName)) {
+                    deserializedIntegrationRuntimeStatus.dataFactoryName = reader.getString();
+                } else if ("state".equals(fieldName)) {
+                    deserializedIntegrationRuntimeStatus.state = IntegrationRuntimeState.fromString(reader.getString());
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedIntegrationRuntimeStatus.additionalProperties = additionalProperties;
+
+            return deserializedIntegrationRuntimeStatus;
+        });
     }
 }

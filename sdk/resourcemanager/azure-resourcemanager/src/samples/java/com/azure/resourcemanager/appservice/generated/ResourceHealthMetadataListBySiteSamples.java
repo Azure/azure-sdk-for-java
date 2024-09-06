@@ -9,7 +9,8 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class ResourceHealthMetadataListBySiteSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/ListResourceHealthMetadataBySite.json
+     * x-ms-original-file:
+     * specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/ListResourceHealthMetadataBySite.json
      */
     /**
      * Sample code: List ResourceHealthMetadata for a site.

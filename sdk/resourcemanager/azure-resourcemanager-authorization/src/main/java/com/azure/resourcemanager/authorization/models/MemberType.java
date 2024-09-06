@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Membership type of the role assignment schedule. */
+/**
+ * Membership type of the role assignment schedule.
+ */
 public final class MemberType extends ExpandableStringEnum<MemberType> {
-    /** Static value Inherited for MemberType. */
+    /**
+     * Static value Inherited for MemberType.
+     */
     public static final MemberType INHERITED = fromString("Inherited");
 
-    /** Static value Direct for MemberType. */
+    /**
+     * Static value Direct for MemberType.
+     */
     public static final MemberType DIRECT = fromString("Direct");
 
-    /** Static value Group for MemberType. */
+    /**
+     * Static value Group for MemberType.
+     */
     public static final MemberType GROUP = fromString("Group");
 
     /**
      * Creates a new instance of MemberType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class MemberType extends ExpandableStringEnum<MemberType> {
 
     /**
      * Creates or finds a MemberType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MemberType.
      */
-    @JsonCreator
     public static MemberType fromString(String name) {
         return fromString(name, MemberType.class);
     }
 
     /**
      * Gets known MemberType values.
-     *
+     * 
      * @return known MemberType values.
      */
     public static Collection<MemberType> values() {

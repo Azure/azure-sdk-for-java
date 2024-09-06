@@ -371,11 +371,8 @@ stages:
                       - template: /eng/common/pipelines/templates/steps/publish-blobs.yml
                         parameters:
                           FolderForUpload: '$(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}'
-                          BlobName: '$(azure-sdk-docs-prod-blob-name)'
                           TargetLanguage: 'java'
                           ArtifactLocation: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}
-                          # we override the regular script path because we have cloned the build tools repo as a separate artifact.
-                          ScriptPath: 'eng/common/scripts/copy-docs-to-blobstorage.ps1'
 
   - ${{if ne(parameters.EnableIntegrationStage, false)}}:
     - stage: Integration
@@ -447,7 +444,7 @@ stages:
 
       - job: PublishDocsToNightlyBranch
         dependsOn: PublishPackages
-        condition: or(eq(variables['SetDevVersion'], 'true'), and(eq(variables['Build.Reason'],'Schedule'), eq(variables['System.TeamProject'], 'internal')))
+        condition: and(succeeded(), or(eq(variables['SetDevVersion'], 'true'), and(eq(variables['Build.Reason'],'Schedule'), eq(variables['System.TeamProject'], 'internal'))))
         pool:
           name: azsdk-pool-mms-ubuntu-2004-general
           image: azsdk-pool-mms-ubuntu-2004-1espt

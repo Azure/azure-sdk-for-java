@@ -4,228 +4,63 @@
 
 package com.azure.resourcemanager.billing.models;
 
-import com.azure.core.annotation.Fluent;
-import com.azure.core.management.ProxyResource;
-import com.azure.resourcemanager.billing.fluent.models.EnrollmentAccountProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.time.OffsetDateTime;
+import com.azure.core.management.SystemData;
+import com.azure.resourcemanager.billing.fluent.models.EnrollmentAccountInner;
+import java.util.Map;
 
-/** An enrollment account. */
-@Fluent
-public final class EnrollmentAccount extends ProxyResource {
-    /*
-     * The properties of an enrollment account.
+/**
+ * An immutable client-side representation of EnrollmentAccount.
+ */
+public interface EnrollmentAccount {
+    /**
+     * Gets the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
      */
-    @JsonProperty(value = "properties")
-    private EnrollmentAccountProperties innerProperties;
-
-    /** Creates an instance of EnrollmentAccount class. */
-    public EnrollmentAccount() {
-    }
+    String id();
 
     /**
-     * Get the innerProperties property: The properties of an enrollment account.
-     *
-     * @return the innerProperties value.
+     * Gets the name property: The name of the resource.
+     * 
+     * @return the name value.
      */
-    private EnrollmentAccountProperties innerProperties() {
-        return this.innerProperties;
-    }
+    String name();
 
     /**
-     * Get the accountName property: The name of the enrollment account.
-     *
-     * @return the accountName value.
+     * Gets the type property: The type of the resource.
+     * 
+     * @return the type value.
      */
-    public String accountName() {
-        return this.innerProperties() == null ? null : this.innerProperties().accountName();
-    }
+    String type();
 
     /**
-     * Set the accountName property: The name of the enrollment account.
-     *
-     * @param accountName the accountName value to set.
-     * @return the EnrollmentAccount object itself.
+     * Gets the tags property: Dictionary of metadata associated with the resource. It may not be populated for all
+     * resource types. Maximum key/value length supported of 256 characters. Keys/value should not empty value nor null.
+     * Keys can not contain &lt; &gt; % &amp; \ ? /.
+     * 
+     * @return the tags value.
      */
-    public EnrollmentAccount withAccountName(String accountName) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new EnrollmentAccountProperties();
-        }
-        this.innerProperties().withAccountName(accountName);
-        return this;
-    }
+    Map<String, String> tags();
 
     /**
-     * Get the costCenter property: The cost center associated with the enrollment account.
-     *
-     * @return the costCenter value.
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
      */
-    public String costCenter() {
-        return this.innerProperties() == null ? null : this.innerProperties().costCenter();
-    }
+    SystemData systemData();
 
     /**
-     * Set the costCenter property: The cost center associated with the enrollment account.
-     *
-     * @param costCenter the costCenter value to set.
-     * @return the EnrollmentAccount object itself.
+     * Gets the properties property: It is an organizational hierarchy within a billing account to administer and manage
+     * azure costs.
+     * 
+     * @return the properties value.
      */
-    public EnrollmentAccount withCostCenter(String costCenter) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new EnrollmentAccountProperties();
-        }
-        this.innerProperties().withCostCenter(costCenter);
-        return this;
-    }
+    EnrollmentAccountProperties properties();
 
     /**
-     * Get the accountOwner property: The owner of the enrollment account.
-     *
-     * @return the accountOwner value.
+     * Gets the inner com.azure.resourcemanager.billing.fluent.models.EnrollmentAccountInner object.
+     * 
+     * @return the inner object.
      */
-    public String accountOwner() {
-        return this.innerProperties() == null ? null : this.innerProperties().accountOwner();
-    }
-
-    /**
-     * Set the accountOwner property: The owner of the enrollment account.
-     *
-     * @param accountOwner the accountOwner value to set.
-     * @return the EnrollmentAccount object itself.
-     */
-    public EnrollmentAccount withAccountOwner(String accountOwner) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new EnrollmentAccountProperties();
-        }
-        this.innerProperties().withAccountOwner(accountOwner);
-        return this;
-    }
-
-    /**
-     * Get the accountOwnerEmail property: The enrollment account owner email address.
-     *
-     * @return the accountOwnerEmail value.
-     */
-    public String accountOwnerEmail() {
-        return this.innerProperties() == null ? null : this.innerProperties().accountOwnerEmail();
-    }
-
-    /**
-     * Set the accountOwnerEmail property: The enrollment account owner email address.
-     *
-     * @param accountOwnerEmail the accountOwnerEmail value to set.
-     * @return the EnrollmentAccount object itself.
-     */
-    public EnrollmentAccount withAccountOwnerEmail(String accountOwnerEmail) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new EnrollmentAccountProperties();
-        }
-        this.innerProperties().withAccountOwnerEmail(accountOwnerEmail);
-        return this;
-    }
-
-    /**
-     * Get the status property: The status of the enrollment account.
-     *
-     * @return the status value.
-     */
-    public String status() {
-        return this.innerProperties() == null ? null : this.innerProperties().status();
-    }
-
-    /**
-     * Set the status property: The status of the enrollment account.
-     *
-     * @param status the status value to set.
-     * @return the EnrollmentAccount object itself.
-     */
-    public EnrollmentAccount withStatus(String status) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new EnrollmentAccountProperties();
-        }
-        this.innerProperties().withStatus(status);
-        return this;
-    }
-
-    /**
-     * Get the startDate property: The start date of the enrollment account.
-     *
-     * @return the startDate value.
-     */
-    public OffsetDateTime startDate() {
-        return this.innerProperties() == null ? null : this.innerProperties().startDate();
-    }
-
-    /**
-     * Set the startDate property: The start date of the enrollment account.
-     *
-     * @param startDate the startDate value to set.
-     * @return the EnrollmentAccount object itself.
-     */
-    public EnrollmentAccount withStartDate(OffsetDateTime startDate) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new EnrollmentAccountProperties();
-        }
-        this.innerProperties().withStartDate(startDate);
-        return this;
-    }
-
-    /**
-     * Get the endDate property: The end date of the enrollment account.
-     *
-     * @return the endDate value.
-     */
-    public OffsetDateTime endDate() {
-        return this.innerProperties() == null ? null : this.innerProperties().endDate();
-    }
-
-    /**
-     * Set the endDate property: The end date of the enrollment account.
-     *
-     * @param endDate the endDate value to set.
-     * @return the EnrollmentAccount object itself.
-     */
-    public EnrollmentAccount withEndDate(OffsetDateTime endDate) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new EnrollmentAccountProperties();
-        }
-        this.innerProperties().withEndDate(endDate);
-        return this;
-    }
-
-    /**
-     * Get the department property: Associated department. By default this is not populated, unless it's specified in
-     * $expand.
-     *
-     * @return the department value.
-     */
-    public Department department() {
-        return this.innerProperties() == null ? null : this.innerProperties().department();
-    }
-
-    /**
-     * Set the department property: Associated department. By default this is not populated, unless it's specified in
-     * $expand.
-     *
-     * @param department the department value to set.
-     * @return the EnrollmentAccount object itself.
-     */
-    public EnrollmentAccount withDepartment(Department department) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new EnrollmentAccountProperties();
-        }
-        this.innerProperties().withDepartment(department);
-        return this;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
-        }
-    }
+    EnrollmentAccountInner innerModel();
 }

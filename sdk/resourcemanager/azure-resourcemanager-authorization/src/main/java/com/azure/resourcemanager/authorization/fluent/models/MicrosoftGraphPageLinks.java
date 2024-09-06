@@ -5,40 +5,43 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** pageLinks. */
+/**
+ * pageLinks.
+ */
 @Fluent
-public final class MicrosoftGraphPageLinks {
+public final class MicrosoftGraphPageLinks implements JsonSerializable<MicrosoftGraphPageLinks> {
     /*
      * externalLink
      */
-    @JsonProperty(value = "oneNoteClientUrl")
     private MicrosoftGraphExternalLink oneNoteClientUrl;
 
     /*
      * externalLink
      */
-    @JsonProperty(value = "oneNoteWebUrl")
     private MicrosoftGraphExternalLink oneNoteWebUrl;
 
     /*
      * pageLinks
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphPageLinks class. */
+    /**
+     * Creates an instance of MicrosoftGraphPageLinks class.
+     */
     public MicrosoftGraphPageLinks() {
     }
 
     /**
      * Get the oneNoteClientUrl property: externalLink.
-     *
+     * 
      * @return the oneNoteClientUrl value.
      */
     public MicrosoftGraphExternalLink oneNoteClientUrl() {
@@ -47,7 +50,7 @@ public final class MicrosoftGraphPageLinks {
 
     /**
      * Set the oneNoteClientUrl property: externalLink.
-     *
+     * 
      * @param oneNoteClientUrl the oneNoteClientUrl value to set.
      * @return the MicrosoftGraphPageLinks object itself.
      */
@@ -58,7 +61,7 @@ public final class MicrosoftGraphPageLinks {
 
     /**
      * Get the oneNoteWebUrl property: externalLink.
-     *
+     * 
      * @return the oneNoteWebUrl value.
      */
     public MicrosoftGraphExternalLink oneNoteWebUrl() {
@@ -67,7 +70,7 @@ public final class MicrosoftGraphPageLinks {
 
     /**
      * Set the oneNoteWebUrl property: externalLink.
-     *
+     * 
      * @param oneNoteWebUrl the oneNoteWebUrl value to set.
      * @return the MicrosoftGraphPageLinks object itself.
      */
@@ -78,17 +81,16 @@ public final class MicrosoftGraphPageLinks {
 
     /**
      * Get the additionalProperties property: pageLinks.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: pageLinks.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphPageLinks object itself.
      */
@@ -97,17 +99,9 @@ public final class MicrosoftGraphPageLinks {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -117,5 +111,55 @@ public final class MicrosoftGraphPageLinks {
         if (oneNoteWebUrl() != null) {
             oneNoteWebUrl().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("oneNoteClientUrl", this.oneNoteClientUrl);
+        jsonWriter.writeJsonField("oneNoteWebUrl", this.oneNoteWebUrl);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphPageLinks from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphPageLinks if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphPageLinks.
+     */
+    public static MicrosoftGraphPageLinks fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphPageLinks deserializedMicrosoftGraphPageLinks = new MicrosoftGraphPageLinks();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("oneNoteClientUrl".equals(fieldName)) {
+                    deserializedMicrosoftGraphPageLinks.oneNoteClientUrl = MicrosoftGraphExternalLink.fromJson(reader);
+                } else if ("oneNoteWebUrl".equals(fieldName)) {
+                    deserializedMicrosoftGraphPageLinks.oneNoteWebUrl = MicrosoftGraphExternalLink.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphPageLinks.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphPageLinks;
+        });
     }
 }

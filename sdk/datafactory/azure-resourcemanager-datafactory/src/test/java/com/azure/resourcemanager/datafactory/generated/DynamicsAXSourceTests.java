@@ -11,20 +11,20 @@ public final class DynamicsAXSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DynamicsAXSource model = BinaryData.fromString(
-            "{\"type\":\"DynamicsAXSource\",\"query\":\"datadmwa\",\"httpRequestTimeout\":\"datapbuqkdieuopwsa\",\"queryTimeout\":\"datahmizcfk\",\"additionalColumns\":\"datafmoonnria\",\"sourceRetryCount\":\"dataygzkdbmjzobc\",\"sourceRetryWait\":\"databbuuipelokptteo\",\"maxConcurrentConnections\":\"datahwgj\",\"disableMetricsCollection\":\"datax\",\"\":{\"hslnq\":\"datawjgkxvkj\",\"vwqiwg\":\"datamwwtzx\"}}")
+            "{\"type\":\"DynamicsAXSource\",\"query\":\"datat\",\"httpRequestTimeout\":\"datauvwzjycgc\",\"queryTimeout\":\"dataagxikzvnghtknrw\",\"additionalColumns\":\"dataysnmy\",\"sourceRetryCount\":\"datafmlcnrapxw\",\"sourceRetryWait\":\"datapxoelfobehr\",\"maxConcurrentConnections\":\"dataglojjcziytf\",\"disableMetricsCollection\":\"datavirmbr\",\"\":{\"hkdzvuhw\":\"datanqahnkmsfy\"}}")
             .toObject(DynamicsAXSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DynamicsAXSource model = new DynamicsAXSource().withSourceRetryCount("dataygzkdbmjzobc")
-            .withSourceRetryWait("databbuuipelokptteo")
-            .withMaxConcurrentConnections("datahwgj")
-            .withDisableMetricsCollection("datax")
-            .withQueryTimeout("datahmizcfk")
-            .withAdditionalColumns("datafmoonnria")
-            .withQuery("datadmwa")
-            .withHttpRequestTimeout("datapbuqkdieuopwsa");
+        DynamicsAXSource model = new DynamicsAXSource().withSourceRetryCount("datafmlcnrapxw")
+            .withSourceRetryWait("datapxoelfobehr")
+            .withMaxConcurrentConnections("dataglojjcziytf")
+            .withDisableMetricsCollection("datavirmbr")
+            .withQueryTimeout("dataagxikzvnghtknrw")
+            .withAdditionalColumns("dataysnmy")
+            .withQuery("datat")
+            .withHttpRequestTimeout("datauvwzjycgc");
         model = BinaryData.fromObject(model).toObject(DynamicsAXSource.class);
     }
 }

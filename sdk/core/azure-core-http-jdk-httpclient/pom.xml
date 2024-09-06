@@ -15,7 +15,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-core-http-jdk-httpclient</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0-beta.15</version> <!-- {x-version-update;com.azure:azure-core-http-jdk-httpclient;current} -->
+  <version>1.0.0-beta.16</version> <!-- {x-version-update;com.azure:azure-core-http-jdk-httpclient;current} -->
 
   <name>Microsoft Azure JDK HTTP Client Library</name>
   <description>This package contains the Azure HTTP client library using the JDK HttpClient API.</description>
@@ -78,14 +78,14 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.51.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.52.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
 
     <!-- test dependencies on azure-core, because we want to run tests inherited from this module using JDK 11 HttpClient -->
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.51.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.52.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>

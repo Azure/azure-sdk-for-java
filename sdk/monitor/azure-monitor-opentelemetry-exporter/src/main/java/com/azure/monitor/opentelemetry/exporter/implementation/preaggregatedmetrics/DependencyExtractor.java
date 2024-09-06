@@ -20,13 +20,8 @@ public final class DependencyExtractor {
     public static final String DEPENDENCY_TARGET = "dependency/target";
     public static final String DEPENDENCY_RESULT_CODE = "dependency/resultCode";
 
-    public static void extract(
-        MetricTelemetryBuilder metricBuilder,
-        @Nullable Long statusCode,
-        boolean success,
-        String type,
-        String target,
-        @Nullable Boolean isSynthetic) {
+    public static void extract(MetricTelemetryBuilder metricBuilder, @Nullable Long statusCode, boolean success,
+        String type, String target, @Nullable Boolean isSynthetic) {
         extractCommon(metricBuilder, isSynthetic);
 
         metricBuilder.addProperty(MS_METRIC_ID, DEPENDENCIES_DURATION);

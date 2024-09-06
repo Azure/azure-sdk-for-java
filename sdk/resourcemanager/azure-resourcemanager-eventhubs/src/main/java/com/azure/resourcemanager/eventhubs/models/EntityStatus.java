@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.eventhubs.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Enumerates the possible values for the status of the Event Hub.
  */
@@ -71,7 +68,6 @@ public enum EntityStatus {
      * @param value the serialized value to parse.
      * @return the parsed EntityStatus object, or null if unable to parse.
      */
-    @JsonCreator
     public static EntityStatus fromString(String value) {
         if (value == null) {
             return null;
@@ -88,7 +84,6 @@ public enum EntityStatus {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

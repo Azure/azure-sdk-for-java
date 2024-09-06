@@ -5,29 +5,40 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** status. */
+/**
+ * status.
+ */
 public final class MicrosoftGraphStatus extends ExpandableStringEnum<MicrosoftGraphStatus> {
-    /** Static value active for MicrosoftGraphStatus. */
+    /**
+     * Static value active for MicrosoftGraphStatus.
+     */
     public static final MicrosoftGraphStatus ACTIVE = fromString("active");
 
-    /** Static value updated for MicrosoftGraphStatus. */
+    /**
+     * Static value updated for MicrosoftGraphStatus.
+     */
     public static final MicrosoftGraphStatus UPDATED = fromString("updated");
 
-    /** Static value deleted for MicrosoftGraphStatus. */
+    /**
+     * Static value deleted for MicrosoftGraphStatus.
+     */
     public static final MicrosoftGraphStatus DELETED = fromString("deleted");
 
-    /** Static value ignored for MicrosoftGraphStatus. */
+    /**
+     * Static value ignored for MicrosoftGraphStatus.
+     */
     public static final MicrosoftGraphStatus IGNORED = fromString("ignored");
 
-    /** Static value unknownFutureValue for MicrosoftGraphStatus. */
+    /**
+     * Static value unknownFutureValue for MicrosoftGraphStatus.
+     */
     public static final MicrosoftGraphStatus UNKNOWN_FUTURE_VALUE = fromString("unknownFutureValue");
 
     /**
      * Creates a new instance of MicrosoftGraphStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,18 +47,17 @@ public final class MicrosoftGraphStatus extends ExpandableStringEnum<MicrosoftGr
 
     /**
      * Creates or finds a MicrosoftGraphStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MicrosoftGraphStatus.
      */
-    @JsonCreator
     public static MicrosoftGraphStatus fromString(String name) {
         return fromString(name, MicrosoftGraphStatus.class);
     }
 
     /**
      * Gets known MicrosoftGraphStatus values.
-     *
+     * 
      * @return known MicrosoftGraphStatus values.
      */
     public static Collection<MicrosoftGraphStatus> values() {

@@ -5,12 +5,20 @@
 package com.azure.resourcemanager.billing.implementation;
 
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.fluent.TransactionsClient;
+import com.azure.resourcemanager.billing.fluent.models.DocumentDownloadResultInner;
 import com.azure.resourcemanager.billing.fluent.models.TransactionInner;
+import com.azure.resourcemanager.billing.fluent.models.TransactionSummaryInner;
+import com.azure.resourcemanager.billing.models.DocumentDownloadResult;
 import com.azure.resourcemanager.billing.models.Transaction;
 import com.azure.resourcemanager.billing.models.Transactions;
+import com.azure.resourcemanager.billing.models.TransactionSummary;
+import com.azure.resourcemanager.billing.models.TransactionType;
+import java.time.LocalDate;
 
 public final class TransactionsImpl implements Transactions {
     private static final ClientLogger LOGGER = new ClientLogger(TransactionsImpl.class);
@@ -19,21 +27,114 @@ public final class TransactionsImpl implements Transactions {
 
     private final com.azure.resourcemanager.billing.BillingManager serviceManager;
 
-    public TransactionsImpl(
-        TransactionsClient innerClient, com.azure.resourcemanager.billing.BillingManager serviceManager) {
+    public TransactionsImpl(TransactionsClient innerClient,
+        com.azure.resourcemanager.billing.BillingManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<Transaction> listByInvoice(String billingAccountName, String invoiceName) {
-        PagedIterable<TransactionInner> inner = this.serviceClient().listByInvoice(billingAccountName, invoiceName);
-        return Utils.mapPage(inner, inner1 -> new TransactionImpl(inner1, this.manager()));
+    public PagedIterable<Transaction> listByCustomer(String billingAccountName, String billingProfileName,
+        String customerName, LocalDate periodStartDate, LocalDate periodEndDate, TransactionType type) {
+        PagedIterable<TransactionInner> inner = this.serviceClient()
+            .listByCustomer(billingAccountName, billingProfileName, customerName, periodStartDate, periodEndDate, type);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new TransactionImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Transaction> listByInvoice(String billingAccountName, String invoiceName, Context context) {
-        PagedIterable<TransactionInner> inner =
-            this.serviceClient().listByInvoice(billingAccountName, invoiceName, context);
-        return Utils.mapPage(inner, inner1 -> new TransactionImpl(inner1, this.manager()));
+    public PagedIterable<Transaction> listByCustomer(String billingAccountName, String billingProfileName,
+        String customerName, LocalDate periodStartDate, LocalDate periodEndDate, TransactionType type, String filter,
+        String orderBy, Long top, Long skip, Boolean count, String search, Context context) {
+        PagedIterable<TransactionInner> inner = this.serviceClient()
+            .listByCustomer(billingAccountName, billingProfileName, customerName, periodStartDate, periodEndDate, type,
+                filter, orderBy, top, skip, count, search, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new TransactionImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<Transaction> listByInvoiceSection(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, LocalDate periodStartDate, LocalDate periodEndDate, TransactionType type) {
+        PagedIterable<TransactionInner> inner = this.serviceClient()
+            .listByInvoiceSection(billingAccountName, billingProfileName, invoiceSectionName, periodStartDate,
+                periodEndDate, type);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new TransactionImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<Transaction> listByInvoiceSection(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, LocalDate periodStartDate, LocalDate periodEndDate, TransactionType type,
+        String filter, String orderBy, Long top, Long skip, Boolean count, String search, Context context) {
+        PagedIterable<TransactionInner> inner = this.serviceClient()
+            .listByInvoiceSection(billingAccountName, billingProfileName, invoiceSectionName, periodStartDate,
+                periodEndDate, type, filter, orderBy, top, skip, count, search, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new TransactionImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<Transaction> listByBillingProfile(String billingAccountName, String billingProfileName,
+        LocalDate periodStartDate, LocalDate periodEndDate, TransactionType type) {
+        PagedIterable<TransactionInner> inner = this.serviceClient()
+            .listByBillingProfile(billingAccountName, billingProfileName, periodStartDate, periodEndDate, type);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new TransactionImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<Transaction> listByBillingProfile(String billingAccountName, String billingProfileName,
+        LocalDate periodStartDate, LocalDate periodEndDate, TransactionType type, String filter, String orderBy,
+        Long top, Long skip, Boolean count, String search, Context context) {
+        PagedIterable<TransactionInner> inner = this.serviceClient()
+            .listByBillingProfile(billingAccountName, billingProfileName, periodStartDate, periodEndDate, type, filter,
+                orderBy, top, skip, count, search, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new TransactionImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<Transaction> listByInvoice(String billingAccountName, String invoiceName) {
+        PagedIterable<TransactionInner> inner = this.serviceClient().listByInvoice(billingAccountName, invoiceName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new TransactionImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<Transaction> listByInvoice(String billingAccountName, String invoiceName, String filter,
+        String orderBy, Long top, Long skip, Boolean count, String search, Context context) {
+        PagedIterable<TransactionInner> inner = this.serviceClient()
+            .listByInvoice(billingAccountName, invoiceName, filter, orderBy, top, skip, count, search, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new TransactionImpl(inner1, this.manager()));
+    }
+
+    public DocumentDownloadResult transactionsDownloadByInvoice(String billingAccountName, String invoiceName) {
+        DocumentDownloadResultInner inner
+            = this.serviceClient().transactionsDownloadByInvoice(billingAccountName, invoiceName);
+        if (inner != null) {
+            return new DocumentDownloadResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public DocumentDownloadResult transactionsDownloadByInvoice(String billingAccountName, String invoiceName,
+        Context context) {
+        DocumentDownloadResultInner inner
+            = this.serviceClient().transactionsDownloadByInvoice(billingAccountName, invoiceName, context);
+        if (inner != null) {
+            return new DocumentDownloadResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<TransactionSummary> getTransactionSummaryByInvoiceWithResponse(String billingAccountName,
+        String invoiceName, String filter, String search, Context context) {
+        Response<TransactionSummaryInner> inner = this.serviceClient()
+            .getTransactionSummaryByInvoiceWithResponse(billingAccountName, invoiceName, filter, search, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new TransactionSummaryImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public TransactionSummary getTransactionSummaryByInvoice(String billingAccountName, String invoiceName) {
+        TransactionSummaryInner inner
+            = this.serviceClient().getTransactionSummaryByInvoice(billingAccountName, invoiceName);
+        if (inner != null) {
+            return new TransactionSummaryImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     private TransactionsClient serviceClient() {

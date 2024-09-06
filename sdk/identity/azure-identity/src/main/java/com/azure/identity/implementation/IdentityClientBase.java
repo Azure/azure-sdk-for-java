@@ -26,9 +26,6 @@ import com.azure.core.util.UserAgentUtil;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.identity.BrowserCustomizationOptions;
 import com.azure.identity.CredentialUnavailableException;
 import com.azure.identity.DeviceCodeInfo;
@@ -103,16 +100,12 @@ import java.util.regex.Pattern;
 import static com.azure.identity.implementation.util.IdentityUtil.isWindowsPlatform;
 
 public abstract class IdentityClientBase {
-    static final SerializerAdapter SERIALIZER_ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
     static final String WINDOWS_STARTER = "cmd.exe";
     static final String LINUX_MAC_STARTER = "/bin/sh";
     static final String WINDOWS_SWITCHER = "/c";
     static final String LINUX_MAC_SWITCHER = "-c";
     static final Pattern WINDOWS_PROCESS_ERROR_MESSAGE = Pattern.compile("'azd?' is not recognized");
     static final Pattern SH_PROCESS_ERROR_MESSAGE = Pattern.compile("azd?:.*not found");
-    static final String DEFAULT_WINDOWS_PS_EXECUTABLE = "pwsh.exe";
-    static final String LEGACY_WINDOWS_PS_EXECUTABLE = "powershell.exe";
-    static final String DEFAULT_LINUX_PS_EXECUTABLE = "pwsh";
     static final String DEFAULT_MAC_LINUX_PATH = "/bin/";
     static final Duration REFRESH_OFFSET = Duration.ofMinutes(5);
     static final String IDENTITY_ENDPOINT_VERSION = "2019-08-01";
@@ -546,8 +539,8 @@ public abstract class IdentityClientBase {
                     .resolveTenantId(tenantId, request, options));
 
         if (request.getClaims() != null) {
-            ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());
-            parametersBuilder.claims(customClaimRequest);
+            ClaimsRequest claimsRequest = ClaimsRequest.formatAsClaimsRequest(request.getClaims());
+            parametersBuilder.claims(claimsRequest);
         }
         return parametersBuilder;
     }
@@ -558,8 +551,8 @@ public abstract class IdentityClientBase {
             .tenant(IdentityUtil.resolveTenantId(tenantId, request, options));
 
         if (request.isCaeEnabled() && request.getClaims() != null) {
-            ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());
-            builder.claims(customClaimRequest);
+            ClaimsRequest claimsRequest = ClaimsRequest.formatAsClaimsRequest(request.getClaims());
+            builder.claims(claimsRequest);
         }
         return builder.build();
     }
@@ -573,8 +566,8 @@ public abstract class IdentityClientBase {
                     .resolveTenantId(tenantId, request, options));
 
         if (request.isCaeEnabled() && request.getClaims() != null) {
-            ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());
-            builder.claims(customClaimRequest);
+            ClaimsRequest claimsRequest = ClaimsRequest.formatAsClaimsRequest(request.getClaims());
+            builder.claims(claimsRequest);
         }
 
         BrowserCustomizationOptions browserCustomizationOptions = options.getBrowserCustomizationOptions();
@@ -612,9 +605,9 @@ public abstract class IdentityClientBase {
                 username, password.toCharArray());
 
         if (request.isCaeEnabled() && request.getClaims() != null) {
-            ClaimsRequest customClaimRequest = CustomClaimRequest
+            ClaimsRequest claimsRequest = ClaimsRequest
                 .formatAsClaimsRequest(request.getClaims());
-            userNamePasswordParametersBuilder.claims(customClaimRequest);
+            userNamePasswordParametersBuilder.claims(claimsRequest);
         }
         userNamePasswordParametersBuilder.tenant(
             IdentityUtil.resolveTenantId(tenantId, request, options));
@@ -790,21 +783,21 @@ public abstract class IdentityClientBase {
                     "Azure Developer CLI Authentication => A token response was received from Azure Developer CLI, deserializing the"
                             +
                             " response into an Access Token.");
-            Map<String, String> objectMap = SERIALIZER_ADAPTER.deserialize(
-                    processOutput,
-                    Map.class,
-                    SerializerEncoding.JSON);
-            String accessToken = objectMap.get("token");
-            String time = objectMap.get("expiresOn");
-            // az expiresOn format = "2022-11-30 02:38:42.000000" vs
-            // azd expiresOn format = "2022-11-30T02:05:08Z"
-            String standardTime = time.substring(0, time.indexOf("Z"));
-            OffsetDateTime expiresOn = LocalDateTime
-                    .parse(standardTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
-                    .atZone(ZoneId.of("Z"))
-                    .toOffsetDateTime()
-                    .withOffsetSameInstant(ZoneOffset.UTC);
-            token = new AccessToken(accessToken, expiresOn);
+            try (JsonReader reader = JsonProviders.createReader(processOutput)) {
+                reader.nextToken();
+                Map<String, String> objectMap = reader.readMap(JsonReader::getString);
+                String accessToken = objectMap.get("token");
+                String time = objectMap.get("expiresOn");
+                // az expiresOn format = "2022-11-30 02:38:42.000000" vs
+                // azd expiresOn format = "2022-11-30T02:05:08Z"
+                String standardTime = time.substring(0, time.indexOf("Z"));
+                OffsetDateTime expiresOn = LocalDateTime
+                        .parse(standardTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+                        .atZone(ZoneId.of("Z"))
+                        .toOffsetDateTime()
+                        .withOffsetSameInstant(ZoneOffset.UTC);
+                token = new AccessToken(accessToken, expiresOn);
+            }
         } catch (IOException | InterruptedException e) {
             IllegalStateException ex = new IllegalStateException(redactInfo(e.getMessage()));
             ex.setStackTrace(e.getStackTrace());
@@ -841,8 +834,7 @@ public abstract class IdentityClientBase {
             }
             connection.connect();
 
-            return SERIALIZER_ADAPTER.deserialize(connection.getInputStream(), MSIToken.class,
-                SerializerEncoding.JSON);
+            return MSIToken.fromJson(JsonProviders.createReader(connection.getInputStream()));
         } finally {
             if (connection != null) {
                 connection.disconnect();

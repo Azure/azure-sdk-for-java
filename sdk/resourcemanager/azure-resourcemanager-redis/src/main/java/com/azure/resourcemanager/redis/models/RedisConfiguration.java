@@ -5,10 +5,11 @@
 package com.azure.resourcemanager.redis.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -19,122 +20,103 @@ import java.util.Map;
  * aof-storage-connection-string-1 etc.
  */
 @Fluent
-public final class RedisConfiguration {
+public final class RedisConfiguration implements JsonSerializable<RedisConfiguration> {
     /*
      * Specifies whether the rdb backup is enabled
      */
-    @JsonProperty(value = "rdb-backup-enabled")
     private String rdbBackupEnabled;
 
     /*
      * Specifies the frequency for creating rdb backup in minutes. Valid values: (15, 30, 60, 360, 720, 1440)
      */
-    @JsonProperty(value = "rdb-backup-frequency")
     private String rdbBackupFrequency;
 
     /*
      * Specifies the maximum number of snapshots for rdb backup
      */
-    @JsonProperty(value = "rdb-backup-max-snapshot-count")
     private String rdbBackupMaxSnapshotCount;
 
     /*
      * The storage account connection string for storing rdb file
      */
-    @JsonProperty(value = "rdb-storage-connection-string")
     private String rdbStorageConnectionString;
 
     /*
      * Specifies whether the aof backup is enabled
      */
-    @JsonProperty(value = "aof-backup-enabled")
     private String aofBackupEnabled;
 
     /*
      * First storage account connection string
      */
-    @JsonProperty(value = "aof-storage-connection-string-0")
     private String aofStorageConnectionString0;
 
     /*
      * Second storage account connection string
      */
-    @JsonProperty(value = "aof-storage-connection-string-1")
     private String aofStorageConnectionString1;
 
     /*
      * Value in megabytes reserved for fragmentation per shard
      */
-    @JsonProperty(value = "maxfragmentationmemory-reserved")
     private String maxfragmentationmemoryReserved;
 
     /*
      * The eviction strategy used when your data won't fit within its memory limit.
      */
-    @JsonProperty(value = "maxmemory-policy")
     private String maxmemoryPolicy;
 
     /*
      * Value in megabytes reserved for non-cache usage per shard e.g. failover.
      */
-    @JsonProperty(value = "maxmemory-reserved")
     private String maxmemoryReserved;
 
     /*
      * Value in megabytes reserved for non-cache usage per shard e.g. failover.
      */
-    @JsonProperty(value = "maxmemory-delta")
     private String maxmemoryDelta;
 
     /*
      * The max clients config
      */
-    @JsonProperty(value = "maxclients", access = JsonProperty.Access.WRITE_ONLY)
     private String maxclients;
 
     /*
      * The keyspace events which should be monitored.
      */
-    @JsonProperty(value = "notify-keyspace-events")
     private String notifyKeyspaceEvents;
 
     /*
      * Preferred auth method to communicate to storage account used for data archive, specify SAS or ManagedIdentity,
      * default value is SAS
      */
-    @JsonProperty(value = "preferred-data-archive-auth-method", access = JsonProperty.Access.WRITE_ONLY)
     private String preferredDataArchiveAuthMethod;
 
     /*
      * Preferred auth method to communicate to storage account used for data persistence, specify SAS or
      * ManagedIdentity, default value is SAS
      */
-    @JsonProperty(value = "preferred-data-persistence-auth-method")
     private String preferredDataPersistenceAuthMethod;
 
     /*
      * Zonal Configuration
      */
-    @JsonProperty(value = "zonal-configuration", access = JsonProperty.Access.WRITE_ONLY)
     private String zonalConfiguration;
 
     /*
      * Specifies whether the authentication is disabled. Setting this property is highly discouraged from security point
      * of view.
      */
-    @JsonProperty(value = "authnotrequired")
     private String authnotrequired;
 
     /*
      * SubscriptionId of the storage account for persistence (aof/rdb) using ManagedIdentity.
      */
-    @JsonProperty(value = "storage-subscription-id")
     private String storageSubscriptionId;
 
     /*
      * Specifies whether AAD based authentication has been enabled or disabled for the cache
      */
-    @JsonProperty(value = "aad-enabled")
     private String aadEnabled;
 
     /*
@@ -143,7 +125,6 @@ public final class RedisConfiguration {
      * maxmemory-policy,notify-keyspace-events, aof-backup-enabled, aof-storage-connection-string-0,
      * aof-storage-connection-string-1 etc.
      */
-    @JsonIgnore
     private Map<String, String> additionalProperties;
 
     /**
@@ -518,7 +499,6 @@ public final class RedisConfiguration {
      * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, String> additionalProperties() {
         return this.additionalProperties;
     }
@@ -537,19 +517,109 @@ public final class RedisConfiguration {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, String value) {
-        if (additionalProperties == null) {
-            additionalProperties = new LinkedHashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("rdb-backup-enabled", this.rdbBackupEnabled);
+        jsonWriter.writeStringField("rdb-backup-frequency", this.rdbBackupFrequency);
+        jsonWriter.writeStringField("rdb-backup-max-snapshot-count", this.rdbBackupMaxSnapshotCount);
+        jsonWriter.writeStringField("rdb-storage-connection-string", this.rdbStorageConnectionString);
+        jsonWriter.writeStringField("aof-backup-enabled", this.aofBackupEnabled);
+        jsonWriter.writeStringField("aof-storage-connection-string-0", this.aofStorageConnectionString0);
+        jsonWriter.writeStringField("aof-storage-connection-string-1", this.aofStorageConnectionString1);
+        jsonWriter.writeStringField("maxfragmentationmemory-reserved", this.maxfragmentationmemoryReserved);
+        jsonWriter.writeStringField("maxmemory-policy", this.maxmemoryPolicy);
+        jsonWriter.writeStringField("maxmemory-reserved", this.maxmemoryReserved);
+        jsonWriter.writeStringField("maxmemory-delta", this.maxmemoryDelta);
+        jsonWriter.writeStringField("notify-keyspace-events", this.notifyKeyspaceEvents);
+        jsonWriter.writeStringField("preferred-data-persistence-auth-method", this.preferredDataPersistenceAuthMethod);
+        jsonWriter.writeStringField("authnotrequired", this.authnotrequired);
+        jsonWriter.writeStringField("storage-subscription-id", this.storageSubscriptionId);
+        jsonWriter.writeStringField("aad-enabled", this.aadEnabled);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, String> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RedisConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RedisConfiguration if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RedisConfiguration.
+     */
+    public static RedisConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RedisConfiguration deserializedRedisConfiguration = new RedisConfiguration();
+            Map<String, String> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("rdb-backup-enabled".equals(fieldName)) {
+                    deserializedRedisConfiguration.rdbBackupEnabled = reader.getString();
+                } else if ("rdb-backup-frequency".equals(fieldName)) {
+                    deserializedRedisConfiguration.rdbBackupFrequency = reader.getString();
+                } else if ("rdb-backup-max-snapshot-count".equals(fieldName)) {
+                    deserializedRedisConfiguration.rdbBackupMaxSnapshotCount = reader.getString();
+                } else if ("rdb-storage-connection-string".equals(fieldName)) {
+                    deserializedRedisConfiguration.rdbStorageConnectionString = reader.getString();
+                } else if ("aof-backup-enabled".equals(fieldName)) {
+                    deserializedRedisConfiguration.aofBackupEnabled = reader.getString();
+                } else if ("aof-storage-connection-string-0".equals(fieldName)) {
+                    deserializedRedisConfiguration.aofStorageConnectionString0 = reader.getString();
+                } else if ("aof-storage-connection-string-1".equals(fieldName)) {
+                    deserializedRedisConfiguration.aofStorageConnectionString1 = reader.getString();
+                } else if ("maxfragmentationmemory-reserved".equals(fieldName)) {
+                    deserializedRedisConfiguration.maxfragmentationmemoryReserved = reader.getString();
+                } else if ("maxmemory-policy".equals(fieldName)) {
+                    deserializedRedisConfiguration.maxmemoryPolicy = reader.getString();
+                } else if ("maxmemory-reserved".equals(fieldName)) {
+                    deserializedRedisConfiguration.maxmemoryReserved = reader.getString();
+                } else if ("maxmemory-delta".equals(fieldName)) {
+                    deserializedRedisConfiguration.maxmemoryDelta = reader.getString();
+                } else if ("maxclients".equals(fieldName)) {
+                    deserializedRedisConfiguration.maxclients = reader.getString();
+                } else if ("notify-keyspace-events".equals(fieldName)) {
+                    deserializedRedisConfiguration.notifyKeyspaceEvents = reader.getString();
+                } else if ("preferred-data-archive-auth-method".equals(fieldName)) {
+                    deserializedRedisConfiguration.preferredDataArchiveAuthMethod = reader.getString();
+                } else if ("preferred-data-persistence-auth-method".equals(fieldName)) {
+                    deserializedRedisConfiguration.preferredDataPersistenceAuthMethod = reader.getString();
+                } else if ("zonal-configuration".equals(fieldName)) {
+                    deserializedRedisConfiguration.zonalConfiguration = reader.getString();
+                } else if ("authnotrequired".equals(fieldName)) {
+                    deserializedRedisConfiguration.authnotrequired = reader.getString();
+                } else if ("storage-subscription-id".equals(fieldName)) {
+                    deserializedRedisConfiguration.storageSubscriptionId = reader.getString();
+                } else if ("aad-enabled".equals(fieldName)) {
+                    deserializedRedisConfiguration.aadEnabled = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.getString());
+                }
+            }
+            deserializedRedisConfiguration.additionalProperties = additionalProperties;
+
+            return deserializedRedisConfiguration;
+        });
     }
 }

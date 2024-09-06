@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** sensitivity. */
+/**
+ * sensitivity.
+ */
 public final class MicrosoftGraphSensitivity extends ExpandableStringEnum<MicrosoftGraphSensitivity> {
-    /** Static value normal for MicrosoftGraphSensitivity. */
+    /**
+     * Static value normal for MicrosoftGraphSensitivity.
+     */
     public static final MicrosoftGraphSensitivity NORMAL = fromString("normal");
 
-    /** Static value personal for MicrosoftGraphSensitivity. */
+    /**
+     * Static value personal for MicrosoftGraphSensitivity.
+     */
     public static final MicrosoftGraphSensitivity PERSONAL = fromString("personal");
 
-    /** Static value private for MicrosoftGraphSensitivity. */
+    /**
+     * Static value private for MicrosoftGraphSensitivity.
+     */
     public static final MicrosoftGraphSensitivity PRIVATE = fromString("private");
 
-    /** Static value confidential for MicrosoftGraphSensitivity. */
+    /**
+     * Static value confidential for MicrosoftGraphSensitivity.
+     */
     public static final MicrosoftGraphSensitivity CONFIDENTIAL = fromString("confidential");
 
     /**
      * Creates a new instance of MicrosoftGraphSensitivity value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +42,17 @@ public final class MicrosoftGraphSensitivity extends ExpandableStringEnum<Micros
 
     /**
      * Creates or finds a MicrosoftGraphSensitivity from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MicrosoftGraphSensitivity.
      */
-    @JsonCreator
     public static MicrosoftGraphSensitivity fromString(String name) {
         return fromString(name, MicrosoftGraphSensitivity.class);
     }
 
     /**
      * Gets known MicrosoftGraphSensitivity values.
-     *
+     * 
      * @return known MicrosoftGraphSensitivity values.
      */
     public static Collection<MicrosoftGraphSensitivity> values() {

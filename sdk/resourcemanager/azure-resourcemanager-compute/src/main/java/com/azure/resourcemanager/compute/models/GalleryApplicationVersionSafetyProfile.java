@@ -5,6 +5,10 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The safety profile of the Gallery Application Version.
@@ -35,5 +39,43 @@ public final class GalleryApplicationVersionSafetyProfile extends GalleryArtifac
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("allowDeletionOfReplicatedLocations", allowDeletionOfReplicatedLocations());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GalleryApplicationVersionSafetyProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GalleryApplicationVersionSafetyProfile if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GalleryApplicationVersionSafetyProfile.
+     */
+    public static GalleryApplicationVersionSafetyProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GalleryApplicationVersionSafetyProfile deserializedGalleryApplicationVersionSafetyProfile
+                = new GalleryApplicationVersionSafetyProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("allowDeletionOfReplicatedLocations".equals(fieldName)) {
+                    deserializedGalleryApplicationVersionSafetyProfile
+                        .withAllowDeletionOfReplicatedLocations(reader.getNullable(JsonReader::getBoolean));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGalleryApplicationVersionSafetyProfile;
+        });
     }
 }

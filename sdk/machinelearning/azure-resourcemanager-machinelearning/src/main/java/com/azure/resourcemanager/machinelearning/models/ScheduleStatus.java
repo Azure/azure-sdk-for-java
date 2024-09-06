@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Is the schedule enabled or disabled?. */
+/**
+ * Is the schedule enabled or disabled?.
+ */
 public final class ScheduleStatus extends ExpandableStringEnum<ScheduleStatus> {
-    /** Static value Enabled for ScheduleStatus. */
+    /**
+     * Static value Enabled for ScheduleStatus.
+     */
     public static final ScheduleStatus ENABLED = fromString("Enabled");
 
-    /** Static value Disabled for ScheduleStatus. */
+    /**
+     * Static value Disabled for ScheduleStatus.
+     */
     public static final ScheduleStatus DISABLED = fromString("Disabled");
 
     /**
      * Creates a new instance of ScheduleStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class ScheduleStatus extends ExpandableStringEnum<ScheduleStatus> {
 
     /**
      * Creates or finds a ScheduleStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ScheduleStatus.
      */
-    @JsonCreator
     public static ScheduleStatus fromString(String name) {
         return fromString(name, ScheduleStatus.class);
     }
 
     /**
      * Gets known ScheduleStatus values.
-     *
+     * 
      * @return known ScheduleStatus values.
      */
     public static Collection<ScheduleStatus> values() {

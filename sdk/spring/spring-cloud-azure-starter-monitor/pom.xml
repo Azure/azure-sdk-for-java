@@ -24,7 +24,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-cloud-azure-starter-monitor</artifactId>
-  <version>1.0.0-beta.6</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-monitor;current} -->
+  <version>1.0.0-beta.7</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-monitor;current} -->
 
   <name>Azure Monitor OpenTelemetry Distro / Application Insights in Spring native Java application</name>
   <description>Spring Boot starter providing telemetry data to Azure Monitor for Spring Boot applications and GraalVM native images.</description>
@@ -46,7 +46,7 @@
     <dependency>
       <groupId>io.opentelemetry.instrumentation</groupId>
       <artifactId>opentelemetry-spring-boot-starter</artifactId>
-      <version>2.6.0</version> <!-- {x-version-update;io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter;external_dependency} -->
+      <version>2.7.0</version> <!-- {x-version-update;io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter;external_dependency} -->
     </dependency>
     <!-- End of OTel dependencies -->
 
@@ -55,27 +55,27 @@
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-api</artifactId>
-      <version>1.40.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
+      <version>1.41.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-sdk</artifactId>
-      <version>1.40.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
+      <version>1.41.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-sdk-metrics</artifactId>
-      <version>1.40.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk-metrics;external_dependency} -->
+      <version>1.41.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk-metrics;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-sdk-logs</artifactId>
-      <version>1.40.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk-logs;external_dependency} -->
+      <version>1.41.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk-logs;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-sdk-extension-autoconfigure-spi</artifactId>
-      <version>1.40.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi;external_dependency} -->
+      <version>1.41.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi;external_dependency} -->
     </dependency>
     <!-- End of redeclaration of the OpenTelemetry exporter dependencies -->
 
@@ -88,7 +88,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-monitor-opentelemetry-exporter</artifactId>
-      <version>1.0.0-beta.25</version> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-exporter;dependency} -->
+      <version>1.0.0-beta.28</version> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-exporter;dependency} -->
     </dependency>
 
     <!-- Test dependencies -->
@@ -131,14 +131,14 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter:[2.6.0]</include> <!-- {x-include-update;io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter;external_dependency} -->
-                <include>io.opentelemetry:opentelemetry-sdk-extension-autoconfigure:[1.40.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-extension-autoconfigure;external_dependency} -->
-                <include>io.opentelemetry.instrumentation:opentelemetry-runtime-telemetry-java8:[2.6.0-alpha]</include> <!-- {x-include-update;io.opentelemetry.instrumentation:opentelemetry-runtime-telemetry-java8;external_dependency} -->
-                <include>io.opentelemetry:opentelemetry-api:[1.40.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
-                <include>io.opentelemetry:opentelemetry-sdk:[1.40.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
-                <include>io.opentelemetry:opentelemetry-sdk-metrics:[1.40.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-metrics;external_dependency} -->
-                <include>io.opentelemetry:opentelemetry-sdk-logs:[1.40.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-logs;external_dependency} -->
-                <include>io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi:[1.40.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi;external_dependency} -->
+                <include>io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter:[2.7.0]</include> <!-- {x-include-update;io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter;external_dependency} -->
+                <include>io.opentelemetry:opentelemetry-sdk-extension-autoconfigure:[1.41.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-extension-autoconfigure;external_dependency} -->
+                <include>io.opentelemetry.instrumentation:opentelemetry-runtime-telemetry-java8:[2.7.0-alpha]</include> <!-- {x-include-update;io.opentelemetry.instrumentation:opentelemetry-runtime-telemetry-java8;external_dependency} -->
+                <include>io.opentelemetry:opentelemetry-api:[1.41.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
+                <include>io.opentelemetry:opentelemetry-sdk:[1.41.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
+                <include>io.opentelemetry:opentelemetry-sdk-metrics:[1.41.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-metrics;external_dependency} -->
+                <include>io.opentelemetry:opentelemetry-sdk-logs:[1.41.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-logs;external_dependency} -->
+                <include>io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi:[1.41.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-starter:[2.7.18]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
               </includes>
             </bannedDependencies>

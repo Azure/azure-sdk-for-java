@@ -1,16 +1,28 @@
 # Release History
 
-## 1.0.0-beta.20 (2024-07-12)
+## 1.0.0-beta.21 (Unreleased)
+
+### Features Added
 
 ### Breaking Changes
 
 - Renamed `VertxAsyncHttpClientBuilder` to `VertxHttpClientBuilder` and `VertxAsyncHttpClientProvider` to `VertxHttpClientProvider`.
 
+### Bugs Fixed
+
 ### Other Changes
 
 #### Dependency Updates
 
-- Upgraded `azure-core` from `1.49.1` to `1.50.0`.
+- Upgraded Vertx from `4.5.8` to `4.5.10`.
+
+## 1.0.0-beta.20 (2024-07-31)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.49.1` to `1.51.0`.
 
 ## 1.0.0-beta.19 (2024-06-06)
 

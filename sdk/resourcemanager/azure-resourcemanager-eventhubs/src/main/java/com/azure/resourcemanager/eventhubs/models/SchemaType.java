@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.util.Collection;
 
 /**
@@ -25,7 +23,7 @@ public final class SchemaType extends ExpandableStringEnum<SchemaType> {
 
     /**
      * Creates a new instance of SchemaType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -34,18 +32,17 @@ public final class SchemaType extends ExpandableStringEnum<SchemaType> {
 
     /**
      * Creates or finds a SchemaType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SchemaType.
      */
-    @JsonCreator
     public static SchemaType fromString(String name) {
         return fromString(name, SchemaType.class);
     }
 
     /**
      * Gets known SchemaType values.
-     *
+     * 
      * @return known SchemaType values.
      */
     public static Collection<SchemaType> values() {

@@ -5,31 +5,34 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Describes image deprecation status properties on the image.
  */
 @Fluent
-public final class ImageDeprecationStatus {
+public final class ImageDeprecationStatus implements JsonSerializable<ImageDeprecationStatus> {
     /*
      * Describes the state of the image.
      */
-    @JsonProperty(value = "imageState")
     private ImageState imageState;
 
     /*
      * The time, in future, at which this image will be marked as deprecated. This scheduled time is chosen by the
      * Publisher.
      */
-    @JsonProperty(value = "scheduledDeprecationTime")
     private OffsetDateTime scheduledDeprecationTime;
 
     /*
      * Describes the alternative option specified by the Publisher for this image when this image is deprecated.
      */
-    @JsonProperty(value = "alternativeOption")
     private AlternativeOption alternativeOption;
 
     /**
@@ -111,5 +114,51 @@ public final class ImageDeprecationStatus {
         if (alternativeOption() != null) {
             alternativeOption().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("imageState", this.imageState == null ? null : this.imageState.toString());
+        jsonWriter.writeStringField("scheduledDeprecationTime",
+            this.scheduledDeprecationTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.scheduledDeprecationTime));
+        jsonWriter.writeJsonField("alternativeOption", this.alternativeOption);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImageDeprecationStatus from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImageDeprecationStatus if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ImageDeprecationStatus.
+     */
+    public static ImageDeprecationStatus fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImageDeprecationStatus deserializedImageDeprecationStatus = new ImageDeprecationStatus();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("imageState".equals(fieldName)) {
+                    deserializedImageDeprecationStatus.imageState = ImageState.fromString(reader.getString());
+                } else if ("scheduledDeprecationTime".equals(fieldName)) {
+                    deserializedImageDeprecationStatus.scheduledDeprecationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("alternativeOption".equals(fieldName)) {
+                    deserializedImageDeprecationStatus.alternativeOption = AlternativeOption.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImageDeprecationStatus;
+        });
     }
 }

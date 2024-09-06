@@ -4,18 +4,23 @@
 
 package com.azure.resourcemanager.sql.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** The state of the data masking policy. */
+/**
+ * The state of the data masking policy.
+ */
 public enum DataMaskingState {
-    /** Enum value Enabled. */
+    /**
+     * Enum value Enabled.
+     */
     ENABLED("Enabled"),
 
-    /** Enum value Disabled. */
+    /**
+     * Enum value Disabled.
+     */
     DISABLED("Disabled");
 
-    /** The actual serialized value for a DataMaskingState instance. */
+    /**
+     * The actual serialized value for a DataMaskingState instance.
+     */
     private final String value;
 
     DataMaskingState(String value) {
@@ -24,11 +29,10 @@ public enum DataMaskingState {
 
     /**
      * Parses a serialized value to a DataMaskingState instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed DataMaskingState object, or null if unable to parse.
      */
-    @JsonCreator
     public static DataMaskingState fromString(String value) {
         if (value == null) {
             return null;
@@ -42,8 +46,9 @@ public enum DataMaskingState {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

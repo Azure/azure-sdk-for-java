@@ -1,5 +1,17 @@
 # Release History
 
+## 1.2.27 (2024-08-27)
+
+### Dependency Updates
+
+- Updated Azure SDK dependency versions to the latest releases.
+
+## 1.2.26 (2024-07-30)
+
+### Dependency Updates
+
+- Updated Azure SDK dependency versions to the latest releases.
+
 ## 1.2.25 (2024-07-02)
 
 ### Dependency Updates

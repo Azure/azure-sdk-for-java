@@ -6,27 +6,28 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.fluent.models.CloudServiceRoleInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The list operation result.
  */
 @Fluent
-public final class CloudServiceRoleListResult {
+public final class CloudServiceRoleListResult implements JsonSerializable<CloudServiceRoleListResult> {
     /*
      * The list of resources.
      */
-    @JsonProperty(value = "value", required = true)
     private List<CloudServiceRoleInner> value;
 
     /*
      * The URI to fetch the next page of resources. Use this to get the next page of resources. Do this till nextLink is
      * null to fetch all the resources.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -37,7 +38,7 @@ public final class CloudServiceRoleListResult {
 
     /**
      * Get the value property: The list of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<CloudServiceRoleInner> value() {
@@ -46,7 +47,7 @@ public final class CloudServiceRoleListResult {
 
     /**
      * Set the value property: The list of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the CloudServiceRoleListResult object itself.
      */
@@ -58,7 +59,7 @@ public final class CloudServiceRoleListResult {
     /**
      * Get the nextLink property: The URI to fetch the next page of resources. Use this to get the next page of
      * resources. Do this till nextLink is null to fetch all the resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -68,7 +69,7 @@ public final class CloudServiceRoleListResult {
     /**
      * Set the nextLink property: The URI to fetch the next page of resources. Use this to get the next page of
      * resources. Do this till nextLink is null to fetch all the resources.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the CloudServiceRoleListResult object itself.
      */
@@ -79,7 +80,7 @@ public final class CloudServiceRoleListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -93,4 +94,46 @@ public final class CloudServiceRoleListResult {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CloudServiceRoleListResult.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CloudServiceRoleListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CloudServiceRoleListResult if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CloudServiceRoleListResult.
+     */
+    public static CloudServiceRoleListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CloudServiceRoleListResult deserializedCloudServiceRoleListResult = new CloudServiceRoleListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<CloudServiceRoleInner> value
+                        = reader.readArray(reader1 -> CloudServiceRoleInner.fromJson(reader1));
+                    deserializedCloudServiceRoleListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedCloudServiceRoleListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCloudServiceRoleListResult;
+        });
+    }
 }

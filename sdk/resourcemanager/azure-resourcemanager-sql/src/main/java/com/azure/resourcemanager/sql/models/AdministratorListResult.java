@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.fluent.models.ServerAzureADAdministratorInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** A list of active directory administrators. */
+/**
+ * A list of active directory administrators.
+ */
 @Immutable
-public final class AdministratorListResult {
+public final class AdministratorListResult implements JsonSerializable<AdministratorListResult> {
     /*
      * Array of results.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<ServerAzureADAdministratorInner> value;
 
     /*
      * Link to retrieve next page of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of AdministratorListResult class. */
+    /**
+     * Creates an instance of AdministratorListResult class.
+     */
     public AdministratorListResult() {
     }
 
     /**
      * Get the value property: Array of results.
-     *
+     * 
      * @return the value value.
      */
     public List<ServerAzureADAdministratorInner> value() {
@@ -39,7 +45,7 @@ public final class AdministratorListResult {
 
     /**
      * Get the nextLink property: Link to retrieve next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,12 +54,51 @@ public final class AdministratorListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AdministratorListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AdministratorListResult if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AdministratorListResult.
+     */
+    public static AdministratorListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AdministratorListResult deserializedAdministratorListResult = new AdministratorListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ServerAzureADAdministratorInner> value
+                        = reader.readArray(reader1 -> ServerAzureADAdministratorInner.fromJson(reader1));
+                    deserializedAdministratorListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedAdministratorListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAdministratorListResult;
+        });
     }
 }

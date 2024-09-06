@@ -13,17 +13,19 @@ public final class AzureFileStorageWriteSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureFileStorageWriteSettings model = BinaryData.fromString(
-            "{\"type\":\"AzureFileStorageWriteSettings\",\"maxConcurrentConnections\":\"datajuingnfunhtzgxs\",\"disableMetricsCollection\":\"datawmopk\",\"copyBehavior\":\"datahjztbw\",\"metadata\":[{\"name\":\"dataz\",\"value\":\"databhznhqzdbzl\"}],\"\":{\"vg\":\"databekvprkwpvxieqc\",\"aeiuex\":\"datashfafbeh\",\"ecrizkabafdlsiza\":\"datapgrmwdwlraeplpf\"}}")
+            "{\"type\":\"AzureFileStorageWriteSettings\",\"maxConcurrentConnections\":\"datasqlyahlaoqkcit\",\"disableMetricsCollection\":\"datauzvaxltrznwh\",\"copyBehavior\":\"datatsauvprqzpfpbx\",\"metadata\":[{\"name\":\"datakkoyzsy\",\"value\":\"datakcld\"},{\"name\":\"dataseka\",\"value\":\"datae\"},{\"name\":\"datalpch\",\"value\":\"datazqmdxmyfrmfclkyn\"}],\"\":{\"zcbohbb\":\"dataaf\",\"c\":\"datavoderduabqbverb\",\"pc\":\"dataszbvhxnjor\",\"uknnm\":\"dataxdlp\"}}")
             .toObject(AzureFileStorageWriteSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureFileStorageWriteSettings model
-            = new AzureFileStorageWriteSettings().withMaxConcurrentConnections("datajuingnfunhtzgxs")
-                .withDisableMetricsCollection("datawmopk")
-                .withCopyBehavior("datahjztbw")
-                .withMetadata(Arrays.asList(new MetadataItem().withName("dataz").withValue("databhznhqzdbzl")));
+            = new AzureFileStorageWriteSettings().withMaxConcurrentConnections("datasqlyahlaoqkcit")
+                .withDisableMetricsCollection("datauzvaxltrznwh")
+                .withCopyBehavior("datatsauvprqzpfpbx")
+                .withMetadata(Arrays.asList(new MetadataItem().withName("datakkoyzsy").withValue("datakcld"),
+                    new MetadataItem().withName("dataseka").withValue("datae"),
+                    new MetadataItem().withName("datalpch").withValue("datazqmdxmyfrmfclkyn")));
         model = BinaryData.fromObject(model).toObject(AzureFileStorageWriteSettings.class);
     }
 }

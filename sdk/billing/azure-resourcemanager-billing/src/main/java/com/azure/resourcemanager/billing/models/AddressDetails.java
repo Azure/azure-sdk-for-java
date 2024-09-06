@@ -6,182 +6,101 @@ package com.azure.resourcemanager.billing.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Address details. */
+/**
+ * Address details.
+ */
 @Fluent
-public final class AddressDetails {
-    /*
-     * First name.
-     */
-    @JsonProperty(value = "firstName")
-    private String firstName;
-
-    /*
-     * Middle name.
-     */
-    @JsonProperty(value = "middleName")
-    private String middleName;
-
-    /*
-     * Last name.
-     */
-    @JsonProperty(value = "lastName")
-    private String lastName;
-
-    /*
-     * Company name.
-     */
-    @JsonProperty(value = "companyName")
-    private String companyName;
-
+public class AddressDetails implements JsonSerializable<AddressDetails> {
     /*
      * Address line 1.
      */
-    @JsonProperty(value = "addressLine1", required = true)
     private String addressLine1;
 
     /*
      * Address line 2.
      */
-    @JsonProperty(value = "addressLine2")
     private String addressLine2;
 
     /*
      * Address line 3.
      */
-    @JsonProperty(value = "addressLine3")
     private String addressLine3;
 
     /*
      * Address city.
      */
-    @JsonProperty(value = "city")
     private String city;
+
+    /*
+     * Company name. Optional for MCA Individual (Pay-as-you-go).
+     */
+    private String companyName;
+
+    /*
+     * Country code uses ISO 3166-1 Alpha-2 format.
+     */
+    private String country;
 
     /*
      * Address district.
      */
-    @JsonProperty(value = "district")
     private String district;
-
-    /*
-     * Address region.
-     */
-    @JsonProperty(value = "region")
-    private String region;
-
-    /*
-     * Country code uses ISO2, 2-digit format.
-     */
-    @JsonProperty(value = "country", required = true)
-    private String country;
-
-    /*
-     * Postal code.
-     */
-    @JsonProperty(value = "postalCode")
-    private String postalCode;
 
     /*
      * Email address.
      */
-    @JsonProperty(value = "email")
     private String email;
+
+    /*
+     * First name. Optional for MCA Enterprise.
+     */
+    private String firstName;
+
+    /*
+     * Last name. Optional for MCA Enterprise.
+     */
+    private String lastName;
+
+    /*
+     * Middle name.
+     */
+    private String middleName;
 
     /*
      * Phone number.
      */
-    @JsonProperty(value = "phoneNumber")
     private String phoneNumber;
 
-    /** Creates an instance of AddressDetails class. */
+    /*
+     * Postal code.
+     */
+    private String postalCode;
+
+    /*
+     * Address region.
+     */
+    private String region;
+
+    /*
+     * Indicates if the address is incomplete.
+     */
+    private Boolean isValidAddress;
+
+    /**
+     * Creates an instance of AddressDetails class.
+     */
     public AddressDetails() {
     }
 
     /**
-     * Get the firstName property: First name.
-     *
-     * @return the firstName value.
-     */
-    public String firstName() {
-        return this.firstName;
-    }
-
-    /**
-     * Set the firstName property: First name.
-     *
-     * @param firstName the firstName value to set.
-     * @return the AddressDetails object itself.
-     */
-    public AddressDetails withFirstName(String firstName) {
-        this.firstName = firstName;
-        return this;
-    }
-
-    /**
-     * Get the middleName property: Middle name.
-     *
-     * @return the middleName value.
-     */
-    public String middleName() {
-        return this.middleName;
-    }
-
-    /**
-     * Set the middleName property: Middle name.
-     *
-     * @param middleName the middleName value to set.
-     * @return the AddressDetails object itself.
-     */
-    public AddressDetails withMiddleName(String middleName) {
-        this.middleName = middleName;
-        return this;
-    }
-
-    /**
-     * Get the lastName property: Last name.
-     *
-     * @return the lastName value.
-     */
-    public String lastName() {
-        return this.lastName;
-    }
-
-    /**
-     * Set the lastName property: Last name.
-     *
-     * @param lastName the lastName value to set.
-     * @return the AddressDetails object itself.
-     */
-    public AddressDetails withLastName(String lastName) {
-        this.lastName = lastName;
-        return this;
-    }
-
-    /**
-     * Get the companyName property: Company name.
-     *
-     * @return the companyName value.
-     */
-    public String companyName() {
-        return this.companyName;
-    }
-
-    /**
-     * Set the companyName property: Company name.
-     *
-     * @param companyName the companyName value to set.
-     * @return the AddressDetails object itself.
-     */
-    public AddressDetails withCompanyName(String companyName) {
-        this.companyName = companyName;
-        return this;
-    }
-
-    /**
      * Get the addressLine1 property: Address line 1.
-     *
+     * 
      * @return the addressLine1 value.
      */
     public String addressLine1() {
@@ -190,7 +109,7 @@ public final class AddressDetails {
 
     /**
      * Set the addressLine1 property: Address line 1.
-     *
+     * 
      * @param addressLine1 the addressLine1 value to set.
      * @return the AddressDetails object itself.
      */
@@ -201,7 +120,7 @@ public final class AddressDetails {
 
     /**
      * Get the addressLine2 property: Address line 2.
-     *
+     * 
      * @return the addressLine2 value.
      */
     public String addressLine2() {
@@ -210,7 +129,7 @@ public final class AddressDetails {
 
     /**
      * Set the addressLine2 property: Address line 2.
-     *
+     * 
      * @param addressLine2 the addressLine2 value to set.
      * @return the AddressDetails object itself.
      */
@@ -221,7 +140,7 @@ public final class AddressDetails {
 
     /**
      * Get the addressLine3 property: Address line 3.
-     *
+     * 
      * @return the addressLine3 value.
      */
     public String addressLine3() {
@@ -230,7 +149,7 @@ public final class AddressDetails {
 
     /**
      * Set the addressLine3 property: Address line 3.
-     *
+     * 
      * @param addressLine3 the addressLine3 value to set.
      * @return the AddressDetails object itself.
      */
@@ -241,7 +160,7 @@ public final class AddressDetails {
 
     /**
      * Get the city property: Address city.
-     *
+     * 
      * @return the city value.
      */
     public String city() {
@@ -250,7 +169,7 @@ public final class AddressDetails {
 
     /**
      * Set the city property: Address city.
-     *
+     * 
      * @param city the city value to set.
      * @return the AddressDetails object itself.
      */
@@ -260,48 +179,28 @@ public final class AddressDetails {
     }
 
     /**
-     * Get the district property: Address district.
-     *
-     * @return the district value.
+     * Get the companyName property: Company name. Optional for MCA Individual (Pay-as-you-go).
+     * 
+     * @return the companyName value.
      */
-    public String district() {
-        return this.district;
+    public String companyName() {
+        return this.companyName;
     }
 
     /**
-     * Set the district property: Address district.
-     *
-     * @param district the district value to set.
+     * Set the companyName property: Company name. Optional for MCA Individual (Pay-as-you-go).
+     * 
+     * @param companyName the companyName value to set.
      * @return the AddressDetails object itself.
      */
-    public AddressDetails withDistrict(String district) {
-        this.district = district;
+    public AddressDetails withCompanyName(String companyName) {
+        this.companyName = companyName;
         return this;
     }
 
     /**
-     * Get the region property: Address region.
-     *
-     * @return the region value.
-     */
-    public String region() {
-        return this.region;
-    }
-
-    /**
-     * Set the region property: Address region.
-     *
-     * @param region the region value to set.
-     * @return the AddressDetails object itself.
-     */
-    public AddressDetails withRegion(String region) {
-        this.region = region;
-        return this;
-    }
-
-    /**
-     * Get the country property: Country code uses ISO2, 2-digit format.
-     *
+     * Get the country property: Country code uses ISO 3166-1 Alpha-2 format.
+     * 
      * @return the country value.
      */
     public String country() {
@@ -309,8 +208,8 @@ public final class AddressDetails {
     }
 
     /**
-     * Set the country property: Country code uses ISO2, 2-digit format.
-     *
+     * Set the country property: Country code uses ISO 3166-1 Alpha-2 format.
+     * 
      * @param country the country value to set.
      * @return the AddressDetails object itself.
      */
@@ -320,28 +219,28 @@ public final class AddressDetails {
     }
 
     /**
-     * Get the postalCode property: Postal code.
-     *
-     * @return the postalCode value.
+     * Get the district property: Address district.
+     * 
+     * @return the district value.
      */
-    public String postalCode() {
-        return this.postalCode;
+    public String district() {
+        return this.district;
     }
 
     /**
-     * Set the postalCode property: Postal code.
-     *
-     * @param postalCode the postalCode value to set.
+     * Set the district property: Address district.
+     * 
+     * @param district the district value to set.
      * @return the AddressDetails object itself.
      */
-    public AddressDetails withPostalCode(String postalCode) {
-        this.postalCode = postalCode;
+    public AddressDetails withDistrict(String district) {
+        this.district = district;
         return this;
     }
 
     /**
      * Get the email property: Email address.
-     *
+     * 
      * @return the email value.
      */
     public String email() {
@@ -350,7 +249,7 @@ public final class AddressDetails {
 
     /**
      * Set the email property: Email address.
-     *
+     * 
      * @param email the email value to set.
      * @return the AddressDetails object itself.
      */
@@ -360,8 +259,68 @@ public final class AddressDetails {
     }
 
     /**
+     * Get the firstName property: First name. Optional for MCA Enterprise.
+     * 
+     * @return the firstName value.
+     */
+    public String firstName() {
+        return this.firstName;
+    }
+
+    /**
+     * Set the firstName property: First name. Optional for MCA Enterprise.
+     * 
+     * @param firstName the firstName value to set.
+     * @return the AddressDetails object itself.
+     */
+    public AddressDetails withFirstName(String firstName) {
+        this.firstName = firstName;
+        return this;
+    }
+
+    /**
+     * Get the lastName property: Last name. Optional for MCA Enterprise.
+     * 
+     * @return the lastName value.
+     */
+    public String lastName() {
+        return this.lastName;
+    }
+
+    /**
+     * Set the lastName property: Last name. Optional for MCA Enterprise.
+     * 
+     * @param lastName the lastName value to set.
+     * @return the AddressDetails object itself.
+     */
+    public AddressDetails withLastName(String lastName) {
+        this.lastName = lastName;
+        return this;
+    }
+
+    /**
+     * Get the middleName property: Middle name.
+     * 
+     * @return the middleName value.
+     */
+    public String middleName() {
+        return this.middleName;
+    }
+
+    /**
+     * Set the middleName property: Middle name.
+     * 
+     * @param middleName the middleName value to set.
+     * @return the AddressDetails object itself.
+     */
+    public AddressDetails withMiddleName(String middleName) {
+        this.middleName = middleName;
+        return this;
+    }
+
+    /**
      * Get the phoneNumber property: Phone number.
-     *
+     * 
      * @return the phoneNumber value.
      */
     public String phoneNumber() {
@@ -370,7 +329,7 @@ public final class AddressDetails {
 
     /**
      * Set the phoneNumber property: Phone number.
-     *
+     * 
      * @param phoneNumber the phoneNumber value to set.
      * @return the AddressDetails object itself.
      */
@@ -380,22 +339,159 @@ public final class AddressDetails {
     }
 
     /**
+     * Get the postalCode property: Postal code.
+     * 
+     * @return the postalCode value.
+     */
+    public String postalCode() {
+        return this.postalCode;
+    }
+
+    /**
+     * Set the postalCode property: Postal code.
+     * 
+     * @param postalCode the postalCode value to set.
+     * @return the AddressDetails object itself.
+     */
+    public AddressDetails withPostalCode(String postalCode) {
+        this.postalCode = postalCode;
+        return this;
+    }
+
+    /**
+     * Get the region property: Address region.
+     * 
+     * @return the region value.
+     */
+    public String region() {
+        return this.region;
+    }
+
+    /**
+     * Set the region property: Address region.
+     * 
+     * @param region the region value to set.
+     * @return the AddressDetails object itself.
+     */
+    public AddressDetails withRegion(String region) {
+        this.region = region;
+        return this;
+    }
+
+    /**
+     * Get the isValidAddress property: Indicates if the address is incomplete.
+     * 
+     * @return the isValidAddress value.
+     */
+    public Boolean isValidAddress() {
+        return this.isValidAddress;
+    }
+
+    /**
+     * Set the isValidAddress property: Indicates if the address is incomplete.
+     * 
+     * @param isValidAddress the isValidAddress value to set.
+     * @return the AddressDetails object itself.
+     */
+    public AddressDetails withIsValidAddress(Boolean isValidAddress) {
+        this.isValidAddress = isValidAddress;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (addressLine1() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property addressLine1 in model AddressDetails"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property addressLine1 in model AddressDetails"));
         }
         if (country() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property country in model AddressDetails"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property country in model AddressDetails"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AddressDetails.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("addressLine1", this.addressLine1);
+        jsonWriter.writeStringField("country", this.country);
+        jsonWriter.writeStringField("addressLine2", this.addressLine2);
+        jsonWriter.writeStringField("addressLine3", this.addressLine3);
+        jsonWriter.writeStringField("city", this.city);
+        jsonWriter.writeStringField("companyName", this.companyName);
+        jsonWriter.writeStringField("district", this.district);
+        jsonWriter.writeStringField("email", this.email);
+        jsonWriter.writeStringField("firstName", this.firstName);
+        jsonWriter.writeStringField("lastName", this.lastName);
+        jsonWriter.writeStringField("middleName", this.middleName);
+        jsonWriter.writeStringField("phoneNumber", this.phoneNumber);
+        jsonWriter.writeStringField("postalCode", this.postalCode);
+        jsonWriter.writeStringField("region", this.region);
+        jsonWriter.writeBooleanField("isValidAddress", this.isValidAddress);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AddressDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AddressDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AddressDetails.
+     */
+    public static AddressDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AddressDetails deserializedAddressDetails = new AddressDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("addressLine1".equals(fieldName)) {
+                    deserializedAddressDetails.addressLine1 = reader.getString();
+                } else if ("country".equals(fieldName)) {
+                    deserializedAddressDetails.country = reader.getString();
+                } else if ("addressLine2".equals(fieldName)) {
+                    deserializedAddressDetails.addressLine2 = reader.getString();
+                } else if ("addressLine3".equals(fieldName)) {
+                    deserializedAddressDetails.addressLine3 = reader.getString();
+                } else if ("city".equals(fieldName)) {
+                    deserializedAddressDetails.city = reader.getString();
+                } else if ("companyName".equals(fieldName)) {
+                    deserializedAddressDetails.companyName = reader.getString();
+                } else if ("district".equals(fieldName)) {
+                    deserializedAddressDetails.district = reader.getString();
+                } else if ("email".equals(fieldName)) {
+                    deserializedAddressDetails.email = reader.getString();
+                } else if ("firstName".equals(fieldName)) {
+                    deserializedAddressDetails.firstName = reader.getString();
+                } else if ("lastName".equals(fieldName)) {
+                    deserializedAddressDetails.lastName = reader.getString();
+                } else if ("middleName".equals(fieldName)) {
+                    deserializedAddressDetails.middleName = reader.getString();
+                } else if ("phoneNumber".equals(fieldName)) {
+                    deserializedAddressDetails.phoneNumber = reader.getString();
+                } else if ("postalCode".equals(fieldName)) {
+                    deserializedAddressDetails.postalCode = reader.getString();
+                } else if ("region".equals(fieldName)) {
+                    deserializedAddressDetails.region = reader.getString();
+                } else if ("isValidAddress".equals(fieldName)) {
+                    deserializedAddressDetails.isValidAddress = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAddressDetails;
+        });
+    }
 }

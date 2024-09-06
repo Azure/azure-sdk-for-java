@@ -6,51 +6,101 @@ package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * Properties of certificate imported from key vault.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("KeyVaultCertificate")
 @Fluent
 public final class KeyVaultCertificateProperties extends CertificateProperties {
     /*
+     * The type of the certificate source.
+     */
+    private String type = "KeyVaultCertificate";
+
+    /*
      * The vault uri of user key vault.
      */
-    @JsonProperty(value = "vaultUri", required = true)
     private String vaultUri;
 
     /*
      * The certificate name of key vault.
      */
-    @JsonProperty(value = "keyVaultCertName", required = true)
     private String keyVaultCertName;
 
     /*
      * The certificate version of key vault.
      */
-    @JsonProperty(value = "certVersion")
     private String certVersion;
 
     /*
      * Optional. If set to true, it will not import private key from key vault.
      */
-    @JsonProperty(value = "excludePrivateKey")
     private Boolean excludePrivateKey;
 
     /*
      * Indicates whether to automatically synchronize certificate from key vault or not.
      */
-    @JsonProperty(value = "autoSync")
     private KeyVaultCertificateAutoSync autoSync;
+
+    /*
+     * The thumbprint of certificate.
+     */
+    private String thumbprint;
+
+    /*
+     * The issuer of certificate.
+     */
+    private String issuer;
+
+    /*
+     * The issue date of certificate.
+     */
+    private String issuedDate;
+
+    /*
+     * The expiration date of certificate.
+     */
+    private String expirationDate;
+
+    /*
+     * The activate date of certificate.
+     */
+    private String activateDate;
+
+    /*
+     * The subject name of certificate.
+     */
+    private String subjectName;
+
+    /*
+     * The domain list of certificate.
+     */
+    private List<String> dnsNames;
+
+    /*
+     * Provisioning state of the Certificate
+     */
+    private CertificateResourceProvisioningState provisioningState;
 
     /**
      * Creates an instance of KeyVaultCertificateProperties class.
      */
     public KeyVaultCertificateProperties() {
+    }
+
+    /**
+     * Get the type property: The type of the certificate source.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -154,6 +204,86 @@ public final class KeyVaultCertificateProperties extends CertificateProperties {
     }
 
     /**
+     * Get the thumbprint property: The thumbprint of certificate.
+     * 
+     * @return the thumbprint value.
+     */
+    @Override
+    public String thumbprint() {
+        return this.thumbprint;
+    }
+
+    /**
+     * Get the issuer property: The issuer of certificate.
+     * 
+     * @return the issuer value.
+     */
+    @Override
+    public String issuer() {
+        return this.issuer;
+    }
+
+    /**
+     * Get the issuedDate property: The issue date of certificate.
+     * 
+     * @return the issuedDate value.
+     */
+    @Override
+    public String issuedDate() {
+        return this.issuedDate;
+    }
+
+    /**
+     * Get the expirationDate property: The expiration date of certificate.
+     * 
+     * @return the expirationDate value.
+     */
+    @Override
+    public String expirationDate() {
+        return this.expirationDate;
+    }
+
+    /**
+     * Get the activateDate property: The activate date of certificate.
+     * 
+     * @return the activateDate value.
+     */
+    @Override
+    public String activateDate() {
+        return this.activateDate;
+    }
+
+    /**
+     * Get the subjectName property: The subject name of certificate.
+     * 
+     * @return the subjectName value.
+     */
+    @Override
+    public String subjectName() {
+        return this.subjectName;
+    }
+
+    /**
+     * Get the dnsNames property: The domain list of certificate.
+     * 
+     * @return the dnsNames value.
+     */
+    @Override
+    public List<String> dnsNames() {
+        return this.dnsNames;
+    }
+
+    /**
+     * Get the provisioningState property: Provisioning state of the Certificate.
+     * 
+     * @return the provisioningState value.
+     */
+    @Override
+    public CertificateResourceProvisioningState provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -162,14 +292,89 @@ public final class KeyVaultCertificateProperties extends CertificateProperties {
     public void validate() {
         super.validate();
         if (vaultUri() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property vaultUri in model KeyVaultCertificateProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property vaultUri in model KeyVaultCertificateProperties"));
         }
         if (keyVaultCertName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property keyVaultCertName in model KeyVaultCertificateProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property keyVaultCertName in model KeyVaultCertificateProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(KeyVaultCertificateProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("vaultUri", this.vaultUri);
+        jsonWriter.writeStringField("keyVaultCertName", this.keyVaultCertName);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("certVersion", this.certVersion);
+        jsonWriter.writeBooleanField("excludePrivateKey", this.excludePrivateKey);
+        jsonWriter.writeStringField("autoSync", this.autoSync == null ? null : this.autoSync.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KeyVaultCertificateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KeyVaultCertificateProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the KeyVaultCertificateProperties.
+     */
+    public static KeyVaultCertificateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KeyVaultCertificateProperties deserializedKeyVaultCertificateProperties
+                = new KeyVaultCertificateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("thumbprint".equals(fieldName)) {
+                    deserializedKeyVaultCertificateProperties.thumbprint = reader.getString();
+                } else if ("issuer".equals(fieldName)) {
+                    deserializedKeyVaultCertificateProperties.issuer = reader.getString();
+                } else if ("issuedDate".equals(fieldName)) {
+                    deserializedKeyVaultCertificateProperties.issuedDate = reader.getString();
+                } else if ("expirationDate".equals(fieldName)) {
+                    deserializedKeyVaultCertificateProperties.expirationDate = reader.getString();
+                } else if ("activateDate".equals(fieldName)) {
+                    deserializedKeyVaultCertificateProperties.activateDate = reader.getString();
+                } else if ("subjectName".equals(fieldName)) {
+                    deserializedKeyVaultCertificateProperties.subjectName = reader.getString();
+                } else if ("dnsNames".equals(fieldName)) {
+                    List<String> dnsNames = reader.readArray(reader1 -> reader1.getString());
+                    deserializedKeyVaultCertificateProperties.dnsNames = dnsNames;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedKeyVaultCertificateProperties.provisioningState
+                        = CertificateResourceProvisioningState.fromString(reader.getString());
+                } else if ("vaultUri".equals(fieldName)) {
+                    deserializedKeyVaultCertificateProperties.vaultUri = reader.getString();
+                } else if ("keyVaultCertName".equals(fieldName)) {
+                    deserializedKeyVaultCertificateProperties.keyVaultCertName = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedKeyVaultCertificateProperties.type = reader.getString();
+                } else if ("certVersion".equals(fieldName)) {
+                    deserializedKeyVaultCertificateProperties.certVersion = reader.getString();
+                } else if ("excludePrivateKey".equals(fieldName)) {
+                    deserializedKeyVaultCertificateProperties.excludePrivateKey
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("autoSync".equals(fieldName)) {
+                    deserializedKeyVaultCertificateProperties.autoSync
+                        = KeyVaultCertificateAutoSync.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKeyVaultCertificateProperties;
+        });
+    }
 }

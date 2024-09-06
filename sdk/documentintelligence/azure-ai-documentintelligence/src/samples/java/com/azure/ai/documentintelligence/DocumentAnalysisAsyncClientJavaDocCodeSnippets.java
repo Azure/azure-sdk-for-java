@@ -4,7 +4,6 @@
 package com.azure.ai.documentintelligence;
 
 import com.azure.ai.documentintelligence.models.AnalyzeDocumentRequest;
-import com.azure.ai.documentintelligence.models.AnalyzeResultOperation;
 import com.azure.ai.documentintelligence.models.ClassifyDocumentRequest;
 import com.azure.ai.documentintelligence.models.ContentFormat;
 import com.azure.ai.documentintelligence.models.SplitMode;
@@ -65,6 +64,7 @@ public class DocumentAnalysisAsyncClientJavaDocCodeSnippets {
         String documentUrl = "{document_url}";
         String modelId = "{model_id}";
         documentIntelligenceAsyncClient.beginAnalyzeDocument(modelId,
+                null,
                 null,
                 null,
                 null,

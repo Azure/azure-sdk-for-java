@@ -4,17 +4,20 @@
 
 package com.azure.resourcemanager.billing.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.billing.fluent.models.AvailableBalanceInner;
-import com.azure.resourcemanager.billing.models.Amount;
 import com.azure.resourcemanager.billing.models.AvailableBalance;
+import com.azure.resourcemanager.billing.models.AvailableBalanceProperties;
+import java.util.Collections;
+import java.util.Map;
 
 public final class AvailableBalanceImpl implements AvailableBalance {
     private AvailableBalanceInner innerObject;
 
     private final com.azure.resourcemanager.billing.BillingManager serviceManager;
 
-    AvailableBalanceImpl(
-        AvailableBalanceInner innerObject, com.azure.resourcemanager.billing.BillingManager serviceManager) {
+    AvailableBalanceImpl(AvailableBalanceInner innerObject,
+        com.azure.resourcemanager.billing.BillingManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -31,8 +34,21 @@ public final class AvailableBalanceImpl implements AvailableBalance {
         return this.innerModel().type();
     }
 
-    public Amount amount() {
-        return this.innerModel().amount();
+    public Map<String, String> tags() {
+        Map<String, String> inner = this.innerModel().tags();
+        if (inner != null) {
+            return Collections.unmodifiableMap(inner);
+        } else {
+            return Collections.emptyMap();
+        }
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
+    }
+
+    public AvailableBalanceProperties properties() {
+        return this.innerModel().properties();
     }
 
     public AvailableBalanceInner innerModel() {

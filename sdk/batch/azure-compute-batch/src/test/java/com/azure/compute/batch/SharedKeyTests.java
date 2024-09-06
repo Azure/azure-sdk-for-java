@@ -2,10 +2,18 @@
 // Licensed under the MIT License.
 package com.azure.compute.batch;
 
+import com.azure.compute.batch.models.BatchNodeCommunicationMode;
+import com.azure.compute.batch.models.BatchPool;
+import com.azure.compute.batch.models.BatchPoolCreateContent;
+import com.azure.compute.batch.models.BatchPoolReplaceContent;
+import com.azure.compute.batch.models.BatchPoolUpdateContent;
+import com.azure.compute.batch.models.ImageReference;
+import com.azure.compute.batch.models.MetadataItem;
+import com.azure.compute.batch.models.VirtualMachineConfiguration;
 import com.azure.core.credential.AzureNamedKeyCredential;
-import com.azure.compute.batch.models.*;
-import com.azure.core.http.*;
 import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
@@ -103,7 +111,7 @@ public class SharedKeyTests extends BatchClientTestBase {
             HttpRequest getPoolRequest = poolGetResponse.getRequest();
             ocpDateHeader = getPoolRequest.getHeaders().get(HttpHeaderName.fromString("ocp-date"));
             Assertions.assertNotNull(ocpDateHeader);
-            Assertions.assertTrue(!ocpDateHeader.getValue().isEmpty());
+            Assertions.assertFalse(ocpDateHeader.getValue().isEmpty());
             pool = poolGetResponse.getValue().toObject(BatchPool.class);
 
             authorizationValue = getPoolRequest.getHeaders().getValue(HttpHeaderName.AUTHORIZATION);

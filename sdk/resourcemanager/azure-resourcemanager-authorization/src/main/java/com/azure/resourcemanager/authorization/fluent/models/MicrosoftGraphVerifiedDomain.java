@@ -5,58 +5,58 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** verifiedDomain. */
+/**
+ * verifiedDomain.
+ */
 @Fluent
-public final class MicrosoftGraphVerifiedDomain {
+public final class MicrosoftGraphVerifiedDomain implements JsonSerializable<MicrosoftGraphVerifiedDomain> {
     /*
      * For example, 'Email', 'OfficeCommunicationsOnline'.
      */
-    @JsonProperty(value = "capabilities")
     private String capabilities;
 
     /*
      * true if this is the default domain associated with the tenant; otherwise, false.
      */
-    @JsonProperty(value = "isDefault")
     private Boolean isDefault;
 
     /*
      * true if this is the initial domain associated with the tenant; otherwise, false
      */
-    @JsonProperty(value = "isInitial")
     private Boolean isInitial;
 
     /*
      * The domain name; for example, 'contoso.onmicrosoft.com'
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * For example, 'Managed'.
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /*
      * verifiedDomain
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphVerifiedDomain class. */
+    /**
+     * Creates an instance of MicrosoftGraphVerifiedDomain class.
+     */
     public MicrosoftGraphVerifiedDomain() {
     }
 
     /**
      * Get the capabilities property: For example, 'Email', 'OfficeCommunicationsOnline'.
-     *
+     * 
      * @return the capabilities value.
      */
     public String capabilities() {
@@ -65,7 +65,7 @@ public final class MicrosoftGraphVerifiedDomain {
 
     /**
      * Set the capabilities property: For example, 'Email', 'OfficeCommunicationsOnline'.
-     *
+     * 
      * @param capabilities the capabilities value to set.
      * @return the MicrosoftGraphVerifiedDomain object itself.
      */
@@ -76,7 +76,7 @@ public final class MicrosoftGraphVerifiedDomain {
 
     /**
      * Get the isDefault property: true if this is the default domain associated with the tenant; otherwise, false.
-     *
+     * 
      * @return the isDefault value.
      */
     public Boolean isDefault() {
@@ -85,7 +85,7 @@ public final class MicrosoftGraphVerifiedDomain {
 
     /**
      * Set the isDefault property: true if this is the default domain associated with the tenant; otherwise, false.
-     *
+     * 
      * @param isDefault the isDefault value to set.
      * @return the MicrosoftGraphVerifiedDomain object itself.
      */
@@ -96,7 +96,7 @@ public final class MicrosoftGraphVerifiedDomain {
 
     /**
      * Get the isInitial property: true if this is the initial domain associated with the tenant; otherwise, false.
-     *
+     * 
      * @return the isInitial value.
      */
     public Boolean isInitial() {
@@ -105,7 +105,7 @@ public final class MicrosoftGraphVerifiedDomain {
 
     /**
      * Set the isInitial property: true if this is the initial domain associated with the tenant; otherwise, false.
-     *
+     * 
      * @param isInitial the isInitial value to set.
      * @return the MicrosoftGraphVerifiedDomain object itself.
      */
@@ -116,7 +116,7 @@ public final class MicrosoftGraphVerifiedDomain {
 
     /**
      * Get the name property: The domain name; for example, 'contoso.onmicrosoft.com'.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -125,7 +125,7 @@ public final class MicrosoftGraphVerifiedDomain {
 
     /**
      * Set the name property: The domain name; for example, 'contoso.onmicrosoft.com'.
-     *
+     * 
      * @param name the name value to set.
      * @return the MicrosoftGraphVerifiedDomain object itself.
      */
@@ -136,7 +136,7 @@ public final class MicrosoftGraphVerifiedDomain {
 
     /**
      * Get the type property: For example, 'Managed'.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -145,7 +145,7 @@ public final class MicrosoftGraphVerifiedDomain {
 
     /**
      * Set the type property: For example, 'Managed'.
-     *
+     * 
      * @param type the type value to set.
      * @return the MicrosoftGraphVerifiedDomain object itself.
      */
@@ -156,17 +156,16 @@ public final class MicrosoftGraphVerifiedDomain {
 
     /**
      * Get the additionalProperties property: verifiedDomain.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: verifiedDomain.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphVerifiedDomain object itself.
      */
@@ -175,19 +174,70 @@ public final class MicrosoftGraphVerifiedDomain {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("capabilities", this.capabilities);
+        jsonWriter.writeBooleanField("isDefault", this.isDefault);
+        jsonWriter.writeBooleanField("isInitial", this.isInitial);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("type", this.type);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphVerifiedDomain from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphVerifiedDomain if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphVerifiedDomain.
+     */
+    public static MicrosoftGraphVerifiedDomain fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphVerifiedDomain deserializedMicrosoftGraphVerifiedDomain = new MicrosoftGraphVerifiedDomain();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("capabilities".equals(fieldName)) {
+                    deserializedMicrosoftGraphVerifiedDomain.capabilities = reader.getString();
+                } else if ("isDefault".equals(fieldName)) {
+                    deserializedMicrosoftGraphVerifiedDomain.isDefault = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isInitial".equals(fieldName)) {
+                    deserializedMicrosoftGraphVerifiedDomain.isInitial = reader.getNullable(JsonReader::getBoolean);
+                } else if ("name".equals(fieldName)) {
+                    deserializedMicrosoftGraphVerifiedDomain.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedMicrosoftGraphVerifiedDomain.type = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphVerifiedDomain.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphVerifiedDomain;
+        });
     }
 }
