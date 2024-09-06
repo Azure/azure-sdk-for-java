@@ -62,6 +62,10 @@ parameters:
     displayName: 'azure-core-http-okhttp'
     type: boolean
     default: true
+  - name: release_azurecorehttptestcommon
+    displayName: 'azure-core-http-test-common'
+    type: boolean
+    default: true
   - name: release_azurecorehttpvertx
     displayName: 'azure-core-http-vertx'
     type: boolean
@@ -131,6 +135,10 @@ extends:
         groupId: com.azure
         safeName: azurecorehttpokhttp
         releaseInBatch: ${{ parameters.release_azurecorehttpokhttp }}
+      - name: azure-core-http-test-common
+        groupId: com.azure
+        safeName: azurecorehttptestcommon
+        releaseInBatch: ${{ parameters.release_azurecorehttptestcommon }}
       - name: azure-core-http-vertx
         groupId: com.azure
         safeName: azurecorehttpvertx
