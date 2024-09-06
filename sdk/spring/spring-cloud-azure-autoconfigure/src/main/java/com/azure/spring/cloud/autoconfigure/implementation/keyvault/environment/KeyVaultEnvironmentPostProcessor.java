@@ -88,13 +88,7 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
 
         final List<AzureKeyVaultPropertySourceProperties> propertiesList = secretProperties.getPropertySources();
 
-        List<String> sourceNames = propertiesList.stream()
-                                                 .map(AzureKeyVaultPropertySourceProperties::getName)
-                                                 .toList();
-        Set<String> deduplicatedSourceNames = new HashSet<>(sourceNames);
-        if (propertiesList.size() != deduplicatedSourceNames.size()) {
-            throw new IllegalStateException("Duplicate property source name found: " + sourceNames);
-        }
+        checkDuplicatePropertySourceNames(propertiesList);
 
         List<KeyVaultPropertySource> keyVaultPropertySources = buildKeyVaultPropertySourceList(propertiesList);
         final MutablePropertySources propertySources = environment.getPropertySources();
@@ -107,6 +101,16 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
             } else {
                 propertySources.addFirst(propertySource);
             }
+        }
+    }
+
+    private void checkDuplicatePropertySourceNames(List<AzureKeyVaultPropertySourceProperties> propertiesList) {
+        List<String> sourceNames = propertiesList.stream()
+                                                 .map(AzureKeyVaultPropertySourceProperties::getName)
+                                                 .toList();
+        Set<String> deduplicatedSourceNames = new HashSet<>(sourceNames);
+        if (propertiesList.size() != deduplicatedSourceNames.size()) {
+            throw new IllegalStateException("Duplicate property source name found: " + sourceNames);
         }
     }
 
