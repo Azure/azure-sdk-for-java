@@ -75,23 +75,6 @@ public class MapsSearchClientTest extends MapsSearchClientTestBase {
         assertEquals(400, httpResponseException.getResponse().getStatusCode());
     }
 
-
-    // Test getGeocode
-    @Disabled("to fix build issue")
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.maps.search.TestUtils#getTestParameters")
-    public void testGetGeocode(HttpClient httpClient, MapsSearchServiceVersion serviceVersion) {
-        client = getMapsSearchClient(httpClient, serviceVersion);
-        BaseSearchOptions options = new BaseSearchOptions();
-        options.setQuery("1 Microsoft Way, Redmond, WA 98052");
-        GeocodingResponse response = client.getGeocoding(options);
-        assertEquals("1 Microsoft Way", response.getFeatures().getFirst().getProperties().getAddress().getAddressLine());
-        assertEquals("98052", response.getFeatures().getFirst().getProperties().getAddress().getPostalCode());
-        assertEquals("Redmond", response.getFeatures().getFirst().getProperties().getAddress().getLocality());
-    }
-
-
-
     // Test getGeocode with response
     // Case 1: 200
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -164,21 +147,6 @@ public class MapsSearchClientTest extends MapsSearchClientTestBase {
                 new GeocodingBatchRequestBody(), Context.NONE));
         assertEquals(400, httpResponseException.getResponse().getStatusCode());
     }
-
-
-
-    // Test getReverseGeocoding
-    @Disabled
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.maps.search.TestUtils#getTestParameters")
-    public void testGetReverseGeocoding(HttpClient httpClient, MapsSearchServiceVersion serviceVersion) {
-        client = getMapsSearchClient(httpClient, serviceVersion);
-        GeoPosition coordinates = new GeoPosition(-122.34255, 47.0);
-        GeocodingResponse response = client.getReverseGeocoding(coordinates, Arrays.asList(ReverseGeocodingResultTypeEnum.ADDRESS), null);
-        assertEquals("Graham", response.getFeatures().getFirst().getProperties().getAddress().getLocality());
-    }
-
-
 
     // Test getReverseGeocoding with response
     // Case 1: 200
