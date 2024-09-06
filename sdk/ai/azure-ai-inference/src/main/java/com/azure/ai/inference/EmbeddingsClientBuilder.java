@@ -65,6 +65,8 @@ public final class EmbeddingsClientBuilder implements HttpTrait<EmbeddingsClient
     @Generated
     private final List<HttpPipelinePolicy> pipelinePolicies;
 
+    private String[] scopes = DEFAULT_SCOPES;
+
     /**
      * Create an instance of the EmbeddingsClientBuilder.
      */
@@ -199,6 +201,18 @@ public final class EmbeddingsClientBuilder implements HttpTrait<EmbeddingsClient
         return this;
     }
 
+    /**
+     * Sets auth domain scopes for client authentication.
+     *
+     * @param scopes domain scope to authenticate against.
+     * @return the ChatCompletionsClientBuilder.
+     */
+    public EmbeddingsClientBuilder scopes(String[] scopes) {
+        this.scopes = scopes;
+        return this;
+    }
+
+
     /*
      * The KeyCredential used for authentication.
      */
@@ -317,7 +331,7 @@ public final class EmbeddingsClientBuilder implements HttpTrait<EmbeddingsClient
             policies.add(new KeyCredentialPolicy("api-key", keyCredential));
         }
         if (tokenCredential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, this.scopes));
         }
         this.pipelinePolicies.stream()
             .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)

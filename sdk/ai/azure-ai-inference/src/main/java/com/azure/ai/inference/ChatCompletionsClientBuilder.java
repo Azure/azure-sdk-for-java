@@ -202,14 +202,12 @@ public final class ChatCompletionsClientBuilder implements HttpTrait<ChatComplet
     }
 
     /**
-     * Sets credential for client authentication.
+     * Sets auth domain scopes for client authentication.
      *
-     * @param tokenCredential credential to authenticate with.
-     * @param scopes scope to authenticate against.
+     * @param scopes domain scope to authenticate against.
      * @return the ChatCompletionsClientBuilder.
      */
-    public ChatCompletionsClientBuilder credential(TokenCredential tokenCredential, String[] scopes) {
-        this.tokenCredential = tokenCredential;
+    public ChatCompletionsClientBuilder scopes(String[] scopes) {
         this.scopes = scopes;
         return this;
     }
@@ -332,7 +330,7 @@ public final class ChatCompletionsClientBuilder implements HttpTrait<ChatComplet
             policies.add(new KeyCredentialPolicy("api-key", keyCredential));
         }
         if (tokenCredential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, this.scopes));
         }
         this.pipelinePolicies.stream()
             .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)

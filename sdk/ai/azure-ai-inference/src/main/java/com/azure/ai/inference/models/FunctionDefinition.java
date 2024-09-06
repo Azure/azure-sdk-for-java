@@ -5,6 +5,7 @@ package com.azure.ai.inference.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -33,8 +34,7 @@ public final class FunctionDefinition implements JsonSerializable<FunctionDefini
     /*
      * The parameters the function accepts, described as a JSON Schema object.
      */
-    @Generated
-    private Object parameters;
+    private BinaryData parameters;
 
     /**
      * Creates an instance of FunctionDefinition class.
@@ -87,8 +87,7 @@ public final class FunctionDefinition implements JsonSerializable<FunctionDefini
      *
      * @return the parameters value.
      */
-    @Generated
-    public Object getParameters() {
+    public BinaryData getParameters() {
         return this.parameters;
     }
 
@@ -98,8 +97,7 @@ public final class FunctionDefinition implements JsonSerializable<FunctionDefini
      * @param parameters the parameters value to set.
      * @return the FunctionDefinition object itself.
      */
-    @Generated
-    public FunctionDefinition setParameters(Object parameters) {
+    public FunctionDefinition setParameters(BinaryData parameters) {
         this.parameters = parameters;
         return this;
     }
@@ -131,7 +129,7 @@ public final class FunctionDefinition implements JsonSerializable<FunctionDefini
         return jsonReader.readObject(reader -> {
             String name = null;
             String description = null;
-            Object parameters = null;
+            BinaryData parameters = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -140,7 +138,7 @@ public final class FunctionDefinition implements JsonSerializable<FunctionDefini
                 } else if ("description".equals(fieldName)) {
                     description = reader.getString();
                 } else if ("parameters".equals(fieldName)) {
-                    parameters = reader.readUntyped();
+                    parameters = BinaryData.fromObject(reader.readUntyped());
                 } else {
                     reader.skipChildren();
                 }

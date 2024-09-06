@@ -26,8 +26,8 @@ public final class BasicChatAADSample {
         String[] scopes = new String[] { "https://cognitiveservices.azure.com/.default" };
         String endpoint = Configuration.getGlobalConfiguration().get("MODEL_ENDPOINT");
         ChatCompletionsClient client = new ChatCompletionsClientBuilder()
-    	    .credential(defaultCredential, scopes)
-            //.credential(defaultCredential) // For non-Azure OpenAI models (such as Cohere, Mistral, Llama, or Phi)
+            .scopes(scopes)
+    	    .credential(defaultCredential)
             .endpoint(endpoint)
             .buildClient();
 
