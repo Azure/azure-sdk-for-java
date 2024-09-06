@@ -52,9 +52,11 @@ public class KeyVaultPropertySource extends EnumerablePropertySource<KeyVaultOpe
 
     /**
      * Create a new {@code KeyVaultPropertySource} with the given name and {@link KeyVaultOperation}.
-     * @param name the associated name
+     * @param name the associated name.
      * @param refreshDuration the refresh in milliseconds (0 or less disables refresh).
-     * @param keyVaultOperation the {@link KeyVaultOperation}
+     * @param keyVaultOperation the {@link KeyVaultOperation}.
+     * @param secretKeys the secret keys to look for.
+     * @param caseSensitive the case-sensitive flag.
      */
     public KeyVaultPropertySource(String name,
                                   final Duration refreshDuration,
