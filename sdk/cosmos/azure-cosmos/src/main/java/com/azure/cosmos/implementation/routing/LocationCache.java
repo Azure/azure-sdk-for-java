@@ -333,20 +333,38 @@ public class LocationCache {
         DatabaseAccountLocationsInfo currentLocationInfo = this.locationInfo;
         String mostPreferredLocation = Utils.firstOrDefault(currentLocationInfo.preferredLocations);
 
+        String mostPreferredEffectiveReadLocation = StringUtils.EMPTY;
+        String mostPreferredEffectiveWriteLocation = StringUtils.EMPTY;
+
         if (StringUtils.isEmpty(mostPreferredLocation)) {
-            URI firstAccountLevelReadRegion = Utils.firstOrDefault(currentLocationInfo.readEndpoints);
+            URI firstAccountLevelReadEndpoint = Utils.firstOrDefault(currentLocationInfo.readEndpoints);
 
             if (currentLocationInfo.regionNameByReadEndpoint != null) {
-                mostPreferredLocation
-                    = currentLocationInfo.regionNameByReadEndpoint.getOrDefault(firstAccountLevelReadRegion, StringUtils.EMPTY);
+                mostPreferredEffectiveReadLocation
+                    = currentLocationInfo.regionNameByReadEndpoint.getOrDefault(firstAccountLevelReadEndpoint, StringUtils.EMPTY);
+            }
+
+            URI firstAccountLevelWriteEndpoint = Utils.firstOrDefault(currentLocationInfo.writeEndpoints);
+
+            if (currentLocationInfo.regionNameByWriteEndpoint != null) {
+                mostPreferredEffectiveWriteLocation
+                    = currentLocationInfo.regionNameByWriteEndpoint.getOrDefault(firstAccountLevelWriteEndpoint, StringUtils.EMPTY);
             }
         }
+
+        String mostPreferredReadLocationToUse = !Strings.isNullOrEmpty(mostPreferredLocation) ?
+            mostPreferredLocation : mostPreferredEffectiveReadLocation;
+
+        String mostPreferredWriteLocationToUse = !Strings.isNullOrEmpty(mostPreferredLocation) ?
+            mostPreferredLocation : mostPreferredEffectiveWriteLocation;
 
         // we should schedule refresh in background if we are unable to target the user's most preferredLocation.
         if (this.enableEndpointDiscovery) {
 
             boolean shouldRefresh = this.useMultipleWriteLocations && !this.enableMultipleWriteLocations;
             List<URI> readLocationEndpoints = currentLocationInfo.readEndpoints;
+
+
             if (this.isEndpointUnavailable(readLocationEndpoints.get(0), OperationType.Read)) {
                 // Since most preferred read endpoint is unavailable, we can only refresh in background if
                 // we have an alternate read endpoint
@@ -358,20 +376,20 @@ public class LocationCache {
                 return true;
             }
 
-            if (!Strings.isNullOrEmpty(mostPreferredLocation)) {
+            if (!Strings.isNullOrEmpty(mostPreferredReadLocationToUse)) {
                 Utils.ValueHolder<URI> mostPreferredReadEndpointHolder = new Utils.ValueHolder<>();
                 Utils.ValueHolder<URI> firstAccountLevelReadEndpointHolder = new Utils.ValueHolder<>();
 
                 logger.debug("getReadEndpoints [{}]", readLocationEndpoints);
 
-                if (Utils.tryGetValue(currentLocationInfo.availableReadEndpointByLocation, mostPreferredLocation, mostPreferredReadEndpointHolder)) {
+                if (Utils.tryGetValue(currentLocationInfo.availableReadEndpointByLocation, mostPreferredReadLocationToUse, mostPreferredReadEndpointHolder)) {
                     logger.debug("most preferred is [{}], most preferred available is [{}]",
-                            mostPreferredLocation, mostPreferredReadEndpointHolder.v);
+                        mostPreferredReadLocationToUse, mostPreferredReadEndpointHolder.v);
                     if (!areEqual(mostPreferredReadEndpointHolder.v, readLocationEndpoints.get(0))) {
                         // For reads, we can always refresh in background as we can alternate to
                         // other available read endpoints
                         logger.debug("shouldRefreshEndpoints = true, most preferred location [{}]" +
-                                " is not available for read.", mostPreferredLocation);
+                                " is not available for read.", mostPreferredReadLocationToUse);
                         return true;
                     }
 
@@ -422,8 +440,8 @@ public class LocationCache {
                     logger.debug("shouldRefreshEndpoints: false, [{}] is available for Write", writeLocationEndpoints.get(0));
                     return shouldRefresh;
                 }
-            } else if (!Strings.isNullOrEmpty(mostPreferredLocation)) {
-                if (Utils.tryGetValue(currentLocationInfo.availableWriteEndpointByLocation, mostPreferredLocation, mostPreferredWriteEndpointHolder)) {
+            } else if (!Strings.isNullOrEmpty(mostPreferredWriteLocationToUse)) {
+                if (Utils.tryGetValue(currentLocationInfo.availableWriteEndpointByLocation, mostPreferredWriteLocationToUse, mostPreferredWriteEndpointHolder)) {
                     shouldRefresh = ! areEqual(mostPreferredWriteEndpointHolder.v, writeLocationEndpoints.get(0));
 
                     // if first account level available write region is not same as first effective preferred write region
