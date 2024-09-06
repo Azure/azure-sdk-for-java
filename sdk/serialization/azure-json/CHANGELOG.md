@@ -3,6 +3,7 @@
 ## 1.3.0-beta.1 (Unreleased)
 
 ### Features Added
+- Enabled parsing JSONC in the `DefaultJsonReader`
 
 ### Breaking Changes
 

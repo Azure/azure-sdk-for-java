@@ -5,34 +5,70 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The UriFolderJobOutput model. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "jobOutputType")
-@JsonTypeName("uri_folder")
+/**
+ * The UriFolderJobOutput model.
+ */
 @Fluent
 public final class UriFolderJobOutput extends JobOutput {
     /*
-     * Output Asset Delivery Mode.
+     * [Required] Specifies the type of job.
      */
-    @JsonProperty(value = "mode")
-    private OutputDeliveryMode mode;
+    private JobOutputType jobOutputType = JobOutputType.URI_FOLDER;
 
     /*
      * Output Asset URI.
      */
-    @JsonProperty(value = "uri")
     private String uri;
 
-    /** Creates an instance of UriFolderJobOutput class. */
+    /*
+     * Output Asset Delivery Mode.
+     */
+    private OutputDeliveryMode mode;
+
+    /**
+     * Creates an instance of UriFolderJobOutput class.
+     */
     public UriFolderJobOutput() {
     }
 
     /**
+     * Get the jobOutputType property: [Required] Specifies the type of job.
+     * 
+     * @return the jobOutputType value.
+     */
+    @Override
+    public JobOutputType jobOutputType() {
+        return this.jobOutputType;
+    }
+
+    /**
+     * Get the uri property: Output Asset URI.
+     * 
+     * @return the uri value.
+     */
+    public String uri() {
+        return this.uri;
+    }
+
+    /**
+     * Set the uri property: Output Asset URI.
+     * 
+     * @param uri the uri value to set.
+     * @return the UriFolderJobOutput object itself.
+     */
+    public UriFolderJobOutput withUri(String uri) {
+        this.uri = uri;
+        return this;
+    }
+
+    /**
      * Get the mode property: Output Asset Delivery Mode.
-     *
+     * 
      * @return the mode value.
      */
     public OutputDeliveryMode mode() {
@@ -41,7 +77,7 @@ public final class UriFolderJobOutput extends JobOutput {
 
     /**
      * Set the mode property: Output Asset Delivery Mode.
-     *
+     * 
      * @param mode the mode value to set.
      * @return the UriFolderJobOutput object itself.
      */
@@ -51,26 +87,8 @@ public final class UriFolderJobOutput extends JobOutput {
     }
 
     /**
-     * Get the uri property: Output Asset URI.
-     *
-     * @return the uri value.
+     * {@inheritDoc}
      */
-    public String uri() {
-        return this.uri;
-    }
-
-    /**
-     * Set the uri property: Output Asset URI.
-     *
-     * @param uri the uri value to set.
-     * @return the UriFolderJobOutput object itself.
-     */
-    public UriFolderJobOutput withUri(String uri) {
-        this.uri = uri;
-        return this;
-    }
-
-    /** {@inheritDoc} */
     @Override
     public UriFolderJobOutput withDescription(String description) {
         super.withDescription(description);
@@ -79,11 +97,56 @@ public final class UriFolderJobOutput extends JobOutput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeStringField("jobOutputType", this.jobOutputType == null ? null : this.jobOutputType.toString());
+        jsonWriter.writeStringField("uri", this.uri);
+        jsonWriter.writeStringField("mode", this.mode == null ? null : this.mode.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UriFolderJobOutput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UriFolderJobOutput if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UriFolderJobOutput.
+     */
+    public static UriFolderJobOutput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UriFolderJobOutput deserializedUriFolderJobOutput = new UriFolderJobOutput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedUriFolderJobOutput.withDescription(reader.getString());
+                } else if ("jobOutputType".equals(fieldName)) {
+                    deserializedUriFolderJobOutput.jobOutputType = JobOutputType.fromString(reader.getString());
+                } else if ("uri".equals(fieldName)) {
+                    deserializedUriFolderJobOutput.uri = reader.getString();
+                } else if ("mode".equals(fieldName)) {
+                    deserializedUriFolderJobOutput.mode = OutputDeliveryMode.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUriFolderJobOutput;
+        });
     }
 }

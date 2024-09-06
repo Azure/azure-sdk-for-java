@@ -6,65 +6,40 @@ package com.azure.resourcemanager.billing.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.billing.BillingManager;
 import com.azure.resourcemanager.billing.models.Customer;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class CustomersListByBillingAccountMockTests {
     @Test
     public void testListByBillingAccount() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"billingProfileDisplayName\":\"qlc\",\"billingProfileId\":\"qnofkwhg\",\"displayName\":\"wfyfdbvooelmikds\",\"systemId\":\"ykgjjsmvsiyqm\",\"status\":\"UnderReview\",\"enabledAzurePlans\":[{\"productId\":\"m\",\"skuId\":\"bmacv\",\"skuDescription\":\"mriyzyvquesxp\"},{\"productId\":\"sinbulolxxhcynnm\",\"skuId\":\"izvkw\",\"skuDescription\":\"pwcidsjqcqyzmrtf\"}],\"resellers\":[{\"resellerId\":\"ryyjlikalbcyuwah\",\"description\":\"agvaidzceph\"},{\"resellerId\":\"nuhgy\",\"description\":\"khis\"}],\"tags\":{\"rtjpairpwjmcgiws\":\"pekiprjbp\",\"ugrsergiuztqef\":\"wpejtvqo\",\"dmcbc\":\"ypul\",\"gukqmkiynbfvkiwm\":\"ndidhuepikwcxoa\"}},\"tags\":{\"x\":\"mytcctirgyut\"},\"id\":\"hdmcgvjbrybfa\",\"name\":\"khkoqcud\",\"type\":\"wmoyhd\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"billingProfileId\":\"aiouaubrjt\",\"billingProfileDisplayName\":\"qxfuojrngif\",\"displayName\":\"z\",\"enabledAzurePlans\":[],\"resellers\":[]},\"id\":\"biuimzdlyjdfq\",\"name\":\"mkyoqufdvruzsl\",\"type\":\"ojhp\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        BillingManager manager = BillingManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<Customer> response = manager.customers()
+            .listByBillingAccount("zp", "qi", "yxjkctyq", "ttampqep", 2055905019025432515L, 6711408200390148025L, true,
+                "plzoepeqlhbtysy", com.azure.core.util.Context.NONE);
 
-        BillingManager manager =
-            BillingManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<Customer> response =
-            manager
-                .customers()
-                .listByBillingAccount("qbnj", "rcgegydcwboxjum", "qqoli", com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("z", response.iterator().next().displayName());
+        Assertions.assertEquals("mytcctirgyut", response.iterator().next().tags().get("x"));
+        Assertions.assertEquals("m", response.iterator().next().properties().enabledAzurePlans().get(0).productId());
+        Assertions.assertEquals("bmacv", response.iterator().next().properties().enabledAzurePlans().get(0).skuId());
+        Assertions.assertEquals("mriyzyvquesxp",
+            response.iterator().next().properties().enabledAzurePlans().get(0).skuDescription());
+        Assertions.assertEquals("pekiprjbp", response.iterator().next().properties().tags().get("rtjpairpwjmcgiws"));
     }
 }

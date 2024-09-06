@@ -88,7 +88,7 @@ import java.util.Map;
 public final class VirtualMachineScaleSetsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Update_MinimumSet_Gen.json
      */
     /**
@@ -107,7 +107,7 @@ public final class VirtualMachineScaleSetsUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Update_MaximumSet_Gen.json
      */
     /**
@@ -130,6 +130,7 @@ public final class VirtualMachineScaleSetsUpdateSamples {
                     .withPromotionCode("fakeTokenPlaceholder"))
                 .withIdentity(new VirtualMachineScaleSetIdentity().withType(ResourceIdentityType.SYSTEM_ASSIGNED)
                     .withUserAssignedIdentities(mapOf("key3951", new VirtualMachineIdentityUserAssignedIdentities())))
+                .withZones(Arrays.asList("1", "2", "3"))
                 .withUpgradePolicy(new UpgradePolicy().withMode(UpgradeMode.MANUAL)
                     .withRollingUpgradePolicy(new RollingUpgradePolicy().withMaxBatchInstancePercent(49)
                         .withMaxUnhealthyInstancePercent(81)

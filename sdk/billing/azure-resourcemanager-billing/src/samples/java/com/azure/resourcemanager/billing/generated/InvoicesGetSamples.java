@@ -4,53 +4,20 @@
 
 package com.azure.resourcemanager.billing.generated;
 
-/** Samples for Invoices Get. */
+/**
+ * Samples for Invoices Get.
+ */
 public final class InvoicesGetSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/Invoice.json
+     * x-ms-original-file:
+     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/invoicesGet.json
      */
     /**
-     * Sample code: Invoice.
-     *
+     * Sample code: InvoicesGet.
+     * 
      * @param manager Entry point to BillingManager.
      */
-    public static void invoice(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.invoices().getWithResponse("{billingAccountName}", "{invoiceName}", com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/CreditNote.json
-     */
-    /**
-     * Sample code: CreditNote.
-     *
-     * @param manager Entry point to BillingManager.
-     */
-    public static void creditNote(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.invoices().getWithResponse("{billingAccountName}", "{invoiceName}", com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/VoidInvoice.json
-     */
-    /**
-     * Sample code: VoidInvoice.
-     *
-     * @param manager Entry point to BillingManager.
-     */
-    public static void voidInvoice(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.invoices().getWithResponse("{billingAccountName}", "{invoiceName}", com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/InvoiceWithRebillDetails.json
-     */
-    /**
-     * Sample code: InvoiceWithRebillDetails.
-     *
-     * @param manager Entry point to BillingManager.
-     */
-    public static void invoiceWithRebillDetails(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.invoices().getWithResponse("{billingAccountName}", "{invoiceName}", com.azure.core.util.Context.NONE);
+    public static void invoicesGet(com.azure.resourcemanager.billing.BillingManager manager) {
+        manager.invoices().getWithResponse("G123456789", com.azure.core.util.Context.NONE);
     }
 }

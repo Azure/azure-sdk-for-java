@@ -12,8 +12,7 @@ public final class NotebookAccessTokenResultImpl implements NotebookAccessTokenR
 
     private final com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager;
 
-    NotebookAccessTokenResultImpl(
-        NotebookAccessTokenResultInner innerObject,
+    NotebookAccessTokenResultImpl(NotebookAccessTokenResultInner innerObject,
         com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

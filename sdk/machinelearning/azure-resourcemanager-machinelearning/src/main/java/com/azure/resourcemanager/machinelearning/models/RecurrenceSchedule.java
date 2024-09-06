@@ -6,43 +6,47 @@ package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The RecurrenceSchedule model. */
+/**
+ * The RecurrenceSchedule model.
+ */
 @Fluent
-public final class RecurrenceSchedule {
+public final class RecurrenceSchedule implements JsonSerializable<RecurrenceSchedule> {
     /*
      * [Required] List of hours for the schedule.
      */
-    @JsonProperty(value = "hours", required = true)
     private List<Integer> hours;
 
     /*
      * [Required] List of minutes for the schedule.
      */
-    @JsonProperty(value = "minutes", required = true)
     private List<Integer> minutes;
-
-    /*
-     * List of month days for the schedule
-     */
-    @JsonProperty(value = "monthDays")
-    private List<Integer> monthDays;
 
     /*
      * List of days for the schedule.
      */
-    @JsonProperty(value = "weekDays")
     private List<WeekDay> weekDays;
 
-    /** Creates an instance of RecurrenceSchedule class. */
+    /*
+     * List of month days for the schedule
+     */
+    private List<Integer> monthDays;
+
+    /**
+     * Creates an instance of RecurrenceSchedule class.
+     */
     public RecurrenceSchedule() {
     }
 
     /**
      * Get the hours property: [Required] List of hours for the schedule.
-     *
+     * 
      * @return the hours value.
      */
     public List<Integer> hours() {
@@ -51,7 +55,7 @@ public final class RecurrenceSchedule {
 
     /**
      * Set the hours property: [Required] List of hours for the schedule.
-     *
+     * 
      * @param hours the hours value to set.
      * @return the RecurrenceSchedule object itself.
      */
@@ -62,7 +66,7 @@ public final class RecurrenceSchedule {
 
     /**
      * Get the minutes property: [Required] List of minutes for the schedule.
-     *
+     * 
      * @return the minutes value.
      */
     public List<Integer> minutes() {
@@ -71,7 +75,7 @@ public final class RecurrenceSchedule {
 
     /**
      * Set the minutes property: [Required] List of minutes for the schedule.
-     *
+     * 
      * @param minutes the minutes value to set.
      * @return the RecurrenceSchedule object itself.
      */
@@ -81,28 +85,8 @@ public final class RecurrenceSchedule {
     }
 
     /**
-     * Get the monthDays property: List of month days for the schedule.
-     *
-     * @return the monthDays value.
-     */
-    public List<Integer> monthDays() {
-        return this.monthDays;
-    }
-
-    /**
-     * Set the monthDays property: List of month days for the schedule.
-     *
-     * @param monthDays the monthDays value to set.
-     * @return the RecurrenceSchedule object itself.
-     */
-    public RecurrenceSchedule withMonthDays(List<Integer> monthDays) {
-        this.monthDays = monthDays;
-        return this;
-    }
-
-    /**
      * Get the weekDays property: List of days for the schedule.
-     *
+     * 
      * @return the weekDays value.
      */
     public List<WeekDay> weekDays() {
@@ -111,7 +95,7 @@ public final class RecurrenceSchedule {
 
     /**
      * Set the weekDays property: List of days for the schedule.
-     *
+     * 
      * @param weekDays the weekDays value to set.
      * @return the RecurrenceSchedule object itself.
      */
@@ -121,22 +105,91 @@ public final class RecurrenceSchedule {
     }
 
     /**
+     * Get the monthDays property: List of month days for the schedule.
+     * 
+     * @return the monthDays value.
+     */
+    public List<Integer> monthDays() {
+        return this.monthDays;
+    }
+
+    /**
+     * Set the monthDays property: List of month days for the schedule.
+     * 
+     * @param monthDays the monthDays value to set.
+     * @return the RecurrenceSchedule object itself.
+     */
+    public RecurrenceSchedule withMonthDays(List<Integer> monthDays) {
+        this.monthDays = monthDays;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (hours() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property hours in model RecurrenceSchedule"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property hours in model RecurrenceSchedule"));
         }
         if (minutes() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property minutes in model RecurrenceSchedule"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property minutes in model RecurrenceSchedule"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RecurrenceSchedule.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("hours", this.hours, (writer, element) -> writer.writeInt(element));
+        jsonWriter.writeArrayField("minutes", this.minutes, (writer, element) -> writer.writeInt(element));
+        jsonWriter.writeArrayField("weekDays", this.weekDays,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeArrayField("monthDays", this.monthDays, (writer, element) -> writer.writeInt(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RecurrenceSchedule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RecurrenceSchedule if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RecurrenceSchedule.
+     */
+    public static RecurrenceSchedule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RecurrenceSchedule deserializedRecurrenceSchedule = new RecurrenceSchedule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("hours".equals(fieldName)) {
+                    List<Integer> hours = reader.readArray(reader1 -> reader1.getInt());
+                    deserializedRecurrenceSchedule.hours = hours;
+                } else if ("minutes".equals(fieldName)) {
+                    List<Integer> minutes = reader.readArray(reader1 -> reader1.getInt());
+                    deserializedRecurrenceSchedule.minutes = minutes;
+                } else if ("weekDays".equals(fieldName)) {
+                    List<WeekDay> weekDays = reader.readArray(reader1 -> WeekDay.fromString(reader1.getString()));
+                    deserializedRecurrenceSchedule.weekDays = weekDays;
+                } else if ("monthDays".equals(fieldName)) {
+                    List<Integer> monthDays = reader.readArray(reader1 -> reader1.getInt());
+                    deserializedRecurrenceSchedule.monthDays = monthDays;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRecurrenceSchedule;
+        });
+    }
 }

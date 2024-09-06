@@ -5,39 +5,50 @@
 package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Cluster available AKS patch version upgrade.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "upgradeType")
-@JsonTypeName("AKSPatchUpgrade")
 @Fluent
 public final class ClusterAvailableUpgradeAksPatchUpgradeProperties extends ClusterAvailableUpgradeProperties {
     /*
+     * Type of upgrade.
+     */
+    private ClusterAvailableUpgradeType upgradeType = ClusterAvailableUpgradeType.AKSPATCH_UPGRADE;
+
+    /*
      * Current node pool version.
      */
-    @JsonProperty(value = "currentVersion")
     private String currentVersion;
 
     /*
      * Current AKS version's status: whether it is deprecated or supported
      */
-    @JsonProperty(value = "currentVersionStatus")
     private CurrentClusterAksVersionStatus currentVersionStatus;
 
     /*
      * Latest available version, which should be equal to AKS control plane version if it's not deprecated.
      */
-    @JsonProperty(value = "latestVersion")
     private String latestVersion;
 
     /**
      * Creates an instance of ClusterAvailableUpgradeAksPatchUpgradeProperties class.
      */
     public ClusterAvailableUpgradeAksPatchUpgradeProperties() {
+    }
+
+    /**
+     * Get the upgradeType property: Type of upgrade.
+     * 
+     * @return the upgradeType value.
+     */
+    @Override
+    public ClusterAvailableUpgradeType upgradeType() {
+        return this.upgradeType;
     }
 
     /**
@@ -111,5 +122,54 @@ public final class ClusterAvailableUpgradeAksPatchUpgradeProperties extends Clus
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("upgradeType", this.upgradeType == null ? null : this.upgradeType.toString());
+        jsonWriter.writeStringField("currentVersion", this.currentVersion);
+        jsonWriter.writeStringField("currentVersionStatus",
+            this.currentVersionStatus == null ? null : this.currentVersionStatus.toString());
+        jsonWriter.writeStringField("latestVersion", this.latestVersion);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterAvailableUpgradeAksPatchUpgradeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterAvailableUpgradeAksPatchUpgradeProperties if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ClusterAvailableUpgradeAksPatchUpgradeProperties.
+     */
+    public static ClusterAvailableUpgradeAksPatchUpgradeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterAvailableUpgradeAksPatchUpgradeProperties deserializedClusterAvailableUpgradeAksPatchUpgradeProperties
+                = new ClusterAvailableUpgradeAksPatchUpgradeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("upgradeType".equals(fieldName)) {
+                    deserializedClusterAvailableUpgradeAksPatchUpgradeProperties.upgradeType
+                        = ClusterAvailableUpgradeType.fromString(reader.getString());
+                } else if ("currentVersion".equals(fieldName)) {
+                    deserializedClusterAvailableUpgradeAksPatchUpgradeProperties.currentVersion = reader.getString();
+                } else if ("currentVersionStatus".equals(fieldName)) {
+                    deserializedClusterAvailableUpgradeAksPatchUpgradeProperties.currentVersionStatus
+                        = CurrentClusterAksVersionStatus.fromString(reader.getString());
+                } else if ("latestVersion".equals(fieldName)) {
+                    deserializedClusterAvailableUpgradeAksPatchUpgradeProperties.latestVersion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterAvailableUpgradeAksPatchUpgradeProperties;
+        });
     }
 }

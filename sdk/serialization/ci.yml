@@ -65,6 +65,7 @@ extends:
                 - gson_2.8
                 - gson_2.9
                 - gson_2.10
+                - gson_2.11
                 - jackson_2.10
                 - jackson_2.11
                 - jackson_2.12
@@ -73,6 +74,7 @@ extends:
                 - jackson_2.15
                 - jackson_2.16
                 - jackson_2.17
+                - jackson_2.18
               TestGoals: surefire:test
 
     LiveTestStages:

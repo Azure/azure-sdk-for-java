@@ -4,18 +4,11 @@
 
 package com.azure.resourcemanager.billing.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.billing.fluent.models.InvoiceInner;
-import com.azure.resourcemanager.billing.models.Amount;
-import com.azure.resourcemanager.billing.models.Document;
 import com.azure.resourcemanager.billing.models.Invoice;
-import com.azure.resourcemanager.billing.models.InvoiceDocumentType;
-import com.azure.resourcemanager.billing.models.InvoiceStatus;
-import com.azure.resourcemanager.billing.models.InvoiceType;
-import com.azure.resourcemanager.billing.models.PaymentProperties;
-import com.azure.resourcemanager.billing.models.RebillDetails;
-import java.time.OffsetDateTime;
+import com.azure.resourcemanager.billing.models.InvoiceProperties;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 public final class InvoiceImpl implements Invoice {
@@ -40,98 +33,8 @@ public final class InvoiceImpl implements Invoice {
         return this.innerModel().type();
     }
 
-    public OffsetDateTime dueDate() {
-        return this.innerModel().dueDate();
-    }
-
-    public OffsetDateTime invoiceDate() {
-        return this.innerModel().invoiceDate();
-    }
-
-    public InvoiceStatus status() {
-        return this.innerModel().status();
-    }
-
-    public Amount amountDue() {
-        return this.innerModel().amountDue();
-    }
-
-    public Amount azurePrepaymentApplied() {
-        return this.innerModel().azurePrepaymentApplied();
-    }
-
-    public Amount billedAmount() {
-        return this.innerModel().billedAmount();
-    }
-
-    public Amount creditAmount() {
-        return this.innerModel().creditAmount();
-    }
-
-    public Amount freeAzureCreditApplied() {
-        return this.innerModel().freeAzureCreditApplied();
-    }
-
-    public Amount subTotal() {
-        return this.innerModel().subTotal();
-    }
-
-    public Amount taxAmount() {
-        return this.innerModel().taxAmount();
-    }
-
-    public Amount totalAmount() {
-        return this.innerModel().totalAmount();
-    }
-
-    public OffsetDateTime invoicePeriodStartDate() {
-        return this.innerModel().invoicePeriodStartDate();
-    }
-
-    public OffsetDateTime invoicePeriodEndDate() {
-        return this.innerModel().invoicePeriodEndDate();
-    }
-
-    public InvoiceType invoiceType() {
-        return this.innerModel().invoiceType();
-    }
-
-    public Boolean isMonthlyInvoice() {
-        return this.innerModel().isMonthlyInvoice();
-    }
-
-    public String billingProfileId() {
-        return this.innerModel().billingProfileId();
-    }
-
-    public String billingProfileDisplayName() {
-        return this.innerModel().billingProfileDisplayName();
-    }
-
-    public String purchaseOrderNumber() {
-        return this.innerModel().purchaseOrderNumber();
-    }
-
-    public List<Document> documents() {
-        List<Document> inner = this.innerModel().documents();
-        if (inner != null) {
-            return Collections.unmodifiableList(inner);
-        } else {
-            return Collections.emptyList();
-        }
-    }
-
-    public List<PaymentProperties> payments() {
-        List<PaymentProperties> inner = this.innerModel().payments();
-        if (inner != null) {
-            return Collections.unmodifiableList(inner);
-        } else {
-            return Collections.emptyList();
-        }
-    }
-
-    public Map<String, RebillDetails> rebillDetails() {
-        Map<String, RebillDetails> inner = this.innerModel().rebillDetails();
+    public Map<String, String> tags() {
+        Map<String, String> inner = this.innerModel().tags();
         if (inner != null) {
             return Collections.unmodifiableMap(inner);
         } else {
@@ -139,20 +42,12 @@ public final class InvoiceImpl implements Invoice {
         }
     }
 
-    public InvoiceDocumentType documentType() {
-        return this.innerModel().documentType();
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
-    public String billedDocumentId() {
-        return this.innerModel().billedDocumentId();
-    }
-
-    public String creditForDocumentId() {
-        return this.innerModel().creditForDocumentId();
-    }
-
-    public String subscriptionId() {
-        return this.innerModel().subscriptionId();
+    public InvoiceProperties properties() {
+        return this.innerModel().properties();
     }
 
     public InvoiceInner innerModel() {

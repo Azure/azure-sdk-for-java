@@ -10,8 +10,8 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.fluent.EnrollmentAccountsClient;
-import com.azure.resourcemanager.billing.fluent.models.EnrollmentAccountSummaryInner;
-import com.azure.resourcemanager.billing.models.EnrollmentAccountSummary;
+import com.azure.resourcemanager.billing.fluent.models.EnrollmentAccountInner;
+import com.azure.resourcemanager.billing.models.EnrollmentAccount;
 import com.azure.resourcemanager.billing.models.EnrollmentAccounts;
 
 public final class EnrollmentAccountsImpl implements EnrollmentAccounts {
@@ -21,42 +21,79 @@ public final class EnrollmentAccountsImpl implements EnrollmentAccounts {
 
     private final com.azure.resourcemanager.billing.BillingManager serviceManager;
 
-    public EnrollmentAccountsImpl(
-        EnrollmentAccountsClient innerClient, com.azure.resourcemanager.billing.BillingManager serviceManager) {
+    public EnrollmentAccountsImpl(EnrollmentAccountsClient innerClient,
+        com.azure.resourcemanager.billing.BillingManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<EnrollmentAccountSummary> list() {
-        PagedIterable<EnrollmentAccountSummaryInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new EnrollmentAccountSummaryImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<EnrollmentAccountSummary> list(Context context) {
-        PagedIterable<EnrollmentAccountSummaryInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new EnrollmentAccountSummaryImpl(inner1, this.manager()));
-    }
-
-    public Response<EnrollmentAccountSummary> getWithResponse(String name, Context context) {
-        Response<EnrollmentAccountSummaryInner> inner = this.serviceClient().getWithResponse(name, context);
+    public Response<EnrollmentAccount> getByDepartmentWithResponse(String billingAccountName, String departmentName,
+        String enrollmentAccountName, Context context) {
+        Response<EnrollmentAccountInner> inner = this.serviceClient()
+            .getByDepartmentWithResponse(billingAccountName, departmentName, enrollmentAccountName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new EnrollmentAccountSummaryImpl(inner.getValue(), this.manager()));
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new EnrollmentAccountImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public EnrollmentAccountSummary get(String name) {
-        EnrollmentAccountSummaryInner inner = this.serviceClient().get(name);
+    public EnrollmentAccount getByDepartment(String billingAccountName, String departmentName,
+        String enrollmentAccountName) {
+        EnrollmentAccountInner inner
+            = this.serviceClient().getByDepartment(billingAccountName, departmentName, enrollmentAccountName);
         if (inner != null) {
-            return new EnrollmentAccountSummaryImpl(inner, this.manager());
+            return new EnrollmentAccountImpl(inner, this.manager());
         } else {
             return null;
         }
+    }
+
+    public PagedIterable<EnrollmentAccount> listByDepartment(String billingAccountName, String departmentName) {
+        PagedIterable<EnrollmentAccountInner> inner
+            = this.serviceClient().listByDepartment(billingAccountName, departmentName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EnrollmentAccountImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<EnrollmentAccount> listByDepartment(String billingAccountName, String departmentName,
+        String filter, String orderBy, Long top, Long skip, Boolean count, String search, Context context) {
+        PagedIterable<EnrollmentAccountInner> inner = this.serviceClient()
+            .listByDepartment(billingAccountName, departmentName, filter, orderBy, top, skip, count, search, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EnrollmentAccountImpl(inner1, this.manager()));
+    }
+
+    public Response<EnrollmentAccount> getWithResponse(String billingAccountName, String enrollmentAccountName,
+        Context context) {
+        Response<EnrollmentAccountInner> inner
+            = this.serviceClient().getWithResponse(billingAccountName, enrollmentAccountName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new EnrollmentAccountImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public EnrollmentAccount get(String billingAccountName, String enrollmentAccountName) {
+        EnrollmentAccountInner inner = this.serviceClient().get(billingAccountName, enrollmentAccountName);
+        if (inner != null) {
+            return new EnrollmentAccountImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public PagedIterable<EnrollmentAccount> listByBillingAccount(String billingAccountName) {
+        PagedIterable<EnrollmentAccountInner> inner = this.serviceClient().listByBillingAccount(billingAccountName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EnrollmentAccountImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<EnrollmentAccount> listByBillingAccount(String billingAccountName, String filter,
+        String orderBy, Long top, Long skip, Boolean count, String search, Context context) {
+        PagedIterable<EnrollmentAccountInner> inner = this.serviceClient()
+            .listByBillingAccount(billingAccountName, filter, orderBy, top, skip, count, search, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EnrollmentAccountImpl(inner1, this.manager()));
     }
 
     private EnrollmentAccountsClient serviceClient() {

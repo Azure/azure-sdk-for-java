@@ -11,15 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class RangerAuditSpecTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RangerAuditSpec model
-            = BinaryData.fromString("{\"storageAccount\":\"zjuzgwyz\"}").toObject(RangerAuditSpec.class);
-        Assertions.assertEquals("zjuzgwyz", model.storageAccount());
+        RangerAuditSpec model = BinaryData.fromString("{\"storageAccount\":\"vmkcx\"}").toObject(RangerAuditSpec.class);
+        Assertions.assertEquals("vmkcx", model.storageAccount());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RangerAuditSpec model = new RangerAuditSpec().withStorageAccount("zjuzgwyz");
+        RangerAuditSpec model = new RangerAuditSpec().withStorageAccount("vmkcx");
         model = BinaryData.fromObject(model).toObject(RangerAuditSpec.class);
-        Assertions.assertEquals("zjuzgwyz", model.storageAccount());
+        Assertions.assertEquals("vmkcx", model.storageAccount());
     }
 }

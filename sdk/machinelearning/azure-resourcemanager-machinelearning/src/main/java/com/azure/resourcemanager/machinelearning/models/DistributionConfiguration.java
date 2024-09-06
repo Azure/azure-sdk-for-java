@@ -5,33 +5,109 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Base definition for job distribution configuration. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "distributionType",
-    defaultImpl = DistributionConfiguration.class)
-@JsonTypeName("DistributionConfiguration")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "Mpi", value = Mpi.class),
-    @JsonSubTypes.Type(name = "PyTorch", value = PyTorch.class),
-    @JsonSubTypes.Type(name = "TensorFlow", value = TensorFlow.class)
-})
+/**
+ * Base definition for job distribution configuration.
+ */
 @Immutable
-public class DistributionConfiguration {
-    /** Creates an instance of DistributionConfiguration class. */
+public class DistributionConfiguration implements JsonSerializable<DistributionConfiguration> {
+    /*
+     * [Required] Specifies the type of distribution framework.
+     */
+    private DistributionType distributionType = DistributionType.fromString("DistributionConfiguration");
+
+    /**
+     * Creates an instance of DistributionConfiguration class.
+     */
     public DistributionConfiguration() {
     }
 
     /**
+     * Get the distributionType property: [Required] Specifies the type of distribution framework.
+     * 
+     * @return the distributionType value.
+     */
+    public DistributionType distributionType() {
+        return this.distributionType;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("distributionType",
+            this.distributionType == null ? null : this.distributionType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DistributionConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DistributionConfiguration if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DistributionConfiguration.
+     */
+    public static DistributionConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("distributionType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("Mpi".equals(discriminatorValue)) {
+                    return Mpi.fromJson(readerToUse.reset());
+                } else if ("PyTorch".equals(discriminatorValue)) {
+                    return PyTorch.fromJson(readerToUse.reset());
+                } else if ("TensorFlow".equals(discriminatorValue)) {
+                    return TensorFlow.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static DistributionConfiguration fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DistributionConfiguration deserializedDistributionConfiguration = new DistributionConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("distributionType".equals(fieldName)) {
+                    deserializedDistributionConfiguration.distributionType
+                        = DistributionType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDistributionConfiguration;
+        });
     }
 }

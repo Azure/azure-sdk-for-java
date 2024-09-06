@@ -55,31 +55,6 @@ public class JsonProcessingException extends JacksonException {
     }
 
     /**
-     * Method that allows to remove context information from this exception's message.
-     * Useful when you are parsing security-sensitive data and don't want original data excerpts
-     * to be present in Jackson parser error messages.
-     *
-     * @since 2.9
-     */
-    public void clearLocation() {
-        _location = null;
-    }
-
-    /**
-     * Method that allows accessing the original "message" argument,
-     * without additional decorations (like location information)
-     * that overridden {@link #getMessage} adds.
-     *
-     * @return Original message passed in constructor
-     *
-     * @since 2.1
-     */
-    @Override
-    public String getOriginalMessage() {
-        return super.getMessage();
-    }
-
-    /**
      * Method that allows accessing underlying processor that triggered
      * this exception; typically either {@link JsonParser} or {@link JsonGenerator}
      * for exceptions that originate from streaming API.
@@ -88,7 +63,7 @@ public class JsonProcessingException extends JacksonException {
      * to set it; this means that caller needs to take care to check for nulls.
      * Subtypes override this method with co-variant return type, for more
      * type-safe access.
-     * 
+     *
      * @return Originating processor, if available; null if not.
      *
      * @since 2.7

@@ -10,11 +10,9 @@ import com.azure.resourcemanager.billing.models.BillingRoleDefinitionListResult;
 public final class BillingRoleDefinitionListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BillingRoleDefinitionListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"description\":\"phvwauyqncygu\",\"permissions\":[],\"roleName\":\"ipmdscwx\"},\"id\":\"upev\",\"name\":\"hfstotxhojujbyp\",\"type\":\"lmcuvhixb\"},{\"properties\":{\"description\":\"fw\",\"permissions\":[],\"roleName\":\"r\"},\"id\":\"ool\",\"name\":\"ttpkiwkkbnujrywv\",\"type\":\"y\"}],\"nextLink\":\"fpncurdo\"}")
-                .toObject(BillingRoleDefinitionListResult.class);
+        BillingRoleDefinitionListResult model = BinaryData.fromString(
+            "{\"nextLink\":\"rwm\",\"value\":[{\"properties\":{\"description\":\"klvxwmyg\",\"permissions\":[{\"actions\":[\"qchiszep\",\"nb\",\"crxgibb\"],\"notActions\":[\"confozauors\",\"kokwbqplhlvnu\",\"epzl\"]},{\"actions\":[\"wzsoldweyuqdunv\"],\"notActions\":[\"rwrbi\",\"rk\",\"alywjhhgdn\"]},{\"actions\":[\"sivfomilo\"],\"notActions\":[\"dufiq\",\"dieuzaofj\"]},{\"actions\":[\"cyyysfgdot\"],\"notActions\":[\"iipuipwoqonm\",\"cje\"]}],\"roleName\":\"nizshqvcim\"},\"tags\":{\"ccwr\":\"fgmblrrilbywdxsm\",\"dvoqyt\":\"fscjfnynszquji\",\"hjoxo\":\"byowbblgyavutp\"},\"id\":\"msksbp\",\"name\":\"mlqoljx\",\"type\":\"cgxxlxs\"},{\"properties\":{\"description\":\"cvizqzdwlvw\",\"permissions\":[{\"actions\":[\"fgfb\",\"jub\",\"yhgk\"],\"notActions\":[\"nsgowzfttst\"]},{\"actions\":[\"lahb\",\"actxtgzukxitm\"],\"notActions\":[\"gqqqxh\"]}],\"roleName\":\"n\"},\"tags\":{\"okqdzfvaz\":\"cpjuisa\",\"ajlkatnw\":\"vjlfrqtt\",\"kqqfk\":\"yiopi\",\"dmligovibrxk\":\"vscx\"},\"id\":\"loazuruocbgoo\",\"name\":\"bteoybf\",\"type\":\"jxakv\"},{\"properties\":{\"description\":\"slordilmyww\",\"permissions\":[{\"actions\":[\"nye\",\"abgyvudt\"],\"notActions\":[\"wbcihxuuwh\",\"j\",\"xccybvpa\"]},{\"actions\":[\"kudzpxgwj\",\"lma\"],\"notActions\":[\"cyohpfkyrkdbd\",\"iogsjkmnwq\",\"nobaiyhddviacegf\"]},{\"actions\":[\"tfpmvmemfnczdw\",\"vbalxlllc\",\"podbzevwrdnh\"],\"notActions\":[\"uvsj\",\"swsmys\",\"uluqypfc\"]}],\"roleName\":\"lerchpq\"},\"tags\":{\"sspuunnoxyhkx\":\"pjbabwidfc\"},\"id\":\"ddrihpf\",\"name\":\"oqcaaewdaomdj\",\"type\":\"l\"},{\"properties\":{\"description\":\"xkzb\",\"permissions\":[{\"actions\":[\"ivsiy\",\"zkdnc\",\"dxonbzoggculap\"],\"notActions\":[\"rpgogtqxep\"]},{\"actions\":[\"b\"],\"notActions\":[\"jlyjtlvofq\",\"hvfcibyfmow\",\"xrkjpvdw\",\"fzwiivwzjbhyz\"]}],\"roleName\":\"xjrk\"},\"tags\":{\"pa\":\"trnegvmnvuqeqvld\",\"kdmflvestmjlx\":\"tjb\"},\"id\":\"ilozapeewchpxlk\",\"name\":\"wk\",\"type\":\"ziycslevufuztck\"}]}")
+            .toObject(BillingRoleDefinitionListResult.class);
     }
 
     @org.junit.jupiter.api.Test

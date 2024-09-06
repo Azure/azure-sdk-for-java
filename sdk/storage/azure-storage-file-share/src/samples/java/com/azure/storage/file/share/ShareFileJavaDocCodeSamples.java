@@ -179,7 +179,7 @@ public class ShareFileJavaDocCodeSamples {
             new Context(key1, value1));
         System.out.printf("Creating the file completed with status code %d", response.getStatusCode());
         // END: com.azure.storage.file.share.ShareFileClient.createWithResponse#long-ShareFileHttpHeaders-FileSmbProperties-String-Map-Duration-Context
-}
+    }
 
     /**
      * Generates a code sample for using {@link ShareFileClient#createWithResponse(long, ShareFileHttpHeaders, FileSmbProperties,

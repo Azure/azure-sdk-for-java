@@ -1,7 +1,7 @@
 {
   "flavor": "azure", 
   "CrossLanguageDefinitionId": {
-    "com.azure.analytics.defender.easm.EasmAsyncClient": "Easm.EasmClient",
+    "com.azure.analytics.defender.easm.EasmAsyncClient": "Customizations.EasmClient",
     "com.azure.analytics.defender.easm.EasmAsyncClient.cancelTask": "Customizations.EasmClient.cancelTask",
     "com.azure.analytics.defender.easm.EasmAsyncClient.cancelTaskWithResponse": "Customizations.EasmClient.cancelTask",
     "com.azure.analytics.defender.easm.EasmAsyncClient.createOrReplaceDataConnection": "Customizations.EasmClient.createOrReplaceDataConnection",
@@ -47,7 +47,7 @@
     "com.azure.analytics.defender.easm.EasmAsyncClient.validateDataConnectionWithResponse": "Customizations.EasmClient.validateDataConnection",
     "com.azure.analytics.defender.easm.EasmAsyncClient.validateDiscoGroup": "Customizations.EasmClient.validateDiscoGroup",
     "com.azure.analytics.defender.easm.EasmAsyncClient.validateDiscoGroupWithResponse": "Customizations.EasmClient.validateDiscoGroup",
-    "com.azure.analytics.defender.easm.EasmClient": "Easm.EasmClient",
+    "com.azure.analytics.defender.easm.EasmClient": "Customizations.EasmClient",
     "com.azure.analytics.defender.easm.EasmClient.cancelTask": "Customizations.EasmClient.cancelTask",
     "com.azure.analytics.defender.easm.EasmClient.cancelTaskWithResponse": "Customizations.EasmClient.cancelTask",
     "com.azure.analytics.defender.easm.EasmClient.createOrReplaceDataConnection": "Customizations.EasmClient.createOrReplaceDataConnection",
@@ -93,7 +93,7 @@
     "com.azure.analytics.defender.easm.EasmClient.validateDataConnectionWithResponse": "Customizations.EasmClient.validateDataConnection",
     "com.azure.analytics.defender.easm.EasmClient.validateDiscoGroup": "Customizations.EasmClient.validateDiscoGroup",
     "com.azure.analytics.defender.easm.EasmClient.validateDiscoGroupWithResponse": "Customizations.EasmClient.validateDiscoGroup",
-    "com.azure.analytics.defender.easm.EasmClientBuilder": "Easm.EasmClient",
+    "com.azure.analytics.defender.easm.EasmClientBuilder": "Customizations.EasmClient",
     "com.azure.analytics.defender.easm.models.AlexaDetails": "Easm.AlexaInfo",
     "com.azure.analytics.defender.easm.models.AsAsset": "Easm.AsAsset",
     "com.azure.analytics.defender.easm.models.AsAssetResource": "Easm.AsAssetResource",
