@@ -166,7 +166,6 @@ public class FhirR4DomainResource extends FhirR4Resource {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("resourceType", getResourceType());
         jsonWriter.writeStringField("id", getId());
         jsonWriter.writeJsonField("meta", getMeta());
         jsonWriter.writeStringField("implicitRules", getImplicitRules());
@@ -228,7 +227,6 @@ public class FhirR4DomainResource extends FhirR4Resource {
     @Generated
     static FhirR4DomainResource fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String resourceType = null;
             String id = null;
             FhirR4Meta meta = null;
             String implicitRules = null;
