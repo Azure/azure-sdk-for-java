@@ -77,10 +77,5 @@ public class MockDownloadHttpResponse extends HttpResponse {
     public BinaryData getBodyAsBinaryData() {
         return BinaryData.fromObject(new IOException());
     }
-
-    @Override
-    public Mono<InputStream> getBodyAsInputStream() {
-        return Mono.error(new IOException());
-    }
 }
 
