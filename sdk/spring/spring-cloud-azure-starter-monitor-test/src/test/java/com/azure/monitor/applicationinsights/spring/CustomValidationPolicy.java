@@ -7,27 +7,25 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.FluxUtil;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.monitor.opentelemetry.exporter.implementation.localstorage.LocalStorageTelemetryPipelineListener;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
-import com.fasterxml.jackson.databind.MappingIterator;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import reactor.core.publisher.Mono;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CountDownLatch;
-import java.util.zip.GZIPInputStream;
 
-class CustomValidationPolicy implements HttpPipelinePolicy {
-    private final ObjectMapper objectMapper = createObjectMapper();
+final class CustomValidationPolicy implements HttpPipelinePolicy {
 
     private final CountDownLatch countDown;
     volatile URL url;
-    final Queue<TelemetryItem> actualTelemetryItems = new ConcurrentLinkedQueue<>();
+    final List<TelemetryItem> actualTelemetryItems = new CopyOnWriteArrayList<>();
 
     CustomValidationPolicy(CountDownLatch countDown) {
         this.countDown = countDown;
@@ -36,45 +34,30 @@ class CustomValidationPolicy implements HttpPipelinePolicy {
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         url = context.getHttpRequest().getUrl();
-        FluxUtil.collectBytesInByteBufferStream(context.getHttpRequest().getBody()).map(CustomValidationPolicy::ungzip)
-            .subscribe(value -> {
-                try (MappingIterator<TelemetryItem> i = objectMapper.readerFor(TelemetryItem.class).readValues(value)) {
-                    i.forEachRemaining(actualTelemetryItems::add);
-                    countDown.countDown();
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            });
+        Mono<byte[]> asyncBytes = FluxUtil.collectBytesInByteBufferStream(context.getHttpRequest().getBody())
+            .map(LocalStorageTelemetryPipelineListener::ungzip);
+        asyncBytes.subscribe(value -> {
+            actualTelemetryItems.addAll(deserialize(value));
+            countDown.countDown();
+        });
         return next.process();
     }
 
-    // decode gzipped request raw bytes back to original request body
-    private static String ungzip(byte[] rawBytes) {
-        if (rawBytes.length == 0) {
-            return "";
-        }
-        try (GZIPInputStream in = new GZIPInputStream(new ByteArrayInputStream(rawBytes))) {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            byte[] data = new byte[1024];
-            int read;
-            while ((read = in.read(data, 0, data.length)) != -1) {
-                baos.write(data, 0, read);
+    // deserialize multiple TelemetryItem raw bytes with newline delimiters to a list of TelemetryItems
+    private static List<TelemetryItem> deserialize(byte[] rawBytes) {
+        try (JsonReader jsonReader = JsonProviders.createReader(rawBytes)) {
+            JsonToken token = jsonReader.currentToken();
+            if (token == null) {
+                token = jsonReader.nextToken();
             }
-            return baos.toString(StandardCharsets.UTF_8.name());
-        } catch (Exception e) {
+
+            List<TelemetryItem> result = new ArrayList<>();
+            do {
+                result.add(TelemetryItem.fromJson(jsonReader));
+            } while (jsonReader.nextToken() == JsonToken.START_OBJECT);
+            return result;
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    // TODO need to update this when a newer version of azure-monitor-opentelemetry-exporter with azure-json is released
-    // azure-sdk-for-java will always test against the source version of azure-monitor-opentelemetry-exporter in CI builds for backward compatibility.
-    // JacksonJsonProvider provides a Jackson Databind modules that enables Jackson deserialization to hook into azure-json deserialization.
-    // Tried it and didn't work.
-    private static ObjectMapper createObjectMapper() {
-        ObjectMapper objectMapper = new ObjectMapper();
-        // handle JSR-310 (java 8) dates with Jackson by configuring ObjectMapper to use this
-        // dependency and not (de)serialize Instant as timestamps that it does by default
-        objectMapper.findAndRegisterModules().disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        return objectMapper;
     }
 }
