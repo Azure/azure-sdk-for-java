@@ -317,6 +317,20 @@
           "justification": "Previous value did was incorrect."
         },
         {
+          "ignore": true,
+          "code": "java.method.returnTypeChangedCovariantly",
+          "old": "method com.azure.messaging.eventgrid.systemevents.AcsChatThreadEventBaseProperties com.azure.messaging.eventgrid.systemevents.AcsChatThreadEventBaseProperties::fromJson(com.azure.json.JsonReader) throws java.io.IOException @ com.azure.messaging.eventgrid.systemevents.AcsChatMemberAddedToThreadWithUserEventData",
+          "new": "method com.azure.messaging.eventgrid.systemevents.AcsChatMemberAddedToThreadWithUserEventData com.azure.messaging.eventgrid.systemevents.AcsChatMemberAddedToThreadWithUserEventData::fromJson(com.azure.json.JsonReader) throws java.io.IOException",
+          "justification": "Subtype was not updated by codegen for azure-json due to being deprecated and no longer in swagger."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.returnTypeChangedCovariantly",
+          "old": "method com.azure.messaging.eventgrid.systemevents.AcsChatThreadEventBaseProperties com.azure.messaging.eventgrid.systemevents.AcsChatThreadEventBaseProperties::fromJson(com.azure.json.JsonReader) throws java.io.IOException @ com.azure.messaging.eventgrid.systemevents.AcsChatMemberRemovedFromThreadWithUserEventData",
+          "new": "method com.azure.messaging.eventgrid.systemevents.AcsChatMemberRemovedFromThreadWithUserEventData com.azure.messaging.eventgrid.systemevents.AcsChatMemberRemovedFromThreadWithUserEventData::fromJson(com.azure.json.JsonReader) throws java.io.IOException",
+          "justification": "Subtype was not updated by codegen for azure-json due to being deprecated and no longer in swagger."
+        },
+        {
           "code" : "java.field.constantValueChanged",
           "old" : "field com.azure.spring.cloud.feature.management.filters.TargetingFilter.GROUPS",
           "new" : "field com.azure.spring.cloud.feature.management.filters.TargetingFilter.GROUPS",
