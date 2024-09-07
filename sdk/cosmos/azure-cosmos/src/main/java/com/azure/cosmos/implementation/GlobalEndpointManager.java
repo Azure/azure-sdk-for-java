@@ -21,7 +21,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 /**
  * Endpoint region cache manager implementation. Supports cross region address routing based on
@@ -188,7 +187,7 @@ public class GlobalEndpointManager implements AutoCloseable {
             if (forceRefresh) {
                 Mono<DatabaseAccount> databaseAccountObs = getDatabaseAccountFromAnyLocationsAsync(
                     this.defaultEndpoint,
-                    new ArrayList<>(this.getEffectivePreferredRegions(false)),
+                    new ArrayList<>(this.getEffectivePreferredRegions()),
                     this::getDatabaseAccountAsync);
 
                 return databaseAccountObs.map(dbAccount -> {
@@ -219,8 +218,8 @@ public class GlobalEndpointManager implements AutoCloseable {
         return this.latestDatabaseAccount;
     }
 
-    public int getPreferredLocationCount(boolean isWriteOperation) {
-        List<String> effectivePreferredRegions = this.getEffectivePreferredRegions(isWriteOperation);
+    public int getPreferredLocationCount() {
+        List<String> effectivePreferredRegions = this.getEffectivePreferredRegions();
 
         return effectivePreferredRegions != null ? effectivePreferredRegions.size() : 0;
     }
@@ -242,7 +241,7 @@ public class GlobalEndpointManager implements AutoCloseable {
 
                     Mono<DatabaseAccount> databaseAccountObs = getDatabaseAccountFromAnyLocationsAsync(
                             this.defaultEndpoint,
-                            new ArrayList<>(this.getEffectivePreferredRegions(false)),
+                            new ArrayList<>(this.getEffectivePreferredRegions()),
                             this::getDatabaseAccountAsync);
 
                     return databaseAccountObs.map(dbAccount -> {
@@ -302,7 +301,7 @@ public class GlobalEndpointManager implements AutoCloseable {
                             }
 
                             logger.debug("startRefreshLocationTimerAsync() - Invoking refresh, I was registered on [{}]", now);
-                            Mono<DatabaseAccount> databaseAccountObs = GlobalEndpointManager.getDatabaseAccountFromAnyLocationsAsync(this.defaultEndpoint, new ArrayList<>(this.getEffectivePreferredRegions(false)),
+                            Mono<DatabaseAccount> databaseAccountObs = GlobalEndpointManager.getDatabaseAccountFromAnyLocationsAsync(this.defaultEndpoint, new ArrayList<>(this.getEffectivePreferredRegions()),
                                     this::getDatabaseAccountAsync);
 
                             return databaseAccountObs.flatMap(dbAccount -> {
@@ -343,7 +342,7 @@ public class GlobalEndpointManager implements AutoCloseable {
         return this.connectionPolicy;
     }
 
-    private List<String> getEffectivePreferredRegions(boolean isWriteOperation) {
+    private List<String> getEffectivePreferredRegions() {
 
         if (this.connectionPolicy.getPreferredRegions() != null && !this.connectionPolicy.getPreferredRegions().isEmpty()) {
             return this.connectionPolicy.getPreferredRegions();
@@ -355,24 +354,6 @@ public class GlobalEndpointManager implements AutoCloseable {
             return Collections.emptyList();
         }
 
-        if (isWriteOperation) {
-            if (this.locationCache.getWriteEndpoints() != null) {
-                return this.locationCache
-                    .getWriteEndpoints()
-                    .stream()
-                    .map(locationEndpoint -> this.getRegionName(locationEndpoint, OperationType.Create))
-                    .collect(Collectors.toList());
-            }
-        } else {
-            if (this.locationCache.getReadEndpoints() != null) {
-                return this.locationCache
-                    .getReadEndpoints()
-                    .stream()
-                    .map(locationEndpoint -> this.getRegionName(locationEndpoint, OperationType.Read))
-                    .collect(Collectors.toList());
-            }
-        }
-
-        return Collections.emptyList();
+        return this.locationCache.getEffectivePreferredLocations();
     }
 }

@@ -395,7 +395,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
             return Mono.just(ShouldRetryResult.noRetry());
         }
 
-        int availablePreferredLocations = this.globalEndpointManager.getPreferredLocationCount(!isReadRequest);
+        int availablePreferredLocations = this.globalEndpointManager.getPreferredLocationCount();
         if (availablePreferredLocations <= 1) {
             logger.warn("shouldRetryOnServiceUnavailable() Not retrying. No other regions available for the request. AvailablePreferredLocations = {}", availablePreferredLocations);
             return Mono.just(ShouldRetryResult.noRetry());
