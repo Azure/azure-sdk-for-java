@@ -47,7 +47,7 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
      * @param content the string content value to set.
      */
     public ChatRequestUserMessage(String content) {
-        String jsonPrompt = "{" + "\"content\":\"%s\"" + "}";
+        String jsonPrompt = "\"%s\"";
         String contentString = String.format(jsonPrompt, content);
         this.content = BinaryData.fromString(contentString);
     }
