@@ -580,10 +580,14 @@ public class LocationCache {
             nextLocationInfo.writeEndpoints = this.getPreferredAvailableEndpoints(nextLocationInfo.availableWriteEndpointByLocation, nextLocationInfo.availableWriteLocations, OperationType.Write, this.defaultEndpoint);
             nextLocationInfo.readEndpoints = this.getPreferredAvailableEndpoints(nextLocationInfo.availableReadEndpointByLocation, nextLocationInfo.availableReadLocations, OperationType.Read, nextLocationInfo.writeEndpoints.get(0));
 
-            List<String> effectivePreferredRegions = new ArrayList<>();
-
             if (nextLocationInfo.preferredLocations == null || nextLocationInfo.preferredLocations.isEmpty()) {
-                nextLocationInfo.effectivePreferredLocations = nextLocationInfo.availableReadLocations;
+
+                Utils.ValueHolder<String> regionForDefaultEndpoint = new Utils.ValueHolder<>();
+
+                // only set effective preferred locations when default endpoint doesn't map to a regional endpoint
+                if (!Utils.tryGetValue(nextLocationInfo.regionNameByReadEndpoint, this.defaultEndpoint, regionForDefaultEndpoint)) {
+                    nextLocationInfo.effectivePreferredLocations = nextLocationInfo.availableReadLocations;
+                }
             }
 
             this.lastCacheUpdateTimestamp = Instant.now();
