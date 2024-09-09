@@ -14,47 +14,37 @@ import com.azure.resourcemanager.webpubsub.models.UpstreamAuthType;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubHubProperties;
 import java.util.Arrays;
 
-/** Samples for WebPubSubHubs CreateOrUpdate. */
+/**
+ * Samples for WebPubSubHubs CreateOrUpdate.
+ */
 public final class WebPubSubHubsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/WebPubSubHubs_CreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2024-04-01-preview/examples/
+     * WebPubSubHubs_CreateOrUpdate.json
      */
     /**
      * Sample code: WebPubSubHubs_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to WebPubSubManager.
      */
     public static void webPubSubHubsCreateOrUpdate(com.azure.resourcemanager.webpubsub.WebPubSubManager manager) {
-        manager
-            .webPubSubHubs()
+        manager.webPubSubHubs()
             .define("exampleHub")
             .withExistingWebPubSub("myResourceGroup", "myWebPubSubService")
-            .withProperties(
-                new WebPubSubHubProperties()
-                    .withEventHandlers(
-                        Arrays
-                            .asList(
-                                new EventHandler()
-                                    .withUrlTemplate("http://host.com")
-                                    .withUserEventPattern("*")
-                                    .withSystemEvents(Arrays.asList("connect", "connected"))
-                                    .withAuth(
-                                        new UpstreamAuthSettings()
-                                            .withType(UpstreamAuthType.MANAGED_IDENTITY)
-                                            .withManagedIdentity(new ManagedIdentitySettings().withResource("abc")))))
-                    .withEventListeners(
-                        Arrays
-                            .asList(
-                                new EventListener()
-                                    .withFilter(
-                                        new EventNameFilter()
-                                            .withSystemEvents(Arrays.asList("connected", "disconnected"))
-                                            .withUserEventPattern("*"))
-                                    .withEndpoint(
-                                        new EventHubEndpoint()
-                                            .withFullyQualifiedNamespace("example.servicebus.windows.net")
-                                            .withEventHubName("eventHubName1"))))
-                    .withAnonymousConnectPolicy("allow"))
+            .withProperties(new WebPubSubHubProperties()
+                .withEventHandlers(Arrays.asList(new EventHandler().withUrlTemplate("http://host.com")
+                    .withUserEventPattern("*")
+                    .withSystemEvents(Arrays.asList("connect", "connected"))
+                    .withAuth(new UpstreamAuthSettings().withType(UpstreamAuthType.MANAGED_IDENTITY)
+                        .withManagedIdentity(new ManagedIdentitySettings().withResource("abc")))))
+                .withEventListeners(Arrays.asList(new EventListener()
+                    .withFilter(new EventNameFilter().withSystemEvents(Arrays.asList("connected", "disconnected"))
+                        .withUserEventPattern("*"))
+                    .withEndpoint(new EventHubEndpoint().withFullyQualifiedNamespace("example.servicebus.windows.net")
+                        .withEventHubName("eventHubName1"))))
+                .withAnonymousConnectPolicy("allow")
+                .withWebSocketKeepAliveIntervalInSeconds(50))
             .create();
     }
 }

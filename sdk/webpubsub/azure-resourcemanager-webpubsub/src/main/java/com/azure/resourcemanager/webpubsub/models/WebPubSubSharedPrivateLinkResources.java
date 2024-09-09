@@ -7,12 +7,15 @@ package com.azure.resourcemanager.webpubsub.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.webpubsub.fluent.models.SharedPrivateLinkResourceInner;
 
-/** Resource collection API of WebPubSubSharedPrivateLinkResources. */
+/**
+ * Resource collection API of WebPubSubSharedPrivateLinkResources.
+ */
 public interface WebPubSubSharedPrivateLinkResources {
     /**
      * List shared private link resources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,7 +27,7 @@ public interface WebPubSubSharedPrivateLinkResources {
 
     /**
      * List shared private link resources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
@@ -37,7 +40,7 @@ public interface WebPubSubSharedPrivateLinkResources {
 
     /**
      * Get the specified shared private link resource.
-     *
+     * 
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -47,12 +50,12 @@ public interface WebPubSubSharedPrivateLinkResources {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified shared private link resource along with {@link Response}.
      */
-    Response<SharedPrivateLinkResource> getWithResponse(
-        String sharedPrivateLinkResourceName, String resourceGroupName, String resourceName, Context context);
+    Response<SharedPrivateLinkResource> getWithResponse(String sharedPrivateLinkResourceName, String resourceGroupName,
+        String resourceName, Context context);
 
     /**
      * Get the specified shared private link resource.
-     *
+     * 
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -64,8 +67,39 @@ public interface WebPubSubSharedPrivateLinkResources {
     SharedPrivateLinkResource get(String sharedPrivateLinkResourceName, String resourceGroupName, String resourceName);
 
     /**
+     * Create or update a shared private link resource.
+     * 
+     * @param sharedPrivateLinkResourceName The name of the shared private link resource.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the resource.
+     * @param parameters The shared private link resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes a Shared Private Link Resource.
+     */
+    SharedPrivateLinkResource createOrUpdate(String sharedPrivateLinkResourceName, String resourceGroupName,
+        String resourceName, SharedPrivateLinkResourceInner parameters);
+
+    /**
+     * Create or update a shared private link resource.
+     * 
+     * @param sharedPrivateLinkResourceName The name of the shared private link resource.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the resource.
+     * @param parameters The shared private link resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes a Shared Private Link Resource.
+     */
+    SharedPrivateLinkResource createOrUpdate(String sharedPrivateLinkResourceName, String resourceGroupName,
+        String resourceName, SharedPrivateLinkResourceInner parameters, Context context);
+
+    /**
      * Delete the specified shared private link resource.
-     *
+     * 
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -77,7 +111,7 @@ public interface WebPubSubSharedPrivateLinkResources {
 
     /**
      * Delete the specified shared private link resource.
-     *
+     * 
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -87,56 +121,4 @@ public interface WebPubSubSharedPrivateLinkResources {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void delete(String sharedPrivateLinkResourceName, String resourceGroupName, String resourceName, Context context);
-
-    /**
-     * Get the specified shared private link resource.
-     *
-     * @param id the resource ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified shared private link resource along with {@link Response}.
-     */
-    SharedPrivateLinkResource getById(String id);
-
-    /**
-     * Get the specified shared private link resource.
-     *
-     * @param id the resource ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified shared private link resource along with {@link Response}.
-     */
-    Response<SharedPrivateLinkResource> getByIdWithResponse(String id, Context context);
-
-    /**
-     * Delete the specified shared private link resource.
-     *
-     * @param id the resource ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void deleteById(String id);
-
-    /**
-     * Delete the specified shared private link resource.
-     *
-     * @param id the resource ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void deleteByIdWithResponse(String id, Context context);
-
-    /**
-     * Begins definition for a new SharedPrivateLinkResource resource.
-     *
-     * @param name resource name.
-     * @return the first stage of the new SharedPrivateLinkResource definition.
-     */
-    SharedPrivateLinkResource.DefinitionStages.Blank define(String name);
 }

@@ -4,19 +4,22 @@
 
 package com.azure.resourcemanager.webpubsub.generated;
 
-/** Samples for WebPubSubCustomCertificates Delete. */
+/**
+ * Samples for WebPubSubCustomCertificates Delete.
+ */
 public final class WebPubSubCustomCertificatesDeleteSamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/WebPubSubCustomCertificates_Delete.json
+     * x-ms-original-file:
+     * specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2024-04-01-preview/examples/
+     * WebPubSubCustomCertificates_Delete.json
      */
     /**
      * Sample code: WebPubSubCustomCertificates_Delete.
-     *
+     * 
      * @param manager Entry point to WebPubSubManager.
      */
     public static void webPubSubCustomCertificatesDelete(com.azure.resourcemanager.webpubsub.WebPubSubManager manager) {
-        manager
-            .webPubSubCustomCertificates()
+        manager.webPubSubCustomCertificates()
             .deleteWithResponse("myResourceGroup", "myWebPubSubService", "myCert", com.azure.core.util.Context.NONE);
     }
 }

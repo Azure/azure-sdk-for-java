@@ -4,20 +4,23 @@
 
 package com.azure.resourcemanager.webpubsub.generated;
 
-/** Samples for WebPubSubCustomCertificates CreateOrUpdate. */
+/**
+ * Samples for WebPubSubCustomCertificates CreateOrUpdate.
+ */
 public final class WebPubSubCustomCertificatesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/WebPubSubCustomCertificates_CreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2024-04-01-preview/examples/
+     * WebPubSubCustomCertificates_CreateOrUpdate.json
      */
     /**
      * Sample code: WebPubSubCustomCertificates_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to WebPubSubManager.
      */
-    public static void webPubSubCustomCertificatesCreateOrUpdate(
-        com.azure.resourcemanager.webpubsub.WebPubSubManager manager) {
-        manager
-            .webPubSubCustomCertificates()
+    public static void
+        webPubSubCustomCertificatesCreateOrUpdate(com.azure.resourcemanager.webpubsub.WebPubSubManager manager) {
+        manager.webPubSubCustomCertificates()
             .define("myCert")
             .withExistingWebPubSub("myResourceGroup", "myWebPubSubService")
             .withKeyVaultBaseUri("https://myvault.keyvault.azure.net/")

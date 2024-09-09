@@ -18,8 +18,7 @@ public final class PrivateEndpointConnectionImpl implements PrivateEndpointConne
 
     private final com.azure.resourcemanager.webpubsub.WebPubSubManager serviceManager;
 
-    PrivateEndpointConnectionImpl(
-        PrivateEndpointConnectionInner innerObject,
+    PrivateEndpointConnectionImpl(PrivateEndpointConnectionInner innerObject,
         com.azure.resourcemanager.webpubsub.WebPubSubManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

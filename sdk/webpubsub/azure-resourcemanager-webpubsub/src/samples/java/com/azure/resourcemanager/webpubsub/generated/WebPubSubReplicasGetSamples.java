@@ -4,20 +4,23 @@
 
 package com.azure.resourcemanager.webpubsub.generated;
 
-/** Samples for WebPubSubReplicas Get. */
+/**
+ * Samples for WebPubSubReplicas Get.
+ */
 public final class WebPubSubReplicasGetSamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/WebPubSubReplicas_Get.json
+     * x-ms-original-file:
+     * specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2024-04-01-preview/examples/
+     * WebPubSubReplicas_Get.json
      */
     /**
      * Sample code: WebPubSubReplicas_Get.
-     *
+     * 
      * @param manager Entry point to WebPubSubManager.
      */
     public static void webPubSubReplicasGet(com.azure.resourcemanager.webpubsub.WebPubSubManager manager) {
-        manager
-            .webPubSubReplicas()
-            .getWithResponse(
-                "myResourceGroup", "myWebPubSubService", "myWebPubSubService-eastus", com.azure.core.util.Context.NONE);
+        manager.webPubSubReplicas()
+            .getWithResponse("myResourceGroup", "myWebPubSubService", "myWebPubSubService-eastus",
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -5,101 +5,100 @@
 package com.azure.resourcemanager.webpubsub.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.webpubsub.models.ApplicationFirewallSettings;
 import com.azure.resourcemanager.webpubsub.models.LiveTraceConfiguration;
 import com.azure.resourcemanager.webpubsub.models.ProvisioningState;
 import com.azure.resourcemanager.webpubsub.models.ResourceLogConfiguration;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubNetworkACLs;
+import com.azure.resourcemanager.webpubsub.models.WebPubSubSocketIOSettings;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubTlsSettings;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** A class that describes the properties of the resource. */
+/**
+ * A class that describes the properties of the resource.
+ */
 @Fluent
-public final class WebPubSubProperties {
+public final class WebPubSubProperties implements JsonSerializable<WebPubSubProperties> {
     /*
      * Provisioning state of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * The publicly accessible IP of the resource.
      */
-    @JsonProperty(value = "externalIP", access = JsonProperty.Access.WRITE_ONLY)
     private String externalIp;
 
     /*
      * FQDN of the service instance.
      */
-    @JsonProperty(value = "hostName", access = JsonProperty.Access.WRITE_ONLY)
     private String hostname;
 
     /*
      * The publicly accessible port of the resource which is designed for browser/client side usage.
      */
-    @JsonProperty(value = "publicPort", access = JsonProperty.Access.WRITE_ONLY)
     private Integer publicPort;
 
     /*
      * The publicly accessible port of the resource which is designed for customer server side usage.
      */
-    @JsonProperty(value = "serverPort", access = JsonProperty.Access.WRITE_ONLY)
     private Integer serverPort;
 
     /*
      * Version of the resource. Probably you need the same or higher version of client SDKs.
      */
-    @JsonProperty(value = "version", access = JsonProperty.Access.WRITE_ONLY)
     private String version;
 
     /*
      * Private endpoint connections to the resource.
      */
-    @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
     private List<PrivateEndpointConnectionInner> privateEndpointConnections;
 
     /*
      * The list of shared private link resources.
      */
-    @JsonProperty(value = "sharedPrivateLinkResources", access = JsonProperty.Access.WRITE_ONLY)
     private List<SharedPrivateLinkResourceInner> sharedPrivateLinkResources;
 
     /*
      * TLS settings for the resource
      */
-    @JsonProperty(value = "tls")
     private WebPubSubTlsSettings tls;
 
     /*
      * Deprecated.
      */
-    @JsonProperty(value = "hostNamePrefix", access = JsonProperty.Access.WRITE_ONLY)
     private String hostnamePrefix;
 
     /*
      * Live trace configuration of a Microsoft.SignalRService resource.
      */
-    @JsonProperty(value = "liveTraceConfiguration")
     private LiveTraceConfiguration liveTraceConfiguration;
 
     /*
      * Resource log configuration of a Microsoft.SignalRService resource.
      */
-    @JsonProperty(value = "resourceLogConfiguration")
     private ResourceLogConfiguration resourceLogConfiguration;
 
     /*
      * Network ACLs for the resource
      */
-    @JsonProperty(value = "networkACLs")
     private WebPubSubNetworkACLs networkACLs;
+
+    /*
+     * Application firewall settings for the resource
+     */
+    private ApplicationFirewallSettings applicationFirewall;
 
     /*
      * Enable or disable public network access. Default to "Enabled".
      * When it's Enabled, network ACLs still apply.
      * When it's Disabled, public network access is always disabled no matter what you set in network ACLs.
      */
-    @JsonProperty(value = "publicNetworkAccess")
     private String publicNetworkAccess;
 
     /*
@@ -107,7 +106,6 @@ public final class WebPubSubProperties {
      * Enable or disable local auth with AccessKey
      * When set as true, connection with AccessKey=xxx won't work.
      */
-    @JsonProperty(value = "disableLocalAuth")
     private Boolean disableLocalAuth;
 
     /*
@@ -115,33 +113,37 @@ public final class WebPubSubProperties {
      * Enable or disable aad auth
      * When set as true, connection with AuthType=aad won't work.
      */
-    @JsonProperty(value = "disableAadAuth")
     private Boolean disableAadAuth;
 
     /*
      * Enable or disable the regional endpoint. Default to "Enabled".
-     * When it's Disabled, new connections will not be routed to this endpoint, however existing connections will not
-     * be affected.
+     * When it's Disabled, new connections will not be routed to this endpoint, however existing connections will not be
+     * affected.
      * This property is replica specific. Disable the regional endpoint without replica is not allowed.
      */
-    @JsonProperty(value = "regionEndpointEnabled")
     private String regionEndpointEnabled;
 
     /*
-     * Stop or start the resource.  Default to "false".
+     * Stop or start the resource. Default to "False".
      * When it's true, the data plane of the resource is shutdown.
      * When it's false, the data plane of the resource is started.
      */
-    @JsonProperty(value = "resourceStopped")
     private String resourceStopped;
 
-    /** Creates an instance of WebPubSubProperties class. */
+    /*
+     * SocketIO settings for the resource
+     */
+    private WebPubSubSocketIOSettings socketIO;
+
+    /**
+     * Creates an instance of WebPubSubProperties class.
+     */
     public WebPubSubProperties() {
     }
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -150,7 +152,7 @@ public final class WebPubSubProperties {
 
     /**
      * Get the externalIp property: The publicly accessible IP of the resource.
-     *
+     * 
      * @return the externalIp value.
      */
     public String externalIp() {
@@ -159,7 +161,7 @@ public final class WebPubSubProperties {
 
     /**
      * Get the hostname property: FQDN of the service instance.
-     *
+     * 
      * @return the hostname value.
      */
     public String hostname() {
@@ -169,7 +171,7 @@ public final class WebPubSubProperties {
     /**
      * Get the publicPort property: The publicly accessible port of the resource which is designed for browser/client
      * side usage.
-     *
+     * 
      * @return the publicPort value.
      */
     public Integer publicPort() {
@@ -179,7 +181,7 @@ public final class WebPubSubProperties {
     /**
      * Get the serverPort property: The publicly accessible port of the resource which is designed for customer server
      * side usage.
-     *
+     * 
      * @return the serverPort value.
      */
     public Integer serverPort() {
@@ -188,7 +190,7 @@ public final class WebPubSubProperties {
 
     /**
      * Get the version property: Version of the resource. Probably you need the same or higher version of client SDKs.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -197,7 +199,7 @@ public final class WebPubSubProperties {
 
     /**
      * Get the privateEndpointConnections property: Private endpoint connections to the resource.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
@@ -206,7 +208,7 @@ public final class WebPubSubProperties {
 
     /**
      * Get the sharedPrivateLinkResources property: The list of shared private link resources.
-     *
+     * 
      * @return the sharedPrivateLinkResources value.
      */
     public List<SharedPrivateLinkResourceInner> sharedPrivateLinkResources() {
@@ -215,7 +217,7 @@ public final class WebPubSubProperties {
 
     /**
      * Get the tls property: TLS settings for the resource.
-     *
+     * 
      * @return the tls value.
      */
     public WebPubSubTlsSettings tls() {
@@ -224,7 +226,7 @@ public final class WebPubSubProperties {
 
     /**
      * Set the tls property: TLS settings for the resource.
-     *
+     * 
      * @param tls the tls value to set.
      * @return the WebPubSubProperties object itself.
      */
@@ -235,7 +237,7 @@ public final class WebPubSubProperties {
 
     /**
      * Get the hostnamePrefix property: Deprecated.
-     *
+     * 
      * @return the hostnamePrefix value.
      */
     public String hostnamePrefix() {
@@ -244,7 +246,7 @@ public final class WebPubSubProperties {
 
     /**
      * Get the liveTraceConfiguration property: Live trace configuration of a Microsoft.SignalRService resource.
-     *
+     * 
      * @return the liveTraceConfiguration value.
      */
     public LiveTraceConfiguration liveTraceConfiguration() {
@@ -253,7 +255,7 @@ public final class WebPubSubProperties {
 
     /**
      * Set the liveTraceConfiguration property: Live trace configuration of a Microsoft.SignalRService resource.
-     *
+     * 
      * @param liveTraceConfiguration the liveTraceConfiguration value to set.
      * @return the WebPubSubProperties object itself.
      */
@@ -264,7 +266,7 @@ public final class WebPubSubProperties {
 
     /**
      * Get the resourceLogConfiguration property: Resource log configuration of a Microsoft.SignalRService resource.
-     *
+     * 
      * @return the resourceLogConfiguration value.
      */
     public ResourceLogConfiguration resourceLogConfiguration() {
@@ -273,7 +275,7 @@ public final class WebPubSubProperties {
 
     /**
      * Set the resourceLogConfiguration property: Resource log configuration of a Microsoft.SignalRService resource.
-     *
+     * 
      * @param resourceLogConfiguration the resourceLogConfiguration value to set.
      * @return the WebPubSubProperties object itself.
      */
@@ -284,7 +286,7 @@ public final class WebPubSubProperties {
 
     /**
      * Get the networkACLs property: Network ACLs for the resource.
-     *
+     * 
      * @return the networkACLs value.
      */
     public WebPubSubNetworkACLs networkACLs() {
@@ -293,7 +295,7 @@ public final class WebPubSubProperties {
 
     /**
      * Set the networkACLs property: Network ACLs for the resource.
-     *
+     * 
      * @param networkACLs the networkACLs value to set.
      * @return the WebPubSubProperties object itself.
      */
@@ -303,10 +305,30 @@ public final class WebPubSubProperties {
     }
 
     /**
-     * Get the publicNetworkAccess property: Enable or disable public network access. Default to "Enabled". When it's
-     * Enabled, network ACLs still apply. When it's Disabled, public network access is always disabled no matter what
-     * you set in network ACLs.
-     *
+     * Get the applicationFirewall property: Application firewall settings for the resource.
+     * 
+     * @return the applicationFirewall value.
+     */
+    public ApplicationFirewallSettings applicationFirewall() {
+        return this.applicationFirewall;
+    }
+
+    /**
+     * Set the applicationFirewall property: Application firewall settings for the resource.
+     * 
+     * @param applicationFirewall the applicationFirewall value to set.
+     * @return the WebPubSubProperties object itself.
+     */
+    public WebPubSubProperties withApplicationFirewall(ApplicationFirewallSettings applicationFirewall) {
+        this.applicationFirewall = applicationFirewall;
+        return this;
+    }
+
+    /**
+     * Get the publicNetworkAccess property: Enable or disable public network access. Default to "Enabled".
+     * When it's Enabled, network ACLs still apply.
+     * When it's Disabled, public network access is always disabled no matter what you set in network ACLs.
+     * 
      * @return the publicNetworkAccess value.
      */
     public String publicNetworkAccess() {
@@ -314,10 +336,10 @@ public final class WebPubSubProperties {
     }
 
     /**
-     * Set the publicNetworkAccess property: Enable or disable public network access. Default to "Enabled". When it's
-     * Enabled, network ACLs still apply. When it's Disabled, public network access is always disabled no matter what
-     * you set in network ACLs.
-     *
+     * Set the publicNetworkAccess property: Enable or disable public network access. Default to "Enabled".
+     * When it's Enabled, network ACLs still apply.
+     * When it's Disabled, public network access is always disabled no matter what you set in network ACLs.
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the WebPubSubProperties object itself.
      */
@@ -327,9 +349,10 @@ public final class WebPubSubProperties {
     }
 
     /**
-     * Get the disableLocalAuth property: DisableLocalAuth Enable or disable local auth with AccessKey When set as true,
-     * connection with AccessKey=xxx won't work.
-     *
+     * Get the disableLocalAuth property: DisableLocalAuth
+     * Enable or disable local auth with AccessKey
+     * When set as true, connection with AccessKey=xxx won't work.
+     * 
      * @return the disableLocalAuth value.
      */
     public Boolean disableLocalAuth() {
@@ -337,9 +360,10 @@ public final class WebPubSubProperties {
     }
 
     /**
-     * Set the disableLocalAuth property: DisableLocalAuth Enable or disable local auth with AccessKey When set as true,
-     * connection with AccessKey=xxx won't work.
-     *
+     * Set the disableLocalAuth property: DisableLocalAuth
+     * Enable or disable local auth with AccessKey
+     * When set as true, connection with AccessKey=xxx won't work.
+     * 
      * @param disableLocalAuth the disableLocalAuth value to set.
      * @return the WebPubSubProperties object itself.
      */
@@ -349,9 +373,10 @@ public final class WebPubSubProperties {
     }
 
     /**
-     * Get the disableAadAuth property: DisableLocalAuth Enable or disable aad auth When set as true, connection with
-     * AuthType=aad won't work.
-     *
+     * Get the disableAadAuth property: DisableLocalAuth
+     * Enable or disable aad auth
+     * When set as true, connection with AuthType=aad won't work.
+     * 
      * @return the disableAadAuth value.
      */
     public Boolean disableAadAuth() {
@@ -359,9 +384,10 @@ public final class WebPubSubProperties {
     }
 
     /**
-     * Set the disableAadAuth property: DisableLocalAuth Enable or disable aad auth When set as true, connection with
-     * AuthType=aad won't work.
-     *
+     * Set the disableAadAuth property: DisableLocalAuth
+     * Enable or disable aad auth
+     * When set as true, connection with AuthType=aad won't work.
+     * 
      * @param disableAadAuth the disableAadAuth value to set.
      * @return the WebPubSubProperties object itself.
      */
@@ -371,10 +397,11 @@ public final class WebPubSubProperties {
     }
 
     /**
-     * Get the regionEndpointEnabled property: Enable or disable the regional endpoint. Default to "Enabled". When it's
-     * Disabled, new connections will not be routed to this endpoint, however existing connections will not be affected.
+     * Get the regionEndpointEnabled property: Enable or disable the regional endpoint. Default to "Enabled".
+     * When it's Disabled, new connections will not be routed to this endpoint, however existing connections will not be
+     * affected.
      * This property is replica specific. Disable the regional endpoint without replica is not allowed.
-     *
+     * 
      * @return the regionEndpointEnabled value.
      */
     public String regionEndpointEnabled() {
@@ -382,10 +409,11 @@ public final class WebPubSubProperties {
     }
 
     /**
-     * Set the regionEndpointEnabled property: Enable or disable the regional endpoint. Default to "Enabled". When it's
-     * Disabled, new connections will not be routed to this endpoint, however existing connections will not be affected.
+     * Set the regionEndpointEnabled property: Enable or disable the regional endpoint. Default to "Enabled".
+     * When it's Disabled, new connections will not be routed to this endpoint, however existing connections will not be
+     * affected.
      * This property is replica specific. Disable the regional endpoint without replica is not allowed.
-     *
+     * 
      * @param regionEndpointEnabled the regionEndpointEnabled value to set.
      * @return the WebPubSubProperties object itself.
      */
@@ -395,9 +423,10 @@ public final class WebPubSubProperties {
     }
 
     /**
-     * Get the resourceStopped property: Stop or start the resource. Default to "false". When it's true, the data plane
-     * of the resource is shutdown. When it's false, the data plane of the resource is started.
-     *
+     * Get the resourceStopped property: Stop or start the resource. Default to "False".
+     * When it's true, the data plane of the resource is shutdown.
+     * When it's false, the data plane of the resource is started.
+     * 
      * @return the resourceStopped value.
      */
     public String resourceStopped() {
@@ -405,9 +434,10 @@ public final class WebPubSubProperties {
     }
 
     /**
-     * Set the resourceStopped property: Stop or start the resource. Default to "false". When it's true, the data plane
-     * of the resource is shutdown. When it's false, the data plane of the resource is started.
-     *
+     * Set the resourceStopped property: Stop or start the resource. Default to "False".
+     * When it's true, the data plane of the resource is shutdown.
+     * When it's false, the data plane of the resource is started.
+     * 
      * @param resourceStopped the resourceStopped value to set.
      * @return the WebPubSubProperties object itself.
      */
@@ -417,8 +447,28 @@ public final class WebPubSubProperties {
     }
 
     /**
+     * Get the socketIO property: SocketIO settings for the resource.
+     * 
+     * @return the socketIO value.
+     */
+    public WebPubSubSocketIOSettings socketIO() {
+        return this.socketIO;
+    }
+
+    /**
+     * Set the socketIO property: SocketIO settings for the resource.
+     * 
+     * @param socketIO the socketIO value to set.
+     * @return the WebPubSubProperties object itself.
+     */
+    public WebPubSubProperties withSocketIO(WebPubSubSocketIOSettings socketIO) {
+        this.socketIO = socketIO;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -440,5 +490,101 @@ public final class WebPubSubProperties {
         if (networkACLs() != null) {
             networkACLs().validate();
         }
+        if (applicationFirewall() != null) {
+            applicationFirewall().validate();
+        }
+        if (socketIO() != null) {
+            socketIO().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("tls", this.tls);
+        jsonWriter.writeJsonField("liveTraceConfiguration", this.liveTraceConfiguration);
+        jsonWriter.writeJsonField("resourceLogConfiguration", this.resourceLogConfiguration);
+        jsonWriter.writeJsonField("networkACLs", this.networkACLs);
+        jsonWriter.writeJsonField("applicationFirewall", this.applicationFirewall);
+        jsonWriter.writeStringField("publicNetworkAccess", this.publicNetworkAccess);
+        jsonWriter.writeBooleanField("disableLocalAuth", this.disableLocalAuth);
+        jsonWriter.writeBooleanField("disableAadAuth", this.disableAadAuth);
+        jsonWriter.writeStringField("regionEndpointEnabled", this.regionEndpointEnabled);
+        jsonWriter.writeStringField("resourceStopped", this.resourceStopped);
+        jsonWriter.writeJsonField("socketIO", this.socketIO);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WebPubSubProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WebPubSubProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WebPubSubProperties.
+     */
+    public static WebPubSubProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WebPubSubProperties deserializedWebPubSubProperties = new WebPubSubProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedWebPubSubProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("externalIP".equals(fieldName)) {
+                    deserializedWebPubSubProperties.externalIp = reader.getString();
+                } else if ("hostName".equals(fieldName)) {
+                    deserializedWebPubSubProperties.hostname = reader.getString();
+                } else if ("publicPort".equals(fieldName)) {
+                    deserializedWebPubSubProperties.publicPort = reader.getNullable(JsonReader::getInt);
+                } else if ("serverPort".equals(fieldName)) {
+                    deserializedWebPubSubProperties.serverPort = reader.getNullable(JsonReader::getInt);
+                } else if ("version".equals(fieldName)) {
+                    deserializedWebPubSubProperties.version = reader.getString();
+                } else if ("privateEndpointConnections".equals(fieldName)) {
+                    List<PrivateEndpointConnectionInner> privateEndpointConnections
+                        = reader.readArray(reader1 -> PrivateEndpointConnectionInner.fromJson(reader1));
+                    deserializedWebPubSubProperties.privateEndpointConnections = privateEndpointConnections;
+                } else if ("sharedPrivateLinkResources".equals(fieldName)) {
+                    List<SharedPrivateLinkResourceInner> sharedPrivateLinkResources
+                        = reader.readArray(reader1 -> SharedPrivateLinkResourceInner.fromJson(reader1));
+                    deserializedWebPubSubProperties.sharedPrivateLinkResources = sharedPrivateLinkResources;
+                } else if ("tls".equals(fieldName)) {
+                    deserializedWebPubSubProperties.tls = WebPubSubTlsSettings.fromJson(reader);
+                } else if ("hostNamePrefix".equals(fieldName)) {
+                    deserializedWebPubSubProperties.hostnamePrefix = reader.getString();
+                } else if ("liveTraceConfiguration".equals(fieldName)) {
+                    deserializedWebPubSubProperties.liveTraceConfiguration = LiveTraceConfiguration.fromJson(reader);
+                } else if ("resourceLogConfiguration".equals(fieldName)) {
+                    deserializedWebPubSubProperties.resourceLogConfiguration
+                        = ResourceLogConfiguration.fromJson(reader);
+                } else if ("networkACLs".equals(fieldName)) {
+                    deserializedWebPubSubProperties.networkACLs = WebPubSubNetworkACLs.fromJson(reader);
+                } else if ("applicationFirewall".equals(fieldName)) {
+                    deserializedWebPubSubProperties.applicationFirewall = ApplicationFirewallSettings.fromJson(reader);
+                } else if ("publicNetworkAccess".equals(fieldName)) {
+                    deserializedWebPubSubProperties.publicNetworkAccess = reader.getString();
+                } else if ("disableLocalAuth".equals(fieldName)) {
+                    deserializedWebPubSubProperties.disableLocalAuth = reader.getNullable(JsonReader::getBoolean);
+                } else if ("disableAadAuth".equals(fieldName)) {
+                    deserializedWebPubSubProperties.disableAadAuth = reader.getNullable(JsonReader::getBoolean);
+                } else if ("regionEndpointEnabled".equals(fieldName)) {
+                    deserializedWebPubSubProperties.regionEndpointEnabled = reader.getString();
+                } else if ("resourceStopped".equals(fieldName)) {
+                    deserializedWebPubSubProperties.resourceStopped = reader.getString();
+                } else if ("socketIO".equals(fieldName)) {
+                    deserializedWebPubSubProperties.socketIO = WebPubSubSocketIOSettings.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWebPubSubProperties;
+        });
     }
 }

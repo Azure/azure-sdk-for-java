@@ -6,18 +6,23 @@ package com.azure.resourcemanager.webpubsub.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Properties of event handler. */
+/**
+ * Properties of event handler.
+ */
 @Fluent
-public final class EventHandler {
+public final class EventHandler implements JsonSerializable<EventHandler> {
     /*
      * Gets or sets the EventHandler URL template. You can use a predefined parameter {hub} and {event} inside the
      * template, the value of the EventHandler URL is dynamically calculated when the client request comes in.
      * For example, UrlTemplate can be `http://example.com/api/{hub}/{event}`. The host part can't contains parameters.
      */
-    @JsonProperty(value = "urlTemplate", required = true)
     private String urlTemplate;
 
     /*
@@ -27,31 +32,30 @@ public final class EventHandler {
      * 2. Combine multiple events with ",", for example "event1,event2", it matches event "event1" and "event2"
      * 3. A single event name, for example, "event1", it matches "event1"
      */
-    @JsonProperty(value = "userEventPattern")
     private String userEventPattern;
 
     /*
      * Gets or sets the list of system events.
      */
-    @JsonProperty(value = "systemEvents")
     private List<String> systemEvents;
 
     /*
      * Upstream auth settings. If not set, no auth is used for upstream messages.
      */
-    @JsonProperty(value = "auth")
     private UpstreamAuthSettings auth;
 
-    /** Creates an instance of EventHandler class. */
+    /**
+     * Creates an instance of EventHandler class.
+     */
     public EventHandler() {
     }
 
     /**
      * Get the urlTemplate property: Gets or sets the EventHandler URL template. You can use a predefined parameter
      * {hub} and {event} inside the template, the value of the EventHandler URL is dynamically calculated when the
-     * client request comes in. For example, UrlTemplate can be `http://example.com/api/{hub}/{event}`. The host part
-     * can't contains parameters.
-     *
+     * client request comes in.
+     * For example, UrlTemplate can be `http://example.com/api/{hub}/{event}`. The host part can't contains parameters.
+     * 
      * @return the urlTemplate value.
      */
     public String urlTemplate() {
@@ -61,9 +65,9 @@ public final class EventHandler {
     /**
      * Set the urlTemplate property: Gets or sets the EventHandler URL template. You can use a predefined parameter
      * {hub} and {event} inside the template, the value of the EventHandler URL is dynamically calculated when the
-     * client request comes in. For example, UrlTemplate can be `http://example.com/api/{hub}/{event}`. The host part
-     * can't contains parameters.
-     *
+     * client request comes in.
+     * For example, UrlTemplate can be `http://example.com/api/{hub}/{event}`. The host part can't contains parameters.
+     * 
      * @param urlTemplate the urlTemplate value to set.
      * @return the EventHandler object itself.
      */
@@ -73,11 +77,12 @@ public final class EventHandler {
     }
 
     /**
-     * Get the userEventPattern property: Gets or sets the matching pattern for event names. There are 3 kinds of
-     * patterns supported: 1. "*", it matches any event name 2. Combine multiple events with ",", for example
-     * "event1,event2", it matches event "event1" and "event2" 3. A single event name, for example, "event1", it matches
-     * "event1".
-     *
+     * Get the userEventPattern property: Gets or sets the matching pattern for event names.
+     * There are 3 kinds of patterns supported:
+     * 1. "*", it matches any event name
+     * 2. Combine multiple events with ",", for example "event1,event2", it matches event "event1" and "event2"
+     * 3. A single event name, for example, "event1", it matches "event1".
+     * 
      * @return the userEventPattern value.
      */
     public String userEventPattern() {
@@ -85,11 +90,12 @@ public final class EventHandler {
     }
 
     /**
-     * Set the userEventPattern property: Gets or sets the matching pattern for event names. There are 3 kinds of
-     * patterns supported: 1. "*", it matches any event name 2. Combine multiple events with ",", for example
-     * "event1,event2", it matches event "event1" and "event2" 3. A single event name, for example, "event1", it matches
-     * "event1".
-     *
+     * Set the userEventPattern property: Gets or sets the matching pattern for event names.
+     * There are 3 kinds of patterns supported:
+     * 1. "*", it matches any event name
+     * 2. Combine multiple events with ",", for example "event1,event2", it matches event "event1" and "event2"
+     * 3. A single event name, for example, "event1", it matches "event1".
+     * 
      * @param userEventPattern the userEventPattern value to set.
      * @return the EventHandler object itself.
      */
@@ -100,7 +106,7 @@ public final class EventHandler {
 
     /**
      * Get the systemEvents property: Gets or sets the list of system events.
-     *
+     * 
      * @return the systemEvents value.
      */
     public List<String> systemEvents() {
@@ -109,7 +115,7 @@ public final class EventHandler {
 
     /**
      * Set the systemEvents property: Gets or sets the list of system events.
-     *
+     * 
      * @param systemEvents the systemEvents value to set.
      * @return the EventHandler object itself.
      */
@@ -120,7 +126,7 @@ public final class EventHandler {
 
     /**
      * Get the auth property: Upstream auth settings. If not set, no auth is used for upstream messages.
-     *
+     * 
      * @return the auth value.
      */
     public UpstreamAuthSettings auth() {
@@ -129,7 +135,7 @@ public final class EventHandler {
 
     /**
      * Set the auth property: Upstream auth settings. If not set, no auth is used for upstream messages.
-     *
+     * 
      * @param auth the auth value to set.
      * @return the EventHandler object itself.
      */
@@ -140,14 +146,13 @@ public final class EventHandler {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (urlTemplate() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property urlTemplate in model EventHandler"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property urlTemplate in model EventHandler"));
         }
         if (auth() != null) {
             auth().validate();
@@ -155,4 +160,51 @@ public final class EventHandler {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(EventHandler.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("urlTemplate", this.urlTemplate);
+        jsonWriter.writeStringField("userEventPattern", this.userEventPattern);
+        jsonWriter.writeArrayField("systemEvents", this.systemEvents, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("auth", this.auth);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EventHandler from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EventHandler if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EventHandler.
+     */
+    public static EventHandler fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EventHandler deserializedEventHandler = new EventHandler();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("urlTemplate".equals(fieldName)) {
+                    deserializedEventHandler.urlTemplate = reader.getString();
+                } else if ("userEventPattern".equals(fieldName)) {
+                    deserializedEventHandler.userEventPattern = reader.getString();
+                } else if ("systemEvents".equals(fieldName)) {
+                    List<String> systemEvents = reader.readArray(reader1 -> reader1.getString());
+                    deserializedEventHandler.systemEvents = systemEvents;
+                } else if ("auth".equals(fieldName)) {
+                    deserializedEventHandler.auth = UpstreamAuthSettings.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEventHandler;
+        });
+    }
 }

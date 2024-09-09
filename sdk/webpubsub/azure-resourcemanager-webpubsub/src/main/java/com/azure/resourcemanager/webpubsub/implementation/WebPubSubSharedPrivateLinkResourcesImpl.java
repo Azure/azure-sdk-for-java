@@ -21,47 +21,63 @@ public final class WebPubSubSharedPrivateLinkResourcesImpl implements WebPubSubS
 
     private final com.azure.resourcemanager.webpubsub.WebPubSubManager serviceManager;
 
-    public WebPubSubSharedPrivateLinkResourcesImpl(
-        WebPubSubSharedPrivateLinkResourcesClient innerClient,
+    public WebPubSubSharedPrivateLinkResourcesImpl(WebPubSubSharedPrivateLinkResourcesClient innerClient,
         com.azure.resourcemanager.webpubsub.WebPubSubManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<SharedPrivateLinkResource> list(String resourceGroupName, String resourceName) {
-        PagedIterable<SharedPrivateLinkResourceInner> inner =
-            this.serviceClient().list(resourceGroupName, resourceName);
-        return Utils.mapPage(inner, inner1 -> new SharedPrivateLinkResourceImpl(inner1, this.manager()));
+        PagedIterable<SharedPrivateLinkResourceInner> inner
+            = this.serviceClient().list(resourceGroupName, resourceName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SharedPrivateLinkResourceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<SharedPrivateLinkResource> list(
+    public PagedIterable<SharedPrivateLinkResource> list(String resourceGroupName, String resourceName,
+        Context context) {
+        PagedIterable<SharedPrivateLinkResourceInner> inner
+            = this.serviceClient().list(resourceGroupName, resourceName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SharedPrivateLinkResourceImpl(inner1, this.manager()));
+    }
+
+    public Response<SharedPrivateLinkResource> getWithResponse(String sharedPrivateLinkResourceName,
         String resourceGroupName, String resourceName, Context context) {
-        PagedIterable<SharedPrivateLinkResourceInner> inner =
-            this.serviceClient().list(resourceGroupName, resourceName, context);
-        return Utils.mapPage(inner, inner1 -> new SharedPrivateLinkResourceImpl(inner1, this.manager()));
-    }
-
-    public Response<SharedPrivateLinkResource> getWithResponse(
-        String sharedPrivateLinkResourceName, String resourceGroupName, String resourceName, Context context) {
-        Response<SharedPrivateLinkResourceInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(sharedPrivateLinkResourceName, resourceGroupName, resourceName, context);
+        Response<SharedPrivateLinkResourceInner> inner = this.serviceClient()
+            .getWithResponse(sharedPrivateLinkResourceName, resourceGroupName, resourceName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SharedPrivateLinkResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public SharedPrivateLinkResource get(
-        String sharedPrivateLinkResourceName, String resourceGroupName, String resourceName) {
-        SharedPrivateLinkResourceInner inner =
-            this.serviceClient().get(sharedPrivateLinkResourceName, resourceGroupName, resourceName);
+    public SharedPrivateLinkResource get(String sharedPrivateLinkResourceName, String resourceGroupName,
+        String resourceName) {
+        SharedPrivateLinkResourceInner inner
+            = this.serviceClient().get(sharedPrivateLinkResourceName, resourceGroupName, resourceName);
+        if (inner != null) {
+            return new SharedPrivateLinkResourceImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public SharedPrivateLinkResource createOrUpdate(String sharedPrivateLinkResourceName, String resourceGroupName,
+        String resourceName, SharedPrivateLinkResourceInner parameters) {
+        SharedPrivateLinkResourceInner inner = this.serviceClient()
+            .createOrUpdate(sharedPrivateLinkResourceName, resourceGroupName, resourceName, parameters);
+        if (inner != null) {
+            return new SharedPrivateLinkResourceImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public SharedPrivateLinkResource createOrUpdate(String sharedPrivateLinkResourceName, String resourceGroupName,
+        String resourceName, SharedPrivateLinkResourceInner parameters, Context context) {
+        SharedPrivateLinkResourceInner inner = this.serviceClient()
+            .createOrUpdate(sharedPrivateLinkResourceName, resourceGroupName, resourceName, parameters, context);
         if (inner != null) {
             return new SharedPrivateLinkResourceImpl(inner, this.manager());
         } else {
@@ -73,127 +89,9 @@ public final class WebPubSubSharedPrivateLinkResourcesImpl implements WebPubSubS
         this.serviceClient().delete(sharedPrivateLinkResourceName, resourceGroupName, resourceName);
     }
 
-    public void delete(
-        String sharedPrivateLinkResourceName, String resourceGroupName, String resourceName, Context context) {
+    public void delete(String sharedPrivateLinkResourceName, String resourceGroupName, String resourceName,
+        Context context) {
         this.serviceClient().delete(sharedPrivateLinkResourceName, resourceGroupName, resourceName, context);
-    }
-
-    public SharedPrivateLinkResource getById(String id) {
-        String sharedPrivateLinkResourceName = Utils.getValueFromIdByName(id, "sharedPrivateLinkResources");
-        if (sharedPrivateLinkResourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'sharedPrivateLinkResources'.",
-                                id)));
-        }
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String resourceName = Utils.getValueFromIdByName(id, "webPubSub");
-        if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'webPubSub'.", id)));
-        }
-        return this
-            .getWithResponse(sharedPrivateLinkResourceName, resourceGroupName, resourceName, Context.NONE)
-            .getValue();
-    }
-
-    public Response<SharedPrivateLinkResource> getByIdWithResponse(String id, Context context) {
-        String sharedPrivateLinkResourceName = Utils.getValueFromIdByName(id, "sharedPrivateLinkResources");
-        if (sharedPrivateLinkResourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'sharedPrivateLinkResources'.",
-                                id)));
-        }
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String resourceName = Utils.getValueFromIdByName(id, "webPubSub");
-        if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'webPubSub'.", id)));
-        }
-        return this.getWithResponse(sharedPrivateLinkResourceName, resourceGroupName, resourceName, context);
-    }
-
-    public void deleteById(String id) {
-        String sharedPrivateLinkResourceName = Utils.getValueFromIdByName(id, "sharedPrivateLinkResources");
-        if (sharedPrivateLinkResourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'sharedPrivateLinkResources'.",
-                                id)));
-        }
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String resourceName = Utils.getValueFromIdByName(id, "webPubSub");
-        if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'webPubSub'.", id)));
-        }
-        this.delete(sharedPrivateLinkResourceName, resourceGroupName, resourceName, Context.NONE);
-    }
-
-    public void deleteByIdWithResponse(String id, Context context) {
-        String sharedPrivateLinkResourceName = Utils.getValueFromIdByName(id, "sharedPrivateLinkResources");
-        if (sharedPrivateLinkResourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'sharedPrivateLinkResources'.",
-                                id)));
-        }
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String resourceName = Utils.getValueFromIdByName(id, "webPubSub");
-        if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'webPubSub'.", id)));
-        }
-        this.delete(sharedPrivateLinkResourceName, resourceGroupName, resourceName, context);
     }
 
     private WebPubSubSharedPrivateLinkResourcesClient serviceClient() {
@@ -202,9 +100,5 @@ public final class WebPubSubSharedPrivateLinkResourcesImpl implements WebPubSubS
 
     private com.azure.resourcemanager.webpubsub.WebPubSubManager manager() {
         return this.serviceManager;
-    }
-
-    public SharedPrivateLinkResourceImpl define(String name) {
-        return new SharedPrivateLinkResourceImpl(name, this.manager());
     }
 }
