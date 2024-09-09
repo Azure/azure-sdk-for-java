@@ -224,7 +224,7 @@ public final class MapsRenderClient {
      * <p>
      * Fetches state tiles in vector format typically to be integrated into indoor maps module of map control or SDK.
      * The map control will call this API after user turns on dynamic styling (see [Zoom Levels and Tile
-     * Grid](<a href="https://docs.microsoft.com/azure/location-based-services/zoom-levels-and-tile-grid">...</a>)).
+     * Grid](<a href="https://docs.microsoft.com/azure/location-based-services/zoom-levels-and-tile-grid">Zoom levels and tile grid</a>)).
      *
      * @param stream The output stream to which the tile is written to.
      * @param statesetId The stateset id.

@@ -10,7 +10,7 @@ import com.azure.core.util.ServiceVersion;
  */
 public enum MapsRenderServiceVersion implements ServiceVersion {
     /**
-    * Service version {@code 2.1}.
+    * Service version {@code 2}.
     */
     V2("2024-04-01");
 
