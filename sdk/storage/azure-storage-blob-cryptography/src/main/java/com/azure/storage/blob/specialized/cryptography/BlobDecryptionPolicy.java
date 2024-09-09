@@ -104,6 +104,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                      * If there was no range set on the request, we skipped instantiating a BlobRange as we did not have
                      * encryption data at the time. Instantiate now with a BlobRange that indicates a full blob.
                      */
+                    // when creating the encrypted range, pass in the new value
                     EncryptedBlobRange encryptedRange = new EncryptedBlobRange(new BlobRange(0), encryptionData);
                     encryptedRange.setAdjustedDownloadCount(
                         Long.parseLong(responseHeaders.getValue(HttpHeaderName.CONTENT_LENGTH)));

@@ -312,6 +312,7 @@ public final class EncryptedBlobClientBuilder implements
                 policies.add(currPolicy);
             }
             // There is guaranteed not to be a decryption policy in the provided pipeline. Add one to the front.
+            // add the gcm length here
             policies.add(0, new BlobDecryptionPolicy(keyWrapper, keyResolver, requiresEncryption));
 
             return new HttpPipelineBuilder()
@@ -326,6 +327,7 @@ public final class EncryptedBlobClientBuilder implements
         // Closest to API goes first, closest to wire goes last.
         List<HttpPipelinePolicy> policies = new ArrayList<>();
 
+        // add the gcm length here
         policies.add(new BlobDecryptionPolicy(keyWrapper, keyResolver, requiresEncryption));
         String applicationId = CoreUtils.getApplicationId(clientOptions, logOptions);
 
@@ -922,8 +924,8 @@ public final class EncryptedBlobClientBuilder implements
 
     /**
      * Sets the partition chunk size
-     * @param gcmEncryptionRegionLength
-     * @return
+     * @param gcmEncryptionRegionLength the region length used for encrypting the blob
+     * @return the updated EncryptedBlobClientBuilder object
      */
     public EncryptedBlobClientBuilder gcmEncryptionRegionLength(int gcmEncryptionRegionLength) {
         if (gcmEncryptionRegionLength <= 0) {

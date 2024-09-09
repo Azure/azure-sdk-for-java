@@ -1579,6 +1579,7 @@ public class BlobAsyncClientBase {
                 long newCount = setupTuple3.getT1();
                 BlobRequestConditions finalConditions = setupTuple3.getT2();
 
+                // needs to use the unencrypted length
                 int numChunks = ChunkedDownloadUtils.calculateNumBlocks(newCount,
                     finalParallelTransferOptions.getBlockSizeLong());
 
