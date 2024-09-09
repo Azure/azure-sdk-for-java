@@ -30,17 +30,18 @@ public final class ChatCompletionsFunctionToolDefinition extends ChatCompletions
 
     /**
      * Creates an instance of ChatCompletionsFunctionToolDefinition class.
-     * 
+     *
      * @param function the function value to set.
      */
     @Generated
     public ChatCompletionsFunctionToolDefinition(FunctionDefinition function) {
         super(function);
+        this.function = function;
     }
 
     /**
      * Get the type property: The object type.
-     * 
+     *
      * @return the type value.
      */
     @Generated
@@ -51,7 +52,7 @@ public final class ChatCompletionsFunctionToolDefinition extends ChatCompletions
 
     /**
      * Get the function property: The function definition details for the function tool.
-     * 
+     *
      * @return the function value.
      */
     @Generated
@@ -73,7 +74,7 @@ public final class ChatCompletionsFunctionToolDefinition extends ChatCompletions
 
     /**
      * Reads an instance of ChatCompletionsFunctionToolDefinition from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of ChatCompletionsFunctionToolDefinition if the JsonReader was pointing to an instance of it,
      * or null if it was pointing to JSON null.

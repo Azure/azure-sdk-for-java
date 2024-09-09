@@ -38,6 +38,7 @@ public final class ChatCompletionsFunctionToolCall extends ChatCompletionsToolCa
      */
     public ChatCompletionsFunctionToolCall(String id, FunctionCall function) {
         super(id, function);
+        this.function = function;
     }
 
     /**

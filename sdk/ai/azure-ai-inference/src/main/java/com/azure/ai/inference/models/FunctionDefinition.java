@@ -111,7 +111,7 @@ public final class FunctionDefinition implements JsonSerializable<FunctionDefini
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("description", this.description);
-        jsonWriter.writeUntypedField("parameters", this.parameters);
+        jsonWriter.writeRawField("parameters", this.parameters.toString());
         return jsonWriter.writeEndObject();
     }
 
