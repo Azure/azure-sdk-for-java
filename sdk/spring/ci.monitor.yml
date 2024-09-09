@@ -35,7 +35,6 @@ extends:
         safeName: springcloudazurestartermonitor
         skipPublishDocGithubIo: true
         skipPublishDocMs: true
-        skipUpdatePackageJson: true
         skipVerifyChangelog: true
         releaseInBatch: true
     AdditionalModules:
