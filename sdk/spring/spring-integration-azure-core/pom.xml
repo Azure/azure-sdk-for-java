@@ -35,6 +35,7 @@
   <properties>
     <!-- Enables fail on deprecated API usage. -->
     <compiler.failondeprecatedstatus/>
+    <jacoco.skip>true</jacoco.skip>
   </properties>
   <dependencies>
     <dependency>
