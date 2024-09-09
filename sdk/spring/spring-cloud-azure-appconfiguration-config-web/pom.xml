@@ -13,7 +13,6 @@
   <name>Spring Cloud Azure App Configuration Config Web</name>
   <description>Integration of Spring Cloud Config and Azure App Configuration Service</description>
   <properties>
-    <codesnippet.skip>false</codesnippet.skip>
     <javadocDoclet></javadocDoclet>
     <javadocDocletOptions></javadocDocletOptions>
   </properties>
