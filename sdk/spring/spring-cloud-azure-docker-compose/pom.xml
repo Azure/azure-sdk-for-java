@@ -35,6 +35,7 @@
   <properties>
     <!-- Enables fail on deprecated API usage. -->
     <compiler.failondeprecatedstatus/>
+    <jacoco.skip>true</jacoco.skip>
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
     <legal>
