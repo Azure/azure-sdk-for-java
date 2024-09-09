@@ -256,7 +256,9 @@ extends:
       - name: spring-cloud-azure-docker-compose
         groupId: com.azure.spring
         safeName: springcloudazuredockercompose
+        skipPublishDocGithubIo: true
         skipPublishDocMs: true
+        skipUpdatePackageJson: true
         skipVerifyChangelog: true
         releaseInBatch: ${{ parameters.release_springcloudazuredockercompose }}
       - name: spring-cloud-azure-service
