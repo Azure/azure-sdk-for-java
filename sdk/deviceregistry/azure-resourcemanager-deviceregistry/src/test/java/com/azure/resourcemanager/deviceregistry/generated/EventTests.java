@@ -13,27 +13,27 @@ public final class EventTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Event model = BinaryData.fromString(
-            "{\"name\":\"qpteeh\",\"eventNotifier\":\"zvypyqrimzinp\",\"capabilityId\":\"wjdk\",\"observabilityMode\":\"log\",\"eventConfiguration\":\"od\"}")
+            "{\"name\":\"jaeq\",\"eventNotifier\":\"hqjbasvmsmj\",\"capabilityId\":\"lngsntnbybkzgcwr\",\"observabilityMode\":\"log\",\"eventConfiguration\":\"xwrljdouskcqvkoc\"}")
             .toObject(Event.class);
-        Assertions.assertEquals("qpteeh", model.name());
-        Assertions.assertEquals("zvypyqrimzinp", model.eventNotifier());
-        Assertions.assertEquals("wjdk", model.capabilityId());
+        Assertions.assertEquals("jaeq", model.name());
+        Assertions.assertEquals("hqjbasvmsmj", model.eventNotifier());
+        Assertions.assertEquals("lngsntnbybkzgcwr", model.capabilityId());
         Assertions.assertEquals(EventsObservabilityMode.LOG, model.observabilityMode());
-        Assertions.assertEquals("od", model.eventConfiguration());
+        Assertions.assertEquals("xwrljdouskcqvkoc", model.eventConfiguration());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Event model = new Event().withName("qpteeh")
-            .withEventNotifier("zvypyqrimzinp")
-            .withCapabilityId("wjdk")
+        Event model = new Event().withName("jaeq")
+            .withEventNotifier("hqjbasvmsmj")
+            .withCapabilityId("lngsntnbybkzgcwr")
             .withObservabilityMode(EventsObservabilityMode.LOG)
-            .withEventConfiguration("od");
+            .withEventConfiguration("xwrljdouskcqvkoc");
         model = BinaryData.fromObject(model).toObject(Event.class);
-        Assertions.assertEquals("qpteeh", model.name());
-        Assertions.assertEquals("zvypyqrimzinp", model.eventNotifier());
-        Assertions.assertEquals("wjdk", model.capabilityId());
+        Assertions.assertEquals("jaeq", model.name());
+        Assertions.assertEquals("hqjbasvmsmj", model.eventNotifier());
+        Assertions.assertEquals("lngsntnbybkzgcwr", model.capabilityId());
         Assertions.assertEquals(EventsObservabilityMode.LOG, model.observabilityMode());
-        Assertions.assertEquals("od", model.eventConfiguration());
+        Assertions.assertEquals("xwrljdouskcqvkoc", model.eventConfiguration());
     }
 }

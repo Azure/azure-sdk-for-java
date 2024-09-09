@@ -13,8 +13,7 @@ public class GetsTheSpecifiedCatalogWithinTheProject {
     public static void main(String[] args) {
         DeploymentEnvironmentsClient deploymentEnvironmentsClient
             = new DeploymentEnvironmentsClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
-                .endpoint(
-                    "https://8a40af38-3b4c-4672-a6a4-5e964b1870ed-contosodevcenter.centralus.devcenter.azure.com/")
+                .endpoint("https://8a40af38-3b4c-4672-a6a4-5e964b1870ed-contosodevcenter.centralus.devcenter.azure.com")
                 .buildClient();
         // BEGIN:com.azure.developer.devcenter.generated.getcatalog.getsthespecifiedcatalogwithintheproject
         DevCenterCatalog response = deploymentEnvironmentsClient.getCatalog("myProject", "foo");

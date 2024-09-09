@@ -124,8 +124,7 @@ import java.util.Map;
  */
 public final class FleetsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/azurefleet/AzureFleet.Management/examples/2024-05-01-preview/Fleets_CreateOrUpdate.json
+     * x-ms-original-file: 2024-05-01-preview/Fleets_CreateOrUpdate.json
      */
     /**
      * Sample code: Fleets_CreateOrUpdate.
@@ -398,6 +397,71 @@ public final class FleetsCreateOrUpdateSamples {
             .create();
     }
 
+    /*
+     * x-ms-original-file: 2024-05-01-preview/Fleets_CreateOrUpdate_MinimumSet.json
+     */
+    /**
+     * Sample code: Fleets_CreateOrUpdate_MinimumSet.
+     * 
+     * @param manager Entry point to ComputeFleetManager.
+     */
+    public static void
+        fleetsCreateOrUpdateMinimumSet(com.azure.resourcemanager.computefleet.ComputeFleetManager manager) {
+        manager.fleets()
+            .define("testFleet")
+            .withRegion("eastus2euap")
+            .withExistingResourceGroup("rgazurefleet")
+            .withTags(mapOf("key", "fakeTokenPlaceholder"))
+            .withProperties(new FleetProperties()
+                .withSpotPriorityProfile(new SpotPriorityProfile().withCapacity(2)
+                    .withMinCapacity(1)
+                    .withEvictionPolicy(EvictionPolicy.DELETE)
+                    .withAllocationStrategy(SpotAllocationStrategy.PRICE_CAPACITY_OPTIMIZED)
+                    .withMaintain(true))
+                .withRegularPriorityProfile(new RegularPriorityProfile().withCapacity(2)
+                    .withMinCapacity(1)
+                    .withAllocationStrategy(RegularPriorityAllocationStrategy.LOWEST_PRICE))
+                .withVmSizesProfile(Arrays.asList(new VmSizeProfile().withName("Standard_D2s_v3"),
+                    new VmSizeProfile().withName("Standard_D4s_v3"), new VmSizeProfile().withName("Standard_E2s_v3")))
+                .withComputeProfile(new ComputeProfile()
+                    .withBaseVirtualMachineProfile(new BaseVirtualMachineProfile()
+                        .withOsProfile(new VirtualMachineScaleSetOSProfile().withComputerNamePrefix("prefix")
+                            .withAdminUsername("azureuser")
+                            .withAdminPassword("fakeTokenPlaceholder")
+                            .withLinuxConfiguration(new LinuxConfiguration().withDisablePasswordAuthentication(false)))
+                        .withStorageProfile(new VirtualMachineScaleSetStorageProfile()
+                            .withImageReference(new ImageReference().withPublisher("canonical")
+                                .withOffer("0001-com-ubuntu-server-focal")
+                                .withSku("20_04-lts-gen2")
+                                .withVersion("latest"))
+                            .withOsDisk(new VirtualMachineScaleSetOSDisk()
+                                .withCaching(CachingTypes.READ_WRITE)
+                                .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE)
+                                .withOsType(OperatingSystemTypes.LINUX)
+                                .withManagedDisk(new VirtualMachineScaleSetManagedDiskParameters()
+                                    .withStorageAccountType(StorageAccountTypes.STANDARD_LRS))))
+                        .withNetworkProfile(new VirtualMachineScaleSetNetworkProfile()
+                            .withNetworkInterfaceConfigurations(
+                                Arrays.asList(new VirtualMachineScaleSetNetworkConfiguration().withName("vmNameTest")
+                                    .withProperties(new VirtualMachineScaleSetNetworkConfigurationProperties()
+                                        .withPrimary(true)
+                                        .withEnableAcceleratedNetworking(false)
+                                        .withIpConfigurations(Arrays.asList(new VirtualMachineScaleSetIPConfiguration()
+                                            .withName("vmNameTest")
+                                            .withProperties(new VirtualMachineScaleSetIPConfigurationProperties()
+                                                .withSubnet(new ApiEntityReference().withId(
+                                                    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}"))
+                                                .withPrimary(true)
+                                                .withLoadBalancerBackendAddressPools(
+                                                    Arrays.asList(new SubResource().withId(
+                                                        "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/backendAddressPools/{backendAddressPoolName}"))))))
+                                        .withEnableIPForwarding(true))))
+                            .withNetworkApiVersion(NetworkApiVersion.fromString("2022-07-01"))))
+                    .withComputeApiVersion("2023-09-01")
+                    .withPlatformFaultDomainCount(1)))
+            .create();
+    }
+
     // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
@@ -420,7 +484,7 @@ public final class FleetsCreateOrUpdateSamples {
  */
 public final class FleetsDeleteSamples {
     /*
-     * x-ms-original-file: specification/azurefleet/AzureFleet.Management/examples/2024-05-01-preview/Fleets_Delete.json
+     * x-ms-original-file: 2024-05-01-preview/Fleets_Delete.json
      */
     /**
      * Sample code: Fleets_Delete.
@@ -441,7 +505,7 @@ public final class FleetsDeleteSamples {
  */
 public final class FleetsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/azurefleet/AzureFleet.Management/examples/2024-05-01-preview/Fleets_Get.json
+     * x-ms-original-file: 2024-05-01-preview/Fleets_Get.json
      */
     /**
      * Sample code: Fleets_Get.
@@ -462,8 +526,7 @@ public final class FleetsGetByResourceGroupSamples {
  */
 public final class FleetsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/azurefleet/AzureFleet.Management/examples/2024-05-01-preview/Fleets_ListBySubscription.json
+     * x-ms-original-file: 2024-05-01-preview/Fleets_ListBySubscription.json
      */
     /**
      * Sample code: Fleets_ListBySubscription.
@@ -484,8 +547,7 @@ public final class FleetsListSamples {
  */
 public final class FleetsListByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/azurefleet/AzureFleet.Management/examples/2024-05-01-preview/Fleets_ListByResourceGroup.json
+     * x-ms-original-file: 2024-05-01-preview/Fleets_ListByResourceGroup.json
      */
     /**
      * Sample code: Fleets_ListByResourceGroup.
@@ -506,9 +568,7 @@ public final class FleetsListByResourceGroupSamples {
  */
 public final class FleetsListVirtualMachineScaleSetsSamples {
     /*
-     * x-ms-original-file:
-     * specification/azurefleet/AzureFleet.Management/examples/2024-05-01-preview/Fleets_ListVirtualMachineScaleSets.
-     * json
+     * x-ms-original-file: 2024-05-01-preview/Fleets_ListVirtualMachineScaleSets.json
      */
     /**
      * Sample code: Fleets_ListVirtualMachineScaleSets.
@@ -632,7 +692,7 @@ import java.util.Map;
  */
 public final class FleetsUpdateSamples {
     /*
-     * x-ms-original-file: specification/azurefleet/AzureFleet.Management/examples/2024-05-01-preview/Fleets_Update.json
+     * x-ms-original-file: 2024-05-01-preview/Fleets_Update.json
      */
     /**
      * Sample code: Fleets_Update.
@@ -927,8 +987,7 @@ public final class FleetsUpdateSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/azurefleet/AzureFleet.Management/examples/2024-05-01-preview/Operations_List.json
+     * x-ms-original-file: 2024-05-01-preview/Operations_List.json
      */
     /**
      * Sample code: Operations_List.

@@ -109,7 +109,10 @@ public final class MultivariateClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return detection results for the resultId value along with {@link Response}.
+     * @return multivariate Anomaly Detection Result
+     *
+     * For asynchronous inference, get a multivariate anomaly detection result based on the
+     * resultId value that the BatchDetectAnomaly API returns along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -418,7 +421,9 @@ public final class MultivariateClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return detailed information about the multivariate model, including the training status
+     * @return multivariate Model
+     *
+     * Get detailed information about the multivariate model, including the training status
      * and variables used in the model along with {@link Response}.
      */
     @Generated
@@ -617,7 +622,10 @@ public final class MultivariateClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return detection results for the resultId value.
+     * @return multivariate Anomaly Detection Result
+     *
+     * For asynchronous inference, get a multivariate anomaly detection result based on the
+     * resultId value that the BatchDetectAnomaly API returns.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -747,7 +755,9 @@ public final class MultivariateClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return detailed information about the multivariate model, including the training status
+     * @return multivariate Model
+     *
+     * Get detailed information about the multivariate model, including the training status
      * and variables used in the model.
      */
     @Generated

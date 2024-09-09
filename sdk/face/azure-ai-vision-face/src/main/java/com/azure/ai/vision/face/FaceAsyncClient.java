@@ -72,7 +72,7 @@ public final class FaceAsyncClient {
      * The 'recognitionModel' associated with the query faceId should be the same as the 'recognitionModel' used by the
      * target faceId array.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     faceId: String (Required)
@@ -83,9 +83,9 @@ public final class FaceAsyncClient {
      *     ]
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -122,16 +122,16 @@ public final class FaceAsyncClient {
      * &gt; * For the scenarios that are sensitive to accuracy please make your own judgment.
      * &gt; * The 'recognitionModel' associated with the both faces should be the same.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     faceId1: String (Required)
      *     faceId2: String (Required)
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     isIdentical: boolean (Required)
@@ -168,7 +168,7 @@ public final class FaceAsyncClient {
      * only have 2 candidate faces.
      * * The 'recognitionModel' associated with the query faces' faceIds should be the same.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     faceIds (Required): [
@@ -176,9 +176,9 @@ public final class FaceAsyncClient {
      *     ]
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     groups (Required): [
@@ -422,15 +422,15 @@ public final class FaceAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     url: String (Required)
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -608,13 +608,13 @@ public final class FaceAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * BinaryData
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * [
      *      (Required){
