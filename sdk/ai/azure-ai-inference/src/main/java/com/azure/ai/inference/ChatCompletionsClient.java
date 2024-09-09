@@ -152,9 +152,9 @@ public final class ChatCompletionsClient {
      * provided prompt data along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ChatCompletions>> completeWithResponse(BinaryData completeRequest, RequestOptions requestOptions) {
+    public Response<ChatCompletions> completeWithResponse(BinaryData completeRequest, RequestOptions requestOptions) {
         Response<BinaryData> response = serviceClient.completeWithResponse(completeRequest, requestOptions);
-        return Mono.just(new SimpleResponse<>(response, response.getValue().toObject(ChatCompletions.class)));
+        return new SimpleResponse<>(response, response.getValue().toObject(ChatCompletions.class));
     }
 
     /**
@@ -222,7 +222,7 @@ public final class ChatCompletionsClient {
         if (extraParams != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("extra-parameters"), extraParams.toString());
         }
-        return Objects.requireNonNull(completeWithResponse(completeRequest, requestOptions).block()).getValue();
+        return Objects.requireNonNull(completeWithResponse(completeRequest, requestOptions)).getValue();
     }
 
     /**
