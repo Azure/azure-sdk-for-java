@@ -31,6 +31,10 @@ public final class ChangeFeedProcessorContextImpl<T> implements ChangeFeedProces
             throw new IllegalStateException("changeFeedObserverContext cannot be null!");
         }
 
+        if (changeFeedObserverContext.getFeedResponse() == null) {
+            throw new IllegalStateException("feed response cannot be null!");
+        }
+
         return changeFeedObserverContext.getFeedResponse().getCosmosDiagnostics();
     }
 }
