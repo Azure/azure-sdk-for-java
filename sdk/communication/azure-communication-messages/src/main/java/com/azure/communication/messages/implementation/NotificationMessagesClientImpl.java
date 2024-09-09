@@ -211,7 +211,7 @@ public final class NotificationMessagesClientImpl {
      * 
      * <pre>{@code
      * {
-     *     kind: String(text/image/template) (Required)
+     *     kind: String(text/image/document/video/audio/template) (Required)
      *     channelRegistrationId: String (Required)
      *     to (Required): [
      *         String (Required)
@@ -279,7 +279,7 @@ public final class NotificationMessagesClientImpl {
      * 
      * <pre>{@code
      * {
-     *     kind: String(text/image/template) (Required)
+     *     kind: String(text/image/document/video/audio/template) (Required)
      *     channelRegistrationId: String (Required)
      *     to (Required): [
      *         String (Required)

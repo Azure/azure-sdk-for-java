@@ -121,7 +121,13 @@ public abstract class NotificationContent implements JsonSerializable<Notificati
                 if ("text".equals(discriminatorValue)) {
                     return TextNotificationContent.fromJson(readerToUse.reset());
                 } else if ("image".equals(discriminatorValue)) {
-                    return MediaNotificationContent.fromJson(readerToUse.reset());
+                    return ImageNotificationContent.fromJson(readerToUse.reset());
+                } else if ("document".equals(discriminatorValue)) {
+                    return DocumentNotificationContent.fromJson(readerToUse.reset());
+                } else if ("video".equals(discriminatorValue)) {
+                    return VideoNotificationContent.fromJson(readerToUse.reset());
+                } else if ("audio".equals(discriminatorValue)) {
+                    return AudioNotificationContent.fromJson(readerToUse.reset());
                 } else if ("template".equals(discriminatorValue)) {
                     return TemplateNotificationContent.fromJson(readerToUse.reset());
                 } else {
