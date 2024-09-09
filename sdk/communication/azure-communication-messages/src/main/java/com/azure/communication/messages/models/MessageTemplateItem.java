@@ -17,7 +17,7 @@ import com.azure.communication.messages.implementation.accesshelpers.MessageTemp
  * The message template as returned from the service.
  */
 @Immutable
-public class MessageTemplateItem implements JsonSerializable<MessageTemplateItem> {
+public abstract class MessageTemplateItem implements JsonSerializable<MessageTemplateItem> {
 
     static {
         MessageTemplateItemAccessHelper.setAccessor(MessageTemplateItem::setName);
@@ -156,38 +156,9 @@ public class MessageTemplateItem implements JsonSerializable<MessageTemplateItem
                 if ("whatsApp".equals(discriminatorValue)) {
                     return WhatsAppMessageTemplateItem.fromJson(readerToUse.reset());
                 } else {
-                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                    throw new IllegalArgumentException("Invalid Kind value - " + discriminatorValue);
                 }
             }
-        });
-    }
-
-    @Generated
-    static MessageTemplateItem fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            String name = null;
-            String language = null;
-            MessageTemplateStatus status = null;
-            CommunicationMessagesChannel kind = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("name".equals(fieldName)) {
-                    name = reader.getString();
-                } else if ("language".equals(fieldName)) {
-                    language = reader.getString();
-                } else if ("status".equals(fieldName)) {
-                    status = MessageTemplateStatus.fromString(reader.getString());
-                } else if ("kind".equals(fieldName)) {
-                    kind = CommunicationMessagesChannel.fromString(reader.getString());
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            MessageTemplateItem deserializedMessageTemplateItem = new MessageTemplateItem(language, status);
-            deserializedMessageTemplateItem.name = name;
-            deserializedMessageTemplateItem.kind = kind;
-            return deserializedMessageTemplateItem;
         });
     }
 }

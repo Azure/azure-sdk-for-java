@@ -15,7 +15,7 @@ import java.io.IOException;
  * The class describes a parameter of a template.
  */
 @Immutable
-public class MessageTemplateValue implements JsonSerializable<MessageTemplateValue> {
+public abstract class MessageTemplateValue implements JsonSerializable<MessageTemplateValue> {
 
     /*
      * The type discriminator describing a template parameter type.
@@ -35,7 +35,7 @@ public class MessageTemplateValue implements JsonSerializable<MessageTemplateVal
      * @param refValue the refValue value to set.
      */
     @Generated
-    public MessageTemplateValue(String refValue) {
+    protected MessageTemplateValue(String refValue) {
         this.refValue = refValue;
     }
 
@@ -111,31 +111,9 @@ public class MessageTemplateValue implements JsonSerializable<MessageTemplateVal
                 } else if ("quickAction".equals(discriminatorValue)) {
                     return MessageTemplateQuickAction.fromJson(readerToUse.reset());
                 } else {
-                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                    throw new IllegalArgumentException("Invalid Kind value - " + discriminatorValue);
                 }
             }
-        });
-    }
-
-    @Generated
-    static MessageTemplateValue fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            String refValue = null;
-            MessageTemplateValueKind kind = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("name".equals(fieldName)) {
-                    refValue = reader.getString();
-                } else if ("kind".equals(fieldName)) {
-                    kind = MessageTemplateValueKind.fromString(reader.getString());
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            MessageTemplateValue deserializedMessageTemplateValue = new MessageTemplateValue(refValue);
-            deserializedMessageTemplateValue.kind = kind;
-            return deserializedMessageTemplateValue;
         });
     }
 }
