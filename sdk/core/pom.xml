@@ -17,7 +17,6 @@
     <module>azure-core-http-jdk-httpclient</module>
     <module>azure-core-http-netty</module>
     <module>azure-core-http-okhttp</module>
-    <module>azure-core-http-test-common</module>
     <module>azure-core-http-vertx</module>
     <module>azure-core-management</module>
     <module>azure-core-metrics-opentelemetry</module>

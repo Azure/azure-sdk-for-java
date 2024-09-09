@@ -9,7 +9,7 @@
 
 ### Breaking Changes
 
-- Moved code related to testing HTTP client implementations to `azure-core-http-test-common`.
+- Moved code related to testing HTTP client implementations to shared `azure-core` test code.
 
 ### Bugs Fixed
 

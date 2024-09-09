@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.core.http.test.common;
+package com.azure.core.test.shared;
 
 import com.azure.core.http.ContentType;
-import com.azure.core.http.test.common.models.HttpBinFormDataJson;
-import com.azure.core.http.test.common.models.HttpBinJson;
-import com.azure.core.http.test.common.models.PizzaSize;
+import com.azure.core.test.shared.models.HttpBinFormDataJson;
+import com.azure.core.test.shared.models.HttpBinJson;
+import com.azure.core.test.shared.models.PizzaSize;
 import com.azure.core.util.DateTimeRfc1123;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Response;
@@ -26,6 +26,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
+
+import static com.azure.core.test.shared.CoreTestUtils.md5;
 
 /**
  * Server used when running {@link HttpClientTests}.
@@ -156,7 +158,7 @@ public final class HttpClientTestsServer {
         byte[] body = new byte[bodySize];
         ThreadLocalRandom.current().nextBytes(body);
 
-        resp.addHeader("ETag", HttpTestUtils.md5(body));
+        resp.addHeader("ETag", md5(body));
 
         resp.getHttpOutput().write(body);
         resp.getHttpOutput().flush();

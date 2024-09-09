@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.core.http.test.common.junitextensions;
+
+package com.azure.core.test.shared;
 
 import org.junit.jupiter.api.extension.AfterTestExecutionCallback;
 import org.junit.jupiter.api.extension.BeforeTestExecutionCallback;
@@ -16,27 +17,25 @@ import java.util.concurrent.Callable;
 import java.util.stream.Stream;
 
 /**
- * A test template extension that helps to branch out a single test into sync and async invocation.
+ * An extension that helps to branch out a single test into sync and async invocation.
+ * <p>
+ * Using azure-core copy of the com.azure.core.test.SyncAsyncExtension class
+ * since azure-core cannot take dependency on azure-core-test package.
  */
-public final class SyncAsyncExtension implements TestTemplateInvocationContextProvider {
+public class SyncAsyncExtension implements TestTemplateInvocationContextProvider {
 
     private static final ThreadLocal<Boolean> IS_SYNC_THREAD_LOCAL = new ThreadLocal<>();
     private static final ThreadLocal<Boolean> WAS_EXTENSION_USED_THREAD_LOCAL = new ThreadLocal<>();
 
     /**
-     * Creates a new instance of {@link SyncAsyncExtension}.
-     */
-    public SyncAsyncExtension() {
-    }
-
-    /**
      * Executes sync or async branch depending on the context.
+     *
      * @param sync sync callable.
      * @param async async callable. It should block at some point to return result.
      * @param <T> type of result of either sync or async invocation.
      * @return result of either sync or async invocation.
+     * @throws RuntimeException exception propagated from the callables.
      * @throws IllegalStateException if extension doesn't work as expected.
-     * @throws RuntimeException a runtime exception wrapping error from callable.
      */
     public static <T> T execute(Callable<T> sync, Callable<Mono<T>> async) {
         Boolean isSync = IS_SYNC_THREAD_LOCAL.get();
@@ -61,10 +60,10 @@ public final class SyncAsyncExtension implements TestTemplateInvocationContextPr
 
     /**
      * Executes sync or async branch depending on the context.
-     * @param sync sync callable.
-     * @param async async callable. It should block at some point to return result.
+     *
+     * @param sync sync runnable.
+     * @param async async runnable. It should block at some point.
      * @throws IllegalStateException if extension doesn't work as expected.
-     * @throws RuntimeException a runtime exception wrapping error from callable.
      */
     public static void execute(Runnable sync, Callable<Mono<Void>> async) {
         Boolean isSync = IS_SYNC_THREAD_LOCAL.get();
@@ -119,8 +118,7 @@ public final class SyncAsyncExtension implements TestTemplateInvocationContextPr
         }
     }
 
-    private static final class SyncAsyncTestInterceptor
-        implements BeforeTestExecutionCallback, AfterTestExecutionCallback {
+    static final class SyncAsyncTestInterceptor implements BeforeTestExecutionCallback, AfterTestExecutionCallback {
         private final boolean isSync;
 
         private SyncAsyncTestInterceptor(boolean isSync) {
@@ -128,7 +126,7 @@ public final class SyncAsyncExtension implements TestTemplateInvocationContextPr
         }
 
         @Override
-        public void beforeTestExecution(ExtensionContext extensionContext) throws Exception {
+        public void beforeTestExecution(ExtensionContext extensionContext) {
             if (IS_SYNC_THREAD_LOCAL.get() != null) {
                 throw new IllegalStateException("The IS_SYNC_THREAD_LOCAL shouldn't be set at this point");
             }
@@ -140,7 +138,7 @@ public final class SyncAsyncExtension implements TestTemplateInvocationContextPr
         }
 
         @Override
-        public void afterTestExecution(ExtensionContext extensionContext) throws Exception {
+        public void afterTestExecution(ExtensionContext extensionContext) {
             IS_SYNC_THREAD_LOCAL.remove();
             if (!WAS_EXTENSION_USED_THREAD_LOCAL.get()) {
                 throw new IllegalStateException(

@@ -1,13 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core;
+package com.azure.core.test.shared;
 
 import com.azure.core.util.UrlBuilder;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -115,7 +116,7 @@ public final class CoreTestUtils {
      * @throws IOException If an error happens during reading.
      */
     public static byte[] readStream(InputStream stream, int bufferSize) throws IOException {
-        TestByteArrayOutputStream outputStream = new TestByteArrayOutputStream();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         byte[] buffer = new byte[bufferSize];
         int length;
         while ((length = stream.read(buffer)) != -1) {
@@ -132,7 +133,7 @@ public final class CoreTestUtils {
      * @throws IOException If an error happens during reading.
      */
     public static byte[] readStreamByteByByte(InputStream stream) throws IOException {
-        TestByteArrayOutputStream outputStream = new TestByteArrayOutputStream();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         byte[] buffer = new byte[8192];
         int bufferPosition = 0;
         int tmp;

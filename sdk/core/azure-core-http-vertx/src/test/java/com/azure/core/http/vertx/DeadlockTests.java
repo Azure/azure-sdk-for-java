@@ -6,7 +6,6 @@ package com.azure.core.http.vertx;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
-import com.azure.core.http.test.common.HttpTestUtils;
 import com.azure.core.util.FluxUtil;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
@@ -21,6 +20,7 @@ import java.util.List;
 
 import static com.azure.core.http.vertx.VertxHttpClientLocalTestServer.EXPECTED_GET_BYTES;
 import static com.azure.core.http.vertx.VertxHttpClientLocalTestServer.GET_ENDPOINT;
+import static com.azure.core.test.shared.CoreTestUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Execution(ExecutionMode.SAME_THREAD)
@@ -45,7 +45,7 @@ public class DeadlockTests {
 
         for (Tuple2<byte[], Integer> result : results) {
             assertEquals(200, result.getT2());
-            HttpTestUtils.assertArraysEqual(EXPECTED_GET_BYTES, result.getT1());
+            assertArraysEqual(EXPECTED_GET_BYTES, result.getT1());
         }
     }
 }

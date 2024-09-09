@@ -1,14 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.core.http.test.common.models;
+
+package com.azure.core.test.shared.models;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
 
-/**
- * A test exception.
- */
-public final class MyRestException extends HttpResponseException {
+public class MyRestException extends HttpResponseException {
     /**
      * Creates a service request exception.
      *

@@ -10,7 +10,6 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.test.common.HttpTestUtils;
 import com.azure.core.implementation.util.HttpUtils;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
@@ -43,6 +42,7 @@ import static com.azure.core.http.vertx.VertxHttpClientLocalTestServer.LONG_BODY
 import static com.azure.core.http.vertx.VertxHttpClientLocalTestServer.RETURN_HEADERS_AS_IS_PATH;
 import static com.azure.core.http.vertx.VertxHttpClientLocalTestServer.SHORT_BODY;
 import static com.azure.core.http.vertx.VertxHttpClientLocalTestServer.TIMEOUT;
+import static com.azure.core.test.shared.CoreTestUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -148,7 +148,7 @@ public class VertxAsyncHttpClientTests {
             .flatMap(response -> Mono.using(() -> response, HttpResponse::getBodyAsByteArray, HttpResponse::close));
 
         StepVerifier.create(responses).thenConsumeWhile(response -> {
-            HttpTestUtils.assertArraysEqual(LONG_BODY, response);
+            assertArraysEqual(LONG_BODY, response);
             return true;
         }).expectComplete().verify(Duration.ofSeconds(60));
     }
@@ -165,7 +165,7 @@ public class VertxAsyncHttpClientTests {
                 requests.add(() -> {
                     try (HttpResponse response = doRequestSync(client, "/long")) {
                         byte[] body = response.getBodyAsBinaryData().toBytes();
-                        HttpTestUtils.assertArraysEqual(LONG_BODY, body);
+                        assertArraysEqual(LONG_BODY, body);
                         return null;
                     }
                 });
@@ -256,7 +256,7 @@ public class VertxAsyncHttpClientTests {
             .flatMap(response -> Mono.zip(FluxUtil.collectBytesInByteBufferStream(response.getBody()),
                 Mono.just(response.getStatusCode()))))
             .assertNext(tuple -> {
-                HttpTestUtils.assertArraysEqual(SHORT_BODY, tuple.getT1());
+                assertArraysEqual(SHORT_BODY, tuple.getT1());
                 assertEquals(200, tuple.getT2());
             })
             .verifyComplete();
@@ -276,7 +276,7 @@ public class VertxAsyncHttpClientTests {
         // Then verify not setting a timeout through Context does not time out the request.
         try (HttpResponse response = client.sendSync(request, Context.NONE)) {
             assertEquals(200, response.getStatusCode());
-            HttpTestUtils.assertArraysEqual(SHORT_BODY, response.getBodyAsByteArray().block());
+            assertArraysEqual(SHORT_BODY, response.getBodyAsByteArray().block());
         }
     }
 

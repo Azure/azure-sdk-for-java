@@ -105,13 +105,8 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
       <version>1.52.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <classifier>tests</classifier>
       <type>test-jar</type>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core-http-test-common</artifactId>
-      <version>1.0.0-beta.1</version>  <!-- {x-version-update;com.azure:azure-core-http-test-common;current} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -137,6 +132,19 @@
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-params</artifactId>
       <version>5.9.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-server</artifactId>
+      <version>9.4.54.v20240208</version> <!-- {x-version-update;org.eclipse.jetty:jetty-server;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-servlet</artifactId>
+      <version>9.4.54.v20240208</version> <!-- {x-version-update;org.eclipse.jetty:jetty-servlet;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

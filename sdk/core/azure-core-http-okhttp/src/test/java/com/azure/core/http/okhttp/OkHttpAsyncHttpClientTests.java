@@ -10,7 +10,6 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.test.common.HttpTestUtils;
 import com.azure.core.implementation.util.HttpUtils;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
@@ -47,6 +46,7 @@ import static com.azure.core.http.okhttp.OkHttpClientLocalTestServer.RETURN_HEAD
 import static com.azure.core.http.okhttp.OkHttpClientLocalTestServer.SHORT_BODY;
 import static com.azure.core.http.okhttp.OkHttpClientLocalTestServer.TIMEOUT;
 import static com.azure.core.http.okhttp.TestUtils.createQuietDispatcher;
+import static com.azure.core.test.shared.CoreTestUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertLinesMatch;
@@ -170,7 +170,7 @@ public class OkHttpAsyncHttpClientTests {
             .flatMap(response -> Mono.using(() -> response, HttpResponse::getBodyAsByteArray, HttpResponse::close));
 
         StepVerifier.create(responses).thenConsumeWhile(response -> {
-            HttpTestUtils.assertArraysEqual(LONG_BODY, response);
+            assertArraysEqual(LONG_BODY, response);
             return true;
         }).expectComplete().verify(Duration.ofSeconds(60));
     }
@@ -187,7 +187,7 @@ public class OkHttpAsyncHttpClientTests {
                 requests.add(() -> {
                     try (HttpResponse response = doRequestSync(client, "/long")) {
                         byte[] body = response.getBodyAsBinaryData().toBytes();
-                        HttpTestUtils.assertArraysEqual(LONG_BODY, body);
+                        assertArraysEqual(LONG_BODY, body);
                         return null;
                     }
                 });
@@ -247,7 +247,7 @@ public class OkHttpAsyncHttpClientTests {
             .flatMap(response -> Mono.zip(FluxUtil.collectBytesInByteBufferStream(response.getBody()),
                 Mono.just(response.getStatusCode()))))
             .assertNext(tuple -> {
-                HttpTestUtils.assertArraysEqual(SHORT_BODY, tuple.getT1());
+                assertArraysEqual(SHORT_BODY, tuple.getT1());
                 assertEquals(200, tuple.getT2());
             })
             .verifyComplete();
@@ -267,7 +267,7 @@ public class OkHttpAsyncHttpClientTests {
         // Then verify not setting a timeout through Context does not time out the request.
         try (HttpResponse response = client.sendSync(request, Context.NONE)) {
             assertEquals(200, response.getStatusCode());
-            HttpTestUtils.assertArraysEqual(SHORT_BODY, response.getBodyAsBinaryData().toBytes());
+            assertArraysEqual(SHORT_BODY, response.getBodyAsBinaryData().toBytes());
         }
     }
 
@@ -292,7 +292,7 @@ public class OkHttpAsyncHttpClientTests {
     private static void checkBodyReceived(byte[] expectedBody, String path) {
         HttpClient client = new OkHttpAsyncHttpClientBuilder().build();
         StepVerifier.create(doRequest(client, path).flatMap(HttpResponse::getBodyAsByteArray))
-            .assertNext(bytes -> HttpTestUtils.assertArraysEqual(expectedBody, bytes))
+            .assertNext(bytes -> assertArraysEqual(expectedBody, bytes))
             .verifyComplete();
     }
 

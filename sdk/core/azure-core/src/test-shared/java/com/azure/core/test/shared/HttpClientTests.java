@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.http.test.common;
+package com.azure.core.test.shared;
 
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
@@ -31,6 +31,11 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.test.shared.models.HttpBinFormDataJson;
+import com.azure.core.test.shared.models.HttpBinHeaders;
+import com.azure.core.test.shared.models.HttpBinJson;
+import com.azure.core.test.shared.models.MyRestException;
+import com.azure.core.test.shared.models.PizzaSize;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
@@ -40,13 +45,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.StreamResponse;
-import com.azure.core.http.test.common.junitextensions.SyncAsyncExtension;
-import com.azure.core.http.test.common.junitextensions.SyncAsyncTest;
-import com.azure.core.http.test.common.models.HttpBinFormDataJson;
-import com.azure.core.http.test.common.models.HttpBinHeaders;
-import com.azure.core.http.test.common.models.HttpBinJson;
-import com.azure.core.http.test.common.models.MyRestException;
-import com.azure.core.http.test.common.models.PizzaSize;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.Contexts;
@@ -106,7 +104,8 @@ import java.util.function.Supplier;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import static com.azure.core.http.test.common.HttpTestUtils.assertArraysEqual;
+import static com.azure.core.test.shared.CoreTestUtils.assertArraysEqual;
+import static com.azure.core.test.shared.CoreTestUtils.md5;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -2835,12 +2834,11 @@ public abstract class HttpClientTests {
     @ParameterizedTest
     @MethodSource("downloadTestArgumentProvider")
     public void simpleDownloadTest(Context context) {
-        Mono<Tuple3<Integer, String, String>> downloadData
-            = Mono.using(() -> createService(DownloadService.class).getBytes(getRequestUri(), context),
-                response -> FluxUtil.collectBytesInByteBufferStream(response.getValue())
-                    .map(bytes -> Tuples.of(bytes.length, response.getHeaders().getValue(HttpHeaderName.ETAG),
-                        HttpTestUtils.md5(bytes))),
-                StreamResponse::close);
+        Mono<Tuple3<Integer, String, String>> downloadData = Mono.using(
+            () -> createService(DownloadService.class).getBytes(getRequestUri(), context),
+            response -> FluxUtil.collectBytesInByteBufferStream(response.getValue())
+                .map(bytes -> Tuples.of(bytes.length, response.getHeaders().getValue(HttpHeaderName.ETAG), md5(bytes))),
+            StreamResponse::close);
 
         StepVerifier.create(downloadData).assertNext(tuple -> {
             assertEquals(30720, tuple.getT1().intValue());
@@ -2866,8 +2864,7 @@ public abstract class HttpClientTests {
         StepVerifier
             .create(createService(DownloadService.class).getBytesAsync(getRequestUri(), context)
                 .flatMap(response -> Mono.using(() -> response,
-                    r -> Mono.zip(HttpTestUtils.md5(r.getValue()),
-                        Mono.just(r.getHeaders().getValue(HttpHeaderName.ETAG))),
+                    r -> Mono.zip(md5(r.getValue()), Mono.just(r.getHeaders().getValue(HttpHeaderName.ETAG))),
                     StreamResponse::close)))
             .assertNext(hashTuple -> assertEquals(hashTuple.getT2(), hashTuple.getT1()))
             .verifyComplete();
@@ -2885,8 +2882,7 @@ public abstract class HttpClientTests {
         try (StreamResponse streamResponse = createService(DownloadService.class).getBytes(getRequestUri(), context)) {
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             streamResponse.writeValueTo(Channels.newChannel(bos));
-            assertEquals(streamResponse.getHeaders().getValue(HttpHeaderName.ETAG),
-                HttpTestUtils.md5(bos.toByteArray()));
+            assertEquals(streamResponse.getHeaders().getValue(HttpHeaderName.ETAG), md5(bos.toByteArray()));
         }
 
         Path tempFile = Files.createTempFile("streamResponseCanTransferBody", null);
@@ -2901,7 +2897,7 @@ public abstract class HttpClientTests {
                     } catch (IOException e) {
                         throw Exceptions.propagate(e);
                     }
-                }).then(Mono.fromCallable(() -> HttpTestUtils.md5(Files.readAllBytes(tempFile)))))
+                }).then(Mono.fromCallable(() -> md5(Files.readAllBytes(tempFile)))))
                 .assertNext(hash -> assertEquals(streamResponse.getHeaders().getValue(HttpHeaderName.ETAG), hash))
                 .verifyComplete();
         }
@@ -2925,8 +2921,7 @@ public abstract class HttpClientTests {
                 } finally {
                     streamResponse.close();
                 }
-                return Tuples.of(streamResponse.getHeaders().getValue(HttpHeaderName.ETAG),
-                    HttpTestUtils.md5(bos.toByteArray()));
+                return Tuples.of(streamResponse.getHeaders().getValue(HttpHeaderName.ETAG), md5(bos.toByteArray()));
             })).assertNext(hashTuple -> assertEquals(hashTuple.getT1(), hashTuple.getT2())).verifyComplete();
 
         Path tempFile = Files.createTempFile("streamResponseCanTransferBody", null);
@@ -2945,7 +2940,7 @@ public abstract class HttpClientTests {
                 }).then(Mono.just(streamResponse.getHeaders().getValue(HttpHeaderName.ETAG)))))
             .assertNext(hash -> {
                 try {
-                    assertEquals(hash, HttpTestUtils.md5(Files.readAllBytes(tempFile)));
+                    assertEquals(hash, md5(Files.readAllBytes(tempFile)));
                 } catch (IOException e) {
                     throw Exceptions.propagate(e);
                 }
@@ -3247,6 +3242,7 @@ public abstract class HttpClientTests {
     public interface Service28 {
         /**
          * Head method with void return type.
+         *
          * @param url The URL.
          */
         @Head("voideagerreadoom")
@@ -3255,6 +3251,7 @@ public abstract class HttpClientTests {
 
         /**
          * Head method with Void return type.
+         *
          * @param url The URL.
          * @return Void
          */
@@ -3264,6 +3261,7 @@ public abstract class HttpClientTests {
 
         /**
          * Head method with Response&lt;Void&gt; return type.
+         *
          * @param url The URL.
          * @return Response&lt;Void&gt;
          */
@@ -3273,6 +3271,7 @@ public abstract class HttpClientTests {
 
         /**
          * Head method with ResponseBase&lt;Void, Void&gt; return type.
+         *
          * @param url The URL.
          * @return ResponseBase&lt;Void, Void&gt;
          */
@@ -3282,6 +3281,7 @@ public abstract class HttpClientTests {
 
         /**
          * Head method with Mono&lt;Void&gt; return type.
+         *
          * @param url The URL.
          * @return Mono&lt;Void&gt;
          */
@@ -3291,6 +3291,7 @@ public abstract class HttpClientTests {
 
         /**
          * Head method with Mono&lt;Response&lt;Void&gt;&gt; return type.
+         *
          * @param url The URL.
          * @return Mono&lt;Response&lt;Void&gt;&gt;
          */
@@ -3300,6 +3301,7 @@ public abstract class HttpClientTests {
 
         /**
          * Head method with Mono&lt;ResponseBase&lt;Void, Void&gt;&gt; return type.
+         *
          * @param url The URL.
          * @return Mono&lt;ResponseBase&lt;Void, Void&gt;&gt;
          */
@@ -3337,6 +3339,7 @@ public abstract class HttpClientTests {
     public interface Service29 {
         /**
          * Put method with void return type.
+         *
          * @param url The URL.
          */
         @Put("voiderrorreturned")
@@ -3345,6 +3348,7 @@ public abstract class HttpClientTests {
 
         /**
          * Put method with Void return type.
+         *
          * @param url The URL.
          * @return Void
          */
@@ -3354,6 +3358,7 @@ public abstract class HttpClientTests {
 
         /**
          * Put method with Response&lt;Void&gt; return type.
+         *
          * @param url The URL.
          * @return Response&lt;Void&gt;
          */
@@ -3363,6 +3368,7 @@ public abstract class HttpClientTests {
 
         /**
          * Put method with ResponseBase&lt;Void, Void&gt; return type.
+         *
          * @param url The URL.
          * @return ResponseBase&lt;Void, Void&gt;
          */
@@ -3372,6 +3378,7 @@ public abstract class HttpClientTests {
 
         /**
          * Put method with Mono&lt;Void&gt; return type.
+         *
          * @param url The URL.
          * @return Mono&lt;Void&gt;
          */
@@ -3381,6 +3388,7 @@ public abstract class HttpClientTests {
 
         /**
          * Put method with Mono&lt;Response&lt;Void&gt;&gt; return type.
+         *
          * @param url The URL.
          * @return Mono&lt;Response&lt;Void&gt;&gt;
          */
@@ -3390,6 +3398,7 @@ public abstract class HttpClientTests {
 
         /**
          * Put method with Mono&lt;ResponseBase&lt;Void, Void&gt;&gt; return type.
+         *
          * @param url The URL.
          * @return Mono&lt;ResponseBase&lt;Void, Void&gt;&gt;
          */

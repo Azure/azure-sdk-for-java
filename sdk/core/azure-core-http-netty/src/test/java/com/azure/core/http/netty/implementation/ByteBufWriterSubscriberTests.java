@@ -5,7 +5,6 @@ package com.azure.core.http.netty.implementation;
 
 import com.azure.core.http.netty.mocking.MockMonoSink;
 import com.azure.core.http.netty.mocking.WriteCountTrackingChannel;
-import com.azure.core.http.test.common.HttpTestUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import org.junit.jupiter.api.Test;
@@ -29,6 +28,7 @@ import java.util.function.Consumer;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import static com.azure.core.test.shared.CoreTestUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -129,7 +129,7 @@ public class ByteBufWriterSubscriberTests {
             .create(Mono.<Void>create(sink -> data.subscribe(new ByteBufWriteSubscriber(channel::write, sink, null))))
             .verifyComplete();
 
-        HttpTestUtils.assertArraysEqual(expectedData, channel.getDataWritten());
+        assertArraysEqual(expectedData, channel.getDataWritten());
     }
 
     private static Stream<Arguments> byteBufsLargerThanInternalBufferSupplier() {

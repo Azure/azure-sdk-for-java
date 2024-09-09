@@ -4,9 +4,9 @@
 package com.azure.core.http.jdk.httpclient;
 
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.test.common.HttpClientTests;
-import com.azure.core.http.test.common.HttpClientTestsServer;
-import com.azure.core.http.test.common.LocalTestServer;
+import com.azure.core.test.shared.HttpClientTests;
+import com.azure.core.test.shared.HttpClientTestsServer;
+import com.azure.core.test.shared.LocalTestServer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.condition.DisabledForJreRange;
