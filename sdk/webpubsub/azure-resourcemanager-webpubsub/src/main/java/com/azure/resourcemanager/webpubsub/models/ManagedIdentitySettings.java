@@ -5,26 +5,33 @@
 package com.azure.resourcemanager.webpubsub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Managed identity settings for upstream. */
+/**
+ * Managed identity settings for upstream.
+ */
 @Fluent
-public final class ManagedIdentitySettings {
+public final class ManagedIdentitySettings implements JsonSerializable<ManagedIdentitySettings> {
     /*
      * The Resource indicating the App ID URI of the target resource.
      * It also appears in the aud (audience) claim of the issued token.
      */
-    @JsonProperty(value = "resource")
     private String resource;
 
-    /** Creates an instance of ManagedIdentitySettings class. */
+    /**
+     * Creates an instance of ManagedIdentitySettings class.
+     */
     public ManagedIdentitySettings() {
     }
 
     /**
-     * Get the resource property: The Resource indicating the App ID URI of the target resource. It also appears in the
-     * aud (audience) claim of the issued token.
-     *
+     * Get the resource property: The Resource indicating the App ID URI of the target resource.
+     * It also appears in the aud (audience) claim of the issued token.
+     * 
      * @return the resource value.
      */
     public String resource() {
@@ -32,9 +39,9 @@ public final class ManagedIdentitySettings {
     }
 
     /**
-     * Set the resource property: The Resource indicating the App ID URI of the target resource. It also appears in the
-     * aud (audience) claim of the issued token.
-     *
+     * Set the resource property: The Resource indicating the App ID URI of the target resource.
+     * It also appears in the aud (audience) claim of the issued token.
+     * 
      * @param resource the resource value to set.
      * @return the ManagedIdentitySettings object itself.
      */
@@ -45,9 +52,45 @@ public final class ManagedIdentitySettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resource", this.resource);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedIdentitySettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedIdentitySettings if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedIdentitySettings.
+     */
+    public static ManagedIdentitySettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedIdentitySettings deserializedManagedIdentitySettings = new ManagedIdentitySettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resource".equals(fieldName)) {
+                    deserializedManagedIdentitySettings.resource = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedIdentitySettings;
+        });
     }
 }

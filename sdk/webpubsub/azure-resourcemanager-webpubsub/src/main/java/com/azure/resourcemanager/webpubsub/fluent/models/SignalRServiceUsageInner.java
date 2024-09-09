@@ -5,50 +5,53 @@
 package com.azure.resourcemanager.webpubsub.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.webpubsub.models.SignalRServiceUsageName;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Object that describes a specific usage of the resources. */
+/**
+ * Object that describes a specific usage of the resources.
+ */
 @Fluent
-public final class SignalRServiceUsageInner {
+public final class SignalRServiceUsageInner implements JsonSerializable<SignalRServiceUsageInner> {
     /*
      * Fully qualified ARM resource id
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * Current value for the usage quota.
      */
-    @JsonProperty(value = "currentValue")
     private Long currentValue;
 
     /*
      * The maximum permitted value for the usage quota. If there is no limit, this value will be -1.
      */
-    @JsonProperty(value = "limit")
     private Long limit;
 
     /*
      * Localizable String object containing the name and a localized value.
      */
-    @JsonProperty(value = "name")
     private SignalRServiceUsageName name;
 
     /*
      * Representing the units of the usage quota. Possible values are: Count, Bytes, Seconds, Percent, CountPerSecond,
      * BytesPerSecond.
      */
-    @JsonProperty(value = "unit")
     private String unit;
 
-    /** Creates an instance of SignalRServiceUsageInner class. */
+    /**
+     * Creates an instance of SignalRServiceUsageInner class.
+     */
     public SignalRServiceUsageInner() {
     }
 
     /**
      * Get the id property: Fully qualified ARM resource id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -57,7 +60,7 @@ public final class SignalRServiceUsageInner {
 
     /**
      * Set the id property: Fully qualified ARM resource id.
-     *
+     * 
      * @param id the id value to set.
      * @return the SignalRServiceUsageInner object itself.
      */
@@ -68,7 +71,7 @@ public final class SignalRServiceUsageInner {
 
     /**
      * Get the currentValue property: Current value for the usage quota.
-     *
+     * 
      * @return the currentValue value.
      */
     public Long currentValue() {
@@ -77,7 +80,7 @@ public final class SignalRServiceUsageInner {
 
     /**
      * Set the currentValue property: Current value for the usage quota.
-     *
+     * 
      * @param currentValue the currentValue value to set.
      * @return the SignalRServiceUsageInner object itself.
      */
@@ -89,7 +92,7 @@ public final class SignalRServiceUsageInner {
     /**
      * Get the limit property: The maximum permitted value for the usage quota. If there is no limit, this value will be
      * -1.
-     *
+     * 
      * @return the limit value.
      */
     public Long limit() {
@@ -99,7 +102,7 @@ public final class SignalRServiceUsageInner {
     /**
      * Set the limit property: The maximum permitted value for the usage quota. If there is no limit, this value will be
      * -1.
-     *
+     * 
      * @param limit the limit value to set.
      * @return the SignalRServiceUsageInner object itself.
      */
@@ -110,7 +113,7 @@ public final class SignalRServiceUsageInner {
 
     /**
      * Get the name property: Localizable String object containing the name and a localized value.
-     *
+     * 
      * @return the name value.
      */
     public SignalRServiceUsageName name() {
@@ -119,7 +122,7 @@ public final class SignalRServiceUsageInner {
 
     /**
      * Set the name property: Localizable String object containing the name and a localized value.
-     *
+     * 
      * @param name the name value to set.
      * @return the SignalRServiceUsageInner object itself.
      */
@@ -131,7 +134,7 @@ public final class SignalRServiceUsageInner {
     /**
      * Get the unit property: Representing the units of the usage quota. Possible values are: Count, Bytes, Seconds,
      * Percent, CountPerSecond, BytesPerSecond.
-     *
+     * 
      * @return the unit value.
      */
     public String unit() {
@@ -141,7 +144,7 @@ public final class SignalRServiceUsageInner {
     /**
      * Set the unit property: Representing the units of the usage quota. Possible values are: Count, Bytes, Seconds,
      * Percent, CountPerSecond, BytesPerSecond.
-     *
+     * 
      * @param unit the unit value to set.
      * @return the SignalRServiceUsageInner object itself.
      */
@@ -152,12 +155,60 @@ public final class SignalRServiceUsageInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() != null) {
             name().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeNumberField("currentValue", this.currentValue);
+        jsonWriter.writeNumberField("limit", this.limit);
+        jsonWriter.writeJsonField("name", this.name);
+        jsonWriter.writeStringField("unit", this.unit);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SignalRServiceUsageInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SignalRServiceUsageInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SignalRServiceUsageInner.
+     */
+    public static SignalRServiceUsageInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SignalRServiceUsageInner deserializedSignalRServiceUsageInner = new SignalRServiceUsageInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSignalRServiceUsageInner.id = reader.getString();
+                } else if ("currentValue".equals(fieldName)) {
+                    deserializedSignalRServiceUsageInner.currentValue = reader.getNullable(JsonReader::getLong);
+                } else if ("limit".equals(fieldName)) {
+                    deserializedSignalRServiceUsageInner.limit = reader.getNullable(JsonReader::getLong);
+                } else if ("name".equals(fieldName)) {
+                    deserializedSignalRServiceUsageInner.name = SignalRServiceUsageName.fromJson(reader);
+                } else if ("unit".equals(fieldName)) {
+                    deserializedSignalRServiceUsageInner.unit = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSignalRServiceUsageInner;
+        });
     }
 }

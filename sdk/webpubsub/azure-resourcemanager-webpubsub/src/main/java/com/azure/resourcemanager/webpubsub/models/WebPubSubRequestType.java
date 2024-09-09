@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.webpubsub.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The incoming request type to the service. */
+/**
+ * The incoming request type to the service.
+ */
 public final class WebPubSubRequestType extends ExpandableStringEnum<WebPubSubRequestType> {
-    /** Static value ClientConnection for WebPubSubRequestType. */
+    /**
+     * Static value ClientConnection for WebPubSubRequestType.
+     */
     public static final WebPubSubRequestType CLIENT_CONNECTION = fromString("ClientConnection");
 
-    /** Static value ServerConnection for WebPubSubRequestType. */
+    /**
+     * Static value ServerConnection for WebPubSubRequestType.
+     */
     public static final WebPubSubRequestType SERVER_CONNECTION = fromString("ServerConnection");
 
-    /** Static value RESTAPI for WebPubSubRequestType. */
+    /**
+     * Static value RESTAPI for WebPubSubRequestType.
+     */
     public static final WebPubSubRequestType RESTAPI = fromString("RESTAPI");
 
-    /** Static value Trace for WebPubSubRequestType. */
+    /**
+     * Static value Trace for WebPubSubRequestType.
+     */
     public static final WebPubSubRequestType TRACE = fromString("Trace");
 
     /**
      * Creates a new instance of WebPubSubRequestType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +42,17 @@ public final class WebPubSubRequestType extends ExpandableStringEnum<WebPubSubRe
 
     /**
      * Creates or finds a WebPubSubRequestType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding WebPubSubRequestType.
      */
-    @JsonCreator
     public static WebPubSubRequestType fromString(String name) {
         return fromString(name, WebPubSubRequestType.class);
     }
 
     /**
      * Gets known WebPubSubRequestType values.
-     *
+     * 
      * @return known WebPubSubRequestType values.
      */
     public static Collection<WebPubSubRequestType> values() {

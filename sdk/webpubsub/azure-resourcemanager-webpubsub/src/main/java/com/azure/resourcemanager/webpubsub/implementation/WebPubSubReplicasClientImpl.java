@@ -40,22 +40,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in WebPubSubReplicasClient. */
+/**
+ * An instance of this class provides access to all the operations defined in WebPubSubReplicasClient.
+ */
 public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final WebPubSubReplicasService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final WebPubSubManagementClientImpl client;
 
     /**
      * Initializes an instance of WebPubSubReplicasClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     WebPubSubReplicasClientImpl(WebPubSubManagementClientImpl client) {
-        this.service =
-            RestProxy.create(WebPubSubReplicasService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(WebPubSubReplicasService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -66,111 +72,78 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
     @Host("{$host}")
     @ServiceInterface(name = "WebPubSubManagementC")
     public interface WebPubSubReplicasService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/replicas")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/replicas")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ReplicaList>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ReplicaList>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/replicas/{replicaName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ReplicaInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
+            @PathParam("replicaName") String replicaName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/replicas/{replicaName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
+            @PathParam("replicaName") String replicaName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ReplicaInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/replicas/{replicaName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/replicas/{replicaName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ReplicaInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
-            @PathParam("replicaName") String replicaName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
+            @PathParam("replicaName") String replicaName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/replicas/{replicaName}")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
+            @PathParam("replicaName") String replicaName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ReplicaInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/replicas/{replicaName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/replicas/{replicaName}/restart")
+        @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> restart(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
-            @PathParam("replicaName") String replicaName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ReplicaInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
+            @PathParam("replicaName") String replicaName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/replicas/{replicaName}")
-        @ExpectedResponses({200, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
-            @PathParam("replicaName") String replicaName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/replicas/{replicaName}")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
-            @PathParam("replicaName") String replicaName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ReplicaInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/replicas/{replicaName}/restart")
-        @ExpectedResponses({202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> restart(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
-            @PathParam("replicaName") String replicaName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ReplicaList>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ReplicaList>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * List all replicas belong to this resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -181,16 +154,12 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ReplicaInner>> listSinglePageAsync(String resourceGroupName, String resourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -201,32 +170,16 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            resourceName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<ReplicaInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, resourceName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<ReplicaInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List all replicas belong to this resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
@@ -236,19 +189,15 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
      * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ReplicaInner>> listSinglePageAsync(
-        String resourceGroupName, String resourceName, Context context) {
+    private Mono<PagedResponse<ReplicaInner>> listSinglePageAsync(String resourceGroupName, String resourceName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -260,28 +209,15 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                resourceName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, resourceName,
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List all replicas belong to this resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -291,13 +227,13 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ReplicaInner> listAsync(String resourceGroupName, String resourceName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, resourceName), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, resourceName),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * List all replicas belong to this resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
@@ -308,14 +244,13 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ReplicaInner> listAsync(String resourceGroupName, String resourceName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, resourceName, context),
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, resourceName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List all replicas belong to this resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -330,7 +265,7 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
 
     /**
      * List all replicas belong to this resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
@@ -346,7 +281,7 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
 
     /**
      * Get the replica and its properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -356,19 +291,15 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
      * @return the replica and its properties along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ReplicaInner>> getWithResponseAsync(
-        String resourceGroupName, String resourceName, String replicaName) {
+    private Mono<Response<ReplicaInner>> getWithResponseAsync(String resourceGroupName, String resourceName,
+        String replicaName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -382,24 +313,14 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            resourceName,
-                            replicaName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, resourceName, replicaName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the replica and its properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -410,19 +331,15 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
      * @return the replica and its properties along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ReplicaInner>> getWithResponseAsync(
-        String resourceGroupName, String resourceName, String replicaName, Context context) {
+    private Mono<Response<ReplicaInner>> getWithResponseAsync(String resourceGroupName, String resourceName,
+        String replicaName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -436,21 +353,13 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                resourceName,
-                replicaName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, resourceName,
+            replicaName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Get the replica and its properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -467,7 +376,7 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
 
     /**
      * Get the replica and its properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -478,14 +387,14 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
      * @return the replica and its properties along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ReplicaInner> getWithResponse(
-        String resourceGroupName, String resourceName, String replicaName, Context context) {
+    public Response<ReplicaInner> getWithResponse(String resourceGroupName, String resourceName, String replicaName,
+        Context context) {
         return getWithResponseAsync(resourceGroupName, resourceName, replicaName, context).block();
     }
 
     /**
      * Get the replica and its properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -501,7 +410,7 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
 
     /**
      * Create or update a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -509,23 +418,19 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a class represent a replica resource along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return a class represent a replica resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String resourceName, String replicaName, ReplicaInner parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String resourceName, String replicaName, ReplicaInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -544,25 +449,14 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            resourceName,
-                            replicaName,
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, resourceName, replicaName, this.client.getApiVersion(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create or update a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -571,23 +465,19 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a class represent a replica resource along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return a class represent a replica resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String resourceName, String replicaName, ReplicaInner parameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String resourceName, String replicaName, ReplicaInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -606,22 +496,13 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                resourceName,
-                replicaName,
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            resourceName, replicaName, this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
      * Create or update a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -632,19 +513,17 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
      * @return the {@link PollerFlux} for polling of a class represent a replica resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ReplicaInner>, ReplicaInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String resourceName, String replicaName, ReplicaInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, resourceName, replicaName, parameters);
-        return this
-            .client
-            .<ReplicaInner, ReplicaInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ReplicaInner.class, ReplicaInner.class, this.client.getContext());
+    private PollerFlux<PollResult<ReplicaInner>, ReplicaInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String resourceName, String replicaName, ReplicaInner parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, resourceName, replicaName, parameters);
+        return this.client.<ReplicaInner, ReplicaInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ReplicaInner.class, ReplicaInner.class, this.client.getContext());
     }
 
     /**
      * Create or update a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -656,20 +535,18 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
      * @return the {@link PollerFlux} for polling of a class represent a replica resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ReplicaInner>, ReplicaInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String resourceName, String replicaName, ReplicaInner parameters, Context context) {
+    private PollerFlux<PollResult<ReplicaInner>, ReplicaInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String resourceName, String replicaName, ReplicaInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, resourceName, replicaName, parameters, context);
-        return this
-            .client
-            .<ReplicaInner, ReplicaInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ReplicaInner.class, ReplicaInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, resourceName, replicaName, parameters, context);
+        return this.client.<ReplicaInner, ReplicaInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ReplicaInner.class, ReplicaInner.class, context);
     }
 
     /**
      * Create or update a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -680,14 +557,14 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
      * @return the {@link SyncPoller} for polling of a class represent a replica resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ReplicaInner>, ReplicaInner> beginCreateOrUpdate(
-        String resourceGroupName, String resourceName, String replicaName, ReplicaInner parameters) {
+    public SyncPoller<PollResult<ReplicaInner>, ReplicaInner> beginCreateOrUpdate(String resourceGroupName,
+        String resourceName, String replicaName, ReplicaInner parameters) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, resourceName, replicaName, parameters).getSyncPoller();
     }
 
     /**
      * Create or update a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -699,16 +576,15 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
      * @return the {@link SyncPoller} for polling of a class represent a replica resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ReplicaInner>, ReplicaInner> beginCreateOrUpdate(
-        String resourceGroupName, String resourceName, String replicaName, ReplicaInner parameters, Context context) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, resourceName, replicaName, parameters, context)
+    public SyncPoller<PollResult<ReplicaInner>, ReplicaInner> beginCreateOrUpdate(String resourceGroupName,
+        String resourceName, String replicaName, ReplicaInner parameters, Context context) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, resourceName, replicaName, parameters, context)
             .getSyncPoller();
     }
 
     /**
      * Create or update a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -719,16 +595,15 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
      * @return a class represent a replica resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ReplicaInner> createOrUpdateAsync(
-        String resourceGroupName, String resourceName, String replicaName, ReplicaInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, resourceName, replicaName, parameters)
-            .last()
+    private Mono<ReplicaInner> createOrUpdateAsync(String resourceGroupName, String resourceName, String replicaName,
+        ReplicaInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, resourceName, replicaName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or update a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -740,16 +615,15 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
      * @return a class represent a replica resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ReplicaInner> createOrUpdateAsync(
-        String resourceGroupName, String resourceName, String replicaName, ReplicaInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, resourceName, replicaName, parameters, context)
-            .last()
+    private Mono<ReplicaInner> createOrUpdateAsync(String resourceGroupName, String resourceName, String replicaName,
+        ReplicaInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, resourceName, replicaName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or update a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -760,14 +634,14 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
      * @return a class represent a replica resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ReplicaInner createOrUpdate(
-        String resourceGroupName, String resourceName, String replicaName, ReplicaInner parameters) {
+    public ReplicaInner createOrUpdate(String resourceGroupName, String resourceName, String replicaName,
+        ReplicaInner parameters) {
         return createOrUpdateAsync(resourceGroupName, resourceName, replicaName, parameters).block();
     }
 
     /**
      * Create or update a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -779,14 +653,14 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
      * @return a class represent a replica resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ReplicaInner createOrUpdate(
-        String resourceGroupName, String resourceName, String replicaName, ReplicaInner parameters, Context context) {
+    public ReplicaInner createOrUpdate(String resourceGroupName, String resourceName, String replicaName,
+        ReplicaInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, resourceName, replicaName, parameters, context).block();
     }
 
     /**
      * Operation to delete a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -796,19 +670,15 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String resourceName, String replicaName) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String resourceName,
+        String replicaName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -822,24 +692,14 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            resourceName,
-                            replicaName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, resourceName, replicaName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Operation to delete a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -850,19 +710,15 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String resourceName, String replicaName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String resourceName,
+        String replicaName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -876,21 +732,13 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                resourceName,
-                replicaName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            resourceName, replicaName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Operation to delete a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -906,7 +754,7 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
 
     /**
      * Operation to delete a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -917,14 +765,14 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String resourceName, String replicaName, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String resourceName, String replicaName,
+        Context context) {
         return deleteWithResponseAsync(resourceGroupName, resourceName, replicaName, context).block();
     }
 
     /**
      * Operation to delete a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -939,7 +787,7 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
 
     /**
      * Operation to update an exiting replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -947,23 +795,19 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a class represent a replica resource along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return a class represent a replica resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String resourceName, String replicaName, ReplicaInner parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String resourceName,
+        String replicaName, ReplicaInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -982,25 +826,14 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            resourceName,
-                            replicaName,
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, resourceName, replicaName, this.client.getApiVersion(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Operation to update an exiting replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -1009,23 +842,19 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a class represent a replica resource along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return a class represent a replica resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String resourceName, String replicaName, ReplicaInner parameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String resourceName,
+        String replicaName, ReplicaInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1044,22 +873,13 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                resourceName,
-                replicaName,
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            resourceName, replicaName, this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
      * Operation to update an exiting replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -1070,19 +890,17 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
      * @return the {@link PollerFlux} for polling of a class represent a replica resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ReplicaInner>, ReplicaInner> beginUpdateAsync(
-        String resourceGroupName, String resourceName, String replicaName, ReplicaInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, resourceName, replicaName, parameters);
-        return this
-            .client
-            .<ReplicaInner, ReplicaInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ReplicaInner.class, ReplicaInner.class, this.client.getContext());
+    private PollerFlux<PollResult<ReplicaInner>, ReplicaInner> beginUpdateAsync(String resourceGroupName,
+        String resourceName, String replicaName, ReplicaInner parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, resourceName, replicaName, parameters);
+        return this.client.<ReplicaInner, ReplicaInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ReplicaInner.class, ReplicaInner.class, this.client.getContext());
     }
 
     /**
      * Operation to update an exiting replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -1094,20 +912,18 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
      * @return the {@link PollerFlux} for polling of a class represent a replica resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ReplicaInner>, ReplicaInner> beginUpdateAsync(
-        String resourceGroupName, String resourceName, String replicaName, ReplicaInner parameters, Context context) {
+    private PollerFlux<PollResult<ReplicaInner>, ReplicaInner> beginUpdateAsync(String resourceGroupName,
+        String resourceName, String replicaName, ReplicaInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, resourceName, replicaName, parameters, context);
-        return this
-            .client
-            .<ReplicaInner, ReplicaInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ReplicaInner.class, ReplicaInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, resourceName, replicaName, parameters, context);
+        return this.client.<ReplicaInner, ReplicaInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ReplicaInner.class, ReplicaInner.class, context);
     }
 
     /**
      * Operation to update an exiting replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -1118,14 +934,14 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
      * @return the {@link SyncPoller} for polling of a class represent a replica resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ReplicaInner>, ReplicaInner> beginUpdate(
-        String resourceGroupName, String resourceName, String replicaName, ReplicaInner parameters) {
+    public SyncPoller<PollResult<ReplicaInner>, ReplicaInner> beginUpdate(String resourceGroupName, String resourceName,
+        String replicaName, ReplicaInner parameters) {
         return this.beginUpdateAsync(resourceGroupName, resourceName, replicaName, parameters).getSyncPoller();
     }
 
     /**
      * Operation to update an exiting replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -1137,14 +953,14 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
      * @return the {@link SyncPoller} for polling of a class represent a replica resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ReplicaInner>, ReplicaInner> beginUpdate(
-        String resourceGroupName, String resourceName, String replicaName, ReplicaInner parameters, Context context) {
+    public SyncPoller<PollResult<ReplicaInner>, ReplicaInner> beginUpdate(String resourceGroupName, String resourceName,
+        String replicaName, ReplicaInner parameters, Context context) {
         return this.beginUpdateAsync(resourceGroupName, resourceName, replicaName, parameters, context).getSyncPoller();
     }
 
     /**
      * Operation to update an exiting replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -1155,16 +971,15 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
      * @return a class represent a replica resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ReplicaInner> updateAsync(
-        String resourceGroupName, String resourceName, String replicaName, ReplicaInner parameters) {
-        return beginUpdateAsync(resourceGroupName, resourceName, replicaName, parameters)
-            .last()
+    private Mono<ReplicaInner> updateAsync(String resourceGroupName, String resourceName, String replicaName,
+        ReplicaInner parameters) {
+        return beginUpdateAsync(resourceGroupName, resourceName, replicaName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Operation to update an exiting replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -1176,16 +991,15 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
      * @return a class represent a replica resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ReplicaInner> updateAsync(
-        String resourceGroupName, String resourceName, String replicaName, ReplicaInner parameters, Context context) {
-        return beginUpdateAsync(resourceGroupName, resourceName, replicaName, parameters, context)
-            .last()
+    private Mono<ReplicaInner> updateAsync(String resourceGroupName, String resourceName, String replicaName,
+        ReplicaInner parameters, Context context) {
+        return beginUpdateAsync(resourceGroupName, resourceName, replicaName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Operation to update an exiting replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -1196,14 +1010,14 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
      * @return a class represent a replica resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ReplicaInner update(
-        String resourceGroupName, String resourceName, String replicaName, ReplicaInner parameters) {
+    public ReplicaInner update(String resourceGroupName, String resourceName, String replicaName,
+        ReplicaInner parameters) {
         return updateAsync(resourceGroupName, resourceName, replicaName, parameters).block();
     }
 
     /**
      * Operation to update an exiting replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -1215,14 +1029,14 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
      * @return a class represent a replica resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ReplicaInner update(
-        String resourceGroupName, String resourceName, String replicaName, ReplicaInner parameters, Context context) {
+    public ReplicaInner update(String resourceGroupName, String resourceName, String replicaName,
+        ReplicaInner parameters, Context context) {
         return updateAsync(resourceGroupName, resourceName, replicaName, parameters, context).block();
     }
 
     /**
      * Operation to restart a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -1232,19 +1046,15 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> restartWithResponseAsync(
-        String resourceGroupName, String resourceName, String replicaName) {
+    private Mono<Response<Flux<ByteBuffer>>> restartWithResponseAsync(String resourceGroupName, String resourceName,
+        String replicaName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1258,24 +1068,14 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .restart(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            resourceName,
-                            replicaName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.restart(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, resourceName, replicaName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Operation to restart a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -1286,19 +1086,15 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> restartWithResponseAsync(
-        String resourceGroupName, String resourceName, String replicaName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> restartWithResponseAsync(String resourceGroupName, String resourceName,
+        String replicaName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1312,21 +1108,13 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .restart(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                resourceName,
-                replicaName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.restart(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            resourceName, replicaName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Operation to restart a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -1336,18 +1124,16 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginRestartAsync(
-        String resourceGroupName, String resourceName, String replicaName) {
+    private PollerFlux<PollResult<Void>, Void> beginRestartAsync(String resourceGroupName, String resourceName,
+        String replicaName) {
         Mono<Response<Flux<ByteBuffer>>> mono = restartWithResponseAsync(resourceGroupName, resourceName, replicaName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Operation to restart a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -1358,19 +1144,18 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginRestartAsync(
-        String resourceGroupName, String resourceName, String replicaName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginRestartAsync(String resourceGroupName, String resourceName,
+        String replicaName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            restartWithResponseAsync(resourceGroupName, resourceName, replicaName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = restartWithResponseAsync(resourceGroupName, resourceName, replicaName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Operation to restart a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -1380,14 +1165,14 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginRestart(
-        String resourceGroupName, String resourceName, String replicaName) {
+    public SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String resourceName,
+        String replicaName) {
         return this.beginRestartAsync(resourceGroupName, resourceName, replicaName).getSyncPoller();
     }
 
     /**
      * Operation to restart a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -1398,14 +1183,14 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginRestart(
-        String resourceGroupName, String resourceName, String replicaName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String resourceName,
+        String replicaName, Context context) {
         return this.beginRestartAsync(resourceGroupName, resourceName, replicaName, context).getSyncPoller();
     }
 
     /**
      * Operation to restart a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -1416,14 +1201,13 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> restartAsync(String resourceGroupName, String resourceName, String replicaName) {
-        return beginRestartAsync(resourceGroupName, resourceName, replicaName)
-            .last()
+        return beginRestartAsync(resourceGroupName, resourceName, replicaName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Operation to restart a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -1434,16 +1218,15 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> restartAsync(
-        String resourceGroupName, String resourceName, String replicaName, Context context) {
-        return beginRestartAsync(resourceGroupName, resourceName, replicaName, context)
-            .last()
+    private Mono<Void> restartAsync(String resourceGroupName, String resourceName, String replicaName,
+        Context context) {
+        return beginRestartAsync(resourceGroupName, resourceName, replicaName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Operation to restart a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -1458,7 +1241,7 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
 
     /**
      * Operation to restart a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -1474,9 +1257,8 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1488,31 +1270,20 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ReplicaInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<ReplicaInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1525,23 +1296,13 @@ public final class WebPubSubReplicasClientImpl implements WebPubSubReplicasClien
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

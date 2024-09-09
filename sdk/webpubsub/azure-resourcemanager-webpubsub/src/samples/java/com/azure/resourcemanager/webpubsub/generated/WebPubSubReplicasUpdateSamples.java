@@ -10,28 +10,26 @@ import com.azure.resourcemanager.webpubsub.models.WebPubSubSkuTier;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for WebPubSubReplicas Update. */
+/**
+ * Samples for WebPubSubReplicas Update.
+ */
 public final class WebPubSubReplicasUpdateSamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/WebPubSubReplicas_Update.json
+     * x-ms-original-file:
+     * specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2024-04-01-preview/examples/
+     * WebPubSubReplicas_Update.json
      */
     /**
      * Sample code: WebPubSubReplicas_Update.
-     *
+     * 
      * @param manager Entry point to WebPubSubManager.
      */
     public static void webPubSubReplicasUpdate(com.azure.resourcemanager.webpubsub.WebPubSubManager manager) {
-        Replica resource =
-            manager
-                .webPubSubReplicas()
-                .getWithResponse(
-                    "myResourceGroup",
-                    "myWebPubSubService",
-                    "myWebPubSubService-eastus",
-                    com.azure.core.util.Context.NONE)
-                .getValue();
-        resource
-            .update()
+        Replica resource = manager.webPubSubReplicas()
+            .getWithResponse("myResourceGroup", "myWebPubSubService", "myWebPubSubService-eastus",
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
             .withTags(mapOf("key1", "fakeTokenPlaceholder"))
             .withSku(new ResourceSku().withName("Premium_P1").withTier(WebPubSubSkuTier.PREMIUM).withCapacity(1))
             .withResourceStopped("false")

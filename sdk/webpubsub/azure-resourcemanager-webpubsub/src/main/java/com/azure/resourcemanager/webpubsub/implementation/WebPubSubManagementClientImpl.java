@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.webpubsub.implementation;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
@@ -12,8 +13,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.exception.ManagementException;
-import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -31,8 +32,9 @@ import com.azure.resourcemanager.webpubsub.fluent.WebPubSubManagementClient;
 import com.azure.resourcemanager.webpubsub.fluent.WebPubSubPrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.webpubsub.fluent.WebPubSubPrivateLinkResourcesClient;
 import com.azure.resourcemanager.webpubsub.fluent.WebPubSubReplicasClient;
-import com.azure.resourcemanager.webpubsub.fluent.WebPubSubSharedPrivateLinkResourcesClient;
+import com.azure.resourcemanager.webpubsub.fluent.WebPubSubReplicaSharedPrivateLinkResourcesClient;
 import com.azure.resourcemanager.webpubsub.fluent.WebPubSubsClient;
+import com.azure.resourcemanager.webpubsub.fluent.WebPubSubSharedPrivateLinkResourcesClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -42,195 +44,243 @@ import java.time.Duration;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the WebPubSubManagementClientImpl type. */
+/**
+ * Initializes a new instance of the WebPubSubManagementClientImpl type.
+ */
 @ServiceClient(builder = WebPubSubManagementClientBuilder.class)
 public final class WebPubSubManagementClientImpl implements WebPubSubManagementClient {
-    /** The ID of the target subscription. The value must be an UUID. */
+    /**
+     * The ID of the target subscription. The value must be an UUID.
+     */
     private final String subscriptionId;
 
     /**
      * Gets The ID of the target subscription. The value must be an UUID.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String getSubscriptionId() {
         return this.subscriptionId;
     }
 
-    /** server parameter. */
+    /**
+     * server parameter.
+     */
     private final String endpoint;
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
         return this.endpoint;
     }
 
-    /** Api Version. */
+    /**
+     * Api Version.
+     */
     private final String apiVersion;
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     public String getApiVersion() {
         return this.apiVersion;
     }
 
-    /** The HTTP pipeline to send requests through. */
+    /**
+     * The HTTP pipeline to send requests through.
+     */
     private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
+    /**
+     * The serializer to serialize an object into a string.
+     */
     private final SerializerAdapter serializerAdapter;
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     SerializerAdapter getSerializerAdapter() {
         return this.serializerAdapter;
     }
 
-    /** The default poll interval for long-running operation. */
+    /**
+     * The default poll interval for long-running operation.
+     */
     private final Duration defaultPollInterval;
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     public Duration getDefaultPollInterval() {
         return this.defaultPollInterval;
     }
 
-    /** The OperationsClient object to access its operations. */
+    /**
+     * The OperationsClient object to access its operations.
+     */
     private final OperationsClient operations;
 
     /**
      * Gets the OperationsClient object to access its operations.
-     *
+     * 
      * @return the OperationsClient object.
      */
     public OperationsClient getOperations() {
         return this.operations;
     }
 
-    /** The WebPubSubsClient object to access its operations. */
+    /**
+     * The WebPubSubsClient object to access its operations.
+     */
     private final WebPubSubsClient webPubSubs;
 
     /**
      * Gets the WebPubSubsClient object to access its operations.
-     *
+     * 
      * @return the WebPubSubsClient object.
      */
     public WebPubSubsClient getWebPubSubs() {
         return this.webPubSubs;
     }
 
-    /** The UsagesClient object to access its operations. */
+    /**
+     * The UsagesClient object to access its operations.
+     */
     private final UsagesClient usages;
 
     /**
      * Gets the UsagesClient object to access its operations.
-     *
+     * 
      * @return the UsagesClient object.
      */
     public UsagesClient getUsages() {
         return this.usages;
     }
 
-    /** The WebPubSubCustomCertificatesClient object to access its operations. */
+    /**
+     * The WebPubSubCustomCertificatesClient object to access its operations.
+     */
     private final WebPubSubCustomCertificatesClient webPubSubCustomCertificates;
 
     /**
      * Gets the WebPubSubCustomCertificatesClient object to access its operations.
-     *
+     * 
      * @return the WebPubSubCustomCertificatesClient object.
      */
     public WebPubSubCustomCertificatesClient getWebPubSubCustomCertificates() {
         return this.webPubSubCustomCertificates;
     }
 
-    /** The WebPubSubCustomDomainsClient object to access its operations. */
+    /**
+     * The WebPubSubCustomDomainsClient object to access its operations.
+     */
     private final WebPubSubCustomDomainsClient webPubSubCustomDomains;
 
     /**
      * Gets the WebPubSubCustomDomainsClient object to access its operations.
-     *
+     * 
      * @return the WebPubSubCustomDomainsClient object.
      */
     public WebPubSubCustomDomainsClient getWebPubSubCustomDomains() {
         return this.webPubSubCustomDomains;
     }
 
-    /** The WebPubSubHubsClient object to access its operations. */
+    /**
+     * The WebPubSubHubsClient object to access its operations.
+     */
     private final WebPubSubHubsClient webPubSubHubs;
 
     /**
      * Gets the WebPubSubHubsClient object to access its operations.
-     *
+     * 
      * @return the WebPubSubHubsClient object.
      */
     public WebPubSubHubsClient getWebPubSubHubs() {
         return this.webPubSubHubs;
     }
 
-    /** The WebPubSubPrivateEndpointConnectionsClient object to access its operations. */
+    /**
+     * The WebPubSubPrivateEndpointConnectionsClient object to access its operations.
+     */
     private final WebPubSubPrivateEndpointConnectionsClient webPubSubPrivateEndpointConnections;
 
     /**
      * Gets the WebPubSubPrivateEndpointConnectionsClient object to access its operations.
-     *
+     * 
      * @return the WebPubSubPrivateEndpointConnectionsClient object.
      */
     public WebPubSubPrivateEndpointConnectionsClient getWebPubSubPrivateEndpointConnections() {
         return this.webPubSubPrivateEndpointConnections;
     }
 
-    /** The WebPubSubPrivateLinkResourcesClient object to access its operations. */
+    /**
+     * The WebPubSubPrivateLinkResourcesClient object to access its operations.
+     */
     private final WebPubSubPrivateLinkResourcesClient webPubSubPrivateLinkResources;
 
     /**
      * Gets the WebPubSubPrivateLinkResourcesClient object to access its operations.
-     *
+     * 
      * @return the WebPubSubPrivateLinkResourcesClient object.
      */
     public WebPubSubPrivateLinkResourcesClient getWebPubSubPrivateLinkResources() {
         return this.webPubSubPrivateLinkResources;
     }
 
-    /** The WebPubSubReplicasClient object to access its operations. */
+    /**
+     * The WebPubSubReplicasClient object to access its operations.
+     */
     private final WebPubSubReplicasClient webPubSubReplicas;
 
     /**
      * Gets the WebPubSubReplicasClient object to access its operations.
-     *
+     * 
      * @return the WebPubSubReplicasClient object.
      */
     public WebPubSubReplicasClient getWebPubSubReplicas() {
         return this.webPubSubReplicas;
     }
 
-    /** The WebPubSubSharedPrivateLinkResourcesClient object to access its operations. */
+    /**
+     * The WebPubSubReplicaSharedPrivateLinkResourcesClient object to access its operations.
+     */
+    private final WebPubSubReplicaSharedPrivateLinkResourcesClient webPubSubReplicaSharedPrivateLinkResources;
+
+    /**
+     * Gets the WebPubSubReplicaSharedPrivateLinkResourcesClient object to access its operations.
+     * 
+     * @return the WebPubSubReplicaSharedPrivateLinkResourcesClient object.
+     */
+    public WebPubSubReplicaSharedPrivateLinkResourcesClient getWebPubSubReplicaSharedPrivateLinkResources() {
+        return this.webPubSubReplicaSharedPrivateLinkResources;
+    }
+
+    /**
+     * The WebPubSubSharedPrivateLinkResourcesClient object to access its operations.
+     */
     private final WebPubSubSharedPrivateLinkResourcesClient webPubSubSharedPrivateLinkResources;
 
     /**
      * Gets the WebPubSubSharedPrivateLinkResourcesClient object to access its operations.
-     *
+     * 
      * @return the WebPubSubSharedPrivateLinkResourcesClient object.
      */
     public WebPubSubSharedPrivateLinkResourcesClient getWebPubSubSharedPrivateLinkResources() {
@@ -239,7 +289,7 @@ public final class WebPubSubManagementClientImpl implements WebPubSubManagementC
 
     /**
      * Initializes an instance of WebPubSubManagementClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
@@ -247,19 +297,14 @@ public final class WebPubSubManagementClientImpl implements WebPubSubManagementC
      * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      * @param endpoint server parameter.
      */
-    WebPubSubManagementClientImpl(
-        HttpPipeline httpPipeline,
-        SerializerAdapter serializerAdapter,
-        Duration defaultPollInterval,
-        AzureEnvironment environment,
-        String subscriptionId,
-        String endpoint) {
+    WebPubSubManagementClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
+        Duration defaultPollInterval, AzureEnvironment environment, String subscriptionId, String endpoint) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2023-08-01-preview";
+        this.apiVersion = "2024-04-01-preview";
         this.operations = new OperationsClientImpl(this);
         this.webPubSubs = new WebPubSubsClientImpl(this);
         this.usages = new UsagesClientImpl(this);
@@ -269,12 +314,14 @@ public final class WebPubSubManagementClientImpl implements WebPubSubManagementC
         this.webPubSubPrivateEndpointConnections = new WebPubSubPrivateEndpointConnectionsClientImpl(this);
         this.webPubSubPrivateLinkResources = new WebPubSubPrivateLinkResourcesClientImpl(this);
         this.webPubSubReplicas = new WebPubSubReplicasClientImpl(this);
+        this.webPubSubReplicaSharedPrivateLinkResources
+            = new WebPubSubReplicaSharedPrivateLinkResourcesClientImpl(this);
         this.webPubSubSharedPrivateLinkResources = new WebPubSubSharedPrivateLinkResourcesClientImpl(this);
     }
 
     /**
      * Gets default client context.
-     *
+     * 
      * @return the default client context.
      */
     public Context getContext() {
@@ -283,7 +330,7 @@ public final class WebPubSubManagementClientImpl implements WebPubSubManagementC
 
     /**
      * Merges default client context with provided context.
-     *
+     * 
      * @param context the context to be merged with default client context.
      * @return the merged context.
      */
@@ -293,7 +340,7 @@ public final class WebPubSubManagementClientImpl implements WebPubSubManagementC
 
     /**
      * Gets long running operation result.
-     *
+     * 
      * @param activationResponse the response of activation operation.
      * @param httpPipeline the http pipeline.
      * @param pollResultType type of poll result.
@@ -303,26 +350,15 @@ public final class WebPubSubManagementClientImpl implements WebPubSubManagementC
      * @param <U> type of final result.
      * @return poller flux for poll result and final result.
      */
-    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(
-        Mono<Response<Flux<ByteBuffer>>> activationResponse,
-        HttpPipeline httpPipeline,
-        Type pollResultType,
-        Type finalResultType,
-        Context context) {
-        return PollerFactory
-            .create(
-                serializerAdapter,
-                httpPipeline,
-                pollResultType,
-                finalResultType,
-                defaultPollInterval,
-                activationResponse,
-                context);
+    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(Mono<Response<Flux<ByteBuffer>>> activationResponse,
+        HttpPipeline httpPipeline, Type pollResultType, Type finalResultType, Context context) {
+        return PollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
+            defaultPollInterval, activationResponse, context);
     }
 
     /**
      * Gets the final result, or an error, based on last async poll response.
-     *
+     * 
      * @param response the last async poll response.
      * @param <T> type of poll result.
      * @param <U> type of final result.
@@ -335,19 +371,16 @@ public final class WebPubSubManagementClientImpl implements WebPubSubManagementC
             HttpResponse errorResponse = null;
             PollResult.Error lroError = response.getValue().getError();
             if (lroError != null) {
-                errorResponse =
-                    new HttpResponseImpl(
-                        lroError.getResponseStatusCode(), lroError.getResponseHeaders(), lroError.getResponseBody());
+                errorResponse = new HttpResponseImpl(lroError.getResponseStatusCode(), lroError.getResponseHeaders(),
+                    lroError.getResponseBody());
 
                 errorMessage = response.getValue().getError().getMessage();
                 String errorBody = response.getValue().getError().getResponseBody();
                 if (errorBody != null) {
                     // try to deserialize error body to ManagementError
                     try {
-                        managementError =
-                            this
-                                .getSerializerAdapter()
-                                .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
+                        managementError = this.getSerializerAdapter()
+                            .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
                         if (managementError.getCode() == null || managementError.getMessage() == null) {
                             managementError = null;
                         }
@@ -388,7 +421,7 @@ public final class WebPubSubManagementClientImpl implements WebPubSubManagementC
         }
 
         public String getHeaderValue(String s) {
-            return httpHeaders.getValue(s);
+            return httpHeaders.getValue(HttpHeaderName.fromString(s));
         }
 
         public HttpHeaders getHeaders() {
