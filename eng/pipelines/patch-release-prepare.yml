@@ -1,3 +1,14 @@
+# This script is used to prepare the patch release by generating patches for automatic releases.
+# It should be triggered manually by the release driver. Release driver should ensure that the CI pipeline is green
+# before manually trigger the patch release pipeline, 'java - patch-release'.
+# The release driver should also ensure that the patches are generated successfully and the PR is created successfully.
+#
+# What this script does:
+#   - Checks out the repository
+#   - Checks out a new release branch, 'release/patch/$currentDate'
+#   - Runs the script to generate patches for automatic releases
+#   - Create a PR with the patches prepared
+
 trigger: none
 pr: none
 stages:
@@ -24,11 +35,20 @@ stages:
                   WorkingDirectory: $(System.DefaultWorkingDirectory)
           # Checkout a new release branch
           - script: |
+              $currentDate = Get-Date -Format "yyyyMMdd"
+              $branchName = "release/patch/$currentDate"
               git checkout main
               git pull origin main
-              git checkout -b release/patch/prepare
+              git checkout -b $branchName
             displayName: 'Create release branch'
           # Run the script to generate patches for automatic releases
           - pwsh: |
               Start-Process powershell -ArgumentList '-NoProfile -ExecutionPolicy Bypass -Command "& { .\eng\scripts\Generate-Patches-For-Automatic-Releases.ps1 -SourcesDirectory .\ -PackagesYmlPath .\eng\pipelines\patch-release.yml }"' -Verb RunAs -Wait
             displayName: 'Run Generate-Patches-For-Automatic-Releases script as Admin'
+          # Create a PR with the patches prepared
+          - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
+            parameters:
+              PRBranchName: prepare-patch-release-$(Build.BuildId)
+              CommitMsg: "Patch releases preparation"
+              PRTitle: "Prepare patch release"
+              CloseAfterOpenForTesting: '${{ parameters.TestPipeline }}'
