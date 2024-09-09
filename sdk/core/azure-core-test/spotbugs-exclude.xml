@@ -28,6 +28,17 @@
         <Method name="getHeaders" />
       </And>
       <And>
+        <Or>
+          <Class name="com.azure.core.test.implementation.models.HttpBinFormDataJson" />
+          <Class name="com.azure.core.test.implementation.models.HttpBinJson" />
+        </Or>
+        <Method name="headers" />
+      </And>
+      <And>
+        <Class name="com.azure.core.test.implementation.models.HttpBinFormDataJson$Form" />
+        <Method name="toppings" />
+      </And>
+      <And>
         <Class name="com.azure.core.test.models.CustomMatcher" />
         <Or>
           <Method name="getExcludedHeaders" />
@@ -79,6 +90,17 @@
           <Class name="com.azure.core.test.policy.RecordNetworkCallPolicy" />
         </Or>
         <Method name="&lt;init&gt;" />
+      </And>
+      <And>
+        <Or>
+          <Class name="com.azure.core.test.implementation.models.HttpBinFormDataJson" />
+          <Class name="com.azure.core.test.implementation.models.HttpBinJson" />
+        </Or>
+        <Method name="headers" />
+      </And>
+      <And>
+        <Class name="com.azure.core.test.implementation.models.HttpBinFormDataJson$Form" />
+        <Method name="toppings" />
       </And>
       <And>
         <Class name="com.azure.core.test.models.CustomMatcher" />
@@ -135,6 +157,12 @@
     </Or>
   </Match>
 
+  <Match>
+    <Bug pattern="REC_CATCH_EXCEPTION" />
+    <Class name="com.azure.core.test.http.MockHttpClient" />
+    <Method name="send" />
+  </Match>
+  
   <Match>
     <Bug pattern="MC_OVERRIDABLE_METHOD_CALL_IN_CONSTRUCTOR" />
     <Class name="com.azure.core.test.http.TestProxyTestServer" />

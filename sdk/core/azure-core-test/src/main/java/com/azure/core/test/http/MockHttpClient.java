@@ -37,13 +37,13 @@ import java.util.concurrent.ThreadLocalRandom;
  * This HttpClient attempts to mimic the behavior of http://httpbin.org without ever making a network call.
  */
 public class MockHttpClient extends NoOpHttpClient {
-    private static final HttpHeaders RESPONSE_HEADERS = new HttpHeaders().set(HttpHeaderName.DATE,
-            "Fri, 13 Oct 2017 20:33:09 GMT")
-        .set(HttpHeaderName.VIA, "1.1 vegur")
-        .set(HttpHeaderName.CONNECTION, "keep-alive")
-        .set(HttpHeaderName.fromString("X-Processed-Time"), "1.0")
-        .set(HttpHeaderName.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true")
-        .set(HttpHeaderName.CONTENT_TYPE, "application/json");
+    private static final HttpHeaders RESPONSE_HEADERS
+        = new HttpHeaders().set(HttpHeaderName.DATE, "Fri, 13 Oct 2017 20:33:09 GMT")
+            .set(HttpHeaderName.VIA, "1.1 vegur")
+            .set(HttpHeaderName.CONNECTION, "keep-alive")
+            .set(HttpHeaderName.fromString("X-Processed-Time"), "1.0")
+            .set(HttpHeaderName.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true")
+            .set(HttpHeaderName.CONTENT_TYPE, "application/json");
 
     @Override
     public Mono<HttpResponse> send(HttpRequest request) {
@@ -68,8 +68,8 @@ public class MockHttpClient extends NoOpHttpClient {
                 } else if (requestPathLower.startsWith("/bytes/")) {
                     final String byteCountString = requestPath.substring("/bytes/".length());
                     final int byteCount = Integer.parseInt(byteCountString);
-                    HttpHeaders newHeaders = new HttpHeaders(RESPONSE_HEADERS).set(HttpHeaderName.CONTENT_TYPE,
-                            ContentType.APPLICATION_OCTET_STREAM)
+                    HttpHeaders newHeaders = new HttpHeaders(RESPONSE_HEADERS)
+                        .set(HttpHeaderName.CONTENT_TYPE, ContentType.APPLICATION_OCTET_STREAM)
                         .set(HttpHeaderName.CONTENT_LENGTH, Integer.toString(byteCount));
                     byte[] content;
                     if (byteCount > 0) {
@@ -134,8 +134,8 @@ public class MockHttpClient extends NoOpHttpClient {
                     }
                     response = new MockHttpResponse(request, 200, RESPONSE_HEADERS, result);
                 } else if ("/datetimerfc1123".equals(requestPathLower)) {
-                    final DateTimeRfc1123 now = new DateTimeRfc1123(
-                        OffsetDateTime.ofInstant(Instant.ofEpochSecond(0), ZoneOffset.UTC));
+                    final DateTimeRfc1123 now
+                        = new DateTimeRfc1123(OffsetDateTime.ofInstant(Instant.ofEpochSecond(0), ZoneOffset.UTC));
                     final String result = now.toString();
                     response = new MockHttpResponse(request, 200, RESPONSE_HEADERS, result);
                 } else if ("/unixtime".equals(requestPathLower)) {
