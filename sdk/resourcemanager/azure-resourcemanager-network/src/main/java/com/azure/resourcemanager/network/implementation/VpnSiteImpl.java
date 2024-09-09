@@ -146,6 +146,18 @@ public class VpnSiteImpl
     }
 
     @Override
+    public VpnSiteImpl withAddressSpace(List<String> cidrList) {
+        if (this.innerModel().addressSpace() == null) {
+            this.innerModel().withAddressSpace(new AddressSpace());
+        }
+        if (this.innerModel().addressSpace().addressPrefixes() == null) {
+            this.innerModel().addressSpace().withAddressPrefixes(new ArrayList<String>());
+        }
+        this.innerModel().addressSpace().withAddressPrefixes(cidrList);
+        return this;
+    }
+
+    @Override
     public VpnSiteImpl enableSecuritySite() {
         this.innerModel().withIsSecuritySite(true);
         return this;

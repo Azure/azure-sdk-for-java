@@ -75,37 +75,15 @@ public interface VpnSite
              * @param cidr the addressSpace value to set.
              * @return the next stage of the definition
              */
-            WithVirtualWan withAddressSpace(String cidr);
-        }
-
-        /**
-         * The stage of the virtual wan definition allowing to specify the VPN site configuration.
-         */
-        interface WithVirtualWan {
-            /**
-             * Set the virtualWan property: The id of VirtualWAN to which the VPN site belongs.
-             *
-             * @param virtualWanId the id of virtualWan to set.
-             * @return the next stage of the definition
-             */
-            WithVpnSiteLinks withVirtualWan(String virtualWanId);
+            WithVpnSiteLinks withAddressSpace(String cidr);
 
             /**
-             * Set the virtualWan property: The instance of VirtualWAN to which the VPN site belongs.
+             * Set the addressSpace property: The AddressSpace that contains an array of IP address ranges.
              *
-             * @param virtualWan the instance of virtualWan to set.
+             * @param cidrList the addressSpace list to set.
              * @return the next stage of the definition
              */
-            WithVpnSiteLinks withVirtualWan(VirtualWan virtualWan);
-
-            /**
-             * Set the virtualWan property: The creatable of VirtualWAN to which the VPN site belongs.
-             *
-             * @param creatable the creatable of virtualWan to set.
-             * @return the next stage of the definition
-             */
-            WithVpnSiteLinks withVirtualWan(Creatable<VirtualWan> creatable);
-
+            WithVpnSiteLinks withAddressSpace(List<String> cidrList);
         }
 
         /**
@@ -119,6 +97,36 @@ public interface VpnSite
              * @return the first stage of the vpn site link definition
              */
             VpnSiteLink.DefinitionStages.Blank<WithCreate> defineVpnSiteLink(String name);
+        }
+
+        /**
+         * The stage of the virtual wan definition allowing to specify the VPN site configuration.
+         */
+        interface WithVirtualWan {
+            /**
+             * Set the virtualWan property: The id of VirtualWAN to which the VPN site belongs.
+             *
+             * @param virtualWanId the id of virtualWan to set.
+             * @return the next stage of the definition
+             */
+            WithCreate withVirtualWan(String virtualWanId);
+
+            /**
+             * Set the virtualWan property: The instance of VirtualWAN to which the VPN site belongs.
+             *
+             * @param virtualWan the instance of virtualWan to set.
+             * @return the next stage of the definition
+             */
+            WithCreate withVirtualWan(VirtualWan virtualWan);
+
+            /**
+             * Set the virtualWan property: The creatable of VirtualWAN to which the VPN site belongs.
+             *
+             * @param creatable the creatable of virtualWan to set.
+             * @return the next stage of the definition
+             */
+            WithCreate withVirtualWan(Creatable<VirtualWan> creatable);
+
         }
 
         /**
@@ -240,6 +248,14 @@ public interface VpnSite
              * @return the next stage of the definition
              */
             Update withAddressSpace(String cidr);
+
+            /**
+             * Set the addressSpace property: The AddressSpace that contains an array of IP address ranges.
+             *
+             * @param cidrList the addressSpace list to set.
+             * @return the next stage of the definition
+             */
+            Update withAddressSpace(List<String> cidrList);
         }
 
         /**

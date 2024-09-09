@@ -39,9 +39,7 @@ public interface VpnSiteLink extends HasInnerModel<VpnSiteLinkInner>, ChildResou
     interface Definition<ParentT>
         extends DefinitionStages.Blank<ParentT>,
         DefinitionStages.WithAttach<ParentT>,
-        DefinitionStages.WithIpAddress<ParentT>,
-        DefinitionStages.WithLinkProperties<ParentT>,
-        DefinitionStages.WithBgpProperties<ParentT> {
+        DefinitionStages.WithIpAddress<ParentT> {
     }
 
     /** Grouping of VPN site link definition stages applicable as part of a vpn site creation. */
@@ -66,7 +64,7 @@ public interface VpnSiteLink extends HasInnerModel<VpnSiteLinkInner>, ChildResou
              * @param ipAddress IP addresses
              * @return the next stage of the definition
              */
-            WithLinkProperties<ParentT> withIpAddress(String ipAddress);
+            WithAttach<ParentT> withIpAddress(String ipAddress);
 
             /**
              * Specifies the fqdn to which this VPN site link applies.
@@ -74,39 +72,7 @@ public interface VpnSiteLink extends HasInnerModel<VpnSiteLinkInner>, ChildResou
              * @param fqdn fqdn
              * @return the next stage of the definition
              */
-            WithLinkProperties<ParentT> withFqdn(String fqdn);
-        }
-
-        /**
-         * The stage of the VPN site link definition allowing the link properties to be specified.
-         *
-         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
-         */
-        interface WithLinkProperties<ParentT> {
-            /**
-             * Specifies the VPN site link properties to which this vpn site link applies.
-             *
-             * @param providerName the name of vpn site provider
-             * @param speedInMbps the value of vpn site link speed
-             * @return the next stage of the definition
-             */
-            WithBgpProperties<ParentT> withLinkProperties(String providerName, Integer speedInMbps);
-        }
-
-        /**
-         * The stage of the VPN site link definition allowing the bgp properties to be specified.
-         *
-         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
-         */
-        interface WithBgpProperties<ParentT> {
-            /**
-             * Specifies the VPN site link properties to which this vpn site link applies.
-             *
-             * @param bgpPeeringAddress the ip address of Bgp setting
-             * @param asn the value of Bgp asn
-             * @return the next stage of the definition
-             */
-            WithAttach<ParentT> withBgpProperties(String bgpPeeringAddress,  Long asn);
+            WithAttach<ParentT> withFqdn(String fqdn);
         }
 
         /**
@@ -119,6 +85,23 @@ public interface VpnSiteLink extends HasInnerModel<VpnSiteLinkInner>, ChildResou
          */
         interface WithAttach<ParentT>
             extends Attachable.InDefinition<ParentT> {
+            /**
+             * Specifies the VPN site link properties to which this vpn site link applies.
+             *
+             * @param providerName the name of vpn site provider
+             * @param speedInMbps the value of vpn site link speed
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withLinkProperties(String providerName, Integer speedInMbps);
+
+            /**
+             * Specifies the VPN site link properties to which this vpn site link applies.
+             *
+             * @param bgpPeeringAddress the ip address of Bgp setting
+             * @param asn the value of Bgp asn
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withBgpProperties(String bgpPeeringAddress,  Long asn);
         }
     }
 
@@ -130,8 +113,6 @@ public interface VpnSiteLink extends HasInnerModel<VpnSiteLinkInner>, ChildResou
     interface UpdateDefinition<ParentT>
         extends UpdateDefinitionStages.Blank<ParentT>,
         UpdateDefinitionStages.WithIpAddress<ParentT>,
-        UpdateDefinitionStages.WithLinkProperties<ParentT>,
-        UpdateDefinitionStages.WithBgpProperties<ParentT>,
         UpdateDefinitionStages.WithAttach<ParentT> {
     }
 
@@ -157,7 +138,7 @@ public interface VpnSiteLink extends HasInnerModel<VpnSiteLinkInner>, ChildResou
              * @param ipAddress IP addresses
              * @return the next stage of the definition
              */
-            WithLinkProperties<ParentT> withIpAddress(String ipAddress);
+            WithAttach<ParentT> withIpAddress(String ipAddress);
 
             /**
              * Specifies the fqdn to which this VPN site link applies.
@@ -165,39 +146,7 @@ public interface VpnSiteLink extends HasInnerModel<VpnSiteLinkInner>, ChildResou
              * @param fqdn fqdn
              * @return the next stage of the definition
              */
-            WithLinkProperties<ParentT> withFqdn(String fqdn);
-        }
-
-        /**
-         * The stage of the VPN site link definition allowing the link properties to be specified.
-         *
-         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
-         */
-        interface WithLinkProperties<ParentT> {
-            /**
-             * Specifies the VPN site link properties to which this vpn site link applies.
-             *
-             * @param providerName the name of vpn site provider
-             * @param speedInMbps the value of vpn site link speed
-             * @return the next stage of the definition
-             */
-            WithBgpProperties<ParentT> withLinkProperties(String providerName, Integer speedInMbps);
-        }
-
-        /**
-         * The stage of the VPN site link definition allowing the bgp properties to be specified.
-         *
-         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
-         */
-        interface WithBgpProperties<ParentT> {
-            /**
-             * Specifies the VPN site link properties to which this vpn site link applies.
-             *
-             * @param bgpPeeringAddress the ip address of Bgp setting
-             * @param asn the value of Bgp asn
-             * @return the next stage of the definition
-             */
-            WithAttach<ParentT> withBgpProperties(String bgpPeeringAddress, Long asn);
+            WithAttach<ParentT> withFqdn(String fqdn);
         }
 
         /**
@@ -209,6 +158,23 @@ public interface VpnSiteLink extends HasInnerModel<VpnSiteLinkInner>, ChildResou
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
         interface WithAttach<ParentT> extends Attachable.InUpdate<ParentT> {
+            /**
+             * Specifies the VPN site link properties to which this vpn site link applies.
+             *
+             * @param providerName the name of vpn site provider
+             * @param speedInMbps the value of vpn site link speed
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withLinkProperties(String providerName, Integer speedInMbps);
+
+            /**
+             * Specifies the VPN site link properties to which this vpn site link applies.
+             *
+             * @param bgpPeeringAddress the ip address of Bgp setting
+             * @param asn the value of Bgp asn
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withBgpProperties(String bgpPeeringAddress, Long asn);
         }
     }
 
