@@ -47,10 +47,10 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
      * @param content the string content value to set.
      */
     public ChatRequestUserMessage(String content) {
-        String jsonPrompt = "\"%s\"";
-        String contentString = String.format(jsonPrompt, content);
+        String contentString = String.format("\"%s\"", content);
         this.content = BinaryData.fromString(contentString);
     }
+
     /**
      * Get the role property: The chat role associated with this message.
      *
