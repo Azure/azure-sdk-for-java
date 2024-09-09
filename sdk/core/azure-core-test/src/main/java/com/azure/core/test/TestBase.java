@@ -68,8 +68,8 @@ public abstract class TestBase {
     private static boolean enableTestProxy;
 
     private static final Duration PLAYBACK_POLL_INTERVAL = Duration.ofMillis(1);
-    private static final String CONFIGURED_HTTP_CLIENTS_TO_TEST = Configuration.getGlobalConfiguration()
-        .get(AZURE_TEST_HTTP_CLIENTS);
+    private static final String CONFIGURED_HTTP_CLIENTS_TO_TEST
+        = Configuration.getGlobalConfiguration().get(AZURE_TEST_HTTP_CLIENTS);
     private static final boolean DEFAULT_TO_NETTY = CoreUtils.isNullOrEmpty(CONFIGURED_HTTP_CLIENTS_TO_TEST);
     private static final List<String> CONFIGURED_HTTP_CLIENTS;
 
@@ -187,8 +187,8 @@ public abstract class TestBase {
         if (shouldLogExecutionStatus()) {
             if (testStartTimeMillis > 0) {
                 long duration = System.currentTimeMillis() - testStartTimeMillis;
-                System.out.println(
-                    "Finished test " + testContextManager.getTrackerTestName() + " in " + duration + " ms.");
+                System.out
+                    .println("Finished test " + testContextManager.getTrackerTestName() + " in " + duration + " ms.");
             } else {
                 System.out.println("Finished test " + testContextManager.getTrackerTestName() + ", duration unknown.");
             }
