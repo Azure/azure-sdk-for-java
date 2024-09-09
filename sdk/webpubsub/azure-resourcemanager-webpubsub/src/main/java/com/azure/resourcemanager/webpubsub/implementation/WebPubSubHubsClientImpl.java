@@ -38,22 +38,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in WebPubSubHubsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in WebPubSubHubsClient.
+ */
 public final class WebPubSubHubsClientImpl implements WebPubSubHubsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final WebPubSubHubsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final WebPubSubManagementClientImpl client;
 
     /**
      * Initializes an instance of WebPubSubHubsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     WebPubSubHubsClientImpl(WebPubSubManagementClientImpl client) {
-        this.service =
-            RestProxy.create(WebPubSubHubsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(WebPubSubHubsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -64,80 +70,56 @@ public final class WebPubSubHubsClientImpl implements WebPubSubHubsClient {
     @Host("{$host}")
     @ServiceInterface(name = "WebPubSubManagementC")
     public interface WebPubSubHubsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/hubs")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/hubs")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WebPubSubHubList>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<WebPubSubHubList>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/hubs/{hubName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<WebPubSubHubInner>> get(@HostParam("$host") String endpoint, @PathParam("hubName") String hubName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/hubs/{hubName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("hubName") String hubName, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
+            @BodyParam("application/json") WebPubSubHubInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/hubs/{hubName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/hubs/{hubName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WebPubSubHubInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("hubName") String hubName,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @PathParam("hubName") String hubName, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/hubs/{hubName}")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("hubName") String hubName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
-            @BodyParam("application/json") WebPubSubHubInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/hubs/{hubName}")
-        @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("hubName") String hubName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WebPubSubHubList>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<WebPubSubHubList>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * List hub settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -148,16 +130,12 @@ public final class WebPubSubHubsClientImpl implements WebPubSubHubsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WebPubSubHubInner>> listSinglePageAsync(String resourceGroupName, String resourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -168,32 +146,16 @@ public final class WebPubSubHubsClientImpl implements WebPubSubHubsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            resourceName,
-                            accept,
-                            context))
-            .<PagedResponse<WebPubSubHubInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context))
+            .<PagedResponse<WebPubSubHubInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List hub settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
@@ -203,19 +165,15 @@ public final class WebPubSubHubsClientImpl implements WebPubSubHubsClient {
      * @return hub setting list along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<WebPubSubHubInner>> listSinglePageAsync(
-        String resourceGroupName, String resourceName, Context context) {
+    private Mono<PagedResponse<WebPubSubHubInner>> listSinglePageAsync(String resourceGroupName, String resourceName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -227,28 +185,15 @@ public final class WebPubSubHubsClientImpl implements WebPubSubHubsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                resourceName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, resourceName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List hub settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -258,13 +203,13 @@ public final class WebPubSubHubsClientImpl implements WebPubSubHubsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<WebPubSubHubInner> listAsync(String resourceGroupName, String resourceName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, resourceName), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, resourceName),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * List hub settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
@@ -275,14 +220,13 @@ public final class WebPubSubHubsClientImpl implements WebPubSubHubsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<WebPubSubHubInner> listAsync(String resourceGroupName, String resourceName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, resourceName, context),
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, resourceName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List hub settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -297,7 +241,7 @@ public final class WebPubSubHubsClientImpl implements WebPubSubHubsClient {
 
     /**
      * List hub settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
@@ -313,7 +257,7 @@ public final class WebPubSubHubsClientImpl implements WebPubSubHubsClient {
 
     /**
      * Get a hub setting.
-     *
+     * 
      * @param hubName The hub name.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -323,22 +267,18 @@ public final class WebPubSubHubsClientImpl implements WebPubSubHubsClient {
      * @return a hub setting along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<WebPubSubHubInner>> getWithResponseAsync(
-        String hubName, String resourceGroupName, String resourceName) {
+    private Mono<Response<WebPubSubHubInner>> getWithResponseAsync(String hubName, String resourceGroupName,
+        String resourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (hubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter hubName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -349,24 +289,14 @@ public final class WebPubSubHubsClientImpl implements WebPubSubHubsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            hubName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            resourceName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), hubName, this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a hub setting.
-     *
+     * 
      * @param hubName The hub name.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -377,22 +307,18 @@ public final class WebPubSubHubsClientImpl implements WebPubSubHubsClient {
      * @return a hub setting along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<WebPubSubHubInner>> getWithResponseAsync(
-        String hubName, String resourceGroupName, String resourceName, Context context) {
+    private Mono<Response<WebPubSubHubInner>> getWithResponseAsync(String hubName, String resourceGroupName,
+        String resourceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (hubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter hubName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -403,21 +329,13 @@ public final class WebPubSubHubsClientImpl implements WebPubSubHubsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                hubName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                resourceName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), hubName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context);
     }
 
     /**
      * Get a hub setting.
-     *
+     * 
      * @param hubName The hub name.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -434,7 +352,7 @@ public final class WebPubSubHubsClientImpl implements WebPubSubHubsClient {
 
     /**
      * Get a hub setting.
-     *
+     * 
      * @param hubName The hub name.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -445,14 +363,14 @@ public final class WebPubSubHubsClientImpl implements WebPubSubHubsClient {
      * @return a hub setting along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<WebPubSubHubInner> getWithResponse(
-        String hubName, String resourceGroupName, String resourceName, Context context) {
+    public Response<WebPubSubHubInner> getWithResponse(String hubName, String resourceGroupName, String resourceName,
+        Context context) {
         return getWithResponseAsync(hubName, resourceGroupName, resourceName, context).block();
     }
 
     /**
      * Get a hub setting.
-     *
+     * 
      * @param hubName The hub name.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -468,7 +386,7 @@ public final class WebPubSubHubsClientImpl implements WebPubSubHubsClient {
 
     /**
      * Create or update a hub setting.
-     *
+     * 
      * @param hubName The hub name.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -479,22 +397,18 @@ public final class WebPubSubHubsClientImpl implements WebPubSubHubsClient {
      * @return a hub setting along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String hubName, String resourceGroupName, String resourceName, WebPubSubHubInner parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String hubName, String resourceGroupName,
+        String resourceName, WebPubSubHubInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (hubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter hubName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -511,24 +425,14 @@ public final class WebPubSubHubsClientImpl implements WebPubSubHubsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            hubName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            resourceName,
-                            parameters,
-                            accept,
-                            context))
+                context -> service.createOrUpdate(this.client.getEndpoint(), hubName, this.client.getApiVersion(),
+                    this.client.getSubscriptionId(), resourceGroupName, resourceName, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create or update a hub setting.
-     *
+     * 
      * @param hubName The hub name.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -540,22 +444,18 @@ public final class WebPubSubHubsClientImpl implements WebPubSubHubsClient {
      * @return a hub setting along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String hubName, String resourceGroupName, String resourceName, WebPubSubHubInner parameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String hubName, String resourceGroupName,
+        String resourceName, WebPubSubHubInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (hubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter hubName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -571,22 +471,13 @@ public final class WebPubSubHubsClientImpl implements WebPubSubHubsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                hubName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                resourceName,
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), hubName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, resourceName, parameters, accept, context);
     }
 
     /**
      * Create or update a hub setting.
-     *
+     * 
      * @param hubName The hub name.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -597,23 +488,17 @@ public final class WebPubSubHubsClientImpl implements WebPubSubHubsClient {
      * @return the {@link PollerFlux} for polling of a hub setting.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<WebPubSubHubInner>, WebPubSubHubInner> beginCreateOrUpdateAsync(
-        String hubName, String resourceGroupName, String resourceName, WebPubSubHubInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(hubName, resourceGroupName, resourceName, parameters);
-        return this
-            .client
-            .<WebPubSubHubInner, WebPubSubHubInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                WebPubSubHubInner.class,
-                WebPubSubHubInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<WebPubSubHubInner>, WebPubSubHubInner> beginCreateOrUpdateAsync(String hubName,
+        String resourceGroupName, String resourceName, WebPubSubHubInner parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(hubName, resourceGroupName, resourceName, parameters);
+        return this.client.<WebPubSubHubInner, WebPubSubHubInner>getLroResult(mono, this.client.getHttpPipeline(),
+            WebPubSubHubInner.class, WebPubSubHubInner.class, this.client.getContext());
     }
 
     /**
      * Create or update a hub setting.
-     *
+     * 
      * @param hubName The hub name.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -625,20 +510,18 @@ public final class WebPubSubHubsClientImpl implements WebPubSubHubsClient {
      * @return the {@link PollerFlux} for polling of a hub setting.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<WebPubSubHubInner>, WebPubSubHubInner> beginCreateOrUpdateAsync(
-        String hubName, String resourceGroupName, String resourceName, WebPubSubHubInner parameters, Context context) {
+    private PollerFlux<PollResult<WebPubSubHubInner>, WebPubSubHubInner> beginCreateOrUpdateAsync(String hubName,
+        String resourceGroupName, String resourceName, WebPubSubHubInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(hubName, resourceGroupName, resourceName, parameters, context);
-        return this
-            .client
-            .<WebPubSubHubInner, WebPubSubHubInner>getLroResult(
-                mono, this.client.getHttpPipeline(), WebPubSubHubInner.class, WebPubSubHubInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(hubName, resourceGroupName, resourceName, parameters, context);
+        return this.client.<WebPubSubHubInner, WebPubSubHubInner>getLroResult(mono, this.client.getHttpPipeline(),
+            WebPubSubHubInner.class, WebPubSubHubInner.class, context);
     }
 
     /**
      * Create or update a hub setting.
-     *
+     * 
      * @param hubName The hub name.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -649,14 +532,14 @@ public final class WebPubSubHubsClientImpl implements WebPubSubHubsClient {
      * @return the {@link SyncPoller} for polling of a hub setting.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<WebPubSubHubInner>, WebPubSubHubInner> beginCreateOrUpdate(
-        String hubName, String resourceGroupName, String resourceName, WebPubSubHubInner parameters) {
+    public SyncPoller<PollResult<WebPubSubHubInner>, WebPubSubHubInner> beginCreateOrUpdate(String hubName,
+        String resourceGroupName, String resourceName, WebPubSubHubInner parameters) {
         return this.beginCreateOrUpdateAsync(hubName, resourceGroupName, resourceName, parameters).getSyncPoller();
     }
 
     /**
      * Create or update a hub setting.
-     *
+     * 
      * @param hubName The hub name.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -668,16 +551,15 @@ public final class WebPubSubHubsClientImpl implements WebPubSubHubsClient {
      * @return the {@link SyncPoller} for polling of a hub setting.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<WebPubSubHubInner>, WebPubSubHubInner> beginCreateOrUpdate(
-        String hubName, String resourceGroupName, String resourceName, WebPubSubHubInner parameters, Context context) {
-        return this
-            .beginCreateOrUpdateAsync(hubName, resourceGroupName, resourceName, parameters, context)
+    public SyncPoller<PollResult<WebPubSubHubInner>, WebPubSubHubInner> beginCreateOrUpdate(String hubName,
+        String resourceGroupName, String resourceName, WebPubSubHubInner parameters, Context context) {
+        return this.beginCreateOrUpdateAsync(hubName, resourceGroupName, resourceName, parameters, context)
             .getSyncPoller();
     }
 
     /**
      * Create or update a hub setting.
-     *
+     * 
      * @param hubName The hub name.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -688,16 +570,15 @@ public final class WebPubSubHubsClientImpl implements WebPubSubHubsClient {
      * @return a hub setting on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<WebPubSubHubInner> createOrUpdateAsync(
-        String hubName, String resourceGroupName, String resourceName, WebPubSubHubInner parameters) {
-        return beginCreateOrUpdateAsync(hubName, resourceGroupName, resourceName, parameters)
-            .last()
+    private Mono<WebPubSubHubInner> createOrUpdateAsync(String hubName, String resourceGroupName, String resourceName,
+        WebPubSubHubInner parameters) {
+        return beginCreateOrUpdateAsync(hubName, resourceGroupName, resourceName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or update a hub setting.
-     *
+     * 
      * @param hubName The hub name.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -709,16 +590,15 @@ public final class WebPubSubHubsClientImpl implements WebPubSubHubsClient {
      * @return a hub setting on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<WebPubSubHubInner> createOrUpdateAsync(
-        String hubName, String resourceGroupName, String resourceName, WebPubSubHubInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(hubName, resourceGroupName, resourceName, parameters, context)
-            .last()
+    private Mono<WebPubSubHubInner> createOrUpdateAsync(String hubName, String resourceGroupName, String resourceName,
+        WebPubSubHubInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(hubName, resourceGroupName, resourceName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or update a hub setting.
-     *
+     * 
      * @param hubName The hub name.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -729,14 +609,14 @@ public final class WebPubSubHubsClientImpl implements WebPubSubHubsClient {
      * @return a hub setting.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public WebPubSubHubInner createOrUpdate(
-        String hubName, String resourceGroupName, String resourceName, WebPubSubHubInner parameters) {
+    public WebPubSubHubInner createOrUpdate(String hubName, String resourceGroupName, String resourceName,
+        WebPubSubHubInner parameters) {
         return createOrUpdateAsync(hubName, resourceGroupName, resourceName, parameters).block();
     }
 
     /**
      * Create or update a hub setting.
-     *
+     * 
      * @param hubName The hub name.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -748,14 +628,14 @@ public final class WebPubSubHubsClientImpl implements WebPubSubHubsClient {
      * @return a hub setting.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public WebPubSubHubInner createOrUpdate(
-        String hubName, String resourceGroupName, String resourceName, WebPubSubHubInner parameters, Context context) {
+    public WebPubSubHubInner createOrUpdate(String hubName, String resourceGroupName, String resourceName,
+        WebPubSubHubInner parameters, Context context) {
         return createOrUpdateAsync(hubName, resourceGroupName, resourceName, parameters, context).block();
     }
 
     /**
      * Delete a hub setting.
-     *
+     * 
      * @param hubName The hub name.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -765,22 +645,18 @@ public final class WebPubSubHubsClientImpl implements WebPubSubHubsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String hubName, String resourceGroupName, String resourceName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String hubName, String resourceGroupName,
+        String resourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (hubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter hubName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -791,24 +667,14 @@ public final class WebPubSubHubsClientImpl implements WebPubSubHubsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            hubName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            resourceName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), hubName, this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete a hub setting.
-     *
+     * 
      * @param hubName The hub name.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -819,22 +685,18 @@ public final class WebPubSubHubsClientImpl implements WebPubSubHubsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String hubName, String resourceGroupName, String resourceName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String hubName, String resourceGroupName,
+        String resourceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (hubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter hubName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -845,21 +707,13 @@ public final class WebPubSubHubsClientImpl implements WebPubSubHubsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                hubName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                resourceName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), hubName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context);
     }
 
     /**
      * Delete a hub setting.
-     *
+     * 
      * @param hubName The hub name.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -869,18 +723,16 @@ public final class WebPubSubHubsClientImpl implements WebPubSubHubsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String hubName, String resourceGroupName, String resourceName) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String hubName, String resourceGroupName,
+        String resourceName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(hubName, resourceGroupName, resourceName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Delete a hub setting.
-     *
+     * 
      * @param hubName The hub name.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -891,19 +743,18 @@ public final class WebPubSubHubsClientImpl implements WebPubSubHubsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String hubName, String resourceGroupName, String resourceName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String hubName, String resourceGroupName,
+        String resourceName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(hubName, resourceGroupName, resourceName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(hubName, resourceGroupName, resourceName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Delete a hub setting.
-     *
+     * 
      * @param hubName The hub name.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -913,14 +764,14 @@ public final class WebPubSubHubsClientImpl implements WebPubSubHubsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String hubName, String resourceGroupName, String resourceName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String hubName, String resourceGroupName,
+        String resourceName) {
         return this.beginDeleteAsync(hubName, resourceGroupName, resourceName).getSyncPoller();
     }
 
     /**
      * Delete a hub setting.
-     *
+     * 
      * @param hubName The hub name.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -931,14 +782,14 @@ public final class WebPubSubHubsClientImpl implements WebPubSubHubsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String hubName, String resourceGroupName, String resourceName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String hubName, String resourceGroupName, String resourceName,
+        Context context) {
         return this.beginDeleteAsync(hubName, resourceGroupName, resourceName, context).getSyncPoller();
     }
 
     /**
      * Delete a hub setting.
-     *
+     * 
      * @param hubName The hub name.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -949,14 +800,13 @@ public final class WebPubSubHubsClientImpl implements WebPubSubHubsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String hubName, String resourceGroupName, String resourceName) {
-        return beginDeleteAsync(hubName, resourceGroupName, resourceName)
-            .last()
+        return beginDeleteAsync(hubName, resourceGroupName, resourceName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete a hub setting.
-     *
+     * 
      * @param hubName The hub name.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -968,14 +818,13 @@ public final class WebPubSubHubsClientImpl implements WebPubSubHubsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String hubName, String resourceGroupName, String resourceName, Context context) {
-        return beginDeleteAsync(hubName, resourceGroupName, resourceName, context)
-            .last()
+        return beginDeleteAsync(hubName, resourceGroupName, resourceName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete a hub setting.
-     *
+     * 
      * @param hubName The hub name.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -990,7 +839,7 @@ public final class WebPubSubHubsClientImpl implements WebPubSubHubsClient {
 
     /**
      * Delete a hub setting.
-     *
+     * 
      * @param hubName The hub name.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -1006,9 +855,8 @@ public final class WebPubSubHubsClientImpl implements WebPubSubHubsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1020,31 +868,20 @@ public final class WebPubSubHubsClientImpl implements WebPubSubHubsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<WebPubSubHubInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<WebPubSubHubInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1057,23 +894,13 @@ public final class WebPubSubHubsClientImpl implements WebPubSubHubsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

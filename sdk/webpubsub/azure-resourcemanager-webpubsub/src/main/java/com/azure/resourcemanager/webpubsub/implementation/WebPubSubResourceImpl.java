@@ -23,6 +23,7 @@ import com.azure.resourcemanager.webpubsub.models.SharedPrivateLinkResource;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubKeys;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubNetworkACLs;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubResource;
+import com.azure.resourcemanager.webpubsub.models.WebPubSubSocketIOSettings;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubTlsSettings;
 import java.util.Collections;
 import java.util.List;
@@ -103,12 +104,9 @@ public final class WebPubSubResourceImpl
     public List<PrivateEndpointConnection> privateEndpointConnections() {
         List<PrivateEndpointConnectionInner> inner = this.innerModel().privateEndpointConnections();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }
@@ -117,12 +115,9 @@ public final class WebPubSubResourceImpl
     public List<SharedPrivateLinkResource> sharedPrivateLinkResources() {
         List<SharedPrivateLinkResourceInner> inner = this.innerModel().sharedPrivateLinkResources();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new SharedPrivateLinkResourceImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new SharedPrivateLinkResourceImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }
@@ -168,6 +163,10 @@ public final class WebPubSubResourceImpl
         return this.innerModel().resourceStopped();
     }
 
+    public WebPubSubSocketIOSettings socketIO() {
+        return this.innerModel().socketIO();
+    }
+
     public Region region() {
         return Region.fromName(this.regionName());
     }
@@ -198,20 +197,16 @@ public final class WebPubSubResourceImpl
     }
 
     public WebPubSubResource create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWebPubSubs()
-                .createOrUpdate(resourceGroupName, resourceName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getWebPubSubs()
+            .createOrUpdate(resourceGroupName, resourceName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public WebPubSubResource create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWebPubSubs()
-                .createOrUpdate(resourceGroupName, resourceName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getWebPubSubs()
+            .createOrUpdate(resourceGroupName, resourceName, this.innerModel(), context);
         return this;
     }
 
@@ -226,48 +221,40 @@ public final class WebPubSubResourceImpl
     }
 
     public WebPubSubResource apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWebPubSubs()
-                .update(resourceGroupName, resourceName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getWebPubSubs()
+            .update(resourceGroupName, resourceName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public WebPubSubResource apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWebPubSubs()
-                .update(resourceGroupName, resourceName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getWebPubSubs()
+            .update(resourceGroupName, resourceName, this.innerModel(), context);
         return this;
     }
 
-    WebPubSubResourceImpl(
-        WebPubSubResourceInner innerObject, com.azure.resourcemanager.webpubsub.WebPubSubManager serviceManager) {
+    WebPubSubResourceImpl(WebPubSubResourceInner innerObject,
+        com.azure.resourcemanager.webpubsub.WebPubSubManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.resourceName = Utils.getValueFromIdByName(innerObject.id(), "webPubSub");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.resourceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "webPubSub");
     }
 
     public WebPubSubResource refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWebPubSubs()
-                .getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getWebPubSubs()
+            .getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public WebPubSubResource refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWebPubSubs()
-                .getByResourceGroupWithResponse(resourceGroupName, resourceName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getWebPubSubs()
+            .getByResourceGroupWithResponse(resourceGroupName, resourceName, context)
+            .getValue();
         return this;
     }
 
@@ -367,6 +354,11 @@ public final class WebPubSubResourceImpl
 
     public WebPubSubResourceImpl withResourceStopped(String resourceStopped) {
         this.innerModel().withResourceStopped(resourceStopped);
+        return this;
+    }
+
+    public WebPubSubResourceImpl withSocketIO(WebPubSubSocketIOSettings socketIO) {
+        this.innerModel().withSocketIO(socketIO);
         return this;
     }
 }

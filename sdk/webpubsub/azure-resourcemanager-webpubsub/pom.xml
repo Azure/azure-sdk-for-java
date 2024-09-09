@@ -18,7 +18,7 @@
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for WebPubSub Management</name>
-  <description>This package contains Microsoft Azure SDK for WebPubSub Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. REST API for Azure WebPubSub Service. Package tag package-2023-08-01-preview.</description>
+  <description>This package contains Microsoft Azure SDK for WebPubSub Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. REST API for Azure WebPubSub Service. Package tag package-2024-03-01.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>
@@ -48,6 +48,11 @@
     <revapi.skip>true</revapi.skip>
   </properties>
   <dependencies>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-json</artifactId>
+      <version>1.2.0</version> <!-- {x-version-update;com.azure:azure-json;dependency} -->
+    </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
@@ -88,8 +93,6 @@
       <version>4.11.0</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
-    <!-- bytebuddy dependencies are required for mockito 4.11.0 to work with Java 21. Mockito 4.11.0 is the last release -->
-    <!-- of Mockito supporting Java 8 as a baseline. -->
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy</artifactId>

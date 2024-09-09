@@ -7,39 +7,59 @@ package com.azure.resourcemanager.webpubsub.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.webpubsub.models.ProvisioningState;
 import com.azure.resourcemanager.webpubsub.models.ResourceSku;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** A class represent a replica resource. */
+/**
+ * A class represent a replica resource.
+ */
 @Fluent
 public final class ReplicaInner extends Resource {
     /*
      * The billing information of the resource.
      */
-    @JsonProperty(value = "sku")
     private ResourceSku sku;
 
     /*
      * The properties property.
      */
-    @JsonProperty(value = "properties")
     private ReplicaProperties innerProperties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of ReplicaInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ReplicaInner class.
+     */
     public ReplicaInner() {
     }
 
     /**
      * Get the sku property: The billing information of the resource.
-     *
+     * 
      * @return the sku value.
      */
     public ResourceSku sku() {
@@ -48,7 +68,7 @@ public final class ReplicaInner extends Resource {
 
     /**
      * Set the sku property: The billing information of the resource.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the ReplicaInner object itself.
      */
@@ -59,7 +79,7 @@ public final class ReplicaInner extends Resource {
 
     /**
      * Get the innerProperties property: The properties property.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ReplicaProperties innerProperties() {
@@ -68,21 +88,55 @@ public final class ReplicaInner extends Resource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ReplicaInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ReplicaInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -91,7 +145,7 @@ public final class ReplicaInner extends Resource {
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -99,9 +153,10 @@ public final class ReplicaInner extends Resource {
     }
 
     /**
-     * Get the regionEndpointEnabled property: Enable or disable the regional endpoint. Default to "Enabled". When it's
-     * Disabled, new connections will not be routed to this endpoint, however existing connections will not be affected.
-     *
+     * Get the regionEndpointEnabled property: Enable or disable the regional endpoint. Default to "Enabled".
+     * When it's Disabled, new connections will not be routed to this endpoint, however existing connections will not be
+     * affected.
+     * 
      * @return the regionEndpointEnabled value.
      */
     public String regionEndpointEnabled() {
@@ -109,9 +164,10 @@ public final class ReplicaInner extends Resource {
     }
 
     /**
-     * Set the regionEndpointEnabled property: Enable or disable the regional endpoint. Default to "Enabled". When it's
-     * Disabled, new connections will not be routed to this endpoint, however existing connections will not be affected.
-     *
+     * Set the regionEndpointEnabled property: Enable or disable the regional endpoint. Default to "Enabled".
+     * When it's Disabled, new connections will not be routed to this endpoint, however existing connections will not be
+     * affected.
+     * 
      * @param regionEndpointEnabled the regionEndpointEnabled value to set.
      * @return the ReplicaInner object itself.
      */
@@ -124,9 +180,10 @@ public final class ReplicaInner extends Resource {
     }
 
     /**
-     * Get the resourceStopped property: Stop or start the resource. Default to "false". When it's true, the data plane
-     * of the resource is shutdown. When it's false, the data plane of the resource is started.
-     *
+     * Get the resourceStopped property: Stop or start the resource. Default to "false".
+     * When it's true, the data plane of the resource is shutdown.
+     * When it's false, the data plane of the resource is started.
+     * 
      * @return the resourceStopped value.
      */
     public String resourceStopped() {
@@ -134,9 +191,10 @@ public final class ReplicaInner extends Resource {
     }
 
     /**
-     * Set the resourceStopped property: Stop or start the resource. Default to "false". When it's true, the data plane
-     * of the resource is shutdown. When it's false, the data plane of the resource is started.
-     *
+     * Set the resourceStopped property: Stop or start the resource. Default to "false".
+     * When it's true, the data plane of the resource is shutdown.
+     * When it's false, the data plane of the resource is started.
+     * 
      * @param resourceStopped the resourceStopped value to set.
      * @return the ReplicaInner object itself.
      */
@@ -150,7 +208,7 @@ public final class ReplicaInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -160,5 +218,66 @@ public final class ReplicaInner extends Resource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+        if (location() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property location in model ReplicaInner"));
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ReplicaInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReplicaInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReplicaInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ReplicaInner.
+     */
+    public static ReplicaInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ReplicaInner deserializedReplicaInner = new ReplicaInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedReplicaInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedReplicaInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedReplicaInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedReplicaInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedReplicaInner.withTags(tags);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedReplicaInner.sku = ResourceSku.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedReplicaInner.innerProperties = ReplicaProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedReplicaInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedReplicaInner;
+        });
     }
 }

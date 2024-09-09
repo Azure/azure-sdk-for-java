@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.webpubsub.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** A class represents the access keys of the resource. */
+/**
+ * A class represents the access keys of the resource.
+ */
 @Fluent
-public final class WebPubSubKeysInner {
+public final class WebPubSubKeysInner implements JsonSerializable<WebPubSubKeysInner> {
     /*
      * The primary access key.
      */
-    @JsonProperty(value = "primaryKey")
     private String primaryKey;
 
     /*
      * The secondary access key.
      */
-    @JsonProperty(value = "secondaryKey")
     private String secondaryKey;
 
     /*
      * Connection string constructed via the primaryKey
      */
-    @JsonProperty(value = "primaryConnectionString")
     private String primaryConnectionString;
 
     /*
      * Connection string constructed via the secondaryKey
      */
-    @JsonProperty(value = "secondaryConnectionString")
     private String secondaryConnectionString;
 
-    /** Creates an instance of WebPubSubKeysInner class. */
+    /**
+     * Creates an instance of WebPubSubKeysInner class.
+     */
     public WebPubSubKeysInner() {
     }
 
     /**
      * Get the primaryKey property: The primary access key.
-     *
+     * 
      * @return the primaryKey value.
      */
     public String primaryKey() {
@@ -49,7 +53,7 @@ public final class WebPubSubKeysInner {
 
     /**
      * Set the primaryKey property: The primary access key.
-     *
+     * 
      * @param primaryKey the primaryKey value to set.
      * @return the WebPubSubKeysInner object itself.
      */
@@ -60,7 +64,7 @@ public final class WebPubSubKeysInner {
 
     /**
      * Get the secondaryKey property: The secondary access key.
-     *
+     * 
      * @return the secondaryKey value.
      */
     public String secondaryKey() {
@@ -69,7 +73,7 @@ public final class WebPubSubKeysInner {
 
     /**
      * Set the secondaryKey property: The secondary access key.
-     *
+     * 
      * @param secondaryKey the secondaryKey value to set.
      * @return the WebPubSubKeysInner object itself.
      */
@@ -80,7 +84,7 @@ public final class WebPubSubKeysInner {
 
     /**
      * Get the primaryConnectionString property: Connection string constructed via the primaryKey.
-     *
+     * 
      * @return the primaryConnectionString value.
      */
     public String primaryConnectionString() {
@@ -89,7 +93,7 @@ public final class WebPubSubKeysInner {
 
     /**
      * Set the primaryConnectionString property: Connection string constructed via the primaryKey.
-     *
+     * 
      * @param primaryConnectionString the primaryConnectionString value to set.
      * @return the WebPubSubKeysInner object itself.
      */
@@ -100,7 +104,7 @@ public final class WebPubSubKeysInner {
 
     /**
      * Get the secondaryConnectionString property: Connection string constructed via the secondaryKey.
-     *
+     * 
      * @return the secondaryConnectionString value.
      */
     public String secondaryConnectionString() {
@@ -109,7 +113,7 @@ public final class WebPubSubKeysInner {
 
     /**
      * Set the secondaryConnectionString property: Connection string constructed via the secondaryKey.
-     *
+     * 
      * @param secondaryConnectionString the secondaryConnectionString value to set.
      * @return the WebPubSubKeysInner object itself.
      */
@@ -120,9 +124,54 @@ public final class WebPubSubKeysInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("primaryKey", this.primaryKey);
+        jsonWriter.writeStringField("secondaryKey", this.secondaryKey);
+        jsonWriter.writeStringField("primaryConnectionString", this.primaryConnectionString);
+        jsonWriter.writeStringField("secondaryConnectionString", this.secondaryConnectionString);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WebPubSubKeysInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WebPubSubKeysInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WebPubSubKeysInner.
+     */
+    public static WebPubSubKeysInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WebPubSubKeysInner deserializedWebPubSubKeysInner = new WebPubSubKeysInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("primaryKey".equals(fieldName)) {
+                    deserializedWebPubSubKeysInner.primaryKey = reader.getString();
+                } else if ("secondaryKey".equals(fieldName)) {
+                    deserializedWebPubSubKeysInner.secondaryKey = reader.getString();
+                } else if ("primaryConnectionString".equals(fieldName)) {
+                    deserializedWebPubSubKeysInner.primaryConnectionString = reader.getString();
+                } else if ("secondaryConnectionString".equals(fieldName)) {
+                    deserializedWebPubSubKeysInner.secondaryConnectionString = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWebPubSubKeysInner;
+        });
     }
 }

@@ -2,7 +2,7 @@
 
 Azure Resource Manager WebPubSub client library for Java.
 
-This package contains Microsoft Azure SDK for WebPubSub Management SDK. REST API for Azure WebPubSub Service. Package tag package-2023-08-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+This package contains Microsoft Azure SDK for WebPubSub Management SDK. REST API for Azure WebPubSub Service. Package tag package-2024-03-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ## We'd love to hear your feedback
 
@@ -32,7 +32,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-webpubsub</artifactId>
-    <version>1.1.0-beta.2</version>
+    <version>1.1.0-beta.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -45,15 +45,11 @@ Azure Management Libraries require a `TokenCredential` implementation for authen
 
 ### Authentication
 
-By default, Microsoft Entra ID token authentication depends on correct configuration of the following environment variables.
+Microsoft Entra ID token authentication relies on the [credential class][azure_identity_credentials] from [Azure Identity][azure_identity] package.
 
-- `AZURE_CLIENT_ID` for Azure client ID.
-- `AZURE_TENANT_ID` for Azure tenant ID.
-- `AZURE_CLIENT_SECRET` or `AZURE_CLIENT_CERTIFICATE_PATH` for client secret or client certificate.
+Azure subscription ID can be configured via `AZURE_SUBSCRIPTION_ID` environment variable.
 
-In addition, Azure subscription ID can be configured via `AZURE_SUBSCRIPTION_ID` environment variable.
-
-With above configuration, `azure` client can be authenticated using the following code:
+Assuming the use of the `DefaultAzureCredential` credential class, the client can be authenticated using the following code:
 
 ```java
 AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
@@ -105,6 +101,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [jdk]: https://learn.microsoft.com/azure/developer/java/fundamentals/
 [azure_subscription]: https://azure.microsoft.com/free/
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity
+[azure_identity_credentials]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity#credentials
 [azure_core_http_netty]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-http-netty
 [authenticate]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/AUTH.md
 [design]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/DESIGN.md

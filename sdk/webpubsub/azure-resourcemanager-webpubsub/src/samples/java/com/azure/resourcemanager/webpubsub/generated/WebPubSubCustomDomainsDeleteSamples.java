@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.webpubsub.generated;
 
-/** Samples for WebPubSubCustomDomains Delete. */
+/**
+ * Samples for WebPubSubCustomDomains Delete.
+ */
 public final class WebPubSubCustomDomainsDeleteSamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/WebPubSubCustomDomains_Delete.json
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2024-03-01/examples/
+     * WebPubSubCustomDomains_Delete.json
      */
     /**
      * Sample code: WebPubSubCustomDomains_Delete.
-     *
+     * 
      * @param manager Entry point to WebPubSubManager.
      */
     public static void webPubSubCustomDomainsDelete(com.azure.resourcemanager.webpubsub.WebPubSubManager manager) {
-        manager
-            .webPubSubCustomDomains()
+        manager.webPubSubCustomDomains()
             .delete("myResourceGroup", "myWebPubSubService", "example", com.azure.core.util.Context.NONE);
     }
 }

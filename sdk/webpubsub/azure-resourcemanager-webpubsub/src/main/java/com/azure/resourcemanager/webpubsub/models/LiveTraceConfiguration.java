@@ -5,12 +5,18 @@
 package com.azure.resourcemanager.webpubsub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Live trace configuration of a Microsoft.SignalRService resource. */
+/**
+ * Live trace configuration of a Microsoft.SignalRService resource.
+ */
 @Fluent
-public final class LiveTraceConfiguration {
+public final class LiveTraceConfiguration implements JsonSerializable<LiveTraceConfiguration> {
     /*
      * Indicates whether or not enable live trace.
      * When it's set to true, live trace client can connect to the service.
@@ -19,24 +25,27 @@ public final class LiveTraceConfiguration {
      * Available values: true, false.
      * Case insensitive.
      */
-    @JsonProperty(value = "enabled")
     private String enabled;
 
     /*
      * Gets or sets the list of category configurations.
      */
-    @JsonProperty(value = "categories")
     private List<LiveTraceCategory> categories;
 
-    /** Creates an instance of LiveTraceConfiguration class. */
+    /**
+     * Creates an instance of LiveTraceConfiguration class.
+     */
     public LiveTraceConfiguration() {
     }
 
     /**
-     * Get the enabled property: Indicates whether or not enable live trace. When it's set to true, live trace client
-     * can connect to the service. Otherwise, live trace client can't connect to the service, so that you are unable to
-     * receive any log, no matter what you configure in "categories". Available values: true, false. Case insensitive.
-     *
+     * Get the enabled property: Indicates whether or not enable live trace.
+     * When it's set to true, live trace client can connect to the service.
+     * Otherwise, live trace client can't connect to the service, so that you are unable to receive any log, no matter
+     * what you configure in "categories".
+     * Available values: true, false.
+     * Case insensitive.
+     * 
      * @return the enabled value.
      */
     public String enabled() {
@@ -44,10 +53,13 @@ public final class LiveTraceConfiguration {
     }
 
     /**
-     * Set the enabled property: Indicates whether or not enable live trace. When it's set to true, live trace client
-     * can connect to the service. Otherwise, live trace client can't connect to the service, so that you are unable to
-     * receive any log, no matter what you configure in "categories". Available values: true, false. Case insensitive.
-     *
+     * Set the enabled property: Indicates whether or not enable live trace.
+     * When it's set to true, live trace client can connect to the service.
+     * Otherwise, live trace client can't connect to the service, so that you are unable to receive any log, no matter
+     * what you configure in "categories".
+     * Available values: true, false.
+     * Case insensitive.
+     * 
      * @param enabled the enabled value to set.
      * @return the LiveTraceConfiguration object itself.
      */
@@ -58,7 +70,7 @@ public final class LiveTraceConfiguration {
 
     /**
      * Get the categories property: Gets or sets the list of category configurations.
-     *
+     * 
      * @return the categories value.
      */
     public List<LiveTraceCategory> categories() {
@@ -67,7 +79,7 @@ public final class LiveTraceConfiguration {
 
     /**
      * Set the categories property: Gets or sets the list of category configurations.
-     *
+     * 
      * @param categories the categories value to set.
      * @return the LiveTraceConfiguration object itself.
      */
@@ -78,12 +90,53 @@ public final class LiveTraceConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (categories() != null) {
             categories().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("enabled", this.enabled);
+        jsonWriter.writeArrayField("categories", this.categories, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LiveTraceConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LiveTraceConfiguration if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LiveTraceConfiguration.
+     */
+    public static LiveTraceConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LiveTraceConfiguration deserializedLiveTraceConfiguration = new LiveTraceConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enabled".equals(fieldName)) {
+                    deserializedLiveTraceConfiguration.enabled = reader.getString();
+                } else if ("categories".equals(fieldName)) {
+                    List<LiveTraceCategory> categories
+                        = reader.readArray(reader1 -> LiveTraceCategory.fromJson(reader1));
+                    deserializedLiveTraceConfiguration.categories = categories;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLiveTraceConfiguration;
+        });
     }
 }

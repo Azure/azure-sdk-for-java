@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.webpubsub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Upstream auth settings. If not set, no auth is used for upstream messages. */
+/**
+ * Upstream auth settings. If not set, no auth is used for upstream messages.
+ */
 @Fluent
-public final class UpstreamAuthSettings {
+public final class UpstreamAuthSettings implements JsonSerializable<UpstreamAuthSettings> {
     /*
      * Upstream auth type enum.
      */
-    @JsonProperty(value = "type")
     private UpstreamAuthType type;
 
     /*
      * Managed identity settings for upstream.
      */
-    @JsonProperty(value = "managedIdentity")
     private ManagedIdentitySettings managedIdentity;
 
-    /** Creates an instance of UpstreamAuthSettings class. */
+    /**
+     * Creates an instance of UpstreamAuthSettings class.
+     */
     public UpstreamAuthSettings() {
     }
 
     /**
      * Get the type property: Upstream auth type enum.
-     *
+     * 
      * @return the type value.
      */
     public UpstreamAuthType type() {
@@ -37,7 +43,7 @@ public final class UpstreamAuthSettings {
 
     /**
      * Set the type property: Upstream auth type enum.
-     *
+     * 
      * @param type the type value to set.
      * @return the UpstreamAuthSettings object itself.
      */
@@ -48,7 +54,7 @@ public final class UpstreamAuthSettings {
 
     /**
      * Get the managedIdentity property: Managed identity settings for upstream.
-     *
+     * 
      * @return the managedIdentity value.
      */
     public ManagedIdentitySettings managedIdentity() {
@@ -57,7 +63,7 @@ public final class UpstreamAuthSettings {
 
     /**
      * Set the managedIdentity property: Managed identity settings for upstream.
-     *
+     * 
      * @param managedIdentity the managedIdentity value to set.
      * @return the UpstreamAuthSettings object itself.
      */
@@ -68,12 +74,51 @@ public final class UpstreamAuthSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (managedIdentity() != null) {
             managedIdentity().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeJsonField("managedIdentity", this.managedIdentity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UpstreamAuthSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UpstreamAuthSettings if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UpstreamAuthSettings.
+     */
+    public static UpstreamAuthSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UpstreamAuthSettings deserializedUpstreamAuthSettings = new UpstreamAuthSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedUpstreamAuthSettings.type = UpstreamAuthType.fromString(reader.getString());
+                } else if ("managedIdentity".equals(fieldName)) {
+                    deserializedUpstreamAuthSettings.managedIdentity = ManagedIdentitySettings.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUpstreamAuthSettings;
+        });
     }
 }

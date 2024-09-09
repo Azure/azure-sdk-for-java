@@ -21,31 +21,28 @@ public final class WebPubSubHubsImpl implements WebPubSubHubs {
 
     private final com.azure.resourcemanager.webpubsub.WebPubSubManager serviceManager;
 
-    public WebPubSubHubsImpl(
-        WebPubSubHubsClient innerClient, com.azure.resourcemanager.webpubsub.WebPubSubManager serviceManager) {
+    public WebPubSubHubsImpl(WebPubSubHubsClient innerClient,
+        com.azure.resourcemanager.webpubsub.WebPubSubManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<WebPubSubHub> list(String resourceGroupName, String resourceName) {
         PagedIterable<WebPubSubHubInner> inner = this.serviceClient().list(resourceGroupName, resourceName);
-        return Utils.mapPage(inner, inner1 -> new WebPubSubHubImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new WebPubSubHubImpl(inner1, this.manager()));
     }
 
     public PagedIterable<WebPubSubHub> list(String resourceGroupName, String resourceName, Context context) {
         PagedIterable<WebPubSubHubInner> inner = this.serviceClient().list(resourceGroupName, resourceName, context);
-        return Utils.mapPage(inner, inner1 -> new WebPubSubHubImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new WebPubSubHubImpl(inner1, this.manager()));
     }
 
-    public Response<WebPubSubHub> getWithResponse(
-        String hubName, String resourceGroupName, String resourceName, Context context) {
-        Response<WebPubSubHubInner> inner =
-            this.serviceClient().getWithResponse(hubName, resourceGroupName, resourceName, context);
+    public Response<WebPubSubHub> getWithResponse(String hubName, String resourceGroupName, String resourceName,
+        Context context) {
+        Response<WebPubSubHubInner> inner
+            = this.serviceClient().getWithResponse(hubName, resourceGroupName, resourceName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new WebPubSubHubImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -70,105 +67,77 @@ public final class WebPubSubHubsImpl implements WebPubSubHubs {
     }
 
     public WebPubSubHub getById(String id) {
-        String hubName = Utils.getValueFromIdByName(id, "hubs");
+        String hubName = ResourceManagerUtils.getValueFromIdByName(id, "hubs");
         if (hubName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
         }
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "webPubSub");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "webPubSub");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'webPubSub'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'webPubSub'.", id)));
         }
         return this.getWithResponse(hubName, resourceGroupName, resourceName, Context.NONE).getValue();
     }
 
     public Response<WebPubSubHub> getByIdWithResponse(String id, Context context) {
-        String hubName = Utils.getValueFromIdByName(id, "hubs");
+        String hubName = ResourceManagerUtils.getValueFromIdByName(id, "hubs");
         if (hubName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
         }
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "webPubSub");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "webPubSub");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'webPubSub'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'webPubSub'.", id)));
         }
         return this.getWithResponse(hubName, resourceGroupName, resourceName, context);
     }
 
     public void deleteById(String id) {
-        String hubName = Utils.getValueFromIdByName(id, "hubs");
+        String hubName = ResourceManagerUtils.getValueFromIdByName(id, "hubs");
         if (hubName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
         }
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "webPubSub");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "webPubSub");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'webPubSub'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'webPubSub'.", id)));
         }
         this.delete(hubName, resourceGroupName, resourceName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String hubName = Utils.getValueFromIdByName(id, "hubs");
+        String hubName = ResourceManagerUtils.getValueFromIdByName(id, "hubs");
         if (hubName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
         }
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "webPubSub");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "webPubSub");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'webPubSub'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'webPubSub'.", id)));
         }
         this.delete(hubName, resourceGroupName, resourceName, context);
     }

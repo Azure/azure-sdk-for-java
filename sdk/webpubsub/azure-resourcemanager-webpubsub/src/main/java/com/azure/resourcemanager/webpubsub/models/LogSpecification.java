@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.webpubsub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Specifications of the Logs for Azure Monitoring. */
+/**
+ * Specifications of the Logs for Azure Monitoring.
+ */
 @Fluent
-public final class LogSpecification {
+public final class LogSpecification implements JsonSerializable<LogSpecification> {
     /*
      * Name of the log.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Localized friendly display name of the log.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
-    /** Creates an instance of LogSpecification class. */
+    /**
+     * Creates an instance of LogSpecification class.
+     */
     public LogSpecification() {
     }
 
     /**
      * Get the name property: Name of the log.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +43,7 @@ public final class LogSpecification {
 
     /**
      * Set the name property: Name of the log.
-     *
+     * 
      * @param name the name value to set.
      * @return the LogSpecification object itself.
      */
@@ -48,7 +54,7 @@ public final class LogSpecification {
 
     /**
      * Get the displayName property: Localized friendly display name of the log.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -57,7 +63,7 @@ public final class LogSpecification {
 
     /**
      * Set the displayName property: Localized friendly display name of the log.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the LogSpecification object itself.
      */
@@ -68,9 +74,48 @@ public final class LogSpecification {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LogSpecification from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LogSpecification if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LogSpecification.
+     */
+    public static LogSpecification fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LogSpecification deserializedLogSpecification = new LogSpecification();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedLogSpecification.name = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedLogSpecification.displayName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLogSpecification;
+        });
     }
 }

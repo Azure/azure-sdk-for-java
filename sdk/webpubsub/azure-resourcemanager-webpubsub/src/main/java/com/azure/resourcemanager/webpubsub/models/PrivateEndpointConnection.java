@@ -8,67 +8,69 @@ import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.webpubsub.fluent.models.PrivateEndpointConnectionInner;
 import java.util.List;
 
-/** An immutable client-side representation of PrivateEndpointConnection. */
+/**
+ * An immutable client-side representation of PrivateEndpointConnection.
+ */
 public interface PrivateEndpointConnection {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
 
     /**
      * Gets the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     ProvisioningState provisioningState();
 
     /**
      * Gets the privateEndpoint property: Private endpoint.
-     *
+     * 
      * @return the privateEndpoint value.
      */
     PrivateEndpoint privateEndpoint();
 
     /**
      * Gets the groupIds property: Group IDs.
-     *
+     * 
      * @return the groupIds value.
      */
     List<String> groupIds();
 
     /**
      * Gets the privateLinkServiceConnectionState property: Connection state of the private endpoint connection.
-     *
+     * 
      * @return the privateLinkServiceConnectionState value.
      */
     PrivateLinkServiceConnectionState privateLinkServiceConnectionState();
 
     /**
      * Gets the inner com.azure.resourcemanager.webpubsub.fluent.models.PrivateEndpointConnectionInner object.
-     *
+     * 
      * @return the inner object.
      */
     PrivateEndpointConnectionInner innerModel();

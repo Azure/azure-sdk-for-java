@@ -7,6 +7,10 @@ package com.azure.resourcemanager.webpubsub.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.webpubsub.models.LiveTraceConfiguration;
 import com.azure.resourcemanager.webpubsub.models.ManagedIdentity;
 import com.azure.resourcemanager.webpubsub.models.ProvisioningState;
@@ -14,51 +18,66 @@ import com.azure.resourcemanager.webpubsub.models.ResourceLogConfiguration;
 import com.azure.resourcemanager.webpubsub.models.ResourceSku;
 import com.azure.resourcemanager.webpubsub.models.ServiceKind;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubNetworkACLs;
+import com.azure.resourcemanager.webpubsub.models.WebPubSubSocketIOSettings;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubTlsSettings;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** A class represent a resource. */
+/**
+ * A class represent a resource.
+ */
 @Fluent
 public final class WebPubSubResourceInner extends Resource {
     /*
      * The billing information of the resource.
      */
-    @JsonProperty(value = "sku")
     private ResourceSku sku;
 
     /*
      * A class that describes the properties of the resource
      */
-    @JsonProperty(value = "properties")
     private WebPubSubProperties innerProperties;
 
     /*
      * The kind of the service
      */
-    @JsonProperty(value = "kind")
     private ServiceKind kind;
 
     /*
      * A class represent managed identities used for request and response
      */
-    @JsonProperty(value = "identity")
     private ManagedIdentity identity;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of WebPubSubResourceInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of WebPubSubResourceInner class.
+     */
     public WebPubSubResourceInner() {
     }
 
     /**
      * Get the sku property: The billing information of the resource.
-     *
+     * 
      * @return the sku value.
      */
     public ResourceSku sku() {
@@ -67,7 +86,7 @@ public final class WebPubSubResourceInner extends Resource {
 
     /**
      * Set the sku property: The billing information of the resource.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the WebPubSubResourceInner object itself.
      */
@@ -78,7 +97,7 @@ public final class WebPubSubResourceInner extends Resource {
 
     /**
      * Get the innerProperties property: A class that describes the properties of the resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private WebPubSubProperties innerProperties() {
@@ -87,7 +106,7 @@ public final class WebPubSubResourceInner extends Resource {
 
     /**
      * Get the kind property: The kind of the service.
-     *
+     * 
      * @return the kind value.
      */
     public ServiceKind kind() {
@@ -96,7 +115,7 @@ public final class WebPubSubResourceInner extends Resource {
 
     /**
      * Set the kind property: The kind of the service.
-     *
+     * 
      * @param kind the kind value to set.
      * @return the WebPubSubResourceInner object itself.
      */
@@ -107,7 +126,7 @@ public final class WebPubSubResourceInner extends Resource {
 
     /**
      * Get the identity property: A class represent managed identities used for request and response.
-     *
+     * 
      * @return the identity value.
      */
     public ManagedIdentity identity() {
@@ -116,7 +135,7 @@ public final class WebPubSubResourceInner extends Resource {
 
     /**
      * Set the identity property: A class represent managed identities used for request and response.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the WebPubSubResourceInner object itself.
      */
@@ -127,21 +146,55 @@ public final class WebPubSubResourceInner extends Resource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WebPubSubResourceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WebPubSubResourceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -150,7 +203,7 @@ public final class WebPubSubResourceInner extends Resource {
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -159,7 +212,7 @@ public final class WebPubSubResourceInner extends Resource {
 
     /**
      * Get the externalIp property: The publicly accessible IP of the resource.
-     *
+     * 
      * @return the externalIp value.
      */
     public String externalIp() {
@@ -168,7 +221,7 @@ public final class WebPubSubResourceInner extends Resource {
 
     /**
      * Get the hostname property: FQDN of the service instance.
-     *
+     * 
      * @return the hostname value.
      */
     public String hostname() {
@@ -178,7 +231,7 @@ public final class WebPubSubResourceInner extends Resource {
     /**
      * Get the publicPort property: The publicly accessible port of the resource which is designed for browser/client
      * side usage.
-     *
+     * 
      * @return the publicPort value.
      */
     public Integer publicPort() {
@@ -188,7 +241,7 @@ public final class WebPubSubResourceInner extends Resource {
     /**
      * Get the serverPort property: The publicly accessible port of the resource which is designed for customer server
      * side usage.
-     *
+     * 
      * @return the serverPort value.
      */
     public Integer serverPort() {
@@ -197,7 +250,7 @@ public final class WebPubSubResourceInner extends Resource {
 
     /**
      * Get the version property: Version of the resource. Probably you need the same or higher version of client SDKs.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -206,7 +259,7 @@ public final class WebPubSubResourceInner extends Resource {
 
     /**
      * Get the privateEndpointConnections property: Private endpoint connections to the resource.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
@@ -215,7 +268,7 @@ public final class WebPubSubResourceInner extends Resource {
 
     /**
      * Get the sharedPrivateLinkResources property: The list of shared private link resources.
-     *
+     * 
      * @return the sharedPrivateLinkResources value.
      */
     public List<SharedPrivateLinkResourceInner> sharedPrivateLinkResources() {
@@ -224,7 +277,7 @@ public final class WebPubSubResourceInner extends Resource {
 
     /**
      * Get the tls property: TLS settings for the resource.
-     *
+     * 
      * @return the tls value.
      */
     public WebPubSubTlsSettings tls() {
@@ -233,7 +286,7 @@ public final class WebPubSubResourceInner extends Resource {
 
     /**
      * Set the tls property: TLS settings for the resource.
-     *
+     * 
      * @param tls the tls value to set.
      * @return the WebPubSubResourceInner object itself.
      */
@@ -247,7 +300,7 @@ public final class WebPubSubResourceInner extends Resource {
 
     /**
      * Get the hostnamePrefix property: Deprecated.
-     *
+     * 
      * @return the hostnamePrefix value.
      */
     public String hostnamePrefix() {
@@ -256,7 +309,7 @@ public final class WebPubSubResourceInner extends Resource {
 
     /**
      * Get the liveTraceConfiguration property: Live trace configuration of a Microsoft.SignalRService resource.
-     *
+     * 
      * @return the liveTraceConfiguration value.
      */
     public LiveTraceConfiguration liveTraceConfiguration() {
@@ -265,7 +318,7 @@ public final class WebPubSubResourceInner extends Resource {
 
     /**
      * Set the liveTraceConfiguration property: Live trace configuration of a Microsoft.SignalRService resource.
-     *
+     * 
      * @param liveTraceConfiguration the liveTraceConfiguration value to set.
      * @return the WebPubSubResourceInner object itself.
      */
@@ -279,7 +332,7 @@ public final class WebPubSubResourceInner extends Resource {
 
     /**
      * Get the resourceLogConfiguration property: Resource log configuration of a Microsoft.SignalRService resource.
-     *
+     * 
      * @return the resourceLogConfiguration value.
      */
     public ResourceLogConfiguration resourceLogConfiguration() {
@@ -288,7 +341,7 @@ public final class WebPubSubResourceInner extends Resource {
 
     /**
      * Set the resourceLogConfiguration property: Resource log configuration of a Microsoft.SignalRService resource.
-     *
+     * 
      * @param resourceLogConfiguration the resourceLogConfiguration value to set.
      * @return the WebPubSubResourceInner object itself.
      */
@@ -302,7 +355,7 @@ public final class WebPubSubResourceInner extends Resource {
 
     /**
      * Get the networkACLs property: Network ACLs for the resource.
-     *
+     * 
      * @return the networkACLs value.
      */
     public WebPubSubNetworkACLs networkACLs() {
@@ -311,7 +364,7 @@ public final class WebPubSubResourceInner extends Resource {
 
     /**
      * Set the networkACLs property: Network ACLs for the resource.
-     *
+     * 
      * @param networkACLs the networkACLs value to set.
      * @return the WebPubSubResourceInner object itself.
      */
@@ -324,10 +377,10 @@ public final class WebPubSubResourceInner extends Resource {
     }
 
     /**
-     * Get the publicNetworkAccess property: Enable or disable public network access. Default to "Enabled". When it's
-     * Enabled, network ACLs still apply. When it's Disabled, public network access is always disabled no matter what
-     * you set in network ACLs.
-     *
+     * Get the publicNetworkAccess property: Enable or disable public network access. Default to "Enabled".
+     * When it's Enabled, network ACLs still apply.
+     * When it's Disabled, public network access is always disabled no matter what you set in network ACLs.
+     * 
      * @return the publicNetworkAccess value.
      */
     public String publicNetworkAccess() {
@@ -335,10 +388,10 @@ public final class WebPubSubResourceInner extends Resource {
     }
 
     /**
-     * Set the publicNetworkAccess property: Enable or disable public network access. Default to "Enabled". When it's
-     * Enabled, network ACLs still apply. When it's Disabled, public network access is always disabled no matter what
-     * you set in network ACLs.
-     *
+     * Set the publicNetworkAccess property: Enable or disable public network access. Default to "Enabled".
+     * When it's Enabled, network ACLs still apply.
+     * When it's Disabled, public network access is always disabled no matter what you set in network ACLs.
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the WebPubSubResourceInner object itself.
      */
@@ -351,9 +404,10 @@ public final class WebPubSubResourceInner extends Resource {
     }
 
     /**
-     * Get the disableLocalAuth property: DisableLocalAuth Enable or disable local auth with AccessKey When set as true,
-     * connection with AccessKey=xxx won't work.
-     *
+     * Get the disableLocalAuth property: DisableLocalAuth
+     * Enable or disable local auth with AccessKey
+     * When set as true, connection with AccessKey=xxx won't work.
+     * 
      * @return the disableLocalAuth value.
      */
     public Boolean disableLocalAuth() {
@@ -361,9 +415,10 @@ public final class WebPubSubResourceInner extends Resource {
     }
 
     /**
-     * Set the disableLocalAuth property: DisableLocalAuth Enable or disable local auth with AccessKey When set as true,
-     * connection with AccessKey=xxx won't work.
-     *
+     * Set the disableLocalAuth property: DisableLocalAuth
+     * Enable or disable local auth with AccessKey
+     * When set as true, connection with AccessKey=xxx won't work.
+     * 
      * @param disableLocalAuth the disableLocalAuth value to set.
      * @return the WebPubSubResourceInner object itself.
      */
@@ -376,9 +431,10 @@ public final class WebPubSubResourceInner extends Resource {
     }
 
     /**
-     * Get the disableAadAuth property: DisableLocalAuth Enable or disable aad auth When set as true, connection with
-     * AuthType=aad won't work.
-     *
+     * Get the disableAadAuth property: DisableLocalAuth
+     * Enable or disable aad auth
+     * When set as true, connection with AuthType=aad won't work.
+     * 
      * @return the disableAadAuth value.
      */
     public Boolean disableAadAuth() {
@@ -386,9 +442,10 @@ public final class WebPubSubResourceInner extends Resource {
     }
 
     /**
-     * Set the disableAadAuth property: DisableLocalAuth Enable or disable aad auth When set as true, connection with
-     * AuthType=aad won't work.
-     *
+     * Set the disableAadAuth property: DisableLocalAuth
+     * Enable or disable aad auth
+     * When set as true, connection with AuthType=aad won't work.
+     * 
      * @param disableAadAuth the disableAadAuth value to set.
      * @return the WebPubSubResourceInner object itself.
      */
@@ -401,10 +458,11 @@ public final class WebPubSubResourceInner extends Resource {
     }
 
     /**
-     * Get the regionEndpointEnabled property: Enable or disable the regional endpoint. Default to "Enabled". When it's
-     * Disabled, new connections will not be routed to this endpoint, however existing connections will not be affected.
+     * Get the regionEndpointEnabled property: Enable or disable the regional endpoint. Default to "Enabled".
+     * When it's Disabled, new connections will not be routed to this endpoint, however existing connections will not be
+     * affected.
      * This property is replica specific. Disable the regional endpoint without replica is not allowed.
-     *
+     * 
      * @return the regionEndpointEnabled value.
      */
     public String regionEndpointEnabled() {
@@ -412,10 +470,11 @@ public final class WebPubSubResourceInner extends Resource {
     }
 
     /**
-     * Set the regionEndpointEnabled property: Enable or disable the regional endpoint. Default to "Enabled". When it's
-     * Disabled, new connections will not be routed to this endpoint, however existing connections will not be affected.
+     * Set the regionEndpointEnabled property: Enable or disable the regional endpoint. Default to "Enabled".
+     * When it's Disabled, new connections will not be routed to this endpoint, however existing connections will not be
+     * affected.
      * This property is replica specific. Disable the regional endpoint without replica is not allowed.
-     *
+     * 
      * @param regionEndpointEnabled the regionEndpointEnabled value to set.
      * @return the WebPubSubResourceInner object itself.
      */
@@ -428,9 +487,10 @@ public final class WebPubSubResourceInner extends Resource {
     }
 
     /**
-     * Get the resourceStopped property: Stop or start the resource. Default to "false". When it's true, the data plane
-     * of the resource is shutdown. When it's false, the data plane of the resource is started.
-     *
+     * Get the resourceStopped property: Stop or start the resource. Default to "False".
+     * When it's true, the data plane of the resource is shutdown.
+     * When it's false, the data plane of the resource is started.
+     * 
      * @return the resourceStopped value.
      */
     public String resourceStopped() {
@@ -438,9 +498,10 @@ public final class WebPubSubResourceInner extends Resource {
     }
 
     /**
-     * Set the resourceStopped property: Stop or start the resource. Default to "false". When it's true, the data plane
-     * of the resource is shutdown. When it's false, the data plane of the resource is started.
-     *
+     * Set the resourceStopped property: Stop or start the resource. Default to "False".
+     * When it's true, the data plane of the resource is shutdown.
+     * When it's false, the data plane of the resource is started.
+     * 
      * @param resourceStopped the resourceStopped value to set.
      * @return the WebPubSubResourceInner object itself.
      */
@@ -453,8 +514,31 @@ public final class WebPubSubResourceInner extends Resource {
     }
 
     /**
+     * Get the socketIO property: SocketIO settings for the resource.
+     * 
+     * @return the socketIO value.
+     */
+    public WebPubSubSocketIOSettings socketIO() {
+        return this.innerProperties() == null ? null : this.innerProperties().socketIO();
+    }
+
+    /**
+     * Set the socketIO property: SocketIO settings for the resource.
+     * 
+     * @param socketIO the socketIO value to set.
+     * @return the WebPubSubResourceInner object itself.
+     */
+    public WebPubSubResourceInner withSocketIO(WebPubSubSocketIOSettings socketIO) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WebPubSubProperties();
+        }
+        this.innerProperties().withSocketIO(socketIO);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -467,5 +551,73 @@ public final class WebPubSubResourceInner extends Resource {
         if (identity() != null) {
             identity().validate();
         }
+        if (location() == null) {
+            throw LOGGER.atError()
+                .log(
+                    new IllegalArgumentException("Missing required property location in model WebPubSubResourceInner"));
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(WebPubSubResourceInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeJsonField("identity", this.identity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WebPubSubResourceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WebPubSubResourceInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WebPubSubResourceInner.
+     */
+    public static WebPubSubResourceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WebPubSubResourceInner deserializedWebPubSubResourceInner = new WebPubSubResourceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedWebPubSubResourceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedWebPubSubResourceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedWebPubSubResourceInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedWebPubSubResourceInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedWebPubSubResourceInner.withTags(tags);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedWebPubSubResourceInner.sku = ResourceSku.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedWebPubSubResourceInner.innerProperties = WebPubSubProperties.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedWebPubSubResourceInner.kind = ServiceKind.fromString(reader.getString());
+                } else if ("identity".equals(fieldName)) {
+                    deserializedWebPubSubResourceInner.identity = ManagedIdentity.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedWebPubSubResourceInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWebPubSubResourceInner;
+        });
     }
 }
