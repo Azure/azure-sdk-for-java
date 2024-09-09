@@ -1,0 +1,34 @@
+trigger: none
+pr: none
+stages:
+  - stage: PreparePatchRelease
+    displayName: Prepare Patch Release
+    timeoutInMinutes: 30
+
+    jobs:
+      - job: PreparePatchRelease
+        displayName: 'Prepare Patch Release'
+        timeoutInMinutes: 30
+        pool:
+          vmImage: 'windows-2022'
+
+        steps:
+          # Checkout the repository
+          - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+            parameters:
+              Paths:
+                - '/*'
+              Repositories:
+                - Name: $(Build.Repository.Name)
+                  Commitish: $(Build.SourceVersion)
+                  WorkingDirectory: $(System.DefaultWorkingDirectory)
+          # Checkout a new release branch
+          - script: |
+              git checkout main
+              git pull origin main
+              git checkout -b release/patch/prepare
+            displayName: 'Create release branch'
+          # Run the script to generate patches for automatic releases
+          - pwsh: |
+              Start-Process powershell -ArgumentList '-NoProfile -ExecutionPolicy Bypass -Command "& { .\eng\scripts\Generate-Patches-For-Automatic-Releases.ps1 -SourcesDirectory .\ -PackagesYmlPath .\eng\pipelines\patch-release.yml }"' -Verb RunAs -Wait
+            displayName: 'Run Generate-Patches-For-Automatic-Releases script as Admin'
