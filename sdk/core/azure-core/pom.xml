@@ -268,53 +268,19 @@
       </plugin>
 
       <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>build-helper-maven-plugin</artifactId>
-        <version>3.5.0</version> <!-- {x-version-update;org.codehaus.mojo:build-helper-maven-plugin;external_dependency} -->
-        <executions>
-          <execution>
-            <id>compile-test-shared-source</id>
-            <phase>generate-test-sources</phase>
-            <goals>
-              <goal>add-test-source</goal>
-            </goals>
-            <configuration>
-              <sources>
-                <source>src/test-shared/java</source>
-              </sources>
-            </configuration>
-          </execution>
-          <execution>
-            <id>compile-test-shared-resource</id>
-            <phase>generate-test-resources</phase>
-            <goals>
-              <goal>add-test-resource</goal>
-            </goals>
-            <configuration>
-              <resources>
-                <resource>
-                  <directory>src/test-shared/resources</directory>
-                </resource>
-              </resources>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-
-      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-assembly-plugin</artifactId>
         <version>3.7.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-assembly-plugin;external_dependency} -->
         <executions>
           <execution>
-            <id>package-test-shared-jar</id>
+            <id>package-test-jar</id>
             <phase>package</phase>
             <goals>
               <goal>single</goal>
             </goals>
             <configuration>
               <descriptors>
-                <descriptor>src/test-shared/assembly/assembly.xml</descriptor>
+                <descriptor>src/test/assembly/assembly.xml</descriptor>
               </descriptors>
             </configuration>
           </execution>

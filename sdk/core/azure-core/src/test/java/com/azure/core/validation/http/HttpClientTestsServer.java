@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.core.test.shared;
+package com.azure.core.validation.http;
 
 import com.azure.core.http.ContentType;
-import com.azure.core.test.shared.models.HttpBinFormDataJson;
-import com.azure.core.test.shared.models.HttpBinJson;
-import com.azure.core.test.shared.models.PizzaSize;
+import com.azure.core.validation.http.models.HttpBinFormDataJson;
+import com.azure.core.validation.http.models.HttpBinJson;
+import com.azure.core.validation.http.models.PizzaSize;
 import com.azure.core.util.DateTimeRfc1123;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Response;
@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
-import static com.azure.core.test.shared.CoreTestUtils.md5;
+import static com.azure.core.validation.http.HttpValidatonUtils.md5;
 
 /**
  * Server used when running {@link HttpClientTests}.

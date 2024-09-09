@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.test.shared;
+package com.azure.core.validation.http;
 
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
@@ -31,11 +31,11 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.test.shared.models.HttpBinFormDataJson;
-import com.azure.core.test.shared.models.HttpBinHeaders;
-import com.azure.core.test.shared.models.HttpBinJson;
-import com.azure.core.test.shared.models.MyRestException;
-import com.azure.core.test.shared.models.PizzaSize;
+import com.azure.core.validation.http.models.HttpBinFormDataJson;
+import com.azure.core.validation.http.models.HttpBinHeaders;
+import com.azure.core.validation.http.models.HttpBinJson;
+import com.azure.core.validation.http.models.MyRestException;
+import com.azure.core.validation.http.models.PizzaSize;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
@@ -104,8 +104,8 @@ import java.util.function.Supplier;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import static com.azure.core.test.shared.CoreTestUtils.assertArraysEqual;
-import static com.azure.core.test.shared.CoreTestUtils.md5;
+import static com.azure.core.validation.http.HttpValidatonUtils.assertArraysEqual;
+import static com.azure.core.validation.http.HttpValidatonUtils.md5;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;

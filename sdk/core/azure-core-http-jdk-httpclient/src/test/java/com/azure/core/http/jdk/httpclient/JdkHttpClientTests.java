@@ -57,7 +57,7 @@ import java.util.stream.Collectors;
 import static com.azure.core.http.jdk.httpclient.JdkHttpClientLocalTestServer.LONG_BODY;
 import static com.azure.core.http.jdk.httpclient.JdkHttpClientLocalTestServer.SHORT_BODY;
 import static com.azure.core.http.jdk.httpclient.JdkHttpClientLocalTestServer.TIMEOUT;
-import static com.azure.core.test.shared.CoreTestUtils.assertArraysEqual;
+import static com.azure.core.validation.http.HttpValidatonUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;

@@ -46,7 +46,7 @@ import static com.azure.core.http.okhttp.OkHttpClientLocalTestServer.RETURN_HEAD
 import static com.azure.core.http.okhttp.OkHttpClientLocalTestServer.SHORT_BODY;
 import static com.azure.core.http.okhttp.OkHttpClientLocalTestServer.TIMEOUT;
 import static com.azure.core.http.okhttp.TestUtils.createQuietDispatcher;
-import static com.azure.core.test.shared.CoreTestUtils.assertArraysEqual;
+import static com.azure.core.validation.http.HttpValidatonUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertLinesMatch;

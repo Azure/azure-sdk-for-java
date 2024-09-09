@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.test.shared.models;
+package com.azure.core.validation.http.models;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;

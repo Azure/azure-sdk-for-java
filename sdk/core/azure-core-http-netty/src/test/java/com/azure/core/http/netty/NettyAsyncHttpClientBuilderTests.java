@@ -7,7 +7,7 @@ import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.netty.implementation.NettyHttpClientLocalTestServer;
-import com.azure.core.test.shared.models.TestConfigurationSource;
+import com.azure.core.validation.http.models.TestConfigurationSource;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.ConfigurationBuilder;
 import com.azure.core.util.ConfigurationSource;

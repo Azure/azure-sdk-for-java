@@ -20,7 +20,7 @@ import java.util.List;
 
 import static com.azure.core.http.vertx.VertxHttpClientLocalTestServer.EXPECTED_GET_BYTES;
 import static com.azure.core.http.vertx.VertxHttpClientLocalTestServer.GET_ENDPOINT;
-import static com.azure.core.test.shared.CoreTestUtils.assertArraysEqual;
+import static com.azure.core.validation.http.HttpValidatonUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Execution(ExecutionMode.SAME_THREAD)

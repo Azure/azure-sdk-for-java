@@ -4,7 +4,7 @@
 package com.azure.core.http.okhttp;
 
 import com.azure.core.http.HttpClient;
-import com.azure.core.test.shared.models.TestConfigurationSource;
+import com.azure.core.validation.http.models.TestConfigurationSource;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.ConfigurationBuilder;
 import com.azure.core.util.ConfigurationSource;

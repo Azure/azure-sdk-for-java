@@ -28,7 +28,7 @@ import java.util.function.Consumer;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import static com.azure.core.test.shared.CoreTestUtils.assertArraysEqual;
+import static com.azure.core.validation.http.HttpValidatonUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertSame;

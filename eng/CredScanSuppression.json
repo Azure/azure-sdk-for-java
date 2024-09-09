@@ -44,8 +44,7 @@
         {
             "file": [
                 "eng/common/testproxy/dotnet-devcert.pfx",
-                "sdk/core/azure-core-test/target/classes/keystore.jks",
-                "sdk/core/azure-core/target/classes/keystore.jks",
+                "sdk/core/azure-core/target/test-classes/keystore.jks",
                 "sdk/cosmos/azure-cosmos-tests/src/test/resources/server.jks",
                 "sdk/cosmos/azure-cosmos-tests/src/test/resources/client.jks",
                 "sdk/identity/azure-identity/src/test/resources/cert-chain.pem",
@@ -91,7 +90,7 @@
         },
         {
             "file": [
-              "sdk/core/azure-core/src/test-shared/resources/keystore.jks"
+              "sdk/core/azure-core/src/test/resources/keystore.jks"
             ],
             "_justification": "Dummy keystore to enable HTTPS testing with LocalTestServer. Contains no real secrets."
         }

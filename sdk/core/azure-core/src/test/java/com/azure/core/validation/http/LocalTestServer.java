@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.core.test.shared;
+package com.azure.core.validation.http;
 
 import org.eclipse.jetty.server.HttpConfiguration;
 import org.eclipse.jetty.server.HttpConnectionFactory;
@@ -189,7 +189,7 @@ public class LocalTestServer {
 
     private static byte[] fullyReadRequest(InputStream requestBody) throws IOException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        CoreTestUtils.copy(requestBody, outputStream);
+        HttpValidatonUtils.copy(requestBody, outputStream);
         return outputStream.toByteArray();
     }
 }

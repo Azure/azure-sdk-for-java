@@ -4,9 +4,9 @@
 package com.azure.core.http.netty;
 
 import com.azure.core.http.HttpClient;
-import com.azure.core.test.shared.HttpClientTests;
-import com.azure.core.test.shared.HttpClientTestsServer;
-import com.azure.core.test.shared.LocalTestServer;
+import com.azure.core.validation.http.HttpClientTests;
+import com.azure.core.validation.http.HttpClientTestsServer;
+import com.azure.core.validation.http.LocalTestServer;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;

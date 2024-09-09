@@ -12,7 +12,8 @@
       <directory>${project.build.directory}/test-classes</directory>
       <outputDirectory>${file.separator}</outputDirectory>
       <includes>
-        <include>com/azure/core/test/shared/**/*</include>
+        <include>com/azure/core/validation/**/*</include>
+        <include>keystore.jks</include>
       </includes>
       <useDefaultExcludes>true</useDefaultExcludes>
     </fileSet>
@@ -21,14 +22,6 @@
       <outputDirectory>${file.separator}</outputDirectory>
       <includes>
         <include>**/*</include>
-      </includes>
-      <useDefaultExcludes>true</useDefaultExcludes>
-    </fileSet>
-    <fileSet>
-      <directory>${project.build.directory}/test-classes</directory>
-      <outputDirectory>${file.separator}</outputDirectory>
-      <includes>
-        <include>keystore.jks</include>
       </includes>
       <useDefaultExcludes>true</useDefaultExcludes>
     </fileSet>

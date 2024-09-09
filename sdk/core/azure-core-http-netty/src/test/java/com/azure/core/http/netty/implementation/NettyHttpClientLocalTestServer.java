@@ -3,7 +3,7 @@
 package com.azure.core.http.netty.implementation;
 
 import com.azure.core.http.HttpHeaderName;
-import com.azure.core.test.shared.LocalTestServer;
+import com.azure.core.validation.http.LocalTestServer;
 import org.eclipse.jetty.util.Callback;
 
 import javax.servlet.ServletException;
