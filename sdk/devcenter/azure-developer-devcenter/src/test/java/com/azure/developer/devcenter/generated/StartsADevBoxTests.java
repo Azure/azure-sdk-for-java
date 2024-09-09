@@ -18,7 +18,7 @@ public final class StartsADevBoxTests extends DevCenterClientTestBase {
     public void testStartsADevBoxTests() {
         // method invocation
         SyncPoller<DevCenterOperationDetails, Void> response
-            = devBoxesClient.beginStartDevBox("myProject", "me", "MyDevBox");
+            = setPlaybackSyncPollerPollInterval(devBoxesClient.beginStartDevBox("myProject", "me", "MyDevBox"));
 
         // response assertion
         Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,

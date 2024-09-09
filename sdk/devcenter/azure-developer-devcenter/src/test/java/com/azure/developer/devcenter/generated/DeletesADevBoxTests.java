@@ -18,7 +18,7 @@ public final class DeletesADevBoxTests extends DevCenterClientTestBase {
     public void testDeletesADevBoxTests() {
         // method invocation
         SyncPoller<DevCenterOperationDetails, Void> response
-            = devBoxesClient.beginDeleteDevBox("myProject", "me", "MyDevBox");
+            = setPlaybackSyncPollerPollInterval(devBoxesClient.beginDeleteDevBox("myProject", "me", "MyDevBox"));
 
         // response assertion
         Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
