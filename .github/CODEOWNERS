@@ -656,6 +656,10 @@
 # ServiceLabel: %Operational Insights
 # ServiceOwners:                                     @AzmonLogA
 
+# PRLabel: %Operator Nexus - Network Cloud
+# ServiceLabel: %Operator Nexus - Network Cloud
+/sdk/networkcloud/                                   @Azure/azure-sdk-write-networkcloud
+
 # ServiceLabel: %Policy
 # ServiceOwners:                                     @aperezcloud @kenieva
 
