@@ -200,7 +200,14 @@ public class GlobalEndpointManager implements AutoCloseable {
                     this::getDatabaseAccountAsync);
 
                 return databaseAccountObs.map(dbAccount -> {
-                    this.locationCache.onDatabaseAccountRead(dbAccount);
+                    this.databaseAccountWriteLock.lock();
+
+                    try {
+                        this.locationCache.onDatabaseAccountRead(dbAccount);
+                    } finally {
+                        this.databaseAccountWriteLock.unlock();
+                    }
+
                     return dbAccount;
                 }).flatMap(dbAccount -> {
                     return Mono.empty();
@@ -238,7 +245,14 @@ public class GlobalEndpointManager implements AutoCloseable {
             logger.debug("refreshLocationPrivateAsync() refreshing locations");
 
             if (databaseAccount != null) {
-                this.locationCache.onDatabaseAccountRead(databaseAccount);
+                this.databaseAccountWriteLock.lock();
+
+                try {
+                    this.locationCache.onDatabaseAccountRead(databaseAccount);
+                } finally {
+                    this.databaseAccountWriteLock.unlock();
+                }
+
             }
 
             Utils.ValueHolder<Boolean> canRefreshInBackground = new Utils.ValueHolder<>();
@@ -254,7 +268,14 @@ public class GlobalEndpointManager implements AutoCloseable {
                             this::getDatabaseAccountAsync);
 
                     return databaseAccountObs.map(dbAccount -> {
-                        this.locationCache.onDatabaseAccountRead(dbAccount);
+                        this.databaseAccountWriteLock.lock();
+
+                        try {
+                            this.locationCache.onDatabaseAccountRead(dbAccount);
+                        } finally {
+                            this.databaseAccountWriteLock.unlock();
+                        }
+
                         this.isRefreshing.set(false);
                         return dbAccount;
                     }).flatMap(dbAccount -> {
