@@ -293,7 +293,7 @@ in the [service quickstart documentation][quickstart_training].
 
 **Note**
 
-You can use the [Document Intelligence Studio preview][fr-studio] for creating a labeled file for your training forms.
+You can use the [Document Intelligence Studio preview][di-studio] for creating a labeled file for your training forms.
 More details on setting up a container and required file structure can be found in [here][fr_build_training_set].
 
 ```java com.azure.ai.documentintelligence.readme.buildModel
@@ -451,7 +451,6 @@ For details on contributing to this repository, see the [contributing guide](htt
 [azure_key_credential]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/credential/AzureKeyCredential.java
 [key]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows#get-the-keys-for-your-resource
 [api_reference_doc]: https://learn.microsoft.com/java/api/overview/azure/ai-documentintelligence-readme?view=azure-java-preview
-[form_recognizer_doc]: https://aka.ms/azsdk-java-documentintelligence-ref-doc
 [azure_identity_credential_type]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity#credentials
 [azure_cli]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account-cli?tabs=windows
 [azure_cli_endpoint]: https://docs.microsoft.com/cli/azure/cognitiveservices/account?view=azure-cli-latest#az-cognitiveservices-account-show
@@ -474,7 +473,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 [product_documentation]: https://docs.microsoft.com/azure/cognitive-services/form-recognizer/overview
 [register_AAD_application]: https://docs.microsoft.com/azure/cognitive-services/authentication#assign-a-role-to-a-service-principal
-[fr-studio]: https://aka.ms/azsdk/formrecognizer/documentintelligencestudio
+[di-studio]: https://aka.ms/azsdk/formrecognizer/formrecognizerstudio
 [fr_build_training_set]: https://aka.ms/azsdk/formrecognizer/buildcustommodel
 [sample_examples]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/documentintelligence/azure-ai-documentintelligence/src/samples#examples
 [samples_readme]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/documentintelligence/azure-ai-documentintelligence/src/samples#readme
