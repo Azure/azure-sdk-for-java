@@ -12,10 +12,10 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The DetectFromUrlRequest model.
+ * The AddFaceFromUrlRequest model.
  */
 @Immutable
-public final class DetectFromUrlRequest implements JsonSerializable<DetectFromUrlRequest> {
+public final class AddFaceFromUrlRequest implements JsonSerializable<AddFaceFromUrlRequest> {
 
     /*
      * URL of input image.
@@ -24,12 +24,12 @@ public final class DetectFromUrlRequest implements JsonSerializable<DetectFromUr
     private final String url;
 
     /**
-     * Creates an instance of DetectFromUrlRequest class.
+     * Creates an instance of AddFaceFromUrlRequest class.
      *
      * @param url the url value to set.
      */
     @Generated
-    public DetectFromUrlRequest(String url) {
+    public AddFaceFromUrlRequest(String url) {
         this.url = url;
     }
 
@@ -55,16 +55,16 @@ public final class DetectFromUrlRequest implements JsonSerializable<DetectFromUr
     }
 
     /**
-     * Reads an instance of DetectFromUrlRequest from the JsonReader.
+     * Reads an instance of AddFaceFromUrlRequest from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of DetectFromUrlRequest if the JsonReader was pointing to an instance of it, or null if it
+     * @return An instance of AddFaceFromUrlRequest if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the DetectFromUrlRequest.
+     * @throws IOException If an error occurs while reading the AddFaceFromUrlRequest.
      */
     @Generated
-    public static DetectFromUrlRequest fromJson(JsonReader jsonReader) throws IOException {
+    public static AddFaceFromUrlRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String url = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -76,7 +76,7 @@ public final class DetectFromUrlRequest implements JsonSerializable<DetectFromUr
                     reader.skipChildren();
                 }
             }
-            return new DetectFromUrlRequest(url);
+            return new AddFaceFromUrlRequest(url);
         });
     }
 }
