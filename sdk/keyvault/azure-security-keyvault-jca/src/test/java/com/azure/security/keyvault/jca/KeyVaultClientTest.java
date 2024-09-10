@@ -37,6 +37,11 @@ public class KeyVaultClientTest {
     }
 
     @Test
+    public void testGetCertificateChain() {
+        assertNotNull(keyVaultClient.getCertificateChain(certificateName));
+    }
+
+    @Test
     public void testGetKey() {
         assertNotNull(keyVaultClient.getKey(certificateName, null));
     }
