@@ -47,7 +47,8 @@ class ServerSideOnlyContinuationFetcherImpl<T> extends Fetcher<T> {
     @Override
     protected String applyServerResponseContinuation(
         String serverContinuationToken,
-        RxDocumentServiceRequest request) {
+        RxDocumentServiceRequest request,
+        FeedResponse<T> response) {
 
         return this.continuationToken = serverContinuationToken;
     }
