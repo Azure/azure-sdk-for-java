@@ -130,7 +130,7 @@ public abstract class IdentityClientBase {
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
     private static final ClientOptions DEFAULT_CLIENT_OPTIONS = new ClientOptions();
-    private static final Map<String, HttpMethod> lookupHttpMethodMap = new HashMap<>(8);
+    private static final Map<String, HttpMethod> HTTP_METHOD_HASH_MAP = new HashMap<>(8);
 
 
     private final Map<String, String> properties = CoreUtils.getProperties(AZURE_IDENTITY_PROPERTIES);
@@ -615,18 +615,18 @@ public abstract class IdentityClientBase {
     }
 
     static HttpMethod mapToMsalHttpMethod(String methodName) {
-        if (lookupHttpMethodMap.containsKey(methodName)) {
-            return lookupHttpMethodMap.get(methodName);
+        if (HTTP_METHOD_HASH_MAP.containsKey(methodName)) {
+            return HTTP_METHOD_HASH_MAP.get(methodName);
         }
 
         // Invalidate the cache if it grows too large. This is a simple cache and does not need to be large.
-        if (lookupHttpMethodMap.size() > 10) {
-            lookupHttpMethodMap.clear();
+        if (HTTP_METHOD_HASH_MAP.size() > 10) {
+            HTTP_METHOD_HASH_MAP.clear();
         }
 
         for (HttpMethod method : HttpMethod.values()) {
             if (method.methodName.equalsIgnoreCase(methodName)) {
-                lookupHttpMethodMap.put(methodName, method);
+                HTTP_METHOD_HASH_MAP.put(methodName, method);
                 return method;
             }
         }

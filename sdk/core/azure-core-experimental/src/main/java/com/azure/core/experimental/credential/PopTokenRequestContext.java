@@ -9,6 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -44,17 +45,17 @@ public final class PopTokenRequestContext extends TokenRequestContext {
         return this;
     }
 
-    /**
-     * Sets the scopes required for the token.
-     * @param scopes The scopes required for the token.
-     * @return The updated PopTokenRequestContext object.
-     */
-    public PopTokenRequestContext setScopes(List<String> scopes) {
-        Objects.requireNonNull(scopes, "'scopes' cannot be null.");
-        this.scopes.clear();
-        this.scopes.addAll(scopes);
-        return this;
-    }
+    //    /**
+    //     * Sets the scopes required for the token.
+    //     * @param scopes The scopes required for the token.
+    //     * @return The updated PopTokenRequestContext object.
+    //     */
+    //    public PopTokenRequestContext setScopes(List<String> scopes) {
+    //        Objects.requireNonNull(scopes, "'scopes' cannot be null.");
+    //        this.scopes.clear();
+    //        this.scopes.addAll(scopes);
+    //        return this;
+    //    }
 
     /**
      * Sets the scopes required for the token.
@@ -106,13 +107,13 @@ public final class PopTokenRequestContext extends TokenRequestContext {
         return this;
     }
 
-    /**
-     * Gets the scopes required for the token.
-     * @return The scopes required for the token.
-     */
-    public List<String> getScopes() {
-        return scopes;
-    }
+    //    /**
+    //     * Gets the scopes required for the token.
+    //     * @return The scopes required for the token.
+    //     */
+    //    public List<String> getScopes() {
+    //        return scopes;
+    //    }
 
     /**
      * Gets the claims required for the token.
@@ -147,31 +148,19 @@ public final class PopTokenRequestContext extends TokenRequestContext {
     }
 
     /**
-     * Gets the HTTP request.
-     * @return The HTTP request.
-     */
-    public HttpRequest getRequest() {
-        return request;
-    }
-
-    /**
      * Gets the HTTP method.
      * @return The HTTP method.
      */
-    public String getHttpMethod() {
+    public String getResourceMethod() {
         return request != null ? request.getHttpMethod().toString() : null;
     }
 
     /**
-     * Gets the URI.
-     * @return The URI.
+     * Gets the Request resource URL for PoP authentication flow.
+     * @return The URL.
      */
-    public URI getUri() {
-        try {
-            return request != null ? request.getUrl().toURI() : null;
-        } catch (URISyntaxException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
-        }
+    public URL getRequestResourceUrl() {
+        return request != null ? request.getUrl() : null;
     }
 
     /**

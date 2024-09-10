@@ -4,6 +4,7 @@
 package com.azure.core.experimental.credential;
 
 import com.azure.core.credential.AccessToken;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.experimental.implementation.AccessTokenCache;
 import com.azure.core.experimental.implementation.AuthorizationChallengeParser;
 import com.azure.core.http.HttpHeaderName;
@@ -38,7 +39,7 @@ public class PopTokenAuthenticationPolicy implements HttpPipelinePolicy {
      * @param credential The credential to use for authentication.
      * @param scopes The scopes required for the token.
      */
-    public PopTokenAuthenticationPolicy(SupportsProofOfPossession credential, String... scopes) {
+    public PopTokenAuthenticationPolicy(TokenCredential credential, String... scopes) {
         Objects.requireNonNull(credential);
         this.scopes.clear();
         this.scopes.addAll(Arrays.asList(scopes));
@@ -86,8 +87,7 @@ public class PopTokenAuthenticationPolicy implements HttpPipelinePolicy {
      * @return A {@link Boolean} indicating if the request was authorized.
      */
     public boolean authorizeRequestOnChallengeSync(HttpPipelineCallContext context, HttpResponse response) {
-        popNonce = AuthorizationChallengeParser
-            .getChallengeParameterFromResponse(response, "PoP", "nonce");
+        popNonce = AuthorizationChallengeParser.getChallengeParameterFromResponse(response, "PoP", "nonce");
 
         if (CoreUtils.isNullOrEmpty(popNonce)) {
             return false;
@@ -128,8 +128,7 @@ public class PopTokenAuthenticationPolicy implements HttpPipelinePolicy {
                     }
                 });
             } else if (authHeader != null) {
-                popNonce
-                    = AuthorizationChallengeParser.getChallengeParameterFromResponse(httpResponse, "PoP", "nonce");
+                popNonce = AuthorizationChallengeParser.getChallengeParameterFromResponse(httpResponse, "PoP", "nonce");
             }
             return Mono.just(httpResponse);
         });
@@ -158,8 +157,7 @@ public class PopTokenAuthenticationPolicy implements HttpPipelinePolicy {
                     return httpResponse;
                 }
             } else if (authHeader != null) {
-                popNonce
-                    = AuthorizationChallengeParser.getChallengeParameterFromResponse(httpResponse, "PoP", "nonce");
+                popNonce = AuthorizationChallengeParser.getChallengeParameterFromResponse(httpResponse, "PoP", "nonce");
                 return httpResponse;
             } else {
                 return httpResponse;

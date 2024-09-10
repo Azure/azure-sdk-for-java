@@ -81,7 +81,6 @@ public final class IdentityClientOptions implements Cloneable {
     private boolean enableMsaPassthrough;
     private boolean useDefaultBrokerAccount;
     private boolean useImdsRetryStrategy;
-    private boolean proofOfPossessionRequired;
 
     /**
      * Creates an instance of IdentityClientOptions with default settings.

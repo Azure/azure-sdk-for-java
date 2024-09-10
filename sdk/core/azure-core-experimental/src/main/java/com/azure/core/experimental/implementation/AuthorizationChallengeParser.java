@@ -9,16 +9,27 @@ import com.azure.core.http.HttpResponse;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Parses Authorization challenges from the Http response.
+ */
 public class AuthorizationChallengeParser {
 
+    /**
+     * Gets the specified challenge parameter from the challenge response.
+     *
+     * @param response the Http response with auth challenge
+     * @param challengeScheme the challenge scheme to be checked
+     * @param parameter the challenge parameter value to get
+     *
+     * @return the extracted value of the challenge parameter
+     */
     public static String getChallengeParameterFromResponse(HttpResponse response, String challengeScheme,
-                                                           String parameter) {
+        String parameter) {
         String headerValue = response.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE);
         return getChallengeParameter(headerValue, challengeScheme, parameter);
     }
 
-    static String getChallengeParameter(String challengeResponse, String challengeScheme,
-                                                           String parameter) {
+    static String getChallengeParameter(String challengeResponse, String challengeScheme, String parameter) {
         if (challengeResponse == null || challengeResponse.isEmpty()) {
             return null;
         }
@@ -45,12 +56,17 @@ public class AuthorizationChallengeParser {
 
         while (start < length) {
             int equalsIndex = challenge.indexOf('=', start);
-            if (equalsIndex == -1) break;
+            if (equalsIndex == -1) {
+                break;
+            }
 
             String key = challenge.substring(start, equalsIndex).trim();
 
             int commaIndex = challenge.indexOf(',', equalsIndex + 1);
-            if (commaIndex == -1) commaIndex = length;
+
+            if (commaIndex == -1) {
+                commaIndex = length;
+            }
 
             String value = challenge.substring(equalsIndex + 1, commaIndex).trim();
 
