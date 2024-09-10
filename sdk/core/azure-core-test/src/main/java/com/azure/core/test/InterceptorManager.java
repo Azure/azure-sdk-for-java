@@ -17,8 +17,9 @@ import com.azure.core.test.policy.TestProxyRecordPolicy;
 import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonWriter;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -58,8 +59,6 @@ import java.util.function.Supplier;
  * calls that were recorded are persisted to: "<i>session-records/{@code testName}.json</i>"
  */
 public class InterceptorManager implements AutoCloseable {
-    private static final ObjectMapper RECORD_MAPPER = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
-
     private static final ClientLogger LOGGER = new ClientLogger(InterceptorManager.class);
     private final Map<String, String> textReplacementRules;
     private final String testName;
@@ -267,6 +266,7 @@ public class InterceptorManager implements AutoCloseable {
 
     /**
      * A {@link Supplier} for retrieving a variable from a test proxy recording.
+     *
      * @return The supplier for retrieving a variable.
      */
     public Supplier<String> getProxyVariableSupplier() {
@@ -282,6 +282,7 @@ public class InterceptorManager implements AutoCloseable {
 
     /**
      * Get a {@link Consumer} for adding variables used in test proxy tests.
+     *
      * @return The consumer for adding a variable.
      */
     public Consumer<String> getProxyVariableConsumer() {
@@ -293,7 +294,6 @@ public class InterceptorManager implements AutoCloseable {
      * {@link InterceptorManager}.
      *
      * @return HttpPipelinePolicy to record network calls.
-     *
      * @throws IllegalStateException A recording policy was requested when the test proxy is enabled and test mode is not RECORD.
      */
     public HttpPipelinePolicy getRecordPolicy() {
@@ -310,7 +310,6 @@ public class InterceptorManager implements AutoCloseable {
      * @param recordingRedactors The custom redactor functions that are applied in addition to the default redactor
      * functions defined in {@link RecordingRedactor}.
      * @return {@link HttpPipelinePolicy} to record network calls.
-     *
      * @throws IllegalStateException A recording policy was requested when the test proxy is enabled and test mode is not RECORD.
      */
     public HttpPipelinePolicy getRecordPolicy(List<Function<String, String>> recordingRedactors) {
@@ -324,7 +323,6 @@ public class InterceptorManager implements AutoCloseable {
      * Gets a new HTTP client that plays back test session records managed by {@link InterceptorManager}.
      *
      * @return An HTTP client that plays back network calls from its recorded data.
-     *
      * @throws IllegalStateException A playback client was requested when the test proxy is enabled and test mode is LIVE.
      */
     public HttpClient getPlaybackClient() {
@@ -356,8 +354,9 @@ public class InterceptorManager implements AutoCloseable {
             if (testProxyEnabled) {
                 testProxyRecordPolicy.stopRecording(proxyVariableQueue);
             } else {
-                try (BufferedWriter writer = Files.newBufferedWriter(createRecordFile(playbackRecordName).toPath())) {
-                    RECORD_MAPPER.writeValue(writer, recordedData);
+                try (BufferedWriter writer = Files.newBufferedWriter(createRecordFile(playbackRecordName).toPath());
+                    JsonWriter jsonWriter = JsonProviders.createWriter(writer)) {
+                    jsonWriter.writeJson(recordedData).flush();
                 } catch (IOException ex) {
                     throw LOGGER
                         .logExceptionAsError(new UncheckedIOException("Unable to write data to playback file.", ex));
@@ -371,8 +370,9 @@ public class InterceptorManager implements AutoCloseable {
     private RecordedData readDataFromFile() {
         File recordFile = getRecordFile();
 
-        try (BufferedReader reader = Files.newBufferedReader(recordFile.toPath())) {
-            return RECORD_MAPPER.readValue(reader, RecordedData.class);
+        try (BufferedReader reader = Files.newBufferedReader(recordFile.toPath());
+            JsonReader jsonReader = JsonProviders.createReader(reader)) {
+            return RecordedData.fromJson(jsonReader);
         } catch (IOException ex) {
             throw LOGGER.logExceptionAsWarning(new UncheckedIOException(ex));
         }
@@ -391,6 +391,7 @@ public class InterceptorManager implements AutoCloseable {
 
     /**
      * Computes the relative path of the record file to the repo root.
+     *
      * @return A {@link File} with the partial path to where the record file lives.
      */
     private File getTestProxyRecordFile() {
@@ -457,6 +458,7 @@ public class InterceptorManager implements AutoCloseable {
 
     /**
      * Add sanitizer rule for sanitization during record or playback.
+     *
      * @param testProxySanitizers the list of replacement regex and rules.
      * @throws RuntimeException Neither playback or record has started.
      */
@@ -475,6 +477,7 @@ public class InterceptorManager implements AutoCloseable {
 
     /**
      * Disable common sanitizer rule for sanitization during record or playback.
+     *
      * @param testProxySanitizersId the list of sanitizer rule Id to disable.
      * @throws RuntimeException Neither playback or record has started.
      */
@@ -493,6 +496,7 @@ public class InterceptorManager implements AutoCloseable {
 
     /**
      * Add sanitizer rule for sanitization during record or playback.
+     *
      * @param testProxySanitizers the list of replacement regex and rules.
      */
     public void addSanitizers(TestProxySanitizer... testProxySanitizers) {
@@ -504,6 +508,7 @@ public class InterceptorManager implements AutoCloseable {
     /**
      * Add matcher rules to match recorded data in playback.
      * Matchers are only applied for playback session and so this will be a noop when invoked in RECORD/LIVE mode.
+     *
      * @param testProxyMatchers the list of matcher rules when playing back recorded data.
      * @throws RuntimeException Playback has not started.
      */
@@ -525,6 +530,7 @@ public class InterceptorManager implements AutoCloseable {
     /**
      * Add matcher rules to match recorded data in playback.
      * Matchers are only applied for playback session and so this will be a noop when invoked in RECORD/LIVE mode.
+     *
      * @param testProxyRequestMatchers the list of matcher rules when playing back recorded data.
      */
     public void addMatchers(TestProxyRequestMatcher... testProxyRequestMatchers) {
@@ -535,6 +541,7 @@ public class InterceptorManager implements AutoCloseable {
 
     /**
      * Get the recording file location in assets repo.
+     *
      * @return the assets repo location of the recording file.
      */
     public String getRecordingFileLocation() {
@@ -543,6 +550,7 @@ public class InterceptorManager implements AutoCloseable {
 
     /**
      * Sets the httpClient to be used for this test.
+     *
      * @param httpClient The {@link HttpClient} implementation to use.
      */
     void setHttpClient(HttpClient httpClient) {
@@ -551,6 +559,7 @@ public class InterceptorManager implements AutoCloseable {
 
     /**
      * Sets the recording options for the proxy.
+     *
      * @param testProxyRecordingOptions The {@link TestProxyRecordingOptions} to use.
      * @throws RuntimeException if test mode is not record.
      */
