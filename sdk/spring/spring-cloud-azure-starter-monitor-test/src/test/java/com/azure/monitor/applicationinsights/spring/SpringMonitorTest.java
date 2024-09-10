@@ -145,7 +145,7 @@ class SpringMonitorTest {
         }
     }
 
-    // Copied from com.azure.monitor.opentelemetry.exporter.implementation.utils
+    // Copied from com.azure.monitor.opentelemetry.exporter.implementation.utils.TestUtils.java
     // azure-json doesn't deserialize subtypes yet, so need to convert the abstract MonitorDomain to RemoteDependencyData
     public static RemoteDependencyData toRemoteDependencyData(MonitorDomain baseData) {
         try (JsonReader jsonReader = JsonProviders.createReader(baseData.toJsonString())) {
