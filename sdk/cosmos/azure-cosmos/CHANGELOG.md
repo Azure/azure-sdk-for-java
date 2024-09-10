@@ -8,6 +8,7 @@
 
 #### Bugs Fixed
 * Fixed an issue where `CosmosDiagnostics` being accumulated across all requests for `queryChangeFeed` - See [PR 41698](https://github.com/Azure/azure-sdk-for-java/pull/41698)
+* Fixed an issue in the `CosmosAsyncContainer.queryChangeFeed` API that could result in hangs under certain conditions. - See [PR 41774](https://github.com/Azure/azure-sdk-for-java/pull/41774)
 
 #### Other Changes
 # Changed diagnostic handler implementations to use weak references to `CosmosAsyncClient` to allow GC to earlier clean them up. - See [PR 41710](https://github.com/Azure/azure-sdk-for-java/pull/41710)
