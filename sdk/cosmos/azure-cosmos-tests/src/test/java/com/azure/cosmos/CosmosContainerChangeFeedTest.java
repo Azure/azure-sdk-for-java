@@ -814,14 +814,19 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
 
         logger.info("New modified continuation to provoke the hang {}", state.toJson());
 
+        assertThat(state.getContinuation().getCompositeContinuationTokens()).hasSize(2);
         options = CosmosChangeFeedRequestOptions
             .createForProcessingFromContinuation(state.toString());
 
-        String continuationBeforeLastDrain = state.toString();
-        String continuationAfterLastDrain =
+        String continuationAfterLastDrainAttempt =
             drainAndValidateChangeFeedResults(options, null, 0);
-
-        assertThat(continuationAfterLastDrain).isEqualTo(continuationBeforeLastDrain);
+        ChangeFeedState stateAfterLastDrainAttemptRaw = ChangeFeedState.fromString(continuationAfterLastDrainAttempt);
+        assertThat(stateAfterLastDrainAttemptRaw).isNotNull();
+        assertThat(stateAfterLastDrainAttemptRaw).isInstanceOf(ChangeFeedStateV1.class);
+        ChangeFeedStateV1 stateAfterLastDrainAttempt = (ChangeFeedStateV1)stateAfterLastDrainAttemptRaw;
+        assertThat(stateAfterLastDrainAttempt.getContinuation()).isNotNull();
+        assertThat(stateAfterLastDrainAttempt.getContinuation().getCompositeContinuationTokens()).isNotNull();
+        assertThat(stateAfterLastDrainAttempt.getContinuation().getCompositeContinuationTokens()).hasSize(3);
     }
 
     void insertDocuments(

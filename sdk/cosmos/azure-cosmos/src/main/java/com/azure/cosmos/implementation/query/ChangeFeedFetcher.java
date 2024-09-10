@@ -7,6 +7,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.InvalidPartitionExceptionRetryPolicy;
@@ -37,6 +38,8 @@ import java.util.function.Supplier;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 class ChangeFeedFetcher<T> extends Fetcher<T> {
+    private final static ImplementationBridgeHelpers.FeedResponseHelper.FeedResponseAccessor  feedResponseAccessor =
+        ImplementationBridgeHelpers.FeedResponseHelper.getFeedResponseAccessor();
     private final ChangeFeedState changeFeedState;
     private final Supplier<RxDocumentServiceRequest> createRequestFunc;
     private final Supplier<DocumentClientRetryPolicy> feedRangeContinuationRetryPolicySupplier;
@@ -127,10 +130,13 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
     @Override
     protected String applyServerResponseContinuation(
         String serverContinuationToken,
-        RxDocumentServiceRequest request) {
+        RxDocumentServiceRequest request,
+        FeedResponse<T> response) {
 
+        boolean isNoChanges = feedResponseAccessor.getNoChanges(response);
+        boolean shouldMoveToNextTokenOnETagReplace = !isNoChanges;
         return this.changeFeedState.applyServerResponseContinuation(
-            serverContinuationToken, request);
+            serverContinuationToken, request, shouldMoveToNextTokenOnETagReplace);
     }
 
     @Override

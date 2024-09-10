@@ -54,7 +54,7 @@ public abstract class FeedRangeContinuation extends JsonSerializable {
 
     public abstract int getContinuationTokenCount();
 
-    public abstract void replaceContinuation(String continuationToken);
+    public abstract void replaceContinuation(String continuationToken, boolean shouldMoveToNextTokenOnETagReplace);
 
     public abstract boolean isDone();
 
