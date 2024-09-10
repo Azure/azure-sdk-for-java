@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core;
+package com.azure.core.validation.http;
 
 import com.azure.core.util.UrlBuilder;
 import reactor.core.Exceptions;
@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 /**
  * Utility methods for testing {@code azure-core}.
  */
-public final class CoreTestUtils {
+public final class HttpValidatonUtils {
     private static final byte[] BYTES;
     private static final int BYTES_LENGTH;
 
@@ -96,63 +96,6 @@ public final class CoreTestUtils {
     }
 
     /**
-     * Reads an {@link InputStream} to completion returning its contents, using a read buffer.
-     *
-     * @param stream The stream to read.
-     * @return The byte array representing its contents.
-     * @throws IOException If an error happens during reading.
-     */
-    public static byte[] readStream(InputStream stream) throws IOException {
-        return readStream(stream, 8 * 1024);
-    }
-
-    /**
-     * Reads an {@link InputStream} to completion returning its contents, using a read buffer.
-     *
-     * @param stream The stream to read.
-     * @param bufferSize The size of the read buffer.
-     * @return The byte array representing its contents.
-     * @throws IOException If an error happens during reading.
-     */
-    public static byte[] readStream(InputStream stream, int bufferSize) throws IOException {
-        TestByteArrayOutputStream outputStream = new TestByteArrayOutputStream();
-        byte[] buffer = new byte[bufferSize];
-        int length;
-        while ((length = stream.read(buffer)) != -1) {
-            outputStream.write(buffer, 0, length);
-        }
-        return outputStream.toByteArray();
-    }
-
-    /**
-     * Reads an {@link InputStream} to completion returning its contents, reading byte by byte.
-     *
-     * @param stream The stream to read.
-     * @return The byte array representing its contents.
-     * @throws IOException If an error happens during reading.
-     */
-    public static byte[] readStreamByteByByte(InputStream stream) throws IOException {
-        TestByteArrayOutputStream outputStream = new TestByteArrayOutputStream();
-        byte[] buffer = new byte[8192];
-        int bufferPosition = 0;
-        int tmp;
-        while ((tmp = stream.read()) != -1) {
-            if (bufferPosition >= 8192) {
-                outputStream.write(buffer);
-                bufferPosition = 0;
-            }
-
-            buffer[bufferPosition++] = (byte) tmp;
-        }
-
-        if (bufferPosition > 0) {
-            outputStream.write(buffer, 0, bufferPosition);
-        }
-
-        return outputStream.toByteArray();
-    }
-
-    /**
      * Convenience method for creating {@link URL} now that as of Java 20+ all {@link URL} constructors are deprecated.
      * <p>
      * This uses the logic {@code URI.create(String).toURL()}, which is recommended instead of the URL constructors.
@@ -217,6 +160,6 @@ public final class CoreTestUtils {
         }
     }
 
-    private CoreTestUtils() {
+    private HttpValidatonUtils() {
     }
 }
