@@ -537,14 +537,14 @@ public final class RadiologyInsightsAsyncClient {
         return this.serviceClient.beginInferRadiologyInsightsAsync(id, resource, requestOptions);
     }
 
-	/**
+    /**
      * Create Radiology Insights job
      *
      * Creates a Radiology Insights job with the given request body.
      *
      * @param id The unique ID of the job.
      * @param resource The resource instance.
-	 * @param expand Expand the indicated resources into the response.
+     * @param expand Expand the indicated resources into the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
