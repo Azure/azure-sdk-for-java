@@ -90,14 +90,38 @@ public final class BufferStagingArea {
 
             result = Flux.just(this.currentBuf);
 
+            // calculate how many chunks remain given the total size of the buffer and the staging area window
+            int remainingChunks = buf.remaining() / (int) this.buffSize;
+            if (remainingChunks >= 1) {
+                // if there is more than one chunk left, we need to create more BufferAggregators and iterate over them
+                // to ensure we don't hit a negative limit.
+                BufferAggregator[] aggregators = new BufferAggregator[remainingChunks];
+                for (int i = 0; i < remainingChunks; i++) {
+                    BufferAggregator overflowBuffer = new BufferAggregator(this.buffSize);
+                    ByteBuffer overflowDup = buf.duplicate();
+                    int overflowLimit = buf.position() + (int) overflowBuffer.remainingCapacity();
+                    overflowDup.limit(overflowLimit);
+                    overflowBuffer.append(overflowDup);
+                    // Adjust the window of original buffer to represent remaining part.
+                    buf.position(overflowLimit);
+                    aggregators[i] = overflowBuffer;
+                }
+                result = result.concatWith(Flux.fromArray(aggregators));
+            }
+
             /*
             Get a new buffer and fill it with whatever is left from buf. Note that this relies on the assumption that
             the source Flux has been split up into buffers that are no bigger than chunk size. This assumption
             means we'll only have to over flow once, and the buffer we overflow into will not be filled. This is the
             buffer we will write to on the next call to write().
              */
-            this.currentBuf = new BufferAggregator(this.buffSize);
-            this.currentBuf.append(buf);
+            if (buf.remaining() > 0) {
+                this.currentBuf = new BufferAggregator(this.buffSize);
+                this.currentBuf.append(buf);
+            } else {
+                // If we have written all the data, we don't need to keep the buffer around.
+                this.currentBuf = null;
+            }
         }
 
         return result;

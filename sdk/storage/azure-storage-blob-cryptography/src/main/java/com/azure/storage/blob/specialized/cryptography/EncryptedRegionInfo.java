@@ -14,7 +14,7 @@ final class EncryptedRegionInfo implements JsonSerializable<EncryptedRegionInfo>
     /**
      * The cipher text length.
      */
-    private int dataLength;
+    private long dataLength;
 
     /**
      * The nonce length.
@@ -30,7 +30,7 @@ final class EncryptedRegionInfo implements JsonSerializable<EncryptedRegionInfo>
      * @param ciphertextLength The length of the cipher text.
      * @param nonceLength The length of the nonce.
      */
-    EncryptedRegionInfo(int ciphertextLength, int nonceLength) {
+    EncryptedRegionInfo(long ciphertextLength, int nonceLength) {
         this.dataLength = ciphertextLength;
         this.nonceLength = nonceLength;
     }
@@ -40,7 +40,7 @@ final class EncryptedRegionInfo implements JsonSerializable<EncryptedRegionInfo>
      *
      * @return The ciphertextLength property.
      */
-    public int getDataLength() {
+    public long getDataLength() {
         return dataLength;
     }
 

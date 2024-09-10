@@ -111,7 +111,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
 
     private final boolean requiresEncryption;
 
-    private final int gcmEncryptionRegionLength;
+    private final BlobEncryptionOptions encryptionOptions;
 
     EncryptionScope getEncryptionScopeInternal() {
         return encryptionScope;
@@ -133,8 +133,8 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
         return requiresEncryption;
     }
 
-    int getGcmEncryptionRegionLength() {
-        return gcmEncryptionRegionLength;
+    BlobEncryptionOptions getBlobEncryptionOptions() {
+        return encryptionOptions;
     }
 
     /**
@@ -157,7 +157,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
     EncryptedBlobAsyncClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion, String accountName,
         String containerName, String blobName, String snapshot, CpkInfo customerProvidedKey,
         EncryptionScope encryptionScope, AsyncKeyEncryptionKey key, String keyWrapAlgorithm, String versionId,
-        EncryptionVersion encryptionVersion, boolean requiresEncryption, int gcmEncryptionRegionLength) {
+        EncryptionVersion encryptionVersion, boolean requiresEncryption, BlobEncryptionOptions encryptionOptions) {
         super(pipeline, url, serviceVersion, accountName, containerName, blobName, snapshot, customerProvidedKey,
             encryptionScope, versionId);
 
@@ -165,7 +165,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
         this.keyWrapAlgorithm = keyWrapAlgorithm;
         this.encryptionVersion = encryptionVersion;
         this.requiresEncryption = requiresEncryption;
-        this.gcmEncryptionRegionLength = gcmEncryptionRegionLength;
+        this.encryptionOptions = encryptionOptions;
     }
 
     /**
@@ -182,8 +182,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
         }
         return new EncryptedBlobAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
             getContainerName(), getBlobName(), getSnapshotId(), getCustomerProvidedKey(), finalEncryptionScope,
-            keyWrapper, keyWrapAlgorithm, getVersionId(), encryptionVersion, requiresEncryption,
-            gcmEncryptionRegionLength);
+            keyWrapper, keyWrapAlgorithm, getVersionId(), encryptionVersion, requiresEncryption, encryptionOptions);
     }
 
     /**
@@ -204,7 +203,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
         }
         return new EncryptedBlobAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
             getContainerName(), getBlobName(), getSnapshotId(), finalCustomerProvidedKey, encryptionScope, keyWrapper,
-            keyWrapAlgorithm, getVersionId(), encryptionVersion, requiresEncryption, gcmEncryptionRegionLength);
+            keyWrapAlgorithm, getVersionId(), encryptionVersion, requiresEncryption, encryptionOptions);
     }
 
     boolean isEncryptionRequired() {
@@ -641,7 +640,8 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
     Mono<EncryptedBlob> encryptBlob(Flux<ByteBuffer> plainTextFlux) {
         Objects.requireNonNull(this.keyWrapper, "keyWrapper cannot be null");
         try {
-            Encryptor encryptor = Encryptor.getEncryptor(this.encryptionVersion, generateSecretKey(), this.gcmEncryptionRegionLength);
+            Encryptor encryptor = Encryptor.getEncryptor(this.encryptionVersion, generateSecretKey(),
+                encryptionOptions);
 
             Map<String, String> keyWrappingMetadata = new HashMap<>();
             keyWrappingMetadata.put(AGENT_METADATA_KEY, AGENT_METADATA_VALUE);

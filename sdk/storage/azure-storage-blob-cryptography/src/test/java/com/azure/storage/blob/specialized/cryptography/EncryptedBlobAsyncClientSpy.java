@@ -13,7 +13,7 @@ final class EncryptedBlobAsyncClientSpy extends EncryptedBlobAsyncClient {
             client.getContainerName(), client.getBlobName(), client.getSnapshotId(), client.getCustomerProvidedKey(),
             client.getEncryptionScopeInternal(), client.getKeyWrapper(), client.getKeyWrapAlgorithm(),
             client.getVersionId(), client.getEncryptionVersion(), client.isRequiresEncryption(),
-            client.getGcmEncryptionRegionLength());
+            client.getBlobEncryptionOptions());
     }
 
     @Override

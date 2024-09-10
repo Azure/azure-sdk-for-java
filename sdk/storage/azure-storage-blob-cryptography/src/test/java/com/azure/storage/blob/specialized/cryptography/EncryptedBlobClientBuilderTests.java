@@ -23,6 +23,7 @@ import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.implementation.util.BlobUserAgentModificationPolicy;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RetryPolicyType;
 import org.junit.jupiter.api.BeforeEach;
@@ -281,10 +282,13 @@ public class EncryptedBlobClientBuilderTests {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = { 0, -1 })
-    public void illegalRegionLength() {
+    @ValueSource(longs = { 0, -1, 15, 4L * Constants.GB })
+    public void illegalRegionLength(long regionLength) {
         // should we have a test for checking whether length > 4MB?
-        assertThrows(IllegalArgumentException.class, () -> new EncryptedBlobClientBuilder(EncryptionVersion.V2).gcmEncryptionRegionLength(0).buildEncryptedBlobClient());
+        assertThrows(IllegalArgumentException.class, () ->
+            new EncryptedBlobClientBuilder(EncryptionVersion.V2)
+                .blobEncryptionOptions(new BlobEncryptionOptions().setAuthenticatedRegionDataLength(regionLength))
+                .buildEncryptedBlobClient());
     }
 
     private static void sendAndValidateUserAgentHeader(HttpPipeline pipeline, String url) {

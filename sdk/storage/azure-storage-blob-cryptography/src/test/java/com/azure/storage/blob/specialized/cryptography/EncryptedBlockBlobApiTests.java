@@ -1728,15 +1728,14 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
         compareFiles(file, outFile, 0, file.length());
     }
 
-    @Test
-    public void uploadAndDownloadDifferentRegionLength() {
-        int regionLength = 4 * Constants.KB;
-        int dataSize = 4 * Constants.MB;
+    @ParameterizedTest
+    @MethodSource("uploadAndDownloadDifferentRegionLengthSupplier")
+    public void uploadAndDownloadDifferentRegionLength(int regionLength, int dataSize) {
         ByteBuffer data = getRandomData(dataSize);
         beac = mockAesKey(getEncryptedClientBuilder(fakeKey, null, ENV.getPrimaryAccount().getCredential(),
             cc.getBlobContainerUrl(), EncryptionVersion.V2)
             .blobName(generateBlobName())
-            .gcmEncryptionRegionLength(regionLength)
+            .blobEncryptionOptions(new BlobEncryptionOptions().setAuthenticatedRegionDataLength(regionLength))
             .buildEncryptedBlobAsyncClient());
         beac.uploadWithResponse(new BlobParallelUploadOptions(Flux.just(data.duplicate()))).block();
         ByteArrayOutputStream plaintextOut = new ByteArrayOutputStream();
@@ -1744,6 +1743,18 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
         new EncryptedBlobClient(beac).downloadStream(plaintextOut);
 
         assertArraysEqual(data.array(), plaintextOut.toByteArray());
+    }
+
+    private static Stream<Arguments> uploadAndDownloadDifferentRegionLengthSupplier() {
+        return Stream.of(
+            Arguments.of(4 * Constants.KB, 4 * Constants.MB),
+            Arguments.of(Constants.KB, 8 * Constants.MB),
+            Arguments.of(10 * Constants.KB, 4 * Constants.MB), // unaligned
+            Arguments.of(16, Constants.KB), // minimum boundary
+            Arguments.of(25, Constants.KB), // unaligned
+            Arguments.of(6 * Constants.MB, Constants.KB), // testing region smaller than data size
+            Arguments.of(6 * Constants.MB, 8 * Constants.MB) // testing greater than default 4MB region size
+        );
     }
 
     private static Stream<Arguments> encryptionDataCaseInsensitivitySupplier() {

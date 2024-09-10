@@ -153,7 +153,7 @@ public final class EncryptedBlobClientBuilder implements
     private BlobServiceVersion version;
     private CpkInfo customerProvidedKey;
     private EncryptionScope encryptionScope;
-    private int gcmEncryptionRegionLength;
+    private BlobEncryptionOptions blobEncryptionOptions;
 
     /**
      * Creates a new instance of the EncryptedBlobClientBuilder
@@ -250,11 +250,17 @@ public final class EncryptedBlobClientBuilder implements
         }
         BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
 
-        int finalGcmEncryptionRegionLength = this.gcmEncryptionRegionLength == 0 ? GCM_ENCRYPTION_REGION_LENGTH : this.gcmEncryptionRegionLength;
+        if (this.blobEncryptionOptions == null) {
+            this.blobEncryptionOptions = new BlobEncryptionOptions();
+        }
+        // check if the region length has been set, if not then set it to the default 4MB region length
+        if (this.blobEncryptionOptions.getAuthenticatedRegionDataLength() == 0) {
+            this.blobEncryptionOptions.setAuthenticatedRegionDataLength(GCM_ENCRYPTION_REGION_LENGTH);
+        }
 
         return new EncryptedBlobAsyncClient(addBlobUserAgentModificationPolicy(getHttpPipeline()), endpoint,
             serviceVersion, accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope,
-            keyWrapper, keyWrapAlgorithm, versionId, encryptionVersion, requiresEncryption, finalGcmEncryptionRegionLength);
+            keyWrapper, keyWrapAlgorithm, versionId, encryptionVersion, requiresEncryption, blobEncryptionOptions);
     }
 
 
@@ -923,15 +929,13 @@ public final class EncryptedBlobClientBuilder implements
     }
 
     /**
-     * Sets the partition chunk size
-     * @param gcmEncryptionRegionLength the region length used for encrypting the blob
+     * Sets the encryption options for the blob.
+     *
+     * @param options The {@link BlobEncryptionOptions} for the blob.
      * @return the updated EncryptedBlobClientBuilder object
      */
-    public EncryptedBlobClientBuilder gcmEncryptionRegionLength(int gcmEncryptionRegionLength) {
-        if (gcmEncryptionRegionLength <= 0) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Region length needs to be greater than 0."));
-        }
-        this.gcmEncryptionRegionLength = gcmEncryptionRegionLength;
+    public EncryptedBlobClientBuilder blobEncryptionOptions(BlobEncryptionOptions options) {
+        this.blobEncryptionOptions = options;
         return this;
     }
 }

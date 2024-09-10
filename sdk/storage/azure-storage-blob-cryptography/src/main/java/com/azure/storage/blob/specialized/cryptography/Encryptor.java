@@ -37,12 +37,12 @@ abstract class Encryptor {
 
     // see if we can generalize this with the gcmEncryptionRegionLength
     // options bag?
-    static Encryptor getEncryptor(EncryptionVersion version, SecretKey aesKey, int gcmEncryptionRegionLength) throws GeneralSecurityException {
+    static Encryptor getEncryptor(EncryptionVersion version, SecretKey aesKey, BlobEncryptionOptions encryptionOptions) throws GeneralSecurityException {
         switch (version) {
             case V1:
                 return new EncryptorV1(aesKey);
             case V2:
-                return new EncryptorV2(aesKey, gcmEncryptionRegionLength);
+                return new EncryptorV2(aesKey, encryptionOptions);
             default:
                 throw LOGGER.logExceptionAsError(new IllegalArgumentException("Invalid encryption version: "
                     + version));
