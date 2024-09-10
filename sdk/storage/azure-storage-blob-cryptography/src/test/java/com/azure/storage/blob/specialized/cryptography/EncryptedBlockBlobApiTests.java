@@ -10,6 +10,7 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.TestMode;
@@ -18,12 +19,9 @@ import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.ProgressListener;
-import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
-import com.azure.security.keyvault.keys.KeyClient;
-import com.azure.security.keyvault.keys.KeyClientBuilder;
 import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
@@ -1793,29 +1791,45 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
 
         file.deleteOnExit();
         outFile.deleteOnExit();
-        Files.write(file.toPath(), getRandomByteArray(4194304));
+        //4194277-4194304
+        Files.write(file.toPath(), getRandomByteArray(4194277));
 
-        bec.uploadFromFile(file.toPath().toString());
-        bec.downloadToFile(outFile.toPath().toString(), true);
+        HttpLogOptions logOptions = new HttpLogOptions()
+            .setLogLevel(HttpLogDetailLevel.HEADERS);
+
+        EncryptedBlobClient bec2 = new EncryptedBlobClientBuilder(EncryptionVersion.V2)
+            .key(fakeKey, KeyWrapAlgorithm.RSA_OAEP_256.toString())
+            .credential(ENV.getPrimaryAccount().getCredential())
+            .endpoint(cc.getBlobContainerUrl())
+            .blobName(generateBlobName())
+            .httpLogOptions(logOptions)
+            .buildEncryptedBlobClient();
+
+        bec2.uploadFromFile(file.toPath().toString());
+        bec2.downloadToFile(outFile.toPath().toString(), true);
     }
 
-    class LocalAsyncEncryptionKey implements AsyncKeyEncryptionKey {
-        @Override
-        public Mono<String> getKeyId() {
-            return Mono.just("/keys/keyId");
-        }
+    @Test
+    public void nonEncryptedTest() throws IOException {
+        File file = File.createTempFile(CoreUtils.randomUuid().toString(), ".txt");
+        File outFile = File.createTempFile(CoreUtils.randomUuid().toString(), ".txt");
 
-        // this will be used while encryption process
-        @Override
-        public Mono<byte[]> wrapKey(String s, byte[] bytes) {
-            return Mono.fromCallable(() -> bytes);
-        }
+        file.deleteOnExit();
+        outFile.deleteOnExit();
+        Files.write(file.toPath(), getRandomByteArray(4194332));
 
-        // this will be used while decryption process
-        @Override
-        public Mono<byte[]> unwrapKey(String s, byte[] bytes) {
-            return Mono.fromCallable(() -> bytes);
-        }
+        HttpLogOptions logOptions = new HttpLogOptions()
+            .setLogLevel(HttpLogDetailLevel.HEADERS);
+
+        BlobClient bec2 = new BlobClientBuilder()
+            .credential(ENV.getPrimaryAccount().getCredential())
+            .endpoint(cc.getBlobContainerUrl())
+            .blobName(generateBlobName())
+            .httpLogOptions(logOptions)
+            .buildClient();
+
+        bec2.uploadFromFile(file.toPath().toString());
+        bec2.downloadToFile(outFile.toPath().toString(), true);
     }
 
 }
