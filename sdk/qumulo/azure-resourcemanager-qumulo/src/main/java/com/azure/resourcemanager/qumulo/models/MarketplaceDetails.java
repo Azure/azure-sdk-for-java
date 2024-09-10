@@ -6,48 +6,56 @@ package com.azure.resourcemanager.qumulo.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** MarketplaceDetails of Qumulo FileSystem resource. */
+/**
+ * MarketplaceDetails of Qumulo FileSystem resource.
+ */
 @Fluent
-public final class MarketplaceDetails {
+public final class MarketplaceDetails implements JsonSerializable<MarketplaceDetails> {
     /*
      * Marketplace Subscription Id
      */
-    @JsonProperty(value = "marketplaceSubscriptionId")
     private String marketplaceSubscriptionId;
 
     /*
      * Plan Id
      */
-    @JsonProperty(value = "planId", required = true)
     private String planId;
 
     /*
      * Offer Id
      */
-    @JsonProperty(value = "offerId", required = true)
     private String offerId;
 
     /*
      * Publisher Id
      */
-    @JsonProperty(value = "publisherId", required = true)
     private String publisherId;
+
+    /*
+     * Term Unit
+     */
+    private String termUnit;
 
     /*
      * Marketplace subscription status
      */
-    @JsonProperty(value = "marketplaceSubscriptionStatus", access = JsonProperty.Access.WRITE_ONLY)
     private MarketplaceSubscriptionStatus marketplaceSubscriptionStatus;
 
-    /** Creates an instance of MarketplaceDetails class. */
+    /**
+     * Creates an instance of MarketplaceDetails class.
+     */
     public MarketplaceDetails() {
     }
 
     /**
      * Get the marketplaceSubscriptionId property: Marketplace Subscription Id.
-     *
+     * 
      * @return the marketplaceSubscriptionId value.
      */
     public String marketplaceSubscriptionId() {
@@ -56,7 +64,7 @@ public final class MarketplaceDetails {
 
     /**
      * Set the marketplaceSubscriptionId property: Marketplace Subscription Id.
-     *
+     * 
      * @param marketplaceSubscriptionId the marketplaceSubscriptionId value to set.
      * @return the MarketplaceDetails object itself.
      */
@@ -67,7 +75,7 @@ public final class MarketplaceDetails {
 
     /**
      * Get the planId property: Plan Id.
-     *
+     * 
      * @return the planId value.
      */
     public String planId() {
@@ -76,7 +84,7 @@ public final class MarketplaceDetails {
 
     /**
      * Set the planId property: Plan Id.
-     *
+     * 
      * @param planId the planId value to set.
      * @return the MarketplaceDetails object itself.
      */
@@ -87,7 +95,7 @@ public final class MarketplaceDetails {
 
     /**
      * Get the offerId property: Offer Id.
-     *
+     * 
      * @return the offerId value.
      */
     public String offerId() {
@@ -96,7 +104,7 @@ public final class MarketplaceDetails {
 
     /**
      * Set the offerId property: Offer Id.
-     *
+     * 
      * @param offerId the offerId value to set.
      * @return the MarketplaceDetails object itself.
      */
@@ -107,7 +115,7 @@ public final class MarketplaceDetails {
 
     /**
      * Get the publisherId property: Publisher Id.
-     *
+     * 
      * @return the publisherId value.
      */
     public String publisherId() {
@@ -116,7 +124,7 @@ public final class MarketplaceDetails {
 
     /**
      * Set the publisherId property: Publisher Id.
-     *
+     * 
      * @param publisherId the publisherId value to set.
      * @return the MarketplaceDetails object itself.
      */
@@ -126,8 +134,28 @@ public final class MarketplaceDetails {
     }
 
     /**
+     * Get the termUnit property: Term Unit.
+     * 
+     * @return the termUnit value.
+     */
+    public String termUnit() {
+        return this.termUnit;
+    }
+
+    /**
+     * Set the termUnit property: Term Unit.
+     * 
+     * @param termUnit the termUnit value to set.
+     * @return the MarketplaceDetails object itself.
+     */
+    public MarketplaceDetails withTermUnit(String termUnit) {
+        this.termUnit = termUnit;
+        return this;
+    }
+
+    /**
      * Get the marketplaceSubscriptionStatus property: Marketplace subscription status.
-     *
+     * 
      * @return the marketplaceSubscriptionStatus value.
      */
     public MarketplaceSubscriptionStatus marketplaceSubscriptionStatus() {
@@ -136,26 +164,71 @@ public final class MarketplaceDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (planId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property planId in model MarketplaceDetails"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property planId in model MarketplaceDetails"));
         }
         if (offerId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property offerId in model MarketplaceDetails"));
-        }
-        if (publisherId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property publisherId in model MarketplaceDetails"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property offerId in model MarketplaceDetails"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(MarketplaceDetails.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("planId", this.planId);
+        jsonWriter.writeStringField("offerId", this.offerId);
+        jsonWriter.writeStringField("marketplaceSubscriptionId", this.marketplaceSubscriptionId);
+        jsonWriter.writeStringField("publisherId", this.publisherId);
+        jsonWriter.writeStringField("termUnit", this.termUnit);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MarketplaceDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MarketplaceDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MarketplaceDetails.
+     */
+    public static MarketplaceDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MarketplaceDetails deserializedMarketplaceDetails = new MarketplaceDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("planId".equals(fieldName)) {
+                    deserializedMarketplaceDetails.planId = reader.getString();
+                } else if ("offerId".equals(fieldName)) {
+                    deserializedMarketplaceDetails.offerId = reader.getString();
+                } else if ("marketplaceSubscriptionId".equals(fieldName)) {
+                    deserializedMarketplaceDetails.marketplaceSubscriptionId = reader.getString();
+                } else if ("publisherId".equals(fieldName)) {
+                    deserializedMarketplaceDetails.publisherId = reader.getString();
+                } else if ("termUnit".equals(fieldName)) {
+                    deserializedMarketplaceDetails.termUnit = reader.getString();
+                } else if ("marketplaceSubscriptionStatus".equals(fieldName)) {
+                    deserializedMarketplaceDetails.marketplaceSubscriptionStatus
+                        = MarketplaceSubscriptionStatus.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMarketplaceDetails;
+        });
+    }
 }
