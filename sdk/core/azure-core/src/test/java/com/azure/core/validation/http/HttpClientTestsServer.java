@@ -1,17 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-
-package com.azure.core.test;
+package com.azure.core.validation.http;
 
 import com.azure.core.http.ContentType;
-import com.azure.core.test.http.HttpClientTests;
-import com.azure.core.test.http.LocalTestServer;
-import com.azure.core.test.implementation.entities.HttpBinFormDataJson;
-import com.azure.core.test.implementation.entities.HttpBinJson;
-import com.azure.core.test.utils.MessageDigestUtils;
+import com.azure.core.validation.http.models.HttpBinFormDataJson;
+import com.azure.core.validation.http.models.HttpBinJson;
+import com.azure.core.validation.http.models.PizzaSize;
 import com.azure.core.util.DateTimeRfc1123;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerEncoding;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Response;
 import org.eclipse.jetty.util.Callback;
@@ -32,12 +27,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
+import static com.azure.core.validation.http.HttpValidatonUtils.md5;
+
 /**
  * Server used when running {@link HttpClientTests}.
  */
 @Execution(ExecutionMode.SAME_THREAD)
-public class HttpClientTestsServer {
-    private static final JacksonAdapter ADAPTER = new JacksonAdapter();
+public final class HttpClientTestsServer {
     private static final String PLAIN_RESPONSE = "/plainBytesNoHeader";
     private static final String HEADER_RESPONSE = "/plainBytesWithHeader";
     private static final String INVALID_HEADER_RESPONSE = "/plainBytesInvalidHeader";
@@ -58,6 +54,11 @@ public class HttpClientTestsServer {
 
     private static final byte[] RETURN_BYTES = "Hello World!".getBytes(StandardCharsets.UTF_8);
 
+    /**
+     * Gets the {@link LocalTestServer}.
+     *
+     * @return The {@link LocalTestServer}.
+     */
     public static LocalTestServer getHttpClientTestsServer() {
         return new LocalTestServer((req, resp, requestBody) -> {
             String path = req.getServletPath();
@@ -157,7 +158,7 @@ public class HttpClientTestsServer {
         byte[] body = new byte[bodySize];
         ThreadLocalRandom.current().nextBytes(body);
 
-        resp.addHeader("ETag", MessageDigestUtils.md5(body));
+        resp.addHeader("ETag", md5(body));
 
         resp.getHttpOutput().write(body);
         resp.getHttpOutput().flush();
@@ -184,7 +185,7 @@ public class HttpClientTestsServer {
             responseBody.headers(headers);
         }
 
-        handleRequest(resp, "application/json", ADAPTER.serializeToBytes(responseBody, SerializerEncoding.JSON));
+        handleRequest(resp, "application/json", responseBody.toJsonBytes());
     }
 
     private static void sendFormResponse(Response resp, String requestString) throws IOException {
@@ -209,7 +210,7 @@ public class HttpClientTestsServer {
                     break;
 
                 case "size":
-                    form.pizzaSize(HttpBinFormDataJson.PizzaSize.valueOf(kvpPieces[1]));
+                    form.pizzaSize(PizzaSize.fromString(kvpPieces[1]));
                     break;
 
                 case "toppings":
@@ -228,7 +229,7 @@ public class HttpClientTestsServer {
         form.toppings(toppings);
         formBody.form(form);
 
-        handleRequest(resp, "application/json", ADAPTER.serializeToBytes(formBody, SerializerEncoding.JSON));
+        handleRequest(resp, "application/json", formBody.toJsonBytes());
     }
 
     private static String cleanseUrl(HttpServletRequest req) {
@@ -244,5 +245,8 @@ public class HttpClientTestsServer {
         resp.addHeader("X-Processed-Time", String.valueOf(ThreadLocalRandom.current().nextDouble(0.0D, 10.0D)));
         resp.addHeader("Access-Control-Allow-Credentials", "true");
         resp.addHeader("Content-Type", "application/json");
+    }
+
+    private HttpClientTestsServer() {
     }
 }

@@ -42,7 +42,7 @@ import static com.azure.core.http.vertx.VertxHttpClientLocalTestServer.LONG_BODY
 import static com.azure.core.http.vertx.VertxHttpClientLocalTestServer.RETURN_HEADERS_AS_IS_PATH;
 import static com.azure.core.http.vertx.VertxHttpClientLocalTestServer.SHORT_BODY;
 import static com.azure.core.http.vertx.VertxHttpClientLocalTestServer.TIMEOUT;
-import static com.azure.core.test.utils.TestUtils.assertArraysEqual;
+import static com.azure.core.validation.http.HttpValidatonUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -148,7 +148,7 @@ public class VertxAsyncHttpClientTests {
             .flatMap(response -> Mono.using(() -> response, HttpResponse::getBodyAsByteArray, HttpResponse::close));
 
         StepVerifier.create(responses).thenConsumeWhile(response -> {
-            com.azure.core.test.utils.TestUtils.assertArraysEqual(LONG_BODY, response);
+            assertArraysEqual(LONG_BODY, response);
             return true;
         }).expectComplete().verify(Duration.ofSeconds(60));
     }
@@ -165,7 +165,7 @@ public class VertxAsyncHttpClientTests {
                 requests.add(() -> {
                     try (HttpResponse response = doRequestSync(client, "/long")) {
                         byte[] body = response.getBodyAsBinaryData().toBytes();
-                        com.azure.core.test.utils.TestUtils.assertArraysEqual(LONG_BODY, body);
+                        assertArraysEqual(LONG_BODY, body);
                         return null;
                     }
                 });

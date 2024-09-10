@@ -38,6 +38,7 @@ import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -77,7 +78,6 @@ public class TestProxyTests extends TestProxyTestBase {
     @BeforeAll
     public static void setupClass() {
         server = new TestProxyTestServer();
-
     }
 
     @AfterAll
@@ -174,8 +174,8 @@ public class TestProxyTests extends TestProxyTestBase {
     @Test
     @Tag("Playback")
     public void testPlayback() {
-
         HttpClient client = interceptorManager.getPlaybackClient();
+        interceptorManager.addMatchers(new CustomMatcher().setExcludedHeaders(Collections.singletonList("Connection")));
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, "http://localhost:" + server.port() + "/first/path")
             // For this test set an Accept header as most HttpClients will use a default which could result in this
@@ -206,8 +206,8 @@ public class TestProxyTests extends TestProxyTestBase {
     @Test
     @Tag("Playback")
     public void testRecordWithRedaction() {
-
         interceptorManager.addSanitizers(CUSTOM_SANITIZER);
+        interceptorManager.addMatchers(new CustomMatcher().setExcludedHeaders(Collections.singletonList("Connection")));
         HttpClient client = interceptorManager.getPlaybackClient();
 
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
@@ -243,7 +243,7 @@ public class TestProxyTests extends TestProxyTestBase {
     public void testPlaybackWithRedaction() {
         interceptorManager.addSanitizers(CUSTOM_SANITIZER);
         interceptorManager.addMatchers(Collections.singletonList(
-            new CustomMatcher().setExcludedHeaders(Collections.singletonList("Ocp-Apim-Subscription-Key"))));
+            new CustomMatcher().setExcludedHeaders(Arrays.asList("Ocp-Apim-Subscription-Key", "Connection"))));
         HttpClient client = interceptorManager.getPlaybackClient();
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, "http://localhost:" + server.port() + "/fr/models")
@@ -264,7 +264,8 @@ public class TestProxyTests extends TestProxyTestBase {
         HttpClient client = interceptorManager.getPlaybackClient();
 
         interceptorManager.addSanitizers(CUSTOM_SANITIZER);
-        interceptorManager.addMatchers(new CustomMatcher().setHeadersKeyOnlyMatch(Collections.singletonList("Accept")));
+        interceptorManager.addMatchers(new CustomMatcher().setHeadersKeyOnlyMatch(Collections.singletonList("Accept"))
+            .setExcludedHeaders(Collections.singletonList("Connection")));
 
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
 
@@ -296,7 +297,8 @@ public class TestProxyTests extends TestProxyTestBase {
 
         HttpClient client = interceptorManager.getPlaybackClient();
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
-        interceptorManager.addMatchers(new CustomMatcher().setHeadersKeyOnlyMatch(Collections.singletonList("Accept")));
+        interceptorManager.addMatchers(new CustomMatcher().setHeadersKeyOnlyMatch(Collections.singletonList("Accept"))
+            .setExcludedHeaders(Collections.singletonList("Connection")));
 
         //        HttpClient client = new HttpURLConnectionHttpClient();
         //        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).policies(interceptorManager.getRecordPolicy()).build();

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.test.http;
+package com.azure.core.validation.http;
 
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
@@ -31,6 +31,11 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.validation.http.models.HttpBinFormDataJson;
+import com.azure.core.validation.http.models.HttpBinHeaders;
+import com.azure.core.validation.http.models.HttpBinJson;
+import com.azure.core.validation.http.models.MyRestException;
+import com.azure.core.validation.http.models.PizzaSize;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
@@ -40,13 +45,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.StreamResponse;
-import com.azure.core.test.MyRestException;
-import com.azure.core.test.SyncAsyncExtension;
-import com.azure.core.test.annotation.SyncAsyncTest;
-import com.azure.core.test.implementation.entities.HttpBinFormDataJson;
-import com.azure.core.test.implementation.entities.HttpBinHeaders;
-import com.azure.core.test.implementation.entities.HttpBinJson;
-import com.azure.core.test.utils.MessageDigestUtils;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.Contexts;
@@ -106,7 +104,8 @@ import java.util.function.Supplier;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import static com.azure.core.test.utils.TestUtils.assertArraysEqual;
+import static com.azure.core.validation.http.HttpValidatonUtils.assertArraysEqual;
+import static com.azure.core.validation.http.HttpValidatonUtils.md5;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -136,11 +135,21 @@ public abstract class HttpClientTests {
     private static final String UTF_32LE_BOM_RESPONSE = "utf32LeBomBytes";
     private static final String BOM_WITH_SAME_HEADER = "bomBytesWithSameHeader";
     private static final String BOM_WITH_DIFFERENT_HEADER = "bomBytesWithDifferentHeader";
+
+    /**
+     * The endpoint that the server will echo back the request body.
+     */
     protected static final String ECHO_RESPONSE = "echo";
 
     private static final byte[] EXPECTED_RETURN_BYTES = "Hello World!".getBytes(StandardCharsets.UTF_8);
 
     private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
+
+    /**
+     * Creates a new instance of {@link HttpClientTests}.
+     */
+    public HttpClientTests() {
+    }
 
     /**
      * Get the HTTP client that will be used for each test. This will be called once per test.
@@ -184,7 +193,7 @@ public abstract class HttpClientTests {
     }
 
     /**
-     * Tests that a response without a byte order mark or a 'Content-Type' header encodes using UTF-8.
+     * Tests that a response without a byte order manrk or a 'Content-Type' header encodes using UTF-8.
      */
     @SyncAsyncTest
     public void plainResponse() {
@@ -1991,10 +2000,7 @@ public abstract class HttpClientTests {
         final byte[] expectedBytes = new byte[] { 1, 2, 3, 4 };
         final HttpBinJson httpBinJSON = service16.putByteArray(getRequestUri(), expectedBytes);
 
-        // httpbin sends the data back as a string like "\u0001\u0002\u0003\u0004"
-        assertInstanceOf(String.class, httpBinJSON.data());
-
-        final String base64String = (String) httpBinJSON.data();
+        final String base64String = httpBinJSON.data();
         final byte[] actualBytes = base64String.getBytes(StandardCharsets.UTF_8);
         assertArraysEqual(expectedBytes, actualBytes);
     }
@@ -2006,10 +2012,7 @@ public abstract class HttpClientTests {
     public void service16PutAsync() {
         final byte[] expectedBytes = new byte[] { 1, 2, 3, 4 };
         StepVerifier.create(createService(Service16.class).putByteArrayAsync(getRequestUri(), expectedBytes))
-            .assertNext(json -> {
-                assertInstanceOf(String.class, json.data());
-                assertArraysEqual(expectedBytes, ((String) json.data()).getBytes(StandardCharsets.UTF_8));
-            })
+            .assertNext(json -> assertArraysEqual(expectedBytes, json.data().getBytes(StandardCharsets.UTF_8)))
             .verifyComplete();
     }
 
@@ -2831,12 +2834,11 @@ public abstract class HttpClientTests {
     @ParameterizedTest
     @MethodSource("downloadTestArgumentProvider")
     public void simpleDownloadTest(Context context) {
-        Mono<Tuple3<Integer, String, String>> downloadData
-            = Mono.using(() -> createService(DownloadService.class).getBytes(getRequestUri(), context),
-                response -> FluxUtil.collectBytesInByteBufferStream(response.getValue())
-                    .map(bytes -> Tuples.of(bytes.length, response.getHeaders().getValue(HttpHeaderName.ETAG),
-                        MessageDigestUtils.md5(bytes))),
-                StreamResponse::close);
+        Mono<Tuple3<Integer, String, String>> downloadData = Mono.using(
+            () -> createService(DownloadService.class).getBytes(getRequestUri(), context),
+            response -> FluxUtil.collectBytesInByteBufferStream(response.getValue())
+                .map(bytes -> Tuples.of(bytes.length, response.getHeaders().getValue(HttpHeaderName.ETAG), md5(bytes))),
+            StreamResponse::close);
 
         StepVerifier.create(downloadData).assertNext(tuple -> {
             assertEquals(30720, tuple.getT1().intValue());
@@ -2862,8 +2864,7 @@ public abstract class HttpClientTests {
         StepVerifier
             .create(createService(DownloadService.class).getBytesAsync(getRequestUri(), context)
                 .flatMap(response -> Mono.using(() -> response,
-                    r -> Mono.zip(MessageDigestUtils.md5(r.getValue()),
-                        Mono.just(r.getHeaders().getValue(HttpHeaderName.ETAG))),
+                    r -> Mono.zip(md5(r.getValue()), Mono.just(r.getHeaders().getValue(HttpHeaderName.ETAG))),
                     StreamResponse::close)))
             .assertNext(hashTuple -> assertEquals(hashTuple.getT2(), hashTuple.getT1()))
             .verifyComplete();
@@ -2881,8 +2882,7 @@ public abstract class HttpClientTests {
         try (StreamResponse streamResponse = createService(DownloadService.class).getBytes(getRequestUri(), context)) {
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             streamResponse.writeValueTo(Channels.newChannel(bos));
-            assertEquals(streamResponse.getHeaders().getValue(HttpHeaderName.ETAG),
-                MessageDigestUtils.md5(bos.toByteArray()));
+            assertEquals(streamResponse.getHeaders().getValue(HttpHeaderName.ETAG), md5(bos.toByteArray()));
         }
 
         Path tempFile = Files.createTempFile("streamResponseCanTransferBody", null);
@@ -2897,7 +2897,7 @@ public abstract class HttpClientTests {
                     } catch (IOException e) {
                         throw Exceptions.propagate(e);
                     }
-                }).then(Mono.fromCallable(() -> MessageDigestUtils.md5(Files.readAllBytes(tempFile)))))
+                }).then(Mono.fromCallable(() -> md5(Files.readAllBytes(tempFile)))))
                 .assertNext(hash -> assertEquals(streamResponse.getHeaders().getValue(HttpHeaderName.ETAG), hash))
                 .verifyComplete();
         }
@@ -2921,8 +2921,7 @@ public abstract class HttpClientTests {
                 } finally {
                     streamResponse.close();
                 }
-                return Tuples.of(streamResponse.getHeaders().getValue(HttpHeaderName.ETAG),
-                    MessageDigestUtils.md5(bos.toByteArray()));
+                return Tuples.of(streamResponse.getHeaders().getValue(HttpHeaderName.ETAG), md5(bos.toByteArray()));
             })).assertNext(hashTuple -> assertEquals(hashTuple.getT1(), hashTuple.getT2())).verifyComplete();
 
         Path tempFile = Files.createTempFile("streamResponseCanTransferBody", null);
@@ -2941,7 +2940,7 @@ public abstract class HttpClientTests {
                 }).then(Mono.just(streamResponse.getHeaders().getValue(HttpHeaderName.ETAG)))))
             .assertNext(hash -> {
                 try {
-                    assertEquals(hash, MessageDigestUtils.md5(Files.readAllBytes(tempFile)));
+                    assertEquals(hash, md5(Files.readAllBytes(tempFile)));
                 } catch (IOException e) {
                     throw Exceptions.propagate(e);
                 }
@@ -3112,12 +3111,12 @@ public abstract class HttpClientTests {
         @Post("post")
         HttpBinFormDataJson postForm(@HostParam("url") String url, @FormParam("custname") String name,
             @FormParam("custtel") String telephone, @FormParam("custemail") String email,
-            @FormParam("size") HttpBinFormDataJson.PizzaSize size, @FormParam("toppings") List<String> toppings);
+            @FormParam("size") PizzaSize size, @FormParam("toppings") List<String> toppings);
 
         @Post("post")
         HttpBinFormDataJson postEncodedForm(@HostParam("url") String url, @FormParam("custname") String name,
             @FormParam("custtel") String telephone, @FormParam(value = "custemail", encoded = true) String email,
-            @FormParam("size") HttpBinFormDataJson.PizzaSize size, @FormParam("toppings") List<String> toppings);
+            @FormParam("size") PizzaSize size, @FormParam("toppings") List<String> toppings);
     }
 
     /**
@@ -3126,14 +3125,14 @@ public abstract class HttpClientTests {
     @Test
     public void postUrlForm() {
         Service26 service = createService(Service26.class);
-        HttpBinFormDataJson response = service.postForm(getRequestUri(), "Foo", "123", "foo@bar.com",
-            HttpBinFormDataJson.PizzaSize.LARGE, Arrays.asList("Bacon", "Onion"));
+        HttpBinFormDataJson response = service.postForm(getRequestUri(), "Foo", "123", "foo@bar.com", PizzaSize.LARGE,
+            Arrays.asList("Bacon", "Onion"));
         assertNotNull(response);
         assertNotNull(response.form());
         assertEquals("Foo", response.form().customerName());
         assertEquals("123", response.form().customerTelephone());
         assertEquals("foo%40bar.com", response.form().customerEmail());
-        assertEquals(HttpBinFormDataJson.PizzaSize.LARGE, response.form().pizzaSize());
+        assertEquals(PizzaSize.LARGE, response.form().pizzaSize());
 
         assertEquals(2, response.form().toppings().size());
         assertEquals("Bacon", response.form().toppings().get(0));
@@ -3147,13 +3146,13 @@ public abstract class HttpClientTests {
     public void postUrlFormEncoded() {
         Service26 service = createService(Service26.class);
         HttpBinFormDataJson response = service.postEncodedForm(getRequestUri(), "Foo", "123", "foo@bar.com",
-            HttpBinFormDataJson.PizzaSize.LARGE, Arrays.asList("Bacon", "Onion"));
+            PizzaSize.LARGE, Arrays.asList("Bacon", "Onion"));
         assertNotNull(response);
         assertNotNull(response.form());
         assertEquals("Foo", response.form().customerName());
         assertEquals("123", response.form().customerTelephone());
         assertEquals("foo@bar.com", response.form().customerEmail());
-        assertEquals(HttpBinFormDataJson.PizzaSize.LARGE, response.form().pizzaSize());
+        assertEquals(PizzaSize.LARGE, response.form().pizzaSize());
 
         assertEquals(2, response.form().toppings().size());
         assertEquals("Bacon", response.form().toppings().get(0));
@@ -3167,13 +3166,6 @@ public abstract class HttpClientTests {
         @ExpectedResponses({ 200 })
         HttpBinJson put(@HostParam("url") String url, @BodyParam(ContentType.APPLICATION_OCTET_STREAM) int putBody,
             RequestOptions requestOptions);
-
-        @Put("put")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(MyRestException.class)
-        HttpBinJson putBodyAndContentLength(@HostParam("url") String url,
-            @BodyParam(ContentType.APPLICATION_OCTET_STREAM) ByteBuffer body,
-            @HeaderParam("Content-Length") long contentLength, RequestOptions requestOptions);
     }
 
     /**
@@ -3241,33 +3233,78 @@ public abstract class HttpClientTests {
         assertEquals("randomValue2", response.getHeaderValue("randomHeader"));
     }
 
+    /**
+     * Service28
+     */
+    @SuppressWarnings("UnusedReturnValue")
     @Host("{url}")
     @ServiceInterface(name = "Service28")
-    interface Service28 {
+    public interface Service28 {
+        /**
+         * Head method with void return type.
+         *
+         * @param url The URL.
+         */
         @Head("voideagerreadoom")
         @ExpectedResponses({ 200 })
         void headvoid(@HostParam("url") String url);
 
+        /**
+         * Head method with Void return type.
+         *
+         * @param url The URL.
+         * @return Void
+         */
         @Head("voideagerreadoom")
         @ExpectedResponses({ 200 })
         Void headVoid(@HostParam("url") String url);
 
+        /**
+         * Head method with Response&lt;Void&gt; return type.
+         *
+         * @param url The URL.
+         * @return Response&lt;Void&gt;
+         */
         @Head("voideagerreadoom")
         @ExpectedResponses({ 200 })
         Response<Void> headResponseVoid(@HostParam("url") String url);
 
+        /**
+         * Head method with ResponseBase&lt;Void, Void&gt; return type.
+         *
+         * @param url The URL.
+         * @return ResponseBase&lt;Void, Void&gt;
+         */
         @Head("voideagerreadoom")
         @ExpectedResponses({ 200 })
         ResponseBase<Void, Void> headResponseBaseVoid(@HostParam("url") String url);
 
+        /**
+         * Head method with Mono&lt;Void&gt; return type.
+         *
+         * @param url The URL.
+         * @return Mono&lt;Void&gt;
+         */
         @Head("voideagerreadoom")
         @ExpectedResponses({ 200 })
         Mono<Void> headMonoVoid(@HostParam("url") String url);
 
+        /**
+         * Head method with Mono&lt;Response&lt;Void&gt;&gt; return type.
+         *
+         * @param url The URL.
+         * @return Mono&lt;Response&lt;Void&gt;&gt;
+         */
         @Head("voideagerreadoom")
         @ExpectedResponses({ 200 })
         Mono<Response<Void>> headMonoResponseVoid(@HostParam("url") String url);
 
+        /**
+         * Head method with Mono&lt;ResponseBase&lt;Void, Void&gt;&gt; return type.
+         *
+         * @param url The URL.
+         * @return Mono&lt;ResponseBase&lt;Void, Void&gt;&gt;
+         */
         @Head("voideagerreadoom")
         @ExpectedResponses({ 200 })
         Mono<ResponseBase<Void, Void>> headMonoResponseBaseVoid(@HostParam("url") String url);
@@ -3293,33 +3330,78 @@ public abstract class HttpClientTests {
             (url, service28) -> service28.headMonoResponseBaseVoid(url).block());
     }
 
+    /**
+     * Service29
+     */
+    @SuppressWarnings("UnusedReturnValue")
     @Host("{url}")
     @ServiceInterface(name = "Service29")
-    interface Service29 {
+    public interface Service29 {
+        /**
+         * Put method with void return type.
+         *
+         * @param url The URL.
+         */
         @Put("voiderrorreturned")
         @ExpectedResponses({ 200 })
         void headvoid(@HostParam("url") String url);
 
+        /**
+         * Put method with Void return type.
+         *
+         * @param url The URL.
+         * @return Void
+         */
         @Put("voiderrorreturned")
         @ExpectedResponses({ 200 })
         Void headVoid(@HostParam("url") String url);
 
+        /**
+         * Put method with Response&lt;Void&gt; return type.
+         *
+         * @param url The URL.
+         * @return Response&lt;Void&gt;
+         */
         @Put("voiderrorreturned")
         @ExpectedResponses({ 200 })
         Response<Void> headResponseVoid(@HostParam("url") String url);
 
+        /**
+         * Put method with ResponseBase&lt;Void, Void&gt; return type.
+         *
+         * @param url The URL.
+         * @return ResponseBase&lt;Void, Void&gt;
+         */
         @Put("voiderrorreturned")
         @ExpectedResponses({ 200 })
         ResponseBase<Void, Void> headResponseBaseVoid(@HostParam("url") String url);
 
+        /**
+         * Put method with Mono&lt;Void&gt; return type.
+         *
+         * @param url The URL.
+         * @return Mono&lt;Void&gt;
+         */
         @Put("voiderrorreturned")
         @ExpectedResponses({ 200 })
         Mono<Void> headMonoVoid(@HostParam("url") String url);
 
+        /**
+         * Put method with Mono&lt;Response&lt;Void&gt;&gt; return type.
+         *
+         * @param url The URL.
+         * @return Mono&lt;Response&lt;Void&gt;&gt;
+         */
         @Put("voiderrorreturned")
         @ExpectedResponses({ 200 })
         Mono<Response<Void>> headMonoResponseVoid(@HostParam("url") String url);
 
+        /**
+         * Put method with Mono&lt;ResponseBase&lt;Void, Void&gt;&gt; return type.
+         *
+         * @param url The URL.
+         * @return Mono&lt;ResponseBase&lt;Void, Void&gt;&gt;
+         */
         @Put("voiderrorreturned")
         @ExpectedResponses({ 200 })
         Mono<ResponseBase<Void, Void>> headMonoResponseBaseVoid(@HostParam("url") String url);
@@ -3349,11 +3431,27 @@ public abstract class HttpClientTests {
     }
 
     // Helpers
+
+    /**
+     * Creates the service instance for the given class.
+     *
+     * @param <T> The type of the service.
+     * @param serviceClass The service class.
+     * @return The service instance.
+     */
     protected <T> T createService(Class<T> serviceClass) {
         final HttpClient httpClient = createHttpClient();
         return createService(serviceClass, httpClient);
     }
 
+    /**
+     * Creates the service instance for the given class.
+     *
+     * @param <T> The type of the service.
+     * @param serviceClass The service class.
+     * @param httpClient The HTTP client to use.
+     * @return The service instance.
+     */
     protected <T> T createService(Class<T> serviceClass, HttpClient httpClient) {
         final HttpPipeline httpPipeline
             = new HttpPipelineBuilder().policies(new PortPolicy(getPort(), true)).httpClient(httpClient).build();
@@ -3361,6 +3459,7 @@ public abstract class HttpClientTests {
         return RestProxy.create(serviceClass, httpPipeline);
     }
 
+    @SuppressWarnings("HttpUrlsUsage")
     private static void assertMatchWithHttpOrHttps(String url1, String url2) {
         final String s1 = "http://" + url1;
         if (s1.equalsIgnoreCase(url2)) {
