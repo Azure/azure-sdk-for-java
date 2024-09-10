@@ -44,7 +44,7 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
     private final Queue<CompositeContinuationToken> compositeContinuationTokens;
     private CompositeContinuationToken currentToken;
     private String initialNoResultsRange;
-    private AtomicLong continuousNotModifiedSinceInitialNoResultsRangeCaptured = new AtomicLong(0);
+    private final AtomicLong continuousNotModifiedSinceInitialNoResultsRangeCaptured = new AtomicLong(0);
 
     public FeedRangeCompositeContinuationImpl(
         String containerRid,
@@ -216,43 +216,40 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
         if (!ModelBridgeInternal.<T>noChanges(response)) {
             this.initialNoResultsRange = null;
             this.continuousNotModifiedSinceInitialNoResultsRangeCaptured.set(0);
-            LOGGER.info("No 304");
         } else if (this.compositeContinuationTokens.size() > 1) {
-            final String eTag = this.currentToken.getToken();
-            LOGGER.info("Etag {}", eTag);
-            StringBuilder sb = new StringBuilder();
-            for (CompositeContinuationToken t : this.getCurrentContinuationTokens()) {
-                sb.append(t.getRange()).append(", ");
-            }
-            LOGGER.info("CompositeTokens {} {}", this.getCurrentContinuationTokens().length,  sb);
-            LOGGER.info("CurrentRange {}", this.currentToken.getRange());
-            LOGGER.info("FEEDResponse Range {}", response.getContinuationToken());
             if (this.initialNoResultsRange == null) {
 
-                LOGGER.info("Setting InitialNoResultsRange {}", this.currentToken.getRange().getMin());
                 this.initialNoResultsRange = this.currentToken.getRange().getMin();
                 this.continuousNotModifiedSinceInitialNoResultsRangeCaptured.set(0);
+
                 // Done already in ChangeFeedFetcher.applyServerContinuation
                 // this.replaceContinuation(eTag);
+
                 this.moveToNextToken();
+
                 return ShouldRetryResult.RETRY_NOW;
             }
 
             if (!this.initialNoResultsRange.equalsIgnoreCase(this.currentToken.getRange().getMin())) {
                 this.continuousNotModifiedSinceInitialNoResultsRangeCaptured.incrementAndGet();
-                LOGGER.info("Skipping CurrentRange {} - InitialNoResultsRange {}", this.currentToken.getRange(), this.initialNoResultsRange);
+
                 // Done already in ChangeFeedFetcher.applyServerContinuation
                 // this.replaceContinuation(eTag);
+
                 this.moveToNextToken();
 
-                if (this.continuousNotModifiedSinceInitialNoResultsRangeCaptured.get() >
-                    4 * (this.compositeContinuationTokens.size() + 1)) {
+                long consecutiveNotModifiedResponsesSnapshot =
+                    this.continuousNotModifiedSinceInitialNoResultsRangeCaptured.get();
+                if (consecutiveNotModifiedResponsesSnapshot > 4L * (this.compositeContinuationTokens.size() + 1)) {
 
-                    // This is just a fail-safe - if we see subsequent 304s all the time, avoid similar hangs
+                    // This is just a defense in-depth - if we see subsequent 304s all the time, avoid similar hangs
                     // just bail out - the threshold allows for two-level splits of all sub-ranges which is
                     // safe enough - with more than two-level splits we have other design gaps (service, not SDK)
                     // due to problems identifying child  ranges anyway.
-                    LOGGER.info("NO_RETRY due to high number of subsequent NotModified");
+                    LOGGER.warn(
+                        "Preempting change feed query early due to {} consecutive 304.",
+                        consecutiveNotModifiedResponsesSnapshot);
+
                     return ShouldRetryResult.NO_RETRY;
                 } else {
                     return ShouldRetryResult.RETRY_NOW;
@@ -260,7 +257,6 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
             }
         }
 
-        LOGGER.info("NO_RETRY");
         return ShouldRetryResult.NO_RETRY;
     }
 

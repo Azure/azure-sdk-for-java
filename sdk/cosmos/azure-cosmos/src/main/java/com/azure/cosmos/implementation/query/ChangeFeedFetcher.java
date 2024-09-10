@@ -4,7 +4,6 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
@@ -277,7 +276,7 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
         String collectionLink,
         boolean isSplitHandlingDisabled) {
 
-        DocumentClientRetryPolicy feedRangeContinuationRetryPolicy = null;
+        DocumentClientRetryPolicy feedRangeContinuationRetryPolicy;
 
         // constructing retry policies for changeFeed requests
         DocumentClientRetryPolicy retryPolicyInstance =
