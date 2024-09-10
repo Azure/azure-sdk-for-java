@@ -13,6 +13,7 @@ import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.messaging.eventgrid.namespaces.implementation.EventGridSenderClientImpl;
 import java.util.List;
@@ -43,7 +44,7 @@ public final class EventGridSenderClient {
     /**
      * Publish a single Cloud Event to a namespace topic.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -58,9 +59,9 @@ public final class EventGridSenderClient {
      *     subject: String (Optional)
      * }
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * { }
      * }</pre>
@@ -83,7 +84,7 @@ public final class EventGridSenderClient {
     /**
      * Publish a batch of Cloud Events to a namespace topic.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * [
      *      (Required){
@@ -100,9 +101,9 @@ public final class EventGridSenderClient {
      *     }
      * ]
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * { }
      * }</pre>
@@ -141,6 +142,25 @@ public final class EventGridSenderClient {
     }
 
     /**
+     * Publish a single Cloud Event to a namespace topic.
+     *
+     * @param event Array of Cloud Events being published.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return The {@link Response} of the send operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> sendWithResponse(CloudEvent event, RequestOptions requestOptions) {
+        Response<BinaryData> response = sendWithResponse(topicName, BinaryData.fromObject(event), requestOptions);
+        return new SimpleResponse<>(response, null);
+    }
+
+    /**
      * Publish a batch of Cloud Events to a namespace topic.
      *
      * @param events Array of Cloud Events being published.
@@ -156,6 +176,26 @@ public final class EventGridSenderClient {
         // Generated convenience method for sendEventsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         sendEventsWithResponse(topicName, BinaryData.fromObject(events), requestOptions);
+    }
+
+    /**
+     * Publish a batch of Cloud Events to a namespace topic.
+     *
+     * @param events Array of Cloud Events being published.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return The {@link Response} of the send operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> sendWithResponse(List<CloudEvent> events, RequestOptions requestOptions) {
+        Response<BinaryData> response
+            = sendEventsWithResponse(topicName, BinaryData.fromObject(events), requestOptions);
+        return new SimpleResponse<>(response, null);
     }
 
     /**

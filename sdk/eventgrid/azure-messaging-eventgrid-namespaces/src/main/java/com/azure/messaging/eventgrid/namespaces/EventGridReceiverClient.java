@@ -13,7 +13,9 @@ import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.Context;
 import com.azure.messaging.eventgrid.namespaces.implementation.EventGridReceiverClientImpl;
 import com.azure.messaging.eventgrid.namespaces.implementation.models.AcknowledgeRequest;
 import com.azure.messaging.eventgrid.namespaces.implementation.models.RejectRequest;
@@ -69,7 +71,7 @@ public final class EventGridReceiverClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     value (Required): [
@@ -116,7 +118,7 @@ public final class EventGridReceiverClient {
      * along with other failed lock tokens with their corresponding error information. Successfully acknowledged events
      * will no longer be available to be received by any consumer.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     lockTokens (Required): [
@@ -124,9 +126,9 @@ public final class EventGridReceiverClient {
      *     ]
      * }
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     failedLockTokens (Required): [
@@ -183,7 +185,7 @@ public final class EventGridReceiverClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     lockTokens (Required): [
@@ -191,9 +193,9 @@ public final class EventGridReceiverClient {
      *     ]
      * }
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     failedLockTokens (Required): [
@@ -241,7 +243,7 @@ public final class EventGridReceiverClient {
      * with other failed lock tokens with their corresponding error information. Successfully rejected events will be
      * dead-lettered and can no longer be received by a consumer.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     lockTokens (Required): [
@@ -249,9 +251,9 @@ public final class EventGridReceiverClient {
      *     ]
      * }
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     failedLockTokens (Required): [
@@ -299,7 +301,7 @@ public final class EventGridReceiverClient {
      * along with other failed lock tokens with their corresponding error information. Successfully renewed locks will
      * ensure that the associated event is only available to the consumer that holds the renewed lock.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     lockTokens (Required): [
@@ -307,9 +309,9 @@ public final class EventGridReceiverClient {
      *     ]
      * }
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     failedLockTokens (Required): [
@@ -378,10 +380,46 @@ public final class EventGridReceiverClient {
             requestOptions.addQueryParam("maxEvents", String.valueOf(maxEvents), false);
         }
         if (maxWaitTime != null) {
+            // Ensure the http client timeout is longer than the maxWaitTime
+            addTimeoutToContext(requestOptions, maxWaitTime);
             requestOptions.addQueryParam("maxWaitTime", String.valueOf(maxWaitTime.getSeconds()), false);
         }
         return receiveWithResponse(topicName, subscriptionName, requestOptions).getValue()
             .toObject(ReceiveResult.class);
+    }
+
+    /**
+     * Receive a batch of Cloud Events from a subscription.
+     *
+     * @param maxEvents Max Events count to be received. Minimum value is 1, while maximum value is 100 events. If not
+     * specified, the default value is 1.
+     * @param maxWaitTime Max wait time value for receive operation in Seconds. It is the time in seconds that the
+     * server approximately waits for the availability of an event and responds to the request. If an event is
+     * available, the broker responds immediately to the client. Minimum value is 10 seconds, while maximum value is 120
+     * seconds. If not specified, the default value is 60 seconds.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details of the Receive operation response along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ReceiveResult> receiveWithResponse(Integer maxEvents, Duration maxWaitTime,
+        RequestOptions requestOptions) {
+        // Generated convenience method for receiveWithResponse
+        if (maxEvents != null) {
+            requestOptions.addQueryParam("maxEvents", String.valueOf(maxEvents), false);
+        }
+        if (maxWaitTime != null) {
+            // Ensure the http client timeout is longer than the maxWaitTime
+            addTimeoutToContext(requestOptions, maxWaitTime);
+            requestOptions.addQueryParam("maxWaitTime", String.valueOf(maxWaitTime.getSeconds()), false);
+        }
+        Response<BinaryData> response = receiveWithResponse(topicName, subscriptionName, requestOptions);
+        return new SimpleResponse<>(response, response.getValue().toObject(ReceiveResult.class));
     }
 
     /**
@@ -401,6 +439,25 @@ public final class EventGridReceiverClient {
         RequestOptions requestOptions = new RequestOptions();
         return receiveWithResponse(topicName, subscriptionName, requestOptions).getValue()
             .toObject(ReceiveResult.class);
+    }
+
+    /**
+     * Receive a Cloud Event from a subscription. This method will wait 60 seconds for a response.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details of the Receive operation response along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ReceiveResult> receiveWithResponse(RequestOptions requestOptions) {
+        // Generated convenience method for receiveWithResponse
+        Response<BinaryData> response = receiveWithResponse(topicName, subscriptionName, requestOptions);
+        return new SimpleResponse<>(response, response.getValue().toObject(ReceiveResult.class));
     }
 
     /**
@@ -425,6 +482,30 @@ public final class EventGridReceiverClient {
         BinaryData request = BinaryData.fromObject(requestObj);
         return acknowledgeWithResponse(topicName, subscriptionName, request, requestOptions).getValue()
             .toObject(AcknowledgeResult.class);
+    }
+
+    /**
+     * Acknowledge a batch of Cloud Events. The response will include the set of successfully acknowledged lock tokens,
+     * along with other failed lock tokens with their corresponding error information. Successfully acknowledged events
+     * will no longer be available to be received by any consumer.
+     *
+     * @param lockTokens Array of lock tokens.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of the Acknowledge operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AcknowledgeResult> acknowledgeWithResponse(List<String> lockTokens, RequestOptions requestOptions) {
+        // Generated convenience method for acknowledgeWithResponse
+        AcknowledgeRequest requestObj = new AcknowledgeRequest(lockTokens);
+        BinaryData request = BinaryData.fromObject(requestObj);
+        Response<BinaryData> response = acknowledgeWithResponse(topicName, subscriptionName, request, requestOptions);
+        return new SimpleResponse<>(response, response.getValue().toObject(AcknowledgeResult.class));
     }
 
     /**
@@ -461,6 +542,35 @@ public final class EventGridReceiverClient {
      * received by consumers.
      *
      * @param lockTokens Array of lock tokens.
+     * @param releaseDelay Release cloud events with the specified delay in seconds.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of the Release operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ReleaseResult> releaseWithResponse(List<String> lockTokens, ReleaseDelay releaseDelay,
+        RequestOptions requestOptions) {
+        // Generated convenience method for releaseWithResponse
+        ReleaseRequest requestObj = new ReleaseRequest(lockTokens);
+        BinaryData request = BinaryData.fromObject(requestObj);
+        if (releaseDelay != null) {
+            requestOptions.addQueryParam("releaseDelayInSeconds", releaseDelay.toString(), false);
+        }
+        Response<BinaryData> response = releaseWithResponse(topicName, subscriptionName, request, requestOptions);
+        return new SimpleResponse<>(response, response.getValue().toObject(ReleaseResult.class));
+    }
+
+    /**
+     * Release a batch of Cloud Events. The response will include the set of successfully released lock tokens, along
+     * with other failed lock tokens with their corresponding error information. Successfully released events can be
+     * received by consumers.
+     *
+     * @param lockTokens Array of lock tokens.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -477,6 +587,30 @@ public final class EventGridReceiverClient {
         BinaryData request = BinaryData.fromObject(requestObj);
         return releaseWithResponse(topicName, subscriptionName, request, requestOptions).getValue()
             .toObject(ReleaseResult.class);
+    }
+
+    /**
+     * Release a batch of Cloud Events. The response will include the set of successfully released lock tokens, along
+     * with other failed lock tokens with their corresponding error information. Successfully released events can be
+     * received by consumers.
+     *
+     * @param lockTokens Array of lock tokens.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of the Release operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ReleaseResult> releaseWithResponse(List<String> lockTokens, RequestOptions requestOptions) {
+        // Generated convenience method for releaseWithResponse
+        ReleaseRequest requestObj = new ReleaseRequest(lockTokens);
+        BinaryData request = BinaryData.fromObject(requestObj);
+        Response<BinaryData> response = releaseWithResponse(topicName, subscriptionName, request, requestOptions);
+        return new SimpleResponse<>(response, response.getValue().toObject(ReleaseResult.class));
     }
 
     /**
@@ -504,6 +638,30 @@ public final class EventGridReceiverClient {
     }
 
     /**
+     * Reject a batch of Cloud Events. The response will include the set of successfully rejected lock tokens, along
+     * with other failed lock tokens with their corresponding error information. Successfully rejected events will be
+     * dead-lettered and can no longer be received by a consumer.
+     *
+     * @param lockTokens Array of lock tokens.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of the Reject operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<RejectResult> rejectWithResponse(List<String> lockTokens, RequestOptions requestOptions) {
+        // Generated convenience method for rejectWithResponse
+        RejectRequest requestObj = new RejectRequest(lockTokens);
+        BinaryData request = BinaryData.fromObject(requestObj);
+        Response<BinaryData> response = rejectWithResponse(topicName, subscriptionName, request, requestOptions);
+        return new SimpleResponse<>(response, response.getValue().toObject(RejectResult.class));
+    }
+
+    /**
      * Renew locks for a batch of Cloud Events. The response will include the set of successfully renewed lock tokens,
      * along with other failed lock tokens with their corresponding error information. Successfully renewed locks will
      * ensure that the associated event is only available to the consumer that holds the renewed lock.
@@ -528,6 +686,30 @@ public final class EventGridReceiverClient {
     }
 
     /**
+     * Renew locks for a batch of Cloud Events. The response will include the set of successfully renewed lock tokens,
+     * along with other failed lock tokens with their corresponding error information. Successfully renewed locks will
+     * ensure that the associated event is only available to the consumer that holds the renewed lock.
+     *
+     * @param lockTokens Array of lock tokens.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of the RenewLock operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<RenewLocksResult> renewLocksWithResponse(List<String> lockTokens, RequestOptions requestOptions) {
+        // Generated convenience method for renewLocksWithResponse
+        RenewLocksRequest requestObj = new RenewLocksRequest(lockTokens);
+        BinaryData request = BinaryData.fromObject(requestObj);
+        Response<BinaryData> response = renewLocksWithResponse(topicName, subscriptionName, request, requestOptions);
+        return new SimpleResponse<>(response, response.getValue().toObject(RenewLocksResult.class));
+    }
+
+    /**
      * Gets the topicName for this client.
      *
      * @return the topic name.
@@ -543,5 +725,21 @@ public final class EventGridReceiverClient {
      */
     public String getSubscriptionName() {
         return subscriptionName;
+    }
+
+    /**
+     * Adds a timeout (maxWaitTime) to a context.
+     * @param requestOptions The request options to update.
+     * @param timeout The timeout to add.
+     * @return The updated context.
+     */
+    private void addTimeoutToContext(RequestOptions requestOptions, Duration timeout) {
+        Context context = requestOptions.getContext();
+        if (context == null) {
+            context = new Context("azure-response-timeout", timeout.plusSeconds(5));
+        } else {
+            context = context.addData("azure-response-timeout", timeout.plusSeconds(5));
+        }
+        requestOptions.setContext(context);
     }
 }
