@@ -131,6 +131,7 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
         this.compositeContinuationTokens = new LinkedList<>();
     }
 
+    @Override
     public Queue<CompositeContinuationToken> getCompositeContinuationTokens() {
         return compositeContinuationTokens;
     }
@@ -209,10 +210,19 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
 
         if (!ModelBridgeInternal.<T>noChanges(response)) {
             this.initialNoResultsRange = null;
+            LOGGER.info("No 304");
         } else if (this.compositeContinuationTokens.size() > 1) {
             final String eTag = this.currentToken.getToken();
+            LOGGER.info("Etag {}", eTag);
+            StringBuilder sb = new StringBuilder();
+            for (CompositeContinuationToken t : this.getCurrentContinuationTokens()) {
+                sb.append(t.getRange()).append(", ");
+            }
+            LOGGER.info("CompositeTokens {} {}", this.getCurrentContinuationTokens().length,  sb);
+            LOGGER.info("CurrentRange {}", this.currentToken.getRange());
             if (this.initialNoResultsRange == null) {
 
+                LOGGER.info("Setting InitialNoResultsRange {}", this.currentToken.getRange().getMin());
                 this.initialNoResultsRange = this.currentToken.getRange().getMin();
                 this.replaceContinuation(eTag);
                 this.moveToNextToken();
@@ -220,12 +230,14 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
             }
 
             if (!this.initialNoResultsRange.equalsIgnoreCase(this.currentToken.getRange().getMin())) {
+                LOGGER.info("Skipping CurrentRange {} - InitialNoResultsRange {}", this.currentToken.getRange(), this.initialNoResultsRange);
                 this.replaceContinuation(eTag);
                 this.moveToNextToken();
                 return ShouldRetryResult.RETRY_NOW;
             }
         }
 
+        LOGGER.info("NO_RETRY");
         return ShouldRetryResult.NO_RETRY;
     }
 
