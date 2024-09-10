@@ -6,12 +6,27 @@ package com.azure.storage.blob.specialized;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.RequestConditions;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.ResponseBase;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
+import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
+import com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder;
+import com.azure.storage.blob.implementation.models.BlobsAcquireLeaseHeaders;
+import com.azure.storage.blob.implementation.models.BlobsBreakLeaseHeaders;
+import com.azure.storage.blob.implementation.models.BlobsChangeLeaseHeaders;
+import com.azure.storage.blob.implementation.models.BlobsRenewLeaseHeaders;
+import com.azure.storage.blob.implementation.models.ContainersAcquireLeaseHeaders;
+import com.azure.storage.blob.implementation.models.ContainersBreakLeaseHeaders;
+import com.azure.storage.blob.implementation.models.ContainersChangeLeaseHeaders;
+import com.azure.storage.blob.implementation.models.ContainersRenewLeaseHeaders;
 import com.azure.storage.blob.implementation.util.ModelHelper;
+import com.azure.storage.blob.models.BlobLeaseRequestConditions;
+import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.options.BlobAcquireLeaseOptions;
 import com.azure.storage.blob.options.BlobBreakLeaseOptions;
 import com.azure.storage.blob.options.BlobChangeLeaseOptions;
@@ -21,6 +36,10 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 
 import java.net.URL;
 import java.time.Duration;
+import java.util.concurrent.Callable;
+
+import static com.azure.storage.blob.implementation.util.ModelHelper.wrapTimeoutServiceCallWithExceptionMapping;
+import static com.azure.storage.common.implementation.StorageImplUtils.sendRequest;
 
 /**
  * This class provides a client that contains all the leasing operations for {@link BlobContainerClient containers} and
@@ -54,10 +73,26 @@ import java.time.Duration;
  */
 @ServiceClient(builder =  BlobLeaseClientBuilder.class)
 public final class BlobLeaseClient {
-    private final BlobLeaseAsyncClient client;
+    private final String containerName;
+    private final String blobName;
+    private final boolean isBlob;
+    private final AzureBlobStorageImpl client;
+    private final String accountName;
 
-    BlobLeaseClient(BlobLeaseAsyncClient client) {
-        this.client = client;
+    private volatile String leaseId;
+
+    BlobLeaseClient(HttpPipeline pipeline, String url, String containerName, String blobName, String leaseId,
+                         boolean isBlob, String accountName, String serviceVersion) {
+        this.isBlob = isBlob;
+        this.leaseId = leaseId;
+        this.client = new AzureBlobStorageImplBuilder()
+            .pipeline(pipeline)
+            .url(url)
+            .version(serviceVersion)
+            .buildClient();
+        this.accountName = accountName;
+        this.containerName = containerName;
+        this.blobName = blobName;
     }
 
     /**
@@ -68,7 +103,11 @@ public final class BlobLeaseClient {
      * @return URL of the lease client.
      */
     public String getResourceUrl() {
-        return client.getResourceUrl();
+        if (this.isBlob) {
+            return this.client.getUrl() + "/" + containerName + "/" + blobName;
+        } else {
+            return this.client.getUrl() + "/" + containerName;
+        }
     }
 
     /**
@@ -77,7 +116,7 @@ public final class BlobLeaseClient {
      * @return the lease ID.
      */
     public String getLeaseId() {
-        return client.getLeaseId();
+        return leaseId;
     }
 
     /**
@@ -161,8 +200,33 @@ public final class BlobLeaseClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<String> acquireLeaseWithResponse(BlobAcquireLeaseOptions options, Duration timeout,
         Context context) {
-        return StorageImplUtils.blockWithOptionalTimeout(this.client.acquireLeaseWithResponse(options, context),
-            timeout);
+        StorageImplUtils.assertNotNull("options", options);
+        BlobLeaseRequestConditions requestConditions = (options.getRequestConditions() == null)
+            ? new BlobLeaseRequestConditions() : options.getRequestConditions();
+        Context finalContext = context == null ? Context.NONE : context;
+
+        if (this.isBlob) {
+            Callable<ResponseBase<BlobsAcquireLeaseHeaders, Void>> operation =
+                wrapTimeoutServiceCallWithExceptionMapping(() ->
+                    this.client.getBlobs().acquireLeaseWithResponse(containerName, blobName, null,
+                        options.getDuration(), this.leaseId, requestConditions.getIfModifiedSince(),
+                        requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
+                        requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null, finalContext));
+            ResponseBase<BlobsAcquireLeaseHeaders, Void> response = sendRequest(operation, timeout,
+                BlobStorageException.class);
+            this.leaseId = response.getDeserializedHeaders().getXMsLeaseId();
+            return new SimpleResponse<>(response, response.getDeserializedHeaders().getXMsLeaseId());
+        } else {
+            Callable<ResponseBase<ContainersAcquireLeaseHeaders, Void>> operation =
+                wrapTimeoutServiceCallWithExceptionMapping(() ->
+                    this.client.getContainers().acquireLeaseWithResponse(containerName, null, options.getDuration(),
+                        this.leaseId, requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
+                        null, finalContext));
+            ResponseBase<ContainersAcquireLeaseHeaders, Void> response = sendRequest(operation, timeout,
+                BlobStorageException.class);
+            this.leaseId = response.getDeserializedHeaders().getXMsLeaseId();
+            return new SimpleResponse<>(response, response.getDeserializedHeaders().getXMsLeaseId());
+        }
     }
 
     /**
@@ -241,7 +305,27 @@ public final class BlobLeaseClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<String> renewLeaseWithResponse(BlobRenewLeaseOptions options, Duration timeout,
         Context context) {
-        return StorageImplUtils.blockWithOptionalTimeout(this.client.renewLeaseWithResponse(options, context), timeout);
+        BlobRenewLeaseOptions finalOptions = (options == null) ? new BlobRenewLeaseOptions() : options;
+        BlobLeaseRequestConditions requestConditions = (finalOptions.getRequestConditions() == null)
+            ? new BlobLeaseRequestConditions() : finalOptions.getRequestConditions();
+        Context finalContext = context == null ? Context.NONE : context;
+        if (this.isBlob) {
+            Callable<ResponseBase<BlobsRenewLeaseHeaders, Void>> operation =
+                wrapTimeoutServiceCallWithExceptionMapping(() ->
+                    this.client.getBlobs().renewLeaseWithResponse(containerName, blobName, this.leaseId, null,
+                        requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
+                        requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(),
+                        requestConditions.getTagsConditions(), null, finalContext));
+            ResponseBase<BlobsRenewLeaseHeaders, Void> response = sendRequest(operation, timeout, BlobStorageException.class);
+            return new SimpleResponse<>(response, response.getDeserializedHeaders().getXMsLeaseId());
+        } else {
+            Callable<ResponseBase<ContainersRenewLeaseHeaders, Void>> operation =
+                wrapTimeoutServiceCallWithExceptionMapping(() ->
+                    this.client.getContainers().renewLeaseWithResponse(containerName, this.leaseId, null,
+                    requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(), null, finalContext));
+            ResponseBase<ContainersRenewLeaseHeaders, Void> response = sendRequest(operation, timeout, BlobStorageException.class);
+            return new SimpleResponse<>(response, response.getDeserializedHeaders().getXMsLeaseId());
+        }
     }
 
     /**
@@ -319,8 +403,23 @@ public final class BlobLeaseClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> releaseLeaseWithResponse(BlobReleaseLeaseOptions options, Duration timeout,
         Context context) {
-        return StorageImplUtils.blockWithOptionalTimeout(this.client.releaseLeaseWithResponse(options, context),
-            timeout);
+        BlobReleaseLeaseOptions finalOptions = (options == null) ? new BlobReleaseLeaseOptions() : options;
+        BlobLeaseRequestConditions requestConditions = (finalOptions.getRequestConditions() == null)
+            ? new BlobLeaseRequestConditions() : finalOptions.getRequestConditions();
+        Context finalContext = context == null ? Context.NONE : context;
+        Callable<Response<Void>> operation;
+        if (this.isBlob) {
+            operation = wrapTimeoutServiceCallWithExceptionMapping(() ->
+                this.client.getBlobs().releaseLeaseNoCustomHeadersWithResponse(containerName, blobName, this.leaseId,
+                    null, requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
+                    requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(),
+                    requestConditions.getTagsConditions(), null, finalContext));
+        } else {
+            operation = wrapTimeoutServiceCallWithExceptionMapping(() ->
+                this.client.getContainers().releaseLeaseNoCustomHeadersWithResponse(containerName, this.leaseId, null,
+                    requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(), null, finalContext));
+        }
+        return sendRequest(operation, timeout, BlobStorageException.class);
     }
 
     /**
@@ -412,7 +511,30 @@ public final class BlobLeaseClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Integer> breakLeaseWithResponse(BlobBreakLeaseOptions options, Duration timeout, Context context) {
-        return StorageImplUtils.blockWithOptionalTimeout(this.client.breakLeaseWithResponse(options, context), timeout);
+        BlobBreakLeaseOptions finalOptions = (options == null) ? new BlobBreakLeaseOptions() : options;
+        BlobLeaseRequestConditions requestConditions = (finalOptions.getRequestConditions() == null)
+            ? new BlobLeaseRequestConditions() : finalOptions.getRequestConditions();
+        Context finalContext = context == null ? Context.NONE : context;
+        Integer breakPeriod = finalOptions.getBreakPeriod() == null ? null
+            : Math.toIntExact(finalOptions.getBreakPeriod().getSeconds());
+
+        if (this.isBlob) {
+            Callable<ResponseBase<BlobsBreakLeaseHeaders, Void>> operation =
+                wrapTimeoutServiceCallWithExceptionMapping(() ->
+                    this.client.getBlobs().breakLeaseWithResponse(containerName, blobName, null, breakPeriod,
+                        requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
+                        requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(),
+                        requestConditions.getTagsConditions(), null, finalContext));
+            ResponseBase<BlobsBreakLeaseHeaders, Void> response = sendRequest(operation, timeout, BlobStorageException.class);
+            return new SimpleResponse<>(response, response.getDeserializedHeaders().getXMsLeaseTime());
+        } else {
+            Callable<ResponseBase<ContainersBreakLeaseHeaders, Void>> operation =
+                wrapTimeoutServiceCallWithExceptionMapping(() -> this.client.getContainers().breakLeaseWithResponse(
+                    containerName, null, breakPeriod, requestConditions.getIfModifiedSince(),
+                    requestConditions.getIfUnmodifiedSince(), null, finalContext));
+            ResponseBase<ContainersBreakLeaseHeaders, Void> response = sendRequest(operation, timeout, BlobStorageException.class);
+            return new SimpleResponse<>(response, response.getDeserializedHeaders().getXMsLeaseTime());
+        }
     }
 
     /**
@@ -492,8 +614,32 @@ public final class BlobLeaseClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<String> changeLeaseWithResponse(BlobChangeLeaseOptions options, Duration timeout, Context context) {
-        return StorageImplUtils.blockWithOptionalTimeout(this.client.changeLeaseWithResponse(options, context),
-            timeout);
+        StorageImplUtils.assertNotNull("options", options);
+        BlobLeaseRequestConditions requestConditions = (options.getRequestConditions() == null)
+            ? new BlobLeaseRequestConditions() : options.getRequestConditions();
+        Context finalContext = context == null ? Context.NONE : context;
+
+        if (this.isBlob) {
+            Callable<ResponseBase<BlobsChangeLeaseHeaders, Void>> operation = wrapTimeoutServiceCallWithExceptionMapping(() ->
+                this.client.getBlobs().changeLeaseWithResponse(containerName, blobName, this.leaseId,
+                        options.getProposedId(), null, requestConditions.getIfModifiedSince(),
+                        requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
+                        requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null, finalContext));
+            ResponseBase<BlobsChangeLeaseHeaders, Void> response = sendRequest(operation, timeout,
+                BlobStorageException.class);
+            this.leaseId = response.getDeserializedHeaders().getXMsLeaseId();
+            return new SimpleResponse<>(response, response.getDeserializedHeaders().getXMsLeaseId());
+        } else {
+            Callable<ResponseBase<ContainersChangeLeaseHeaders, Void>> operation =
+                wrapTimeoutServiceCallWithExceptionMapping(() ->
+                    this.client.getContainers().changeLeaseWithResponse(containerName, this.leaseId,
+                        options.getProposedId(), null, requestConditions.getIfModifiedSince(),
+                        requestConditions.getIfUnmodifiedSince(), null, finalContext));
+            ResponseBase<ContainersChangeLeaseHeaders, Void> response = sendRequest(operation, timeout,
+                BlobStorageException.class);
+            this.leaseId = response.getDeserializedHeaders().getXMsLeaseId();
+            return new SimpleResponse<>(response, response.getDeserializedHeaders().getXMsLeaseId());
+        }
     }
 
     /**
@@ -502,7 +648,7 @@ public final class BlobLeaseClient {
      * @return account name associated with this storage resource.
      */
     public String getAccountName() {
-        return client.getAccountName();
+        return this.accountName;
     }
 
 }
