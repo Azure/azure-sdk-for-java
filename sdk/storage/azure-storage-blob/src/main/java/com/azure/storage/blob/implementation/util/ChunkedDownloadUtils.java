@@ -11,6 +11,7 @@ import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.common.ParallelTransferOptions;
+import com.azure.storage.common.implementation.Constants;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.function.Tuple3;
@@ -57,6 +58,16 @@ public class ChunkedDownloadUtils {
                 // Extract the total length of the blob from the contentRange header. e.g. "bytes 1-6/7"
                 long totalLength = extractTotalBlobLength(response.getDeserializedHeaders().getContentRange());
 
+                //if the blob is encrypted, use the unencrypted length for range calculations
+                if (response.getDeserializedHeaders().isServerEncrypted()) {
+                    //values i pulled from CryptographyConstants
+                    int nonce = 12;
+                    int tag = 16;
+                    int regionLength = 4 * Constants.MB;
+                    long region = Math.floorDiv(totalLength, regionLength);
+                    long offset = (nonce + tag) * region;
+                    totalLength = totalLength - offset;
+                }
                 /*
                 If the user either didn't specify a count or they specified a count greater than the size of the
                 remaining data, take the size of the remaining data. This is to prevent the case where the count

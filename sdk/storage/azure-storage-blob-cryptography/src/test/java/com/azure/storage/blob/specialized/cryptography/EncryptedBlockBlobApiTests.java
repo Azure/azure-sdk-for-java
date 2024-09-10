@@ -10,7 +10,6 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.TestMode;
@@ -127,7 +126,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
         cc.create();
 
         beac = getEncryptionAsyncClient(EncryptionVersion.V1);
-        bec = getEncryptionClient(EncryptionVersion.V2);
+        bec = getEncryptionClient(EncryptionVersion.V1);
 
         String blobName = generateBlobName();
 
@@ -1785,51 +1784,28 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
     }
 
     @Test
-    public void brokenTest() throws IOException {
-        File file = File.createTempFile(CoreUtils.randomUuid().toString(), ".txt");
-        File outFile = File.createTempFile(CoreUtils.randomUuid().toString(), ".txt");
-
-        file.deleteOnExit();
-        outFile.deleteOnExit();
-        //4194277-4194304
-        Files.write(file.toPath(), getRandomByteArray(4194277));
-
-        HttpLogOptions logOptions = new HttpLogOptions()
-            .setLogLevel(HttpLogDetailLevel.HEADERS);
+    public void test4MBUploadsV2() throws IOException {
+        int[] sizes = {4194305, 4194304, 4194277, 33554432};
 
         EncryptedBlobClient bec2 = new EncryptedBlobClientBuilder(EncryptionVersion.V2)
             .key(fakeKey, KeyWrapAlgorithm.RSA_OAEP_256.toString())
             .credential(ENV.getPrimaryAccount().getCredential())
             .endpoint(cc.getBlobContainerUrl())
             .blobName(generateBlobName())
-            .httpLogOptions(logOptions)
             .buildEncryptedBlobClient();
 
-        bec2.uploadFromFile(file.toPath().toString());
-        bec2.downloadToFile(outFile.toPath().toString(), true);
-    }
+        for (int size : sizes) {
+            File file = File.createTempFile(CoreUtils.randomUuid().toString(), ".txt");
+            File outFile = File.createTempFile(CoreUtils.randomUuid().toString(), ".txt");
 
-    @Test
-    public void nonEncryptedTest() throws IOException {
-        File file = File.createTempFile(CoreUtils.randomUuid().toString(), ".txt");
-        File outFile = File.createTempFile(CoreUtils.randomUuid().toString(), ".txt");
+            file.deleteOnExit();
+            outFile.deleteOnExit();
 
-        file.deleteOnExit();
-        outFile.deleteOnExit();
-        Files.write(file.toPath(), getRandomByteArray(4194332));
+            Files.write(file.toPath(), getRandomByteArray(size));
 
-        HttpLogOptions logOptions = new HttpLogOptions()
-            .setLogLevel(HttpLogDetailLevel.HEADERS);
-
-        BlobClient bec2 = new BlobClientBuilder()
-            .credential(ENV.getPrimaryAccount().getCredential())
-            .endpoint(cc.getBlobContainerUrl())
-            .blobName(generateBlobName())
-            .httpLogOptions(logOptions)
-            .buildClient();
-
-        bec2.uploadFromFile(file.toPath().toString());
-        bec2.downloadToFile(outFile.toPath().toString(), true);
+            bec2.uploadFromFile(file.toPath().toString(), true);
+            bec2.downloadToFile(outFile.toPath().toString(), true);
+        }
     }
 
 }
