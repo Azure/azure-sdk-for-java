@@ -199,7 +199,7 @@ public class ServiceAsyncApiTests extends BlobTestBase {
                 // cleanup:
                 Flux.fromIterable(containers)
                     .flatMap(BlobContainerAsyncClient::delete)
-                    .subscribe();
+                    .blockLast();
             })))
             .assertNext(r -> assertEquals(pageResults, r.getValue().size()))
             .expectNextCount(1)
@@ -222,7 +222,7 @@ public class ServiceAsyncApiTests extends BlobTestBase {
                 // cleanup:
                 Flux.fromIterable(containers)
                     .flatMap(BlobContainerAsyncClient::delete)
-                    .subscribe();
+                    .blockLast();
             })))
             .thenConsumeWhile(r -> {
                 assertTrue(r.getValue().size() <= pageResults);
@@ -319,7 +319,7 @@ public class ServiceAsyncApiTests extends BlobTestBase {
                     // cleanup:
                     Flux.fromIterable(containers)
                         .flatMap(BlobContainerAsyncClient::delete)
-                        .subscribe();
+                        .blockLast();
                 })))
             .expectNextCount(1)
             .verifyComplete();
@@ -348,7 +348,7 @@ public class ServiceAsyncApiTests extends BlobTestBase {
                     .then(primaryBlobServiceAsyncClient.getProperties())
                     .doOnNext(properties ->
                         assertFalse(properties.getLogging().getRetentionPolicy().isEnabled()))
-                    .subscribe();
+                    .block();
             });
 
         StepVerifier.create(response)
@@ -386,7 +386,7 @@ public class ServiceAsyncApiTests extends BlobTestBase {
                         String.format("@container='%s' AND \"bar\"='foo'", cc.getBlobContainerName()))
                         .doFinally(signalType -> {
                             // cleanup:
-                            cc.delete().subscribe();
+                            cc.delete().block();
                         })
                     );
             });
@@ -426,7 +426,7 @@ public class ServiceAsyncApiTests extends BlobTestBase {
                         return cc;
                     }).doFinally(signalType -> {
                         // cleanup:
-                        cc.delete().subscribe();
+                        cc.delete().block();
                     });
             }));
 
@@ -454,7 +454,7 @@ public class ServiceAsyncApiTests extends BlobTestBase {
                     null, Context.NONE).byPage())
                     .doFinally(signalType -> {
                         // cleanup:
-                        cc.delete().subscribe();
+                        cc.delete().block();
                     });
             });
 
@@ -484,7 +484,7 @@ public class ServiceAsyncApiTests extends BlobTestBase {
                     new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue))).byPage(pageResults))
                     .doFinally(signalType -> {
                         // cleanup:
-                        cc.delete().subscribe();
+                        cc.delete().block();
                     });
             });
 
@@ -566,7 +566,7 @@ public class ServiceAsyncApiTests extends BlobTestBase {
                     String.format("\"%s\"='%s'", tagKey, tagValue)).setMaxResultsPerPage(pageResults)).byPage().count())
                     .doFinally(signalType -> {
                         // cleanup:
-                        cc.delete().subscribe();
+                        cc.delete().block();
                     });
             });
 
@@ -663,7 +663,7 @@ public class ServiceAsyncApiTests extends BlobTestBase {
             .then(primaryBlobServiceAsyncClient.getProperties())
             .doFinally(signalType -> {
                 // cleanup:
-                setInitialProperties().subscribe();
+                setInitialProperties().block();
             });
 
         StepVerifier.create(response)
@@ -712,7 +712,7 @@ public class ServiceAsyncApiTests extends BlobTestBase {
             then(primaryBlobServiceAsyncClient.setPropertiesWithResponse(sentProperties))
             .doFinally(signalType -> {
                 // cleanup:
-                setInitialProperties().subscribe();
+                setInitialProperties().block();
             });
 
         assertAsyncResponseStatusCode(response, 202);
@@ -735,7 +735,7 @@ public class ServiceAsyncApiTests extends BlobTestBase {
                 return primaryBlobServiceAsyncClient.setPropertiesWithResponse(r)
                     .doFinally(signalType -> {
                         // cleanup:
-                        setInitialProperties().subscribe();
+                        setInitialProperties().block();
                     });
             });
 
@@ -763,7 +763,7 @@ public class ServiceAsyncApiTests extends BlobTestBase {
         Mono<BlobServiceProperties> response2 = primaryBlobServiceAsyncClient.getProperties()
             .doFinally(signalType -> {
                 // cleanup:
-                setInitialProperties().subscribe();
+                setInitialProperties().block();
             });
 
         StepVerifier.create(response2)
@@ -797,7 +797,7 @@ public class ServiceAsyncApiTests extends BlobTestBase {
             .then(primaryBlobServiceAsyncClient.getPropertiesWithResponse())
             .doFinally(signalType -> {
                 // cleanup:
-                setInitialProperties().subscribe();
+                setInitialProperties().block();
             });
         assertAsyncResponseStatusCode(response, 200);
     }

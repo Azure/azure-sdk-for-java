@@ -823,7 +823,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
             .thenMany(ccAsync.listBlobs(new ListBlobsOptions().setPrefix(prefix), null))
             .doFinally(signalType -> {
                 // cleanup:
-                ccAsync.delete().subscribe();
+                ccAsync.delete().block();
             });
 
         StepVerifier.create(response)
@@ -1091,7 +1091,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
             .thenMany(versionedCC.listBlobs(options))
             .doFinally(signalType -> {
                 // cleanup:
-                versionedCC.delete().subscribe();
+                versionedCC.delete().block();
             });
 
         StepVerifier.create(response)
@@ -1490,7 +1490,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
             .thenMany(versionedCC.listBlobsByHierarchy("", options))
             .doFinally(signalType -> {
                 // cleanup:
-                versionedCC.delete().subscribe();
+                versionedCC.delete().block();
             });
 
         StepVerifier.create(response)
@@ -1748,7 +1748,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
             .then(versionedCC.listBlobsByHierarchy("/", options).collect(Collectors.toList()))
             .doFinally(signalType -> {
                 // cleanup:
-                versionedCC.delete().subscribe();
+                versionedCC.delete().block();
             });
 
         StepVerifier.create(response)

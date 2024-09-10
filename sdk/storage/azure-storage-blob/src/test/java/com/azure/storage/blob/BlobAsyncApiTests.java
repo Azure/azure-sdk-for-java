@@ -2609,7 +2609,7 @@ public class BlobAsyncApiTests extends BlobTestBase {
                         })
                     .doFinally(signalType -> {
                         // cleanup:
-                        cc.delete().subscribe();
+                        cc.delete().block();
                     });
             });
 
@@ -2633,7 +2633,7 @@ public class BlobAsyncApiTests extends BlobTestBase {
                     })
                     .doFinally(signalType -> {
                         // cleanup:
-                        cc.delete().subscribe();
+                        cc.delete().block();
                     });
             });
 
@@ -2657,7 +2657,7 @@ public class BlobAsyncApiTests extends BlobTestBase {
                     .then(bc.setAccessTierWithResponse(AccessTier.HOT, null, null))
                     .doFinally(signalType -> {
                         // cleanup:
-                        cc.delete().subscribe();
+                        cc.delete().block();
                     });
             });
 
@@ -2687,7 +2687,7 @@ public class BlobAsyncApiTests extends BlobTestBase {
                 .thenMany(cc.listBlobs())
                 .doFinally(signalType -> {
                     // cleanup:
-                    cc.delete().subscribe();
+                    cc.delete().block();
                 });
         });
 
@@ -2711,7 +2711,7 @@ public class BlobAsyncApiTests extends BlobTestBase {
                 }).thenMany(cc.listBlobs())
                 .doFinally(signalType -> {
                     // cleanup:
-                    cc.delete().subscribe();
+                    cc.delete().block();
                 });
         });
 
@@ -2746,7 +2746,7 @@ public class BlobAsyncApiTests extends BlobTestBase {
                 }).thenMany(cc.listBlobs())
                 .doFinally(signalType -> {
                     // cleanup:
-                    cc.delete().subscribe();
+                    cc.delete().block();
                 });
         });
 
@@ -2769,7 +2769,7 @@ public class BlobAsyncApiTests extends BlobTestBase {
                 }).thenMany(cc.listBlobs())
                 .doFinally(signalType -> {
                     // cleanup:
-                    cc.delete().subscribe();
+                    cc.delete().block();
                 });
         });
 
@@ -2835,7 +2835,7 @@ public class BlobAsyncApiTests extends BlobTestBase {
                 .then(bc.setAccessTier(AccessTier.fromString("garbage")))
                 .doFinally(signalType -> {
                     // cleanup:
-                    cc.delete().subscribe();
+                    cc.delete().block();
                 });
         });
 
@@ -2864,7 +2864,7 @@ public class BlobAsyncApiTests extends BlobTestBase {
                     return bc.setAccessTierWithResponse(AccessTier.HOT, null, r);
                 }).doFinally(signalType -> {
                     // cleanup:
-                    cc.delete().subscribe();
+                    cc.delete().block();
                 });
         });
 
@@ -2881,7 +2881,7 @@ public class BlobAsyncApiTests extends BlobTestBase {
                 .then(bc.setAccessTierWithResponse(AccessTier.HOT, null, "garbage"))
                 .doFinally(signalType -> {
                     // cleanup:
-                    cc.delete().subscribe();
+                    cc.delete().block();
                 });
         });
 
@@ -2904,7 +2904,7 @@ public class BlobAsyncApiTests extends BlobTestBase {
                         .setTagsConditions("\"foo\" = 'bar'")))
                     .doFinally(signalType -> {
                         // cleanup:
-                        cc.delete().subscribe();
+                        cc.delete().block();
                     });
             });
 
@@ -2923,7 +2923,7 @@ public class BlobAsyncApiTests extends BlobTestBase {
                         .setTagsConditions("\"foo\" = 'bar'")))
                     .doFinally(signalType -> {
                         // cleanup:
-                        cc.delete().subscribe();
+                        cc.delete().block();
                     });
             });
 
