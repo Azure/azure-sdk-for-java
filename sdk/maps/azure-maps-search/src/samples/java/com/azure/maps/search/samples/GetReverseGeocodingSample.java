@@ -16,6 +16,7 @@ import com.azure.maps.search.MapsSearchAsyncClient;
 import com.azure.maps.search.MapsSearchClient;
 import com.azure.maps.search.MapsSearchClientBuilder;
 import com.azure.maps.search.implementation.models.ReverseGeocodingResultTypeEnum;
+import com.azure.maps.search.models.GeocodingResponse;
 
 public class GetReverseGeocodingSample {
     public static void main(String[] args) throws IOException {

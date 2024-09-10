@@ -16,6 +16,7 @@ import com.azure.maps.search.MapsSearchClient;
 import com.azure.maps.search.MapsSearchClientBuilder;
 import com.azure.maps.search.implementation.models.SearchesGetGeocodingHeaders;
 import com.azure.maps.search.models.BaseSearchOptions;
+import com.azure.maps.search.models.GeocodingResponse;
 
 public class GetGeocodingSample {
     public static void main(String[] args) throws IOException {
