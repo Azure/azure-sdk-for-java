@@ -27,7 +27,6 @@ import com.azure.ai.inference.implementation.ChatCompletionsUtils;
 import com.azure.ai.inference.models.StreamingChatCompletionsUpdate;
 import com.azure.core.util.IterableStream;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
 import java.util.Objects;
