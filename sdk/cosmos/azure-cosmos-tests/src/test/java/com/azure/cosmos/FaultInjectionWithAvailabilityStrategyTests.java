@@ -3060,9 +3060,12 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             // retry on the first region will provide a successful response for the one partition and no hedging is
             // happening. There should be one CosmosDiagnosticsContext (and page) per partition - each should only have
             // a single CosmosDiagnostics instance contacting both regions.
+            // In PR - https://github.com/Azure/azure-sdk-for-java/pull/41653 e2e timeout was increased from 1s to 1.1s to allow
+            // tests which use closer region as fault injected / outage region to get a success from a further away region
+            // with a cross-region retry
             new Object[] {
                 "DefaultPageSize_CrossPartition_404-1002_OnlyFirstRegion_SinglePartition_RemotePreferred_ReluctantAvailabilityStrategy",
-                ONE_SECOND_DURATION,
+                Duration.ofMillis(1100),
                 reluctantThresholdAvailabilityStrategy,
                 CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED,
                 ConnectionMode.DIRECT,
