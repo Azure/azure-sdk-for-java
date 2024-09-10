@@ -352,14 +352,8 @@ public class GlobalEndpointManager implements AutoCloseable {
         return this.owner.getDatabaseAccountFromEndpoint(serviceEndpoint)
             .doOnNext(databaseAccount -> {
                 if(databaseAccount != null) {
-                    this.databaseAccountWriteLock.lock();
-
-                    try {
-                        this.latestDatabaseAccount = databaseAccount;
-                        this.setLatestDatabaseRefreshError(null);
-                    } finally {
-                        this.databaseAccountWriteLock.unlock();
-                    }
+                    this.latestDatabaseAccount = databaseAccount;
+                    this.setLatestDatabaseRefreshError(null);
                 }
 
                 logger.debug("account retrieved: {}", databaseAccount);
