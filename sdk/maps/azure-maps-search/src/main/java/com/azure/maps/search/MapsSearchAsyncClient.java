@@ -14,7 +14,7 @@ import com.azure.core.models.GeoBoundingBox;
 import com.azure.core.models.GeoPosition;
 import com.azure.core.util.Context;
 import com.azure.maps.search.implementation.SearchesImpl;
-import com.azure.maps.search.implementation.models.Boundary;
+import com.azure.maps.search.models.Boundary;
 import com.azure.maps.search.implementation.models.BoundaryResultTypeEnum;
 import com.azure.maps.search.implementation.models.ErrorResponseException;
 import com.azure.maps.search.implementation.models.GeocodingBatchRequestBody;
