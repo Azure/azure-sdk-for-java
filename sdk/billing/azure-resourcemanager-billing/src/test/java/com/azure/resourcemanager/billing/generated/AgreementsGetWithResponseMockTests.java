@@ -6,59 +6,34 @@ package com.azure.resourcemanager.billing.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.billing.BillingManager;
 import com.azure.resourcemanager.billing.models.Agreement;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class AgreementsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"acceptanceMode\":\"ESignOffline\",\"agreementLink\":\"tdds\",\"billingProfileInfo\":[{\"billingAccountId\":\"pnouhbqezkqx\",\"billingProfileDisplayName\":\"lu\",\"billingProfileId\":\"igfcvcewbwqhd\",\"billingProfileSystemId\":\"jsatm\",\"indirectRelationshipOrganizationName\":\"c\"},{\"billingAccountId\":\"zdfsqxhyqmr\",\"billingProfileDisplayName\":\"parn\",\"billingProfileId\":\"grszrbwtdrcwg\",\"billingProfileSystemId\":\"ll\",\"indirectRelationshipOrganizationName\":\"lhhfi\"},{\"billingAccountId\":\"cfculzj\",\"billingProfileDisplayName\":\"hp\",\"billingProfileId\":\"wvyldqpzf\",\"billingProfileSystemId\":\"soxinu\",\"indirectRelationshipOrganizationName\":\"lzkdrocqsxy\"}],\"category\":\"IndirectForGovernmentAgreement\",\"displayName\":\"cmiwdw\",\"effectiveDate\":\"2021-10-07T11:57Z\",\"expirationDate\":\"2021-10-01T08:58:47Z\",\"participants\":[{\"email\":\"ajamc\",\"status\":\"yh\",\"statusDate\":\"2021-02-08T06:18:05Z\"},{\"email\":\"c\",\"status\":\"yklleynqanhkiggl\",\"statusDate\":\"2021-08-29T00:53:27Z\"}],\"status\":\"lhv\",\"leadBillingAccountName\":\"hg\"},\"tags\":{\"alec\":\"etxdqcmyctajqzj\",\"egyxsbfpzvoik\":\"bibiwks\",\"pblalhhez\":\"ntwczfzwushlc\",\"qdsgptotxj\":\"fkissaidqzsaa\"},\"id\":\"ia\",\"name\":\"cnlrt\",\"type\":\"fijzz\"}";
 
-        String responseStr =
-            "{\"properties\":{\"agreementLink\":\"eaoqaqbzgyhf\",\"category\":\"Other\",\"acceptanceMode\":\"ClickToAccept\",\"billingProfileInfo\":{\"billingProfileId\":\"wbqamteuliy\",\"billingProfileDisplayName\":\"pkcvmwf\",\"indirectRelationshipOrganizationName\":\"xxe\"},\"effectiveDate\":\"2021-08-01T10:31:28Z\",\"expirationDate\":\"2021-11-27T08:01:10Z\",\"participants\":[],\"status\":\"c\"},\"id\":\"miciij\",\"name\":\"pkzfbojxj\",\"type\":\"cs\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        BillingManager manager = BillingManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Agreement response = manager.agreements()
+            .getWithResponse("kvycqqqdseipnquw", "xhrptyodlh", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        BillingManager manager =
-            BillingManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        Agreement response =
-            manager.agreements().getWithResponse("zjd", "r", "jb", com.azure.core.util.Context.NONE).getValue();
+        Assertions.assertEquals("etxdqcmyctajqzj", response.tags().get("alec"));
     }
 }

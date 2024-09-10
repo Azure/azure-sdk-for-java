@@ -491,8 +491,8 @@ public class RetryPolicyTests {
         };
     }
 
-    static HttpResponse sendRequest(HttpPipeline pipeline) {
-        return pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/")).block();
+    static Mono<HttpResponse> sendRequest(HttpPipeline pipeline) {
+        return pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/"));
     }
 
     static HttpResponse sendRequestSync(HttpPipeline pipeline) {

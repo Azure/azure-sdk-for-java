@@ -4,21 +4,20 @@
 
 package com.azure.resourcemanager.billing.implementation;
 
-import com.azure.resourcemanager.billing.fluent.models.BillingPermissionsPropertiesInner;
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.billing.fluent.models.BillingRoleDefinitionInner;
-import com.azure.resourcemanager.billing.models.BillingPermissionsProperties;
 import com.azure.resourcemanager.billing.models.BillingRoleDefinition;
+import com.azure.resourcemanager.billing.models.BillingRoleDefinitionProperties;
 import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
 
 public final class BillingRoleDefinitionImpl implements BillingRoleDefinition {
     private BillingRoleDefinitionInner innerObject;
 
     private final com.azure.resourcemanager.billing.BillingManager serviceManager;
 
-    BillingRoleDefinitionImpl(
-        BillingRoleDefinitionInner innerObject, com.azure.resourcemanager.billing.BillingManager serviceManager) {
+    BillingRoleDefinitionImpl(BillingRoleDefinitionInner innerObject,
+        com.azure.resourcemanager.billing.BillingManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -35,26 +34,21 @@ public final class BillingRoleDefinitionImpl implements BillingRoleDefinition {
         return this.innerModel().type();
     }
 
-    public String description() {
-        return this.innerModel().description();
-    }
-
-    public List<BillingPermissionsProperties> permissions() {
-        List<BillingPermissionsPropertiesInner> inner = this.innerModel().permissions();
+    public Map<String, String> tags() {
+        Map<String, String> inner = this.innerModel().tags();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new BillingPermissionsPropertiesImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableMap(inner);
         } else {
-            return Collections.emptyList();
+            return Collections.emptyMap();
         }
     }
 
-    public String roleName() {
-        return this.innerModel().roleName();
+    public SystemData systemData() {
+        return this.innerModel().systemData();
+    }
+
+    public BillingRoleDefinitionProperties properties() {
+        return this.innerModel().properties();
     }
 
     public BillingRoleDefinitionInner innerModel() {

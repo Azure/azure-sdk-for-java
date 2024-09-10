@@ -9,54 +9,82 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.billing.fluent.models.BillingProfileInner;
 
-/** Resource collection API of BillingProfiles. */
+/**
+ * Resource collection API of BillingProfiles.
+ */
 public interface BillingProfiles {
     /**
-     * Lists the billing profiles that a user has access to. The operation is supported for billing accounts with
-     * agreement type Microsoft Customer Agreement or Microsoft Partner Agreement.
-     *
+     * Validates if the billing profile can be deleted. The operation is supported for billing accounts with agreement
+     * type Microsoft Customer Agreement and Microsoft Partner Agreement.
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing profiles as paginated response with {@link PagedIterable}.
-     */
-    PagedIterable<BillingProfile> listByBillingAccount(String billingAccountName);
-
-    /**
-     * Lists the billing profiles that a user has access to. The operation is supported for billing accounts with
-     * agreement type Microsoft Customer Agreement or Microsoft Partner Agreement.
-     *
-     * @param billingAccountName The ID that uniquely identifies a billing account.
-     * @param expand May be used to expand the invoice sections.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing profiles as paginated response with {@link PagedIterable}.
+     * @return eligibility to delete a billing profile result along with {@link Response}.
      */
-    PagedIterable<BillingProfile> listByBillingAccount(String billingAccountName, String expand, Context context);
+    Response<DeleteBillingProfileEligibilityResult> validateDeleteEligibilityWithResponse(String billingAccountName,
+        String billingProfileName, Context context);
+
+    /**
+     * Validates if the billing profile can be deleted. The operation is supported for billing accounts with agreement
+     * type Microsoft Customer Agreement and Microsoft Partner Agreement.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return eligibility to delete a billing profile result.
+     */
+    DeleteBillingProfileEligibilityResult validateDeleteEligibility(String billingAccountName,
+        String billingProfileName);
+
+    /**
+     * Deletes a billing profile. The operation is supported for billing accounts with agreement type Microsoft Customer
+     * Agreement and Microsoft Partner Agreement.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void deleteByResourceGroup(String billingAccountName, String billingProfileName);
+
+    /**
+     * Deletes a billing profile. The operation is supported for billing accounts with agreement type Microsoft Customer
+     * Agreement and Microsoft Partner Agreement.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void delete(String billingAccountName, String billingProfileName, Context context);
 
     /**
      * Gets a billing profile by its ID. The operation is supported for billing accounts with agreement type Microsoft
-     * Customer Agreement or Microsoft Partner Agreement.
-     *
+     * Customer Agreement and Microsoft Partner Agreement.
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
      * @param billingProfileName The ID that uniquely identifies a billing profile.
-     * @param expand May be used to expand the invoice sections.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a billing profile by its ID along with {@link Response}.
      */
-    Response<BillingProfile> getWithResponse(
-        String billingAccountName, String billingProfileName, String expand, Context context);
+    Response<BillingProfile> getWithResponse(String billingAccountName, String billingProfileName, Context context);
 
     /**
      * Gets a billing profile by its ID. The operation is supported for billing accounts with agreement type Microsoft
-     * Customer Agreement or Microsoft Partner Agreement.
-     *
+     * Customer Agreement and Microsoft Partner Agreement.
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
      * @param billingProfileName The ID that uniquely identifies a billing profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -68,11 +96,12 @@ public interface BillingProfiles {
 
     /**
      * Creates or updates a billing profile. The operation is supported for billing accounts with agreement type
-     * Microsoft Customer Agreement or Microsoft Partner Agreement.
-     *
+     * Microsoft Customer Agreement and Microsoft Partner Agreement. If you are a MCA Individual (Pay-as-you-go)
+     * customer, then please use the Azure portal experience to create the billing profile.
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
      * @param billingProfileName The ID that uniquely identifies a billing profile.
-     * @param parameters The new or updated billing profile.
+     * @param parameters A billing profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -82,17 +111,56 @@ public interface BillingProfiles {
 
     /**
      * Creates or updates a billing profile. The operation is supported for billing accounts with agreement type
-     * Microsoft Customer Agreement or Microsoft Partner Agreement.
-     *
+     * Microsoft Customer Agreement and Microsoft Partner Agreement. If you are a MCA Individual (Pay-as-you-go)
+     * customer, then please use the Azure portal experience to create the billing profile.
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
      * @param billingProfileName The ID that uniquely identifies a billing profile.
-     * @param parameters The new or updated billing profile.
+     * @param parameters A billing profile.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a billing profile.
      */
-    BillingProfile createOrUpdate(
-        String billingAccountName, String billingProfileName, BillingProfileInner parameters, Context context);
+    BillingProfile createOrUpdate(String billingAccountName, String billingProfileName, BillingProfileInner parameters,
+        Context context);
+
+    /**
+     * Lists the billing profiles that a user has access to. The operation is supported for billing accounts with
+     * agreement of type Microsoft Customer Agreement and Microsoft Partner Agreement.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container for a list of resources as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<BillingProfile> listByBillingAccount(String billingAccountName);
+
+    /**
+     * Lists the billing profiles that a user has access to. The operation is supported for billing accounts with
+     * agreement of type Microsoft Customer Agreement and Microsoft Partner Agreement.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param includeDeleted Can be used to get deleted billing profiles.
+     * @param filter The filter query option allows clients to filter a collection of resources that are addressed by a
+     * request URL.
+     * @param orderBy The orderby query option allows clients to request resources in a particular order.
+     * @param top The top query option requests the number of items in the queried collection to be included in the
+     * result. The maximum supported value for top is 50.
+     * @param skip The skip query option requests the number of items in the queried collection that are to be skipped
+     * and not included in the result.
+     * @param count The count query option allows clients to request a count of the matching resources included with the
+     * resources in the response.
+     * @param search The search query option allows clients to request items within a collection matching a free-text
+     * search expression. search is only supported for string fields.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container for a list of resources as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<BillingProfile> listByBillingAccount(String billingAccountName, Boolean includeDeleted, String filter,
+        String orderBy, Long top, Long skip, Boolean count, String search, Context context);
 }

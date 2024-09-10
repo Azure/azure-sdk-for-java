@@ -12,78 +12,62 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.billing.fluent.models.BillingSubscriptionInner;
-import com.azure.resourcemanager.billing.fluent.models.ValidateSubscriptionTransferEligibilityResultInner;
-import com.azure.resourcemanager.billing.models.TransferBillingSubscriptionRequestProperties;
+import com.azure.resourcemanager.billing.fluent.models.MoveBillingSubscriptionEligibilityResultInner;
+import com.azure.resourcemanager.billing.models.BillingSubscriptionMergeRequest;
+import com.azure.resourcemanager.billing.models.BillingSubscriptionPatch;
+import com.azure.resourcemanager.billing.models.BillingSubscriptionSplitRequest;
+import com.azure.resourcemanager.billing.models.CancelSubscriptionRequest;
+import com.azure.resourcemanager.billing.models.MoveBillingSubscriptionRequest;
 
-/** An instance of this class provides access to all the operations defined in BillingSubscriptionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in BillingSubscriptionsClient.
+ */
 public interface BillingSubscriptionsClient {
     /**
-     * Lists the subscriptions for a customer. The operation is supported only for billing accounts with agreement type
-     * Microsoft Partner Agreement.
-     *
+     * Gets a subscription by its billing profile and ID. The operation is supported for billing accounts with agreement
+     * type Enterprise Agreement.
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
-     * @param customerName The ID that uniquely identifies a customer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing subscriptions as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BillingSubscriptionInner> listByCustomer(String billingAccountName, String customerName);
-
-    /**
-     * Lists the subscriptions for a customer. The operation is supported only for billing accounts with agreement type
-     * Microsoft Partner Agreement.
-     *
-     * @param billingAccountName The ID that uniquely identifies a billing account.
-     * @param customerName The ID that uniquely identifies a customer.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param billingSubscriptionName The ID that uniquely identifies a subscription.
+     * @param expand Can be used to expand `Reseller`, `ConsumptionCostCenter`, `LastMonthCharges` and
+     * `MonthToDateCharges`.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing subscriptions as paginated response with {@link PagedIterable}.
+     * @return a subscription by its billing profile and ID along with {@link Response}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BillingSubscriptionInner> listByCustomer(
-        String billingAccountName, String customerName, Context context);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<BillingSubscriptionInner> getByBillingProfileWithResponse(String billingAccountName,
+        String billingProfileName, String billingSubscriptionName, String expand, Context context);
 
     /**
-     * Lists the subscriptions for a billing account. The operation is supported for billing accounts with agreement
-     * type Microsoft Customer Agreement or Microsoft Partner Agreement.
-     *
+     * Gets a subscription by its billing profile and ID. The operation is supported for billing accounts with agreement
+     * type Enterprise Agreement.
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param billingSubscriptionName The ID that uniquely identifies a subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing subscriptions as paginated response with {@link PagedIterable}.
+     * @return a subscription by its billing profile and ID.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BillingSubscriptionInner> listByBillingAccount(String billingAccountName);
-
-    /**
-     * Lists the subscriptions for a billing account. The operation is supported for billing accounts with agreement
-     * type Microsoft Customer Agreement or Microsoft Partner Agreement.
-     *
-     * @param billingAccountName The ID that uniquely identifies a billing account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing subscriptions as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BillingSubscriptionInner> listByBillingAccount(String billingAccountName, Context context);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    BillingSubscriptionInner getByBillingProfile(String billingAccountName, String billingProfileName,
+        String billingSubscriptionName);
 
     /**
      * Lists the subscriptions that are billed to a billing profile. The operation is supported for billing accounts
      * with agreement type Microsoft Customer Agreement or Microsoft Partner Agreement.
-     *
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
      * @param billingProfileName The ID that uniquely identifies a billing profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing subscriptions as paginated response with {@link PagedIterable}.
+     * @return a container for a list of resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BillingSubscriptionInner> listByBillingProfile(String billingAccountName, String billingProfileName);
@@ -91,180 +75,398 @@ public interface BillingSubscriptionsClient {
     /**
      * Lists the subscriptions that are billed to a billing profile. The operation is supported for billing accounts
      * with agreement type Microsoft Customer Agreement or Microsoft Partner Agreement.
-     *
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
      * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param includeDeleted Can be used to get deleted billing subscriptions.
+     * @param expand Can be used to expand `Reseller`, `ConsumptionCostCenter`, `LastMonthCharges` and
+     * `MonthToDateCharges`.
+     * @param filter The filter query option allows clients to filter a collection of resources that are addressed by a
+     * request URL.
+     * @param orderBy The orderby query option allows clients to request resources in a particular order.
+     * @param top The top query option requests the number of items in the queried collection to be included in the
+     * result. The maximum supported value for top is 50.
+     * @param skip The skip query option requests the number of items in the queried collection that are to be skipped
+     * and not included in the result.
+     * @param count The count query option allows clients to request a count of the matching resources included with the
+     * resources in the response.
+     * @param search The search query option allows clients to request items within a collection matching a free-text
+     * search expression. search is only supported for string fields.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing subscriptions as paginated response with {@link PagedIterable}.
+     * @return a container for a list of resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BillingSubscriptionInner> listByBillingProfile(
-        String billingAccountName, String billingProfileName, Context context);
+    PagedIterable<BillingSubscriptionInner> listByBillingProfile(String billingAccountName, String billingProfileName,
+        Boolean includeDeleted, String expand, String filter, String orderBy, Long top, Long skip, Boolean count,
+        String search, Context context);
+
+    /**
+     * Lists the subscriptions for a customer. The operation is supported only for billing accounts with agreement type
+     * Microsoft Partner Agreement.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param customerName The ID that uniquely identifies a customer.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container for a list of resources as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<BillingSubscriptionInner> listByCustomer(String billingAccountName, String billingProfileName,
+        String customerName);
+
+    /**
+     * Lists the subscriptions for a customer. The operation is supported only for billing accounts with agreement type
+     * Microsoft Partner Agreement.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param customerName The ID that uniquely identifies a customer.
+     * @param includeDeleted Can be used to get deleted billing subscriptions.
+     * @param expand Can be used to expand `Reseller`, `ConsumptionCostCenter`, `LastMonthCharges` and
+     * `MonthToDateCharges`.
+     * @param filter The filter query option allows clients to filter a collection of resources that are addressed by a
+     * request URL.
+     * @param orderBy The orderby query option allows clients to request resources in a particular order.
+     * @param top The top query option requests the number of items in the queried collection to be included in the
+     * result. The maximum supported value for top is 50.
+     * @param skip The skip query option requests the number of items in the queried collection that are to be skipped
+     * and not included in the result.
+     * @param count The count query option allows clients to request a count of the matching resources included with the
+     * resources in the response.
+     * @param search The search query option allows clients to request items within a collection matching a free-text
+     * search expression. search is only supported for string fields.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container for a list of resources as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<BillingSubscriptionInner> listByCustomer(String billingAccountName, String billingProfileName,
+        String customerName, Boolean includeDeleted, String expand, String filter, String orderBy, Long top, Long skip,
+        Boolean count, String search, Context context);
 
     /**
      * Lists the subscriptions that are billed to an invoice section. The operation is supported only for billing
      * accounts with agreement type Microsoft Customer Agreement.
-     *
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
      * @param billingProfileName The ID that uniquely identifies a billing profile.
      * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing subscriptions as paginated response with {@link PagedIterable}.
+     * @return a container for a list of resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BillingSubscriptionInner> listByInvoiceSection(
-        String billingAccountName, String billingProfileName, String invoiceSectionName);
+    PagedIterable<BillingSubscriptionInner> listByInvoiceSection(String billingAccountName, String billingProfileName,
+        String invoiceSectionName);
 
     /**
      * Lists the subscriptions that are billed to an invoice section. The operation is supported only for billing
      * accounts with agreement type Microsoft Customer Agreement.
-     *
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
      * @param billingProfileName The ID that uniquely identifies a billing profile.
      * @param invoiceSectionName The ID that uniquely identifies an invoice section.
+     * @param includeDeleted Can be used to get deleted billing subscriptions.
+     * @param expand Can be used to expand `Reseller`, `ConsumptionCostCenter`, `LastMonthCharges` and
+     * `MonthToDateCharges`.
+     * @param filter The filter query option allows clients to filter a collection of resources that are addressed by a
+     * request URL.
+     * @param orderBy The orderby query option allows clients to request resources in a particular order.
+     * @param top The top query option requests the number of items in the queried collection to be included in the
+     * result. The maximum supported value for top is 50.
+     * @param skip The skip query option requests the number of items in the queried collection that are to be skipped
+     * and not included in the result.
+     * @param count The count query option allows clients to request a count of the matching resources included with the
+     * resources in the response.
+     * @param search The search query option allows clients to request items within a collection matching a free-text
+     * search expression. search is only supported for string fields.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing subscriptions as paginated response with {@link PagedIterable}.
+     * @return a container for a list of resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BillingSubscriptionInner> listByInvoiceSection(
-        String billingAccountName, String billingProfileName, String invoiceSectionName, Context context);
+    PagedIterable<BillingSubscriptionInner> listByInvoiceSection(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, Boolean includeDeleted, String expand, String filter, String orderBy, Long top,
+        Long skip, Boolean count, String search, Context context);
 
     /**
-     * Gets a subscription by its ID. The operation is supported for billing accounts with agreement type Microsoft
-     * Customer Agreement and Microsoft Partner Agreement.
-     *
+     * Cancels a usage-based subscription. This operation is supported only for billing accounts of type Microsoft
+     * Partner Agreement.
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
-     * @param context The context to associate with this operation.
+     * @param billingSubscriptionName The ID that uniquely identifies a subscription.
+     * @param parameters Request parameters for cancel customer subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a subscription by its ID along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BillingSubscriptionInner> getWithResponse(String billingAccountName, Context context);
-
-    /**
-     * Gets a subscription by its ID. The operation is supported for billing accounts with agreement type Microsoft
-     * Customer Agreement and Microsoft Partner Agreement.
-     *
-     * @param billingAccountName The ID that uniquely identifies a billing account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a subscription by its ID.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    BillingSubscriptionInner get(String billingAccountName);
-
-    /**
-     * Updates the properties of a billing subscription. Currently, cost center can be updated. The operation is
-     * supported only for billing accounts with agreement type Microsoft Customer Agreement.
-     *
-     * @param billingAccountName The ID that uniquely identifies a billing account.
-     * @param parameters Request parameters that are provided to the update billing subscription operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a billing subscription along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BillingSubscriptionInner> updateWithResponse(
-        String billingAccountName, BillingSubscriptionInner parameters, Context context);
-
-    /**
-     * Updates the properties of a billing subscription. Currently, cost center can be updated. The operation is
-     * supported only for billing accounts with agreement type Microsoft Customer Agreement.
-     *
-     * @param billingAccountName The ID that uniquely identifies a billing account.
-     * @param parameters Request parameters that are provided to the update billing subscription operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a billing subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    BillingSubscriptionInner update(String billingAccountName, BillingSubscriptionInner parameters);
-
-    /**
-     * Moves a subscription's charges to a new invoice section. The new invoice section must belong to the same billing
-     * profile as the existing invoice section. This operation is supported for billing accounts with agreement type
-     * Microsoft Customer Agreement.
-     *
-     * @param billingAccountName The ID that uniquely identifies a billing account.
-     * @param parameters Request parameters that are provided to the move subscription operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a billing subscription.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<BillingSubscriptionInner>, BillingSubscriptionInner> beginMove(
-        String billingAccountName, TransferBillingSubscriptionRequestProperties parameters);
+    SyncPoller<PollResult<Void>, Void> beginCancel(String billingAccountName, String billingSubscriptionName,
+        CancelSubscriptionRequest parameters);
 
     /**
-     * Moves a subscription's charges to a new invoice section. The new invoice section must belong to the same billing
-     * profile as the existing invoice section. This operation is supported for billing accounts with agreement type
-     * Microsoft Customer Agreement.
-     *
+     * Cancels a usage-based subscription. This operation is supported only for billing accounts of type Microsoft
+     * Partner Agreement.
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
-     * @param parameters Request parameters that are provided to the move subscription operation.
+     * @param billingSubscriptionName The ID that uniquely identifies a subscription.
+     * @param parameters Request parameters for cancel customer subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a billing subscription.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<BillingSubscriptionInner>, BillingSubscriptionInner> beginMove(
-        String billingAccountName, TransferBillingSubscriptionRequestProperties parameters, Context context);
+    SyncPoller<PollResult<Void>, Void> beginCancel(String billingAccountName, String billingSubscriptionName,
+        CancelSubscriptionRequest parameters, Context context);
 
     /**
-     * Moves a subscription's charges to a new invoice section. The new invoice section must belong to the same billing
-     * profile as the existing invoice section. This operation is supported for billing accounts with agreement type
-     * Microsoft Customer Agreement.
-     *
+     * Cancels a usage-based subscription. This operation is supported only for billing accounts of type Microsoft
+     * Partner Agreement.
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
-     * @param parameters Request parameters that are provided to the move subscription operation.
+     * @param billingSubscriptionName The ID that uniquely identifies a subscription.
+     * @param parameters Request parameters for cancel customer subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a billing subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BillingSubscriptionInner move(String billingAccountName, TransferBillingSubscriptionRequestProperties parameters);
+    void cancel(String billingAccountName, String billingSubscriptionName, CancelSubscriptionRequest parameters);
 
     /**
-     * Moves a subscription's charges to a new invoice section. The new invoice section must belong to the same billing
-     * profile as the existing invoice section. This operation is supported for billing accounts with agreement type
-     * Microsoft Customer Agreement.
-     *
+     * Cancels a usage-based subscription. This operation is supported only for billing accounts of type Microsoft
+     * Partner Agreement.
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
-     * @param parameters Request parameters that are provided to the move subscription operation.
+     * @param billingSubscriptionName The ID that uniquely identifies a subscription.
+     * @param parameters Request parameters for cancel customer subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a billing subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BillingSubscriptionInner move(
-        String billingAccountName, TransferBillingSubscriptionRequestProperties parameters, Context context);
+    void cancel(String billingAccountName, String billingSubscriptionName, CancelSubscriptionRequest parameters,
+        Context context);
 
     /**
-     * Validates if a subscription's charges can be moved to a new invoice section. This operation is supported for
+     * Merges the billing subscription provided in the request with a target billing subscription.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingSubscriptionName The ID that uniquely identifies a subscription.
+     * @param parameters Request parameters that are provided to merge the two billing subscriptions.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the billing properties of a subscription.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<BillingSubscriptionInner>, BillingSubscriptionInner> beginMerge(String billingAccountName,
+        String billingSubscriptionName, BillingSubscriptionMergeRequest parameters);
+
+    /**
+     * Merges the billing subscription provided in the request with a target billing subscription.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingSubscriptionName The ID that uniquely identifies a subscription.
+     * @param parameters Request parameters that are provided to merge the two billing subscriptions.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the billing properties of a subscription.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<BillingSubscriptionInner>, BillingSubscriptionInner> beginMerge(String billingAccountName,
+        String billingSubscriptionName, BillingSubscriptionMergeRequest parameters, Context context);
+
+    /**
+     * Merges the billing subscription provided in the request with a target billing subscription.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingSubscriptionName The ID that uniquely identifies a subscription.
+     * @param parameters Request parameters that are provided to merge the two billing subscriptions.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the billing properties of a subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    BillingSubscriptionInner merge(String billingAccountName, String billingSubscriptionName,
+        BillingSubscriptionMergeRequest parameters);
+
+    /**
+     * Merges the billing subscription provided in the request with a target billing subscription.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingSubscriptionName The ID that uniquely identifies a subscription.
+     * @param parameters Request parameters that are provided to merge the two billing subscriptions.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the billing properties of a subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    BillingSubscriptionInner merge(String billingAccountName, String billingSubscriptionName,
+        BillingSubscriptionMergeRequest parameters, Context context);
+
+    /**
+     * Moves charges for a subscription to a new invoice section. The new invoice section must belong to the same
+     * billing profile as the existing invoice section. This operation is supported for billing accounts with agreement
+     * type Microsoft Customer Agreement.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingSubscriptionName The ID that uniquely identifies a subscription.
+     * @param parameters Request parameters to transfer billing subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the billing properties of a subscription.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<BillingSubscriptionInner>, BillingSubscriptionInner> beginMove(String billingAccountName,
+        String billingSubscriptionName, MoveBillingSubscriptionRequest parameters);
+
+    /**
+     * Moves charges for a subscription to a new invoice section. The new invoice section must belong to the same
+     * billing profile as the existing invoice section. This operation is supported for billing accounts with agreement
+     * type Microsoft Customer Agreement.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingSubscriptionName The ID that uniquely identifies a subscription.
+     * @param parameters Request parameters to transfer billing subscription.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the billing properties of a subscription.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<BillingSubscriptionInner>, BillingSubscriptionInner> beginMove(String billingAccountName,
+        String billingSubscriptionName, MoveBillingSubscriptionRequest parameters, Context context);
+
+    /**
+     * Moves charges for a subscription to a new invoice section. The new invoice section must belong to the same
+     * billing profile as the existing invoice section. This operation is supported for billing accounts with agreement
+     * type Microsoft Customer Agreement.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingSubscriptionName The ID that uniquely identifies a subscription.
+     * @param parameters Request parameters to transfer billing subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the billing properties of a subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    BillingSubscriptionInner move(String billingAccountName, String billingSubscriptionName,
+        MoveBillingSubscriptionRequest parameters);
+
+    /**
+     * Moves charges for a subscription to a new invoice section. The new invoice section must belong to the same
+     * billing profile as the existing invoice section. This operation is supported for billing accounts with agreement
+     * type Microsoft Customer Agreement.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingSubscriptionName The ID that uniquely identifies a subscription.
+     * @param parameters Request parameters to transfer billing subscription.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the billing properties of a subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    BillingSubscriptionInner move(String billingAccountName, String billingSubscriptionName,
+        MoveBillingSubscriptionRequest parameters, Context context);
+
+    /**
+     * Splits a subscription into a new subscription with quantity less than current subscription quantity and not equal
+     * to 0.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingSubscriptionName The ID that uniquely identifies a subscription.
+     * @param parameters Request parameters that are provided to split the billing subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the billing properties of a subscription.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<BillingSubscriptionInner>, BillingSubscriptionInner> beginSplit(String billingAccountName,
+        String billingSubscriptionName, BillingSubscriptionSplitRequest parameters);
+
+    /**
+     * Splits a subscription into a new subscription with quantity less than current subscription quantity and not equal
+     * to 0.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingSubscriptionName The ID that uniquely identifies a subscription.
+     * @param parameters Request parameters that are provided to split the billing subscription.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the billing properties of a subscription.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<BillingSubscriptionInner>, BillingSubscriptionInner> beginSplit(String billingAccountName,
+        String billingSubscriptionName, BillingSubscriptionSplitRequest parameters, Context context);
+
+    /**
+     * Splits a subscription into a new subscription with quantity less than current subscription quantity and not equal
+     * to 0.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingSubscriptionName The ID that uniquely identifies a subscription.
+     * @param parameters Request parameters that are provided to split the billing subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the billing properties of a subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    BillingSubscriptionInner split(String billingAccountName, String billingSubscriptionName,
+        BillingSubscriptionSplitRequest parameters);
+
+    /**
+     * Splits a subscription into a new subscription with quantity less than current subscription quantity and not equal
+     * to 0.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingSubscriptionName The ID that uniquely identifies a subscription.
+     * @param parameters Request parameters that are provided to split the billing subscription.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the billing properties of a subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    BillingSubscriptionInner split(String billingAccountName, String billingSubscriptionName,
+        BillingSubscriptionSplitRequest parameters, Context context);
+
+    /**
+     * Validates if charges for a subscription can be moved to a new invoice section. This operation is supported for
      * billing accounts with agreement type Microsoft Customer Agreement.
-     *
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
-     * @param parameters Request parameters that are provided to the validate move eligibility operation.
+     * @param billingSubscriptionName The ID that uniquely identifies a subscription.
+     * @param parameters Request parameters to transfer billing subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -272,21 +474,307 @@ public interface BillingSubscriptionsClient {
      * @return result of the transfer eligibility validation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ValidateSubscriptionTransferEligibilityResultInner> validateMoveWithResponse(
-        String billingAccountName, TransferBillingSubscriptionRequestProperties parameters, Context context);
+    Response<MoveBillingSubscriptionEligibilityResultInner> validateMoveEligibilityWithResponse(
+        String billingAccountName, String billingSubscriptionName, MoveBillingSubscriptionRequest parameters,
+        Context context);
 
     /**
-     * Validates if a subscription's charges can be moved to a new invoice section. This operation is supported for
+     * Validates if charges for a subscription can be moved to a new invoice section. This operation is supported for
      * billing accounts with agreement type Microsoft Customer Agreement.
-     *
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
-     * @param parameters Request parameters that are provided to the validate move eligibility operation.
+     * @param billingSubscriptionName The ID that uniquely identifies a subscription.
+     * @param parameters Request parameters to transfer billing subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the transfer eligibility validation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ValidateSubscriptionTransferEligibilityResultInner validateMove(
-        String billingAccountName, TransferBillingSubscriptionRequestProperties parameters);
+    MoveBillingSubscriptionEligibilityResultInner validateMoveEligibility(String billingAccountName,
+        String billingSubscriptionName, MoveBillingSubscriptionRequest parameters);
+
+    /**
+     * Cancels a billing subscription. This operation is supported only for billing accounts of type Microsoft Partner
+     * Agreement or Microsoft Customer Agreement.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingSubscriptionName The ID that uniquely identifies a subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String billingAccountName, String billingSubscriptionName);
+
+    /**
+     * Cancels a billing subscription. This operation is supported only for billing accounts of type Microsoft Partner
+     * Agreement or Microsoft Customer Agreement.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingSubscriptionName The ID that uniquely identifies a subscription.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String billingAccountName, String billingSubscriptionName,
+        Context context);
+
+    /**
+     * Cancels a billing subscription. This operation is supported only for billing accounts of type Microsoft Partner
+     * Agreement or Microsoft Customer Agreement.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingSubscriptionName The ID that uniquely identifies a subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String billingAccountName, String billingSubscriptionName);
+
+    /**
+     * Cancels a billing subscription. This operation is supported only for billing accounts of type Microsoft Partner
+     * Agreement or Microsoft Customer Agreement.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingSubscriptionName The ID that uniquely identifies a subscription.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String billingAccountName, String billingSubscriptionName, Context context);
+
+    /**
+     * Gets a subscription by its ID. The operation is supported for billing accounts with agreement type Microsoft
+     * Customer Agreement, Microsoft Partner Agreement, and Enterprise Agreement.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingSubscriptionName The ID that uniquely identifies a subscription.
+     * @param expand Can be used to expand `Reseller`, `ConsumptionCostCenter`, `LastMonthCharges` and
+     * `MonthToDateCharges`.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a subscription by its ID along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<BillingSubscriptionInner> getWithResponse(String billingAccountName, String billingSubscriptionName,
+        String expand, Context context);
+
+    /**
+     * Gets a subscription by its ID. The operation is supported for billing accounts with agreement type Microsoft
+     * Customer Agreement, Microsoft Partner Agreement, and Enterprise Agreement.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingSubscriptionName The ID that uniquely identifies a subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a subscription by its ID.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    BillingSubscriptionInner get(String billingAccountName, String billingSubscriptionName);
+
+    /**
+     * Updates the properties of a billing subscription.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingSubscriptionName The ID that uniquely identifies a subscription.
+     * @param parameters The billing properties of a subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the billing properties of a subscription.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<BillingSubscriptionInner>, BillingSubscriptionInner> beginUpdate(String billingAccountName,
+        String billingSubscriptionName, BillingSubscriptionPatch parameters);
+
+    /**
+     * Updates the properties of a billing subscription.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingSubscriptionName The ID that uniquely identifies a subscription.
+     * @param parameters The billing properties of a subscription.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the billing properties of a subscription.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<BillingSubscriptionInner>, BillingSubscriptionInner> beginUpdate(String billingAccountName,
+        String billingSubscriptionName, BillingSubscriptionPatch parameters, Context context);
+
+    /**
+     * Updates the properties of a billing subscription.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingSubscriptionName The ID that uniquely identifies a subscription.
+     * @param parameters The billing properties of a subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the billing properties of a subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    BillingSubscriptionInner update(String billingAccountName, String billingSubscriptionName,
+        BillingSubscriptionPatch parameters);
+
+    /**
+     * Updates the properties of a billing subscription.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingSubscriptionName The ID that uniquely identifies a subscription.
+     * @param parameters The billing properties of a subscription.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the billing properties of a subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    BillingSubscriptionInner update(String billingAccountName, String billingSubscriptionName,
+        BillingSubscriptionPatch parameters, Context context);
+
+    /**
+     * Lists the subscriptions for a billing account.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container for a list of resources as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<BillingSubscriptionInner> listByBillingAccount(String billingAccountName);
+
+    /**
+     * Lists the subscriptions for a billing account.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param includeDeleted Can be used to get deleted billing subscriptions.
+     * @param includeTenantSubscriptions Can be used to get tenant-owned billing subscriptions. This field is only
+     * applies to Microsoft Online Services Program billing accounts.
+     * @param includeFailed Can be used to get failed billing subscriptions.
+     * @param expand Can be used to expand `Reseller`, `ConsumptionCostCenter`, `LastMonthCharges` and
+     * `MonthToDateCharges`.
+     * @param filter The filter query option allows clients to filter a collection of resources that are addressed by a
+     * request URL.
+     * @param orderBy The orderby query option allows clients to request resources in a particular order.
+     * @param top The top query option requests the number of items in the queried collection to be included in the
+     * result. The maximum supported value for top is 50.
+     * @param skip The skip query option requests the number of items in the queried collection that are to be skipped
+     * and not included in the result.
+     * @param count The count query option allows clients to request a count of the matching resources included with the
+     * resources in the response.
+     * @param search The search query option allows clients to request items within a collection matching a free-text
+     * search expression. search is only supported for string fields.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container for a list of resources as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<BillingSubscriptionInner> listByBillingAccount(String billingAccountName, Boolean includeDeleted,
+        Boolean includeTenantSubscriptions, Boolean includeFailed, String expand, String filter, String orderBy,
+        Long top, Long skip, Boolean count, String search, Context context);
+
+    /**
+     * Lists the subscriptions for a customer at billing account level. The operation is supported only for billing
+     * accounts with agreement type Microsoft Partner Agreement.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param customerName The ID that uniquely identifies a customer.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container for a list of resources as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<BillingSubscriptionInner> listByCustomerAtBillingAccount(String billingAccountName,
+        String customerName);
+
+    /**
+     * Lists the subscriptions for a customer at billing account level. The operation is supported only for billing
+     * accounts with agreement type Microsoft Partner Agreement.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param customerName The ID that uniquely identifies a customer.
+     * @param includeDeleted Can be used to get deleted billing subscriptions.
+     * @param expand Can be used to expand `Reseller`, `ConsumptionCostCenter`, `LastMonthCharges` and
+     * `MonthToDateCharges`.
+     * @param filter The filter query option allows clients to filter a collection of resources that are addressed by a
+     * request URL.
+     * @param orderBy The orderby query option allows clients to request resources in a particular order.
+     * @param top The top query option requests the number of items in the queried collection to be included in the
+     * result. The maximum supported value for top is 50.
+     * @param skip The skip query option requests the number of items in the queried collection that are to be skipped
+     * and not included in the result.
+     * @param count The count query option allows clients to request a count of the matching resources included with the
+     * resources in the response.
+     * @param search The search query option allows clients to request items within a collection matching a free-text
+     * search expression. search is only supported for string fields.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container for a list of resources as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<BillingSubscriptionInner> listByCustomerAtBillingAccount(String billingAccountName,
+        String customerName, Boolean includeDeleted, String expand, String filter, String orderBy, Long top, Long skip,
+        Boolean count, String search, Context context);
+
+    /**
+     * Lists the subscriptions for an enrollment account. The operation is supported for billing accounts with agreement
+     * type Enterprise Agreement.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param enrollmentAccountName The name of the enrollment account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container for a list of resources as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<BillingSubscriptionInner> listByEnrollmentAccount(String billingAccountName,
+        String enrollmentAccountName);
+
+    /**
+     * Lists the subscriptions for an enrollment account. The operation is supported for billing accounts with agreement
+     * type Enterprise Agreement.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param enrollmentAccountName The name of the enrollment account.
+     * @param filter The filter query option allows clients to filter a collection of resources that are addressed by a
+     * request URL.
+     * @param orderBy The orderby query option allows clients to request resources in a particular order.
+     * @param top The top query option requests the number of items in the queried collection to be included in the
+     * result. The maximum supported value for top is 50.
+     * @param skip The skip query option requests the number of items in the queried collection that are to be skipped
+     * and not included in the result.
+     * @param count The count query option allows clients to request a count of the matching resources included with the
+     * resources in the response.
+     * @param search The search query option allows clients to request items within a collection matching a free-text
+     * search expression. search is only supported for string fields.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container for a list of resources as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<BillingSubscriptionInner> listByEnrollmentAccount(String billingAccountName,
+        String enrollmentAccountName, String filter, String orderBy, Long top, Long skip, Boolean count, String search,
+        Context context);
 }

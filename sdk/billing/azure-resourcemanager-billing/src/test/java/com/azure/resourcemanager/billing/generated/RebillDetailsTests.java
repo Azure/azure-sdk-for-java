@@ -10,11 +10,9 @@ import com.azure.resourcemanager.billing.models.RebillDetails;
 public final class RebillDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RebillDetails model =
-            BinaryData
-                .fromString(
-                    "{\"creditNoteDocumentId\":\"qfobwyz\",\"invoiceDocumentId\":\"bykutw\",\"rebillDetails\":{\"akgtdlmkkzevdlh\":{\"creditNoteDocumentId\":\"a\",\"invoiceDocumentId\":\"hrskdsnfd\",\"rebillDetails\":{}},\"akufgmjz\":{\"creditNoteDocumentId\":\"pusdstt\",\"invoiceDocumentId\":\"ogvbbejdcngq\",\"rebillDetails\":{}}}}")
-                .toObject(RebillDetails.class);
+        RebillDetails model = BinaryData.fromString(
+            "{\"invoiceDocumentId\":\"ktyjmf\",\"creditNoteDocumentId\":\"l\",\"rebillDetails\":{\"invoiceDocumentId\":\"qkfrbzgowoxqmj\",\"creditNoteDocumentId\":\"jcx\",\"rebillDetails\":{\"invoiceDocumentId\":\"gxhlusr\",\"creditNoteDocumentId\":\"i\",\"rebillDetails\":{\"invoiceDocumentId\":\"jceagb\",\"creditNoteDocumentId\":\"vl\",\"rebillDetails\":{\"invoiceDocumentId\":\"ywzash\",\"creditNoteDocumentId\":\"onoyjf\",\"rebillDetails\":{\"invoiceDocumentId\":\"ubyzn\",\"creditNoteDocumentId\":\"k\",\"rebillDetails\":{}}}}}}}")
+            .toObject(RebillDetails.class);
     }
 
     @org.junit.jupiter.api.Test
