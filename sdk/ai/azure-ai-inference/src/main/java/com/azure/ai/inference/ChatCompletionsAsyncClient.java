@@ -159,20 +159,41 @@ public final class ChatCompletionsAsyncClient {
      * Completions support a wide variety of tasks and generate text that continues from or "completes"
      * provided prompt data. The method makes a REST API call to the `/chat/completions` route
      * on the given endpoint.
-     * @param completeRequest The completeRequest parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param options The configuration information for a chat completions request. Completions support a
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return chat completions for the provided chat messages.
      * Completions support a wide variety of tasks and generate text that continues from or "completes"
      * provided prompt data along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ChatCompletions>> completeWithResponse(BinaryData completeRequest, RequestOptions requestOptions) {
-        Response<BinaryData> response = serviceClient.completeWithResponseAsync(completeRequest, requestOptions).block();
-        return Mono.just(new SimpleResponse<>(response, response.getValue().toObject(ChatCompletions.class)));
+    public Mono<Response<ChatCompletions>> completeWithResponse(ChatCompletionsOptions options) {
+        RequestOptions requestOptions = new RequestOptions();
+        CompleteRequest completeRequestObj
+            = new CompleteRequest(options.getMessages()).setFrequencyPenalty(options.getFrequencyPenalty())
+            .setStream(options.isStream())
+            .setPresencePenalty(options.getPresencePenalty())
+            .setTemperature(options.getTemperature())
+            .setTopP(options.getTopP())
+            .setMaxTokens(options.getMaxTokens())
+            .setResponseFormat(options.getResponseFormat())
+            .setStop(options.getStop())
+            .setTools(options.getTools())
+            .setToolChoice(options.getToolChoice())
+            .setSeed(options.getSeed())
+            .setModel(options.getModel());
+        BinaryData completeRequest = BinaryData.fromObject(completeRequestObj);
+        ExtraParameters extraParams = options.getExtraParams();
+        if (extraParams != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("extra-parameters"), extraParams.toString());
+        }
+
+        return completeWithBinaryResponse(completeRequest, requestOptions).map(
+            methodDataResponse -> new SimpleResponse<>(methodDataResponse, methodDataResponse.getValue().toObject(ChatCompletions.class)));
     }
 
     /**
