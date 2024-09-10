@@ -22,12 +22,17 @@ import com.azure.storage.blob.models.BlobQuerySerialization;
 import com.azure.storage.internal.avro.implementation.AvroConstants;
 import com.azure.storage.internal.avro.implementation.AvroObject;
 import com.azure.storage.internal.avro.implementation.AvroReaderFactory;
+import com.azure.storage.internal.avro.implementation.AvroReaderSyncFactory;
 import com.azure.storage.internal.avro.implementation.schema.AvroSchema;
 import com.azure.storage.internal.avro.implementation.schema.primitive.AvroNullSchema;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +46,7 @@ import java.util.function.Consumer;
  */
 public class BlobQueryReader {
 
+    private static final ClientLogger LOGGER = new ClientLogger(BlobQueryReader.class);
     private final Flux<ByteBuffer> avro;
     private final Consumer<BlobQueryProgress> progressConsumer;
     private final Consumer<BlobQueryError> errorConsumer;
@@ -75,6 +81,73 @@ public class BlobQueryReader {
     }
 
     /**
+     * Avro parses a query reactive stream.
+     *
+     * The Avro stream is formatted as the Avro Header (that specifies the schema) and the Avro Body (that contains
+     * a series of blocks of data). The Query Avro schema indicates that the objects being emitted from the parser can
+     * either be a result data record, an end record, a progress record or an error record.
+     *
+     * @param inputStream The input stream to read from.
+     * @return The parsed query reactive stream.
+     * @throws IOException If an I/O error occurs.
+     */
+    public InputStream readInputStream(InputStream inputStream) throws IOException {
+        AvroReaderSyncFactory avroReaderSyncFactory = new AvroReaderSyncFactory();
+        ByteBuffer fullBuffer = convertInputStreamToByteBuffer(inputStream);
+
+        Iterable<AvroObject> avroObjects = avroReaderSyncFactory.getAvroReader(fullBuffer).read();
+
+        // serialize AvroObject back to bytes
+        byte[] processedData = serializeAvroObjectsToBytes(avroObjects);
+        return new ByteArrayInputStream(processedData);
+    }
+
+    private ByteBuffer convertInputStreamToByteBuffer(InputStream inputStream) throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        byte[] buffer = new byte[1024]; // Temporary buffer size
+        int bytesRead;
+        while ((bytesRead = inputStream.read(buffer)) != -1) {
+            outputStream.write(buffer, 0, bytesRead);
+        }
+        byte[] data = outputStream.toByteArray(); // Get all data read from the stream
+
+        // Convert the byte array to ByteBuffer
+        ByteBuffer byteBuffer = ByteBuffer.allocateDirect(data.length);
+        byteBuffer.put(data);
+        byteBuffer.flip(); // Prepare the buffer for reading
+        return byteBuffer;
+    }
+
+    private byte[] serializeAvroObjectsToBytes(Iterable<AvroObject> avroObjects) {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        for (AvroObject avroObject : avroObjects) {
+            try {
+                Object potentialMap = avroObject.getObject();
+                if (!(potentialMap instanceof Map)) {
+                    throw LOGGER.logExceptionAsError(new IllegalArgumentException("Expected object to be of type Map"));
+                }
+                Map<?, ?> recordMap = (Map<?, ?>) potentialMap; // Safely cast it to a Map
+                ByteBuffer buffer = parseSyncRecord(recordMap); // Use the Map directly
+
+                if (buffer != null) {
+                    if (buffer.hasArray()) {
+                        outputStream.write(buffer.array(), buffer.position(), buffer.remaining());
+                    } else {
+                        // If the buffer does not have an accessible array, manually copy
+                        byte[] data = new byte[buffer.remaining()];
+                        buffer.get(data);
+                        outputStream.write(data);
+                    }
+                    buffer.clear(); // Prepare buffer for next iteration if reusing
+                }
+            } catch (IOException e) {
+                throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
+            }
+        }
+        return outputStream.toByteArray();
+    }
+
+    /**
      * Parses a query record.
      *
      * @param quickQueryRecord The query record.
@@ -103,6 +176,34 @@ public class BlobQueryReader {
     }
 
     /**
+     * Parses a query record.
+     *
+     * @param quickQueryRecord The query record.
+     * @return The optional data in the record.
+     */
+    private ByteBuffer parseSyncRecord(Object quickQueryRecord) {
+        if (!(quickQueryRecord instanceof Map)) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Expected object to be of type Map"));
+        }
+        Map<?, ?> record = (Map<?, ?>) quickQueryRecord;
+        Object recordSchema = record.get(AvroConstants.RECORD);
+
+        switch (recordSchema.toString()) {
+            case "resultData":
+                return parseSyncResultData(record);
+            case "end":
+                return parseSyncEnd(record);
+            case "progress":
+                return parseSyncProgress(record);
+            case "error":
+                return parseSyncError(record);
+            default:
+                throw LOGGER.logExceptionAsError(new IllegalStateException(String.format("Unknown record type %s "
+                    + "while parsing query response. ", recordSchema.toString())));
+        }
+    }
+
+    /**
      * Parses a query result data record.
      * @param dataRecord The query result data record.
      * @return The data in the record.
@@ -115,6 +216,23 @@ public class BlobQueryReader {
             return Mono.just(ByteBuffer.wrap(AvroSchema.getBytes((List<?>) data)));
         } else {
             return Mono.error(new IllegalArgumentException("Failed to parse result data record from "
+                + "query response stream."));
+        }
+    }
+
+    /**
+     * Parses a query result data record.
+     * @param dataRecord The query result data record.
+     * @return The data in the record.
+     */
+    private ByteBuffer parseSyncResultData(Map<?, ?> dataRecord) {
+        Object data = dataRecord.get("data");
+
+        if (checkParametersNotNull(data)) {
+            AvroSchema.checkType("data", data, List.class);
+            return ByteBuffer.wrap(AvroSchema.getBytes((List<?>) data));
+        } else {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Failed to parse result data record from "
                 + "query response stream."));
         }
     }
@@ -140,6 +258,26 @@ public class BlobQueryReader {
     }
 
     /**
+     * Parses a query end record.
+     * @param endRecord The query end record.
+     * @return Mono.empty or Mono.error
+     */
+    private ByteBuffer parseSyncEnd(Map<?, ?> endRecord) {
+        if (progressConsumer != null) {
+            Object totalBytes = endRecord.get("totalBytes");
+
+            if (checkParametersNotNull(totalBytes)) {
+                AvroSchema.checkType("totalBytes", totalBytes, Long.class);
+                progressConsumer.accept(new BlobQueryProgress((long) totalBytes, (long) totalBytes));
+            } else {
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException("Failed to parse end record from query "
+                    + "response stream."));
+            }
+        }
+        return null;
+    }
+
+    /**
      * Parses a query progress record.
      * @param progressRecord The query progress record.
      * @return Mono.empty or Mono.error
@@ -159,6 +297,28 @@ public class BlobQueryReader {
             }
         }
         return Mono.empty();
+    }
+
+    /**
+     * Parses a query progress record.
+     * @param progressRecord The query progress record.
+     * @return Mono.empty or Mono.error
+     */
+    private ByteBuffer parseSyncProgress(Map<?, ?> progressRecord) {
+        if (progressConsumer != null) {
+            Object bytesScanned = progressRecord.get("bytesScanned");
+            Object totalBytes = progressRecord.get("totalBytes");
+
+            if (checkParametersNotNull(bytesScanned, totalBytes)) {
+                AvroSchema.checkType("bytesScanned", bytesScanned, Long.class);
+                AvroSchema.checkType("totalBytes", totalBytes, Long.class);
+                progressConsumer.accept(new BlobQueryProgress((long) bytesScanned, (long) totalBytes));
+            } else {
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException("Failed to parse progress record from "
+                    + "query response stream."));
+            }
+        }
+        return null;
     }
 
     /**
@@ -192,6 +352,39 @@ public class BlobQueryReader {
                 + "query response stream."));
         }
         return Mono.empty();
+    }
+
+    /**
+     * Parses a query error record.
+     * @param errorRecord The query error record.
+     * @return Mono.empty or Mono.error
+     */
+    private ByteBuffer parseSyncError(Map<?, ?> errorRecord) {
+        Object fatal = errorRecord.get("fatal");
+        Object name = errorRecord.get("name");
+        Object description = errorRecord.get("description");
+        Object position = errorRecord.get("position");
+
+        if (checkParametersNotNull(fatal, name, description, position)) {
+            AvroSchema.checkType("fatal", fatal, Boolean.class);
+            AvroSchema.checkType("name", name, String.class);
+            AvroSchema.checkType("description", description, String.class);
+            AvroSchema.checkType("position", position, Long.class);
+
+            BlobQueryError error = new BlobQueryError((Boolean) fatal, (String) name,
+                (String) description, (Long) position);
+
+            if (errorConsumer != null) {
+                errorConsumer.accept(error);
+            } else {
+                throw LOGGER.logExceptionAsError(new UncheckedIOException(new IOException("An error was reported during query response processing, "
+                    + System.lineSeparator() + error.toString())));
+            }
+        } else {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Failed to parse error record from "
+                + "query response stream."));
+        }
+        return null;
     }
 
     /**

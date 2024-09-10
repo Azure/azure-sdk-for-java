@@ -2976,9 +2976,8 @@ public class FileApiTest extends DataLakeTestBase {
         String expression = "SELECT * from BlobStorage";
 
         liveTestScenarioWithRetry(() -> {
-            InputStream qqStream = fc.openQueryInputStreamWithResponse(new FileQueryOptions(expression)
-                .setInputSerialization(new FileQueryJsonSerialization())).getValue();
-            assertThrows(UncheckedIOException.class, () -> readFromInputStream(qqStream, Constants.KB));
+            assertThrows(UncheckedIOException.class, () -> fc.openQueryInputStreamWithResponse(
+                new FileQueryOptions(expression).setInputSerialization(new FileQueryJsonSerialization())).getValue());
 
             assertThrows(RuntimeException.class, () -> fc.queryWithResponse(new FileQueryOptions(expression,
                 new ByteArrayOutputStream()).setInputSerialization(new FileQueryJsonSerialization()), null, null));
