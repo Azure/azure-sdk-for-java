@@ -252,7 +252,6 @@ public class GlobalEndpointManager implements AutoCloseable {
                 } finally {
                     this.databaseAccountWriteLock.unlock();
                 }
-
             }
 
             Utils.ValueHolder<Boolean> canRefreshInBackground = new Utils.ValueHolder<>();
@@ -352,8 +351,15 @@ public class GlobalEndpointManager implements AutoCloseable {
         return this.owner.getDatabaseAccountFromEndpoint(serviceEndpoint)
             .doOnNext(databaseAccount -> {
                 if(databaseAccount != null) {
-                    this.latestDatabaseAccount = databaseAccount;
-                    this.setLatestDatabaseRefreshError(null);
+
+                    this.databaseAccountWriteLock.lock();
+
+                    try {
+                        this.latestDatabaseAccount = databaseAccount;
+                        this.setLatestDatabaseRefreshError(null);
+                    } finally {
+                        this.databaseAccountWriteLock.unlock();
+                    }
                 }
 
                 logger.debug("account retrieved: {}", databaseAccount);
