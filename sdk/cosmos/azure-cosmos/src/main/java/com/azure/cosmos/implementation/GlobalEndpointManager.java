@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.function.Function;
 
 /**
@@ -43,6 +44,10 @@ public class GlobalEndpointManager implements AutoCloseable {
     private volatile boolean isClosed;
     private AtomicBoolean firstTimeDatabaseAccountInitialization = new AtomicBoolean(true);
     private volatile DatabaseAccount latestDatabaseAccount;
+
+    private final ReentrantReadWriteLock.WriteLock databaseAccountWriteLock;
+
+    private final ReentrantReadWriteLock.ReadLock databaseAccountReadLock;
 
     private volatile Throwable latestDatabaseRefreshError;
 
@@ -70,6 +75,10 @@ public class GlobalEndpointManager implements AutoCloseable {
             this.isRefreshing = new AtomicBoolean(false);
             this.refreshInBackground = new AtomicBoolean(false);
             this.isClosed = false;
+            ReentrantReadWriteLock reentrantReadWriteLock = new ReentrantReadWriteLock();
+
+            this.databaseAccountWriteLock = reentrantReadWriteLock.writeLock();
+            this.databaseAccountReadLock = reentrantReadWriteLock.readLock();
         } catch (Exception e) {
             throw new IllegalArgumentException(e);
         }
@@ -322,8 +331,14 @@ public class GlobalEndpointManager implements AutoCloseable {
         return this.owner.getDatabaseAccountFromEndpoint(serviceEndpoint)
             .doOnNext(databaseAccount -> {
                 if(databaseAccount != null) {
-                    this.latestDatabaseAccount = databaseAccount;
-                    this.setLatestDatabaseRefreshError(null);
+                    this.databaseAccountWriteLock.lock();
+
+                    try {
+                        this.latestDatabaseAccount = databaseAccount;
+                        this.setLatestDatabaseRefreshError(null);
+                    } finally {
+                        this.databaseAccountWriteLock.unlock();
+                    }
                 }
 
                 logger.debug("account retrieved: {}", databaseAccount);
@@ -350,10 +365,16 @@ public class GlobalEndpointManager implements AutoCloseable {
 
         // when latestDatabaseAccount is initialized
         // the locationCache reflects account-level region information
-        if (this.latestDatabaseAccount == null) {
-            return Collections.emptyList();
-        }
 
-        return this.locationCache.getEffectivePreferredLocations();
+        this.databaseAccountReadLock.lock();
+
+        try {
+            if (this.latestDatabaseAccount == null) {
+                return Collections.emptyList();
+            }
+            return this.locationCache.getEffectivePreferredLocations();
+        } finally {
+            this.databaseAccountReadLock.unlock();
+        }
     }
 }
