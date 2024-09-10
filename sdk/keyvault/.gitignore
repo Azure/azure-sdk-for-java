@@ -2,7 +2,6 @@
 *.cer
 *.key
 *.pfx
-!azure-security-keyvault-jca/src/test/resources/certificate-util/**/*.pfx
 
 #External libs
 extlib/
