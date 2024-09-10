@@ -17,6 +17,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.CustomMatcher;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.health.insights.radiologyinsights.models.ClinicalDocumentType;
 import com.azure.health.insights.radiologyinsights.models.DocumentAdministrativeMetadata;
@@ -42,10 +43,8 @@ import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInfer
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsModelConfiguration;
 import com.azure.health.insights.radiologyinsights.models.SpecialtyType;
 import com.azure.health.insights.radiologyinsights.models.TimePeriod;
-import com.azure.identity.DefaultAzureCredential;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.identity.AzurePowerShellCredentialBuilder;
-import com.azure.core.test.utils.MockTokenCredential;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 
 /**
  * Base class for Radiology Insights clients test.
@@ -68,9 +67,9 @@ abstract class RadiologyInsightsClientTestBase extends TestProxyTestBase {
         if (interceptorManager.isPlaybackMode()) {
             credential = new MockTokenCredential();
         } else if (interceptorManager.isRecordMode()) {
-        	credential = new DefaultAzureCredentialBuilder().build();
+            credential = new DefaultAzureCredentialBuilder().build();
         } else {
-        	credential = new AzurePowerShellCredentialBuilder().build();
+            credential = new AzurePowerShellCredentialBuilder().build();
         }
         RadiologyInsightsClientBuilder builder = new RadiologyInsightsClientBuilder()
                 .endpoint(endpoint)
@@ -78,8 +77,7 @@ abstract class RadiologyInsightsClientTestBase extends TestProxyTestBase {
 
         System.out.println("Test mode: " + getTestMode());
 
-        
-        
+
         if (getTestMode() == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         } else if (getTestMode() == TestMode.PLAYBACK) {
