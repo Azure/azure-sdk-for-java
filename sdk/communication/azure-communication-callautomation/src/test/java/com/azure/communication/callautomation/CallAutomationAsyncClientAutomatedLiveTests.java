@@ -10,6 +10,7 @@ import com.azure.communication.callautomation.models.CreateGroupCallOptions;
 import com.azure.communication.callautomation.models.RejectCallOptions;
 import com.azure.communication.callautomation.models.events.CallConnected;
 import com.azure.communication.callautomation.models.events.CallDisconnected;
+import com.azure.communication.callautomation.models.events.CreateCallFailed;
 import com.azure.communication.callautomation.models.events.ParticipantsUpdated;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
@@ -194,6 +195,11 @@ public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationA
             CallDisconnected callDisconnected = waitForEvent(CallDisconnected.class, callerConnectionId, Duration.ofSeconds(10));
             assertNotNull(callDisconnected);
             assertThrows(RuntimeException.class, () -> createCallResult.getCallConnection().getCallProperties());
+
+            CreateCallFailed createCallFailed = waitForEvent(CreateCallFailed.class, callerConnectionId, Duration.ofSeconds(10));
+            assertNotNull(createCallFailed);
+            assertThrows(RuntimeException.class, () -> createCallResult.getCallConnection().getCallProperties());
+
         } catch (Exception ex) {
             fail("Unexpected exception received", ex);
         }
