@@ -43,6 +43,7 @@ final class CustomValidationPolicy implements HttpPipelinePolicy {
         return next.process();
     }
 
+    // Copied from com.azure.monitor.opentelemetry.exporter.implementation.utils.TestUtils.java
     // deserialize multiple TelemetryItem raw bytes with newline delimiters to a list of TelemetryItems
     private static List<TelemetryItem> deserialize(byte[] rawBytes) {
         try (JsonReader jsonReader = JsonProviders.createReader(rawBytes)) {
