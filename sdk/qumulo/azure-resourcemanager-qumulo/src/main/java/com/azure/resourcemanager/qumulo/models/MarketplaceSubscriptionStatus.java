@@ -4,54 +4,58 @@
 
 package com.azure.resourcemanager.qumulo.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
 
-/** Marketplace subscription status of the file system resource. */
-public enum MarketplaceSubscriptionStatus {
-    /** Enum value PendingFulfillmentStart. */
-    PENDING_FULFILLMENT_START("PendingFulfillmentStart"),
+/**
+ * Marketplace subscription status of the file system resource.
+ */
+public final class MarketplaceSubscriptionStatus extends ExpandableStringEnum<MarketplaceSubscriptionStatus> {
+    /**
+     * Static value PendingFulfillmentStart for MarketplaceSubscriptionStatus.
+     */
+    public static final MarketplaceSubscriptionStatus PENDING_FULFILLMENT_START = fromString("PendingFulfillmentStart");
 
-    /** Enum value Subscribed. */
-    SUBSCRIBED("Subscribed"),
+    /**
+     * Static value Subscribed for MarketplaceSubscriptionStatus.
+     */
+    public static final MarketplaceSubscriptionStatus SUBSCRIBED = fromString("Subscribed");
 
-    /** Enum value Suspended. */
-    SUSPENDED("Suspended"),
+    /**
+     * Static value Suspended for MarketplaceSubscriptionStatus.
+     */
+    public static final MarketplaceSubscriptionStatus SUSPENDED = fromString("Suspended");
 
-    /** Enum value Unsubscribed. */
-    UNSUBSCRIBED("Unsubscribed");
+    /**
+     * Static value Unsubscribed for MarketplaceSubscriptionStatus.
+     */
+    public static final MarketplaceSubscriptionStatus UNSUBSCRIBED = fromString("Unsubscribed");
 
-    /** The actual serialized value for a MarketplaceSubscriptionStatus instance. */
-    private final String value;
-
-    MarketplaceSubscriptionStatus(String value) {
-        this.value = value;
+    /**
+     * Creates a new instance of MarketplaceSubscriptionStatus value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MarketplaceSubscriptionStatus() {
     }
 
     /**
-     * Parses a serialized value to a MarketplaceSubscriptionStatus instance.
-     *
-     * @param value the serialized value to parse.
-     * @return the parsed MarketplaceSubscriptionStatus object, or null if unable to parse.
+     * Creates or finds a MarketplaceSubscriptionStatus from its string representation.
+     * 
+     * @param name a name to look for.
+     * @return the corresponding MarketplaceSubscriptionStatus.
      */
-    @JsonCreator
-    public static MarketplaceSubscriptionStatus fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        MarketplaceSubscriptionStatus[] items = MarketplaceSubscriptionStatus.values();
-        for (MarketplaceSubscriptionStatus item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static MarketplaceSubscriptionStatus fromString(String name) {
+        return fromString(name, MarketplaceSubscriptionStatus.class);
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /**
+     * Gets known MarketplaceSubscriptionStatus values.
+     * 
+     * @return known MarketplaceSubscriptionStatus values.
+     */
+    public static Collection<MarketplaceSubscriptionStatus> values() {
+        return values(MarketplaceSubscriptionStatus.class);
     }
 }

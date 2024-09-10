@@ -1,7 +1,7 @@
 {
   "flavor": "azure", 
   "CrossLanguageDefinitionId": {
-    "com.azure.compute.batch.BatchAsyncClient": "Azure.Batch.BatchClient",
+    "com.azure.compute.batch.BatchAsyncClient": "Azure.Batch.Batch",
     "com.azure.compute.batch.BatchAsyncClient.createJobInternal": "Azure.Batch.Batch.createJob",
     "com.azure.compute.batch.BatchAsyncClient.createJobInternalWithResponse": "Azure.Batch.Batch.createJob",
     "com.azure.compute.batch.BatchAsyncClient.createJobScheduleInternal": "Azure.Batch.Batch.createJobSchedule",
@@ -125,7 +125,7 @@
     "com.azure.compute.batch.BatchAsyncClient.updatePoolInternalWithResponse": "Azure.Batch.Batch.updatePool",
     "com.azure.compute.batch.BatchAsyncClient.uploadNodeLogsInternal": "Azure.Batch.Batch.uploadNodeLogs",
     "com.azure.compute.batch.BatchAsyncClient.uploadNodeLogsInternalWithResponse": "Azure.Batch.Batch.uploadNodeLogs",
-    "com.azure.compute.batch.BatchClient": "Azure.Batch.BatchClient",
+    "com.azure.compute.batch.BatchClient": "Azure.Batch.Batch",
     "com.azure.compute.batch.BatchClient.createJobInternal": "Azure.Batch.Batch.createJob",
     "com.azure.compute.batch.BatchClient.createJobInternalWithResponse": "Azure.Batch.Batch.createJob",
     "com.azure.compute.batch.BatchClient.createJobScheduleInternal": "Azure.Batch.Batch.createJobSchedule",
@@ -249,7 +249,7 @@
     "com.azure.compute.batch.BatchClient.updatePoolInternalWithResponse": "Azure.Batch.Batch.updatePool",
     "com.azure.compute.batch.BatchClient.uploadNodeLogsInternal": "Azure.Batch.Batch.uploadNodeLogs",
     "com.azure.compute.batch.BatchClient.uploadNodeLogsInternalWithResponse": "Azure.Batch.Batch.uploadNodeLogs",
-    "com.azure.compute.batch.BatchClientBuilder": "Azure.Batch.BatchClient",
+    "com.azure.compute.batch.BatchClientBuilder": "Azure.Batch.Batch",
     "com.azure.compute.batch.models.AccessScope": "Azure.Batch.AccessScope",
     "com.azure.compute.batch.models.AffinityInfo": "Azure.Batch.AffinityInfo",
     "com.azure.compute.batch.models.AllocationState": "Azure.Batch.AllocationState",

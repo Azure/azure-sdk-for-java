@@ -29,7 +29,6 @@ import com.azure.storage.file.datalake.implementation.models.FileSystemsListPath
 import com.azure.storage.file.datalake.implementation.models.PathList;
 import com.azure.storage.file.datalake.implementation.models.PathResourceType;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
-import com.azure.storage.file.datalake.implementation.util.ModelHelper;
 import com.azure.storage.file.datalake.implementation.util.TransformUtils;
 import com.azure.storage.file.datalake.models.CustomerProvidedKey;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
@@ -1287,8 +1286,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
         return StorageImplUtils.applyOptionalTimeout(
             this.fileSystemDataLakeStorage.getFileSystems().listPathsWithResponseAsync(
                 recursive, null, null, marker, getDirectoryPath(), maxResults, userPrincipleNameReturned,
-                Context.NONE), timeout)
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException);
+                Context.NONE), timeout);
     }
 
     /**

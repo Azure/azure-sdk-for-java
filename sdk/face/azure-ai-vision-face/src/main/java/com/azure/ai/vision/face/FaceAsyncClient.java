@@ -5,7 +5,7 @@ package com.azure.ai.vision.face;
 
 import com.azure.ai.vision.face.implementation.FaceClientImpl;
 import com.azure.ai.vision.face.implementation.models.DetectFromUrlImplOptions;
-import com.azure.ai.vision.face.implementation.models.DetectFromUrlImplRequest;
+import com.azure.ai.vision.face.implementation.models.DetectFromUrlRequest;
 import com.azure.ai.vision.face.implementation.models.FindSimilarRequest;
 import com.azure.ai.vision.face.implementation.models.GroupRequest;
 import com.azure.ai.vision.face.implementation.models.VerifyFaceToFaceRequest;
@@ -779,8 +779,6 @@ public final class FaceAsyncClient {
     Mono<List<FaceDetectionResult>> detectFromUrlImpl(DetectFromUrlImplOptions options) {
         // Generated convenience method for detectFromUrlImplWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        DetectFromUrlImplRequest detectFromUrlRequestObj = new DetectFromUrlImplRequest(options.getUrl());
-        BinaryData detectFromUrlRequest = BinaryData.fromObject(detectFromUrlRequestObj);
         FaceDetectionModel detectionModel = options.getDetectionModel();
         FaceRecognitionModel recognitionModel = options.getRecognitionModel();
         Boolean returnFaceId = options.isReturnFaceId();
@@ -788,6 +786,8 @@ public final class FaceAsyncClient {
         Boolean returnFaceLandmarks = options.isReturnFaceLandmarks();
         Boolean returnRecognitionModel = options.isReturnRecognitionModel();
         Integer faceIdTimeToLive = options.getFaceIdTimeToLive();
+        DetectFromUrlRequest detectFromUrlRequestObj = new DetectFromUrlRequest(options.getUrl());
+        BinaryData detectFromUrlRequest = BinaryData.fromObject(detectFromUrlRequestObj);
         if (detectionModel != null) {
             requestOptions.addQueryParam("detectionModel", detectionModel.toString(), false);
         }
@@ -1322,7 +1322,7 @@ public final class FaceAsyncClient {
         addRequiredQueryParameterForDetection(requestOptions, detectionModel, recognitionModel, returnFaceId);
         addOptionalQueryParameterForDetection(requestOptions, returnFaceAttributes, returnFaceLandmarks,
             returnRecognitionModel, faceIdTimeToLive);
-        DetectFromUrlImplRequest requestObj = new DetectFromUrlImplRequest(url);
+        DetectFromUrlRequest requestObj = new DetectFromUrlRequest(url);
         BinaryData request = BinaryData.fromObject(requestObj);
         return detectFromUrlImplWithResponse(request, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_FACE_DETECTION_RESULT));

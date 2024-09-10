@@ -51,11 +51,10 @@
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
     <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
     <javaModulesSurefireArgLine>
-      --add-exports com.azure.core/com.azure.core.implementation.jackson=ALL-UNNAMED
+
       --add-opens com.azure.messaging.eventgrid/com.azure.messaging.eventgrid=ALL-UNNAMED
       --add-opens com.azure.messaging.eventgrid/com.azure.messaging.eventgrid.implementation=ALL-UNNAMED
 
-      --add-reads com.azure.messaging.eventgrid=com.azure.core.serializer.json.jackson
       --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
       --add-exports com.azure.core/com.azure.core.implementation=ALL-UNNAMED
     </javaModulesSurefireArgLine>
@@ -88,14 +87,8 @@
     <!-- test -->
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-core-serializer-json-jackson</artifactId>
-      <version>1.5.0</version> <!-- {x-version-update;com.azure:azure-core-serializer-json-jackson;dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
       <artifactId>azure-storage-queue</artifactId>
-      <version>12.22.0</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
+      <version>12.22.1</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

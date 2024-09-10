@@ -4,171 +4,342 @@
 
 package com.azure.resourcemanager.billing.models;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.billing.fluent.models.ReservationInner;
+import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Map;
 
-/** An immutable client-side representation of Reservation. */
+/**
+ * An immutable client-side representation of Reservation.
+ */
 public interface Reservation {
     /**
-     * Gets the id property: The id of the reservation.
-     *
+     * Gets the id property: Fully qualified resource Id for the resource.
+     * 
      * @return the id value.
      */
     String id();
 
     /**
-     * Gets the name property: The name of the reservation.
-     *
+     * Gets the name property: The name of the resource.
+     * 
      * @return the name value.
      */
     String name();
 
     /**
-     * Gets the type property: The type of the reservation.
-     *
+     * Gets the type property: The type of the resource.
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the location property: The location of the reservation.
-     *
+     * 
      * @return the location value.
      */
     String location();
 
     /**
+     * Gets the etag property: The etag property.
+     * 
+     * @return the etag value.
+     */
+    Integer etag();
+
+    /**
+     * Gets the tags property: Tags for this reservation.
+     * 
+     * @return the tags value.
+     */
+    Map<String, String> tags();
+
+    /**
      * Gets the sku property: The sku information associated to this reservation.
-     *
+     * 
      * @return the sku value.
      */
     ReservationSkuProperty sku();
 
     /**
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    SystemData systemData();
+
+    /**
+     * Gets the reservedResourceType property: The reserved source type of the reservation, e.g. virtual machine.
+     * 
+     * @return the reservedResourceType value.
+     */
+    String reservedResourceType();
+
+    /**
+     * Gets the instanceFlexibility property: Allows reservation discount to be applied across skus within the same auto
+     * fit group. Not all skus support instance size flexibility.
+     * 
+     * @return the instanceFlexibility value.
+     */
+    InstanceFlexibility instanceFlexibility();
+
+    /**
+     * Gets the displayName property: The display name of the reservation.
+     * 
+     * @return the displayName value.
+     */
+    String displayName();
+
+    /**
      * Gets the appliedScopes property: The array of applied scopes of a reservation. Will be null if the reservation is
      * in Shared scope.
-     *
+     * 
      * @return the appliedScopes value.
      */
     List<String> appliedScopes();
 
     /**
      * Gets the appliedScopeType property: The applied scope type of the reservation.
-     *
+     * 
      * @return the appliedScopeType value.
      */
     String appliedScopeType();
 
     /**
-     * Gets the reservedResourceType property: The reserved source type of the reservation, e.g. virtual machine.
-     *
-     * @return the reservedResourceType value.
+     * Gets the archived property: Indicates if the reservation is archived.
+     * 
+     * @return the archived value.
      */
-    String reservedResourceType();
+    Boolean archived();
+
+    /**
+     * Gets the capabilities property: Capabilities of the reservation.
+     * 
+     * @return the capabilities value.
+     */
+    String capabilities();
 
     /**
      * Gets the quantity property: The number of the reservation.
-     *
+     * 
      * @return the quantity value.
      */
     Float quantity();
 
     /**
      * Gets the provisioningState property: The provisioning state of the reservation, e.g. Succeeded.
-     *
+     * 
      * @return the provisioningState value.
      */
     String provisioningState();
 
     /**
+     * Gets the effectiveDateTime property: The effective date time of the reservation.
+     * 
+     * @return the effectiveDateTime value.
+     */
+    OffsetDateTime effectiveDateTime();
+
+    /**
+     * Gets the benefitStartTime property: This is the DateTime when the reservation benefit started.
+     * 
+     * @return the benefitStartTime value.
+     */
+    OffsetDateTime benefitStartTime();
+
+    /**
+     * Gets the lastUpdatedDateTime property: DateTime of the last time the reservation was updated.
+     * 
+     * @return the lastUpdatedDateTime value.
+     */
+    OffsetDateTime lastUpdatedDateTime();
+
+    /**
      * Gets the expiryDate property: The expiry date of the reservation.
-     *
+     * 
      * @return the expiryDate value.
      */
     String expiryDate();
 
     /**
-     * Gets the provisioningSubState property: The provisioning state of the reservation, e.g. Succeeded.
-     *
-     * @return the provisioningSubState value.
+     * Gets the expiryDateTime property: This is the date-time when the reservation will expire.
+     * 
+     * @return the expiryDateTime value.
      */
-    String provisioningSubState();
+    OffsetDateTime expiryDateTime();
 
     /**
-     * Gets the displayName property: The display name of the reservation.
-     *
-     * @return the displayName value.
+     * Gets the reviewDateTime property: This is the date-time when the Azure Hybrid Benefit needs to be reviewed.
+     * 
+     * @return the reviewDateTime value.
      */
-    String displayName();
-
-    /**
-     * Gets the displayProvisioningState property: The provisioning state of the reservation for display, e.g.
-     * Succeeded.
-     *
-     * @return the displayProvisioningState value.
-     */
-    String displayProvisioningState();
-
-    /**
-     * Gets the userFriendlyRenewState property: The renew state of the reservation for display, e.g. On.
-     *
-     * @return the userFriendlyRenewState value.
-     */
-    String userFriendlyRenewState();
-
-    /**
-     * Gets the userFriendlyAppliedScopeType property: The applied scope type of the reservation for display, e.g.
-     * Shared.
-     *
-     * @return the userFriendlyAppliedScopeType value.
-     */
-    String userFriendlyAppliedScopeType();
-
-    /**
-     * Gets the effectiveDateTime property: The effective date time of the reservation.
-     *
-     * @return the effectiveDateTime value.
-     */
-    String effectiveDateTime();
+    OffsetDateTime reviewDateTime();
 
     /**
      * Gets the skuDescription property: The sku description of the reservation.
-     *
+     * 
      * @return the skuDescription value.
      */
     String skuDescription();
 
     /**
-     * Gets the term property: The term of the reservation, e.g. P1Y.
-     *
-     * @return the term value.
+     * Gets the extendedStatusInfo property: The message giving detailed information about the status code.
+     * 
+     * @return the extendedStatusInfo value.
      */
-    String term();
+    ReservationExtendedStatusInfo extendedStatusInfo();
+
+    /**
+     * Gets the billingPlan property: The billing plan options available for this sku.
+     * 
+     * @return the billingPlan value.
+     */
+    ReservationBillingPlan billingPlan();
+
+    /**
+     * Gets the displayProvisioningState property: The provisioning state of the reservation for display, e.g.
+     * Succeeded.
+     * 
+     * @return the displayProvisioningState value.
+     */
+    String displayProvisioningState();
+
+    /**
+     * Gets the provisioningSubState property: The provisioning state of the reservation, e.g. Succeeded.
+     * 
+     * @return the provisioningSubState value.
+     */
+    String provisioningSubState();
+
+    /**
+     * Gets the purchaseDate property: This is the date when the reservation was purchased.
+     * 
+     * @return the purchaseDate value.
+     */
+    LocalDate purchaseDate();
+
+    /**
+     * Gets the purchaseDateTime property: This is the date-time when the reservation was purchased.
+     * 
+     * @return the purchaseDateTime value.
+     */
+    OffsetDateTime purchaseDateTime();
+
+    /**
+     * Gets the splitProperties property: Properties of reservation split.
+     * 
+     * @return the splitProperties value.
+     */
+    ReservationSplitProperties splitProperties();
+
+    /**
+     * Gets the mergeProperties property: Properties of reservation merge.
+     * 
+     * @return the mergeProperties value.
+     */
+    ReservationMergeProperties mergeProperties();
+
+    /**
+     * Gets the swapProperties property: Properties of reservation swap.
+     * 
+     * @return the swapProperties value.
+     */
+    ReservationSwapProperties swapProperties();
+
+    /**
+     * Gets the appliedScopeProperties property: Properties specific to applied scope type. Not required if not
+     * applicable. Required and need to provide tenantId and managementGroupId if AppliedScopeType is ManagementGroup.
+     * 
+     * @return the appliedScopeProperties value.
+     */
+    ReservationAppliedScopeProperties appliedScopeProperties();
+
+    /**
+     * Gets the billingScopeId property: Subscription that will be charged for purchasing reservation or savings plan.
+     * 
+     * @return the billingScopeId value.
+     */
+    String billingScopeId();
 
     /**
      * Gets the renew property: The renew state of the reservation.
-     *
+     * 
      * @return the renew value.
      */
     Boolean renew();
 
     /**
      * Gets the renewSource property: The renew source of the reservation.
-     *
+     * 
      * @return the renewSource value.
      */
     String renewSource();
 
     /**
-     * Gets the utilization property: Reservation utilization.
-     *
-     * @return the utilization value.
+     * Gets the renewDestination property: Reservation Id of the reservation which is purchased because of renew. Format
+     * of the resource Id is
+     * /providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}.
+     * 
+     * @return the renewDestination value.
      */
-    ReservationPropertyUtilization utilization();
+    String renewDestination();
+
+    /**
+     * Gets the renewProperties property: The renew properties for a reservation.
+     * 
+     * @return the renewProperties value.
+     */
+    RenewPropertiesResponse renewProperties();
+
+    /**
+     * Gets the term property: The term of the reservation, e.g. P1Y.
+     * 
+     * @return the term value.
+     */
+    String term();
+
+    /**
+     * Gets the userFriendlyAppliedScopeType property: The applied scope type of the reservation for display, e.g.
+     * Shared.
+     * 
+     * @return the userFriendlyAppliedScopeType value.
+     */
+    String userFriendlyAppliedScopeType();
+
+    /**
+     * Gets the userFriendlyRenewState property: The renew state of the reservation for display, e.g. On.
+     * 
+     * @return the userFriendlyRenewState value.
+     */
+    String userFriendlyRenewState();
+
+    /**
+     * Gets the productCode property: Represents UPN.
+     * 
+     * @return the productCode value.
+     */
+    String productCode();
+
+    /**
+     * Gets the trend property: last 7 day utilization trend for a reservation.
+     * 
+     * @return the trend value.
+     */
+    String trend();
+
+    /**
+     * Gets the aggregates property: The array of aggregates of a reservation's utilization.
+     * 
+     * @return the aggregates value.
+     */
+    List<ReservationUtilizationAggregates> aggregates();
 
     /**
      * Gets the inner com.azure.resourcemanager.billing.fluent.models.ReservationInner object.
-     *
+     * 
      * @return the inner object.
      */
     ReservationInner innerModel();

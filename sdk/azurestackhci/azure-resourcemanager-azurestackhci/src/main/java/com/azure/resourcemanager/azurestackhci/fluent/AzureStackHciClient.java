@@ -7,117 +7,133 @@ package com.azure.resourcemanager.azurestackhci.fluent;
 import com.azure.core.http.HttpPipeline;
 import java.time.Duration;
 
-/** The interface for AzureStackHciClient class. */
+/**
+ * The interface for AzureStackHciClient class.
+ */
 public interface AzureStackHciClient {
     /**
-     * Gets The ID of the target subscription.
-     *
+     * Gets The ID of the target subscription. The value must be an UUID.
+     * 
      * @return the subscriptionId value.
      */
     String getSubscriptionId();
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     String getEndpoint();
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     String getApiVersion();
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     HttpPipeline getHttpPipeline();
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     Duration getDefaultPollInterval();
 
     /**
-     * Gets the GalleryImagesOperationsClient object to access its operations.
-     *
-     * @return the GalleryImagesOperationsClient object.
+     * Gets the ArcSettingsClient object to access its operations.
+     * 
+     * @return the ArcSettingsClient object.
      */
-    GalleryImagesOperationsClient getGalleryImagesOperations();
+    ArcSettingsClient getArcSettings();
+
+    /**
+     * Gets the ClustersClient object to access its operations.
+     * 
+     * @return the ClustersClient object.
+     */
+    ClustersClient getClusters();
+
+    /**
+     * Gets the DeploymentSettingsClient object to access its operations.
+     * 
+     * @return the DeploymentSettingsClient object.
+     */
+    DeploymentSettingsClient getDeploymentSettings();
+
+    /**
+     * Gets the EdgeDevicesClient object to access its operations.
+     * 
+     * @return the EdgeDevicesClient object.
+     */
+    EdgeDevicesClient getEdgeDevices();
+
+    /**
+     * Gets the ExtensionsClient object to access its operations.
+     * 
+     * @return the ExtensionsClient object.
+     */
+    ExtensionsClient getExtensions();
+
+    /**
+     * Gets the OffersClient object to access its operations.
+     * 
+     * @return the OffersClient object.
+     */
+    OffersClient getOffers();
 
     /**
      * Gets the OperationsClient object to access its operations.
-     *
+     * 
      * @return the OperationsClient object.
      */
     OperationsClient getOperations();
 
     /**
-     * Gets the LogicalNetworksOperationsClient object to access its operations.
-     *
-     * @return the LogicalNetworksOperationsClient object.
+     * Gets the PublishersClient object to access its operations.
+     * 
+     * @return the PublishersClient object.
      */
-    LogicalNetworksOperationsClient getLogicalNetworksOperations();
+    PublishersClient getPublishers();
 
     /**
-     * Gets the MarketplaceGalleryImagesOperationsClient object to access its operations.
-     *
-     * @return the MarketplaceGalleryImagesOperationsClient object.
+     * Gets the SecuritySettingsClient object to access its operations.
+     * 
+     * @return the SecuritySettingsClient object.
      */
-    MarketplaceGalleryImagesOperationsClient getMarketplaceGalleryImagesOperations();
+    SecuritySettingsClient getSecuritySettings();
 
     /**
-     * Gets the NetworkInterfacesOperationsClient object to access its operations.
-     *
-     * @return the NetworkInterfacesOperationsClient object.
+     * Gets the SkusClient object to access its operations.
+     * 
+     * @return the SkusClient object.
      */
-    NetworkInterfacesOperationsClient getNetworkInterfacesOperations();
+    SkusClient getSkus();
 
     /**
-     * Gets the StorageContainersOperationsClient object to access its operations.
-     *
-     * @return the StorageContainersOperationsClient object.
+     * Gets the UpdateRunsClient object to access its operations.
+     * 
+     * @return the UpdateRunsClient object.
      */
-    StorageContainersOperationsClient getStorageContainersOperations();
+    UpdateRunsClient getUpdateRuns();
 
     /**
-     * Gets the VirtualHardDisksOperationsClient object to access its operations.
-     *
-     * @return the VirtualHardDisksOperationsClient object.
+     * Gets the UpdateSummariesOperationsClient object to access its operations.
+     * 
+     * @return the UpdateSummariesOperationsClient object.
      */
-    VirtualHardDisksOperationsClient getVirtualHardDisksOperations();
+    UpdateSummariesOperationsClient getUpdateSummariesOperations();
 
     /**
-     * Gets the VirtualMachineInstancesClient object to access its operations.
-     *
-     * @return the VirtualMachineInstancesClient object.
+     * Gets the UpdatesClient object to access its operations.
+     * 
+     * @return the UpdatesClient object.
      */
-    VirtualMachineInstancesClient getVirtualMachineInstances();
-
-    /**
-     * Gets the HybridIdentityMetadatasClient object to access its operations.
-     *
-     * @return the HybridIdentityMetadatasClient object.
-     */
-    HybridIdentityMetadatasClient getHybridIdentityMetadatas();
-
-    /**
-     * Gets the GuestAgentsClient object to access its operations.
-     *
-     * @return the GuestAgentsClient object.
-     */
-    GuestAgentsClient getGuestAgents();
-
-    /**
-     * Gets the GuestAgentsOperationsClient object to access its operations.
-     *
-     * @return the GuestAgentsOperationsClient object.
-     */
-    GuestAgentsOperationsClient getGuestAgentsOperations();
+    UpdatesClient getUpdates();
 }

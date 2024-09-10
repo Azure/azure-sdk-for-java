@@ -9,54 +9,152 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.billing.fluent.models.EnrollmentAccountSummaryInner;
+import com.azure.resourcemanager.billing.fluent.models.EnrollmentAccountInner;
 
-/** An instance of this class provides access to all the operations defined in EnrollmentAccountsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in EnrollmentAccountsClient.
+ */
 public interface EnrollmentAccountsClient {
     /**
-     * Lists the enrollment accounts the caller has access to.
-     *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing enrollment accounts as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<EnrollmentAccountSummaryInner> list();
-
-    /**
-     * Lists the enrollment accounts the caller has access to.
-     *
+     * Gets an enrollment account by department. The operation is supported only for billing accounts with agreement
+     * type Enterprise Agreement.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param departmentName The name of the department.
+     * @param enrollmentAccountName The name of the enrollment account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing enrollment accounts as paginated response with {@link PagedIterable}.
+     * @return an enrollment account by department along with {@link Response}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<EnrollmentAccountSummaryInner> list(Context context);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<EnrollmentAccountInner> getByDepartmentWithResponse(String billingAccountName, String departmentName,
+        String enrollmentAccountName, Context context);
 
     /**
-     * Gets a enrollment account by name.
-     *
-     * @param name Enrollment Account name.
+     * Gets an enrollment account by department. The operation is supported only for billing accounts with agreement
+     * type Enterprise Agreement.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param departmentName The name of the department.
+     * @param enrollmentAccountName The name of the enrollment account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an enrollment account by department.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    EnrollmentAccountInner getByDepartment(String billingAccountName, String departmentName,
+        String enrollmentAccountName);
+
+    /**
+     * Lists the enrollment accounts for a department. The operation is supported only for billing accounts with
+     * agreement type Enterprise Agreement.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param departmentName The name of the department.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container for a list of resources as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<EnrollmentAccountInner> listByDepartment(String billingAccountName, String departmentName);
+
+    /**
+     * Lists the enrollment accounts for a department. The operation is supported only for billing accounts with
+     * agreement type Enterprise Agreement.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param departmentName The name of the department.
+     * @param filter The filter query option allows clients to filter a collection of resources that are addressed by a
+     * request URL.
+     * @param orderBy The orderby query option allows clients to request resources in a particular order.
+     * @param top The top query option requests the number of items in the queried collection to be included in the
+     * result. The maximum supported value for top is 50.
+     * @param skip The skip query option requests the number of items in the queried collection that are to be skipped
+     * and not included in the result.
+     * @param count The count query option allows clients to request a count of the matching resources included with the
+     * resources in the response.
+     * @param search The search query option allows clients to request items within a collection matching a free-text
+     * search expression. search is only supported for string fields.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a enrollment account by name along with {@link Response}.
+     * @return a container for a list of resources as paginated response with {@link PagedIterable}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<EnrollmentAccountSummaryInner> getWithResponse(String name, Context context);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<EnrollmentAccountInner> listByDepartment(String billingAccountName, String departmentName,
+        String filter, String orderBy, Long top, Long skip, Boolean count, String search, Context context);
 
     /**
-     * Gets a enrollment account by name.
-     *
-     * @param name Enrollment Account name.
+     * Gets an enrollment account by ID. The operation is supported only for billing accounts with agreement type
+     * Enterprise Agreement.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param enrollmentAccountName The name of the enrollment account.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a enrollment account by name.
+     * @return an enrollment account by ID along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    EnrollmentAccountSummaryInner get(String name);
+    Response<EnrollmentAccountInner> getWithResponse(String billingAccountName, String enrollmentAccountName,
+        Context context);
+
+    /**
+     * Gets an enrollment account by ID. The operation is supported only for billing accounts with agreement type
+     * Enterprise Agreement.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param enrollmentAccountName The name of the enrollment account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an enrollment account by ID.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    EnrollmentAccountInner get(String billingAccountName, String enrollmentAccountName);
+
+    /**
+     * Lists the enrollment accounts for a billing account. The operation is supported only for billing accounts with
+     * agreement type Enterprise Agreement.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container for a list of resources as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<EnrollmentAccountInner> listByBillingAccount(String billingAccountName);
+
+    /**
+     * Lists the enrollment accounts for a billing account. The operation is supported only for billing accounts with
+     * agreement type Enterprise Agreement.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param filter The filter query option allows clients to filter a collection of resources that are addressed by a
+     * request URL.
+     * @param orderBy The orderby query option allows clients to request resources in a particular order.
+     * @param top The top query option requests the number of items in the queried collection to be included in the
+     * result. The maximum supported value for top is 50.
+     * @param skip The skip query option requests the number of items in the queried collection that are to be skipped
+     * and not included in the result.
+     * @param count The count query option allows clients to request a count of the matching resources included with the
+     * resources in the response.
+     * @param search The search query option allows clients to request items within a collection matching a free-text
+     * search expression. search is only supported for string fields.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container for a list of resources as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<EnrollmentAccountInner> listByBillingAccount(String billingAccountName, String filter, String orderBy,
+        Long top, Long skip, Boolean count, String search, Context context);
 }
