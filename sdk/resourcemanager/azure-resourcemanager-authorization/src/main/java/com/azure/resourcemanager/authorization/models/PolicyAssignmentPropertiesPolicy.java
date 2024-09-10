@@ -5,37 +5,44 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Details of the policy. */
+/**
+ * Details of the policy.
+ */
 @Fluent
-public final class PolicyAssignmentPropertiesPolicy {
+public final class PolicyAssignmentPropertiesPolicy implements JsonSerializable<PolicyAssignmentPropertiesPolicy> {
     /*
      * Id of the policy
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * The name of the entity last modified it
      */
-    @JsonProperty(value = "lastModifiedBy", access = JsonProperty.Access.WRITE_ONLY)
     private Principal lastModifiedBy;
 
     /*
      * The last modified date time.
      */
-    @JsonProperty(value = "lastModifiedDateTime")
     private OffsetDateTime lastModifiedDateTime;
 
-    /** Creates an instance of PolicyAssignmentPropertiesPolicy class. */
+    /**
+     * Creates an instance of PolicyAssignmentPropertiesPolicy class.
+     */
     public PolicyAssignmentPropertiesPolicy() {
     }
 
     /**
      * Get the id property: Id of the policy.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -44,7 +51,7 @@ public final class PolicyAssignmentPropertiesPolicy {
 
     /**
      * Set the id property: Id of the policy.
-     *
+     * 
      * @param id the id value to set.
      * @return the PolicyAssignmentPropertiesPolicy object itself.
      */
@@ -55,7 +62,7 @@ public final class PolicyAssignmentPropertiesPolicy {
 
     /**
      * Get the lastModifiedBy property: The name of the entity last modified it.
-     *
+     * 
      * @return the lastModifiedBy value.
      */
     public Principal lastModifiedBy() {
@@ -64,7 +71,7 @@ public final class PolicyAssignmentPropertiesPolicy {
 
     /**
      * Get the lastModifiedDateTime property: The last modified date time.
-     *
+     * 
      * @return the lastModifiedDateTime value.
      */
     public OffsetDateTime lastModifiedDateTime() {
@@ -73,7 +80,7 @@ public final class PolicyAssignmentPropertiesPolicy {
 
     /**
      * Set the lastModifiedDateTime property: The last modified date time.
-     *
+     * 
      * @param lastModifiedDateTime the lastModifiedDateTime value to set.
      * @return the PolicyAssignmentPropertiesPolicy object itself.
      */
@@ -84,12 +91,58 @@ public final class PolicyAssignmentPropertiesPolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (lastModifiedBy() != null) {
             lastModifiedBy().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("lastModifiedDateTime",
+            this.lastModifiedDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastModifiedDateTime));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PolicyAssignmentPropertiesPolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PolicyAssignmentPropertiesPolicy if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PolicyAssignmentPropertiesPolicy.
+     */
+    public static PolicyAssignmentPropertiesPolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PolicyAssignmentPropertiesPolicy deserializedPolicyAssignmentPropertiesPolicy
+                = new PolicyAssignmentPropertiesPolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedPolicyAssignmentPropertiesPolicy.id = reader.getString();
+                } else if ("lastModifiedBy".equals(fieldName)) {
+                    deserializedPolicyAssignmentPropertiesPolicy.lastModifiedBy = Principal.fromJson(reader);
+                } else if ("lastModifiedDateTime".equals(fieldName)) {
+                    deserializedPolicyAssignmentPropertiesPolicy.lastModifiedDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPolicyAssignmentPropertiesPolicy;
+        });
     }
 }

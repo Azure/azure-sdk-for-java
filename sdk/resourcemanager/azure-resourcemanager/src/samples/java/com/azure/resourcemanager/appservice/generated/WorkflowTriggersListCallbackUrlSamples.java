@@ -9,7 +9,8 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class WorkflowTriggersListCallbackUrlSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/WorkflowTriggers_ListCallbackUrl.json
+     * x-ms-original-file:
+     * specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/WorkflowTriggers_ListCallbackUrl.json
      */
     /**
      * Sample code: Get the callback URL for a trigger.

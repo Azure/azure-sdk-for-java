@@ -111,8 +111,7 @@ import java.util.Map;
  */
 public final class FleetsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/azurefleet/AzureFleet.Management/examples/2024-05-01-preview/Fleets_CreateOrUpdate.json
+     * x-ms-original-file: 2024-05-01-preview/Fleets_CreateOrUpdate.json
      */
     /**
      * Sample code: Fleets_CreateOrUpdate.
@@ -386,8 +385,7 @@ public final class FleetsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/azurefleet/AzureFleet.Management/examples/2024-05-01-preview/Fleets_CreateOrUpdate_MinimumSet.json
+     * x-ms-original-file: 2024-05-01-preview/Fleets_CreateOrUpdate_MinimumSet.json
      */
     /**
      * Sample code: Fleets_CreateOrUpdate_MinimumSet.

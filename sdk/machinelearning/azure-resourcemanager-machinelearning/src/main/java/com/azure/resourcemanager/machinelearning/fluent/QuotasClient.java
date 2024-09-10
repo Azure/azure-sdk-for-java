@@ -13,11 +13,13 @@ import com.azure.resourcemanager.machinelearning.fluent.models.ResourceQuotaInne
 import com.azure.resourcemanager.machinelearning.fluent.models.UpdateWorkspaceQuotasResultInner;
 import com.azure.resourcemanager.machinelearning.models.QuotaUpdateParameters;
 
-/** An instance of this class provides access to all the operations defined in QuotasClient. */
+/**
+ * An instance of this class provides access to all the operations defined in QuotasClient.
+ */
 public interface QuotasClient {
     /**
      * Update quota for each VM family in workspace.
-     *
+     * 
      * @param location The location for update quota is queried.
      * @param parameters Quota update parameters.
      * @param context The context to associate with this operation.
@@ -27,12 +29,12 @@ public interface QuotasClient {
      * @return the result of update workspace quota along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<UpdateWorkspaceQuotasResultInner> updateWithResponse(
-        String location, QuotaUpdateParameters parameters, Context context);
+    Response<UpdateWorkspaceQuotasResultInner> updateWithResponse(String location, QuotaUpdateParameters parameters,
+        Context context);
 
     /**
      * Update quota for each VM family in workspace.
-     *
+     * 
      * @param location The location for update quota is queried.
      * @param parameters Quota update parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -45,27 +47,27 @@ public interface QuotasClient {
 
     /**
      * Gets the currently assigned Workspace Quotas based on VMFamily.
-     *
+     * 
      * @param location The location for which resource usage is queried.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the currently assigned Workspace Quotas based on VMFamily as paginated response with {@link
-     *     PagedIterable}.
+     * @return the currently assigned Workspace Quotas based on VMFamily as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ResourceQuotaInner> list(String location);
 
     /**
      * Gets the currently assigned Workspace Quotas based on VMFamily.
-     *
+     * 
      * @param location The location for which resource usage is queried.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the currently assigned Workspace Quotas based on VMFamily as paginated response with {@link
-     *     PagedIterable}.
+     * @return the currently assigned Workspace Quotas based on VMFamily as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ResourceQuotaInner> list(String location, Context context);

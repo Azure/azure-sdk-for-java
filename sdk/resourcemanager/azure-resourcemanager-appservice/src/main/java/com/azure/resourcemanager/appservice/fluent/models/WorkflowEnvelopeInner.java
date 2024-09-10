@@ -5,48 +5,46 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.WorkflowEnvelopeProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Workflow properties definition.
  */
 @Fluent
-public final class WorkflowEnvelopeInner {
+public final class WorkflowEnvelopeInner implements JsonSerializable<WorkflowEnvelopeInner> {
     /*
      * The resource id.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * Gets the resource name.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Gets the resource type.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
      * The resource kind.
      */
-    @JsonProperty(value = "kind")
     private String kind;
 
     /*
      * The resource location.
      */
-    @JsonProperty(value = "location")
     private String location;
 
     /*
      * Additional workflow properties.
      */
-    @JsonProperty(value = "properties")
     private WorkflowEnvelopeProperties properties;
 
     /**
@@ -151,5 +149,53 @@ public final class WorkflowEnvelopeInner {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", this.kind);
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkflowEnvelopeInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkflowEnvelopeInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WorkflowEnvelopeInner.
+     */
+    public static WorkflowEnvelopeInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkflowEnvelopeInner deserializedWorkflowEnvelopeInner = new WorkflowEnvelopeInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedWorkflowEnvelopeInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedWorkflowEnvelopeInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedWorkflowEnvelopeInner.type = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedWorkflowEnvelopeInner.kind = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedWorkflowEnvelopeInner.location = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedWorkflowEnvelopeInner.properties = WorkflowEnvelopeProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkflowEnvelopeInner;
+        });
     }
 }

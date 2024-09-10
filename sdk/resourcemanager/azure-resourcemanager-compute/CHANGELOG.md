@@ -1,6 +1,6 @@
 # Release History
 
-## 2.42.0-beta.1 (Unreleased)
+## 2.43.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,24 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.42.0 (2024-08-23)
+
+### Features Added
+
+- Supported enabling ultra SSD in `VirtualMachine` class.
+
+### Bugs Fixed
+
+- Fixed a bug that `ClassCastException` occurs for some Virtual Machines with extensions.
+
+### Other Changes
+
+- Replaced `Jackson` with `azure-json` for serialization/deserialization.
+
+#### Dependency Updates
+
+- Updated `api-version` of ComputeRP to `2024-07-01`.
 
 ## 2.41.0 (2024-07-25)
 

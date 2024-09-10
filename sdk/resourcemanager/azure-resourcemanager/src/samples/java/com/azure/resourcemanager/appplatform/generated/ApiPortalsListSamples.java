@@ -18,7 +18,10 @@ public final class ApiPortalsListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void apiPortalsList(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getApiPortals().list("myResourceGroup", "myservice",
-            com.azure.core.util.Context.NONE);
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getApiPortals()
+            .list("myResourceGroup", "myservice", com.azure.core.util.Context.NONE);
     }
 }

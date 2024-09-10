@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -32,7 +31,6 @@ public final class SnapshotType extends ExpandableStringEnum<SnapshotType> {
      * @param name a name to look for.
      * @return the corresponding SnapshotType.
      */
-    @JsonCreator
     public static SnapshotType fromString(String name) {
         return fromString(name, SnapshotType.class);
     }

@@ -5,10 +5,11 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -16,38 +17,33 @@ import java.util.Map;
  * PolyBase settings.
  */
 @Fluent
-public final class PolybaseSettings {
+public final class PolybaseSettings implements JsonSerializable<PolybaseSettings> {
     /*
      * Reject type.
      */
-    @JsonProperty(value = "rejectType")
     private PolybaseSettingsRejectType rejectType;
 
     /*
      * Specifies the value or the percentage of rows that can be rejected before the query fails. Type: number (or
      * Expression with resultType number), minimum: 0.
      */
-    @JsonProperty(value = "rejectValue")
     private Object rejectValue;
 
     /*
      * Determines the number of rows to attempt to retrieve before the PolyBase recalculates the percentage of rejected
      * rows. Type: integer (or Expression with resultType integer), minimum: 0.
      */
-    @JsonProperty(value = "rejectSampleValue")
     private Object rejectSampleValue;
 
     /*
      * Specifies how to handle missing values in delimited text files when PolyBase retrieves data from the text file.
      * Type: boolean (or Expression with resultType boolean).
      */
-    @JsonProperty(value = "useTypeDefault")
     private Object useTypeDefault;
 
     /*
      * PolyBase settings.
      */
-    @JsonIgnore
     private Map<String, Object> additionalProperties;
 
     /**
@@ -147,7 +143,6 @@ public final class PolybaseSettings {
      * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
@@ -163,19 +158,67 @@ public final class PolybaseSettings {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new LinkedHashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("rejectType", this.rejectType == null ? null : this.rejectType.toString());
+        jsonWriter.writeUntypedField("rejectValue", this.rejectValue);
+        jsonWriter.writeUntypedField("rejectSampleValue", this.rejectSampleValue);
+        jsonWriter.writeUntypedField("useTypeDefault", this.useTypeDefault);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PolybaseSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PolybaseSettings if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PolybaseSettings.
+     */
+    public static PolybaseSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PolybaseSettings deserializedPolybaseSettings = new PolybaseSettings();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("rejectType".equals(fieldName)) {
+                    deserializedPolybaseSettings.rejectType = PolybaseSettingsRejectType.fromString(reader.getString());
+                } else if ("rejectValue".equals(fieldName)) {
+                    deserializedPolybaseSettings.rejectValue = reader.readUntyped();
+                } else if ("rejectSampleValue".equals(fieldName)) {
+                    deserializedPolybaseSettings.rejectSampleValue = reader.readUntyped();
+                } else if ("useTypeDefault".equals(fieldName)) {
+                    deserializedPolybaseSettings.useTypeDefault = reader.readUntyped();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedPolybaseSettings.additionalProperties = additionalProperties;
+
+            return deserializedPolybaseSettings;
+        });
     }
 }

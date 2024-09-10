@@ -7,133 +7,421 @@ package com.azure.resourcemanager.billing.fluent;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
+import com.azure.core.util.polling.SyncPoller;
+import com.azure.resourcemanager.billing.fluent.models.BillingAccountPolicyInner;
+import com.azure.resourcemanager.billing.fluent.models.BillingProfilePolicyInner;
 import com.azure.resourcemanager.billing.fluent.models.CustomerPolicyInner;
-import com.azure.resourcemanager.billing.fluent.models.PolicyInner;
+import com.azure.resourcemanager.billing.fluent.models.SubscriptionPolicyInner;
+import com.azure.resourcemanager.billing.models.ServiceDefinedResourceName;
 
-/** An instance of this class provides access to all the operations defined in PoliciesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PoliciesClient.
+ */
 public interface PoliciesClient {
     /**
-     * Lists the policies for a billing profile. This operation is supported only for billing accounts with agreement
-     * type Microsoft Customer Agreement.
-     *
+     * Lists the policies for a customer. This operation is supported only for billing accounts with agreement type
+     * Microsoft Partner Agreement.
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
      * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param customerName The ID that uniquely identifies a customer.
+     * @param policyName Service-defined resource names such as 'default' which are reserved resource names.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a policy along with {@link Response}.
+     * @return a policy at customer scope along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PolicyInner> getByBillingProfileWithResponse(
-        String billingAccountName, String billingProfileName, Context context);
-
-    /**
-     * Lists the policies for a billing profile. This operation is supported only for billing accounts with agreement
-     * type Microsoft Customer Agreement.
-     *
-     * @param billingAccountName The ID that uniquely identifies a billing account.
-     * @param billingProfileName The ID that uniquely identifies a billing profile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PolicyInner getByBillingProfile(String billingAccountName, String billingProfileName);
-
-    /**
-     * Updates the policies for a billing profile. This operation is supported only for billing accounts with agreement
-     * type Microsoft Customer Agreement.
-     *
-     * @param billingAccountName The ID that uniquely identifies a billing account.
-     * @param billingProfileName The ID that uniquely identifies a billing profile.
-     * @param parameters Request parameters that are provided to the update policies operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a policy along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PolicyInner> updateWithResponse(
-        String billingAccountName, String billingProfileName, PolicyInner parameters, Context context);
-
-    /**
-     * Updates the policies for a billing profile. This operation is supported only for billing accounts with agreement
-     * type Microsoft Customer Agreement.
-     *
-     * @param billingAccountName The ID that uniquely identifies a billing account.
-     * @param billingProfileName The ID that uniquely identifies a billing profile.
-     * @param parameters Request parameters that are provided to the update policies operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PolicyInner update(String billingAccountName, String billingProfileName, PolicyInner parameters);
+    Response<CustomerPolicyInner> getByCustomerWithResponse(String billingAccountName, String billingProfileName,
+        String customerName, ServiceDefinedResourceName policyName, Context context);
 
     /**
      * Lists the policies for a customer. This operation is supported only for billing accounts with agreement type
      * Microsoft Partner Agreement.
-     *
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
      * @param customerName The ID that uniquely identifies a customer.
-     * @param context The context to associate with this operation.
+     * @param policyName Service-defined resource names such as 'default' which are reserved resource names.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the customer's Policy along with {@link Response}.
+     * @return a policy at customer scope.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CustomerPolicyInner> getByCustomerWithResponse(
-        String billingAccountName, String customerName, Context context);
-
-    /**
-     * Lists the policies for a customer. This operation is supported only for billing accounts with agreement type
-     * Microsoft Partner Agreement.
-     *
-     * @param billingAccountName The ID that uniquely identifies a billing account.
-     * @param customerName The ID that uniquely identifies a customer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the customer's Policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CustomerPolicyInner getByCustomer(String billingAccountName, String customerName);
+    CustomerPolicyInner getByCustomer(String billingAccountName, String billingProfileName, String customerName,
+        ServiceDefinedResourceName policyName);
 
     /**
      * Updates the policies for a customer. This operation is supported only for billing accounts with agreement type
      * Microsoft Partner Agreement.
-     *
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
      * @param customerName The ID that uniquely identifies a customer.
-     * @param parameters Request parameters that are provided to the update policies operation.
+     * @param parameters A policy at customer scope.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a policy at customer scope.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CustomerPolicyInner>, CustomerPolicyInner> beginCreateOrUpdateByCustomer(
+        String billingAccountName, String billingProfileName, String customerName, CustomerPolicyInner parameters);
+
+    /**
+     * Updates the policies for a customer. This operation is supported only for billing accounts with agreement type
+     * Microsoft Partner Agreement.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param customerName The ID that uniquely identifies a customer.
+     * @param parameters A policy at customer scope.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the customer's Policy along with {@link Response}.
+     * @return the {@link SyncPoller} for polling of a policy at customer scope.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CustomerPolicyInner>, CustomerPolicyInner> beginCreateOrUpdateByCustomer(
+        String billingAccountName, String billingProfileName, String customerName, CustomerPolicyInner parameters,
+        Context context);
+
+    /**
+     * Updates the policies for a customer. This operation is supported only for billing accounts with agreement type
+     * Microsoft Partner Agreement.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param customerName The ID that uniquely identifies a customer.
+     * @param parameters A policy at customer scope.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a policy at customer scope.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CustomerPolicyInner> updateCustomerWithResponse(
+    CustomerPolicyInner createOrUpdateByCustomer(String billingAccountName, String billingProfileName,
+        String customerName, CustomerPolicyInner parameters);
+
+    /**
+     * Updates the policies for a customer. This operation is supported only for billing accounts with agreement type
+     * Microsoft Partner Agreement.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param customerName The ID that uniquely identifies a customer.
+     * @param parameters A policy at customer scope.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a policy at customer scope.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CustomerPolicyInner createOrUpdateByCustomer(String billingAccountName, String billingProfileName,
+        String customerName, CustomerPolicyInner parameters, Context context);
+
+    /**
+     * Lists the policies for a billing profile. This operation is supported only for billing accounts with agreement
+     * type Microsoft Customer Agreement.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a policy at billing profile scope along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<BillingProfilePolicyInner> getByBillingProfileWithResponse(String billingAccountName,
+        String billingProfileName, Context context);
+
+    /**
+     * Lists the policies for a billing profile. This operation is supported only for billing accounts with agreement
+     * type Microsoft Customer Agreement.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a policy at billing profile scope.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    BillingProfilePolicyInner getByBillingProfile(String billingAccountName, String billingProfileName);
+
+    /**
+     * Updates the policies for a billing profile. This operation is supported only for billing accounts with agreement
+     * type Microsoft Customer Agreement.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param parameters A policy at billing profile scope.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a policy at billing profile scope.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<BillingProfilePolicyInner>, BillingProfilePolicyInner> beginCreateOrUpdateByBillingProfile(
+        String billingAccountName, String billingProfileName, BillingProfilePolicyInner parameters);
+
+    /**
+     * Updates the policies for a billing profile. This operation is supported only for billing accounts with agreement
+     * type Microsoft Customer Agreement.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param parameters A policy at billing profile scope.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a policy at billing profile scope.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<BillingProfilePolicyInner>, BillingProfilePolicyInner> beginCreateOrUpdateByBillingProfile(
+        String billingAccountName, String billingProfileName, BillingProfilePolicyInner parameters, Context context);
+
+    /**
+     * Updates the policies for a billing profile. This operation is supported only for billing accounts with agreement
+     * type Microsoft Customer Agreement.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param parameters A policy at billing profile scope.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a policy at billing profile scope.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    BillingProfilePolicyInner createOrUpdateByBillingProfile(String billingAccountName, String billingProfileName,
+        BillingProfilePolicyInner parameters);
+
+    /**
+     * Updates the policies for a billing profile. This operation is supported only for billing accounts with agreement
+     * type Microsoft Customer Agreement.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param parameters A policy at billing profile scope.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a policy at billing profile scope.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    BillingProfilePolicyInner createOrUpdateByBillingProfile(String billingAccountName, String billingProfileName,
+        BillingProfilePolicyInner parameters, Context context);
+
+    /**
+     * Lists the policies for a customer at billing account scope. This operation is supported only for billing accounts
+     * with agreement type Microsoft Partner Agreement.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param customerName The ID that uniquely identifies a customer.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a policy at customer scope along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<CustomerPolicyInner> getByCustomerAtBillingAccountWithResponse(String billingAccountName,
+        String customerName, Context context);
+
+    /**
+     * Lists the policies for a customer at billing account scope. This operation is supported only for billing accounts
+     * with agreement type Microsoft Partner Agreement.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param customerName The ID that uniquely identifies a customer.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a policy at customer scope.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CustomerPolicyInner getByCustomerAtBillingAccount(String billingAccountName, String customerName);
+
+    /**
+     * Updates the policies for a customer at billing account scope. This operation is supported only for billing
+     * accounts with agreement type Microsoft Partner Agreement.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param customerName The ID that uniquely identifies a customer.
+     * @param parameters A policy at customer scope.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a policy at customer scope.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CustomerPolicyInner>, CustomerPolicyInner> beginCreateOrUpdateByCustomerAtBillingAccount(
+        String billingAccountName, String customerName, CustomerPolicyInner parameters);
+
+    /**
+     * Updates the policies for a customer at billing account scope. This operation is supported only for billing
+     * accounts with agreement type Microsoft Partner Agreement.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param customerName The ID that uniquely identifies a customer.
+     * @param parameters A policy at customer scope.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a policy at customer scope.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CustomerPolicyInner>, CustomerPolicyInner> beginCreateOrUpdateByCustomerAtBillingAccount(
         String billingAccountName, String customerName, CustomerPolicyInner parameters, Context context);
 
     /**
-     * Updates the policies for a customer. This operation is supported only for billing accounts with agreement type
-     * Microsoft Partner Agreement.
-     *
+     * Updates the policies for a customer at billing account scope. This operation is supported only for billing
+     * accounts with agreement type Microsoft Partner Agreement.
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
      * @param customerName The ID that uniquely identifies a customer.
-     * @param parameters Request parameters that are provided to the update policies operation.
+     * @param parameters A policy at customer scope.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the customer's Policy.
+     * @return a policy at customer scope.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CustomerPolicyInner updateCustomer(String billingAccountName, String customerName, CustomerPolicyInner parameters);
+    CustomerPolicyInner createOrUpdateByCustomerAtBillingAccount(String billingAccountName, String customerName,
+        CustomerPolicyInner parameters);
+
+    /**
+     * Updates the policies for a customer at billing account scope. This operation is supported only for billing
+     * accounts with agreement type Microsoft Partner Agreement.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param customerName The ID that uniquely identifies a customer.
+     * @param parameters A policy at customer scope.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a policy at customer scope.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CustomerPolicyInner createOrUpdateByCustomerAtBillingAccount(String billingAccountName, String customerName,
+        CustomerPolicyInner parameters, Context context);
+
+    /**
+     * Get the policies for a billing account of Enterprise Agreement type.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the policies for a billing account of Enterprise Agreement type along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<BillingAccountPolicyInner> getByBillingAccountWithResponse(String billingAccountName, Context context);
+
+    /**
+     * Get the policies for a billing account of Enterprise Agreement type.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the policies for a billing account of Enterprise Agreement type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    BillingAccountPolicyInner getByBillingAccount(String billingAccountName);
+
+    /**
+     * Update the policies for a billing account of Enterprise Agreement type.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param parameters A policy at billing account scope.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a policy at billing account scope.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<BillingAccountPolicyInner>, BillingAccountPolicyInner>
+        beginCreateOrUpdateByBillingAccount(String billingAccountName, BillingAccountPolicyInner parameters);
+
+    /**
+     * Update the policies for a billing account of Enterprise Agreement type.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param parameters A policy at billing account scope.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a policy at billing account scope.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<BillingAccountPolicyInner>, BillingAccountPolicyInner> beginCreateOrUpdateByBillingAccount(
+        String billingAccountName, BillingAccountPolicyInner parameters, Context context);
+
+    /**
+     * Update the policies for a billing account of Enterprise Agreement type.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param parameters A policy at billing account scope.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a policy at billing account scope.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    BillingAccountPolicyInner createOrUpdateByBillingAccount(String billingAccountName,
+        BillingAccountPolicyInner parameters);
+
+    /**
+     * Update the policies for a billing account of Enterprise Agreement type.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param parameters A policy at billing account scope.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a policy at billing account scope.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    BillingAccountPolicyInner createOrUpdateByBillingAccount(String billingAccountName,
+        BillingAccountPolicyInner parameters, Context context);
+
+    /**
+     * Lists the policies that are managed by the Billing Admin for the defined subscriptions. This is supported for
+     * Microsoft Online Services Program, Microsoft Customer Agreement and Microsoft Partner Agreement.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a policy at subscription scope along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<SubscriptionPolicyInner> getBySubscriptionWithResponse(Context context);
+
+    /**
+     * Lists the policies that are managed by the Billing Admin for the defined subscriptions. This is supported for
+     * Microsoft Online Services Program, Microsoft Customer Agreement and Microsoft Partner Agreement.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a policy at subscription scope.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SubscriptionPolicyInner getBySubscription();
 }

@@ -11,7 +11,7 @@ import com.azure.json.implementation.jackson.core.util.JacksonFeature;
  *<p>
  * Since 2.12 this is more of an extra marker feature, as its core API is now
  * defined in more general {@link JacksonFeature}.
- * 
+ *
  * @since 2.6
  */
 public interface FormatFeature extends JacksonFeature // since 2.12
@@ -20,18 +20,18 @@ public interface FormatFeature extends JacksonFeature // since 2.12
      * Accessor for checking whether this feature is enabled by default.
      */
     @Override
-    public boolean enabledByDefault();
+    boolean enabledByDefault();
 
     /**
      * Returns bit mask for this feature instance; must be a single bit,
      * that is of form <code>(1 &lt;&lt; N)</code>
      */
     @Override
-    public int getMask();
+    int getMask();
 
     /**
      * Convenience method for checking whether feature is enabled in given bitmask
      */
     @Override
-    public boolean enabledIn(int flags);
+    boolean enabledIn(int flags);
 }

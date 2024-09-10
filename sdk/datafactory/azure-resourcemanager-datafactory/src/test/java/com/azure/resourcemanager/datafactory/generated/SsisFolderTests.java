@@ -11,22 +11,21 @@ import org.junit.jupiter.api.Assertions;
 public final class SsisFolderTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SsisFolder model = BinaryData
-            .fromString(
-                "{\"type\":\"Folder\",\"id\":675766868795663943,\"name\":\"mkqbylbbnjldicq\",\"description\":\"a\"}")
+        SsisFolder model = BinaryData.fromString(
+            "{\"type\":\"Folder\",\"id\":5928487509100506530,\"name\":\"iqcypmonfcorcn\",\"description\":\"ycigcb\"}")
             .toObject(SsisFolder.class);
-        Assertions.assertEquals(675766868795663943L, model.id());
-        Assertions.assertEquals("mkqbylbbnjldicq", model.name());
-        Assertions.assertEquals("a", model.description());
+        Assertions.assertEquals(5928487509100506530L, model.id());
+        Assertions.assertEquals("iqcypmonfcorcn", model.name());
+        Assertions.assertEquals("ycigcb", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SsisFolder model
-            = new SsisFolder().withId(675766868795663943L).withName("mkqbylbbnjldicq").withDescription("a");
+            = new SsisFolder().withId(5928487509100506530L).withName("iqcypmonfcorcn").withDescription("ycigcb");
         model = BinaryData.fromObject(model).toObject(SsisFolder.class);
-        Assertions.assertEquals(675766868795663943L, model.id());
-        Assertions.assertEquals("mkqbylbbnjldicq", model.name());
-        Assertions.assertEquals("a", model.description());
+        Assertions.assertEquals(5928487509100506530L, model.id());
+        Assertions.assertEquals("iqcypmonfcorcn", model.name());
+        Assertions.assertEquals("ycigcb", model.description());
     }
 }

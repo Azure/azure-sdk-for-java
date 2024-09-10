@@ -223,7 +223,7 @@ class DeploymentSlotImpl
                             return Mono.error(new ManagementException("Deserialize failed for response body.", response));
                         }
                         return Mono.justOrEmpty(status);
-                    });
+                    }).doFinally(ignored -> response.close());
             });
     }
 }

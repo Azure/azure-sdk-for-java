@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Eligible child resource. */
+/**
+ * Eligible child resource.
+ */
 @Immutable
-public final class EligibleChildResourceInner {
+public final class EligibleChildResourceInner implements JsonSerializable<EligibleChildResourceInner> {
     /*
      * The resource scope Id.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * The resource name.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The resource type.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of EligibleChildResourceInner class. */
+    /**
+     * Creates an instance of EligibleChildResourceInner class.
+     */
     public EligibleChildResourceInner() {
     }
 
     /**
      * Get the id property: The resource scope Id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -43,7 +48,7 @@ public final class EligibleChildResourceInner {
 
     /**
      * Get the name property: The resource name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -52,7 +57,7 @@ public final class EligibleChildResourceInner {
 
     /**
      * Get the type property: The resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -61,9 +66,48 @@ public final class EligibleChildResourceInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EligibleChildResourceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EligibleChildResourceInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EligibleChildResourceInner.
+     */
+    public static EligibleChildResourceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EligibleChildResourceInner deserializedEligibleChildResourceInner = new EligibleChildResourceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedEligibleChildResourceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedEligibleChildResourceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedEligibleChildResourceInner.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEligibleChildResourceInner;
+        });
     }
 }

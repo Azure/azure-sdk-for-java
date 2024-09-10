@@ -5,47 +5,48 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** scopedRoleMembership. */
+/**
+ * scopedRoleMembership.
+ */
 @Fluent
 public final class MicrosoftGraphScopedRoleMembership extends MicrosoftGraphEntity {
     /*
      * Unique identifier for the administrative unit that the directory role is scoped to
      */
-    @JsonProperty(value = "administrativeUnitId")
     private String administrativeUnitId;
 
     /*
      * Unique identifier for the directory role that the member is in.
      */
-    @JsonProperty(value = "roleId")
     private String roleId;
 
     /*
      * identity
      */
-    @JsonProperty(value = "roleMemberInfo")
     private MicrosoftGraphIdentity roleMemberInfo;
 
     /*
      * scopedRoleMembership
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphScopedRoleMembership class. */
+    /**
+     * Creates an instance of MicrosoftGraphScopedRoleMembership class.
+     */
     public MicrosoftGraphScopedRoleMembership() {
     }
 
     /**
      * Get the administrativeUnitId property: Unique identifier for the administrative unit that the directory role is
      * scoped to.
-     *
+     * 
      * @return the administrativeUnitId value.
      */
     public String administrativeUnitId() {
@@ -55,7 +56,7 @@ public final class MicrosoftGraphScopedRoleMembership extends MicrosoftGraphEnti
     /**
      * Set the administrativeUnitId property: Unique identifier for the administrative unit that the directory role is
      * scoped to.
-     *
+     * 
      * @param administrativeUnitId the administrativeUnitId value to set.
      * @return the MicrosoftGraphScopedRoleMembership object itself.
      */
@@ -66,7 +67,7 @@ public final class MicrosoftGraphScopedRoleMembership extends MicrosoftGraphEnti
 
     /**
      * Get the roleId property: Unique identifier for the directory role that the member is in.
-     *
+     * 
      * @return the roleId value.
      */
     public String roleId() {
@@ -75,7 +76,7 @@ public final class MicrosoftGraphScopedRoleMembership extends MicrosoftGraphEnti
 
     /**
      * Set the roleId property: Unique identifier for the directory role that the member is in.
-     *
+     * 
      * @param roleId the roleId value to set.
      * @return the MicrosoftGraphScopedRoleMembership object itself.
      */
@@ -86,7 +87,7 @@ public final class MicrosoftGraphScopedRoleMembership extends MicrosoftGraphEnti
 
     /**
      * Get the roleMemberInfo property: identity.
-     *
+     * 
      * @return the roleMemberInfo value.
      */
     public MicrosoftGraphIdentity roleMemberInfo() {
@@ -95,7 +96,7 @@ public final class MicrosoftGraphScopedRoleMembership extends MicrosoftGraphEnti
 
     /**
      * Set the roleMemberInfo property: identity.
-     *
+     * 
      * @param roleMemberInfo the roleMemberInfo value to set.
      * @return the MicrosoftGraphScopedRoleMembership object itself.
      */
@@ -106,17 +107,16 @@ public final class MicrosoftGraphScopedRoleMembership extends MicrosoftGraphEnti
 
     /**
      * Get the additionalProperties property: scopedRoleMembership.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: scopedRoleMembership.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphScopedRoleMembership object itself.
      */
@@ -125,15 +125,9 @@ public final class MicrosoftGraphScopedRoleMembership extends MicrosoftGraphEnti
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphScopedRoleMembership withId(String id) {
         super.withId(id);
@@ -142,7 +136,7 @@ public final class MicrosoftGraphScopedRoleMembership extends MicrosoftGraphEnti
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -151,5 +145,63 @@ public final class MicrosoftGraphScopedRoleMembership extends MicrosoftGraphEnti
         if (roleMemberInfo() != null) {
             roleMemberInfo().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeStringField("administrativeUnitId", this.administrativeUnitId);
+        jsonWriter.writeStringField("roleId", this.roleId);
+        jsonWriter.writeJsonField("roleMemberInfo", this.roleMemberInfo);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphScopedRoleMembership from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphScopedRoleMembership if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphScopedRoleMembership.
+     */
+    public static MicrosoftGraphScopedRoleMembership fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphScopedRoleMembership deserializedMicrosoftGraphScopedRoleMembership
+                = new MicrosoftGraphScopedRoleMembership();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphScopedRoleMembership.withId(reader.getString());
+                } else if ("administrativeUnitId".equals(fieldName)) {
+                    deserializedMicrosoftGraphScopedRoleMembership.administrativeUnitId = reader.getString();
+                } else if ("roleId".equals(fieldName)) {
+                    deserializedMicrosoftGraphScopedRoleMembership.roleId = reader.getString();
+                } else if ("roleMemberInfo".equals(fieldName)) {
+                    deserializedMicrosoftGraphScopedRoleMembership.roleMemberInfo
+                        = MicrosoftGraphIdentity.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphScopedRoleMembership.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphScopedRoleMembership;
+        });
     }
 }

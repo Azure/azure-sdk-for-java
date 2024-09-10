@@ -6,12 +6,15 @@ package com.azure.resourcemanager.resources.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.resources.models.ParameterDefinitionsValue;
 import com.azure.resourcemanager.resources.models.PolicyDefinitionGroup;
 import com.azure.resourcemanager.resources.models.PolicyDefinitionReference;
 import com.azure.resourcemanager.resources.models.PolicyType;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -19,48 +22,41 @@ import java.util.Map;
  * The policy set definition properties.
  */
 @Fluent
-public final class PolicySetDefinitionProperties {
+public final class PolicySetDefinitionProperties implements JsonSerializable<PolicySetDefinitionProperties> {
     /*
      * The type of policy definition. Possible values are NotSpecified, BuiltIn, Custom, and Static.
      */
-    @JsonProperty(value = "policyType")
     private PolicyType policyType;
 
     /*
      * The display name of the policy set definition.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * The policy set definition description.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
-     * The policy set definition metadata.  Metadata is an open ended object and is typically a collection of key value pairs.
+     * The policy set definition metadata. Metadata is an open ended object and is typically a collection of key value
+     * pairs.
      */
-    @JsonProperty(value = "metadata")
     private Object metadata;
 
     /*
      * The policy set definition parameters that can be used in policy definition references.
      */
-    @JsonProperty(value = "parameters")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, ParameterDefinitionsValue> parameters;
 
     /*
      * An array of policy definition references.
      */
-    @JsonProperty(value = "policyDefinitions", required = true)
     private List<PolicyDefinitionReference> policyDefinitions;
 
     /*
      * The metadata describing groups of policy definition references within the policy set definition.
      */
-    @JsonProperty(value = "policyDefinitionGroups")
     private List<PolicyDefinitionGroup> policyDefinitionGroups;
 
     /**
@@ -244,4 +240,68 @@ public final class PolicySetDefinitionProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(PolicySetDefinitionProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("policyDefinitions", this.policyDefinitions,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("policyType", this.policyType == null ? null : this.policyType.toString());
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeUntypedField("metadata", this.metadata);
+        jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("policyDefinitionGroups", this.policyDefinitionGroups,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PolicySetDefinitionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PolicySetDefinitionProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PolicySetDefinitionProperties.
+     */
+    public static PolicySetDefinitionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PolicySetDefinitionProperties deserializedPolicySetDefinitionProperties
+                = new PolicySetDefinitionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("policyDefinitions".equals(fieldName)) {
+                    List<PolicyDefinitionReference> policyDefinitions
+                        = reader.readArray(reader1 -> PolicyDefinitionReference.fromJson(reader1));
+                    deserializedPolicySetDefinitionProperties.policyDefinitions = policyDefinitions;
+                } else if ("policyType".equals(fieldName)) {
+                    deserializedPolicySetDefinitionProperties.policyType = PolicyType.fromString(reader.getString());
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedPolicySetDefinitionProperties.displayName = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedPolicySetDefinitionProperties.description = reader.getString();
+                } else if ("metadata".equals(fieldName)) {
+                    deserializedPolicySetDefinitionProperties.metadata = reader.readUntyped();
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, ParameterDefinitionsValue> parameters
+                        = reader.readMap(reader1 -> ParameterDefinitionsValue.fromJson(reader1));
+                    deserializedPolicySetDefinitionProperties.parameters = parameters;
+                } else if ("policyDefinitionGroups".equals(fieldName)) {
+                    List<PolicyDefinitionGroup> policyDefinitionGroups
+                        = reader.readArray(reader1 -> PolicyDefinitionGroup.fromJson(reader1));
+                    deserializedPolicySetDefinitionProperties.policyDefinitionGroups = policyDefinitionGroups;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPolicySetDefinitionProperties;
+        });
+    }
 }

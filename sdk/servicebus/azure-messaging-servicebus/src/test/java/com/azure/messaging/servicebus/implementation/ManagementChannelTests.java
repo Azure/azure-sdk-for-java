@@ -4,6 +4,7 @@
 package com.azure.messaging.servicebus.implementation;
 
 import com.azure.core.amqp.exception.AmqpResponseCode;
+import com.azure.core.amqp.implementation.ChannelCacheWrapper;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RequestResponseChannel;
 import com.azure.core.amqp.implementation.TokenManager;
@@ -153,7 +154,8 @@ class ManagementChannelTests {
         when(requestResponseChannel.sendWithAck(any(Message.class))).thenReturn(Mono.just(responseMessage));
         when(requestResponseChannel.sendWithAck(any(Message.class), isNull())).thenReturn(Mono.just(responseMessage));
 
-        managementChannel = new ManagementChannel(Mono.just(requestResponseChannel), NAMESPACE, ENTITY_PATH,
+        ChannelCacheWrapper channelCache = new ChannelCacheWrapper(Mono.just(requestResponseChannel));
+        managementChannel = new ManagementChannel(channelCache, NAMESPACE, ENTITY_PATH,
             tokenManager, messageSerializer, TIMEOUT);
     }
 

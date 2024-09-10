@@ -5,33 +5,26 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * The location of azure blob dataset.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "type",
-    defaultImpl = AzureBlobStorageLocation.class,
-    visible = true)
-@JsonTypeName("AzureBlobStorageLocation")
 @Fluent
 public final class AzureBlobStorageLocation extends DatasetLocation {
     /*
      * Type of dataset storage location.
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private String type = "AzureBlobStorageLocation";
 
     /*
      * Specify the container of azure blob. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "container")
     private Object container;
 
     /**
@@ -98,5 +91,61 @@ public final class AzureBlobStorageLocation extends DatasetLocation {
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("folderPath", folderPath());
+        jsonWriter.writeUntypedField("fileName", fileName());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeUntypedField("container", this.container);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureBlobStorageLocation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureBlobStorageLocation if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureBlobStorageLocation.
+     */
+    public static AzureBlobStorageLocation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureBlobStorageLocation deserializedAzureBlobStorageLocation = new AzureBlobStorageLocation();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("folderPath".equals(fieldName)) {
+                    deserializedAzureBlobStorageLocation.withFolderPath(reader.readUntyped());
+                } else if ("fileName".equals(fieldName)) {
+                    deserializedAzureBlobStorageLocation.withFileName(reader.readUntyped());
+                } else if ("type".equals(fieldName)) {
+                    deserializedAzureBlobStorageLocation.type = reader.getString();
+                } else if ("container".equals(fieldName)) {
+                    deserializedAzureBlobStorageLocation.container = reader.readUntyped();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedAzureBlobStorageLocation.withAdditionalProperties(additionalProperties);
+
+            return deserializedAzureBlobStorageLocation;
+        });
     }
 }

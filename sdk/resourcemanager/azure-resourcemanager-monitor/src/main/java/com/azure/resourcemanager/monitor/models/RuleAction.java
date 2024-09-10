@@ -5,32 +5,36 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The action that is performed when the alert rule becomes active, and when an alert condition is resolved.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "odata.type",
-    defaultImpl = RuleAction.class)
-@JsonTypeName("RuleAction")
-@JsonSubTypes({
-    @JsonSubTypes.Type(
-        name = "Microsoft.Azure.Management.Insights.Models.RuleEmailAction",
-        value = RuleEmailAction.class),
-    @JsonSubTypes.Type(
-        name = "Microsoft.Azure.Management.Insights.Models.RuleWebhookAction",
-        value = RuleWebhookAction.class) })
 @Immutable
-public class RuleAction {
+public class RuleAction implements JsonSerializable<RuleAction> {
+    /*
+     * specifies the type of the action. There are two types of actions: RuleEmailAction and RuleWebhookAction.
+     */
+    private String odataType = "RuleAction";
+
     /**
      * Creates an instance of RuleAction class.
      */
     public RuleAction() {
+    }
+
+    /**
+     * Get the odataType property: specifies the type of the action. There are two types of actions: RuleEmailAction and
+     * RuleWebhookAction.
+     * 
+     * @return the odataType value.
+     */
+    public String odataType() {
+        return this.odataType;
     }
 
     /**
@@ -39,5 +43,68 @@ public class RuleAction {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("odata.type", this.odataType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RuleAction from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RuleAction if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the RuleAction.
+     */
+    public static RuleAction fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("odata.type".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("Microsoft.Azure.Management.Insights.Models.RuleEmailAction".equals(discriminatorValue)) {
+                    return RuleEmailAction.fromJson(readerToUse.reset());
+                } else if ("Microsoft.Azure.Management.Insights.Models.RuleWebhookAction".equals(discriminatorValue)) {
+                    return RuleWebhookAction.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static RuleAction fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RuleAction deserializedRuleAction = new RuleAction();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("odata.type".equals(fieldName)) {
+                    deserializedRuleAction.odataType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRuleAction;
+        });
     }
 }

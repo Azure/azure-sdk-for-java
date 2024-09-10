@@ -4,50 +4,183 @@
 
 package com.azure.resourcemanager.billing.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.management.ProxyResource;
-import com.azure.resourcemanager.billing.models.Amount;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.annotation.Fluent;
+import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.billing.models.AvailableBalanceProperties;
+import com.azure.resourcemanager.billing.models.ProxyResourceWithTags;
+import java.io.IOException;
+import java.util.Map;
 
-/** The latest Azure credit balance. This is the balance available for pay now. */
-@Immutable
-public final class AvailableBalanceInner extends ProxyResource {
+/**
+ * The Available Credit or Payment on Account Balance. The credit balance can be used to settle due or past due
+ * invoices.
+ */
+@Fluent
+public final class AvailableBalanceInner extends ProxyResourceWithTags {
     /*
-     * The properties of available balance.
+     * The Available Credit or Payment on Account Balance. The credit balance can be used to settle due or past due
+     * invoices.
      */
-    @JsonProperty(value = "properties")
-    private AvailableBalanceProperties innerProperties;
+    private AvailableBalanceProperties properties;
 
-    /** Creates an instance of AvailableBalanceInner class. */
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of AvailableBalanceInner class.
+     */
     public AvailableBalanceInner() {
     }
 
     /**
-     * Get the innerProperties property: The properties of available balance.
-     *
-     * @return the innerProperties value.
+     * Get the properties property: The Available Credit or Payment on Account Balance. The credit balance can be used
+     * to settle due or past due invoices.
+     * 
+     * @return the properties value.
      */
-    private AvailableBalanceProperties innerProperties() {
-        return this.innerProperties;
+    public AvailableBalanceProperties properties() {
+        return this.properties;
     }
 
     /**
-     * Get the amount property: Balance amount.
-     *
-     * @return the amount value.
+     * Set the properties property: The Available Credit or Payment on Account Balance. The credit balance can be used
+     * to settle due or past due invoices.
+     * 
+     * @param properties the properties value to set.
+     * @return the AvailableBalanceInner object itself.
      */
-    public Amount amount() {
-        return this.innerProperties() == null ? null : this.innerProperties().amount();
+    public AvailableBalanceInner withProperties(AvailableBalanceProperties properties) {
+        this.properties = properties;
+        return this;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    @Override
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AvailableBalanceInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
+        if (properties() != null) {
+            properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AvailableBalanceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AvailableBalanceInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AvailableBalanceInner.
+     */
+    public static AvailableBalanceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AvailableBalanceInner deserializedAvailableBalanceInner = new AvailableBalanceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedAvailableBalanceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedAvailableBalanceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedAvailableBalanceInner.type = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAvailableBalanceInner.withTags(tags);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedAvailableBalanceInner.systemData = SystemData.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAvailableBalanceInner.properties = AvailableBalanceProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAvailableBalanceInner;
+        });
     }
 }

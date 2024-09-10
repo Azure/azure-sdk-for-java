@@ -14,45 +14,47 @@ import com.azure.resourcemanager.authorization.fluent.models.RoleManagementPolic
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in RoleManagementPolicyAssignmentsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in RoleManagementPolicyAssignmentsClient.
+ */
 public interface RoleManagementPolicyAssignmentsClient extends InnerSupportsDelete<Void> {
     /**
      * Get the specified role management policy assignment for a resource scope.
-     *
+     * 
      * @param scope The scope of the role management policy.
      * @param roleManagementPolicyAssignmentName The name of format {guid_guid} the role management policy assignment to
-     *     get.
+     * get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified role management policy assignment for a resource scope along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<RoleManagementPolicyAssignmentInner>> getWithResponseAsync(
-        String scope, String roleManagementPolicyAssignmentName);
+    Mono<Response<RoleManagementPolicyAssignmentInner>> getWithResponseAsync(String scope,
+        String roleManagementPolicyAssignmentName);
 
     /**
      * Get the specified role management policy assignment for a resource scope.
-     *
+     * 
      * @param scope The scope of the role management policy.
      * @param roleManagementPolicyAssignmentName The name of format {guid_guid} the role management policy assignment to
-     *     get.
+     * get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified role management policy assignment for a resource scope on successful completion of {@link
-     *     Mono}.
+     * @return the specified role management policy assignment for a resource scope on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<RoleManagementPolicyAssignmentInner> getAsync(String scope, String roleManagementPolicyAssignmentName);
 
     /**
      * Get the specified role management policy assignment for a resource scope.
-     *
+     * 
      * @param scope The scope of the role management policy.
      * @param roleManagementPolicyAssignmentName The name of format {guid_guid} the role management policy assignment to
-     *     get.
+     * get.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -60,15 +62,15 @@ public interface RoleManagementPolicyAssignmentsClient extends InnerSupportsDele
      * @return the specified role management policy assignment for a resource scope along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RoleManagementPolicyAssignmentInner> getWithResponse(
-        String scope, String roleManagementPolicyAssignmentName, Context context);
+    Response<RoleManagementPolicyAssignmentInner> getWithResponse(String scope,
+        String roleManagementPolicyAssignmentName, Context context);
 
     /**
      * Get the specified role management policy assignment for a resource scope.
-     *
+     * 
      * @param scope The scope of the role management policy.
      * @param roleManagementPolicyAssignmentName The name of format {guid_guid} the role management policy assignment to
-     *     get.
+     * get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -79,10 +81,10 @@ public interface RoleManagementPolicyAssignmentsClient extends InnerSupportsDele
 
     /**
      * Create a role management policy assignment.
-     *
+     * 
      * @param scope The scope of the role management policy assignment to upsert.
      * @param roleManagementPolicyAssignmentName The name of format {guid_guid} the role management policy assignment to
-     *     upsert.
+     * upsert.
      * @param parameters Parameters for the role management policy assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -90,15 +92,15 @@ public interface RoleManagementPolicyAssignmentsClient extends InnerSupportsDele
      * @return role management policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<RoleManagementPolicyAssignmentInner>> createWithResponseAsync(
-        String scope, String roleManagementPolicyAssignmentName, RoleManagementPolicyAssignmentInner parameters);
+    Mono<Response<RoleManagementPolicyAssignmentInner>> createWithResponseAsync(String scope,
+        String roleManagementPolicyAssignmentName, RoleManagementPolicyAssignmentInner parameters);
 
     /**
      * Create a role management policy assignment.
-     *
+     * 
      * @param scope The scope of the role management policy assignment to upsert.
      * @param roleManagementPolicyAssignmentName The name of format {guid_guid} the role management policy assignment to
-     *     upsert.
+     * upsert.
      * @param parameters Parameters for the role management policy assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -106,15 +108,15 @@ public interface RoleManagementPolicyAssignmentsClient extends InnerSupportsDele
      * @return role management policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<RoleManagementPolicyAssignmentInner> createAsync(
-        String scope, String roleManagementPolicyAssignmentName, RoleManagementPolicyAssignmentInner parameters);
+    Mono<RoleManagementPolicyAssignmentInner> createAsync(String scope, String roleManagementPolicyAssignmentName,
+        RoleManagementPolicyAssignmentInner parameters);
 
     /**
      * Create a role management policy assignment.
-     *
+     * 
      * @param scope The scope of the role management policy assignment to upsert.
      * @param roleManagementPolicyAssignmentName The name of format {guid_guid} the role management policy assignment to
-     *     upsert.
+     * upsert.
      * @param parameters Parameters for the role management policy assignment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -123,18 +125,15 @@ public interface RoleManagementPolicyAssignmentsClient extends InnerSupportsDele
      * @return role management policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RoleManagementPolicyAssignmentInner> createWithResponse(
-        String scope,
-        String roleManagementPolicyAssignmentName,
-        RoleManagementPolicyAssignmentInner parameters,
-        Context context);
+    Response<RoleManagementPolicyAssignmentInner> createWithResponse(String scope,
+        String roleManagementPolicyAssignmentName, RoleManagementPolicyAssignmentInner parameters, Context context);
 
     /**
      * Create a role management policy assignment.
-     *
+     * 
      * @param scope The scope of the role management policy assignment to upsert.
      * @param roleManagementPolicyAssignmentName The name of format {guid_guid} the role management policy assignment to
-     *     upsert.
+     * upsert.
      * @param parameters Parameters for the role management policy assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -142,15 +141,15 @@ public interface RoleManagementPolicyAssignmentsClient extends InnerSupportsDele
      * @return role management policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RoleManagementPolicyAssignmentInner create(
-        String scope, String roleManagementPolicyAssignmentName, RoleManagementPolicyAssignmentInner parameters);
+    RoleManagementPolicyAssignmentInner create(String scope, String roleManagementPolicyAssignmentName,
+        RoleManagementPolicyAssignmentInner parameters);
 
     /**
      * Delete a role management policy assignment.
-     *
+     * 
      * @param scope The scope of the role management policy assignment to delete.
      * @param roleManagementPolicyAssignmentName The name of format {guid_guid} the role management policy assignment to
-     *     delete.
+     * delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -161,10 +160,10 @@ public interface RoleManagementPolicyAssignmentsClient extends InnerSupportsDele
 
     /**
      * Delete a role management policy assignment.
-     *
+     * 
      * @param scope The scope of the role management policy assignment to delete.
      * @param roleManagementPolicyAssignmentName The name of format {guid_guid} the role management policy assignment to
-     *     delete.
+     * delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -175,10 +174,10 @@ public interface RoleManagementPolicyAssignmentsClient extends InnerSupportsDele
 
     /**
      * Delete a role management policy assignment.
-     *
+     * 
      * @param scope The scope of the role management policy assignment to delete.
      * @param roleManagementPolicyAssignmentName The name of format {guid_guid} the role management policy assignment to
-     *     delete.
+     * delete.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -190,10 +189,10 @@ public interface RoleManagementPolicyAssignmentsClient extends InnerSupportsDele
 
     /**
      * Delete a role management policy assignment.
-     *
+     * 
      * @param scope The scope of the role management policy assignment to delete.
      * @param roleManagementPolicyAssignmentName The name of format {guid_guid} the role management policy assignment to
-     *     delete.
+     * delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -203,7 +202,7 @@ public interface RoleManagementPolicyAssignmentsClient extends InnerSupportsDele
 
     /**
      * Gets role management assignment policies for a resource scope.
-     *
+     * 
      * @param scope The scope of the role management policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -215,27 +214,27 @@ public interface RoleManagementPolicyAssignmentsClient extends InnerSupportsDele
 
     /**
      * Gets role management assignment policies for a resource scope.
-     *
+     * 
      * @param scope The scope of the role management policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role management assignment policies for a resource scope as paginated response with {@link
-     *     PagedIterable}.
+     * @return role management assignment policies for a resource scope as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RoleManagementPolicyAssignmentInner> listForScope(String scope);
 
     /**
      * Gets role management assignment policies for a resource scope.
-     *
+     * 
      * @param scope The scope of the role management policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role management assignment policies for a resource scope as paginated response with {@link
-     *     PagedIterable}.
+     * @return role management assignment policies for a resource scope as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RoleManagementPolicyAssignmentInner> listForScope(String scope, Context context);

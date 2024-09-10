@@ -12,19 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class DataLakeAnalyticsSchemaTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataLakeAnalyticsSchema model =
-            BinaryData
-                .fromString("{\"properties\":{\"dataLakeStoreAccountName\":\"mg\"}}")
+        DataLakeAnalyticsSchema model
+            = BinaryData.fromString("{\"properties\":{\"dataLakeStoreAccountName\":\"dbmp\"}}")
                 .toObject(DataLakeAnalyticsSchema.class);
-        Assertions.assertEquals("mg", model.properties().dataLakeStoreAccountName());
+        Assertions.assertEquals("dbmp", model.properties().dataLakeStoreAccountName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataLakeAnalyticsSchema model =
-            new DataLakeAnalyticsSchema()
-                .withProperties(new DataLakeAnalyticsSchemaProperties().withDataLakeStoreAccountName("mg"));
+        DataLakeAnalyticsSchema model = new DataLakeAnalyticsSchema()
+            .withProperties(new DataLakeAnalyticsSchemaProperties().withDataLakeStoreAccountName("dbmp"));
         model = BinaryData.fromObject(model).toObject(DataLakeAnalyticsSchema.class);
-        Assertions.assertEquals("mg", model.properties().dataLakeStoreAccountName());
+        Assertions.assertEquals("dbmp", model.properties().dataLakeStoreAccountName());
     }
 }

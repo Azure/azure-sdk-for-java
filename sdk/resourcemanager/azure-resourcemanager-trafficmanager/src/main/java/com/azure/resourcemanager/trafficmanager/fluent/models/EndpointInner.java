@@ -6,49 +6,53 @@ package com.azure.resourcemanager.trafficmanager.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.trafficmanager.models.AlwaysServe;
 import com.azure.resourcemanager.trafficmanager.models.EndpointMonitorStatus;
 import com.azure.resourcemanager.trafficmanager.models.EndpointPropertiesCustomHeadersItem;
 import com.azure.resourcemanager.trafficmanager.models.EndpointPropertiesSubnetsItem;
 import com.azure.resourcemanager.trafficmanager.models.EndpointStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Class representing a Traffic Manager endpoint. */
+/**
+ * Class representing a Traffic Manager endpoint.
+ */
 @Fluent
 public final class EndpointInner extends ProxyResource {
     /*
      * The properties of the Traffic Manager endpoint.
      */
-    @JsonProperty(value = "properties")
     private EndpointProperties innerProperties;
 
     /*
      * Fully qualified resource Id for the resource. Ex -
-     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficManagerProfiles/{resourceName}
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/
+     * trafficManagerProfiles/{resourceName}
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * The name of the resource
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The type of the resource. Ex- Microsoft.Network/trafficManagerProfiles.
      */
-    @JsonProperty(value = "type")
     private String type;
 
-    /** Creates an instance of EndpointInner class. */
+    /**
+     * Creates an instance of EndpointInner class.
+     */
     public EndpointInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of the Traffic Manager endpoint.
-     *
+     * 
      * @return the innerProperties value.
      */
     private EndpointProperties innerProperties() {
@@ -58,7 +62,7 @@ public final class EndpointInner extends ProxyResource {
     /**
      * Get the id property: Fully qualified resource Id for the resource. Ex -
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficManagerProfiles/{resourceName}.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -68,7 +72,7 @@ public final class EndpointInner extends ProxyResource {
     /**
      * Set the id property: Fully qualified resource Id for the resource. Ex -
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficManagerProfiles/{resourceName}.
-     *
+     * 
      * @param id the id value to set.
      * @return the EndpointInner object itself.
      */
@@ -79,7 +83,7 @@ public final class EndpointInner extends ProxyResource {
 
     /**
      * Get the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -88,7 +92,7 @@ public final class EndpointInner extends ProxyResource {
 
     /**
      * Set the name property: The name of the resource.
-     *
+     * 
      * @param name the name value to set.
      * @return the EndpointInner object itself.
      */
@@ -99,7 +103,7 @@ public final class EndpointInner extends ProxyResource {
 
     /**
      * Get the type property: The type of the resource. Ex- Microsoft.Network/trafficManagerProfiles.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -108,7 +112,7 @@ public final class EndpointInner extends ProxyResource {
 
     /**
      * Set the type property: The type of the resource. Ex- Microsoft.Network/trafficManagerProfiles.
-     *
+     * 
      * @param type the type value to set.
      * @return the EndpointInner object itself.
      */
@@ -120,7 +124,7 @@ public final class EndpointInner extends ProxyResource {
     /**
      * Get the targetResourceId property: The Azure Resource URI of the of the endpoint. Not applicable to endpoints of
      * type 'ExternalEndpoints'.
-     *
+     * 
      * @return the targetResourceId value.
      */
     public String targetResourceId() {
@@ -130,7 +134,7 @@ public final class EndpointInner extends ProxyResource {
     /**
      * Set the targetResourceId property: The Azure Resource URI of the of the endpoint. Not applicable to endpoints of
      * type 'ExternalEndpoints'.
-     *
+     * 
      * @param targetResourceId the targetResourceId value to set.
      * @return the EndpointInner object itself.
      */
@@ -145,7 +149,7 @@ public final class EndpointInner extends ProxyResource {
     /**
      * Get the target property: The fully-qualified DNS name or IP address of the endpoint. Traffic Manager returns this
      * value in DNS responses to direct traffic to this endpoint.
-     *
+     * 
      * @return the target value.
      */
     public String target() {
@@ -155,7 +159,7 @@ public final class EndpointInner extends ProxyResource {
     /**
      * Set the target property: The fully-qualified DNS name or IP address of the endpoint. Traffic Manager returns this
      * value in DNS responses to direct traffic to this endpoint.
-     *
+     * 
      * @param target the target value to set.
      * @return the EndpointInner object itself.
      */
@@ -170,7 +174,7 @@ public final class EndpointInner extends ProxyResource {
     /**
      * Get the endpointStatus property: The status of the endpoint. If the endpoint is Enabled, it is probed for
      * endpoint health and is included in the traffic routing method.
-     *
+     * 
      * @return the endpointStatus value.
      */
     public EndpointStatus endpointStatus() {
@@ -180,7 +184,7 @@ public final class EndpointInner extends ProxyResource {
     /**
      * Set the endpointStatus property: The status of the endpoint. If the endpoint is Enabled, it is probed for
      * endpoint health and is included in the traffic routing method.
-     *
+     * 
      * @param endpointStatus the endpointStatus value to set.
      * @return the EndpointInner object itself.
      */
@@ -195,7 +199,7 @@ public final class EndpointInner extends ProxyResource {
     /**
      * Get the weight property: The weight of this endpoint when using the 'Weighted' traffic routing method. Possible
      * values are from 1 to 1000.
-     *
+     * 
      * @return the weight value.
      */
     public Long weight() {
@@ -205,7 +209,7 @@ public final class EndpointInner extends ProxyResource {
     /**
      * Set the weight property: The weight of this endpoint when using the 'Weighted' traffic routing method. Possible
      * values are from 1 to 1000.
-     *
+     * 
      * @param weight the weight value to set.
      * @return the EndpointInner object itself.
      */
@@ -221,7 +225,7 @@ public final class EndpointInner extends ProxyResource {
      * Get the priority property: The priority of this endpoint when using the 'Priority' traffic routing method.
      * Possible values are from 1 to 1000, lower values represent higher priority. This is an optional parameter. If
      * specified, it must be specified on all endpoints, and no two endpoints can share the same priority value.
-     *
+     * 
      * @return the priority value.
      */
     public Long priority() {
@@ -232,7 +236,7 @@ public final class EndpointInner extends ProxyResource {
      * Set the priority property: The priority of this endpoint when using the 'Priority' traffic routing method.
      * Possible values are from 1 to 1000, lower values represent higher priority. This is an optional parameter. If
      * specified, it must be specified on all endpoints, and no two endpoints can share the same priority value.
-     *
+     * 
      * @param priority the priority value to set.
      * @return the EndpointInner object itself.
      */
@@ -247,7 +251,7 @@ public final class EndpointInner extends ProxyResource {
     /**
      * Get the endpointLocation property: Specifies the location of the external or nested endpoints when using the
      * 'Performance' traffic routing method.
-     *
+     * 
      * @return the endpointLocation value.
      */
     public String endpointLocation() {
@@ -257,7 +261,7 @@ public final class EndpointInner extends ProxyResource {
     /**
      * Set the endpointLocation property: Specifies the location of the external or nested endpoints when using the
      * 'Performance' traffic routing method.
-     *
+     * 
      * @param endpointLocation the endpointLocation value to set.
      * @return the EndpointInner object itself.
      */
@@ -271,7 +275,7 @@ public final class EndpointInner extends ProxyResource {
 
     /**
      * Get the endpointMonitorStatus property: The monitoring status of the endpoint.
-     *
+     * 
      * @return the endpointMonitorStatus value.
      */
     public EndpointMonitorStatus endpointMonitorStatus() {
@@ -280,7 +284,7 @@ public final class EndpointInner extends ProxyResource {
 
     /**
      * Set the endpointMonitorStatus property: The monitoring status of the endpoint.
-     *
+     * 
      * @param endpointMonitorStatus the endpointMonitorStatus value to set.
      * @return the EndpointInner object itself.
      */
@@ -296,7 +300,7 @@ public final class EndpointInner extends ProxyResource {
      * Get the minChildEndpoints property: The minimum number of endpoints that must be available in the child profile
      * in order for the parent profile to be considered available. Only applicable to endpoint of type
      * 'NestedEndpoints'.
-     *
+     * 
      * @return the minChildEndpoints value.
      */
     public Long minChildEndpoints() {
@@ -307,7 +311,7 @@ public final class EndpointInner extends ProxyResource {
      * Set the minChildEndpoints property: The minimum number of endpoints that must be available in the child profile
      * in order for the parent profile to be considered available. Only applicable to endpoint of type
      * 'NestedEndpoints'.
-     *
+     * 
      * @param minChildEndpoints the minChildEndpoints value to set.
      * @return the EndpointInner object itself.
      */
@@ -323,7 +327,7 @@ public final class EndpointInner extends ProxyResource {
      * Get the minChildEndpointsIPv4 property: The minimum number of IPv4 (DNS record type A) endpoints that must be
      * available in the child profile in order for the parent profile to be considered available. Only applicable to
      * endpoint of type 'NestedEndpoints'.
-     *
+     * 
      * @return the minChildEndpointsIPv4 value.
      */
     public Long minChildEndpointsIPv4() {
@@ -334,7 +338,7 @@ public final class EndpointInner extends ProxyResource {
      * Set the minChildEndpointsIPv4 property: The minimum number of IPv4 (DNS record type A) endpoints that must be
      * available in the child profile in order for the parent profile to be considered available. Only applicable to
      * endpoint of type 'NestedEndpoints'.
-     *
+     * 
      * @param minChildEndpointsIPv4 the minChildEndpointsIPv4 value to set.
      * @return the EndpointInner object itself.
      */
@@ -350,7 +354,7 @@ public final class EndpointInner extends ProxyResource {
      * Get the minChildEndpointsIPv6 property: The minimum number of IPv6 (DNS record type AAAA) endpoints that must be
      * available in the child profile in order for the parent profile to be considered available. Only applicable to
      * endpoint of type 'NestedEndpoints'.
-     *
+     * 
      * @return the minChildEndpointsIPv6 value.
      */
     public Long minChildEndpointsIPv6() {
@@ -361,7 +365,7 @@ public final class EndpointInner extends ProxyResource {
      * Set the minChildEndpointsIPv6 property: The minimum number of IPv6 (DNS record type AAAA) endpoints that must be
      * available in the child profile in order for the parent profile to be considered available. Only applicable to
      * endpoint of type 'NestedEndpoints'.
-     *
+     * 
      * @param minChildEndpointsIPv6 the minChildEndpointsIPv6 value to set.
      * @return the EndpointInner object itself.
      */
@@ -377,7 +381,7 @@ public final class EndpointInner extends ProxyResource {
      * Get the geoMapping property: The list of countries/regions mapped to this endpoint when using the 'Geographic'
      * traffic routing method. Please consult Traffic Manager Geographic documentation for a full list of accepted
      * values.
-     *
+     * 
      * @return the geoMapping value.
      */
     public List<String> geoMapping() {
@@ -388,7 +392,7 @@ public final class EndpointInner extends ProxyResource {
      * Set the geoMapping property: The list of countries/regions mapped to this endpoint when using the 'Geographic'
      * traffic routing method. Please consult Traffic Manager Geographic documentation for a full list of accepted
      * values.
-     *
+     * 
      * @param geoMapping the geoMapping value to set.
      * @return the EndpointInner object itself.
      */
@@ -403,7 +407,7 @@ public final class EndpointInner extends ProxyResource {
     /**
      * Get the subnets property: The list of subnets, IP addresses, and/or address ranges mapped to this endpoint when
      * using the 'Subnet' traffic routing method. An empty list will match all ranges not covered by other endpoints.
-     *
+     * 
      * @return the subnets value.
      */
     public List<EndpointPropertiesSubnetsItem> subnets() {
@@ -413,7 +417,7 @@ public final class EndpointInner extends ProxyResource {
     /**
      * Set the subnets property: The list of subnets, IP addresses, and/or address ranges mapped to this endpoint when
      * using the 'Subnet' traffic routing method. An empty list will match all ranges not covered by other endpoints.
-     *
+     * 
      * @param subnets the subnets value to set.
      * @return the EndpointInner object itself.
      */
@@ -427,7 +431,7 @@ public final class EndpointInner extends ProxyResource {
 
     /**
      * Get the customHeaders property: List of custom headers.
-     *
+     * 
      * @return the customHeaders value.
      */
     public List<EndpointPropertiesCustomHeadersItem> customHeaders() {
@@ -436,7 +440,7 @@ public final class EndpointInner extends ProxyResource {
 
     /**
      * Set the customHeaders property: List of custom headers.
-     *
+     * 
      * @param customHeaders the customHeaders value to set.
      * @return the EndpointInner object itself.
      */
@@ -451,7 +455,7 @@ public final class EndpointInner extends ProxyResource {
     /**
      * Get the alwaysServe property: If Always Serve is enabled, probing for endpoint health will be disabled and
      * endpoints will be included in the traffic routing method.
-     *
+     * 
      * @return the alwaysServe value.
      */
     public AlwaysServe alwaysServe() {
@@ -461,7 +465,7 @@ public final class EndpointInner extends ProxyResource {
     /**
      * Set the alwaysServe property: If Always Serve is enabled, probing for endpoint health will be disabled and
      * endpoints will be included in the traffic routing method.
-     *
+     * 
      * @param alwaysServe the alwaysServe value to set.
      * @return the EndpointInner object itself.
      */
@@ -475,12 +479,58 @@ public final class EndpointInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EndpointInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EndpointInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EndpointInner.
+     */
+    public static EndpointInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EndpointInner deserializedEndpointInner = new EndpointInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedEndpointInner.innerProperties = EndpointProperties.fromJson(reader);
+                } else if ("id".equals(fieldName)) {
+                    deserializedEndpointInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedEndpointInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedEndpointInner.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEndpointInner;
+        });
     }
 }

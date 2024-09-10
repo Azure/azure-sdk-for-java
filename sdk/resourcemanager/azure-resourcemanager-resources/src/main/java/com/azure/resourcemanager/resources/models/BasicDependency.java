@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Deployment dependency information.
  */
 @Fluent
-public final class BasicDependency {
+public final class BasicDependency implements JsonSerializable<BasicDependency> {
     /*
      * The ID of the dependency.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * The dependency resource type.
      */
-    @JsonProperty(value = "resourceType")
     private String resourceType;
 
     /*
      * The dependency resource name.
      */
-    @JsonProperty(value = "resourceName")
     private String resourceName;
 
     /**
@@ -102,5 +103,47 @@ public final class BasicDependency {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("resourceType", this.resourceType);
+        jsonWriter.writeStringField("resourceName", this.resourceName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BasicDependency from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BasicDependency if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BasicDependency.
+     */
+    public static BasicDependency fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BasicDependency deserializedBasicDependency = new BasicDependency();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedBasicDependency.id = reader.getString();
+                } else if ("resourceType".equals(fieldName)) {
+                    deserializedBasicDependency.resourceType = reader.getString();
+                } else if ("resourceName".equals(fieldName)) {
+                    deserializedBasicDependency.resourceName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBasicDependency;
+        });
     }
 }

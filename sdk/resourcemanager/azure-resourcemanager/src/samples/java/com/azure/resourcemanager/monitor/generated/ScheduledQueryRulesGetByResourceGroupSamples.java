@@ -18,7 +18,10 @@ public final class ScheduledQueryRulesGetByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAScheduledQueryRuleForSingleResource(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getScheduledQueryRules()
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getScheduledQueryRules()
             .getByResourceGroupWithResponse("QueryResourceGroupName", "perf", com.azure.core.util.Context.NONE);
     }
 }

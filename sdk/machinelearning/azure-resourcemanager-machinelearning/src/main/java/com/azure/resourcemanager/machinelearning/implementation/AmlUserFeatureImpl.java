@@ -12,8 +12,7 @@ public final class AmlUserFeatureImpl implements AmlUserFeature {
 
     private final com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager;
 
-    AmlUserFeatureImpl(
-        AmlUserFeatureInner innerObject,
+    AmlUserFeatureImpl(AmlUserFeatureInner innerObject,
         com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

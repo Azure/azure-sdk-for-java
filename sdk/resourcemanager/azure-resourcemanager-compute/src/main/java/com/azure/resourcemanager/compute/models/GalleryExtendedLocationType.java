@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class GalleryExtendedLocationType extends ExpandableStringEnum<Gall
      * @param name a name to look for.
      * @return the corresponding GalleryExtendedLocationType.
      */
-    @JsonCreator
     public static GalleryExtendedLocationType fromString(String name) {
         return fromString(name, GalleryExtendedLocationType.class);
     }

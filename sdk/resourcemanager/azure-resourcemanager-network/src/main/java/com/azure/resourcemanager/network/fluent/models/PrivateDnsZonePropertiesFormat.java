@@ -5,25 +5,27 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.RecordSet;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Properties of the private dns zone configuration resource.
  */
 @Fluent
-public final class PrivateDnsZonePropertiesFormat {
+public final class PrivateDnsZonePropertiesFormat implements JsonSerializable<PrivateDnsZonePropertiesFormat> {
     /*
      * The resource id of the private dns zone.
      */
-    @JsonProperty(value = "privateDnsZoneId")
     private String privateDnsZoneId;
 
     /*
      * A collection of information regarding a recordSet, holding information to identify private resources.
      */
-    @JsonProperty(value = "recordSets", access = JsonProperty.Access.WRITE_ONLY)
     private List<RecordSet> recordSets;
 
     /**
@@ -71,5 +73,45 @@ public final class PrivateDnsZonePropertiesFormat {
         if (recordSets() != null) {
             recordSets().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("privateDnsZoneId", this.privateDnsZoneId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PrivateDnsZonePropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PrivateDnsZonePropertiesFormat if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PrivateDnsZonePropertiesFormat.
+     */
+    public static PrivateDnsZonePropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PrivateDnsZonePropertiesFormat deserializedPrivateDnsZonePropertiesFormat
+                = new PrivateDnsZonePropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("privateDnsZoneId".equals(fieldName)) {
+                    deserializedPrivateDnsZonePropertiesFormat.privateDnsZoneId = reader.getString();
+                } else if ("recordSets".equals(fieldName)) {
+                    List<RecordSet> recordSets = reader.readArray(reader1 -> RecordSet.fromJson(reader1));
+                    deserializedPrivateDnsZonePropertiesFormat.recordSets = recordSets;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPrivateDnsZonePropertiesFormat;
+        });
     }
 }

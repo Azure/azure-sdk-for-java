@@ -135,7 +135,7 @@ public interface MongoClusters {
     /**
      * Check if mongo cluster name is available for use.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param body The CheckAvailability request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -149,7 +149,7 @@ public interface MongoClusters {
     /**
      * Check if mongo cluster name is available for use.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param body The CheckAvailability request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

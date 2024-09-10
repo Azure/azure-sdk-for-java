@@ -5,30 +5,32 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Export resource group template request parameters.
  */
 @Fluent
-public final class ExportTemplateRequest {
+public final class ExportTemplateRequest implements JsonSerializable<ExportTemplateRequest> {
     /*
      * The IDs of the resources to filter the export by. To export all resources, supply an array with single entry '*'.
      */
-    @JsonProperty(value = "resources")
     private List<String> resources;
 
     /*
-     * The export template options. A CSV-formatted list containing zero or more of the following: 'IncludeParameterDefaultValue', 'IncludeComments', 'SkipResourceNameParameterization', 'SkipAllParameterization'
+     * The export template options. A CSV-formatted list containing zero or more of the following:
+     * 'IncludeParameterDefaultValue', 'IncludeComments', 'SkipResourceNameParameterization', 'SkipAllParameterization'
      */
-    @JsonProperty(value = "options")
     private String options;
 
     /*
      * The output format for the exported resources.
      */
-    @JsonProperty(value = "outputFormat")
     private ExportTemplateOutputFormat outputFormat;
 
     /**
@@ -109,5 +111,49 @@ public final class ExportTemplateRequest {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("resources", this.resources, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("options", this.options);
+        jsonWriter.writeStringField("outputFormat", this.outputFormat == null ? null : this.outputFormat.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExportTemplateRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExportTemplateRequest if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExportTemplateRequest.
+     */
+    public static ExportTemplateRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExportTemplateRequest deserializedExportTemplateRequest = new ExportTemplateRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resources".equals(fieldName)) {
+                    List<String> resources = reader.readArray(reader1 -> reader1.getString());
+                    deserializedExportTemplateRequest.resources = resources;
+                } else if ("options".equals(fieldName)) {
+                    deserializedExportTemplateRequest.options = reader.getString();
+                } else if ("outputFormat".equals(fieldName)) {
+                    deserializedExportTemplateRequest.outputFormat
+                        = ExportTemplateOutputFormat.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExportTemplateRequest;
+        });
     }
 }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -47,7 +46,6 @@ public final class ApplicationGatewayRedirectType extends ExpandableStringEnum<A
      * @param name a name to look for.
      * @return the corresponding ApplicationGatewayRedirectType.
      */
-    @JsonCreator
     public static ApplicationGatewayRedirectType fromString(String name) {
         return fromString(name, ApplicationGatewayRedirectType.class);
     }

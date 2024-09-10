@@ -4,37 +4,34 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.fluent.models.ManagedInstanceLongTermRetentionPolicyInner;
 import com.azure.resourcemanager.sql.models.ManagedInstanceLongTermRetentionPolicyName;
 
-/** Samples for ManagedInstanceLongTermRetentionPolicies CreateOrUpdate. */
+/**
+ * Samples for ManagedInstanceLongTermRetentionPolicies CreateOrUpdate.
+ */
 public final class ManagedInstanceLongTermRetentionPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedInstanceLongTermRetentionPolicyCreateOrUpdate.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/
+     * ManagedInstanceLongTermRetentionPolicyCreateOrUpdate.json
      */
     /**
      * Sample code: Create or update the LTR policy for the managed database.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void createOrUpdateTheLTRPolicyForTheManagedDatabase(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+    public static void
+        createOrUpdateTheLTRPolicyForTheManagedDatabase(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getManagedInstanceLongTermRetentionPolicies()
-            .createOrUpdate(
-                "testResourceGroup",
-                "testInstance",
-                "testDatabase",
+            .createOrUpdate("testResourceGroup", "testInstance", "testDatabase",
                 ManagedInstanceLongTermRetentionPolicyName.DEFAULT,
-                new ManagedInstanceLongTermRetentionPolicyInner()
-                    .withWeeklyRetention("P1M")
+                new ManagedInstanceLongTermRetentionPolicyInner().withWeeklyRetention("P1M")
                     .withMonthlyRetention("P1Y")
                     .withYearlyRetention("P5Y")
                     .withWeekOfYear(5),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

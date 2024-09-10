@@ -25,16 +25,22 @@ public final class DiagnosticSettingsOperationCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createsOrUpdatesTheDiagnosticSetting(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getDiagnosticSettingsOperations()
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getDiagnosticSettingsOperations()
             .createOrUpdateWithResponse(
                 "subscriptions/1a66ce04-b633-4a0b-b2bc-a912ec8986a6/resourcegroups/viruela1/providers/microsoft.logic/workflows/viruela6",
                 "mysetting",
                 new DiagnosticSettingsResourceInner().withStorageAccountId(
                     "/subscriptions/df602c9c-7aa0-407d-a6fb-eb20c8bd1192/resourceGroups/apptest/providers/Microsoft.Storage/storageAccounts/appteststorage1")
-                    .withEventHubAuthorizationRuleId("fakeTokenPlaceholder").withEventHubName("myeventhub")
-                    .withMetrics(Arrays.asList(new MetricSettings().withCategory("WorkflowMetrics").withEnabled(true)
+                    .withEventHubAuthorizationRuleId("fakeTokenPlaceholder")
+                    .withEventHubName("myeventhub")
+                    .withMetrics(Arrays.asList(new MetricSettings().withCategory("WorkflowMetrics")
+                        .withEnabled(true)
                         .withRetentionPolicy(new RetentionPolicy().withEnabled(false).withDays(0))))
-                    .withLogs(Arrays.asList(new LogSettings().withCategoryGroup("allLogs").withEnabled(true)
+                    .withLogs(Arrays.asList(new LogSettings().withCategoryGroup("allLogs")
+                        .withEnabled(true)
                         .withRetentionPolicy(new RetentionPolicy().withEnabled(false).withDays(0))))
                     .withWorkspaceId("")
                     .withMarketplacePartnerId(
@@ -55,16 +61,22 @@ public final class DiagnosticSettingsOperationCreateOrUpdateSamples {
      */
     public static void
         createsOrUpdatesTheDiagnosticSettingForCategory(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getDiagnosticSettingsOperations()
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getDiagnosticSettingsOperations()
             .createOrUpdateWithResponse(
                 "subscriptions/1a66ce04-b633-4a0b-b2bc-a912ec8986a6/resourcegroups/viruela1/providers/microsoft.logic/workflows/viruela6",
                 "mysetting",
                 new DiagnosticSettingsResourceInner().withStorageAccountId(
                     "/subscriptions/df602c9c-7aa0-407d-a6fb-eb20c8bd1192/resourceGroups/apptest/providers/Microsoft.Storage/storageAccounts/appteststorage1")
-                    .withEventHubAuthorizationRuleId("fakeTokenPlaceholder").withEventHubName("myeventhub")
-                    .withMetrics(Arrays.asList(new MetricSettings().withCategory("WorkflowMetrics").withEnabled(true)
+                    .withEventHubAuthorizationRuleId("fakeTokenPlaceholder")
+                    .withEventHubName("myeventhub")
+                    .withMetrics(Arrays.asList(new MetricSettings().withCategory("WorkflowMetrics")
+                        .withEnabled(true)
                         .withRetentionPolicy(new RetentionPolicy().withEnabled(false).withDays(0))))
-                    .withLogs(Arrays.asList(new LogSettings().withCategory("WorkflowRuntime").withEnabled(true)
+                    .withLogs(Arrays.asList(new LogSettings().withCategory("WorkflowRuntime")
+                        .withEnabled(true)
                         .withRetentionPolicy(new RetentionPolicy().withEnabled(false).withDays(0))))
                     .withWorkspaceId("")
                     .withMarketplacePartnerId(

@@ -5,56 +5,53 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.DatasetCompression;
 import com.azure.resourcemanager.datafactory.models.DatasetStorageFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * On-premises file system dataset properties.
  */
 @Fluent
-public final class FileShareDatasetTypeProperties {
+public final class FileShareDatasetTypeProperties implements JsonSerializable<FileShareDatasetTypeProperties> {
     /*
      * The path of the on-premises file system. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "folderPath")
     private Object folderPath;
 
     /*
      * The name of the on-premises file system. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "fileName")
     private Object fileName;
 
     /*
      * The start of file's modified datetime. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "modifiedDatetimeStart")
     private Object modifiedDatetimeStart;
 
     /*
      * The end of file's modified datetime. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "modifiedDatetimeEnd")
     private Object modifiedDatetimeEnd;
 
     /*
      * The format of the files.
      */
-    @JsonProperty(value = "format")
     private DatasetStorageFormat format;
 
     /*
      * Specify a filter to be used to select a subset of files in the folderPath rather than all files. Type: string (or
      * Expression with resultType string).
      */
-    @JsonProperty(value = "fileFilter")
     private Object fileFilter;
 
     /*
      * The data compression method used for the file system.
      */
-    @JsonProperty(value = "compression")
     private DatasetCompression compression;
 
     /**
@@ -225,5 +222,60 @@ public final class FileShareDatasetTypeProperties {
         if (compression() != null) {
             compression().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("folderPath", this.folderPath);
+        jsonWriter.writeUntypedField("fileName", this.fileName);
+        jsonWriter.writeUntypedField("modifiedDatetimeStart", this.modifiedDatetimeStart);
+        jsonWriter.writeUntypedField("modifiedDatetimeEnd", this.modifiedDatetimeEnd);
+        jsonWriter.writeJsonField("format", this.format);
+        jsonWriter.writeUntypedField("fileFilter", this.fileFilter);
+        jsonWriter.writeJsonField("compression", this.compression);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FileShareDatasetTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FileShareDatasetTypeProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FileShareDatasetTypeProperties.
+     */
+    public static FileShareDatasetTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FileShareDatasetTypeProperties deserializedFileShareDatasetTypeProperties
+                = new FileShareDatasetTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("folderPath".equals(fieldName)) {
+                    deserializedFileShareDatasetTypeProperties.folderPath = reader.readUntyped();
+                } else if ("fileName".equals(fieldName)) {
+                    deserializedFileShareDatasetTypeProperties.fileName = reader.readUntyped();
+                } else if ("modifiedDatetimeStart".equals(fieldName)) {
+                    deserializedFileShareDatasetTypeProperties.modifiedDatetimeStart = reader.readUntyped();
+                } else if ("modifiedDatetimeEnd".equals(fieldName)) {
+                    deserializedFileShareDatasetTypeProperties.modifiedDatetimeEnd = reader.readUntyped();
+                } else if ("format".equals(fieldName)) {
+                    deserializedFileShareDatasetTypeProperties.format = DatasetStorageFormat.fromJson(reader);
+                } else if ("fileFilter".equals(fieldName)) {
+                    deserializedFileShareDatasetTypeProperties.fileFilter = reader.readUntyped();
+                } else if ("compression".equals(fieldName)) {
+                    deserializedFileShareDatasetTypeProperties.compression = DatasetCompression.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFileShareDatasetTypeProperties;
+        });
     }
 }

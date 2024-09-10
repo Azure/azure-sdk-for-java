@@ -20,23 +20,17 @@ import java.util.UUID;
  * delete that newly created event route.
  */
 public class EventRoutesSyncSamples {
-    private static DigitalTwinsClient client;
 
     public static void main(String[] args) {
         SamplesArguments parsedArguments = new SamplesArguments(args);
 
-        client = new DigitalTwinsClientBuilder()
-            .credential(
-                new ClientSecretCredentialBuilder()
-                    .tenantId(parsedArguments.getTenantId())
+        DigitalTwinsClient client = new DigitalTwinsClientBuilder().credential(
+                new ClientSecretCredentialBuilder().tenantId(parsedArguments.getTenantId())
                     .clientId(parsedArguments.getClientId())
                     .clientSecret(parsedArguments.getClientSecret())
-                    .build()
-            )
+                    .build())
             .endpoint(parsedArguments.getDigitalTwinEndpoint())
-            .httpLogOptions(
-                new HttpLogOptions()
-                    .setLogLevel(parsedArguments.getHttpLogDetailLevel()))
+            .httpLogOptions(new HttpLogOptions().setLogLevel(parsedArguments.getHttpLogDetailLevel()))
             .buildClient();
 
         ConsoleLogger.printHeader("List event routes");
@@ -66,9 +60,11 @@ public class EventRoutesSyncSamples {
             ConsoleLogger.print(String.format("Getting a single event route with Id %s", existingEventRouteId));
             try {
                 DigitalTwinsEventRoute existingEventRoute = client.getEventRoute(existingEventRouteId);
-                ConsoleLogger.print(String.format("Successfully retrieved event route with Id %s", existingEventRouteId));
+                ConsoleLogger.print(
+                    String.format("Successfully retrieved event route with Id %s", existingEventRouteId));
                 ConsoleLogger.print(String.format("\tEventRouteId: %s", existingEventRoute.getEventRouteId()));
-                ConsoleLogger.print(String.format("\tEventRouteEndpointName: %s", existingEventRoute.getEndpointName()));
+                ConsoleLogger.print(
+                    String.format("\tEventRouteEndpointName: %s", existingEventRoute.getEndpointName()));
                 if (existingEventRoute.getFilter() != null) {
                     ConsoleLogger.print(String.format("\tFilter: %s", existingEventRoute.getFilter()));
                 }
@@ -83,16 +79,20 @@ public class EventRoutesSyncSamples {
 
         if (parsedArguments.getEventRouteEndpointName() != null) {
             ConsoleLogger.printHeader("Create an event route");
-            ConsoleLogger.print("An event route endpoint name was provided as an input parameter, so this sample will create a new event route");
+            ConsoleLogger.print(
+                "An event route endpoint name was provided as an input parameter, so this sample will create a new event route");
 
             String eventRouteId = "SomeEventRoute-" + UUID.randomUUID();
             String eventRouteEndpointName = parsedArguments.getEventRouteEndpointName();
-            String filter = "$eventType = 'DigitalTwinTelemetryMessages' or $eventType = 'DigitalTwinLifecycleNotification'";
+            String filter
+                = "$eventType = 'DigitalTwinTelemetryMessages' or $eventType = 'DigitalTwinLifecycleNotification'";
             DigitalTwinsEventRoute eventRoute = new DigitalTwinsEventRoute(eventRouteEndpointName);
             eventRoute.setFilter(filter);
 
             try {
-                ConsoleLogger.print(String.format("Creating new event route with Id %s and endpoint name %s", eventRouteId, eventRouteEndpointName));
+                ConsoleLogger.print(
+                    String.format("Creating new event route with Id %s and endpoint name %s", eventRouteId,
+                        eventRouteEndpointName));
                 client.createOrReplaceEventRoute(eventRouteId, eventRoute);
                 ConsoleLogger.print(String.format("Successfully created event route with Id %s", eventRouteId));
             } catch (ErrorResponseException ex) {
@@ -112,8 +112,10 @@ public class EventRoutesSyncSamples {
                 System.exit(0);
             }
         } else {
-            ConsoleLogger.printWarning("No event route endpoint name was provided as an input parameter, so this sample will not create a new event route");
-            ConsoleLogger.printWarning("In order to create a new endpoint for this sample to use, use the Azure portal or the control plane client library.");
+            ConsoleLogger.printWarning(
+                "No event route endpoint name was provided as an input parameter, so this sample will not create a new event route");
+            ConsoleLogger.printWarning(
+                "In order to create a new endpoint for this sample to use, use the Azure portal or the control plane client library.");
         }
     }
 }

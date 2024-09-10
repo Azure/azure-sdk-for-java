@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -87,7 +86,6 @@ public final class Operator extends ExpandableStringEnum<Operator> {
      * @param name a name to look for.
      * @return the corresponding Operator.
      */
-    @JsonCreator
     public static Operator fromString(String name) {
         return fromString(name, Operator.class);
     }

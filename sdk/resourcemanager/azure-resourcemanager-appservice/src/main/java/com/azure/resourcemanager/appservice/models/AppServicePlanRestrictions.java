@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.appservice.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * App Service plans this offer is restricted to.
  */
@@ -56,7 +53,6 @@ public enum AppServicePlanRestrictions {
      * @param value the serialized value to parse.
      * @return the parsed AppServicePlanRestrictions object, or null if unable to parse.
      */
-    @JsonCreator
     public static AppServicePlanRestrictions fromString(String value) {
         if (value == null) {
             return null;
@@ -73,7 +69,6 @@ public enum AppServicePlanRestrictions {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

@@ -23,7 +23,7 @@ package com.azure.json.implementation.jackson.core;
  * schema details; rather, specific parser and generator implementations need
  * to cast to schema implementations they use. This marker interface is mostly
  * used for tagging "some kind of schema" -- instead of passing opaque
- * {@link java.lang.Object} -- for documentation purposes.
+ * {@link Object} -- for documentation purposes.
  */
 public interface FormatSchema {
     /**

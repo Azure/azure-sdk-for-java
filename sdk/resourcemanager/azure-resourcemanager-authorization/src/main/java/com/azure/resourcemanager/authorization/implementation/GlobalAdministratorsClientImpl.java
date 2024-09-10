@@ -23,23 +23,28 @@ import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.authorization.fluent.GlobalAdministratorsClient;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in GlobalAdministratorsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in GlobalAdministratorsClient.
+ */
 public final class GlobalAdministratorsClientImpl implements GlobalAdministratorsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final GlobalAdministratorsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AuthorizationManagementClientImpl client;
 
     /**
      * Initializes an instance of GlobalAdministratorsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     GlobalAdministratorsClientImpl(AuthorizationManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(GlobalAdministratorsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(GlobalAdministratorsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -50,20 +55,17 @@ public final class GlobalAdministratorsClientImpl implements GlobalAdministrator
     @Host("{$host}")
     @ServiceInterface(name = "AuthorizationManagem")
     public interface GlobalAdministratorsService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/providers/Microsoft.Authorization/elevateAccess")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> elevateAccess(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Void>> elevateAccess(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Elevates access for a Global Administrator.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
@@ -71,10 +73,8 @@ public final class GlobalAdministratorsClientImpl implements GlobalAdministrator
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> elevateAccessWithResponseAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String apiVersion = "2015-07-01";
         final String accept = "application/json";
@@ -85,7 +85,7 @@ public final class GlobalAdministratorsClientImpl implements GlobalAdministrator
 
     /**
      * Elevates access for a Global Administrator.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -95,10 +95,8 @@ public final class GlobalAdministratorsClientImpl implements GlobalAdministrator
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> elevateAccessWithResponseAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String apiVersion = "2015-07-01";
         final String accept = "application/json";
@@ -108,7 +106,7 @@ public final class GlobalAdministratorsClientImpl implements GlobalAdministrator
 
     /**
      * Elevates access for a Global Administrator.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
@@ -120,7 +118,7 @@ public final class GlobalAdministratorsClientImpl implements GlobalAdministrator
 
     /**
      * Elevates access for a Global Administrator.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -134,7 +132,7 @@ public final class GlobalAdministratorsClientImpl implements GlobalAdministrator
 
     /**
      * Elevates access for a Global Administrator.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */

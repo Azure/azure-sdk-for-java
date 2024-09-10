@@ -632,8 +632,10 @@ public final class BuildServiceAgentPoolsClientImpl implements BuildServiceAgent
     public SyncPoller<PollResult<BuildServiceAgentPoolResourceInner>, BuildServiceAgentPoolResourceInner>
         beginUpdatePut(String resourceGroupName, String serviceName, String buildServiceName, String agentPoolName,
             BuildServiceAgentPoolResourceInner agentPoolResource, Context context) {
-        return this.beginUpdatePutAsync(resourceGroupName, serviceName, buildServiceName, agentPoolName,
-            agentPoolResource, context).getSyncPoller();
+        return this
+            .beginUpdatePutAsync(resourceGroupName, serviceName, buildServiceName, agentPoolName, agentPoolResource,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -654,7 +656,8 @@ public final class BuildServiceAgentPoolsClientImpl implements BuildServiceAgent
     public Mono<BuildServiceAgentPoolResourceInner> updatePutAsync(String resourceGroupName, String serviceName,
         String buildServiceName, String agentPoolName, BuildServiceAgentPoolResourceInner agentPoolResource) {
         return beginUpdatePutAsync(resourceGroupName, serviceName, buildServiceName, agentPoolName, agentPoolResource)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -727,9 +730,7 @@ public final class BuildServiceAgentPoolsClientImpl implements BuildServiceAgent
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -755,9 +756,7 @@ public final class BuildServiceAgentPoolsClientImpl implements BuildServiceAgent
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

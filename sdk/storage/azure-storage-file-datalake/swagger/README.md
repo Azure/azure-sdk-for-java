@@ -27,7 +27,7 @@ license-header: MICROSOFT_MIT_SMALL
 enable-sync-stack: true
 context-client-method-parameter: true
 optional-constant-as-enum: true
-default-http-exception-type: com.azure.storage.file.datalake.models.DataLakeStorageException
+default-http-exception-type: com.azure.storage.file.datalake.implementation.models.DataLakeStorageExceptionInternal
 models-subpackage: implementation.models
 custom-types: FileSystemInfo,FileSystemItem,FileSystemProperties,PathInfo,PathItem,PathProperties,ListFileSystemsOptions,PathHttpHeaders,EncryptionAlgorithmType,LeaseAction
 custom-types-subpackage: models

@@ -22,6 +22,8 @@ For concrete examples you can have a look at the following links. Some of the mo
 * [Audio Transcription sample](#audio-transcription "Audio Transcription")
 * [Audio Translation sample](#audio-translation "Audio Translation")
 * [Text To Speech sample](#text-to-speech "Text To Speech")
+* [File operations sample](#file-operations "File Operations")
+* [Batch operations sample](#batch-operations "Batch Operations")
 
 If you want to see the full code for these snippets check out our [samples folder][samples_folder].
 
@@ -43,7 +45,7 @@ If you want to see the full code for these snippets check out our [samples folde
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-openai</artifactId>
-    <version>1.0.0-beta.9</version>
+    <version>1.0.0-beta.11</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -157,6 +159,9 @@ The following sections provide several code snippets covering some of the most c
 * [Image Generation sample](#image-generation "Image Generation")
 * [Audio Transcription sample](#audio-transcription "Audio Transcription")
 * [Audio Translation sample](#audio-translation "Audio Translation")
+* [Text To Speech sample](#text-to-speech "Text To Speech")
+* [File operations sample](#file-operations "File Operations")
+* [Batch operations sample](#batch-operations "Batch Operations")
 
 ### Legacy completions
 
@@ -418,6 +423,43 @@ Files.write(path, speech.toBytes());
 See sample [Text to Speech][sample_text_to_speech] for a complete sample.
 Please refer to the service documentation for a conceptual discussion of [Text to Speech][microsoft_docs_text_to_speech].
 
+### File operations
+
+The OpenAI service supports `upload`, `get`, `list`, and `delete` operations for interacting File APIs with OpenAI service. 
+```java readme-sample-fileOperations
+// Upload a file
+FileDetails fileDetails = new FileDetails(
+    BinaryData.fromFile(Paths.get("{your-local-file-path}/batch_tasks.jsonl")),
+    "batch_tasks.jsonl");
+OpenAIFile file = client.uploadFile(fileDetails, FilePurpose.BATCH);
+String fileId = file.getId();
+// Get single file
+OpenAIFile fileFromBackend = client.getFile(fileId);
+// List files
+List<OpenAIFile> files = client.listFiles(FilePurpose.ASSISTANTS);
+// Delete file
+FileDeletionStatus deletionStatus = client.deleteFile(fileId);
+```
+For a complete sample example, see sample [File Operations][sample_file_operations].
+
+### Batch operations
+
+The OpenAI service supports `create`, `get`, `list`, and `delete` operations for interacting Batch APIs with OpenAI service.
+Use Batch API to send asynchronous groups of requests with 50% lower costs, a separate pool of significantly higher rate 
+limits, and a clear 24-hour turnaround time. The service is ideal for processing jobs that don't require immediate responses.
+```java readme-sample-batchOperations
+String fileId = "{fileId-from-service-side}";
+// Create a batch
+Batch batch = client.createBatch(new BatchCreateRequest("/chat/completions", fileId, "24h"));
+// Get single file
+byte[] fileContent = client.getFileContent(batch.getOutputFileId());
+// List batches
+PageableList<Batch> batchPageableList = client.listBatches();
+// Cancel a batch
+Batch cancelledBatch = client.cancelBatch(batch.getId());
+```
+For a complete sample example, see sample [Batch Operations][sample_batch_operations].
+
 ## Troubleshooting
 ### Enable client logging
 You can set the `AZURE_LOG_LEVEL` environment variable to view logging statements made in the client library. For
@@ -427,7 +469,7 @@ be found here: [log levels][logLevels].
 ### Default HTTP Client
 All client libraries by default use the Netty HTTP client. Adding the above dependency will automatically configure
 the client library to use the Netty HTTP client. Configuring or changing the HTTP client is detailed in the
-[HTTP clients wiki](https://github.com/Azure/azure-sdk-for-java/wiki/HTTP-clients).
+[HTTP clients wiki](https://learn.microsoft.com/azure/developer/java/sdk/http-client-pipeline#http-clients).
 
 ### Default SSL library
 All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL
@@ -471,8 +513,10 @@ For details on contributing to this repository, see the [contributing guide](htt
 [source_code]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/openai/azure-ai-openai/src
 [samples_folder]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai
 [samples_readme]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/openai/azure-ai-openai/src/samples
+[sample_batch_operations]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/BatchOperationsSample.java
 [sample_chat_completion_function_call]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/ChatCompletionsFunctionCall.java
 [sample_chat_completion_BYOD]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/ChatCompletionsWithYourData.java
+[sample_file_operations]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/FileOperationsSample.java
 [sample_get_chat_completions]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetChatCompletionsSample.java
 [sample_get_chat_completions_streaming]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetChatCompletionsStreamSample.java
 [sample_get_completions]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetCompletionsSample.java
@@ -488,5 +532,5 @@ For details on contributing to this repository, see the [contributing guide](htt
 [openai_client_builder]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/main/java/com/azure/ai/openai/OpenAIClientBuilder.java
 [openai_client_sync]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/main/java/com/azure/ai/openai/OpenAIClient.java
 [troubleshooting]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/TROUBLESHOOTING.md
-[wiki_identity]: https://github.com/Azure/azure-sdk-for-java/wiki/Identity-and-Authentication
+[wiki_identity]: https://learn.microsoft.com/azure/developer/java/sdk/identity
 

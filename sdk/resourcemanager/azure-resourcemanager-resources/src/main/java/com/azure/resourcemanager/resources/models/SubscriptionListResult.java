@@ -6,25 +6,27 @@ package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.resources.fluent.models.SubscriptionInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Subscription list operation response.
  */
 @Fluent
-public final class SubscriptionListResult {
+public final class SubscriptionListResult implements JsonSerializable<SubscriptionListResult> {
     /*
      * An array of subscriptions.
      */
-    @JsonProperty(value = "value")
     private List<SubscriptionInner> value;
 
     /*
      * The URL to get the next set of results.
      */
-    @JsonProperty(value = "nextLink", required = true)
     private String nextLink;
 
     /**
@@ -90,4 +92,45 @@ public final class SubscriptionListResult {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SubscriptionListResult.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SubscriptionListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SubscriptionListResult if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SubscriptionListResult.
+     */
+    public static SubscriptionListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SubscriptionListResult deserializedSubscriptionListResult = new SubscriptionListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nextLink".equals(fieldName)) {
+                    deserializedSubscriptionListResult.nextLink = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    List<SubscriptionInner> value = reader.readArray(reader1 -> SubscriptionInner.fromJson(reader1));
+                    deserializedSubscriptionListResult.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSubscriptionListResult;
+        });
+    }
 }

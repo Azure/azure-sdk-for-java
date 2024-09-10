@@ -13,16 +13,16 @@ public final class AllowedAudiencesValidationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AllowedAudiencesValidation model
-            = BinaryData.fromString("{\"allowedAudiences\":[\"igdtopbob\",\"og\",\"m\",\"w\"]}")
+            = BinaryData.fromString("{\"allowedAudiences\":[\"zqqedq\",\"tbciqfouflmm\",\"kzsmodm\",\"lougpbkw\"]}")
                 .toObject(AllowedAudiencesValidation.class);
-        Assertions.assertEquals("igdtopbob", model.allowedAudiences().get(0));
+        Assertions.assertEquals("zqqedq", model.allowedAudiences().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AllowedAudiencesValidation model
-            = new AllowedAudiencesValidation().withAllowedAudiences(Arrays.asList("igdtopbob", "og", "m", "w"));
+        AllowedAudiencesValidation model = new AllowedAudiencesValidation()
+            .withAllowedAudiences(Arrays.asList("zqqedq", "tbciqfouflmm", "kzsmodm", "lougpbkw"));
         model = BinaryData.fromObject(model).toObject(AllowedAudiencesValidation.class);
-        Assertions.assertEquals("igdtopbob", model.allowedAudiences().get(0));
+        Assertions.assertEquals("zqqedq", model.allowedAudiences().get(0));
     }
 }

@@ -5,52 +5,53 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** sharingInvitation. */
+/**
+ * sharingInvitation.
+ */
 @Fluent
-public final class MicrosoftGraphSharingInvitation {
+public final class MicrosoftGraphSharingInvitation implements JsonSerializable<MicrosoftGraphSharingInvitation> {
     /*
      * The email address provided for the recipient of the sharing invitation. Read-only.
      */
-    @JsonProperty(value = "email")
     private String email;
 
     /*
      * identitySet
      */
-    @JsonProperty(value = "invitedBy")
     private MicrosoftGraphIdentitySet invitedBy;
 
     /*
      * The redeemedBy property.
      */
-    @JsonProperty(value = "redeemedBy")
     private String redeemedBy;
 
     /*
      * If true the recipient of the invitation needs to sign in in order to access the shared item. Read-only.
      */
-    @JsonProperty(value = "signInRequired")
     private Boolean signInRequired;
 
     /*
      * sharingInvitation
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphSharingInvitation class. */
+    /**
+     * Creates an instance of MicrosoftGraphSharingInvitation class.
+     */
     public MicrosoftGraphSharingInvitation() {
     }
 
     /**
      * Get the email property: The email address provided for the recipient of the sharing invitation. Read-only.
-     *
+     * 
      * @return the email value.
      */
     public String email() {
@@ -59,7 +60,7 @@ public final class MicrosoftGraphSharingInvitation {
 
     /**
      * Set the email property: The email address provided for the recipient of the sharing invitation. Read-only.
-     *
+     * 
      * @param email the email value to set.
      * @return the MicrosoftGraphSharingInvitation object itself.
      */
@@ -70,7 +71,7 @@ public final class MicrosoftGraphSharingInvitation {
 
     /**
      * Get the invitedBy property: identitySet.
-     *
+     * 
      * @return the invitedBy value.
      */
     public MicrosoftGraphIdentitySet invitedBy() {
@@ -79,7 +80,7 @@ public final class MicrosoftGraphSharingInvitation {
 
     /**
      * Set the invitedBy property: identitySet.
-     *
+     * 
      * @param invitedBy the invitedBy value to set.
      * @return the MicrosoftGraphSharingInvitation object itself.
      */
@@ -90,7 +91,7 @@ public final class MicrosoftGraphSharingInvitation {
 
     /**
      * Get the redeemedBy property: The redeemedBy property.
-     *
+     * 
      * @return the redeemedBy value.
      */
     public String redeemedBy() {
@@ -99,7 +100,7 @@ public final class MicrosoftGraphSharingInvitation {
 
     /**
      * Set the redeemedBy property: The redeemedBy property.
-     *
+     * 
      * @param redeemedBy the redeemedBy value to set.
      * @return the MicrosoftGraphSharingInvitation object itself.
      */
@@ -111,7 +112,7 @@ public final class MicrosoftGraphSharingInvitation {
     /**
      * Get the signInRequired property: If true the recipient of the invitation needs to sign in in order to access the
      * shared item. Read-only.
-     *
+     * 
      * @return the signInRequired value.
      */
     public Boolean signInRequired() {
@@ -121,7 +122,7 @@ public final class MicrosoftGraphSharingInvitation {
     /**
      * Set the signInRequired property: If true the recipient of the invitation needs to sign in in order to access the
      * shared item. Read-only.
-     *
+     * 
      * @param signInRequired the signInRequired value to set.
      * @return the MicrosoftGraphSharingInvitation object itself.
      */
@@ -132,17 +133,16 @@ public final class MicrosoftGraphSharingInvitation {
 
     /**
      * Get the additionalProperties property: sharingInvitation.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: sharingInvitation.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphSharingInvitation object itself.
      */
@@ -151,22 +151,72 @@ public final class MicrosoftGraphSharingInvitation {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (invitedBy() != null) {
             invitedBy().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("email", this.email);
+        jsonWriter.writeJsonField("invitedBy", this.invitedBy);
+        jsonWriter.writeStringField("redeemedBy", this.redeemedBy);
+        jsonWriter.writeBooleanField("signInRequired", this.signInRequired);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphSharingInvitation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphSharingInvitation if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphSharingInvitation.
+     */
+    public static MicrosoftGraphSharingInvitation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphSharingInvitation deserializedMicrosoftGraphSharingInvitation
+                = new MicrosoftGraphSharingInvitation();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("email".equals(fieldName)) {
+                    deserializedMicrosoftGraphSharingInvitation.email = reader.getString();
+                } else if ("invitedBy".equals(fieldName)) {
+                    deserializedMicrosoftGraphSharingInvitation.invitedBy = MicrosoftGraphIdentitySet.fromJson(reader);
+                } else if ("redeemedBy".equals(fieldName)) {
+                    deserializedMicrosoftGraphSharingInvitation.redeemedBy = reader.getString();
+                } else if ("signInRequired".equals(fieldName)) {
+                    deserializedMicrosoftGraphSharingInvitation.signInRequired
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphSharingInvitation.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphSharingInvitation;
+        });
     }
 }

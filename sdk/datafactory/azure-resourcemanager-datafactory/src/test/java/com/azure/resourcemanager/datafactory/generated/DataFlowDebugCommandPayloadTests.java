@@ -13,24 +13,24 @@ public final class DataFlowDebugCommandPayloadTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataFlowDebugCommandPayload model = BinaryData.fromString(
-            "{\"streamName\":\"uartvti\",\"rowLimits\":1848545940,\"columns\":[\"chnmna\",\"mnxhkxjqirwrweo\"],\"expression\":\"ffifhx\"}")
+            "{\"streamName\":\"opionszon\",\"rowLimits\":1957887263,\"columns\":[\"jinnix\",\"awrtmjfjmyccxlz\",\"coxovn\",\"khenlus\"],\"expression\":\"rd\"}")
             .toObject(DataFlowDebugCommandPayload.class);
-        Assertions.assertEquals("uartvti", model.streamName());
-        Assertions.assertEquals(1848545940, model.rowLimits());
-        Assertions.assertEquals("chnmna", model.columns().get(0));
-        Assertions.assertEquals("ffifhx", model.expression());
+        Assertions.assertEquals("opionszon", model.streamName());
+        Assertions.assertEquals(1957887263, model.rowLimits());
+        Assertions.assertEquals("jinnix", model.columns().get(0));
+        Assertions.assertEquals("rd", model.expression());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataFlowDebugCommandPayload model = new DataFlowDebugCommandPayload().withStreamName("uartvti")
-            .withRowLimits(1848545940)
-            .withColumns(Arrays.asList("chnmna", "mnxhkxjqirwrweo"))
-            .withExpression("ffifhx");
+        DataFlowDebugCommandPayload model = new DataFlowDebugCommandPayload().withStreamName("opionszon")
+            .withRowLimits(1957887263)
+            .withColumns(Arrays.asList("jinnix", "awrtmjfjmyccxlz", "coxovn", "khenlus"))
+            .withExpression("rd");
         model = BinaryData.fromObject(model).toObject(DataFlowDebugCommandPayload.class);
-        Assertions.assertEquals("uartvti", model.streamName());
-        Assertions.assertEquals(1848545940, model.rowLimits());
-        Assertions.assertEquals("chnmna", model.columns().get(0));
-        Assertions.assertEquals("ffifhx", model.expression());
+        Assertions.assertEquals("opionszon", model.streamName());
+        Assertions.assertEquals(1957887263, model.rowLimits());
+        Assertions.assertEquals("jinnix", model.columns().get(0));
+        Assertions.assertEquals("rd", model.expression());
     }
 }

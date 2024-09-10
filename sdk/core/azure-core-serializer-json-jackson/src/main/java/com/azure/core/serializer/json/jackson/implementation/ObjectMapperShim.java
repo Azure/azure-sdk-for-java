@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.Stack;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
@@ -286,24 +287,51 @@ public final class ObjectMapperShim {
             return getFromTypeCache(type, t -> {
                 JavaType javaType = mapper.constructType(t);
 
+                // Non-container type, just need to check for the type being JsonSerializable.
+                if (!javaType.isContainerType()) {
+                    Class<?> clazz = javaType.getRawClass();
+                    if (ReflectionSerializable.supportsJsonSerializable(clazz)) {
+                        return javaType
+                            .withValueHandler(new JsonSerializableDeserializer((Class<JsonSerializable<?>>) clazz));
+                    }
+
+                    return javaType;
+                }
+
                 // Need additional handling here so that the JavaType returned has the correct value handler for
                 // JsonSerializable types.
                 // While JsonSerializableDeserializer is registered with the ObjectMapper, and it mutates the
                 // JsonSerializer used by Jackson to handle as a JsonSerializable type, there have been cases where
                 // collection types (List, Map, etc) have not been handled correctly. So, additional handling is done
                 // here to ensure that the JavaType returned has the correct value handler.
+                //
+                // These are container types and they need to be traversed until a non-container type is found.
 
-                if (!(t instanceof Class<?>)) {
-                    // Not a Class, so can't be a JsonSerializable type.
-                    return javaType;
+                JavaType initializeType = javaType;
+                Stack<JavaType> containerTypes = new Stack<>();
+                while (javaType.isContainerType()) {
+                    containerTypes.add(javaType);
+                    javaType = javaType.getContentType();
                 }
 
-                if (ReflectionSerializable.supportsJsonSerializable((Class<?>) t)) {
+                // At this point the javaType is a non-container type, check if it is a JsonSerializable type.
+                Class<?> clazz = javaType.getRawClass();
+                if (ReflectionSerializable.supportsJsonSerializable(clazz)) {
                     // JsonSerializable type, so add the JsonSerializableDeserializer as the value handler.
-                    return javaType.withValueHandler(new JsonSerializableDeserializer((Class<JsonSerializable<?>>) t));
+                    javaType = javaType
+                        .withValueHandler(new JsonSerializableDeserializer((Class<JsonSerializable<?>>) clazz));
+                } else {
+                    return initializeType;
                 }
 
-                return javaType;
+                // Now we need to unwind the stack of container types and update the content type of each container
+                // type. Jackson returns new instances upon each modification, so we need to track the new instance.
+                JavaType toReturn = javaType;
+                while (!containerTypes.isEmpty()) {
+                    toReturn = containerTypes.pop().withContentType(toReturn);
+                }
+
+                return toReturn;
             });
         }
     }

@@ -6,17 +6,20 @@ package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Cosmos DB Cassandra keyspace resource object.
  */
 @Fluent
-public class CassandraKeyspaceResource {
+public class CassandraKeyspaceResource implements JsonSerializable<CassandraKeyspaceResource> {
     /*
      * Name of the Cosmos DB Cassandra keyspace
      */
-    @JsonProperty(value = "id", required = true)
     private String id;
 
     /**
@@ -58,4 +61,41 @@ public class CassandraKeyspaceResource {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CassandraKeyspaceResource.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CassandraKeyspaceResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CassandraKeyspaceResource if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CassandraKeyspaceResource.
+     */
+    public static CassandraKeyspaceResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CassandraKeyspaceResource deserializedCassandraKeyspaceResource = new CassandraKeyspaceResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedCassandraKeyspaceResource.id = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCassandraKeyspaceResource;
+        });
+    }
 }

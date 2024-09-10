@@ -5,8 +5,13 @@ package com.azure.analytics.defender.easm.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -19,231 +24,198 @@ public final class SslCertAsset extends InventoryAsset {
      * The sha1 property.
      */
     @Generated
-    @JsonProperty(value = "sha1")
     private String sha1;
 
     /*
      * The subjectCommonNames property.
      */
     @Generated
-    @JsonProperty(value = "subjectCommonNames")
     private List<String> subjectCommonNames;
 
     /*
      * The organizations property.
      */
     @Generated
-    @JsonProperty(value = "organizations")
     private List<String> organizations;
 
     /*
      * The organizationalUnits property.
      */
     @Generated
-    @JsonProperty(value = "organizationalUnits")
     private List<String> organizationalUnits;
 
     /*
      * The issuerCommonNames property.
      */
     @Generated
-    @JsonProperty(value = "issuerCommonNames")
     private List<String> issuerCommonNames;
 
     /*
      * The sigAlgName property.
      */
     @Generated
-    @JsonProperty(value = "sigAlgName")
     private String sigAlgName;
 
     /*
      * The invalidAfter property.
      */
     @Generated
-    @JsonProperty(value = "invalidAfter")
     private OffsetDateTime invalidAfter;
 
     /*
      * The serialNumber property.
      */
     @Generated
-    @JsonProperty(value = "serialNumber")
     private String serialNumber;
 
     /*
      * The subjectAlternativeNames property.
      */
     @Generated
-    @JsonProperty(value = "subjectAlternativeNames")
     private List<String> subjectAlternativeNames;
 
     /*
      * The issuerAlternativeNames property.
      */
     @Generated
-    @JsonProperty(value = "issuerAlternativeNames")
     private List<String> issuerAlternativeNames;
 
     /*
      * The sources property.
      */
     @Generated
-    @JsonProperty(value = "sources")
     private List<Source> sources;
 
     /*
      * The firstSeen property.
      */
     @Generated
-    @JsonProperty(value = "firstSeen")
     private OffsetDateTime firstSeen;
 
     /*
      * The lastSeen property.
      */
     @Generated
-    @JsonProperty(value = "lastSeen")
     private OffsetDateTime lastSeen;
 
     /*
      * The count property.
      */
     @Generated
-    @JsonProperty(value = "count")
     private Long count;
 
     /*
      * The invalidBefore property.
      */
     @Generated
-    @JsonProperty(value = "invalidBefore")
     private OffsetDateTime invalidBefore;
 
     /*
      * The keySize property.
      */
     @Generated
-    @JsonProperty(value = "keySize")
     private Integer keySize;
 
     /*
      * The keyAlgorithm property.
      */
     @Generated
-    @JsonProperty(value = "keyAlgorithm")
     private String keyAlgorithm;
 
     /*
      * The subjectLocality property.
      */
     @Generated
-    @JsonProperty(value = "subjectLocality")
     private List<String> subjectLocality;
 
     /*
      * The subjectState property.
      */
     @Generated
-    @JsonProperty(value = "subjectState")
     private List<String> subjectState;
 
     /*
      * The subjectCountry property.
      */
     @Generated
-    @JsonProperty(value = "subjectCountry")
     private List<String> subjectCountry;
 
     /*
      * The issuerLocality property.
      */
     @Generated
-    @JsonProperty(value = "issuerLocality")
     private List<String> issuerLocality;
 
     /*
      * The issuerState property.
      */
     @Generated
-    @JsonProperty(value = "issuerState")
     private List<String> issuerState;
 
     /*
      * The issuerCountry property.
      */
     @Generated
-    @JsonProperty(value = "issuerCountry")
     private List<String> issuerCountry;
 
     /*
      * The subjectOrganizations property.
      */
     @Generated
-    @JsonProperty(value = "subjectOrganizations")
     private List<String> subjectOrganizations;
 
     /*
      * The subjectOrganizationalUnits property.
      */
     @Generated
-    @JsonProperty(value = "subjectOrganizationalUnits")
     private List<String> subjectOrganizationalUnits;
 
     /*
      * The issuerOrganizations property.
      */
     @Generated
-    @JsonProperty(value = "issuerOrganizations")
     private List<String> issuerOrganizations;
 
     /*
      * The issuerOrganizationalUnits property.
      */
     @Generated
-    @JsonProperty(value = "issuerOrganizationalUnits")
     private List<String> issuerOrganizationalUnits;
 
     /*
      * The version property.
      */
     @Generated
-    @JsonProperty(value = "version")
     private Integer version;
 
     /*
      * The certificateAuthority property.
      */
     @Generated
-    @JsonProperty(value = "certificateAuthority")
     private Boolean certificateAuthority;
 
     /*
      * The selfSigned property.
      */
     @Generated
-    @JsonProperty(value = "selfSigned")
     private Boolean selfSigned;
 
     /*
      * The sigAlgOid property.
      */
     @Generated
-    @JsonProperty(value = "sigAlgOid")
     private String sigAlgOid;
 
     /*
      * The recent property.
      */
     @Generated
-    @JsonProperty(value = "recent")
     private Boolean recent;
 
     /*
      * The validationType property.
      */
     @Generated
-    @JsonProperty(value = "validationType")
     private SslCertAssetValidationType validationType;
 
     /**
@@ -581,5 +553,177 @@ public final class SslCertAsset extends InventoryAsset {
     @Generated
     public SslCertAssetValidationType getValidationType() {
         return this.validationType;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("sha1", this.sha1);
+        jsonWriter.writeArrayField("subjectCommonNames", this.subjectCommonNames,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("organizations", this.organizations,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("organizationalUnits", this.organizationalUnits,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("issuerCommonNames", this.issuerCommonNames,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("sigAlgName", this.sigAlgName);
+        jsonWriter.writeStringField("invalidAfter",
+            this.invalidAfter == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.invalidAfter));
+        jsonWriter.writeStringField("serialNumber", this.serialNumber);
+        jsonWriter.writeArrayField("subjectAlternativeNames", this.subjectAlternativeNames,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("issuerAlternativeNames", this.issuerAlternativeNames,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("sources", this.sources, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("firstSeen",
+            this.firstSeen == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.firstSeen));
+        jsonWriter.writeStringField("lastSeen",
+            this.lastSeen == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastSeen));
+        jsonWriter.writeNumberField("count", this.count);
+        jsonWriter.writeStringField("invalidBefore",
+            this.invalidBefore == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.invalidBefore));
+        jsonWriter.writeNumberField("keySize", this.keySize);
+        jsonWriter.writeStringField("keyAlgorithm", this.keyAlgorithm);
+        jsonWriter.writeArrayField("subjectLocality", this.subjectLocality,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("subjectState", this.subjectState, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("subjectCountry", this.subjectCountry,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("issuerLocality", this.issuerLocality,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("issuerState", this.issuerState, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("issuerCountry", this.issuerCountry,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("subjectOrganizations", this.subjectOrganizations,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("subjectOrganizationalUnits", this.subjectOrganizationalUnits,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("issuerOrganizations", this.issuerOrganizations,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("issuerOrganizationalUnits", this.issuerOrganizationalUnits,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeNumberField("version", this.version);
+        jsonWriter.writeBooleanField("certificateAuthority", this.certificateAuthority);
+        jsonWriter.writeBooleanField("selfSigned", this.selfSigned);
+        jsonWriter.writeStringField("sigAlgOid", this.sigAlgOid);
+        jsonWriter.writeBooleanField("recent", this.recent);
+        jsonWriter.writeStringField("validationType",
+            this.validationType == null ? null : this.validationType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SslCertAsset from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SslCertAsset if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SslCertAsset.
+     */
+    @Generated
+    public static SslCertAsset fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SslCertAsset deserializedSslCertAsset = new SslCertAsset();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("sha1".equals(fieldName)) {
+                    deserializedSslCertAsset.sha1 = reader.getString();
+                } else if ("subjectCommonNames".equals(fieldName)) {
+                    List<String> subjectCommonNames = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSslCertAsset.subjectCommonNames = subjectCommonNames;
+                } else if ("organizations".equals(fieldName)) {
+                    List<String> organizations = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSslCertAsset.organizations = organizations;
+                } else if ("organizationalUnits".equals(fieldName)) {
+                    List<String> organizationalUnits = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSslCertAsset.organizationalUnits = organizationalUnits;
+                } else if ("issuerCommonNames".equals(fieldName)) {
+                    List<String> issuerCommonNames = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSslCertAsset.issuerCommonNames = issuerCommonNames;
+                } else if ("sigAlgName".equals(fieldName)) {
+                    deserializedSslCertAsset.sigAlgName = reader.getString();
+                } else if ("invalidAfter".equals(fieldName)) {
+                    deserializedSslCertAsset.invalidAfter = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("serialNumber".equals(fieldName)) {
+                    deserializedSslCertAsset.serialNumber = reader.getString();
+                } else if ("subjectAlternativeNames".equals(fieldName)) {
+                    List<String> subjectAlternativeNames = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSslCertAsset.subjectAlternativeNames = subjectAlternativeNames;
+                } else if ("issuerAlternativeNames".equals(fieldName)) {
+                    List<String> issuerAlternativeNames = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSslCertAsset.issuerAlternativeNames = issuerAlternativeNames;
+                } else if ("sources".equals(fieldName)) {
+                    List<Source> sources = reader.readArray(reader1 -> Source.fromJson(reader1));
+                    deserializedSslCertAsset.sources = sources;
+                } else if ("firstSeen".equals(fieldName)) {
+                    deserializedSslCertAsset.firstSeen = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastSeen".equals(fieldName)) {
+                    deserializedSslCertAsset.lastSeen = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("count".equals(fieldName)) {
+                    deserializedSslCertAsset.count = reader.getNullable(JsonReader::getLong);
+                } else if ("invalidBefore".equals(fieldName)) {
+                    deserializedSslCertAsset.invalidBefore = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("keySize".equals(fieldName)) {
+                    deserializedSslCertAsset.keySize = reader.getNullable(JsonReader::getInt);
+                } else if ("keyAlgorithm".equals(fieldName)) {
+                    deserializedSslCertAsset.keyAlgorithm = reader.getString();
+                } else if ("subjectLocality".equals(fieldName)) {
+                    List<String> subjectLocality = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSslCertAsset.subjectLocality = subjectLocality;
+                } else if ("subjectState".equals(fieldName)) {
+                    List<String> subjectState = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSslCertAsset.subjectState = subjectState;
+                } else if ("subjectCountry".equals(fieldName)) {
+                    List<String> subjectCountry = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSslCertAsset.subjectCountry = subjectCountry;
+                } else if ("issuerLocality".equals(fieldName)) {
+                    List<String> issuerLocality = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSslCertAsset.issuerLocality = issuerLocality;
+                } else if ("issuerState".equals(fieldName)) {
+                    List<String> issuerState = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSslCertAsset.issuerState = issuerState;
+                } else if ("issuerCountry".equals(fieldName)) {
+                    List<String> issuerCountry = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSslCertAsset.issuerCountry = issuerCountry;
+                } else if ("subjectOrganizations".equals(fieldName)) {
+                    List<String> subjectOrganizations = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSslCertAsset.subjectOrganizations = subjectOrganizations;
+                } else if ("subjectOrganizationalUnits".equals(fieldName)) {
+                    List<String> subjectOrganizationalUnits = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSslCertAsset.subjectOrganizationalUnits = subjectOrganizationalUnits;
+                } else if ("issuerOrganizations".equals(fieldName)) {
+                    List<String> issuerOrganizations = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSslCertAsset.issuerOrganizations = issuerOrganizations;
+                } else if ("issuerOrganizationalUnits".equals(fieldName)) {
+                    List<String> issuerOrganizationalUnits = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSslCertAsset.issuerOrganizationalUnits = issuerOrganizationalUnits;
+                } else if ("version".equals(fieldName)) {
+                    deserializedSslCertAsset.version = reader.getNullable(JsonReader::getInt);
+                } else if ("certificateAuthority".equals(fieldName)) {
+                    deserializedSslCertAsset.certificateAuthority = reader.getNullable(JsonReader::getBoolean);
+                } else if ("selfSigned".equals(fieldName)) {
+                    deserializedSslCertAsset.selfSigned = reader.getNullable(JsonReader::getBoolean);
+                } else if ("sigAlgOid".equals(fieldName)) {
+                    deserializedSslCertAsset.sigAlgOid = reader.getString();
+                } else if ("recent".equals(fieldName)) {
+                    deserializedSslCertAsset.recent = reader.getNullable(JsonReader::getBoolean);
+                } else if ("validationType".equals(fieldName)) {
+                    deserializedSslCertAsset.validationType = SslCertAssetValidationType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedSslCertAsset;
+        });
     }
 }

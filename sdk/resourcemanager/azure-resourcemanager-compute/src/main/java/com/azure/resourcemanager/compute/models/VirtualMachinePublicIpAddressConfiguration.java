@@ -7,31 +7,33 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachinePublicIpAddressConfigurationProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Describes a virtual machines IP Configuration's PublicIPAddress configuration.
  */
 @Fluent
-public final class VirtualMachinePublicIpAddressConfiguration {
+public final class VirtualMachinePublicIpAddressConfiguration
+    implements JsonSerializable<VirtualMachinePublicIpAddressConfiguration> {
     /*
      * The publicIP address configuration name.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * Describes a virtual machines IP Configuration's PublicIPAddress configuration
      */
-    @JsonProperty(value = "properties")
     private VirtualMachinePublicIpAddressConfigurationProperties innerProperties;
 
     /*
      * Describes the public IP Sku. It can only be set with OrchestrationMode as Flexible.
      */
-    @JsonProperty(value = "sku")
     private PublicIpAddressSku sku;
 
     /**
@@ -274,4 +276,49 @@ public final class VirtualMachinePublicIpAddressConfiguration {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VirtualMachinePublicIpAddressConfiguration.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("sku", this.sku);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachinePublicIpAddressConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachinePublicIpAddressConfiguration if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VirtualMachinePublicIpAddressConfiguration.
+     */
+    public static VirtualMachinePublicIpAddressConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachinePublicIpAddressConfiguration deserializedVirtualMachinePublicIpAddressConfiguration
+                = new VirtualMachinePublicIpAddressConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedVirtualMachinePublicIpAddressConfiguration.name = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedVirtualMachinePublicIpAddressConfiguration.innerProperties
+                        = VirtualMachinePublicIpAddressConfigurationProperties.fromJson(reader);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedVirtualMachinePublicIpAddressConfiguration.sku = PublicIpAddressSku.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachinePublicIpAddressConfiguration;
+        });
+    }
 }
