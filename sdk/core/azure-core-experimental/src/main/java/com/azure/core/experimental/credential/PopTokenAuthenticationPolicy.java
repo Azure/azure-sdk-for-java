@@ -171,7 +171,7 @@ public class PopTokenAuthenticationPolicy implements HttpPipelinePolicy {
                 "Proof of possession token authentication is not permitted for non TLS-protected (HTTPS) endpoints."));
         }
 
-        PopTokenRequestContext popTokenRequestContext = new PopTokenRequestContext().setScopes(this.scopes)
+        PopTokenRequestContext popTokenRequestContext = new PopTokenRequestContext().addScopes(this.scopes.get(0))
             .setProofOfPossessionNonce(popNonce)
             .setRequest(context.getHttpRequest());
 
@@ -190,7 +190,7 @@ public class PopTokenAuthenticationPolicy implements HttpPipelinePolicy {
                 "Proof of possession token authentication is not permitted for non TLS-protected (HTTPS) endpoints."));
         }
         PopTokenRequestContext popTokenRequestContext
-            = new PopTokenRequestContext().setScopes(this.scopes).setProofOfPossessionNonce(popNonce);
+            = new PopTokenRequestContext().addScopes(this.scopes.get(0)).setProofOfPossessionNonce(popNonce);
 
         AccessToken token = this.cache.getTokenSync(popTokenRequestContext, checkToForceFetchToken);
         setAuthorizationHeader(context.getHttpRequest().getHeaders(), token.getToken());

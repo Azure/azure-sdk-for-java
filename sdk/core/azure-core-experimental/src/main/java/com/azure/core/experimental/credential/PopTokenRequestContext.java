@@ -45,18 +45,6 @@ public final class PopTokenRequestContext extends TokenRequestContext {
         return this;
     }
 
-    //    /**
-    //     * Sets the scopes required for the token.
-    //     * @param scopes The scopes required for the token.
-    //     * @return The updated PopTokenRequestContext object.
-    //     */
-    //    public PopTokenRequestContext setScopes(List<String> scopes) {
-    //        Objects.requireNonNull(scopes, "'scopes' cannot be null.");
-    //        this.scopes.clear();
-    //        this.scopes.addAll(scopes);
-    //        return this;
-    //    }
-
     /**
      * Sets the scopes required for the token.
      * @param claims The claims required for the token.
@@ -106,14 +94,6 @@ public final class PopTokenRequestContext extends TokenRequestContext {
         this.request = request;
         return this;
     }
-
-    //    /**
-    //     * Gets the scopes required for the token.
-    //     * @return The scopes required for the token.
-    //     */
-    //    public List<String> getScopes() {
-    //        return scopes;
-    //    }
 
     /**
      * Gets the claims required for the token.

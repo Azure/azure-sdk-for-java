@@ -3,9 +3,6 @@
 
 package com.azure.core.credential;
 
-import com.azure.core.http.HttpMethod;
-
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -46,16 +43,11 @@ import java.util.Objects;
  * @see com.azure.core.credential
  * @see com.azure.core.credential.TokenCredential
  */
-
 public class TokenRequestContext {
     private final List<String> scopes;
     private String claims;
     private String tenantId;
     private boolean enableCae;
-    private boolean isProofOfPossessionEnabled;
-    private String proofOfPossessionNonce;
-    private HttpMethod httpMethod;
-    private URL url;
 
     /**
      * Creates a token request instance.
@@ -165,81 +157,5 @@ public class TokenRequestContext {
      */
     public boolean isCaeEnabled() {
         return this.enableCae;
-    }
-
-    /**
-     * Sets the scopes required for the token.
-     * @param proofOfPossessionNonce The proof of possession nonce.
-     * @return The updated PopTokenRequestContext object.
-     */
-    public TokenRequestContext setProofOfPossessionNonce(String proofOfPossessionNonce) {
-        this.proofOfPossessionNonce = proofOfPossessionNonce;
-        return this;
-    }
-
-    /**
-     * Gets the proof of possession nonce.
-     * @return The proof of possession nonce.
-     */
-    public String getProofOfPossessionNonce() {
-        return proofOfPossessionNonce;
-    }
-
-    /**
-     * Sets the HTTP method.
-     *
-     * @param httpMethod the http method to set.
-     * @return The updated PopTokenRequestContext object.
-     */
-    public TokenRequestContext setHttpMethod(HttpMethod httpMethod) {
-        this.httpMethod = httpMethod;
-        return this;
-    }
-
-    /**
-     * Gets the HTTP method.
-     * @return The HTTP method.
-     */
-    public HttpMethod getHttpMethod() {
-        return httpMethod;
-    }
-
-    /**
-     * Sets the Request Resource URL.
-     *
-     * @param requestResourceUrl the url to set.
-     * @return The URL.
-     */
-    public TokenRequestContext setResourceRequestUrl(URL requestResourceUrl) {
-        this.url = requestResourceUrl;
-        return this;
-    }
-
-    /**
-     * Gets the URL.
-     * @return The URL.
-     */
-    public URL getResourceRequestUrl() {
-        return url;
-    }
-
-    /**
-     * Sets the proof of possession enabled flag.
-     *
-     * @param enableProofOfPossession the flag indicating whether proof of possession is enabled or not.
-     * @return the current instance of TokenRequestContext.
-     */
-    public TokenRequestContext setProofOfPossessionEnabled(boolean enableProofOfPossession) {
-        this.isProofOfPossessionEnabled = enableProofOfPossession;
-        return this;
-    }
-
-    /**
-     * Checks if the proof of possession is enabled.
-     *
-     * @return true if the proof of possession is enabled, false otherwise.
-     */
-    public boolean isProofOfPossessionEnabled() {
-        return this.isProofOfPossessionEnabled;
     }
 }

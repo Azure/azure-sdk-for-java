@@ -67,12 +67,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.Proxy;
-import java.net.URI;
-import java.net.URL;
-import java.net.URLEncoder;
+import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -595,9 +590,15 @@ public abstract class IdentityClientBase {
                 builder.extraQueryParameters(extraQueryParameters);
             }
 
-            if (request instanceof PopTokenRequestContext && ((PopTokenRequestContext) request).isProofOfPossessionEnabled()) {
+            if (request instanceof PopTokenRequestContext
+                && ((PopTokenRequestContext) request).isProofOfPossessionEnabled()) {
                 PopTokenRequestContext requestContext = (PopTokenRequestContext) request;
-                builder.proofOfPossession(mapToMsalHttpMethod(requestContext.getHttpMethod()), requestContext.getUri(), requestContext.getProofOfPossessionNonce());
+                try {
+                    builder.proofOfPossession(mapToMsalHttpMethod(requestContext.getResourceMethod()),
+                        requestContext.getRequestResourceUrl().toURI(), requestContext.getProofOfPossessionNonce());
+                } catch (URISyntaxException e) {
+                    throw new IllegalArgumentException(e);
+                }
             }
         }
 
