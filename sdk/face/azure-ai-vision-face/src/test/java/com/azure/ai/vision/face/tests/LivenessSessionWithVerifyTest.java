@@ -19,7 +19,6 @@ import com.azure.ai.vision.face.tests.utils.FaceDisplayNameGenerator;
 import com.azure.ai.vision.face.tests.utils.TestUtils;
 import com.azure.core.test.annotation.RecordWithoutRequestBody;
 import com.azure.core.util.BinaryData;
-import org.apache.commons.lang3.tuple.Triple;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,6 +27,7 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import reactor.util.function.Tuple3;
 
 import java.util.UUID;
 import java.util.function.Supplier;
@@ -97,7 +97,7 @@ public class LivenessSessionWithVerifyTest extends FaceClientTestBase {
         String[] imagePaths = new String[] {null, Resources.TEST_IMAGE_PATH_DETECTLIVENESS_VERIFYIMAGE};
         LivenessSessionWithVerifyCommandsProvider[] providers =  LivenessSessionWithVerifyCommandsProvider.getFunctionProviders();
 
-        Stream<Triple<String, FaceServiceVersion, Supplier<ILivenessWithVerifySessionSyncCommands>>> clientArumentStream =
+        Stream<Tuple3<String, FaceServiceVersion, Supplier<ILivenessWithVerifySessionSyncCommands>>> clientArumentStream =
                 createClientArgumentStream(FaceSessionClient.class, FaceSessionAsyncClient.class, providers);
 
         return TestUtils.createCombinationWithClientArguments(clientArumentStream, imagePaths);
