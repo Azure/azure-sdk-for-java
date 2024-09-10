@@ -26,6 +26,12 @@ public interface AzureCertificates {
     Map<String, Certificate> getCertificates();
 
     /**
+     * Get certificates.
+     * @return certificates
+     */
+    Map<String, Certificate[]> getCertificateChains();
+
+    /**
      * Get certificate keys.
      * @return certificate keys
      */
