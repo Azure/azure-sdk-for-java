@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.CustomMatcher;
@@ -43,6 +44,8 @@ import com.azure.health.insights.radiologyinsights.models.SpecialtyType;
 import com.azure.health.insights.radiologyinsights.models.TimePeriod;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
+import com.azure.core.test.utils.MockTokenCredential;
 
 /**
  * Base class for Radiology Insights clients test.
@@ -61,14 +64,22 @@ abstract class RadiologyInsightsClientTestBase extends TestProxyTestBase {
 
     RadiologyInsightsClientBuilder getClientBuilder() {
         String endpoint = Configuration.getGlobalConfiguration().get("AZURE_HEALTHINSIGHTS_ENDPOINT", "https://localhost:8080/");
-
-        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
+        TokenCredential credential = null;
+        if (interceptorManager.isPlaybackMode()) {
+            credential = new MockTokenCredential();
+        } else if (interceptorManager.isRecordMode()) {
+        	credential = new DefaultAzureCredentialBuilder().build();
+        } else {
+        	credential = new AzurePowerShellCredentialBuilder().build();
+        }
         RadiologyInsightsClientBuilder builder = new RadiologyInsightsClientBuilder()
                 .endpoint(endpoint)
                 .credential(credential);
 
         System.out.println("Test mode: " + getTestMode());
 
+        
+        
         if (getTestMode() == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         } else if (getTestMode() == TestMode.PLAYBACK) {
