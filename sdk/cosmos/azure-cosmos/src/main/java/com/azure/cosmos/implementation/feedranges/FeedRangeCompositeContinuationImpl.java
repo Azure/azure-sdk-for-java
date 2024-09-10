@@ -216,12 +216,24 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
         if (!ModelBridgeInternal.<T>noChanges(response)) {
             this.initialNoResultsRange = null;
             this.continuousNotModifiedSinceInitialNoResultsRangeCaptured.set(0);
+            LOGGER.info("No 304");
         } else if (this.compositeContinuationTokens.size() > 1) {
+            final String eTag = this.currentToken.getToken();
+            LOGGER.info("Etag {}", eTag);
+            StringBuilder sb = new StringBuilder();
+            for (CompositeContinuationToken t : this.getCurrentContinuationTokens()) {
+                sb.append(t.getRange()).append(", ");
+            }
+            LOGGER.info("CompositeTokens {} {}", this.getCurrentContinuationTokens().length,  sb);
+            LOGGER.info("CurrentRange {}", this.currentToken.getRange());
+            LOGGER.info("FEEDResponse Range {}", response.getContinuationToken());
             if (this.initialNoResultsRange == null) {
 
+                LOGGER.info("Setting InitialNoResultsRange {}", this.currentToken.getRange().getMin());
                 this.initialNoResultsRange = this.currentToken.getRange().getMin();
                 this.continuousNotModifiedSinceInitialNoResultsRangeCaptured.set(0);
 
+                LOGGER.info("Skipping CurrentRange {} - InitialNoResultsRange {}", this.currentToken.getRange(), this.initialNoResultsRange);
                 // Done already in ChangeFeedFetcher.applyServerContinuation
                 // this.replaceContinuation(eTag);
 
@@ -242,6 +254,7 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
                     this.continuousNotModifiedSinceInitialNoResultsRangeCaptured.get();
                 if (consecutiveNotModifiedResponsesSnapshot > 4L * (this.compositeContinuationTokens.size() + 1)) {
 
+                    LOGGER.info("NO_RETRY due to high number of subsequent NotModified");
                     // This is just a defense in-depth - if we see subsequent 304s all the time, avoid similar hangs
                     // just bail out - the threshold allows for two-level splits of all sub-ranges which is
                     // safe enough - with more than two-level splits we have other design gaps (service, not SDK)
