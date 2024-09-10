@@ -79,7 +79,6 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
     private static final int PHYSICAL_PARTITION_COUNT = 3;
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private final static Logger logger = LoggerFactory.getLogger(FaultInjectionWithAvailabilityStrategyTests.class);
-
     private final static Integer NO_QUERY_PAGE_SUB_STATUS_CODE = 9999;
     private final static Duration ONE_SECOND_DURATION = Duration.ofSeconds(1);
     private final static Duration TWO_SECOND_DURATION = Duration.ofSeconds(2);
