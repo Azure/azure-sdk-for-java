@@ -24,109 +24,6 @@
   },
   "include": [
     {
-      "ConsistencyConfig": {
-        "Session": {
-          "DESIRED_CONSISTENCY": "Session",
-          "ACCOUNT_CONSISTENCY": "Session",
-          "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session'; enablePartitionMerge = $true }"
-        },
-        "Strong": {
-          "DESIRED_CONSISTENCY": "Strong",
-          "ACCOUNT_CONSISTENCY": "Strong",
-          "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Strong' }"
-        }
-      },
-      "AdditionalArgs": [
-        "-DargLine=\"-Dazure.cosmos.directModeProtocol=Tcp\""
-      ],
-      "ProfileFlag": "-Pe2e",
-      "Agent": {
-        "ubuntu": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
-      }
-    },
-    {
-      "DESIRED_CONSISTENCIES": "[\"Session\"]",
-      "ACCOUNT_CONSISTENCY": "Session",
-      "PROTOCOLS": "[\"Tcp\"]",
-      "ProfileFlag": [ "-Pcfp-split", "-Psplit", "-Pquery", "-Pfast", "-Pdirect" ],
-      "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session' }",
-      "Agent": {
-        "ubuntu": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
-      }
-    },
-    {
-      "DESIRED_CONSISTENCIES": [ "[\"Strong\", \"Session\"]", "[\"BoundedStaleness\"]", "[\"ConsistentPrefix\"]" ],
-      "ACCOUNT_CONSISTENCY": "Strong",
-      "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Strong' }",
-      "PROTOCOLS": "[\"Tcp\"]",
-      "ProfileFlag": [ "-Pcfp-split", "-Psplit", "-Pquery", "-Pfast" ],
-      "Agent": {
-        "ubuntu": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
-      }
-    },
-    {
-      "DESIRED_CONSISTENCY": "BoundedStaleness",
-      "ACCOUNT_CONSISTENCY": "Strong",
-      "AdditionalArgs": "-DargLine=\"-Dazure.cosmos.directModeProtocol=Tcp\"",
-      "ProfileFlag": "-Pe2e",
-      "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Strong' }",
-      "Agent": {
-        "ubuntu": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
-      }
-    },
-    {
-      "DESIRED_CONSISTENCIES": "[\"Strong\", \"Session\"]",
-      "ACCOUNT_CONSISTENCY": "Strong",
-      "PROTOCOLS": "[\"Tcp\"]",
-      "ProfileFlag": [ "-Pdirect" ],
-      "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Strong' }",
-      "Agent": {
-        "ubuntu": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
-      }
-    },
-    {
-      "DESIRED_CONSISTENCIES": "[\"Session\"]",
-      "ACCOUNT_CONSISTENCY": "Session",
-      "PROTOCOLS": "[\"Tcp\"]",
-      "ProfileFlag": [ "-Plong" ],
-      "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session'; enablePartitionMerge = $true }",
-      "Agent": {
-        "ubuntu": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
-      }
-    },
-    {
-      "DESIRED_CONSISTENCIES": "[\"Session\"]",
-      "ACCOUNT_CONSISTENCY": "Session",
-      "ArmConfig": {
-        "MultiMaster_MultiRegion_CircuitBreaker_True": {
-          "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $true; defaultConsistencyLevel = 'Session'; enableMultipleRegions = $true }",
-          "PREFERRED_LOCATIONS": "[\"East US 2\"]"
-        }
-      },
-      "PROTOCOLS": "[\"Tcp\"]",
-      "ProfileFlag": [ "-Pmulti-master" ],
-      "AdditionalArgs": "\"-DCOSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN=TRUE\"",
-      "Agent": {
-        "ubuntu": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
-      }
-    },
-    {
-      "DESIRED_CONSISTENCIES": "[\"Session\"]",
-      "ACCOUNT_CONSISTENCY": "Session",
-      "ArmConfig": {
-        "MultiMaster_MultiRegion_CircuitBreaker_False": {
-          "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $true; defaultConsistencyLevel = 'Session'; enableMultipleRegions = $true }",
-          "PREFERRED_LOCATIONS": "[\"East US 2\"]"
-        }
-      },
-      "PROTOCOLS": "[\"Tcp\"]",
-      "ProfileFlag": [ "-Pmulti-master" ],
-      "AdditionalArgs": "\"-DCOSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN=FALSE\"",
-      "Agent": {
-        "ubuntu": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
-      }
-    },
-    {
       "DESIRED_CONSISTENCIES": "[\"Session\"]",
       "ACCOUNT_CONSISTENCY": "Session",
       "ArmConfig": {
@@ -136,7 +33,7 @@
         }
       },
       "PROTOCOLS": "[\"Tcp\"]",
-      "ProfileFlag": [ "-Pcfp-split", "-Psplit", "-Pquery", "-Pflaky-multi-master", "-Pcircuit-breaker-misc-direct", "-Pcircuit-breaker-misc-gateway", "-Pcircuit-breaker-read-all-read-many", "-Pfast", "-Pdirect" ],
+      "ProfileFlag": [ "-Pfast" ],
       "Agent": {
         "ubuntu": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
       }
