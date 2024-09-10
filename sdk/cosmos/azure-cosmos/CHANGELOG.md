@@ -1,10 +1,6 @@
 ## Release History
 
-### 4.64.0-beta.1 (Unreleased)
-
-#### Features Added
-
-#### Breaking Changes
+### 4.63.3 (2024-09-10)
 
 #### Bugs Fixed
 * Fixed an issue where `CosmosDiagnostics` being accumulated across all requests for `queryChangeFeed` - See [PR 41698](https://github.com/Azure/azure-sdk-for-java/pull/41698)
