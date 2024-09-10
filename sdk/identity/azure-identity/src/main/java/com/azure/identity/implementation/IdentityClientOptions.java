@@ -570,25 +570,6 @@ public final class IdentityClientOptions implements Cloneable {
         return this;
     }
 
-
-    /**
-     * Configures the proof of possession requirement.
-     * @param proofOfPossessionRequired
-     * @return
-     */
-    public IdentityClientOptions setProofOfPossessionRequired(boolean proofOfPossessionRequired) {
-        this.proofOfPossessionRequired = proofOfPossessionRequired;
-        return this;
-    }
-
-    /**
-     * Get the configured proof of possession requirement.
-     * @return the proof of possession requirement.
-     */
-    public boolean isProofOfPossessionRequired() {
-        return proofOfPossessionRequired;
-    }
-
     /**
      * Get the configured retry policy.
      * @return the retry policy.

@@ -4,10 +4,7 @@
 package com.azure.core.credential;
 
 import com.azure.core.http.HttpMethod;
-import com.azure.core.http.HttpRequest;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -55,7 +52,6 @@ public class TokenRequestContext {
     private String claims;
     private String tenantId;
     private boolean enableCae;
-    private String parentRequestId;
     private boolean isProofOfPossessionEnabled;
     private String proofOfPossessionNonce;
     private HttpMethod httpMethod;
@@ -173,30 +169,12 @@ public class TokenRequestContext {
 
     /**
      * Sets the scopes required for the token.
-     * @param parentRequestId The parent request id.
-     * @return The updated PopTokenRequestContext object.
-     */
-    public TokenRequestContext setParentRequestId(String parentRequestId) {
-        this.parentRequestId = parentRequestId;
-        return this;
-    }
-
-    /**
-     * Sets the scopes required for the token.
      * @param proofOfPossessionNonce The proof of possession nonce.
      * @return The updated PopTokenRequestContext object.
      */
     public TokenRequestContext setProofOfPossessionNonce(String proofOfPossessionNonce) {
         this.proofOfPossessionNonce = proofOfPossessionNonce;
         return this;
-    }
-
-    /**
-     * Gets the parent request id.
-     * @return The parent request id.
-     */
-    public String getParentRequestId() {
-        return parentRequestId;
     }
 
     /**

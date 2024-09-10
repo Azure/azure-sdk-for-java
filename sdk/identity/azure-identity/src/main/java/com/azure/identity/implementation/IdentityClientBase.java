@@ -602,7 +602,7 @@ public abstract class IdentityClientBase {
                 builder.extraQueryParameters(extraQueryParameters);
             }
 
-            if (options.isProofOfPossessionRequired() && request instanceof PopTokenRequestContext) {
+            if (request instanceof PopTokenRequestContext && ((PopTokenRequestContext) request).isProofOfPossessionEnabled()) {
                 PopTokenRequestContext requestContext = (PopTokenRequestContext) request;
                 builder.proofOfPossession(mapToMsalHttpMethod(requestContext.getHttpMethod()), requestContext.getUri(), requestContext.getProofOfPossessionNonce());
             }

@@ -21,12 +21,12 @@ public final class PopTokenRequestContext extends TokenRequestContext {
     private static final ClientLogger LOGGER = new ClientLogger(PopTokenRequestContext.class);
 
     private final List<String> scopes = new ArrayList<String>();
-    private String parentRequestId;
     private String claims;
     private String tenantId;
     private boolean isCaeEnabled;
     private String proofOfPossessionNonce;
     private HttpRequest request;
+    private boolean isProofOfPossessionEnabled;
 
     /**
      * Creates a new instance of the PopTokenRequestContext.
@@ -53,16 +53,6 @@ public final class PopTokenRequestContext extends TokenRequestContext {
         Objects.requireNonNull(scopes, "'scopes' cannot be null.");
         this.scopes.clear();
         this.scopes.addAll(scopes);
-        return this;
-    }
-
-    /**
-     * Sets the scopes required for the token.
-     * @param parentRequestId The parent request id.
-     * @return The updated PopTokenRequestContext object.
-     */
-    public PopTokenRequestContext setParentRequestId(String parentRequestId) {
-        this.parentRequestId = parentRequestId;
         return this;
     }
 
@@ -125,14 +115,6 @@ public final class PopTokenRequestContext extends TokenRequestContext {
     }
 
     /**
-     * Gets the parent request id.
-     * @return The parent request id.
-     */
-    public String getParentRequestId() {
-        return parentRequestId;
-    }
-
-    /**
      * Gets the claims required for the token.
      * @return The claims required for the token.
      */
@@ -190,5 +172,25 @@ public final class PopTokenRequestContext extends TokenRequestContext {
         } catch (URISyntaxException e) {
             throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
+    }
+
+    /**
+     * Sets the proof of possession enabled flag.
+     *
+     * @param enableProofOfPossession the flag indicating whether proof of possession is enabled or not.
+     * @return the current instance of TokenRequestContext.
+     */
+    public TokenRequestContext setProofOfPossessionEnabled(boolean enableProofOfPossession) {
+        this.isProofOfPossessionEnabled = enableProofOfPossession;
+        return this;
+    }
+
+    /**
+     * Checks if the proof of possession is enabled.
+     *
+     * @return true if the proof of possession is enabled, false otherwise.
+     */
+    public boolean isProofOfPossessionEnabled() {
+        return this.isProofOfPossessionEnabled;
     }
 }
