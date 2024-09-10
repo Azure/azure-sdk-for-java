@@ -320,6 +320,9 @@ public class KeyVaultClient {
         headers.put("Authorization", "Bearer " + getAccessToken());
         String uri = keyVaultUri + "secrets/" + alias + API_VERSION_POSTFIX;
         String response = HttpUtil.get(uri, headers);
+        if (response == null) {
+            throw new NullPointerException();
+        }
         SecretBundle secretBundle = (SecretBundle) JsonConverterUtil.fromJson(response, SecretBundle.class);
 
         Certificate[] certificates = new Certificate[0];
