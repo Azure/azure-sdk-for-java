@@ -11,6 +11,10 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 #### Features Added
 - Provide extension point to configure token credential for Key Vault property source  [#41580](https://github.com/Azure/azure-sdk-for-java/pull/41580).
 
+#### Bugs Fixed
+- Avoid always overriding the default binder when using Kafka binder. [#37337](https://github.com/Azure/azure-sdk-for-java/issues/37337).
+- Fix to support multiple property sources auto refresh. [#26356](https://github.com/Azure/azure-sdk-for-java/issues/26356).
+
 ## 5.15.0 (2024-08-07)
 - This release is compatible with Spring Boot 3.0.0-3.0.13, 3.1.0-3.1.12, 3.2.0-3.2.7, 3.3.0-3.3.2. (Note: 3.0.x (x>13), 3.1.y (y>12), 3.2.z (z>7) and 3.3.m (m>2) should be supported, but they aren't tested with this release.)
 - This release is compatible with Spring Cloud 2022.0.0-2022.0.5, 2023.0.0-2023.0.3. (Note: 2022.0.x (x>5) and 2023.0.y (y>3) should be supported, but they aren't tested with this release.)

@@ -223,7 +223,7 @@ public abstract class ParserBase extends ParserMinimalBase {
 
     /**
      * Length of the exponent part of the number, if any, not
-     * including 'e' marker or sign, just digits. 
+     * including 'e' marker or sign, just digits.
      * Not used for  pure integer values.
      */
     protected int _expLength;
@@ -799,8 +799,7 @@ public abstract class ParserBase extends ParserMinimalBase {
             final int len = _intLength;
             // First: optimization for simple int
             if (len <= 9) {
-                int i = _textBuffer.contentsAsInt(_numberNegative);
-                _numberInt = i;
+                _numberInt = _textBuffer.contentsAsInt(_numberNegative);
                 _numTypesValid = NR_INT;
                 return;
             }
@@ -967,7 +966,7 @@ public abstract class ParserBase extends ParserMinimalBase {
 
     protected void convertNumberToLong() throws IOException {
         if ((_numTypesValid & NR_INT) != 0) {
-            _numberLong = (long) _numberInt;
+            _numberLong = _numberInt;
         } else if ((_numTypesValid & NR_BIGINT) != 0) {
             if (BI_MIN_LONG.compareTo(_numberBigInt) > 0 || BI_MAX_LONG.compareTo(_numberBigInt) < 0) {
                 reportOverflowLong();
@@ -990,7 +989,7 @@ public abstract class ParserBase extends ParserMinimalBase {
         _numTypesValid |= NR_LONG;
     }
 
-    protected void convertNumberToBigInteger() throws IOException {
+    protected void convertNumberToBigInteger() {
         if ((_numTypesValid & NR_BIGDECIMAL) != 0) {
             // here it'll just get truncated, no exceptions thrown
             _numberBigInt = _numberBigDecimal.toBigInteger();
@@ -1006,7 +1005,7 @@ public abstract class ParserBase extends ParserMinimalBase {
         _numTypesValid |= NR_BIGINT;
     }
 
-    protected void convertNumberToDouble() throws IOException {
+    protected void convertNumberToDouble() {
         /*
          * 05-Aug-2008, tatus: Important note: this MUST start with
          * more accurate representations, since we don't know which
@@ -1021,7 +1020,7 @@ public abstract class ParserBase extends ParserMinimalBase {
         } else if ((_numTypesValid & NR_LONG) != 0) {
             _numberDouble = (double) _numberLong;
         } else if ((_numTypesValid & NR_INT) != 0) {
-            _numberDouble = (double) _numberInt;
+            _numberDouble = _numberInt;
         } else {
             _throwInternal();
         }
@@ -1107,11 +1106,9 @@ public abstract class ParserBase extends ParserMinimalBase {
      *    invalid (unrecognized) JSON token: called when parser finds something that
      *    looks like unquoted textual token
      *
-     * @throws IOException Not thrown by base implementation but allowed by sub-classes
-     *
      * @since 2.10
      */
-    protected String _validJsonTokenList() throws IOException {
+    protected String _validJsonTokenList() {
         return _validJsonValueList();
     }
 
@@ -1120,12 +1117,10 @@ public abstract class ParserBase extends ParserMinimalBase {
      *    invalid (unrecognized) JSON value: called when parser finds something that
      *    does not look like a value or separator.
      *
-     * @throws IOException Not thrown by base implementation but allowed by sub-classes
-     *
      * @since 2.10
      */
     @SuppressWarnings("deprecation")
-    protected String _validJsonValueList() throws IOException {
+    protected String _validJsonValueList() {
         if (isEnabled(Feature.ALLOW_NON_NUMERIC_NUMBERS)) {
             return "(JSON String, Number (or 'NaN'/'INF'/'+INF'), Array, Object or token 'null', 'true' or 'false')";
         }
@@ -1244,7 +1239,7 @@ public abstract class ParserBase extends ParserMinimalBase {
      */
     @Deprecated
     protected Object _getSourceReference() {
-        if (JsonParser.Feature.INCLUDE_SOURCE_IN_LOCATION.enabledIn(_features)) {
+        if (Feature.INCLUDE_SOURCE_IN_LOCATION.enabledIn(_features)) {
             return _ioContext.contentReference().getRawContent();
         }
         return null;
@@ -1259,7 +1254,7 @@ public abstract class ParserBase extends ParserMinimalBase {
      * @since 2.13
      */
     protected ContentReference _contentReference() {
-        if (JsonParser.Feature.INCLUDE_SOURCE_IN_LOCATION.enabledIn(_features)) {
+        if (Feature.INCLUDE_SOURCE_IN_LOCATION.enabledIn(_features)) {
             return _ioContext.contentReference();
         }
         return ContentReference.unknown();
@@ -1287,7 +1282,7 @@ public abstract class ParserBase extends ParserMinimalBase {
     }
 
     @Deprecated // since 2.8
-    protected boolean loadMore() throws IOException {
+    protected boolean loadMore() {
         return false;
     }
 
