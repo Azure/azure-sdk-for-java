@@ -91,7 +91,7 @@ import static com.azure.core.http.netty.implementation.NettyHttpClientLocalTestS
 import static com.azure.core.http.netty.implementation.NettyHttpClientLocalTestServer.SHORT_POST_BODY_WITH_VALIDATION_PATH;
 import static com.azure.core.http.netty.implementation.NettyHttpClientLocalTestServer.TEST_HEADER;
 import static com.azure.core.http.netty.implementation.NettyHttpClientLocalTestServer.TIMEOUT;
-import static com.azure.core.test.utils.TestUtils.assertArraysEqual;
+import static com.azure.core.validation.http.HttpValidatonUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
