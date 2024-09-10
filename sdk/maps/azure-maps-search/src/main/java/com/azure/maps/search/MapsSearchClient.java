@@ -12,16 +12,16 @@ import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.models.GeoPosition;
 import com.azure.core.util.Context;
 import com.azure.maps.search.models.Boundary;
-import com.azure.maps.search.implementation.models.BoundaryResultTypeEnum;
 import com.azure.maps.search.implementation.models.ErrorResponseException;
-import com.azure.maps.search.implementation.models.GeocodingBatchRequestBody;
-import com.azure.maps.search.implementation.models.GeocodingBatchResponse;
-import com.azure.maps.search.implementation.models.GeocodingResponse;
-import com.azure.maps.search.implementation.models.ResolutionEnum;
-import com.azure.maps.search.implementation.models.ReverseGeocodingBatchRequestBody;
 import com.azure.maps.search.implementation.models.ReverseGeocodingResultTypeEnum;
 import com.azure.maps.search.implementation.models.SearchesGetGeocodingHeaders;
 import com.azure.maps.search.models.BaseSearchOptions;
+import com.azure.maps.search.models.BoundaryResultTypeEnum;
+import com.azure.maps.search.models.GeocodingBatchRequestBody;
+import com.azure.maps.search.models.GeocodingBatchResponse;
+import com.azure.maps.search.models.GeocodingResponse;
+import com.azure.maps.search.models.ResolutionEnum;
+import com.azure.maps.search.models.ReverseGeocodingBatchRequestBody;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -215,7 +215,7 @@ public final class MapsSearchClient {
      */
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response< GeocodingResponse> getGeocodingNoCustomHeaderWithResponse(BaseSearchOptions options, Context context) {
+    public Response<GeocodingResponse> getGeocodingNoCustomHeaderWithResponse(BaseSearchOptions options, Context context) {
         return this.asyncClient.getGeocodingNoCustomHeaderWithResponse(options, context).block();
     }
 

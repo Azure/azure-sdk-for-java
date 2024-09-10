@@ -15,7 +15,6 @@ import com.azure.core.util.Context;
 import com.azure.maps.search.MapsSearchAsyncClient;
 import com.azure.maps.search.MapsSearchClient;
 import com.azure.maps.search.MapsSearchClientBuilder;
-import com.azure.maps.search.implementation.models.GeocodingResponse;
 import com.azure.maps.search.implementation.models.ReverseGeocodingResultTypeEnum;
 
 public class GetReverseGeocodingSample {

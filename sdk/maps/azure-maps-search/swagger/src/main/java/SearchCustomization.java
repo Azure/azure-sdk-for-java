@@ -27,7 +27,30 @@ public class SearchCustomization extends Customization {
 
         customizeErrorDetail(implementationModels);
         customizeReverseGeocodingBatchRequestItem(implementationModels);
+        customizeGeoJsonObject(implementationModels);
+        customizeGeoJsonGeometry(models);
+        customizeGeoJsonFeature(models);
 
+    }
+
+    private void customizeGeoJsonObject(PackageCustomization models) {
+        models.getClass("GeoJsonObject").customizeAst(ast -> {
+            ast.addImport("com.azure.maps.search.models.Boundary");
+        });
+    }
+
+    private void customizeGeoJsonGeometry(PackageCustomization models) {
+        models.getClass("GeoJsonGeometry").customizeAst(ast -> {
+            ast.getClassByName("GeoJsonGeometry").ifPresent(clazz -> clazz.getMethodsByName("fromJsonKnownDiscriminator").get(0)
+                .setModifiers(Modifier.Keyword.PUBLIC, Modifier.Keyword.STATIC));
+        });
+    }
+
+    private void customizeGeoJsonFeature(PackageCustomization models) {
+        models.getClass("GeoJsonFeature").customizeAst(ast -> {
+            ast.getClassByName("GeoJsonFeature").ifPresent(clazz -> clazz.getMethodsByName("fromJsonKnownDiscriminator").get(0)
+                .setModifiers(Modifier.Keyword.PUBLIC, Modifier.Keyword.STATIC));
+        });
     }
 
     private void customizeReverseGeocodingBatchRequestItem(PackageCustomization models) {

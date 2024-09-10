@@ -14,7 +14,6 @@ import com.azure.core.models.GeoPosition;
 import com.azure.maps.search.MapsSearchAsyncClient;
 import com.azure.maps.search.MapsSearchClient;
 import com.azure.maps.search.MapsSearchClientBuilder;
-import com.azure.maps.search.implementation.models.GeocodingResponse;
 import com.azure.maps.search.implementation.models.SearchesGetGeocodingHeaders;
 import com.azure.maps.search.models.BaseSearchOptions;
 

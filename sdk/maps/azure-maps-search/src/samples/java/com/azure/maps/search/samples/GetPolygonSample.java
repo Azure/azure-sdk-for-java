@@ -15,8 +15,6 @@ import com.azure.maps.search.MapsSearchAsyncClient;
 import com.azure.maps.search.MapsSearchClient;
 import com.azure.maps.search.MapsSearchClientBuilder;
 import com.azure.maps.search.models.Boundary;
-import com.azure.maps.search.implementation.models.BoundaryResultTypeEnum;
-import com.azure.maps.search.implementation.models.ResolutionEnum;
 
 public class GetPolygonSample {
 

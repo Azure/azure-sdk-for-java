@@ -9,18 +9,17 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.models.GeoPosition;
 import com.azure.core.util.Context;
 import com.azure.maps.search.models.Boundary;
-import com.azure.maps.search.implementation.models.BoundaryResultTypeEnum;
 import com.azure.maps.search.implementation.models.GeoJsonGeometryCollection;
-import com.azure.maps.search.implementation.models.GeocodingBatchRequestBody;
 import com.azure.maps.search.implementation.models.GeocodingBatchRequestItem;
-import com.azure.maps.search.implementation.models.GeocodingBatchResponse;
-import com.azure.maps.search.implementation.models.GeocodingResponse;
-import com.azure.maps.search.implementation.models.ResolutionEnum;
-import com.azure.maps.search.implementation.models.ReverseGeocodingBatchRequestBody;
 import com.azure.maps.search.implementation.models.ReverseGeocodingBatchRequestItem;
 import com.azure.maps.search.implementation.models.ReverseGeocodingResultTypeEnum;
 import com.azure.maps.search.models.BaseSearchOptions;
-import org.junit.jupiter.api.Disabled;
+import com.azure.maps.search.models.BoundaryResultTypeEnum;
+import com.azure.maps.search.models.GeocodingBatchRequestBody;
+import com.azure.maps.search.models.GeocodingBatchResponse;
+import com.azure.maps.search.models.GeocodingResponse;
+import com.azure.maps.search.models.ResolutionEnum;
+import com.azure.maps.search.models.ReverseGeocodingBatchRequestBody;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -113,8 +112,8 @@ public class MapsSearchClientTest extends MapsSearchClientTestBase {
         item2.setQuery("15171 NE 24th St, Redmond, WA 98052, United States");
         body.setBatchItems(Arrays.asList(item1, item2));
         GeocodingBatchResponse response = client.getGeocodingBatch(body);
-        assertEquals(2,response.getSummary().getSuccessfulRequests());
-        assertEquals(2,response.getSummary().getTotalRequests());
+        assertEquals(2, response.getSummary().getSuccessfulRequests());
+        assertEquals(2, response.getSummary().getTotalRequests());
     }
 
 

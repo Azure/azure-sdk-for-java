@@ -9,9 +9,9 @@ import com.azure.core.util.Context;
 import com.azure.maps.search.MapsSearchAsyncClient;
 import com.azure.maps.search.MapsSearchClient;
 import com.azure.maps.search.MapsSearchClientBuilder;
-import com.azure.maps.search.implementation.models.GeocodingBatchRequestBody;
 import com.azure.maps.search.implementation.models.GeocodingBatchRequestItem;
-import com.azure.maps.search.implementation.models.GeocodingBatchResponse;
+import com.azure.maps.search.models.GeocodingBatchRequestBody;
+import com.azure.maps.search.models.GeocodingBatchResponse;
 
 import java.io.IOException;
 import java.util.Arrays;

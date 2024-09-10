@@ -8,6 +8,8 @@ import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.maps.search.models.GeoJsonGeometry;
+import com.azure.maps.search.models.GeoJsonObjectType;
 import java.io.IOException;
 import java.util.List;
 
