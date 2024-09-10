@@ -5,6 +5,7 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,7 +21,7 @@ public final class ChatRequestToolMessage extends ChatRequestMessage {
      * The content of the message.
      */
     @Generated
-    private final String content;
+    private final BinaryData content;
 
     /*
      * The ID of the tool call resolved by the provided content.
@@ -29,24 +30,12 @@ public final class ChatRequestToolMessage extends ChatRequestMessage {
     private final String toolCallId;
 
     /**
-     * Creates an instance of ChatRequestToolMessage class.
-     *
-     * @param content the content value to set.
-     * @param toolCallId the toolCallId value to set.
-     */
-    @Generated
-    public ChatRequestToolMessage(String content, String toolCallId) {
-        this.content = content;
-        this.toolCallId = toolCallId;
-    }
-
-    /**
      * Get the content property: The content of the message.
      *
      * @return the content value.
      */
     @Generated
-    public String getContent() {
+    public BinaryData getContent() {
         return this.content;
     }
 
@@ -84,7 +73,7 @@ public final class ChatRequestToolMessage extends ChatRequestMessage {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("content", this.content);
+        jsonWriter.writeUntypedField("content", this.content.toObject(Object.class));
         jsonWriter.writeStringField("tool_call_id", this.toolCallId);
         jsonWriter.writeStringField("role", this.role == null ? null : this.role.toString());
         return jsonWriter.writeEndObject();
@@ -102,14 +91,14 @@ public final class ChatRequestToolMessage extends ChatRequestMessage {
     @Generated
     public static ChatRequestToolMessage fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String content = null;
+            BinaryData content = null;
             String toolCallId = null;
             ChatRole role = ChatRole.TOOL;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("content".equals(fieldName)) {
-                    content = reader.getString();
+                    content = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
                 } else if ("tool_call_id".equals(fieldName)) {
                     toolCallId = reader.getString();
                 } else if ("role".equals(fieldName)) {
@@ -122,5 +111,17 @@ public final class ChatRequestToolMessage extends ChatRequestMessage {
             deserializedChatRequestToolMessage.role = role;
             return deserializedChatRequestToolMessage;
         });
+    }
+
+    /**
+     * Creates an instance of ChatRequestToolMessage class.
+     *
+     * @param content the content value to set.
+     * @param toolCallId the toolCallId value to set.
+     */
+    @Generated
+    public ChatRequestToolMessage(BinaryData content, String toolCallId) {
+        this.content = content;
+        this.toolCallId = toolCallId;
     }
 }

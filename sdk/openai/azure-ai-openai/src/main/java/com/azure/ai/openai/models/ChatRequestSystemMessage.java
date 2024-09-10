@@ -5,6 +5,7 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,7 +22,7 @@ public final class ChatRequestSystemMessage extends ChatRequestMessage {
      * The contents of the system message.
      */
     @Generated
-    private final String content;
+    private final BinaryData content;
 
     /*
      * An optional name for the participant.
@@ -30,22 +31,12 @@ public final class ChatRequestSystemMessage extends ChatRequestMessage {
     private String name;
 
     /**
-     * Creates an instance of ChatRequestSystemMessage class.
-     *
-     * @param content the content value to set.
-     */
-    @Generated
-    public ChatRequestSystemMessage(String content) {
-        this.content = content;
-    }
-
-    /**
      * Get the content property: The contents of the system message.
      *
      * @return the content value.
      */
     @Generated
-    public String getContent() {
+    public BinaryData getContent() {
         return this.content;
     }
 
@@ -95,7 +86,7 @@ public final class ChatRequestSystemMessage extends ChatRequestMessage {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("content", this.content);
+        jsonWriter.writeUntypedField("content", this.content.toObject(Object.class));
         jsonWriter.writeStringField("role", this.role == null ? null : this.role.toString());
         jsonWriter.writeStringField("name", this.name);
         return jsonWriter.writeEndObject();
@@ -113,14 +104,14 @@ public final class ChatRequestSystemMessage extends ChatRequestMessage {
     @Generated
     public static ChatRequestSystemMessage fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String content = null;
+            BinaryData content = null;
             ChatRole role = ChatRole.SYSTEM;
             String name = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("content".equals(fieldName)) {
-                    content = reader.getString();
+                    content = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
                 } else if ("role".equals(fieldName)) {
                     role = ChatRole.fromString(reader.getString());
                 } else if ("name".equals(fieldName)) {
@@ -134,5 +125,15 @@ public final class ChatRequestSystemMessage extends ChatRequestMessage {
             deserializedChatRequestSystemMessage.name = name;
             return deserializedChatRequestSystemMessage;
         });
+    }
+
+    /**
+     * Creates an instance of ChatRequestSystemMessage class.
+     *
+     * @param content the content value to set.
+     */
+    @Generated
+    public ChatRequestSystemMessage(BinaryData content) {
+        this.content = content;
     }
 }

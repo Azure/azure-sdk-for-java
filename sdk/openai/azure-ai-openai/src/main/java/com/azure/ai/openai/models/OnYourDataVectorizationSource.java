@@ -84,6 +84,8 @@ public class OnYourDataVectorizationSource implements JsonSerializable<OnYourDat
                     return OnYourDataDeploymentNameVectorizationSource.fromJson(readerToUse.reset());
                 } else if ("model_id".equals(discriminatorValue)) {
                     return OnYourDataModelIdVectorizationSource.fromJson(readerToUse.reset());
+                } else if ("integrated".equals(discriminatorValue)) {
+                    return OnYourDataIntegratedVectorizationSource.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

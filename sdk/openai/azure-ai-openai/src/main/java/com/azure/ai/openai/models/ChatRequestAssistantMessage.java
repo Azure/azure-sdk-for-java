@@ -5,6 +5,7 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,7 +22,7 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
      * The content of the message.
      */
     @Generated
-    private final String content;
+    private final BinaryData content;
 
     /*
      * An optional name for the participant.
@@ -44,22 +45,12 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
     private FunctionCall functionCall;
 
     /**
-     * Creates an instance of ChatRequestAssistantMessage class.
-     *
-     * @param content the content value to set.
-     */
-    @Generated
-    public ChatRequestAssistantMessage(String content) {
-        this.content = content;
-    }
-
-    /**
      * Get the content property: The content of the message.
      *
      * @return the content value.
      */
     @Generated
-    public String getContent() {
+    public BinaryData getContent() {
         return this.content;
     }
 
@@ -161,7 +152,7 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("content", this.content);
+        jsonWriter.writeUntypedField("content", this.content.toObject(Object.class));
         jsonWriter.writeStringField("role", this.role == null ? null : this.role.toString());
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeArrayField("tool_calls", this.toolCalls, (writer, element) -> writer.writeJson(element));
@@ -181,7 +172,7 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
     @Generated
     public static ChatRequestAssistantMessage fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String content = null;
+            BinaryData content = null;
             ChatRole role = ChatRole.ASSISTANT;
             String name = null;
             List<ChatCompletionsToolCall> toolCalls = null;
@@ -190,7 +181,7 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("content".equals(fieldName)) {
-                    content = reader.getString();
+                    content = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
                 } else if ("role".equals(fieldName)) {
                     role = ChatRole.fromString(reader.getString());
                 } else if ("name".equals(fieldName)) {
@@ -211,5 +202,15 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
             deserializedChatRequestAssistantMessage.functionCall = functionCall;
             return deserializedChatRequestAssistantMessage;
         });
+    }
+
+    /**
+     * Creates an instance of ChatRequestAssistantMessage class.
+     *
+     * @param content the content value to set.
+     */
+    @Generated
+    public ChatRequestAssistantMessage(BinaryData content) {
+        this.content = content;
     }
 }

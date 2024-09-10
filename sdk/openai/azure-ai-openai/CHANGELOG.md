@@ -4,7 +4,20 @@
 
 ### Features Added
 
+- Added support for service API version, `2024-08-01-preview`.
+- Added support for MongoDB chat extension. New classes `MongoDBChatExtensionConfiguration`, `MongoDBChatExtensionParameters`, and `MongoDBChatExtensionParametersFieldsMapping` are added to support MongoDB chat extension.
+- Added `roleInformation` property in `AzureCosmosDBChatExtensionParameters` class to support role information.
+- Added `rerank_score` property in `AzureChatExtensionDataSourceResponseCitation` class to support re-rank score.
+- Added `refusal` property in `ChatChoiceLogProbabilityInfo`, `ChatMessageContentItem`, `ChatResponseMessage` classes and a new type of content item class `ChatMessageRefusalContentItem` to support refusal.
+- Added `json_schema` property in `ChatCompletionsResponseFormat` class to support JSON schema.
+- Added `username_and_password` in `OnYourDataAuthenticationOptions` class and an input option class`OnYourDataUsernameAndPasswordAuthenticationOptions`  to support username and password authentication.
+- Added `intergrated` property in `OnYourDataVectorizationSource` class and `OnYourDataVectorizationSourceType` to support integrated vectorization source.
+
 ### Breaking Changes
+
+- The `content` type in `ChatRequestAssistantsMessage`, `ChatRequestSystemMessage`, `ChatRequestToolMessage` classes is now of type `BinaryData` instead of `String`.
+- Removed `azure_ml_index` from `AzureChatExtensionConfiguration` class, and its response models `AzureMachineLearningIndexConfiguration` and `AzureMachineLearningIndexChatExtensionParameters`.
+- Removed `role_information` from `AzureSearchChatExtensionParameters`, `ElasticsearchChatExtensionParameters` and `PineconeChatExtensionParameters` classes.
 
 ### Bugs Fixed
 
