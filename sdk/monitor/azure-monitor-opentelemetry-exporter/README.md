@@ -36,8 +36,10 @@ The following code shows how to configure the OpenTelemetry SDK auto-configurati
 ```java readme-sample-autoconfigure
 AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
 
-OpenTelemetry openTelemetry = new AzureMonitor().connectionString("{connection-string}")
-    .configure(sdkBuilder).build().getOpenTelemetrySdk();
+ExportOptions exportOptions = new ExportOptions().connectionString("{connection-string}");
+AzureMonitor.configure(sdkBuilder, exportOptions);
+
+OpenTelemetry openTelemetry = sdkBuilder.build().getOpenTelemetrySdk();
 ```
 
 ## Examples
@@ -48,9 +50,17 @@ The following sections provide code samples using the OpenTelemetry Azure Monito
 The following example shows how create a span:
 
 ```java readme-sample-create-span
+
+
+
+```
+The following example demonstrates how to add a span processor to the OpenTelemetry SDK autoconfiguration.
+
+```java readme-sample-span-processor
 AutoConfiguredOpenTelemetrySdkBuilder otelSdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
 
-AzureMonitor.configure(otelSdkBuilder, AzureMonitor.exportOptions().connectionString("{connection-string}"));
+ExportOptions exportOptions = new ExportOptions().connectionString("{connection-string}");
+AzureMonitor.configure(otelSdkBuilder, exportOptions);
 
 OpenTelemetry openTelemetry = otelSdkBuilder.build().getOpenTelemetrySdk();
 Tracer tracer = openTelemetry.getTracer("Sample");
@@ -66,38 +76,6 @@ try (Scope scope = span.makeCurrent()) {
 } finally {
     span.end();
 }
-```
-The following example demonstrates how to add a span processor to the OpenTelemetry SDK autoconfiguration.
-
-```java readme-sample-span-processor
-AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
-
-AzureMonitor.configure(sdkBuilder);
-
-SpanProcessor spanProcessor = new SpanProcessor() {
-    @Override
-    public void onStart(Context context, ReadWriteSpan span) {
-        span.setAttribute(AttributeKey.stringKey("random"), RandomStringUtils.random(10));
-    }
-
-    @Override
-    public boolean isStartRequired() {
-        return true;
-    }
-
-    @Override
-    public void onEnd(ReadableSpan readableSpan) {
-    }
-
-    @Override
-    public boolean isEndRequired() {
-        return false;
-    }
-};
-
-sdkBuilder.addTracerProviderCustomizer(
-    (sdkTracerProviderBuilder, configProperties) -> sdkTracerProviderBuilder
-    .addSpanProcessor(spanProcessor));
 ```
 More advanced examples with OpenTelemetry APIs:
 * [Advanced examples - 1][advanced_examples_1]

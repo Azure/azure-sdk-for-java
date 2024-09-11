@@ -8,6 +8,7 @@ import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.monitor.opentelemetry.AzureMonitor;
+import com.azure.monitor.opentelemetry.exporter.ExportOptions;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.*;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk;
@@ -82,12 +83,10 @@ public final class TestUtils {
         String connectionString) {
         AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
 
-        AzureMonitor.configure(sdkBuilder, AzureMonitor.exportOptions().connectionString(connectionString).httpPipeline(httpPipeline));
+        ExportOptions exportOptions = new ExportOptions().connectionString(connectionString).httpPipeline(httpPipeline);
+        AzureMonitor.configure(sdkBuilder, exportOptions);
 
-        return sdkBuilder
-            .addPropertiesSupplier(() -> configuration)
-            .build()
-            .getOpenTelemetrySdk();
+        return sdkBuilder.addPropertiesSupplier(() -> configuration).build().getOpenTelemetrySdk();
     }
 
     // azure-json doesn't deserialize subtypes yet, so need to convert the abstract MonitorDomain to RemoteDependencyData

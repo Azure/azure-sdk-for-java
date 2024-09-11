@@ -75,140 +75,27 @@ public final class AzureMonitorExporterBuilder {
     private static final Map<String, String> PROPERTIES
         = CoreUtils.getProperties("azure-monitor-opentelemetry-exporter.properties");
 
-    private ConnectionString connectionString;
-    private TokenCredential credential;
-
-    private HttpPipeline httpPipeline;
-    private HttpClient httpClient;
-    private HttpLogOptions httpLogOptions;
-    private final List<HttpPipelinePolicy> httpPipelinePolicies = new ArrayList<>();
-    private ClientOptions clientOptions;
-
-    private boolean frozen;
-
     // this is only populated after the builder is frozen
     private TelemetryItemExporter builtTelemetryItemExporter;
 
     // this is only populated after the builder is frozen
     private StatsbeatModule statsbeatModule;
 
+    private final ExportOptions exportOptions;
+
     /**
      * Creates an instance of {@link AzureMonitorExporterBuilder}.
      */
     public AzureMonitorExporterBuilder() {
+        this.exportOptions = new ExportOptions();
     }
 
     /**
-     * Sets the HTTP pipeline to use for the service client. If {@code httpPipeline} is set, all other
-     * settings are ignored.
-     *
-     * @param httpPipeline The HTTP pipeline to use for sending service requests and receiving
-     *                     responses.
-     * @return The updated {@link AzureMonitorExporterBuilder} object.
+     * Creates an instance of {@link AzureMonitorExporterBuilder}.
+     * @param exportOptions Export options to Azure Monitor.
      */
-    public AzureMonitorExporterBuilder httpPipeline(HttpPipeline httpPipeline) {
-        if (frozen) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException(
-                "httpPipeline cannot be changed after any of the build methods have been called"));
-        }
-        this.httpPipeline = httpPipeline;
-        return this;
-    }
-
-    /**
-     * Sets the HTTP client to use for sending and receiving requests to and from the service.
-     *
-     * @param httpClient The HTTP client to use for requests.
-     * @return The updated {@link AzureMonitorExporterBuilder} object.
-     */
-    public AzureMonitorExporterBuilder httpClient(HttpClient httpClient) {
-        if (frozen) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException(
-                "httpClient cannot be changed after any of the build methods have been called"));
-        }
-        this.httpClient = httpClient;
-        return this;
-    }
-
-    /**
-     * Sets the logging configuration for HTTP requests and responses.
-     *
-     * <p>If logLevel is not provided, default value of {@link HttpLogDetailLevel#NONE} is set.
-     *
-     * @param httpLogOptions The logging configuration to use when sending and receiving HTTP
-     *                       requests/responses.
-     * @return The updated {@link AzureMonitorExporterBuilder} object.
-     */
-    public AzureMonitorExporterBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
-        if (frozen) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException(
-                "httpLogOptions cannot be changed after any of the build methods have been called"));
-        }
-        this.httpLogOptions = httpLogOptions;
-        return this;
-    }
-
-    /**
-     * Adds a policy to the set of existing policies that are executed after required policies.
-     *
-     * @param httpPipelinePolicy a policy to be added to the http pipeline.
-     * @return The updated {@link AzureMonitorExporterBuilder} object.
-     * @throws NullPointerException If {@code policy} is {@code null}.
-     */
-    public AzureMonitorExporterBuilder addHttpPipelinePolicy(HttpPipelinePolicy httpPipelinePolicy) {
-        if (frozen) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException(
-                "httpPipelinePolicies cannot be added after any of the build methods have been called"));
-        }
-        httpPipelinePolicies.add(Objects.requireNonNull(httpPipelinePolicy, "'policy' cannot be null."));
-        return this;
-    }
-
-    /**
-     * Sets the client options such as application ID and custom headers to set on a request.
-     *
-     * @param clientOptions The client options.
-     * @return The updated {@link AzureMonitorExporterBuilder} object.
-     */
-    public AzureMonitorExporterBuilder clientOptions(ClientOptions clientOptions) {
-        if (frozen) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException(
-                "clientOptions cannot be changed after any of the build methods have been called"));
-        }
-        this.clientOptions = clientOptions;
-        return this;
-    }
-
-    /**
-     * Sets the connection string to use for exporting telemetry events to Azure Monitor.
-     *
-     * @param connectionString The connection string for the Azure Monitor resource.
-     * @return The updated {@link AzureMonitorExporterBuilder} object.
-     * @throws NullPointerException If the connection string is {@code null}.
-     * @throws IllegalArgumentException If the connection string is invalid.
-     */
-    public AzureMonitorExporterBuilder connectionString(String connectionString) {
-        if (frozen) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException(
-                "connectionString cannot be changed after any of the build methods have been called"));
-        }
-        this.connectionString = ConnectionString.parse(connectionString);
-        return this;
-    }
-
-    /**
-     * Sets the token credential required for authentication with the ingestion endpoint service.
-     *
-     * @param credential The Azure Identity TokenCredential.
-     * @return The updated {@link AzureMonitorExporterBuilder} object.
-     */
-    public AzureMonitorExporterBuilder credential(TokenCredential credential) {
-        if (frozen) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException(
-                "credential cannot be changed after any of the build methods have been called"));
-        }
-        this.credential = credential;
-        return this;
+    public AzureMonitorExporterBuilder(ExportOptions exportOptions) {
+        this.exportOptions = exportOptions;
     }
 
     /**
@@ -272,7 +159,7 @@ public final class AzureMonitorExporterBuilder {
     // the new ConfigProperties will not get applied to StatsbeatModule because of "frozen" guard. Luckily, we're using the config properties
     // in StatsbeatModule for testing only. We might need to revisit this approach later.
     void internalBuildAndFreeze(ConfigProperties configProperties) {
-        if (!frozen) {
+        if (!exportOptions.frozen) {
             HttpPipeline httpPipeline = createHttpPipeline();
             statsbeatModule = initStatsbeatModule(configProperties);
             File tempDir = TempDirs.getApplicationInsightsTempDir(LOGGER,
@@ -281,7 +168,7 @@ public final class AzureMonitorExporterBuilder {
             builtTelemetryItemExporter = AzureMonitorHelper.createTelemetryItemExporter(httpPipeline, statsbeatModule,
                 tempDir, LocalStorageStats.noop());
             startStatsbeatModule(statsbeatModule, configProperties, tempDir); // wait till TelemetryItemExporter has been initialized before starting StatsbeatModule
-            frozen = true;
+            exportOptions.frozen = true;
         }
     }
 
@@ -330,7 +217,7 @@ public final class AzureMonitorExporterBuilder {
     }
 
     private StatsbeatConnectionString getStatsbeatConnectionString() {
-        return StatsbeatConnectionString.create(connectionString, null, null);
+        return StatsbeatConnectionString.create(exportOptions.connectionString, null, null);
     }
 
     private SpanDataMapper createSpanDataMapper(ConfigProperties configProperties) {
@@ -351,8 +238,8 @@ public final class AzureMonitorExporterBuilder {
     }
 
     private ConnectionString getConnectionString(ConfigProperties configProperties) {
-        if (connectionString != null) {
-            return connectionString;
+        if (exportOptions.connectionString != null) {
+            return exportOptions.connectionString;
         }
         ConnectionString connectionString
             = ConnectionString.parse(configProperties.getString(APPLICATIONINSIGHTS_CONNECTION_STRING));
@@ -361,46 +248,47 @@ public final class AzureMonitorExporterBuilder {
 
     private HttpPipeline createHttpPipeline() {
 
-        if (httpPipeline != null) {
-            if (credential != null) {
+        if (exportOptions.httpPipeline != null) {
+            if (exportOptions.credential != null) {
                 throw LOGGER.logExceptionAsError(
                     new IllegalStateException("'credential' is not supported when custom 'httpPipeline' is specified"));
             }
-            if (httpClient != null) {
+            if (exportOptions.httpClient != null) {
                 throw LOGGER.logExceptionAsError(
                     new IllegalStateException("'httpClient' is not supported when custom 'httpPipeline' is specified"));
             }
-            if (httpLogOptions != null) {
+            if (exportOptions.httpLogOptions != null) {
                 throw LOGGER.logExceptionAsError(new IllegalStateException(
                     "'httpLogOptions' is not supported when custom 'httpPipeline' is specified"));
             }
-            if (!httpPipelinePolicies.isEmpty()) {
+            if (!exportOptions.httpPipelinePolicies.isEmpty()) {
                 throw LOGGER.logExceptionAsError(new IllegalStateException(
                     "'httpPipelinePolicies' is not supported when custom 'httpPipeline' is specified"));
             }
-            if (clientOptions != null) {
+            if (exportOptions.clientOptions != null) {
                 throw LOGGER.logExceptionAsError(new IllegalStateException(
                     "'clientOptions' is not supported when custom 'httpPipeline' is specified"));
             }
-            return httpPipeline;
+            return exportOptions.httpPipeline;
         }
 
         List<HttpPipelinePolicy> policies = new ArrayList<>();
         String clientName = PROPERTIES.getOrDefault("name", "UnknownName");
         String clientVersion = PROPERTIES.getOrDefault("version", "UnknownVersion");
 
-        String applicationId = CoreUtils.getApplicationId(clientOptions, httpLogOptions);
+        String applicationId = CoreUtils.getApplicationId(exportOptions.clientOptions, exportOptions.httpLogOptions);
 
         policies
             .add(new UserAgentPolicy(applicationId, clientName, clientVersion, Configuration.getGlobalConfiguration()));
         policies.add(new CookiePolicy());
-        if (credential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(credential, APPLICATIONINSIGHTS_AUTHENTICATION_SCOPE));
+        if (exportOptions.credential != null) {
+            policies.add(new BearerTokenAuthenticationPolicy(exportOptions.credential,
+                APPLICATIONINSIGHTS_AUTHENTICATION_SCOPE));
         }
-        policies.addAll(httpPipelinePolicies);
-        policies.add(new HttpLoggingPolicy(httpLogOptions));
+        policies.addAll(exportOptions.httpPipelinePolicies);
+        policies.add(new HttpLoggingPolicy(exportOptions.httpLogOptions));
         return new com.azure.core.http.HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(httpClient)
+            .httpClient(exportOptions.httpClient)
             .tracer(new NoopTracer())
             .build();
     }
@@ -423,23 +311,23 @@ public final class AzureMonitorExporterBuilder {
     }
 
     private HttpPipeline createStatsbeatHttpPipeline() {
-        if (httpPipeline != null) {
-            return httpPipeline;
+        if (exportOptions.httpPipeline != null) {
+            return exportOptions.httpPipeline;
         }
 
         List<HttpPipelinePolicy> policies = new ArrayList<>();
         String clientName = PROPERTIES.getOrDefault("name", "UnknownName");
         String clientVersion = PROPERTIES.getOrDefault("version", "UnknownVersion");
 
-        String applicationId = CoreUtils.getApplicationId(clientOptions, httpLogOptions);
+        String applicationId = CoreUtils.getApplicationId(exportOptions.clientOptions, exportOptions.httpLogOptions);
 
         policies
             .add(new UserAgentPolicy(applicationId, clientName, clientVersion, Configuration.getGlobalConfiguration()));
         policies.add(new CookiePolicy());
-        policies.addAll(httpPipelinePolicies);
-        policies.add(new HttpLoggingPolicy(httpLogOptions));
+        policies.addAll(exportOptions.httpPipelinePolicies);
+        policies.add(new HttpLoggingPolicy(exportOptions.httpLogOptions));
         return new com.azure.core.http.HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(httpClient)
+            .httpClient(exportOptions.httpClient)
             .tracer(new NoopTracer())
             .build();
     }
