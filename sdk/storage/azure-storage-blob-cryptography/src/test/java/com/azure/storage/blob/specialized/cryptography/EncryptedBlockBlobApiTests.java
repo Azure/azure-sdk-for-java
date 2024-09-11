@@ -1087,6 +1087,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
     @MethodSource("downloadFileSupplier")
     public void downloadFile(int fileSize, EncryptionVersion version) throws IOException {
         File file = getRandomFile(fileSize);
+        ebc = getEncryptionClient(version);
         ebc.uploadFromFile(file.toPath().toString(), true);
         File outFile = new File(testResourceNamer.randomName(prefix, 60) + ".txt");
         Files.deleteIfExists(outFile.toPath());
@@ -1187,6 +1188,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
     @MethodSource("downloadFileRangeSupplier")
     public void downloadFileRange(BlobRange range, EncryptionVersion version) throws IOException {
         File file = getRandomFile(DATA.getDefaultDataSize());
+        ebc = getEncryptionClient(version);
         ebc.uploadFromFile(file.toPath().toString(), true);
         File outFile = new File(testResourceNamer.randomName(prefix, 60));
         Files.deleteIfExists(outFile.toPath());
