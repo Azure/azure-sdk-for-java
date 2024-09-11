@@ -17,7 +17,6 @@ import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.network.models.VirtualWan;
 import com.azure.resourcemanager.network.models.VpnSite;
 import com.azure.resourcemanager.network.models.VpnSiteLink;
-import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.AcceptedImpl;
@@ -68,7 +67,6 @@ public class VpnSiteImpl
 
     @Override
     protected void afterCreating() {
-        this.virtualWanCreatable = null;
     }
 
     @Override
@@ -90,14 +88,6 @@ public class VpnSiteImpl
             .serviceClient()
             .getVpnSites()
             .updateTagsAsync(resourceGroupName(), name(), new TagsObject().withTags(innerModel().tags()));
-    }
-
-    void addToCreatableDependencies(Creatable<? extends Resource> creatableResource) {
-        this.addDependency(creatableResource);
-    }
-
-    Resource createdDependencyResource(String key) {
-        return this.<Resource>taskResult(key);
     }
 
     @Override
@@ -249,21 +239,20 @@ public class VpnSiteImpl
                 inner -> {
                     innerToFluentMap(this);
                     initializeChildrenFromInner();
-                    afterCreating();
                 },
                 Context.NONE);
-
     }
 
     @Override
     protected void beforeCreating() {
-        if (virtualWanCreatable != null) {
-            VirtualWan virtualWan = virtualWanCreatable.create();
+        if (this.virtualWanCreatable != null) {
+            VirtualWan virtualWan = this.virtualWanCreatable.create();
             if (this.innerModel().virtualWan() == null) {
                 this.innerModel().withVirtualWan(new SubResource());
             }
             this.innerModel().virtualWan().withId(virtualWan.id());
         }
+        this.virtualWanCreatable = null;
     }
 
     @Override
@@ -277,12 +266,17 @@ public class VpnSiteImpl
 
     @Override
     public VpnSite apply() {
+        final VpnSiteImpl self = this;
         beforeCreating();
-        VpnSiteInner inner = this.manager()
-                .serviceClient()
-                .getVpnSites()
-                .createOrUpdate(resourceGroupName(), name(), this.innerModel());
-        afterCreating();
-        return new VpnSiteImpl(name(), inner, this.manager());
+        return this.manager()
+            .serviceClient()
+            .getVpnSites()
+            .createOrUpdateAsync(resourceGroupName(), name(), this.innerModel())
+            .map(
+                vpnSiteInner -> {
+                    self.setInner(vpnSiteInner);
+                    self.initializeChildrenFromInner();
+                    return self;
+                }).block();
     }
 }

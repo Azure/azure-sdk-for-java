@@ -181,9 +181,25 @@ public interface VpnSiteLink extends HasInnerModel<VpnSiteLinkInner>, ChildResou
     /** The entirety of a VPN site link update as part of a VPN site update. */
     interface Update
         extends UpdateStages.WithIpAddress,
-        UpdateStages.WithLinkProperties,
-        UpdateStages.WithBgpProperties,
         Settable<VpnSite.Update> {
+
+        /**
+         * Specifies the VPN site link properties to which this vpn site link applies.
+         *
+         * @param providerName the name of vpn site provider
+         * @param speedInMbps the value of vpn site link speed
+         * @return the next stage of the definition
+         */
+        Update withLinkProperties(String providerName, Integer speedInMbps);
+
+        /**
+         * Specifies the VPN site link properties to which this vpn site link applies.
+         *
+         * @param bgpPeeringAddress the ip address of Bgp setting
+         * @param asn the value of Bgp asn
+         * @return the next stage of the definition
+         */
+        Update withBgpProperties(String bgpPeeringAddress, Long asn);
     }
 
     /** Grouping of VPN site link update stages. */
@@ -206,30 +222,6 @@ public interface VpnSiteLink extends HasInnerModel<VpnSiteLinkInner>, ChildResou
              * @return the next stage of the definition
              */
             Update withFqdn(String fqdn);
-        }
-
-        /** The stage of the VPN site link description allowing link properties to be specified. */
-        interface WithLinkProperties {
-            /**
-             * Specifies the VPN site link properties to which this vpn site link applies.
-             *
-             * @param providerName the name of vpn site provider
-             * @param speedInMbps the value of vpn site link speed
-             * @return the next stage of the definition
-             */
-            Update withLinkProperties(String providerName, Integer speedInMbps);
-        }
-
-        /** The stage of the VPN site link description allowing bgp properties to be specified. */
-        interface WithBgpProperties {
-            /**
-             * Specifies the VPN site link properties to which this vpn site link applies.
-             *
-             * @param bgpPeeringAddress the ip address of Bgp setting
-             * @param asn the value of Bgp asn
-             * @return the next stage of the definition
-             */
-            Update withBgpProperties(String bgpPeeringAddress, Long asn);
         }
     }
 }

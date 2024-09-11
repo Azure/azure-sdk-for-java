@@ -59,12 +59,18 @@ public class VpnSiteLinkImpl
     @Override
     public VpnSiteLinkImpl withIpAddress(String ipAddress) {
         this.innerModel().withIpAddress(ipAddress);
+        if (this.innerModel().fqdn() != null) {
+            this.innerModel().withFqdn(null);
+        }
         return this;
     }
 
     @Override
     public VpnSiteLinkImpl withFqdn(String fqdn) {
         this.innerModel().withFqdn(fqdn);
+        if (this.innerModel().ipAddress() != null) {
+            this.innerModel().withIpAddress(null);
+        }
         return this;
     }
 

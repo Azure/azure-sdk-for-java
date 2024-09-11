@@ -185,7 +185,7 @@ public interface VpnSite
         }
     }
 
-    /** Grouping of VPN sitee update stages. */
+    /** Grouping of VPN site update stages. */
     interface UpdateStages {
         /**
          * The stage of the virtual wan definition allowing to specify the VPN site configuration.
