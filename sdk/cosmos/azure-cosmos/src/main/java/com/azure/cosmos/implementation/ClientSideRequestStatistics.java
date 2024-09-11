@@ -428,9 +428,7 @@ public class ClientSideRequestStatistics {
             return;
         }
 
-        for (URI uri : other) {
-            this.failedReplicas.add(uri);
-        }
+        this.failedReplicas.addAll(other);
     }
 
     private void mergeLocationEndpointsContacted(Set<URI> other) {
@@ -443,9 +441,7 @@ public class ClientSideRequestStatistics {
             return;
         }
 
-        for (URI uri : other) {
-            this.locationEndpointsContacted.add(uri);
-        }
+        this.locationEndpointsContacted.addAll(other);
     }
 
     private void mergeRegionWithContextSet(NavigableSet<RegionWithContext> other) {
@@ -458,9 +454,7 @@ public class ClientSideRequestStatistics {
             return;
         }
 
-        for (RegionWithContext regionWithContext : other) {
-            this.regionsContactedWithContext.add(regionWithContext);
-        }
+        this.regionsContactedWithContext.addAll(other);
     }
 
     private void mergeRegionsContacted(Set<String> other) {
@@ -473,9 +467,7 @@ public class ClientSideRequestStatistics {
             return;
         }
 
-        for (String region : other) {
-            this.regionsContacted.add(region);
-        }
+        this.regionsContacted.addAll(other);
     }
 
     private void mergeStartTime(Instant other) {

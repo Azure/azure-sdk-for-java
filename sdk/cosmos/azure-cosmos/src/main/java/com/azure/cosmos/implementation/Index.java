@@ -124,7 +124,7 @@ public abstract class Index extends JsonSerializable {
         try {
             result = IndexKind.valueOf(StringUtils.upperCase(super.getString(Constants.Properties.INDEX_KIND)));
         } catch (IllegalArgumentException e) {
-            super.getLogger().warn("INVALID index kind value %s.", super.getString(Constants.Properties.INDEX_KIND));
+            super.getLogger().warn("INVALID index kind value {}", super.getString(Constants.Properties.INDEX_KIND));
         }
 
         return result;

@@ -10,7 +10,7 @@ public class Integers {
         }
 
         try {
-            return Integer.valueOf(value);
+            return Integer.parseInt(value);
         } catch (NumberFormatException e) {
             return defaultValue;
         }

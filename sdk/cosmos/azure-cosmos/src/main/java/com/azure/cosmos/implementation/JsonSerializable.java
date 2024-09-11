@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.directconnectivity.Address;
+import com.azure.cosmos.implementation.guava25.base.Function;
 import com.azure.cosmos.implementation.query.PartitionedQueryExecutionInfoInternal;
 import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.implementation.query.QueryItem;
@@ -340,11 +341,7 @@ public class JsonSerializable {
      * @return the value of the property.
      */
     public Object get(String propertyName) {
-        if (this.has(propertyName) && this.propertyBag.hasNonNull(propertyName)) {
-            return getValue(this.propertyBag.get(propertyName));
-        } else {
-            return null;
-        }
+        return getWithMapping(propertyName, JsonSerializable::getValue);
     }
 
     /**
@@ -354,11 +351,7 @@ public class JsonSerializable {
      * @return the string value.
      */
     public String getString(String propertyName) {
-        if (this.has(propertyName) && this.propertyBag.hasNonNull(propertyName)) {
-            return this.propertyBag.get(propertyName).asText();
-        } else {
-            return null;
-        }
+        return getWithMapping(propertyName, JsonNode::asText);
     }
 
     /**
@@ -372,11 +365,7 @@ public class JsonSerializable {
     // returned, this will result in a NPE. @Nullable is used indicate that returning null is permitted.
     @Nullable
     public Boolean getBoolean(String propertyName) {
-        if (this.has(propertyName) && this.propertyBag.hasNonNull(propertyName)) {
-            return this.propertyBag.get(propertyName).asBoolean();
-        } else {
-            return null;
-        }
+        return getWithMapping(propertyName, JsonNode::asBoolean);
     }
 
     /**
@@ -386,11 +375,7 @@ public class JsonSerializable {
      * @return the boolean value
      */
     public Integer getInt(String propertyName) {
-        if (this.has(propertyName) && this.propertyBag.hasNonNull(propertyName)) {
-            return this.propertyBag.get(propertyName).asInt();
-        } else {
-            return null;
-        }
+        return getWithMapping(propertyName, JsonNode::asInt);
     }
 
     /**
@@ -400,11 +385,7 @@ public class JsonSerializable {
      * @return the long value
      */
     protected Long getLong(String propertyName) {
-        if (this.has(propertyName) && this.propertyBag.hasNonNull(propertyName)) {
-            return this.propertyBag.get(propertyName).asLong();
-        } else {
-            return null;
-        }
+        return getWithMapping(propertyName, JsonNode::asLong);
     }
 
     /**
@@ -414,11 +395,29 @@ public class JsonSerializable {
      * @return the double value.
      */
     public Double getDouble(String propertyName) {
-        if (this.has(propertyName) && this.propertyBag.hasNonNull(propertyName)) {
-            return this.propertyBag.get(propertyName).asDouble();
-        } else {
+        return getWithMapping(propertyName, JsonNode::asDouble);
+    }
+
+    /**
+     * Helper method that optimizes retrieval and conversion of a property value to a specific type.
+     * <p>
+     * Before this, the get* methods were checking both {@link #has(String)} and {@link JsonNode#hasNonNull(String)}
+     * which was redundant as {@link JsonNode#hasNonNull(String)} already checks {@link #has(String)}. Additionally,
+     * there would be the check for {@link JsonNode#hasNonNull(String)} then getting the value and converting it to the
+     * required type. This method combines all these steps into one.
+     *
+     * @param propertyName the property to get.
+     * @param mapper the function to convert the JsonNode to the required type.
+     * @return the value of the property, or null if the property does not exist or is null.
+     * @param <T> the type of the object.
+     */
+    private <T> T getWithMapping(String propertyName, Function<JsonNode, T> mapper) {
+        JsonNode node = this.propertyBag.get(propertyName);
+        if (node == null || node.isNull()) {
             return null;
         }
+
+        return mapper.apply(node);
     }
 
     /**
@@ -437,15 +436,14 @@ public class JsonSerializable {
     @SuppressWarnings("unchecked")
     // Implicit or explicit cast to T is done only after checking values are assignable from Class<T>.
     public <T> T getObject(String propertyName, Class<T> c, boolean... convertFromCamelCase) {
-        if (this.propertyBag.has(propertyName) && this.propertyBag.hasNonNull(propertyName)) {
-            JsonNode jsonObj = propertyBag.get(propertyName);
+        return getWithMapping(propertyName, jsonObj -> {
             if (Number.class.isAssignableFrom(c) || String.class.isAssignableFrom(c)
                     || Boolean.class.isAssignableFrom(c) || Object.class == c) {
                 // NUMBER, STRING, Boolean
                 return c.cast(getValue(jsonObj));
             } else if (Enum.class.isAssignableFrom(c)) {
                 try {
-                    String value = String.class.cast(getValue(jsonObj));
+                    String value = (String) getValue(jsonObj);
                     value = convertFromCamelCase.length > 0 && convertFromCamelCase[0]
                                 ? Strings.fromCamelCaseToUpperCase(value) : value;
                     return c.cast(c.getMethod("valueOf", String.class).invoke(null, value));
@@ -467,9 +465,7 @@ public class JsonSerializable {
                     throw new IllegalStateException("Failed to get POJO.", e);
                 }
             }
-        }
-
-        return null;
+        });
     }
 
     /**
@@ -488,8 +484,7 @@ public class JsonSerializable {
     @SuppressWarnings("unchecked")
     // Implicit or explicit cast to T is done only after checking values are assignable from Class<T>.
     public <T> List<T> getList(String propertyName, Class<T> c, boolean... convertFromCamelCase) {
-        if (this.propertyBag.has(propertyName) && this.propertyBag.hasNonNull(propertyName)) {
-            JsonNode jsonArray = this.propertyBag.get(propertyName);
+        return getWithMapping(propertyName, jsonArray -> {
             ArrayList<T> result = new ArrayList<>();
 
             boolean isBaseClass = false;
@@ -517,7 +512,7 @@ public class JsonSerializable {
                     result.add(c.cast(getValue(n)));
                 } else if (isEnumClass) {
                     try {
-                        String value = String.class.cast(getValue(n));
+                        String value = (String) getValue(n);
                         value = convertFromCamelCase.length > 0 && convertFromCamelCase[0]
                                     ? Strings.fromCamelCaseToUpperCase(value) : value;
                         result.add(c.cast(c.getMethod("valueOf", String.class).invoke(null, value)));
@@ -543,8 +538,7 @@ public class JsonSerializable {
                 }
             }
             return result;
-        }
-        return null;
+        });
     }
 
     /**
@@ -570,10 +564,7 @@ public class JsonSerializable {
      * @return the ObjectNode.
      */
     public ObjectNode getObject(String propertyName) {
-        if (this.propertyBag.has(propertyName) && this.propertyBag.hasNonNull(propertyName)) {
-            return (ObjectNode) this.propertyBag.get(propertyName);
-        }
-        return null;
+        return getWithMapping(propertyName, n -> (ObjectNode) n);
     }
 
     /**
@@ -583,16 +574,13 @@ public class JsonSerializable {
      * @return the ObjectNode collection.
      */
     Collection<ObjectNode> getCollection(String propertyName) {
-        Collection<ObjectNode> result = null;
-        if (this.propertyBag.has(propertyName) && this.propertyBag.hasNonNull(propertyName)) {
-            result = new ArrayList<ObjectNode>();
-
-            for (JsonNode n : this.propertyBag.findValues(propertyName)) {
-                result.add((ObjectNode) n);
+        return getWithMapping(propertyName, n -> {
+            Collection<ObjectNode> result = new ArrayList<>();
+            for (JsonNode node : n) {
+                result.add((ObjectNode) node);
             }
-        }
-
-        return result;
+            return result;
+        });
     }
 
     /**

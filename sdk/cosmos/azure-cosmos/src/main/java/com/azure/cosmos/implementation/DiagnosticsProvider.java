@@ -1640,12 +1640,9 @@ public final class DiagnosticsProvider {
         // there is no mapping, handle error
         if (this.shouldSystemExitOnError) {
             LOGGER.error("Unexpected error in DiagnosticsProvider.endSpan. Calling System.exit({})...", systemExitCode, error);
-            System.err.println(
-                String.format(
-                    "Unexpected error in DiagnosticsProvider.endSpan. Calling System.exit(%d)... %s",
-                    systemExitCode,
-                    error)
-            );
+            System.err.printf("Unexpected error in DiagnosticsProvider.endSpan. Calling System.exit(%d)... %s%n",
+                systemExitCode,
+                error);
 
             System.exit(systemExitCode);
         } else {

@@ -387,12 +387,12 @@ public class Configs {
     public static int getDefaultHttpPoolSize() {
         String valueFromSystemProperty = System.getProperty(HTTP_DEFAULT_CONNECTION_POOL_SIZE);
         if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
-            return Integer.valueOf(valueFromSystemProperty);
+            return Integer.parseInt(valueFromSystemProperty);
         }
 
         String valueFromEnvVariable = System.getenv(HTTP_DEFAULT_CONNECTION_POOL_SIZE_VARIABLE);
         if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
-            return Integer.valueOf(valueFromEnvVariable);
+            return Integer.parseInt(valueFromEnvVariable);
         }
 
         return DEFAULT_HTTP_DEFAULT_CONNECTION_POOL_SIZE;
@@ -401,12 +401,12 @@ public class Configs {
     public static boolean isDefaultE2ETimeoutDisabledForNonPointOperations() {
         String valueFromSystemProperty = System.getProperty(DEFAULT_E2E_FOR_NON_POINT_DISABLED);
         if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
-            return Boolean.valueOf(valueFromSystemProperty);
+            return Boolean.parseBoolean(valueFromSystemProperty);
         }
 
         String valueFromEnvVariable = System.getenv(DEFAULT_E2E_FOR_NON_POINT_DISABLED_VARIABLE);
         if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
-            return Boolean.valueOf(valueFromEnvVariable);
+            return Boolean.parseBoolean(valueFromEnvVariable);
         }
 
         return DEFAULT_E2E_FOR_NON_POINT_DISABLED_DEFAULT;
@@ -415,12 +415,12 @@ public class Configs {
     public static boolean isIdValueValidationEnabled() {
         String valueFromSystemProperty = System.getProperty(PREVENT_INVALID_ID_CHARS);
         if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
-            return !Boolean.valueOf(valueFromSystemProperty);
+            return !Boolean.parseBoolean(valueFromSystemProperty);
         }
 
         String valueFromEnvVariable = System.getenv(PREVENT_INVALID_ID_CHARS_VARIABLE);
         if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
-            return!Boolean.valueOf(valueFromEnvVariable);
+            return!Boolean.parseBoolean(valueFromEnvVariable);
         }
 
         return DEFAULT_PREVENT_INVALID_ID_CHARS;
@@ -429,12 +429,12 @@ public class Configs {
     public static int getMaxHttpRequestTimeout() {
         String valueFromSystemProperty = System.getProperty(HTTP_MAX_REQUEST_TIMEOUT);
         if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
-            return Integer.valueOf(valueFromSystemProperty);
+            return Integer.parseInt(valueFromSystemProperty);
         }
 
         String valueFromEnvVariable = System.getenv(HTTP_MAX_REQUEST_TIMEOUT_VARIABLE);
         if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
-            return Integer.valueOf(valueFromEnvVariable);
+            return Integer.parseInt(valueFromEnvVariable);
         }
 
         return DEFAULT_HTTP_MAX_REQUEST_TIMEOUT;
@@ -515,7 +515,7 @@ public class Configs {
         if (StringUtils.isEmpty(val)) {
             return defaultValue;
         } else {
-            return Integer.valueOf(val);
+            return Integer.parseInt(val);
         }
     }
 
@@ -523,7 +523,7 @@ public class Configs {
         if (StringUtils.isEmpty(val)) {
             return defaultValue;
         } else {
-            return Boolean.valueOf(val);
+            return Boolean.parseBoolean(val);
         }
     }
 
