@@ -18,6 +18,7 @@ import static com.azure.core.implementation.ImplUtils.MAX_CACHE_SIZE;
 /**
  * A builder class that is used to create URLs.
  */
+@SuppressWarnings("deprecation")
 public final class UrlBuilder {
     private static final Map<String, UrlBuilder> PARSED_URLS = new ConcurrentHashMap<>();
     private static final URL HTTP;
@@ -338,7 +339,6 @@ public final class UrlBuilder {
      * @return The URL that is being built.
      * @throws MalformedURLException if the URL is not fully formed.
      */
-    @SuppressWarnings("deprecation")
     public URL toUrl() throws MalformedURLException {
         // Continue using new URL constructor here as URI either cannot accept certain characters in the path or
         // escapes '/', depending on the API used to create the URI.
