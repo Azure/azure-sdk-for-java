@@ -14,7 +14,7 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-avs</artifactId>
-  <version>1.2.0-beta.2</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-avs;current} -->
+  <version>1.2.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-avs;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Avs Management</name>
@@ -45,7 +45,6 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jacoco.min.linecoverage>0</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0</jacoco.min.branchcoverage>
-    <revapi.skip>true</revapi.skip>
   </properties>
   <dependencies>
     <dependency>
