@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.ai.inference;
 
+import com.azure.ai.inference.implementation.InferenceServerSentEvents;
 import com.azure.ai.inference.models.*;
 import com.azure.core.http.HttpClient;
 
@@ -11,7 +12,9 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.IterableStream;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import reactor.core.publisher.Flux;
 
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -98,33 +101,24 @@ public class ChatCompletionsSyncClientTest extends ChatCompletionsClientTestBase
             assertCompletions(1, resultCompletions);
         });
     }
-/*
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void testGetCompletionsWithResponseBadDeployment(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        client = getChatCompletionsClient(httpClient);
-        getCompletionsRunner((_deploymentId, prompt) -> {
-            String deploymentId = "BAD_DEPLOYMENT_ID";
-            ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class,
-                () -> client.getCompletionsWithResponse(deploymentId,
-                    BinaryData.fromObject(new CompletionsOptions(prompt)), new RequestOptions()));
-            assertEquals(404, exception.getResponse().getStatusCode());
-        });
-    }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.inference.TestUtils#getTestParameters")
     public void testGetChatCompletionsStreamWithResponse(HttpClient httpClient) {
         client = getChatCompletionsClient(httpClient);
-        getChatCompletionsWithResponseRunner(deploymentId -> chatMessages -> requestOptions -> {
-            Response<IterableStream<ChatCompletions>> response = client.getChatCompletionsStreamWithResponse(
-                    deploymentId, new ChatCompletionsOptions(chatMessages), requestOptions);
+        getChatCompletionsFromOptionsRunner(options -> {
+            options.setStream(true);
+            Response<BinaryData> response = client.completeStreamingWithResponse(
+                BinaryData.fromObject(options), new RequestOptions());
             assertResponseRequestHeader(response.getRequest());
-            IterableStream<ChatCompletions> value = response.getValue();
+            Flux<ByteBuffer> responseStream
+                = response.getValue().toFluxByteBuffer();
+            InferenceServerSentEvents<StreamingChatCompletionsUpdate> chatCompletionsStream
+                = new InferenceServerSentEvents<>(responseStream, StreamingChatCompletionsUpdate.class);
+            IterableStream<StreamingChatCompletionsUpdate> value = new IterableStream<>(chatCompletionsStream.getEvents());
             assertTrue(value.stream().toArray().length > 1);
-            value.forEach(OpenAIClientTestBase::assertChatCompletionsStream);
+            value.forEach(ChatCompletionsClientTestBase::assertCompletionsStream);
         });
     }
-*/
 
 }

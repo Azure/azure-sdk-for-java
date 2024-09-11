@@ -11,6 +11,7 @@ package com.azure.ai.inference;
 import com.azure.ai.inference.models.*;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpRequest;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.CustomMatcher;
@@ -129,6 +130,23 @@ public abstract class ChatCompletionsClientTestBase extends TestProxyTestBase {
         assertNotNull(actual.getMessage().getContent());
         assertEquals(index, actual.getIndex());
         assertNotNull(actual.getFinishReason());
+    }
+
+    static void assertResponseRequestHeader(HttpRequest request) {
+        request.getHeaders().stream().filter(header -> {
+            String name = header.getName();
+            return "my-header1".equals(name) || "my-header2".equals(name) || "my-header3".equals(name);
+        }).forEach(header -> {
+            if (header.getName().equals("my-header1")) {
+                assertEquals("my-header1-value", header.getValue());
+            } else if (header.getName().equals("my-header2")) {
+                assertEquals("my-header2-value", header.getValue());
+            } else if (header.getName().equals("my-header3")) {
+                assertEquals("my-header3-value", header.getValue());
+            } else {
+                assertFalse(true);
+            }
+        });
     }
 
     private List<ChatRequestMessage> getChatMessages() {
