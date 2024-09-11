@@ -7,6 +7,8 @@ import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPr
 import com.azure.spring.cloud.autoconfigure.implementation.storage.queue.AzureStorageQueueAutoConfiguration;
 import com.azure.storage.queue.QueueClient;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,6 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
     "spring.docker.compose.stop.command=down",
     "spring.cloud.azure.storage.queue.queue-name=devstoreaccount1/tc-queue"
 })
+@EnabledOnOs(OS.LINUX)
 class StorageQueueDockerComposeConnectionDetailsFactoryTests {
 
     @Autowired
