@@ -35,9 +35,7 @@ abstract class Encryptor {
             .setWrappedContentKey(wrappedKey);
     }
 
-    // see if we can generalize this with the gcmEncryptionRegionLength
-    // options bag?
-    static Encryptor getEncryptor(EncryptionVersion version, SecretKey aesKey, BlobEncryptionOptions encryptionOptions) throws GeneralSecurityException {
+    static Encryptor getEncryptor(EncryptionVersion version, SecretKey aesKey, BlobClientSideEncryptionOptions encryptionOptions) throws GeneralSecurityException {
         switch (version) {
             case V1:
                 return new EncryptorV1(aesKey);

@@ -1730,12 +1730,12 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
 
     @ParameterizedTest
     @MethodSource("uploadAndDownloadDifferentRegionLengthSupplier")
-    public void uploadAndDownloadDifferentRegionLength(int regionLength, int dataSize) {
+    public void uploadAndDownloadDifferentRegionLengthAsync(int regionLength, int dataSize) {
         ByteBuffer data = getRandomData(dataSize);
         beac = mockAesKey(getEncryptedClientBuilder(fakeKey, null, ENV.getPrimaryAccount().getCredential(),
             cc.getBlobContainerUrl(), EncryptionVersion.V2)
             .blobName(generateBlobName())
-            .blobEncryptionOptions(new BlobEncryptionOptions().setAuthenticatedRegionDataLength(regionLength))
+            .blobClientSideEncryptionOptions(new BlobClientSideEncryptionOptions().setAuthenticatedRegionDataLength(regionLength))
             .buildEncryptedBlobAsyncClient());
         beac.uploadWithResponse(new BlobParallelUploadOptions(Flux.just(data.duplicate()))).block();
         ByteArrayOutputStream plaintextOut = new ByteArrayOutputStream();
@@ -1756,6 +1756,22 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
             Arguments.of(6 * Constants.MB, 8 * Constants.MB) // testing greater than default 4MB region size
         );
     }
+
+    // revisit this test later, testing to see if the region length that is on the metadata is the one we pass in
+//    @Test
+//    public void clientSideEncryptionMetadataRegionLength() {
+//        long regionLength = 4 * Constants.KB;
+//        BlobClientSideEncryptionOptions options = new BlobClientSideEncryptionOptions().setAuthenticatedRegionDataLength(regionLength);
+//
+//        beac = mockAesKey(getEncryptedClientBuilder(fakeKey, null, ENV.getPrimaryAccount().getCredential(),
+//            cc.getBlobContainerUrl(), EncryptionVersion.V2)
+//            .blobName(generateBlobName())
+//            .blobClientSideEncryptionOptions(options)
+//            .buildEncryptedBlobAsyncClient());
+//
+//
+//
+//    }
 
     private static Stream<Arguments> encryptionDataCaseInsensitivitySupplier() {
         return Stream.of(

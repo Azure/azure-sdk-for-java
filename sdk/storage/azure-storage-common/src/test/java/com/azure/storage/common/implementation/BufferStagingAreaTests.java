@@ -126,8 +126,16 @@ public class BufferStagingAreaTests {
 
         // Convert list of ByteBuffers to a single byte array
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        int sizeRemaining = dataSize % stagingSize;
         collectedBuffers.forEach(bb -> {
             byte[] array = new byte[bb.remaining()];
+
+            if (array.length % stagingSize != 0) {
+                // for unaligned staging size, the last buffer will have a different size. assert with the remaining size
+                assertEquals(sizeRemaining, array.length);
+            } else {
+                assertEquals(stagingSize, array.length);
+            }
             bb.get(array);
             try {
                 outputStream.write(array);

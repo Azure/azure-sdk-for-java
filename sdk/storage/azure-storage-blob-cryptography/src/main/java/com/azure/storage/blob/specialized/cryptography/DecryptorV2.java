@@ -45,7 +45,7 @@ class DecryptorV2 extends Decryptor {
     Flux<ByteBuffer> decrypt(Flux<ByteBuffer> encryptedFlux, EncryptedBlobRange encryptedBlobRange,
         boolean padding, String requestUri, AtomicLong totalInputBytes, byte[] contentEncryptionKey) {
         // Buffer an exact region with the nonce and tag
-        final long authenticatedRegionDataLength = encryptionData.getEncryptedRegionInfo().getDataLength();
+        final int authenticatedRegionDataLength = (int) encryptionData.getEncryptedRegionInfo().getDataLength();
         final int nonceLength = encryptionData.getEncryptedRegionInfo().getNonceLength();
         BufferStagingArea stagingArea =
             new BufferStagingArea(authenticatedRegionDataLength + TAG_LENGTH + nonceLength,
@@ -65,7 +65,7 @@ class DecryptorV2 extends Decryptor {
                     return Mono.error(LOGGER.logExceptionAsError(Exceptions.propagate(e)));
                 }
 
-                ByteBuffer decryptedRegion = ByteBuffer.allocate((int) authenticatedRegionDataLength);
+                ByteBuffer decryptedRegion = ByteBuffer.allocate(authenticatedRegionDataLength);
                 return aggregator.asFlux()
                     .map(buffer -> {
                         // Write into the preallocated buffer and always return this buffer.

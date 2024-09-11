@@ -128,26 +128,26 @@ final class EncryptedBlobRange {
             case ENCRYPTION_PROTOCOL_V2:
                 // Calculate offsetAdjustment.
                 // Get the start of the encryption region for the original offset
-                // grab the region length from the metadata
-                long gcmEncryptionRegionLength = encryptionData.getEncryptedRegionInfo().getDataLength();
-                long regionNumber = originalRange.getOffset() / gcmEncryptionRegionLength;
+                long authenticatedRegionDataLength = encryptionData.getEncryptedRegionInfo() == null
+                    ? GCM_ENCRYPTION_REGION_LENGTH : encryptionData.getEncryptedRegionInfo().getDataLength();
+                long regionNumber = originalRange.getOffset() / authenticatedRegionDataLength;
 
                 long regionStartOffset = regionNumber
-                    * (NONCE_LENGTH + gcmEncryptionRegionLength + TAG_LENGTH);
+                    * (NONCE_LENGTH + authenticatedRegionDataLength + TAG_LENGTH);
 
                 // This is the plaintext original offset minus the beginning of the containing encryption region also in plaintext.
                 // It is effectively the amount of extra plaintext we grabbed. This is necessary because the nonces and tags
                 // are stored in the data, which skews our counting.
-                this.amountPlaintextToSkip = originalRange.getOffset() - (regionNumber * gcmEncryptionRegionLength);
+                this.amountPlaintextToSkip = originalRange.getOffset() - (regionNumber * authenticatedRegionDataLength);
 
                 if (originalRange.getCount() != null) {
                     // Get the end of the encryption region for the end of the original range
                     regionNumber = (originalRange.getOffset() + originalRange.getCount() - 1)
-                        / gcmEncryptionRegionLength;
+                        / authenticatedRegionDataLength;
                     // Read: Get the starting offset for the last encryption region as above and add the length of a region
                     // to get the end offset for the region
                     long regionEndOffset = (regionNumber + 1)
-                        * (NONCE_LENGTH + gcmEncryptionRegionLength + TAG_LENGTH);
+                        * (NONCE_LENGTH + authenticatedRegionDataLength + TAG_LENGTH);
                     // adjusted download count is the difference in the end and start of the range.
                     this.adjustedDownloadCount = regionEndOffset - regionStartOffset;
                 }

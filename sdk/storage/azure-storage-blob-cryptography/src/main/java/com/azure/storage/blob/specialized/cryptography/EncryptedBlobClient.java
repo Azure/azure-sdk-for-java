@@ -569,4 +569,8 @@ public class EncryptedBlobClient extends BlobClient {
             "Cannot query data encrypted on client side."));
     }
 
+    BlobClientSideEncryptionOptions getBlobClientSideEncryptionOptions() {
+        return encryptedBlobAsyncClient.getBlobClientSideEncryptionOptions();
+    }
+
 }

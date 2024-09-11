@@ -90,6 +90,10 @@ public final class BufferStagingArea {
 
             result = Flux.just(this.currentBuf);
 
+            /*
+            This logic is to handle when the buffer provided is larger than the remaining capacity of the current buffer
+            + the fixed size of the new BufferAggregator.
+             */
             // calculate how many chunks remain given the total size of the buffer and the staging area window
             int remainingChunks = buf.remaining() / (int) this.buffSize;
             if (remainingChunks >= 1) {
@@ -109,12 +113,6 @@ public final class BufferStagingArea {
                 result = result.concatWith(Flux.fromArray(aggregators));
             }
 
-            /*
-            Get a new buffer and fill it with whatever is left from buf. Note that this relies on the assumption that
-            the source Flux has been split up into buffers that are no bigger than chunk size. This assumption
-            means we'll only have to over flow once, and the buffer we overflow into will not be filled. This is the
-            buffer we will write to on the next call to write().
-             */
             if (buf.remaining() > 0) {
                 this.currentBuf = new BufferAggregator(this.buffSize);
                 this.currentBuf.append(buf);

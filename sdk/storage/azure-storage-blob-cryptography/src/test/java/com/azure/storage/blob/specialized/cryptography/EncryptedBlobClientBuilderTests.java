@@ -284,12 +284,33 @@ public class EncryptedBlobClientBuilderTests {
     @ParameterizedTest
     @ValueSource(longs = { 0, -1, 15, 4L * Constants.GB })
     public void illegalRegionLength(long regionLength) {
-        // should we have a test for checking whether length > 4MB?
-        assertThrows(IllegalArgumentException.class, () ->
-            new EncryptedBlobClientBuilder(EncryptionVersion.V2)
-                .blobEncryptionOptions(new BlobEncryptionOptions().setAuthenticatedRegionDataLength(regionLength))
-                .buildEncryptedBlobClient());
+        assertThrows(IllegalArgumentException.class, () -> new BlobClientSideEncryptionOptions()
+                    .setAuthenticatedRegionDataLength(regionLength));
     }
+
+    @ParameterizedTest
+    @ValueSource(longs = { 16, 4 * Constants.KB, 4 * Constants.MB, Constants.GB })
+    public void encryptedRegionLength(long regionLength) {
+        EncryptedBlobClient encryptedBlobClient = new EncryptedBlobClientBuilder(EncryptionVersion.V2)
+            .blobName("foo")
+            .containerName("container")
+            .key(new FakeKey("keyId", randomData), "keyWrapAlgorithm")
+            .blobClientSideEncryptionOptions(new BlobClientSideEncryptionOptions()
+                    .setAuthenticatedRegionDataLength(regionLength))
+                .buildEncryptedBlobClient();
+        assertEquals(regionLength, encryptedBlobClient.getBlobClientSideEncryptionOptions().getAuthenticatedRegionDataLength());
+    }
+
+    @Test
+    public void encryptedRegionLengthDefault() {
+        EncryptedBlobClient encryptedBlobClient = new EncryptedBlobClientBuilder(EncryptionVersion.V2)
+            .blobName("foo")
+            .containerName("container")
+            .key(new FakeKey("keyId", randomData), "keyWrapAlgorithm")
+            .buildEncryptedBlobClient();
+        assertEquals(4 * Constants.MB, encryptedBlobClient.getBlobClientSideEncryptionOptions().getAuthenticatedRegionDataLength());
+    }
+
 
     private static void sendAndValidateUserAgentHeader(HttpPipeline pipeline, String url) {
         boolean foundPolicy = false;

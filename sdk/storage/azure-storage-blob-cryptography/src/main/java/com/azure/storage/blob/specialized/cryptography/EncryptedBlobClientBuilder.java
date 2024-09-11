@@ -153,7 +153,7 @@ public final class EncryptedBlobClientBuilder implements
     private BlobServiceVersion version;
     private CpkInfo customerProvidedKey;
     private EncryptionScope encryptionScope;
-    private BlobEncryptionOptions blobEncryptionOptions;
+    private BlobClientSideEncryptionOptions blobEncryptionOptions;
 
     /**
      * Creates a new instance of the EncryptedBlobClientBuilder
@@ -250,13 +250,7 @@ public final class EncryptedBlobClientBuilder implements
         }
         BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
 
-        if (this.blobEncryptionOptions == null) {
-            this.blobEncryptionOptions = new BlobEncryptionOptions();
-        }
-        // check if the region length has been set, if not then set it to the default 4MB region length
-        if (this.blobEncryptionOptions.getAuthenticatedRegionDataLength() == 0) {
-            this.blobEncryptionOptions.setAuthenticatedRegionDataLength(GCM_ENCRYPTION_REGION_LENGTH);
-        }
+        this.blobEncryptionOptions = this.blobEncryptionOptions == null ? new BlobClientSideEncryptionOptions() : this.blobEncryptionOptions;
 
         return new EncryptedBlobAsyncClient(addBlobUserAgentModificationPolicy(getHttpPipeline()), endpoint,
             serviceVersion, accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope,
@@ -333,7 +327,6 @@ public final class EncryptedBlobClientBuilder implements
         // Closest to API goes first, closest to wire goes last.
         List<HttpPipelinePolicy> policies = new ArrayList<>();
 
-        // add the gcm length here
         policies.add(new BlobDecryptionPolicy(keyWrapper, keyResolver, requiresEncryption));
         String applicationId = CoreUtils.getApplicationId(clientOptions, logOptions);
 
@@ -931,10 +924,10 @@ public final class EncryptedBlobClientBuilder implements
     /**
      * Sets the encryption options for the blob.
      *
-     * @param options The {@link BlobEncryptionOptions} for the blob.
+     * @param options The {@link BlobClientSideEncryptionOptions} for the blob.
      * @return the updated EncryptedBlobClientBuilder object
      */
-    public EncryptedBlobClientBuilder blobEncryptionOptions(BlobEncryptionOptions options) {
+    public EncryptedBlobClientBuilder blobClientSideEncryptionOptions(BlobClientSideEncryptionOptions options) {
         this.blobEncryptionOptions = options;
         return this;
     }

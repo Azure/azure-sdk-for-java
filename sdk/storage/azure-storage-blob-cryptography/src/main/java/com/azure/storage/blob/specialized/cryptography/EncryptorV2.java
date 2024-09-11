@@ -30,9 +30,9 @@ import static com.azure.storage.blob.specialized.cryptography.CryptographyConsta
 
 class EncryptorV2 extends Encryptor {
     private static final ClientLogger LOGGER = new ClientLogger(EncryptorV2.class);
-    private final BlobEncryptionOptions encryptionOptions;
+    private final BlobClientSideEncryptionOptions encryptionOptions;
 
-    protected EncryptorV2(SecretKey aesKey, BlobEncryptionOptions encryptionOptions) {
+    protected EncryptorV2(SecretKey aesKey, BlobClientSideEncryptionOptions encryptionOptions) {
         super(aesKey);
         this.encryptionOptions = encryptionOptions;
     }
