@@ -15,7 +15,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-json</artifactId>
   <packaging>jar</packaging>
-  <version>1.3.0-beta.1</version> <!-- {x-version-update;com.azure:azure-json;current} -->
+  <version>1.3.0</version> <!-- {x-version-update;com.azure:azure-json;current} -->
 
   <name>Microsoft Azure Java JSON Library</name>
   <description>This package provides interfaces for reading and writing JSON.</description>
