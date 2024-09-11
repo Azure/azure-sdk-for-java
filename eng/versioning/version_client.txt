@@ -101,7 +101,7 @@ com.azure:azure-core-test;1.26.2;1.27.0-beta.1
 com.azure:azure-core-tracing-opentelemetry;1.0.0-beta.48;1.0.0-beta.49
 com.azure:azure-core-tracing-opentelemetry-samples;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-core-version-tests;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-cosmos;4.63.2;4.64.0-beta.1
+com.azure:azure-cosmos;4.63.2;4.63.3
 com.azure:azure-cosmos-benchmark;4.0.1-beta.1;4.0.1-beta.1
 com.azure:azure-cosmos-dotnet-benchmark;4.0.1-beta.1;4.0.1-beta.1
 com.azure.cosmos.spark:azure-cosmos-spark_3_2-12;1.0.0-beta.1;1.0.0-beta.1
