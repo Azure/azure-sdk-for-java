@@ -50,8 +50,9 @@ The following example shows how create a span:
 ```java readme-sample-create-span
 AutoConfiguredOpenTelemetrySdkBuilder otelSdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
 
-OpenTelemetry openTelemetry = new AzureMonitor().connectionString("{connection-string}")
-    .configure(otelSdkBuilder).build().getOpenTelemetrySdk();
+AzureMonitor.configure(otelSdkBuilder, AzureMonitor.exportOptions().connectionString("{connection-string}"));
+
+OpenTelemetry openTelemetry = otelSdkBuilder.build().getOpenTelemetrySdk();
 Tracer tracer = openTelemetry.getTracer("Sample");
 
 Span span = tracer.spanBuilder("spanName").startSpan();
@@ -70,6 +71,8 @@ The following example demonstrates how to add a span processor to the OpenTeleme
 
 ```java readme-sample-span-processor
 AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
+
+AzureMonitor.configure(sdkBuilder);
 
 SpanProcessor spanProcessor = new SpanProcessor() {
     @Override
@@ -94,7 +97,7 @@ SpanProcessor spanProcessor = new SpanProcessor() {
 
 sdkBuilder.addTracerProviderCustomizer(
     (sdkTracerProviderBuilder, configProperties) -> sdkTracerProviderBuilder
-        .addSpanProcessor(spanProcessor));
+    .addSpanProcessor(spanProcessor));
 ```
 More advanced examples with OpenTelemetry APIs:
 * [Advanced examples - 1][advanced_examples_1]

@@ -23,7 +23,7 @@ public class AzureMonitorExporterBuilderTest {
         Class<T> exceptionExpected) {
         Assertions.assertThrows(exceptionExpected, () -> {
             AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
-            new AzureMonitor().connectionString(connectionString).configure(sdkBuilder);
+            AzureMonitor.configure(sdkBuilder, AzureMonitor.exportOptions().connectionString(connectionString));
             sdkBuilder.build();
         });
     }

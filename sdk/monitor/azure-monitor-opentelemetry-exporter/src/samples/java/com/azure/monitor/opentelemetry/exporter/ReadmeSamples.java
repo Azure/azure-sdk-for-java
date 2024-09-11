@@ -55,8 +55,9 @@ public class ReadmeSamples {
         // This should be done just once when application starts up
         AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
 
-        OpenTelemetry openTelemetry = new AzureMonitor().connectionString("{connection-string}")
-            .configure(sdkBuilder).build().getOpenTelemetrySdk();
+        AzureMonitor.configure(sdkBuilder, AzureMonitor.exportOptions().connectionString("{connection-string}"));
+
+        OpenTelemetry openTelemetry = sdkBuilder.build().getOpenTelemetrySdk();
 
         Tracer tracer = openTelemetry.getTracer("Sample");
         // END: readme-sample-setupExporter
@@ -86,8 +87,9 @@ public class ReadmeSamples {
         // BEGIN: readme-sample-autoconfigure
         AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
 
-        OpenTelemetry openTelemetry = new AzureMonitor().connectionString("{connection-string}")
-            .configure(sdkBuilder).build().getOpenTelemetrySdk();
+        AzureMonitor.configure(sdkBuilder, AzureMonitor.exportOptions().connectionString("{connection-string}"));
+
+        OpenTelemetry openTelemetry =sdkBuilder.build().getOpenTelemetrySdk();
         // END: readme-sample-autoconfigure
     }
 
@@ -99,8 +101,9 @@ public class ReadmeSamples {
         // BEGIN: readme-sample-create-span
         AutoConfiguredOpenTelemetrySdkBuilder otelSdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
 
-        OpenTelemetry openTelemetry = new AzureMonitor().connectionString("{connection-string}")
-            .configure(otelSdkBuilder).build().getOpenTelemetrySdk();
+        AzureMonitor.configure(otelSdkBuilder, AzureMonitor.exportOptions().connectionString("{connection-string}"));
+
+        OpenTelemetry openTelemetry = otelSdkBuilder.build().getOpenTelemetrySdk();
         Tracer tracer = openTelemetry.getTracer("Sample");
 
         Span span = tracer.spanBuilder("spanName").startSpan();
@@ -123,6 +126,8 @@ public class ReadmeSamples {
     public void spanProcessor() {
         // BEGIN: readme-sample-span-processor
         AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
+
+        AzureMonitor.configure(sdkBuilder);
 
         SpanProcessor spanProcessor = new SpanProcessor() {
             @Override

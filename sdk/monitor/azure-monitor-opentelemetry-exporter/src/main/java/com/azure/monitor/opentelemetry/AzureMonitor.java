@@ -27,103 +27,133 @@ import java.util.Map;
 /**
  * Class to enable Azure Monitor for OpenTelemetry autoconfiguration.
  */
-@Fluent
 public final class AzureMonitor {
 
-    private final AzureMonitorExporterBuilder azureMonitorExporterBuilder = new AzureMonitorExporterBuilder();
-
+    @Fluent
     /**
-     * Sets the HTTP pipeline to use for the service client. If {@code httpPipeline} is set, all other
-     * settings are ignored.
-     *
-     * @param httpPipeline The HTTP pipeline to use for sending service requests and receiving
-     *                     responses.
-     * @return The updated {@link AzureMonitor} object.
+     * Options to configure the Azure Monitor export.
      */
-    public AzureMonitor httpPipeline(HttpPipeline httpPipeline) {
-        azureMonitorExporterBuilder.httpPipeline(httpPipeline);
-        return this;
+    public static class ExportOptions {
+
+        private HttpPipeline httpPipeline;
+        private HttpClient httpClient;
+        private HttpLogOptions httpLogOptions;
+        private HttpPipelinePolicy httpPipelinePolicy;
+        private ClientOptions clientOptions;
+        private String connectionString;
+        private TokenCredential credential;
+
+        private ExportOptions() {}
+
+        /**
+         * Sets the HTTP pipeline to use for the service client. If {@code httpPipeline} is set, all other
+         * settings are ignored.
+         *
+         * @param httpPipeline The HTTP pipeline to use for sending service requests and receiving
+         *                     responses.
+         * @return The updated {@link AzureMonitor} object.
+         */
+        public ExportOptions httpPipeline(HttpPipeline httpPipeline) {
+            this.httpPipeline = httpPipeline;
+            return this;
+        }
+
+        /**
+         * Sets the HTTP client to use for sending and receiving requests to and from the service.
+         *
+         * @param httpClient The HTTP client to use for requests.
+         * @return The updated {@link AzureMonitor} object.
+         */
+        public ExportOptions httpClient(HttpClient httpClient) {
+            this.httpClient = httpClient;
+            return this;
+        }
+
+        /**
+         * Sets the logging configuration for HTTP requests and responses.
+         *
+         * <p>If logLevel is not provided, default value of {@link HttpLogDetailLevel#NONE} is set.
+         *
+         * @param httpLogOptions The logging configuration to use when sending and receiving HTTP
+         *                       requests/responses.
+         * @return The updated {@link AzureMonitor} object.
+         */
+        public ExportOptions httpLogOptions(HttpLogOptions httpLogOptions) {
+            this.httpLogOptions = httpLogOptions;
+            return this;
+        }
+
+        /**
+         * Adds a policy to the set of existing policies that are executed after required policies.
+         *
+         * @param httpPipelinePolicy a policy to be added to the http pipeline.
+         * @return The updated {@link AzureMonitorExporterBuilder} object.
+         * @throws NullPointerException If {@code policy} is {@code null}.
+         */
+        public ExportOptions addHttpPipelinePolicy(HttpPipelinePolicy httpPipelinePolicy) {
+            this.httpPipelinePolicy = httpPipelinePolicy;
+            return this;
+        }
+
+        /**
+         * Sets the client options such as application ID and custom headers to set on a request.
+         *
+         * @param clientOptions The client options.
+         * @return The updated {@link AzureMonitorExporterBuilder} object.
+         */
+        public ExportOptions clientOptions(ClientOptions clientOptions) {
+            this.clientOptions = clientOptions;
+            return this;
+        }
+
+        /**
+         * Sets the connection string to use for exporting telemetry events to Azure Monitor.
+         *
+         * @param connectionString The connection string for the Azure Monitor resource.
+         * @return The updated {@link AzureMonitorExporterBuilder} object.
+         * @throws NullPointerException If the connection string is {@code null}.
+         * @throws IllegalArgumentException If the connection string is invalid.
+         */
+        public ExportOptions connectionString(String connectionString) {
+            this.connectionString = connectionString;
+            return this;
+        }
+
+        /**
+         * Sets the token credential required for authentication with the ingestion endpoint service.
+         *
+         * @param credential The Azure Identity TokenCredential.
+         * @return The updated {@link AzureMonitorExporterBuilder} object.
+         */
+        public ExportOptions credential(TokenCredential credential) {
+            this.credential = credential;
+            return this;
+        }
     }
 
     /**
-     * Sets the HTTP client to use for sending and receiving requests to and from the service.
-     *
-     * @param httpClient The HTTP client to use for requests.
-     * @return The updated {@link AzureMonitor} object.
+     * Creeate export options.
+     * @return the export options.
      */
-    public AzureMonitor httpClient(HttpClient httpClient) {
-        azureMonitorExporterBuilder.httpClient(httpClient);
-        return this;
+    public static ExportOptions exportOptions() {
+        return new ExportOptions();
     }
 
     /**
-     * Sets the logging configuration for HTTP requests and responses.
-     *
-     * <p>If logLevel is not provided, default value of {@link HttpLogDetailLevel#NONE} is set.
-     *
-     * @param httpLogOptions The logging configuration to use when sending and receiving HTTP
-     *                       requests/responses.
-     * @return The updated {@link AzureMonitor} object.
+     * Configures an {@link AutoConfiguredOpenTelemetrySdkBuilder} for Azure Monitor based on the options set.
      */
-    public AzureMonitor httpLogOptions(HttpLogOptions httpLogOptions) {
-        azureMonitorExporterBuilder.httpLogOptions(httpLogOptions);
-        return this;
-    }
-
-    /**
-     * Adds a policy to the set of existing policies that are executed after required policies.
-     *
-     * @param httpPipelinePolicy a policy to be added to the http pipeline.
-     * @return The updated {@link AzureMonitorExporterBuilder} object.
-     * @throws NullPointerException If {@code policy} is {@code null}.
-     */
-    public AzureMonitor addHttpPipelinePolicy(HttpPipelinePolicy httpPipelinePolicy) {
-        azureMonitorExporterBuilder.addHttpPipelinePolicy(httpPipelinePolicy);
-        return this;
-    }
-
-    /**
-     * Sets the client options such as application ID and custom headers to set on a request.
-     *
-     * @param clientOptions The client options.
-     * @return The updated {@link AzureMonitorExporterBuilder} object.
-     */
-    public AzureMonitor clientOptions(ClientOptions clientOptions) {
-        azureMonitorExporterBuilder.clientOptions(clientOptions);
-        return this;
-    }
-
-    /**
-     * Sets the connection string to use for exporting telemetry events to Azure Monitor.
-     *
-     * @param connectionString The connection string for the Azure Monitor resource.
-     * @return The updated {@link AzureMonitorExporterBuilder} object.
-     * @throws NullPointerException If the connection string is {@code null}.
-     * @throws IllegalArgumentException If the connection string is invalid.
-     */
-    public AzureMonitor connectionString(String connectionString) {
-        azureMonitorExporterBuilder.connectionString(connectionString);
-        return this;
-    }
-
-    /**
-     * Sets the token credential required for authentication with the ingestion endpoint service.
-     *
-     * @param credential The Azure Identity TokenCredential.
-     * @return The updated {@link AzureMonitorExporterBuilder} object.
-     */
-    public AzureMonitor credential(TokenCredential credential) {
-        azureMonitorExporterBuilder.credential(credential);
-        return this;
+    public static void configure(AutoConfiguredOpenTelemetrySdkBuilder autoConfiguredOpenTelemetrySdkBuilder) {
+        configure(autoConfiguredOpenTelemetrySdkBuilder, new ExportOptions());
     }
 
     /**
      * Configures an {@link AutoConfiguredOpenTelemetrySdkBuilder} for Azure Monitor based on the options set.
      * @param autoConfiguredOpenTelemetrySdkBuilder the {@link AutoConfiguredOpenTelemetrySdkBuilder} object.
-     * @return the {@link AutoConfiguredOpenTelemetrySdkBuilder} object given in argument.
      */
-    public AutoConfiguredOpenTelemetrySdkBuilder
-        configure(AutoConfiguredOpenTelemetrySdkBuilder autoConfiguredOpenTelemetrySdkBuilder) {
+    public static void configure(AutoConfiguredOpenTelemetrySdkBuilder autoConfiguredOpenTelemetrySdkBuilder, ExportOptions exportOptions) {
+
+        AzureMonitorExporterBuilder azureMonitorExporterBuilder = createExporterBuilder(exportOptions);
+
         autoConfiguredOpenTelemetrySdkBuilder.addPropertiesSupplier(() -> {
             Map<String, String> props = new HashMap<>();
             props.put("otel.traces.exporter", AzureMonitorExporterProviderKeys.EXPORTER_NAME);
@@ -161,6 +191,31 @@ public final class AzureMonitor {
                     View.builder().setAggregation(Aggregation.drop()).build())
                 .registerView(InstrumentSelector.builder().setMeterName("io.opentelemetry.sdk.logs").build(),
                     View.builder().setAggregation(Aggregation.drop()).build()));
-        return autoConfiguredOpenTelemetrySdkBuilder;
+    }
+
+    private static AzureMonitorExporterBuilder createExporterBuilder(ExportOptions exportOptions) {
+        AzureMonitorExporterBuilder azureMonitorExporterBuilder = new AzureMonitorExporterBuilder();
+        if(exportOptions.httpPipeline != null) {
+            azureMonitorExporterBuilder.httpPipeline(exportOptions.httpPipeline);
+        }
+        if(exportOptions.httpClient != null) {
+            azureMonitorExporterBuilder.httpClient(exportOptions.httpClient);
+        }
+        if(exportOptions.httpLogOptions != null) {
+            azureMonitorExporterBuilder.httpLogOptions(exportOptions.httpLogOptions);
+        }
+        if(exportOptions.httpPipelinePolicy != null) {
+            azureMonitorExporterBuilder.addHttpPipelinePolicy(exportOptions.httpPipelinePolicy);
+        }
+        if(exportOptions.clientOptions != null) {
+            azureMonitorExporterBuilder.clientOptions(exportOptions.clientOptions);
+        }
+        if(exportOptions.connectionString != null) {
+            azureMonitorExporterBuilder.connectionString(exportOptions.connectionString);
+        }
+        if(exportOptions.credential != null) {
+            azureMonitorExporterBuilder.credential(exportOptions.credential);
+        }
+        return azureMonitorExporterBuilder;
     }
 }

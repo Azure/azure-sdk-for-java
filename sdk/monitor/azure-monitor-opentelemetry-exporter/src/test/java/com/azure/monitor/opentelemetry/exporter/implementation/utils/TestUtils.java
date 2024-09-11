@@ -82,9 +82,9 @@ public final class TestUtils {
         String connectionString) {
         AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
 
-        return new AzureMonitor().connectionString(connectionString)
-            .httpPipeline(httpPipeline)
-            .configure(sdkBuilder)
+        AzureMonitor.configure(sdkBuilder, AzureMonitor.exportOptions().connectionString(connectionString).httpPipeline(httpPipeline));
+
+        return sdkBuilder
             .addPropertiesSupplier(() -> configuration)
             .build()
             .getOpenTelemetrySdk();
