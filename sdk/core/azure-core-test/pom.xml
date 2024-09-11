@@ -75,7 +75,7 @@
       <version>1.52.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
 
-    <!-- Azure HTTP client implementation depdencnies -->
+    <!-- Azure HTTP client implementation dependencies -->
     <!-- Downstream libraries no longer need to add test dependencies on these libraries to run tests against different implementations. -->
     <dependency>
       <groupId>com.azure</groupId>

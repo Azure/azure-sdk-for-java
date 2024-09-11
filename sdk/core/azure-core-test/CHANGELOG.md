@@ -10,6 +10,8 @@
 ### Breaking Changes
 
 - Moved code related to testing HTTP client implementations to shared `azure-core` test code.
+- Replaced dependency `commons-compress` with `ant` to handle tar.gz files. `ant` has fewer transitive dependencies,
+  reducing the likelihood of dependency conflicts.
 
 ### Bugs Fixed
 
