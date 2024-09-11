@@ -12,6 +12,7 @@ import com.azure.core.test.TestBase;
 import com.azure.core.test.TestContextManager;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.ClientOptions;
+import com.azure.core.util.ConfigurationBuilder;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -127,7 +128,10 @@ public abstract class IntegrationTestBase extends TestBase {
             .retryOptions(RETRY_OPTIONS)
             .clientOptions(OPTIONS_WITH_TRACING)
             .transportType(AmqpTransportType.AMQP)
-            .scheduler(scheduler);
+            .scheduler(scheduler)
+            .configuration(new ConfigurationBuilder()
+                .putProperty("com.azure.messaging.eventhubs.v2", "true")
+                .build());
 
         final String fullyQualifiedDomainName = TestUtils.getFullyQualifiedDomainName();
         final String eventHubName = TestUtils.getEventHubName();
