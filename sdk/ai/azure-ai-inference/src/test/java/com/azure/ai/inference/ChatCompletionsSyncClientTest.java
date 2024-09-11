@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.azure.ai.inference.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ChatCompletionsSyncClientTest extends ChatCompletionsClientTestBase {
     private ChatCompletionsClient client;
@@ -71,11 +71,38 @@ public class ChatCompletionsSyncClientTest extends ChatCompletionsClientTestBase
         });
     }
 
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.inference.TestUtils#getTestParameters")
+    public void testGetCompletionsUsageField(HttpClient httpClient) {
+        client = getChatCompletionsClient(httpClient);
+        getChatCompletionsFromOptionsRunner((options) -> {
+            options.setMaxTokens(1024);
+
+            ChatCompletions resultCompletions = client.complete(options);
+
+            CompletionsUsage usage = resultCompletions.getUsage();
+            assertCompletions(1, resultCompletions);
+            assertNotNull(usage);
+            assertTrue(usage.getTotalTokens() > 0);
+            assertEquals(usage.getCompletionTokens() + usage.getPromptTokens(), usage.getTotalTokens());
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.inference.TestUtils#getTestParameters")
+    public void testGetCompletionsTokenCutoff(HttpClient httpClient) {
+        client = getChatCompletionsClient(httpClient);
+        getChatCompletionsFromOptionsRunner((options) -> {
+            options.setMaxTokens(3);
+            ChatCompletions resultCompletions = client.complete(options);
+            assertCompletions(1, resultCompletions);
+        });
+    }
 /*
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetCompletionsWithResponseBadDeployment(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        client = getModelClient(httpClient);
+        client = getChatCompletionsClient(httpClient);
         getCompletionsRunner((_deploymentId, prompt) -> {
             String deploymentId = "BAD_DEPLOYMENT_ID";
             ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class,
@@ -86,62 +113,9 @@ public class ChatCompletionsSyncClientTest extends ChatCompletionsClientTestBase
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void testGetCompletionsUsageField(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        client = getModelClient(httpClient);
-        getCompletionsRunner((modelId, prompt) -> {
-            CompletionsOptions completionsOptions = new CompletionsOptions(prompt);
-            completionsOptions.setMaxTokens(1024);
-            completionsOptions.setN(3);
-            completionsOptions.setLogprobs(1);
-
-            Completions resultCompletions = client.getCompletions(modelId, completionsOptions);
-
-            CompletionsUsage usage = resultCompletions.getUsage();
-            assertCompletions(completionsOptions.getN() * completionsOptions.getPrompt().size(), resultCompletions);
-            assertNotNull(usage);
-            assertTrue(usage.getTotalTokens() > 0);
-            assertEquals(usage.getCompletionTokens() + usage.getPromptTokens(), usage.getTotalTokens());
-        });
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void testGetCompletionsTokenCutoff(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        client = getModelClient(httpClient);
-        getCompletionsRunner((modelId, prompt) -> {
-            CompletionsOptions completionsOptions = new CompletionsOptions(prompt);
-            completionsOptions.setMaxTokens(3);
-            Completions resultCompletions = client.getCompletions(modelId, completionsOptions);
-            assertCompletions(1, resultCompletions);
-        });
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void testGetChatCompletions(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        client = getModelClient(httpClient);
-        getChatCompletionsRunner((deploymentId, chatMessages) -> {
-            ChatCompletions resultChatCompletions = client.getChatCompletions(deploymentId, new ChatCompletionsOptions(chatMessages));
-            assertChatCompletions(1, resultChatCompletions);
-        });
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void testGetChatCompletionsStream(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        client = getModelClient(httpClient);
-        getChatCompletionsRunner((deploymentId, chatMessages) -> {
-            IterableStream<ChatCompletions> resultChatCompletions = client.getChatCompletionsStream(deploymentId, new ChatCompletionsOptions(chatMessages));
-            assertTrue(resultChatCompletions.stream().toArray().length > 1);
-            resultChatCompletions.forEach(OpenAIClientTestBase::assertChatCompletionsStream);
-        });
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void testGetChatCompletionsStreamWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        client = getModelClient(httpClient);
+    @MethodSource("com.azure.ai.inference.TestUtils#getTestParameters")
+    public void testGetChatCompletionsStreamWithResponse(HttpClient httpClient) {
+        client = getChatCompletionsClient(httpClient);
         getChatCompletionsWithResponseRunner(deploymentId -> chatMessages -> requestOptions -> {
             Response<IterableStream<ChatCompletions>> response = client.getChatCompletionsStreamWithResponse(
                     deploymentId, new ChatCompletionsOptions(chatMessages), requestOptions);
@@ -149,18 +123,6 @@ public class ChatCompletionsSyncClientTest extends ChatCompletionsClientTestBase
             IterableStream<ChatCompletions> value = response.getValue();
             assertTrue(value.stream().toArray().length > 1);
             value.forEach(OpenAIClientTestBase::assertChatCompletionsStream);
-        });
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void testGetChatCompletionsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        client = getModelClient(httpClient);
-        getChatCompletionsRunner((deploymentId, chatMessages) -> {
-            Response<BinaryData> response = client.getChatCompletionsWithResponse(deploymentId,
-                BinaryData.fromObject(new ChatCompletionsOptions(chatMessages)), new RequestOptions());
-            ChatCompletions resultChatCompletions = assertAndGetValueFromResponse(response, ChatCompletions.class, 200);
-            assertChatCompletions(1, resultChatCompletions);
         });
     }
 */
