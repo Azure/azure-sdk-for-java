@@ -1210,7 +1210,7 @@ public class IdentityClient extends IdentityClientBase {
                         throw LoggingUtil.logCredentialUnavailableException(LOGGER, options,
                             new CredentialUnavailableException(
                                 "ManagedIdentityCredential authentication unavailable. "
-                                    + "Connection to IMDS endpoint cannot be established.", null));
+                                    + "Connection to IMDS endpoint cannot be established.", exception));
                     }
 
                     if (responseCode == 403) {

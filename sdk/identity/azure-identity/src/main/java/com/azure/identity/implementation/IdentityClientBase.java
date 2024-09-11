@@ -6,6 +6,7 @@ package com.azure.identity.implementation;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
+import com.azure.core.experimental.credential.PopTokenRequestContext;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
@@ -52,6 +53,7 @@ import com.microsoft.aad.msal4j.PublicClientApplication;
 import com.microsoft.aad.msal4j.SystemBrowserOptions;
 import com.microsoft.aad.msal4j.TokenProviderResult;
 import com.microsoft.aad.msal4j.UserNamePasswordParameters;
+import com.microsoft.aad.msal4j.HttpMethod;
 import reactor.core.publisher.Mono;
 
 import java.io.BufferedInputStream;
@@ -69,6 +71,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.Proxy;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -121,6 +124,7 @@ public abstract class IdentityClientBase {
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
     private static final ClientOptions DEFAULT_CLIENT_OPTIONS = new ClientOptions();
+    private static final Map<String, HttpMethod> HTTP_METHOD_HASH_MAP = new HashMap<>(8);
 
 
     private final Map<String, String> properties = CoreUtils.getProperties(AZURE_IDENTITY_PROPERTIES);
@@ -591,12 +595,42 @@ public abstract class IdentityClientBase {
                 extraQueryParameters.put("msal_request_type", "consumer_passthrough");
                 builder.extraQueryParameters(extraQueryParameters);
             }
+
+            if (request instanceof PopTokenRequestContext
+                && ((PopTokenRequestContext) request).isProofOfPossessionEnabled()) {
+                PopTokenRequestContext requestContext = (PopTokenRequestContext) request;
+                try {
+                    builder.proofOfPossession(mapToMsalHttpMethod(requestContext.getResourceRequestMethod()),
+                        requestContext.getResourceRequestUrl().toURI(), requestContext.getProofOfPossessionNonce());
+                } catch (URISyntaxException e) {
+                    throw new IllegalArgumentException(e);
+                }
+            }
         }
 
         if (loginHint != null) {
             builder.loginHint(loginHint);
         }
         return builder;
+    }
+
+    static HttpMethod mapToMsalHttpMethod(String methodName) {
+        if (HTTP_METHOD_HASH_MAP.containsKey(methodName)) {
+            return HTTP_METHOD_HASH_MAP.get(methodName);
+        }
+
+        // Invalidate the cache if it grows too large. This is a simple cache and does not need to be large.
+        if (HTTP_METHOD_HASH_MAP.size() > 10) {
+            HTTP_METHOD_HASH_MAP.clear();
+        }
+
+        for (HttpMethod method : HttpMethod.values()) {
+            if (method.methodName.equalsIgnoreCase(methodName)) {
+                HTTP_METHOD_HASH_MAP.put(methodName, method);
+                return method;
+            }
+        }
+        throw new IllegalArgumentException("No enum constant with method name: " + methodName);
     }
 
     UserNamePasswordParameters.UserNamePasswordParametersBuilder buildUsernamePasswordFlowParameters(TokenRequestContext request, String username, String password) {
