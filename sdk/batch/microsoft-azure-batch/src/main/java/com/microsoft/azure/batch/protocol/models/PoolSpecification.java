@@ -36,25 +36,8 @@ public class PoolSpecification {
     private String vmSize;
 
     /**
-     * The cloud service configuration for the Pool.
-     * This property must be specified if the Pool needs to be created with
-     * Azure PaaS VMs. This property and virtualMachineConfiguration are
-     * mutually exclusive and one of the properties must be specified. If
-     * neither is specified then the Batch service returns an error; if you are
-     * calling the REST API directly, the HTTP status code is 400 (Bad
-     * Request). This property cannot be specified if the Batch Account was
-     * created with its poolAllocationMode property set to 'UserSubscription'.
-     */
-    @JsonProperty(value = "cloudServiceConfiguration")
-    private CloudServiceConfiguration cloudServiceConfiguration;
-
-    /**
      * The virtual machine configuration for the Pool.
-     * This property must be specified if the Pool needs to be created with
-     * Azure IaaS VMs. This property and cloudServiceConfiguration are mutually
-     * exclusive and one of the properties must be specified. If neither is
-     * specified then the Batch service returns an error; if you are calling
-     * the REST API directly, the HTTP status code is 400 (Bad Request).
+     * This property must be specified.
      */
     @JsonProperty(value = "virtualMachineConfiguration")
     private VirtualMachineConfiguration virtualMachineConfiguration;
@@ -193,18 +176,6 @@ public class PoolSpecification {
     private List<ApplicationPackageReference> applicationPackageReferences;
 
     /**
-     * The list of application licenses the Batch service will make available
-     * on each Compute Node in the Pool.
-     * The list of application licenses must be a subset of available Batch
-     * service application licenses. If a license is requested which is not
-     * supported, Pool creation will fail. The permitted licenses available on
-     * the Pool are 'maya', 'vray', '3dsmax', 'arnold'. An additional charge
-     * applies for each application license added to the Pool.
-     */
-    @JsonProperty(value = "applicationLicenses")
-    private List<String> applicationLicenses;
-
-    /**
      * The list of user Accounts to be created on each Compute Node in the
      * Pool.
      */
@@ -292,27 +263,7 @@ public class PoolSpecification {
     }
 
     /**
-     * Get this property must be specified if the Pool needs to be created with Azure PaaS VMs. This property and virtualMachineConfiguration are mutually exclusive and one of the properties must be specified. If neither is specified then the Batch service returns an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request). This property cannot be specified if the Batch Account was created with its poolAllocationMode property set to 'UserSubscription'.
-     *
-     * @return the cloudServiceConfiguration value
-     */
-    public CloudServiceConfiguration cloudServiceConfiguration() {
-        return this.cloudServiceConfiguration;
-    }
-
-    /**
-     * Set this property must be specified if the Pool needs to be created with Azure PaaS VMs. This property and virtualMachineConfiguration are mutually exclusive and one of the properties must be specified. If neither is specified then the Batch service returns an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request). This property cannot be specified if the Batch Account was created with its poolAllocationMode property set to 'UserSubscription'.
-     *
-     * @param cloudServiceConfiguration the cloudServiceConfiguration value to set
-     * @return the PoolSpecification object itself.
-     */
-    public PoolSpecification withCloudServiceConfiguration(CloudServiceConfiguration cloudServiceConfiguration) {
-        this.cloudServiceConfiguration = cloudServiceConfiguration;
-        return this;
-    }
-
-    /**
-     * Get this property must be specified if the Pool needs to be created with Azure IaaS VMs. This property and cloudServiceConfiguration are mutually exclusive and one of the properties must be specified. If neither is specified then the Batch service returns an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
+     * Get this property must be specified.
      *
      * @return the virtualMachineConfiguration value
      */
@@ -321,7 +272,7 @@ public class PoolSpecification {
     }
 
     /**
-     * Set this property must be specified if the Pool needs to be created with Azure IaaS VMs. This property and cloudServiceConfiguration are mutually exclusive and one of the properties must be specified. If neither is specified then the Batch service returns an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
+     * Set this property must be specified.
      *
      * @param virtualMachineConfiguration the virtualMachineConfiguration value to set
      * @return the PoolSpecification object itself.
@@ -590,26 +541,6 @@ public class PoolSpecification {
      */
     public PoolSpecification withApplicationPackageReferences(List<ApplicationPackageReference> applicationPackageReferences) {
         this.applicationPackageReferences = applicationPackageReferences;
-        return this;
-    }
-
-    /**
-     * Get the list of application licenses must be a subset of available Batch service application licenses. If a license is requested which is not supported, Pool creation will fail. The permitted licenses available on the Pool are 'maya', 'vray', '3dsmax', 'arnold'. An additional charge applies for each application license added to the Pool.
-     *
-     * @return the applicationLicenses value
-     */
-    public List<String> applicationLicenses() {
-        return this.applicationLicenses;
-    }
-
-    /**
-     * Set the list of application licenses must be a subset of available Batch service application licenses. If a license is requested which is not supported, Pool creation will fail. The permitted licenses available on the Pool are 'maya', 'vray', '3dsmax', 'arnold'. An additional charge applies for each application license added to the Pool.
-     *
-     * @param applicationLicenses the applicationLicenses value to set
-     * @return the PoolSpecification object itself.
-     */
-    public PoolSpecification withApplicationLicenses(List<String> applicationLicenses) {
-        this.applicationLicenses = applicationLicenses;
         return this;
     }
 

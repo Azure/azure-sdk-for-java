@@ -37,8 +37,6 @@ public class UpgradePolicy {
 
     /**
      * The configuration parameters used while performing a rolling upgrade.
-     * This property is only supported on Pools with the
-     * virtualMachineConfiguration property.
      */
     @JsonProperty(value = "rollingUpgradePolicy")
     private RollingUpgradePolicy rollingUpgradePolicy;
@@ -84,7 +82,7 @@ public class UpgradePolicy {
     }
 
     /**
-     * Get this property is only supported on Pools with the virtualMachineConfiguration property.
+     * Get the rollingUpgradePolicy value.
      *
      * @return the rollingUpgradePolicy value
      */
@@ -93,7 +91,7 @@ public class UpgradePolicy {
     }
 
     /**
-     * Set this property is only supported on Pools with the virtualMachineConfiguration property.
+     * Set the rollingUpgradePolicy value.
      *
      * @param rollingUpgradePolicy the rollingUpgradePolicy value to set
      * @return the UpgradePolicy object itself.

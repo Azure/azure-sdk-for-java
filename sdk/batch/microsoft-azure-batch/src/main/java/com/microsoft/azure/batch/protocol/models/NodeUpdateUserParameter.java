@@ -17,11 +17,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class NodeUpdateUserParameter {
     /**
      * The password of the Account.
-     * The password is required for Windows Compute Nodes (those created with
-     * 'cloudServiceConfiguration', or created with
-     * 'virtualMachineConfiguration' using a Windows Image reference). For
-     * Linux Compute Nodes, the password can optionally be specified along with
-     * the sshPublicKey property. If omitted, any existing password is removed.
+     * The password is required for Windows Compute Nodes. For Linux Compute
+     * Nodes, the password can optionally be specified along with the
+     * sshPublicKey property. If omitted, any existing password is removed.
      */
     @JsonProperty(value = "password")
     private String password;
@@ -48,7 +46,7 @@ public class NodeUpdateUserParameter {
     private String sshPublicKey;
 
     /**
-     * Get the password is required for Windows Compute Nodes (those created with 'cloudServiceConfiguration', or created with 'virtualMachineConfiguration' using a Windows Image reference). For Linux Compute Nodes, the password can optionally be specified along with the sshPublicKey property. If omitted, any existing password is removed.
+     * Get the password is required for Windows Compute Nodes. For Linux Compute Nodes, the password can optionally be specified along with the sshPublicKey property. If omitted, any existing password is removed.
      *
      * @return the password value
      */
@@ -57,7 +55,7 @@ public class NodeUpdateUserParameter {
     }
 
     /**
-     * Set the password is required for Windows Compute Nodes (those created with 'cloudServiceConfiguration', or created with 'virtualMachineConfiguration' using a Windows Image reference). For Linux Compute Nodes, the password can optionally be specified along with the sshPublicKey property. If omitted, any existing password is removed.
+     * Set the password is required for Windows Compute Nodes. For Linux Compute Nodes, the password can optionally be specified along with the sshPublicKey property. If omitted, any existing password is removed.
      *
      * @param password the password value to set
      * @return the NodeUpdateUserParameter object itself.

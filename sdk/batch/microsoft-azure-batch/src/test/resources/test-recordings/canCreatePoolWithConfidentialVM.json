@@ -1,0 +1,108 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "HEAD",
+    "Uri" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUserConfidentialVMPool?api-version=2024-07-01.20.0",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-07-01.20.0)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 06 Sep 2024 22:03:58 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "x-content-type-options" : "nosniff",
+      "client-request-id" : "4e8c982a-dd81-4add-877c-7981f629a5a5",
+      "retry-after" : "0",
+      "request-id" : "10ddaf1e-f732-427d-9464-7e69a7077cf7",
+      "StatusCode" : "404",
+      "dataserviceversion" : "3.0",
+      "Body" : "",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains"
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://sanjbatch.eastus.batch.azure.com/pools?api-version=2024-07-01.20.0",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-07-01.20.0)",
+      "Content-Type" : "application/json; odata=minimalmetadata; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 06 Sep 2024 22:03:59 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "dataserviceid" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUserConfidentialVMPool",
+      "retry-after" : "0",
+      "request-id" : "4afc3fb3-5bdb-423e-b319-b37c4ac0754f",
+      "StatusCode" : "201",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "last-modified" : "Fri, 06 Sep 2024 22:03:59 GMT",
+      "x-content-type-options" : "nosniff",
+      "client-request-id" : "50f80b52-30b5-4b31-a66d-38d9a4a60c03",
+      "etag" : "0x8DCCEBFCF8F143C",
+      "location" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUserConfidentialVMPool",
+      "dataserviceversion" : "3.0",
+      "Body" : ""
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUserConfidentialVMPool?api-version=2024-07-01.20.0",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-07-01.20.0)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 06 Sep 2024 22:03:59 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "request-id" : "f27b1981-bd20-4032-ae3f-f40c17f0af7a",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "last-modified" : "Fri, 06 Sep 2024 22:03:59 GMT",
+      "x-content-type-options" : "nosniff",
+      "client-request-id" : "3a5e5965-4e97-4379-a2eb-40a804d81eeb",
+      "content-type" : "application/json;odata=minimalmetadata",
+      "etag" : "0x8DCCEBFCF8F143C",
+      "dataserviceversion" : "3.0",
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUserConfidentialVMPool\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/pools/BatchUserConfidentialVMPool\",\"eTag\":\"0x8DCCEBFCF8F143C\",\"lastModified\":\"2024-09-06T22:03:59.610374Z\",\"creationTime\":\"2024-09-06T22:03:59.6103724Z\",\"state\":\"active\",\"stateTransitionTime\":\"2024-09-06T22:03:59.6103724Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2024-09-06T22:03:59.6103741Z\",\"vmSize\":\"standard_d2s_v3\",\"resizeTimeout\":\"PT15M\",\"currentDedicatedNodes\":0,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":0,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"certificateReferences\":[],\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"Canonical\",\"offer\":\"0001-com-ubuntu-server-jammy\",\"sku\":\"22_04-lts\",\"version\":\"latest\"\r\n    },\"osDisk\":{\r\n      \"ephemeralOSDiskSettings\":{},\"managedDisk\":{\r\n        \"storageAccountType\":\"standard_lrs\",\"securityProfile\":{\r\n          \"securityEncryptionType\":\"VMGuestStateOnly\"\r\n        }\r\n      },\"caching\":\"None\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 22.04\",\"securityProfile\":{\r\n      \"securityType\":\"confidentialvm\",\"encryptionAtHost\":true,\"uefiSettings\":{\r\n        \"secureBootEnabled\":true,\"vTpmEnabled\":true\r\n      }\r\n    }\r\n  }\r\n}"
+    }
+  }, {
+    "Method" : "HEAD",
+    "Uri" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUserConfidentialVMPool?api-version=2024-07-01.20.0",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-07-01.20.0)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 06 Sep 2024 22:03:59 GMT",
+      "last-modified" : "Fri, 06 Sep 2024 22:03:59 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "x-content-type-options" : "nosniff",
+      "client-request-id" : "c61a5fae-4427-4f35-af63-3d7ac241cb9d",
+      "etag" : "0x8DCCEBFCF8F143C",
+      "retry-after" : "0",
+      "request-id" : "5a3abe8e-1b7b-4773-882e-ed259993b224",
+      "StatusCode" : "200",
+      "dataserviceversion" : "3.0",
+      "Body" : "",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUserConfidentialVMPool?api-version=2024-07-01.20.0",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-07-01.20.0)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 06 Sep 2024 22:04:00 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "x-content-type-options" : "nosniff",
+      "client-request-id" : "c0540475-e1f5-4956-9832-70e0edcefa33",
+      "retry-after" : "0",
+      "request-id" : "b66a6e3f-a58c-4d32-90d3-4861cba72500",
+      "StatusCode" : "202",
+      "dataserviceversion" : "3.0",
+      "Body" : "",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains"
+    }
+  } ],
+  "variables" : [ ]
+}

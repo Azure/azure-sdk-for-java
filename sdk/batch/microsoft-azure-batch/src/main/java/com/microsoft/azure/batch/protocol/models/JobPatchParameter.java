@@ -80,6 +80,12 @@ public class JobPatchParameter {
     private PoolInformation poolInfo;
 
     /**
+     * The network configuration for the Job.
+     */
+    @JsonProperty(value = "networkConfiguration")
+    private JobNetworkConfiguration networkConfiguration;
+
+    /**
      * A list of name-value pairs associated with the Job as metadata.
      * If omitted, the existing Job metadata is left unchanged.
      */
@@ -203,6 +209,26 @@ public class JobPatchParameter {
      */
     public JobPatchParameter withPoolInfo(PoolInformation poolInfo) {
         this.poolInfo = poolInfo;
+        return this;
+    }
+
+    /**
+     * Get the networkConfiguration value.
+     *
+     * @return the networkConfiguration value
+     */
+    public JobNetworkConfiguration networkConfiguration() {
+        return this.networkConfiguration;
+    }
+
+    /**
+     * Set the networkConfiguration value.
+     *
+     * @param networkConfiguration the networkConfiguration value to set
+     * @return the JobPatchParameter object itself.
+     */
+    public JobPatchParameter withNetworkConfiguration(JobNetworkConfiguration networkConfiguration) {
+        this.networkConfiguration = networkConfiguration;
         return this;
     }
 
