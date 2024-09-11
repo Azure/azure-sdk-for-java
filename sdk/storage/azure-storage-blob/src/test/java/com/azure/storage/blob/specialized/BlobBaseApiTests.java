@@ -35,7 +35,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UncheckedIOException;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -522,7 +521,8 @@ public class BlobBaseApiTests extends BlobTestBase {
 
         liveTestScenarioWithRetry(() -> {
             /* Input Stream. */
-            assertThrows(UncheckedIOException.class, () -> bc.openQueryInputStreamWithResponse(options).getValue());
+            InputStream qqStream = bc.openQueryInputStreamWithResponse(options).getValue();
+            assertThrows(Throwable.class, () -> readFromInputStream(qqStream, Constants.KB));
 
             /* Output Stream. */
             //Exceptions.ReactiveException.class

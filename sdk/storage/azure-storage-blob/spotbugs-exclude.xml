@@ -8,7 +8,6 @@
       <Class name="com.azure.storage.blob.implementation.util.BlobSasImplUtil" />
       <Class name="com.azure.storage.blob.models.CustomerProvidedKey" />
       <Class name="com.azure.storage.blob.specialized.BlobAsyncClientBase" />
-      <Class name="com.azure.storage.blob.specialized.BlobClientBase" />
     </Or>
   </Match>
   <Match>
@@ -185,9 +184,5 @@
       <Class name="com.azure.storage.blob.BlobUrlParts" />
       <Class name="com.azure.storage.blob.sas.BlobServiceSasSignatureValues" />
     </Or>
-  </Match>
-  <Match>
-    <Bug pattern="MC_OVERRIDABLE_METHOD_CALL_IN_CONSTRUCTOR" />
-    <Class name="com.azure.storage.blob.specialized.BlobClientBase" />
   </Match>
 </FindBugsFilter>
