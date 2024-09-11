@@ -51,8 +51,8 @@ public final class TrainResult implements JsonSerializable<TrainResult> {
     }
 
     /**
-     * Get the trainingDocuments property: List of the documents used to train the model and any errors reported in each
-     * document.
+     * Get the trainingDocuments property: List of the documents used to train the model and any errors reported in
+     * each document.
      * 
      * @return the trainingDocuments value.
      */
@@ -61,8 +61,8 @@ public final class TrainResult implements JsonSerializable<TrainResult> {
     }
 
     /**
-     * Set the trainingDocuments property: List of the documents used to train the model and any errors reported in each
-     * document.
+     * Set the trainingDocuments property: List of the documents used to train the model and any errors reported in
+     * each document.
      * 
      * @param trainingDocuments the trainingDocuments value to set.
      * @return the TrainResult object itself.
@@ -152,9 +152,6 @@ public final class TrainResult implements JsonSerializable<TrainResult> {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

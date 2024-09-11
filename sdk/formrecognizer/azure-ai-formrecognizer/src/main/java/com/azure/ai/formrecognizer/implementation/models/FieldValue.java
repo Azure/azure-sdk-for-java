@@ -428,9 +428,6 @@ public final class FieldValue implements JsonSerializable<FieldValue> {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

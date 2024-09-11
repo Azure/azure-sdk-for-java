@@ -61,8 +61,8 @@ public final class CopyRequest implements JsonSerializable<CopyRequest> {
     }
 
     /**
-     * Get the targetResourceRegion property: Location of the target Azure resource. A valid Azure region name supported
-     * by Cognitive Services.
+     * Get the targetResourceRegion property: Location of the target Azure resource. A valid Azure region name
+     * supported by Cognitive Services.
      * 
      * @return the targetResourceRegion value.
      */
@@ -71,8 +71,8 @@ public final class CopyRequest implements JsonSerializable<CopyRequest> {
     }
 
     /**
-     * Set the targetResourceRegion property: Location of the target Azure resource. A valid Azure region name supported
-     * by Cognitive Services.
+     * Set the targetResourceRegion property: Location of the target Azure resource. A valid Azure region name
+     * supported by Cognitive Services.
      * 
      * @param targetResourceRegion the targetResourceRegion value to set.
      * @return the CopyRequest object itself.
@@ -102,9 +102,6 @@ public final class CopyRequest implements JsonSerializable<CopyRequest> {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

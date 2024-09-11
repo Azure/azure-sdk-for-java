@@ -59,7 +59,7 @@ public final class AnalyzersImpl {
 
     /**
      * Initializes an instance of AnalyzersImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     AnalyzersImpl(FormRecognizerClientImpl client) {
@@ -260,7 +260,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given business card document. The input document must be of one of
      * the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param contentType Upload file type.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
@@ -279,11 +279,8 @@ public final class AnalyzersImpl {
         ContentType contentType, Boolean includeTextDetails, Locale locale, List<String> pages,
         Flux<ByteBuffer> fileStream, Long contentLength) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null)
-            ? null
-            : pages.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
+        String pagesConverted = (pages == null) ? null : pages.stream()
+            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
         return FluxUtil
             .withContext(context -> service.analyzeBusinessCard(this.client.getEndpoint(), this.client.getApiVersion(),
                 includeTextDetails, locale, pagesConverted, contentType, fileStream, contentLength, accept, context));
@@ -293,7 +290,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given business card document. The input document must be of one of
      * the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param contentType Upload file type.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
@@ -313,11 +310,8 @@ public final class AnalyzersImpl {
         ContentType contentType, Boolean includeTextDetails, Locale locale, List<String> pages,
         Flux<ByteBuffer> fileStream, Long contentLength, Context context) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null)
-            ? null
-            : pages.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
+        String pagesConverted = (pages == null) ? null : pages.stream()
+            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
         return service.analyzeBusinessCard(this.client.getEndpoint(), this.client.getApiVersion(), includeTextDetails,
             locale, pagesConverted, contentType, fileStream, contentLength, accept, context);
     }
@@ -326,7 +320,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given business card document. The input document must be of one of
      * the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param contentType Upload file type.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
@@ -351,7 +345,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given business card document. The input document must be of one of
      * the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param contentType Upload file type.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
@@ -377,7 +371,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given business card document. The input document must be of one of
      * the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param contentType Upload file type.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
@@ -404,7 +398,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given business card document. The input document must be of one of
      * the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param contentType Upload file type.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
@@ -428,7 +422,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given business card document. The input document must be of one of
      * the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param contentType Upload file type.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
@@ -447,11 +441,8 @@ public final class AnalyzersImpl {
         ContentType contentType, Boolean includeTextDetails, Locale locale, List<String> pages, BinaryData fileStream,
         Long contentLength) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null)
-            ? null
-            : pages.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
+        String pagesConverted = (pages == null) ? null : pages.stream()
+            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
         return FluxUtil
             .withContext(context -> service.analyzeBusinessCard(this.client.getEndpoint(), this.client.getApiVersion(),
                 includeTextDetails, locale, pagesConverted, contentType, fileStream, contentLength, accept, context));
@@ -461,7 +452,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given business card document. The input document must be of one of
      * the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param contentType Upload file type.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
@@ -481,11 +472,8 @@ public final class AnalyzersImpl {
         ContentType contentType, Boolean includeTextDetails, Locale locale, List<String> pages, BinaryData fileStream,
         Long contentLength, Context context) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null)
-            ? null
-            : pages.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
+        String pagesConverted = (pages == null) ? null : pages.stream()
+            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
         return service.analyzeBusinessCard(this.client.getEndpoint(), this.client.getApiVersion(), includeTextDetails,
             locale, pagesConverted, contentType, fileStream, contentLength, accept, context);
     }
@@ -494,7 +482,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given business card document. The input document must be of one of
      * the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param contentType Upload file type.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
@@ -519,7 +507,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given business card document. The input document must be of one of
      * the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param contentType Upload file type.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
@@ -545,7 +533,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given business card document. The input document must be of one of
      * the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param contentType Upload file type.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
@@ -572,7 +560,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given business card document. The input document must be of one of
      * the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param contentType Upload file type.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
@@ -596,7 +584,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given business card document. The input document must be of one of
      * the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
      * en-US(default).
@@ -612,11 +600,8 @@ public final class AnalyzersImpl {
     public Mono<ResponseBase<AnalyzersAnalyzeBusinessCardHeaders, Void>> analyzeBusinessCardWithResponseAsync(
         Boolean includeTextDetails, Locale locale, List<String> pages, SourcePath fileStream) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null)
-            ? null
-            : pages.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
+        String pagesConverted = (pages == null) ? null : pages.stream()
+            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
         return FluxUtil.withContext(context -> service.analyzeBusinessCard(this.client.getEndpoint(),
             this.client.getApiVersion(), includeTextDetails, locale, pagesConverted, fileStream, accept, context));
     }
@@ -625,7 +610,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given business card document. The input document must be of one of
      * the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
      * en-US(default).
@@ -642,11 +627,8 @@ public final class AnalyzersImpl {
     public Mono<ResponseBase<AnalyzersAnalyzeBusinessCardHeaders, Void>> analyzeBusinessCardWithResponseAsync(
         Boolean includeTextDetails, Locale locale, List<String> pages, SourcePath fileStream, Context context) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null)
-            ? null
-            : pages.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
+        String pagesConverted = (pages == null) ? null : pages.stream()
+            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
         return service.analyzeBusinessCard(this.client.getEndpoint(), this.client.getApiVersion(), includeTextDetails,
             locale, pagesConverted, fileStream, accept, context);
     }
@@ -655,7 +637,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given business card document. The input document must be of one of
      * the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
      * en-US(default).
@@ -678,7 +660,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given business card document. The input document must be of one of
      * the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
      * en-US(default).
@@ -702,7 +684,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given business card document. The input document must be of one of
      * the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
      * en-US(default).
@@ -725,7 +707,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given business card document. The input document must be of one of
      * the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
      * en-US(default).
@@ -744,7 +726,7 @@ public final class AnalyzersImpl {
 
     /**
      * Track the progress and obtain the result of the analyze business card operation.
-     *
+     * 
      * @param resultId Analyze operation result identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -761,7 +743,7 @@ public final class AnalyzersImpl {
 
     /**
      * Track the progress and obtain the result of the analyze business card operation.
-     *
+     * 
      * @param resultId Analyze operation result identifier.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -780,7 +762,7 @@ public final class AnalyzersImpl {
 
     /**
      * Track the progress and obtain the result of the analyze business card operation.
-     *
+     * 
      * @param resultId Analyze operation result identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -794,7 +776,7 @@ public final class AnalyzersImpl {
 
     /**
      * Track the progress and obtain the result of the analyze business card operation.
-     *
+     * 
      * @param resultId Analyze operation result identifier.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -810,7 +792,7 @@ public final class AnalyzersImpl {
 
     /**
      * Track the progress and obtain the result of the analyze business card operation.
-     *
+     * 
      * @param resultId Analyze operation result identifier.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -825,7 +807,7 @@ public final class AnalyzersImpl {
 
     /**
      * Track the progress and obtain the result of the analyze business card operation.
-     *
+     * 
      * @param resultId Analyze operation result identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -841,7 +823,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given invoice document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param contentType Upload file type.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
@@ -860,11 +842,8 @@ public final class AnalyzersImpl {
         ContentType contentType, Boolean includeTextDetails, Locale locale, List<String> pages,
         Flux<ByteBuffer> fileStream, Long contentLength) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null)
-            ? null
-            : pages.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
+        String pagesConverted = (pages == null) ? null : pages.stream()
+            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
         return FluxUtil
             .withContext(context -> service.analyzeInvoice(this.client.getEndpoint(), this.client.getApiVersion(),
                 includeTextDetails, locale, pagesConverted, contentType, fileStream, contentLength, accept, context));
@@ -874,7 +853,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given invoice document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param contentType Upload file type.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
@@ -894,11 +873,8 @@ public final class AnalyzersImpl {
         ContentType contentType, Boolean includeTextDetails, Locale locale, List<String> pages,
         Flux<ByteBuffer> fileStream, Long contentLength, Context context) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null)
-            ? null
-            : pages.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
+        String pagesConverted = (pages == null) ? null : pages.stream()
+            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
         return service.analyzeInvoice(this.client.getEndpoint(), this.client.getApiVersion(), includeTextDetails,
             locale, pagesConverted, contentType, fileStream, contentLength, accept, context);
     }
@@ -907,7 +883,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given invoice document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param contentType Upload file type.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
@@ -932,7 +908,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given invoice document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param contentType Upload file type.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
@@ -958,7 +934,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given invoice document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param contentType Upload file type.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
@@ -985,7 +961,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given invoice document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param contentType Upload file type.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
@@ -1009,7 +985,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given invoice document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param contentType Upload file type.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
@@ -1028,11 +1004,8 @@ public final class AnalyzersImpl {
         ContentType contentType, Boolean includeTextDetails, Locale locale, List<String> pages, BinaryData fileStream,
         Long contentLength) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null)
-            ? null
-            : pages.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
+        String pagesConverted = (pages == null) ? null : pages.stream()
+            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
         return FluxUtil
             .withContext(context -> service.analyzeInvoice(this.client.getEndpoint(), this.client.getApiVersion(),
                 includeTextDetails, locale, pagesConverted, contentType, fileStream, contentLength, accept, context));
@@ -1042,7 +1015,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given invoice document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param contentType Upload file type.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
@@ -1062,11 +1035,8 @@ public final class AnalyzersImpl {
         ContentType contentType, Boolean includeTextDetails, Locale locale, List<String> pages, BinaryData fileStream,
         Long contentLength, Context context) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null)
-            ? null
-            : pages.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
+        String pagesConverted = (pages == null) ? null : pages.stream()
+            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
         return service.analyzeInvoice(this.client.getEndpoint(), this.client.getApiVersion(), includeTextDetails,
             locale, pagesConverted, contentType, fileStream, contentLength, accept, context);
     }
@@ -1075,7 +1045,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given invoice document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param contentType Upload file type.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
@@ -1100,7 +1070,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given invoice document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param contentType Upload file type.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
@@ -1126,7 +1096,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given invoice document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param contentType Upload file type.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
@@ -1153,7 +1123,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given invoice document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param contentType Upload file type.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
@@ -1177,7 +1147,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given invoice document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
      * en-US(default).
@@ -1193,11 +1163,8 @@ public final class AnalyzersImpl {
     public Mono<ResponseBase<AnalyzersAnalyzeInvoiceHeaders, Void>> analyzeInvoiceWithResponseAsync(
         Boolean includeTextDetails, Locale locale, List<String> pages, SourcePath fileStream) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null)
-            ? null
-            : pages.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
+        String pagesConverted = (pages == null) ? null : pages.stream()
+            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
         return FluxUtil.withContext(context -> service.analyzeInvoice(this.client.getEndpoint(),
             this.client.getApiVersion(), includeTextDetails, locale, pagesConverted, fileStream, accept, context));
     }
@@ -1206,7 +1173,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given invoice document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
      * en-US(default).
@@ -1223,11 +1190,8 @@ public final class AnalyzersImpl {
     public Mono<ResponseBase<AnalyzersAnalyzeInvoiceHeaders, Void>> analyzeInvoiceWithResponseAsync(
         Boolean includeTextDetails, Locale locale, List<String> pages, SourcePath fileStream, Context context) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null)
-            ? null
-            : pages.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
+        String pagesConverted = (pages == null) ? null : pages.stream()
+            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
         return service.analyzeInvoice(this.client.getEndpoint(), this.client.getApiVersion(), includeTextDetails,
             locale, pagesConverted, fileStream, accept, context);
     }
@@ -1236,7 +1200,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given invoice document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
      * en-US(default).
@@ -1259,7 +1223,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given invoice document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
      * en-US(default).
@@ -1283,7 +1247,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given invoice document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
      * en-US(default).
@@ -1306,7 +1270,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given invoice document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
      * en-US(default).
@@ -1324,7 +1288,7 @@ public final class AnalyzersImpl {
 
     /**
      * Track the progress and obtain the result of the analyze invoice operation.
-     *
+     * 
      * @param resultId Analyze operation result identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1341,7 +1305,7 @@ public final class AnalyzersImpl {
 
     /**
      * Track the progress and obtain the result of the analyze invoice operation.
-     *
+     * 
      * @param resultId Analyze operation result identifier.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1360,7 +1324,7 @@ public final class AnalyzersImpl {
 
     /**
      * Track the progress and obtain the result of the analyze invoice operation.
-     *
+     * 
      * @param resultId Analyze operation result identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1374,7 +1338,7 @@ public final class AnalyzersImpl {
 
     /**
      * Track the progress and obtain the result of the analyze invoice operation.
-     *
+     * 
      * @param resultId Analyze operation result identifier.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1390,7 +1354,7 @@ public final class AnalyzersImpl {
 
     /**
      * Track the progress and obtain the result of the analyze invoice operation.
-     *
+     * 
      * @param resultId Analyze operation result identifier.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1405,7 +1369,7 @@ public final class AnalyzersImpl {
 
     /**
      * Track the progress and obtain the result of the analyze invoice operation.
-     *
+     * 
      * @param resultId Analyze operation result identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1421,7 +1385,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given ID document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param contentType Upload file type.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
@@ -1438,11 +1402,8 @@ public final class AnalyzersImpl {
         ContentType contentType, Boolean includeTextDetails, List<String> pages, Flux<ByteBuffer> fileStream,
         Long contentLength) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null)
-            ? null
-            : pages.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
+        String pagesConverted = (pages == null) ? null : pages.stream()
+            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
         return FluxUtil
             .withContext(context -> service.analyzeIdDocument(this.client.getEndpoint(), this.client.getApiVersion(),
                 includeTextDetails, pagesConverted, contentType, fileStream, contentLength, accept, context));
@@ -1452,7 +1413,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given ID document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param contentType Upload file type.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
@@ -1470,11 +1431,8 @@ public final class AnalyzersImpl {
         ContentType contentType, Boolean includeTextDetails, List<String> pages, Flux<ByteBuffer> fileStream,
         Long contentLength, Context context) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null)
-            ? null
-            : pages.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
+        String pagesConverted = (pages == null) ? null : pages.stream()
+            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
         return service.analyzeIdDocument(this.client.getEndpoint(), this.client.getApiVersion(), includeTextDetails,
             pagesConverted, contentType, fileStream, contentLength, accept, context);
     }
@@ -1483,7 +1441,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given ID document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param contentType Upload file type.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
@@ -1506,7 +1464,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given ID document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param contentType Upload file type.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
@@ -1530,7 +1488,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given ID document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param contentType Upload file type.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
@@ -1555,7 +1513,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given ID document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param contentType Upload file type.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
@@ -1576,7 +1534,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given ID document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param contentType Upload file type.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
@@ -1593,11 +1551,8 @@ public final class AnalyzersImpl {
         ContentType contentType, Boolean includeTextDetails, List<String> pages, BinaryData fileStream,
         Long contentLength) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null)
-            ? null
-            : pages.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
+        String pagesConverted = (pages == null) ? null : pages.stream()
+            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
         return FluxUtil
             .withContext(context -> service.analyzeIdDocument(this.client.getEndpoint(), this.client.getApiVersion(),
                 includeTextDetails, pagesConverted, contentType, fileStream, contentLength, accept, context));
@@ -1607,7 +1562,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given ID document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param contentType Upload file type.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
@@ -1625,11 +1580,8 @@ public final class AnalyzersImpl {
         ContentType contentType, Boolean includeTextDetails, List<String> pages, BinaryData fileStream,
         Long contentLength, Context context) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null)
-            ? null
-            : pages.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
+        String pagesConverted = (pages == null) ? null : pages.stream()
+            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
         return service.analyzeIdDocument(this.client.getEndpoint(), this.client.getApiVersion(), includeTextDetails,
             pagesConverted, contentType, fileStream, contentLength, accept, context);
     }
@@ -1638,7 +1590,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given ID document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param contentType Upload file type.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
@@ -1661,7 +1613,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given ID document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param contentType Upload file type.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
@@ -1685,7 +1637,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given ID document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param contentType Upload file type.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
@@ -1709,7 +1661,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given ID document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param contentType Upload file type.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
@@ -1730,7 +1682,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given ID document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param includeTextDetails Include text lines and element references in the result.
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
@@ -1744,11 +1696,8 @@ public final class AnalyzersImpl {
     public Mono<ResponseBase<AnalyzersAnalyzeIdDocumentHeaders, Void>>
         analyzeIdDocumentWithResponseAsync(Boolean includeTextDetails, List<String> pages, SourcePath fileStream) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null)
-            ? null
-            : pages.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
+        String pagesConverted = (pages == null) ? null : pages.stream()
+            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
         return FluxUtil.withContext(context -> service.analyzeIdDocument(this.client.getEndpoint(),
             this.client.getApiVersion(), includeTextDetails, pagesConverted, fileStream, accept, context));
     }
@@ -1757,7 +1706,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given ID document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param includeTextDetails Include text lines and element references in the result.
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
@@ -1772,11 +1721,8 @@ public final class AnalyzersImpl {
     public Mono<ResponseBase<AnalyzersAnalyzeIdDocumentHeaders, Void>> analyzeIdDocumentWithResponseAsync(
         Boolean includeTextDetails, List<String> pages, SourcePath fileStream, Context context) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null)
-            ? null
-            : pages.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
+        String pagesConverted = (pages == null) ? null : pages.stream()
+            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
         return service.analyzeIdDocument(this.client.getEndpoint(), this.client.getApiVersion(), includeTextDetails,
             pagesConverted, fileStream, accept, context);
     }
@@ -1785,7 +1731,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given ID document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param includeTextDetails Include text lines and element references in the result.
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
@@ -1805,7 +1751,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given ID document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param includeTextDetails Include text lines and element references in the result.
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
@@ -1827,7 +1773,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given ID document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param includeTextDetails Include text lines and element references in the result.
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
@@ -1848,7 +1794,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given ID document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param includeTextDetails Include text lines and element references in the result.
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
@@ -1864,7 +1810,7 @@ public final class AnalyzersImpl {
 
     /**
      * Track the progress and obtain the result of the analyze ID operation.
-     *
+     * 
      * @param resultId Analyze operation result identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1881,7 +1827,7 @@ public final class AnalyzersImpl {
 
     /**
      * Track the progress and obtain the result of the analyze ID operation.
-     *
+     * 
      * @param resultId Analyze operation result identifier.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1900,7 +1846,7 @@ public final class AnalyzersImpl {
 
     /**
      * Track the progress and obtain the result of the analyze ID operation.
-     *
+     * 
      * @param resultId Analyze operation result identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1914,7 +1860,7 @@ public final class AnalyzersImpl {
 
     /**
      * Track the progress and obtain the result of the analyze ID operation.
-     *
+     * 
      * @param resultId Analyze operation result identifier.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1930,7 +1876,7 @@ public final class AnalyzersImpl {
 
     /**
      * Track the progress and obtain the result of the analyze ID operation.
-     *
+     * 
      * @param resultId Analyze operation result identifier.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1945,7 +1891,7 @@ public final class AnalyzersImpl {
 
     /**
      * Track the progress and obtain the result of the analyze ID operation.
-     *
+     * 
      * @param resultId Analyze operation result identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1961,7 +1907,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given receipt document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param contentType Upload file type.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
@@ -1980,11 +1926,8 @@ public final class AnalyzersImpl {
         ContentType contentType, Boolean includeTextDetails, Locale locale, List<String> pages,
         Flux<ByteBuffer> fileStream, Long contentLength) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null)
-            ? null
-            : pages.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
+        String pagesConverted = (pages == null) ? null : pages.stream()
+            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
         return FluxUtil
             .withContext(context -> service.analyzeReceipt(this.client.getEndpoint(), this.client.getApiVersion(),
                 includeTextDetails, locale, pagesConverted, contentType, fileStream, contentLength, accept, context));
@@ -1994,7 +1937,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given receipt document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param contentType Upload file type.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
@@ -2014,11 +1957,8 @@ public final class AnalyzersImpl {
         ContentType contentType, Boolean includeTextDetails, Locale locale, List<String> pages,
         Flux<ByteBuffer> fileStream, Long contentLength, Context context) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null)
-            ? null
-            : pages.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
+        String pagesConverted = (pages == null) ? null : pages.stream()
+            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
         return service.analyzeReceipt(this.client.getEndpoint(), this.client.getApiVersion(), includeTextDetails,
             locale, pagesConverted, contentType, fileStream, contentLength, accept, context);
     }
@@ -2027,7 +1967,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given receipt document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param contentType Upload file type.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
@@ -2052,7 +1992,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given receipt document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param contentType Upload file type.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
@@ -2078,7 +2018,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given receipt document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param contentType Upload file type.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
@@ -2105,7 +2045,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given receipt document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param contentType Upload file type.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
@@ -2129,7 +2069,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given receipt document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param contentType Upload file type.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
@@ -2148,11 +2088,8 @@ public final class AnalyzersImpl {
         ContentType contentType, Boolean includeTextDetails, Locale locale, List<String> pages, BinaryData fileStream,
         Long contentLength) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null)
-            ? null
-            : pages.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
+        String pagesConverted = (pages == null) ? null : pages.stream()
+            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
         return FluxUtil
             .withContext(context -> service.analyzeReceipt(this.client.getEndpoint(), this.client.getApiVersion(),
                 includeTextDetails, locale, pagesConverted, contentType, fileStream, contentLength, accept, context));
@@ -2162,7 +2099,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given receipt document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param contentType Upload file type.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
@@ -2182,11 +2119,8 @@ public final class AnalyzersImpl {
         ContentType contentType, Boolean includeTextDetails, Locale locale, List<String> pages, BinaryData fileStream,
         Long contentLength, Context context) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null)
-            ? null
-            : pages.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
+        String pagesConverted = (pages == null) ? null : pages.stream()
+            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
         return service.analyzeReceipt(this.client.getEndpoint(), this.client.getApiVersion(), includeTextDetails,
             locale, pagesConverted, contentType, fileStream, contentLength, accept, context);
     }
@@ -2195,7 +2129,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given receipt document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param contentType Upload file type.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
@@ -2220,7 +2154,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given receipt document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param contentType Upload file type.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
@@ -2246,7 +2180,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given receipt document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param contentType Upload file type.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
@@ -2273,7 +2207,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given receipt document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param contentType Upload file type.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
@@ -2297,7 +2231,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given receipt document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
      * en-US(default).
@@ -2313,11 +2247,8 @@ public final class AnalyzersImpl {
     public Mono<ResponseBase<AnalyzersAnalyzeReceiptHeaders, Void>> analyzeReceiptWithResponseAsync(
         Boolean includeTextDetails, Locale locale, List<String> pages, SourcePath fileStream) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null)
-            ? null
-            : pages.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
+        String pagesConverted = (pages == null) ? null : pages.stream()
+            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
         return FluxUtil.withContext(context -> service.analyzeReceipt(this.client.getEndpoint(),
             this.client.getApiVersion(), includeTextDetails, locale, pagesConverted, fileStream, accept, context));
     }
@@ -2326,7 +2257,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given receipt document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
      * en-US(default).
@@ -2343,11 +2274,8 @@ public final class AnalyzersImpl {
     public Mono<ResponseBase<AnalyzersAnalyzeReceiptHeaders, Void>> analyzeReceiptWithResponseAsync(
         Boolean includeTextDetails, Locale locale, List<String> pages, SourcePath fileStream, Context context) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null)
-            ? null
-            : pages.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
+        String pagesConverted = (pages == null) ? null : pages.stream()
+            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
         return service.analyzeReceipt(this.client.getEndpoint(), this.client.getApiVersion(), includeTextDetails,
             locale, pagesConverted, fileStream, accept, context);
     }
@@ -2356,7 +2284,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given receipt document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
      * en-US(default).
@@ -2379,7 +2307,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given receipt document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
      * en-US(default).
@@ -2403,7 +2331,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given receipt document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
      * en-US(default).
@@ -2426,7 +2354,7 @@ public final class AnalyzersImpl {
      * Extract field text and semantic values from a given receipt document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
-     *
+     * 
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
      * en-US(default).
@@ -2444,7 +2372,7 @@ public final class AnalyzersImpl {
 
     /**
      * Track the progress and obtain the result of the analyze receipt operation.
-     *
+     * 
      * @param resultId Analyze operation result identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -2461,7 +2389,7 @@ public final class AnalyzersImpl {
 
     /**
      * Track the progress and obtain the result of the analyze receipt operation.
-     *
+     * 
      * @param resultId Analyze operation result identifier.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2480,7 +2408,7 @@ public final class AnalyzersImpl {
 
     /**
      * Track the progress and obtain the result of the analyze receipt operation.
-     *
+     * 
      * @param resultId Analyze operation result identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -2494,7 +2422,7 @@ public final class AnalyzersImpl {
 
     /**
      * Track the progress and obtain the result of the analyze receipt operation.
-     *
+     * 
      * @param resultId Analyze operation result identifier.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2510,7 +2438,7 @@ public final class AnalyzersImpl {
 
     /**
      * Track the progress and obtain the result of the analyze receipt operation.
-     *
+     * 
      * @param resultId Analyze operation result identifier.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2525,7 +2453,7 @@ public final class AnalyzersImpl {
 
     /**
      * Track the progress and obtain the result of the analyze receipt operation.
-     *
+     * 
      * @param resultId Analyze operation result identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -2541,7 +2469,7 @@ public final class AnalyzersImpl {
      * Extract text and layout information from a given document. The input document must be of one of the supported
      * content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'. Alternatively, use
      * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
-     *
+     * 
      * @param contentType Upload file type.
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
@@ -2574,11 +2502,8 @@ public final class AnalyzersImpl {
         ContentType contentType, List<String> pages, Language language, ReadingOrder readingOrder,
         Flux<ByteBuffer> fileStream, Long contentLength) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null)
-            ? null
-            : pages.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
+        String pagesConverted = (pages == null) ? null : pages.stream()
+            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
         return FluxUtil
             .withContext(context -> service.analyzeLayout(this.client.getEndpoint(), this.client.getApiVersion(),
                 pagesConverted, language, readingOrder, contentType, fileStream, contentLength, accept, context));
@@ -2588,7 +2513,7 @@ public final class AnalyzersImpl {
      * Extract text and layout information from a given document. The input document must be of one of the supported
      * content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'. Alternatively, use
      * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
-     *
+     * 
      * @param contentType Upload file type.
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
@@ -2622,11 +2547,8 @@ public final class AnalyzersImpl {
         ContentType contentType, List<String> pages, Language language, ReadingOrder readingOrder,
         Flux<ByteBuffer> fileStream, Long contentLength, Context context) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null)
-            ? null
-            : pages.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
+        String pagesConverted = (pages == null) ? null : pages.stream()
+            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
         return service.analyzeLayout(this.client.getEndpoint(), this.client.getApiVersion(), pagesConverted, language,
             readingOrder, contentType, fileStream, contentLength, accept, context);
     }
@@ -2635,7 +2557,7 @@ public final class AnalyzersImpl {
      * Extract text and layout information from a given document. The input document must be of one of the supported
      * content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'. Alternatively, use
      * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
-     *
+     * 
      * @param contentType Upload file type.
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
@@ -2674,7 +2596,7 @@ public final class AnalyzersImpl {
      * Extract text and layout information from a given document. The input document must be of one of the supported
      * content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'. Alternatively, use
      * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
-     *
+     * 
      * @param contentType Upload file type.
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
@@ -2714,7 +2636,7 @@ public final class AnalyzersImpl {
      * Extract text and layout information from a given document. The input document must be of one of the supported
      * content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'. Alternatively, use
      * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
-     *
+     * 
      * @param contentType Upload file type.
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
@@ -2755,7 +2677,7 @@ public final class AnalyzersImpl {
      * Extract text and layout information from a given document. The input document must be of one of the supported
      * content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'. Alternatively, use
      * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
-     *
+     * 
      * @param contentType Upload file type.
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
@@ -2792,7 +2714,7 @@ public final class AnalyzersImpl {
      * Extract text and layout information from a given document. The input document must be of one of the supported
      * content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'. Alternatively, use
      * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
-     *
+     * 
      * @param contentType Upload file type.
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
@@ -2825,11 +2747,8 @@ public final class AnalyzersImpl {
         ContentType contentType, List<String> pages, Language language, ReadingOrder readingOrder,
         BinaryData fileStream, Long contentLength) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null)
-            ? null
-            : pages.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
+        String pagesConverted = (pages == null) ? null : pages.stream()
+            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
         return FluxUtil
             .withContext(context -> service.analyzeLayout(this.client.getEndpoint(), this.client.getApiVersion(),
                 pagesConverted, language, readingOrder, contentType, fileStream, contentLength, accept, context));
@@ -2839,7 +2758,7 @@ public final class AnalyzersImpl {
      * Extract text and layout information from a given document. The input document must be of one of the supported
      * content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'. Alternatively, use
      * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
-     *
+     * 
      * @param contentType Upload file type.
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
@@ -2873,11 +2792,8 @@ public final class AnalyzersImpl {
         ContentType contentType, List<String> pages, Language language, ReadingOrder readingOrder,
         BinaryData fileStream, Long contentLength, Context context) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null)
-            ? null
-            : pages.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
+        String pagesConverted = (pages == null) ? null : pages.stream()
+            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
         return service.analyzeLayout(this.client.getEndpoint(), this.client.getApiVersion(), pagesConverted, language,
             readingOrder, contentType, fileStream, contentLength, accept, context);
     }
@@ -2886,7 +2802,7 @@ public final class AnalyzersImpl {
      * Extract text and layout information from a given document. The input document must be of one of the supported
      * content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'. Alternatively, use
      * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
-     *
+     * 
      * @param contentType Upload file type.
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
@@ -2925,7 +2841,7 @@ public final class AnalyzersImpl {
      * Extract text and layout information from a given document. The input document must be of one of the supported
      * content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'. Alternatively, use
      * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
-     *
+     * 
      * @param contentType Upload file type.
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
@@ -2965,7 +2881,7 @@ public final class AnalyzersImpl {
      * Extract text and layout information from a given document. The input document must be of one of the supported
      * content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'. Alternatively, use
      * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
-     *
+     * 
      * @param contentType Upload file type.
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
@@ -3006,7 +2922,7 @@ public final class AnalyzersImpl {
      * Extract text and layout information from a given document. The input document must be of one of the supported
      * content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'. Alternatively, use
      * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
-     *
+     * 
      * @param contentType Upload file type.
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
@@ -3043,7 +2959,7 @@ public final class AnalyzersImpl {
      * Extract text and layout information from a given document. The input document must be of one of the supported
      * content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'. Alternatively, use
      * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
-     *
+     * 
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
      * @param language Currently, only Afrikaans (‘af’), Albanian (‘sq’), Asturian (‘ast’), Basque (‘eu’), Bislama
@@ -3073,11 +2989,8 @@ public final class AnalyzersImpl {
     public Mono<ResponseBase<AnalyzersAnalyzeLayoutHeaders, Void>> analyzeLayoutWithResponseAsync(List<String> pages,
         Language language, ReadingOrder readingOrder, SourcePath fileStream) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null)
-            ? null
-            : pages.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
+        String pagesConverted = (pages == null) ? null : pages.stream()
+            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
         return FluxUtil.withContext(context -> service.analyzeLayout(this.client.getEndpoint(),
             this.client.getApiVersion(), pagesConverted, language, readingOrder, fileStream, accept, context));
     }
@@ -3086,7 +2999,7 @@ public final class AnalyzersImpl {
      * Extract text and layout information from a given document. The input document must be of one of the supported
      * content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'. Alternatively, use
      * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
-     *
+     * 
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
      * @param language Currently, only Afrikaans (‘af’), Albanian (‘sq’), Asturian (‘ast’), Basque (‘eu’), Bislama
@@ -3117,11 +3030,8 @@ public final class AnalyzersImpl {
     public Mono<ResponseBase<AnalyzersAnalyzeLayoutHeaders, Void>> analyzeLayoutWithResponseAsync(List<String> pages,
         Language language, ReadingOrder readingOrder, SourcePath fileStream, Context context) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null)
-            ? null
-            : pages.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
+        String pagesConverted = (pages == null) ? null : pages.stream()
+            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
         return service.analyzeLayout(this.client.getEndpoint(), this.client.getApiVersion(), pagesConverted, language,
             readingOrder, fileStream, accept, context);
     }
@@ -3130,7 +3040,7 @@ public final class AnalyzersImpl {
      * Extract text and layout information from a given document. The input document must be of one of the supported
      * content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'. Alternatively, use
      * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
-     *
+     * 
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
      * @param language Currently, only Afrikaans (‘af’), Albanian (‘sq’), Asturian (‘ast’), Basque (‘eu’), Bislama
@@ -3167,7 +3077,7 @@ public final class AnalyzersImpl {
      * Extract text and layout information from a given document. The input document must be of one of the supported
      * content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'. Alternatively, use
      * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
-     *
+     * 
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
      * @param language Currently, only Afrikaans (‘af’), Albanian (‘sq’), Asturian (‘ast’), Basque (‘eu’), Bislama
@@ -3205,7 +3115,7 @@ public final class AnalyzersImpl {
      * Extract text and layout information from a given document. The input document must be of one of the supported
      * content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'. Alternatively, use
      * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
-     *
+     * 
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
      * @param language Currently, only Afrikaans (‘af’), Albanian (‘sq’), Asturian (‘ast’), Basque (‘eu’), Bislama
@@ -3242,7 +3152,7 @@ public final class AnalyzersImpl {
      * Extract text and layout information from a given document. The input document must be of one of the supported
      * content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'. Alternatively, use
      * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
-     *
+     * 
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
      * @param language Currently, only Afrikaans (‘af’), Albanian (‘sq’), Asturian (‘ast’), Basque (‘eu’), Bislama
@@ -3274,7 +3184,7 @@ public final class AnalyzersImpl {
 
     /**
      * Track the progress and obtain the result of the analyze layout operation.
-     *
+     * 
      * @param resultId Analyze operation result identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -3291,7 +3201,7 @@ public final class AnalyzersImpl {
 
     /**
      * Track the progress and obtain the result of the analyze layout operation.
-     *
+     * 
      * @param resultId Analyze operation result identifier.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3310,7 +3220,7 @@ public final class AnalyzersImpl {
 
     /**
      * Track the progress and obtain the result of the analyze layout operation.
-     *
+     * 
      * @param resultId Analyze operation result identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -3324,7 +3234,7 @@ public final class AnalyzersImpl {
 
     /**
      * Track the progress and obtain the result of the analyze layout operation.
-     *
+     * 
      * @param resultId Analyze operation result identifier.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3340,7 +3250,7 @@ public final class AnalyzersImpl {
 
     /**
      * Track the progress and obtain the result of the analyze layout operation.
-     *
+     * 
      * @param resultId Analyze operation result identifier.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3355,7 +3265,7 @@ public final class AnalyzersImpl {
 
     /**
      * Track the progress and obtain the result of the analyze layout operation.
-     *
+     * 
      * @param resultId Analyze operation result identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.

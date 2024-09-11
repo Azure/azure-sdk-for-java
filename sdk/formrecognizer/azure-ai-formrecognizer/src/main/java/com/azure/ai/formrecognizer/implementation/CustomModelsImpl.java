@@ -534,11 +534,8 @@ public final class CustomModelsImpl {
         ContentType contentType, Boolean includeTextDetails, List<String> pages, Flux<ByteBuffer> fileStream,
         Long contentLength) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null)
-            ? null
-            : pages.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
+        String pagesConverted = (pages == null) ? null : pages.stream()
+            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
         return FluxUtil
             .withContext(context -> service.analyzeDocument(this.client.getEndpoint(), this.client.getApiVersion(),
                 modelId, includeTextDetails, pagesConverted, contentType, fileStream, contentLength, accept, context));
@@ -568,11 +565,8 @@ public final class CustomModelsImpl {
         ContentType contentType, Boolean includeTextDetails, List<String> pages, Flux<ByteBuffer> fileStream,
         Long contentLength, Context context) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null)
-            ? null
-            : pages.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
+        String pagesConverted = (pages == null) ? null : pages.stream()
+            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
         return service.analyzeDocument(this.client.getEndpoint(), this.client.getApiVersion(), modelId,
             includeTextDetails, pagesConverted, contentType, fileStream, contentLength, accept, context);
     }
@@ -702,11 +696,8 @@ public final class CustomModelsImpl {
         ContentType contentType, Boolean includeTextDetails, List<String> pages, BinaryData fileStream,
         Long contentLength) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null)
-            ? null
-            : pages.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
+        String pagesConverted = (pages == null) ? null : pages.stream()
+            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
         return FluxUtil
             .withContext(context -> service.analyzeDocument(this.client.getEndpoint(), this.client.getApiVersion(),
                 modelId, includeTextDetails, pagesConverted, contentType, fileStream, contentLength, accept, context));
@@ -736,11 +727,8 @@ public final class CustomModelsImpl {
         ContentType contentType, Boolean includeTextDetails, List<String> pages, BinaryData fileStream,
         Long contentLength, Context context) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null)
-            ? null
-            : pages.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
+        String pagesConverted = (pages == null) ? null : pages.stream()
+            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
         return service.analyzeDocument(this.client.getEndpoint(), this.client.getApiVersion(), modelId,
             includeTextDetails, pagesConverted, contentType, fileStream, contentLength, accept, context);
     }
@@ -867,11 +855,8 @@ public final class CustomModelsImpl {
     public Mono<ResponseBase<CustomModelsAnalyzeDocumentHeaders, Void>> analyzeDocumentWithResponseAsync(UUID modelId,
         Boolean includeTextDetails, List<String> pages, SourcePath fileStream) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null)
-            ? null
-            : pages.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
+        String pagesConverted = (pages == null) ? null : pages.stream()
+            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
         return FluxUtil.withContext(context -> service.analyzeDocument(this.client.getEndpoint(),
             this.client.getApiVersion(), modelId, includeTextDetails, pagesConverted, fileStream, accept, context));
     }
@@ -897,11 +882,8 @@ public final class CustomModelsImpl {
     public Mono<ResponseBase<CustomModelsAnalyzeDocumentHeaders, Void>> analyzeDocumentWithResponseAsync(UUID modelId,
         Boolean includeTextDetails, List<String> pages, SourcePath fileStream, Context context) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null)
-            ? null
-            : pages.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
+        String pagesConverted = (pages == null) ? null : pages.stream()
+            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
         return service.analyzeDocument(this.client.getEndpoint(), this.client.getApiVersion(), modelId,
             includeTextDetails, pagesConverted, fileStream, accept, context);
     }
@@ -1692,7 +1674,9 @@ public final class CustomModelsImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items.
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1712,7 +1696,9 @@ public final class CustomModelsImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items.
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1731,7 +1717,9 @@ public final class CustomModelsImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items.
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1745,7 +1733,9 @@ public final class CustomModelsImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items.
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.

@@ -8,6 +8,7 @@ import com.azure.ai.formrecognizer.FormRecognizerClientBuilder;
 import com.azure.ai.formrecognizer.FormRecognizerServiceVersion;
 import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient;
 import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient;
+import com.azure.ai.formrecognizer.implementation.CustomModelsImpl;
 import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImpl;
 import com.azure.ai.formrecognizer.implementation.Utility;
 import com.azure.ai.formrecognizer.implementation.models.ComposeRequest;
@@ -56,6 +57,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.azure.ai.formrecognizer.implementation.Utility.DEFAULT_POLL_INTERVAL;
+import static com.azure.ai.formrecognizer.implementation.Utility.getCreateComposeModelOptions;
 import static com.azure.ai.formrecognizer.implementation.Utility.parseModelId;
 import static com.azure.ai.formrecognizer.implementation.Utility.urlActivationOperation;
 import static com.azure.ai.formrecognizer.training.CustomModelTransforms.toCustomFormModel;
@@ -64,7 +66,7 @@ import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 
 /**
- * <p>This class provides an asynchronous client to connect to the Form Recognizer Azure Cognitive Service.</p>
+ * <p>This class provides an asynchronous client to connect to the Form Recognizer Azure Cognitive customModelsImpl.</p>
  * <p>This client provides asynchronous methods to:</p>
  *
  * <ol>
@@ -134,6 +136,7 @@ public final class FormTrainingAsyncClient {
     private final ClientLogger logger = new ClientLogger(FormTrainingAsyncClient.class);
     private final FormRecognizerClientImpl service;
     private final FormRecognizerServiceVersion serviceVersion;
+    private final CustomModelsImpl customModelsImpl;
 
     /**
      * Create a {@link FormTrainingClient} that sends requests to the Form Recognizer service's endpoint.
@@ -145,6 +148,7 @@ public final class FormTrainingAsyncClient {
     FormTrainingAsyncClient(FormRecognizerClientImpl service, FormRecognizerServiceVersion serviceVersion) {
         this.service = service;
         this.serviceVersion = serviceVersion;
+        this.customModelsImpl = service.getCustomModels();
     }
 
     /**
@@ -354,7 +358,7 @@ public final class FormTrainingAsyncClient {
         if (CoreUtils.isNullOrEmpty(modelId)) {
             return monoError(logger, new IllegalArgumentException("'modelId' is required and cannot be null or empty"));
         }
-        return service.getCustomModelWithResponseAsync(UUID.fromString(modelId), true, context)
+        return customModelsImpl.getWithResponseAsync(UUID.fromString(modelId), true, context)
             .onErrorMap(Utility::mapToHttpResponseExceptionIfExists)
             .map(response -> new SimpleResponse<>(response, toCustomFormModel(response.getValue())));
     }
@@ -412,7 +416,7 @@ public final class FormTrainingAsyncClient {
     }
 
     Mono<Response<AccountProperties>> getAccountPropertiesWithResponse(Context context) {
-        return service.getCustomModelsWithResponseAsync(context)
+        return customModelsImpl.getSummaryWithResponseAsync(context)
             .onErrorMap(Utility::mapToHttpResponseExceptionIfExists)
             .map(response -> new SimpleResponse<>(response,
                 new AccountProperties(response.getValue().getSummary().getCount(),
@@ -474,7 +478,7 @@ public final class FormTrainingAsyncClient {
         if (CoreUtils.isNullOrEmpty(modelId)) {
             return monoError(logger, new IllegalArgumentException("'modelId' is required and cannot be null or empty"));
         }
-        return service.deleteCustomModelWithResponseAsync(UUID.fromString(modelId), context)
+        return customModelsImpl.deleteWithResponseAsync(UUID.fromString(modelId), context)
             .onErrorMap(Utility::mapToHttpResponseExceptionIfExists)
             .map(response -> new SimpleResponse<>(response, null));
     }
@@ -811,7 +815,7 @@ public final class FormTrainingAsyncClient {
                 .setModelName(creatComposeModelOptions.getModelName());
 
             return new PollerFlux<>(DEFAULT_POLL_INTERVAL,
-                urlActivationOperation(() -> service.composeCustomModelsAsyncWithResponseAsync(composeRequest, context)
+                urlActivationOperation(() -> customModelsImpl.composeWithResponseAsync(composeRequest, context)
                     .map(response -> new FormRecognizerOperationResult(parseModelId(
                         response.getDeserializedHeaders().getLocation()))), logger), createModelPollOperation(context),
                 (activationResponse, pollingContext)
@@ -830,7 +834,7 @@ public final class FormTrainingAsyncClient {
         if (resourceRegion == null) {
             return monoError(logger, new NullPointerException("'resourceRegion' cannot be null."));
         }
-        return service.generateModelCopyAuthorizationWithResponseAsync(context)
+        return customModelsImpl.authorizeModelCopyWithResponseAsync(context)
             .onErrorMap(Utility::mapToHttpResponseExceptionIfExists)
             .map(response -> {
                 CopyAuthorizationResult copyAuthorizationResult = response.getValue();
@@ -841,7 +845,7 @@ public final class FormTrainingAsyncClient {
     }
 
     private Mono<PagedResponse<CustomFormModelInfo>> listFirstPageModelInfo(Context context) {
-        return service.listCustomModelsSinglePageAsync(context)
+        return customModelsImpl.listSinglePageAsync(context)
             .doOnRequest(ignoredValue -> logger.info("Listing information for all models"))
             .doOnSuccess(response -> logger.info("Listed all models"))
             .doOnError(error -> logger.warning("Failed to list all models information", error))
@@ -854,7 +858,7 @@ public final class FormTrainingAsyncClient {
         if (CoreUtils.isNullOrEmpty(nextPageLink)) {
             return Mono.empty();
         }
-        return service.listCustomModelsNextSinglePageAsync(nextPageLink, context)
+        return customModelsImpl.listNextSinglePageAsync(nextPageLink, context)
             .doOnSubscribe(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
             .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", nextPageLink))
             .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
@@ -872,9 +876,8 @@ public final class FormTrainingAsyncClient {
                 if (modelId == null) {
                     return Mono.error(new NullPointerException("'modelId' cannot be null."));
                 }
-                return service.getCustomModelCopyResultWithResponseAsync(UUID.fromString(modelId), resultUid, context)
-                    .map(modelSimpleResponse -> {
-                        CopyOperationResult copyOperationResult = modelSimpleResponse.getValue();
+                return customModelsImpl.getCopyResultAsync(UUID.fromString(modelId), resultUid, context)
+                    .map(copyOperationResult -> {
                         return new CustomFormModelInfo(copyModelId,
                             copyOperationResult.getStatus() == OperationStatus.SUCCEEDED
                                 ? CustomFormModelStatus.READY
@@ -896,7 +899,7 @@ public final class FormTrainingAsyncClient {
                 PollResponse<FormRecognizerOperationResult> operationResultPollResponse =
                     pollingContext.getLatestResponse();
                 UUID targetId = UUID.fromString(operationResultPollResponse.getValue().getResultId());
-                return service.getCustomModelCopyResultWithResponseAsync(UUID.fromString(modelId), targetId, context)
+                return customModelsImpl.getCopyResultWithResponseAsync(UUID.fromString(modelId), targetId, context)
                     .flatMap(modelSimpleResponse ->
                         processCopyModelResponse(modelSimpleResponse, operationResultPollResponse))
                     .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
@@ -923,7 +926,7 @@ public final class FormTrainingAsyncClient {
                         .setModelId(target.getModelId())
                         .setAccessToken(target.getAccessToken())
                         .setExpirationDateTimeTicks(target.getExpiresOn().toEpochSecond()));
-                return service.copyCustomModelWithResponseAsync(UUID.fromString(modelId), copyRequest, context)
+                return customModelsImpl.copyWithResponseAsync(UUID.fromString(modelId), copyRequest, context)
                     .map(response ->
                         new FormRecognizerOperationResult(
                             parseModelId(response.getDeserializedHeaders().getOperationLocation())))
@@ -964,7 +967,7 @@ public final class FormTrainingAsyncClient {
         return (pollingContext) -> {
             try {
                 final UUID modelUid = UUID.fromString(pollingContext.getLatestResponse().getValue().getResultId());
-                return service.getCustomModelWithResponseAsync(modelUid, true, context)
+                return customModelsImpl.getWithResponseAsync(modelUid, true, context)
                     .map(modelSimpleResponse -> toCustomFormModel(modelSimpleResponse.getValue()))
                     .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
             } catch (RuntimeException ex) {
@@ -980,7 +983,7 @@ public final class FormTrainingAsyncClient {
                 PollResponse<FormRecognizerOperationResult> operationResultPollResponse =
                     pollingContext.getLatestResponse();
                 UUID modelUid = UUID.fromString(operationResultPollResponse.getValue().getResultId());
-                return service.getCustomModelWithResponseAsync(modelUid, true, context)
+                return customModelsImpl.getWithResponseAsync(modelUid, true, context)
                     .flatMap(modelSimpleResponse ->
                         processTrainingModelResponse(modelSimpleResponse, operationResultPollResponse))
                     .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
@@ -1006,7 +1009,7 @@ public final class FormTrainingAsyncClient {
                     .setSourceFilter(trainSourceFilter)
                     .setUseLabelFile(useTrainingLabels)
                     .setModelName(modelName);
-                return service.trainCustomModelAsyncWithResponseAsync(serviceTrainRequest, context)
+                return customModelsImpl.trainWithResponseAsync(serviceTrainRequest, context)
                     .map(response -> new FormRecognizerOperationResult(
                         parseModelId(response.getDeserializedHeaders().getLocation())))
                     .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
@@ -1042,8 +1045,5 @@ public final class FormTrainingAsyncClient {
         return Mono.just(new PollResponse<>(status, trainingModelOperationResponse.getValue()));
     }
 
-    private static CreateComposedModelOptions
-        getCreateComposeModelOptions(CreateComposedModelOptions userProvidedOptions) {
-        return userProvidedOptions == null ? new CreateComposedModelOptions() : userProvidedOptions;
-    }
+
 }

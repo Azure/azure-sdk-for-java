@@ -24,6 +24,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.BodilessMatcher;
+import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.identity.AzurePowerShellCredentialBuilder;
@@ -87,7 +88,7 @@ public abstract class FormRecognizerClientTestBase extends TestProxyTestBase {
     static final String INVALID_UUID_EXCEPTION_MESSAGE = "Invalid UUID string: ";
     static final String INVALID_SOURCE_URL_EXCEPTION_MESSAGE = "Failed to download the image from the submitted URL. "
         + "The URL may either be invalid or the server hosting the image is experiencing some technical difficulties.";
-    static final String MODEL_ID_IS_REQUIRED_EXCEPTION_MESSAGE = "'modelId' is required and cannot be null.";
+    static final String MODEL_ID_IS_REQUIRED_EXCEPTION_MESSAGE = "'modelId' is required and cannot be null or empty";
     static final String COPY_OPERATION_FAILED_STATUS_MESSAGE = "Copy operation failed";
 
     static final String INVALID_ENDPOINT = "https://notreal.azure.com";
@@ -143,7 +144,7 @@ public abstract class FormRecognizerClientTestBase extends TestProxyTestBase {
 
         if (interceptorManager.isPlaybackMode()) {
             builder.credential(new MockTokenCredential());
-            interceptorManager.addMatchers(Collections.singletonList(new BodilessMatcher()));
+            interceptorManager.addMatchers(Collections.singletonList(new CustomMatcher().setExcludedHeaders(Collections.singletonList("Content-Type")).setComparingBodies(false)));
         } else if (interceptorManager.isRecordMode()) {
             builder.credential(new DefaultAzureCredentialBuilder().build());
             builder.addPolicy(interceptorManager.getRecordPolicy());
@@ -171,7 +172,7 @@ public abstract class FormRecognizerClientTestBase extends TestProxyTestBase {
 
         if (interceptorManager.isPlaybackMode()) {
             builder.credential(new MockTokenCredential());
-            interceptorManager.addMatchers(Collections.singletonList(new BodilessMatcher()));
+            interceptorManager.addMatchers(Collections.singletonList(new CustomMatcher().setExcludedHeaders(Collections.singletonList("Content-Type")).setComparingBodies(false)));
         } else if (interceptorManager.isRecordMode()) {
             builder.credential(new DefaultAzureCredentialBuilder().build());
             builder.addPolicy(interceptorManager.getRecordPolicy());

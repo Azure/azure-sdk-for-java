@@ -21,7 +21,7 @@ public class FormRecognizerException extends AzureException {
     private final List<FormRecognizerErrorInformation> errorInformationList;
 
     /**
-     * Error information message.
+     * Error information message.FormRecognizerException
      */
     private final String errorInformationMessage;
 

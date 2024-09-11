@@ -151,9 +151,6 @@ public final class DocumentResult implements JsonSerializable<DocumentResult> {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

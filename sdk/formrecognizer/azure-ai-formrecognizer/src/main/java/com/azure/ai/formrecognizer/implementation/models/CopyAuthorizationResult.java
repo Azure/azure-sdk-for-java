@@ -100,9 +100,6 @@ public final class CopyAuthorizationResult implements JsonSerializable<CopyAutho
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

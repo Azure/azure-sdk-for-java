@@ -6,6 +6,7 @@ package com.azure.ai.formrecognizer;
 import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient;
 import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient;
 import com.azure.ai.formrecognizer.implementation.AnalyzersImpl;
+import com.azure.ai.formrecognizer.implementation.CustomModelsImpl;
 import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImpl;
 import com.azure.ai.formrecognizer.implementation.Utility;
 import com.azure.ai.formrecognizer.implementation.models.AnalyzeOperationResult;
@@ -52,6 +53,12 @@ import static com.azure.ai.formrecognizer.Transforms.toRecognizedForm;
 import static com.azure.ai.formrecognizer.Transforms.toRecognizedLayout;
 import static com.azure.ai.formrecognizer.implementation.Utility.DEFAULT_POLL_INTERVAL;
 import static com.azure.ai.formrecognizer.implementation.Utility.detectContentType;
+import static com.azure.ai.formrecognizer.implementation.Utility.getRecognizeBusinessCardsOptions;
+import static com.azure.ai.formrecognizer.implementation.Utility.getRecognizeContentOptions;
+import static com.azure.ai.formrecognizer.implementation.Utility.getRecognizeCustomFormOptions;
+import static com.azure.ai.formrecognizer.implementation.Utility.getRecognizeIdentityDocumentOptions;
+import static com.azure.ai.formrecognizer.implementation.Utility.getRecognizeInvoicesOptions;
+import static com.azure.ai.formrecognizer.implementation.Utility.getRecognizeReceiptOptions;
 import static com.azure.ai.formrecognizer.implementation.Utility.parseModelId;
 import static com.azure.ai.formrecognizer.implementation.Utility.urlActivationOperation;
 import static com.azure.core.util.FluxUtil.monoError;
@@ -128,6 +135,7 @@ public final class FormRecognizerAsyncClient {
     private final ClientLogger logger = new ClientLogger(FormRecognizerAsyncClient.class);
     private final FormRecognizerClientImpl service;
     private final AnalyzersImpl analyzersImpl;
+    private final CustomModelsImpl customModelsImpl;
     private final FormRecognizerServiceVersion serviceVersion;
 
     /**
@@ -139,7 +147,8 @@ public final class FormRecognizerAsyncClient {
      */
     FormRecognizerAsyncClient(FormRecognizerClientImpl service, FormRecognizerServiceVersion serviceVersion) {
         this.service = service;
-        this.analyzersImpl = analyzersImpl.getAnalyzers();
+        this.analyzersImpl = service.getAnalyzers();
+        this.customModelsImpl = service.getCustomModels();
         this.serviceVersion = serviceVersion;
     }
 
@@ -237,7 +246,7 @@ public final class FormRecognizerAsyncClient {
                 return PollerFlux.error(new NullPointerException("'formUrl' is required and cannot be null."));
             }
             if (modelId == null) {
-                return PollerFlux.error(new NullPointerException("'modelId' is required and cannot be null."));
+                return PollerFlux.error(new NullPointerException("'modelId' is required and cannot be null or empty"));
             }
 
             final RecognizeCustomFormsOptions finalRecognizeCustomFormsOptions
@@ -245,15 +254,15 @@ public final class FormRecognizerAsyncClient {
             UUID modelUuid = UUID.fromString(modelId);
             final boolean isFieldElementsIncluded = finalRecognizeCustomFormsOptions.isFieldElementsIncluded();
             return new PollerFlux<>(finalRecognizeCustomFormsOptions.getPollInterval(), urlActivationOperation(() ->
-                analyzersImpl.(modelUuid, isFieldElementsIncluded,
+                customModelsImpl.analyzeDocumentWithResponseAsync(modelUuid, isFieldElementsIncluded,
                             finalRecognizeCustomFormsOptions.getPages(), new SourcePath().setSource(formUrl), context)
                         .map(response -> new FormRecognizerOperationResult(
                             parseModelId(response.getDeserializedHeaders().getOperationLocation()))), logger),
                 pollingOperation(resultUid ->
-                    analyzersImpl.getAnalyzeFormResultWithResponseAsync(modelUuid, resultUid, context)),
+                    customModelsImpl.getAnalyzeResultWithResponseAsync(modelUuid, resultUid, context)),
                 (activationResponse, pollingContext) ->
                     Mono.error(new RuntimeException("Cancellation is not supported")),
-                fetchingOperation(resultId -> analyzersImpl.getAnalyzeFormResultWithResponseAsync(modelUuid, resultId,
+                fetchingOperation(resultId -> customModelsImpl.getAnalyzeResultWithResponseAsync(modelUuid, resultId,
                     context))
                     .andThen(after -> after.map(modelSimpleResponse ->
                         toRecognizedForm(modelSimpleResponse.getValue().getAnalyzeResult(), isFieldElementsIncluded,
@@ -373,7 +382,7 @@ public final class FormRecognizerAsyncClient {
                 return PollerFlux.error(new NullPointerException("'form' is required and cannot be null."));
             }
             if (modelId == null) {
-                return PollerFlux.error(new NullPointerException("'modelId' is required and cannot be null."));
+                return PollerFlux.error(new NullPointerException("'modelId' is required and cannot be null or empty"));
             }
 
             final RecognizeCustomFormsOptions finalRecognizeCustomFormsOptions
@@ -381,17 +390,17 @@ public final class FormRecognizerAsyncClient {
             UUID modelUuid = UUID.fromString(modelId);
             final boolean isFieldElementsIncluded = finalRecognizeCustomFormsOptions.isFieldElementsIncluded();
             return new PollerFlux<>(finalRecognizeCustomFormsOptions.getPollInterval(), streamActivationOperation(
-                    contentType -> analyzersImpl.analyzeWithCustomModelWithResponseAsync(modelUuid,
+                    contentType -> customModelsImpl.analyzeDocumentWithResponseAsync(modelUuid,
                             ContentType.fromString(contentType.toString()), isFieldElementsIncluded,
                             finalRecognizeCustomFormsOptions.getPages(), form, length, context)
                         .map(response -> new FormRecognizerOperationResult(
                             parseModelId(response.getDeserializedHeaders().getOperationLocation()))),
                 form, finalRecognizeCustomFormsOptions.getContentType()),
-                pollingOperation(resultUuid -> analyzersImpl.getAnalyzeFormResultWithResponseAsync(modelUuid, resultUuid,
+                pollingOperation(resultUuid -> customModelsImpl.getAnalyzeResultWithResponseAsync(modelUuid, resultUuid,
                     context)),
                 (activationResponse, pollingContext) ->
                     Mono.error(new RuntimeException("Cancellation is not supported")),
-                fetchingOperation(resultId -> analyzersImpl.getAnalyzeFormResultWithResponseAsync(modelUuid, resultId,
+                fetchingOperation(resultId -> customModelsImpl.getAnalyzeResultWithResponseAsync(modelUuid, resultId,
                     context))
                     .andThen(after -> after.map(modelSimpleResponse -> toRecognizedForm(
                         modelSimpleResponse.getValue().getAnalyzeResult(), isFieldElementsIncluded, modelId))
@@ -2032,32 +2041,5 @@ public final class FormRecognizerAsyncClient {
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
         }
-    }
-
-    private static RecognizeCustomFormsOptions getRecognizeCustomFormOptions(
-        RecognizeCustomFormsOptions userProvidedOptions) {
-        return userProvidedOptions == null ? new RecognizeCustomFormsOptions() : userProvidedOptions;
-    }
-
-    static RecognizeContentOptions getRecognizeContentOptions(RecognizeContentOptions userProvidedOptions) {
-        return userProvidedOptions == null ? new RecognizeContentOptions() : userProvidedOptions;
-    }
-
-    static RecognizeReceiptsOptions getRecognizeReceiptOptions(RecognizeReceiptsOptions userProvidedOptions) {
-        return userProvidedOptions == null ? new RecognizeReceiptsOptions() : userProvidedOptions;
-    }
-
-    private static RecognizeBusinessCardsOptions getRecognizeBusinessCardsOptions(
-        RecognizeBusinessCardsOptions userProvidedOptions) {
-        return userProvidedOptions == null ? new RecognizeBusinessCardsOptions() : userProvidedOptions;
-    }
-
-    private static RecognizeInvoicesOptions getRecognizeInvoicesOptions(RecognizeInvoicesOptions userProvidedOptions) {
-        return userProvidedOptions == null ? new RecognizeInvoicesOptions() : userProvidedOptions;
-    }
-
-    private static RecognizeIdentityDocumentOptions getRecognizeIdentityDocumentOptions(
-        RecognizeIdentityDocumentOptions userProvidedOptions) {
-        return userProvidedOptions == null ? new RecognizeIdentityDocumentOptions() : userProvidedOptions;
     }
 }
