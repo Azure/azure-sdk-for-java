@@ -89,7 +89,16 @@ public abstract class ChatCompletionsClientTestBase extends TestProxyTestBase {
         testRunner.accept("Say this is a test");
     }
 
-    void getStreamingChatCompletionsRunner(Consumer<List<ChatRequestMessage>> testRunner) {
+    void getChatCompletionsFromOptionsRunner(Consumer<ChatCompletionsOptions> testRunner) {
+        List<ChatRequestMessage> chatMessages = Arrays.asList(
+            new ChatRequestSystemMessage("You are a helpful assistant."),
+            new ChatRequestUserMessage("What sort of clothing should I wear today in Berlin?")
+        );
+        ChatCompletionsOptions options = new ChatCompletionsOptions(chatMessages);
+        testRunner.accept(options);
+    }
+
+    void getChatCompletionsFromMessagesRunner(Consumer<List<ChatRequestMessage>> testRunner) {
         testRunner.accept(getChatMessages());
     }
 
