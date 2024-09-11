@@ -48,7 +48,7 @@ if (-not (Test-Path -Path $ArtifactStagingDirectory)) {
 
 Write-Host ""
 Write-Host "ArtifactsList:"
-$ArtifactsList | Format-Table -Property GroupId, Name | Out-String | Write-Host
+$ArtifactsList | Format-Table -Property GroupId, Name, ReleaseInBatch | Out-String | Write-Host
 
 $packageInfoDirectory = Join-Path $ArtifactStagingDirectory "PackageInfo"
 
@@ -57,6 +57,11 @@ $foundError = $false
 # The only thing being done here is adding or updating namespaces for libraries
 # that will be producing docs. This ArtifactsList is
 foreach($artifact in $ArtifactsList) {
+    if ($artifact.ReleaseInBatch -eq $false) {
+        Write-Host "Skipping $($artifact.Name) as it is not being released in this batch."
+        continue
+    }
+
     # Get the version from the packageInfo file
     $packageInfoFile = Join-Path $packageInfoDirectory "$($artifact.Name).json"
     Write-Host "processing $($packageInfoFile.FullName)"
