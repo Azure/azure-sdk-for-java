@@ -4,11 +4,11 @@ package com.azure.security.keyvault.administration.implementation;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
+import com.azure.core.util.Base64Util;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -26,6 +26,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+
+import static com.azure.core.http.HttpHeaderName.CONTENT_LENGTH;
+import static com.azure.core.http.HttpHeaderName.WWW_AUTHENTICATE;
 
 /**
  * A policy that authenticates requests with the Azure Key Vault service. The content added by this policy is
@@ -67,16 +70,17 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
             return Collections.emptyMap();
         }
 
-        authenticateHeader =
-            authenticateHeader.toLowerCase(Locale.ROOT).replace(authChallengePrefix.toLowerCase(Locale.ROOT), "");
-
-        String[] attributes = authenticateHeader.split(", ");
+        String[] attributes = authenticateHeader.substring(authChallengePrefix.length()).split(", ");
         Map<String, String> attributeMap = new HashMap<>();
 
         for (String pair : attributes) {
-            String[] keyValue = pair.split("=");
+            if (pair.startsWith("claims=")) {
+                attributeMap.put("claims", pair.substring("claims=".length()).replaceAll("\"", ""));
+            } else {
+                String[] keyValue = pair.split("=");
 
-            attributeMap.put(keyValue[0].replaceAll("\"", ""), keyValue[1].replaceAll("\"", ""));
+                attributeMap.put(keyValue[0].replaceAll("\"", ""), keyValue[1].replaceAll("\"", ""));
+            }
         }
 
         return attributeMap;
@@ -102,31 +106,31 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
 
             // If this policy doesn't have challenge parameters cached try to get it from the static challenge cache.
             if (this.challenge == null) {
-                String authority = getRequestAuthority(request);
-                this.challenge = CHALLENGE_CACHE.get(authority);
+                this.challenge = CHALLENGE_CACHE.get(getRequestAuthority(request));
             }
 
             if (this.challenge != null) {
                 // We fetched the challenge from the cache, but we have not initialized the scopes in the base yet.
                 TokenRequestContext tokenRequestContext = new TokenRequestContext()
                     .addScopes(this.challenge.getScopes())
-                    .setTenantId(this.challenge.getTenantId());
+                    .setTenantId(this.challenge.getTenantId())
+                    .setClaims(this.challenge.getClaims());
 
                 return setAuthorizationHeader(context, tokenRequestContext);
             }
 
-            // The body is removed from the initial request because Key Vault supports other authentication schemes which
-            // also protect the body of the request. As a result, before we know the auth scheme we need to avoid sending
-            // an unprotected body to Key Vault. We don't currently support this enhanced auth scheme in the SDK but we
-            // still don't want to send any unprotected data to vaults which require it.
+            // The body is removed from the initial request because Key Vault supports other authentication schemes
+            // which also protect the body of the request. As a result, before we know the auth scheme we need to
+            // avoid sending an unprotected body to Key Vault. We don't currently support this enhanced auth scheme
+            // in the SDK, but we still don't want to send any unprotected data to vaults which require it.
 
             // Do not overwrite previous contents if retrying after initial request failed (e.g. timeout).
             if (!context.getData(KEY_VAULT_STASHED_CONTENT_KEY).isPresent()) {
                 if (request.getBody() != null) {
                     context.setData(KEY_VAULT_STASHED_CONTENT_KEY, request.getBody());
                     context.setData(KEY_VAULT_STASHED_CONTENT_LENGTH_KEY,
-                        request.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH));
-                    request.setHeader(HttpHeaderName.CONTENT_LENGTH, "0");
+                        request.getHeaders().getValue(CONTENT_LENGTH));
+                    request.setHeader(CONTENT_LENGTH, "0");
                     request.setBody((Flux<ByteBuffer>) null);
                 }
             }
@@ -145,13 +149,26 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
 
             if (request.getBody() == null && contentOptional.isPresent() && contentLengthOptional.isPresent()) {
                 request.setBody((Flux<ByteBuffer>) contentOptional.get());
-                request.setHeader(HttpHeaderName.CONTENT_LENGTH, (String) contentLengthOptional.get());
+                request.setHeader(CONTENT_LENGTH, (String) contentLengthOptional.get());
             }
 
             String authority = getRequestAuthority(request);
             Map<String, String> challengeAttributes =
-                extractChallengeAttributes(response.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE),
-                    BEARER_TOKEN_PREFIX);
+                extractChallengeAttributes(response.getHeaderValue(WWW_AUTHENTICATE), BEARER_TOKEN_PREFIX);
+
+            String error = challengeAttributes.get("error");
+            String claims = null;
+
+            if (error != null) {
+                LOGGER.verbose(String.format("The challenge response contained an error: %s", error));
+
+                String base64Claims = challengeAttributes.get("claims");
+
+                if (error.equalsIgnoreCase("insufficient_claims") && base64Claims != null) {
+                    claims = new String(Base64Util.decodeString(base64Claims));
+                }
+            }
+
             String scope = challengeAttributes.get("resource");
 
             if (scope != null) {
@@ -165,6 +182,8 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
 
                 if (this.challenge == null) {
                     return Mono.just(false);
+                } else if (claims != null) {
+                    CHALLENGE_CACHE.put(authority, this.challenge.setClaims(claims));
                 }
             } else {
                 if (!disableChallengeResourceVerification) {
@@ -194,14 +213,15 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
                             String.format("The challenge authorization URI '%s' is invalid.", authorization), e));
                 }
 
-                this.challenge = new ChallengeParameters(authorizationUri, new String[] {scope});
+                this.challenge = new ChallengeParameters(authorizationUri, new String[] {scope}).setClaims(claims);
 
                 CHALLENGE_CACHE.put(authority, this.challenge);
             }
 
             TokenRequestContext tokenRequestContext = new TokenRequestContext()
                 .addScopes(this.challenge.getScopes())
-                .setTenantId(this.challenge.getTenantId());
+                .setTenantId(this.challenge.getTenantId())
+                .setClaims(this.challenge.getClaims());
 
             return setAuthorizationHeader(context, tokenRequestContext)
                 .then(Mono.just(true));
@@ -214,38 +234,38 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
 
         // If this policy doesn't have challenge parameters cached try to get it from the static challenge cache.
         if (this.challenge == null) {
-            String authority = getRequestAuthority(request);
-            this.challenge = CHALLENGE_CACHE.get(authority);
+            this.challenge = CHALLENGE_CACHE.get(getRequestAuthority(request));
         }
 
         if (this.challenge != null) {
             // We fetched the challenge from the cache, but we have not initialized the scopes in the base yet.
             TokenRequestContext tokenRequestContext = new TokenRequestContext()
                 .addScopes(this.challenge.getScopes())
-                .setTenantId(this.challenge.getTenantId());
+                .setTenantId(this.challenge.getTenantId())
+                .setClaims(this.challenge.getClaims());
 
             setAuthorizationHeaderSync(context, tokenRequestContext);
+
             return;
         }
 
         // The body is removed from the initial request because Key Vault supports other authentication schemes which
-        // also protect the body of the request. As a result, before we know the auth scheme we need to avoid sending
-        // an unprotected body to Key Vault. We don't currently support this enhanced auth scheme in the SDK but we
-        // still don't want to send any unprotected data to vaults which require it.
+        // also protect the body of the request. As a result, before we know the auth scheme we need to avoid sending an
+        // unprotected body to Key Vault. We don't currently support this enhanced auth scheme in the SDK, but we still
+        // don't want to send any unprotected data to vaults which require it.
 
         // Do not overwrite previous contents if retrying after initial request failed (e.g. timeout).
         if (!context.getData(KEY_VAULT_STASHED_CONTENT_KEY).isPresent()) {
             if (request.getBodyAsBinaryData() != null) {
                 context.setData(KEY_VAULT_STASHED_CONTENT_KEY, request.getBodyAsBinaryData());
                 context.setData(KEY_VAULT_STASHED_CONTENT_LENGTH_KEY,
-                    request.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH));
-                request.setHeader(HttpHeaderName.CONTENT_LENGTH, "0");
+                    request.getHeaders().getValue(CONTENT_LENGTH));
+                request.setHeader(CONTENT_LENGTH, "0");
                 request.setBody((BinaryData) null);
             }
         }
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public boolean authorizeRequestOnChallengeSync(HttpPipelineCallContext context, HttpResponse response) {
         HttpRequest request = context.getHttpRequest();
@@ -254,12 +274,26 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
 
         if (request.getBody() == null && contentOptional.isPresent() && contentLengthOptional.isPresent()) {
             request.setBody((BinaryData) (contentOptional.get()));
-            request.setHeader(HttpHeaderName.CONTENT_LENGTH, (String) contentLengthOptional.get());
+            request.setHeader(CONTENT_LENGTH, (String) contentLengthOptional.get());
         }
 
         String authority = getRequestAuthority(request);
         Map<String, String> challengeAttributes =
-            extractChallengeAttributes(response.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE), BEARER_TOKEN_PREFIX);
+            extractChallengeAttributes(response.getHeaderValue(WWW_AUTHENTICATE), BEARER_TOKEN_PREFIX);
+
+        String error = challengeAttributes.get("error");
+        String claims = null;
+
+        if (error != null) {
+            LOGGER.verbose(String.format("The challenge response contained an error: %s", error));
+
+            String base64Claims = challengeAttributes.get("claims");
+
+            if (error.equalsIgnoreCase("insufficient_claims") && base64Claims != null) {
+                claims = new String(Base64Util.decodeString(base64Claims));
+            }
+        }
+
         String scope = challengeAttributes.get("resource");
 
         if (scope != null) {
@@ -273,6 +307,8 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
 
             if (this.challenge == null) {
                 return false;
+            } else if (claims != null) {
+                CHALLENGE_CACHE.put(authority, this.challenge.setClaims(claims));
             }
         } else {
             if (!disableChallengeResourceVerification) {
@@ -302,16 +338,18 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
                         String.format("The challenge authorization URI '%s' is invalid.", authorization), e));
             }
 
-            this.challenge = new ChallengeParameters(authorizationUri, new String[] {scope});
+            this.challenge = new ChallengeParameters(authorizationUri, new String[] {scope}).setClaims(claims);
 
             CHALLENGE_CACHE.put(authority, this.challenge);
         }
 
         TokenRequestContext tokenRequestContext = new TokenRequestContext()
             .addScopes(this.challenge.getScopes())
-            .setTenantId(this.challenge.getTenantId());
+            .setTenantId(this.challenge.getTenantId())
+            .setClaims(this.challenge.getClaims());
 
         setAuthorizationHeaderSync(context, tokenRequestContext);
+
         return true;
     }
 
@@ -319,6 +357,7 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
         private final URI authorizationUri;
         private final String tenantId;
         private final String[] scopes;
+        private String claims;
 
         ChallengeParameters(URI authorizationUri, String[] scopes) {
             this.authorizationUri = authorizationUri;
@@ -346,6 +385,22 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
          */
         public String getTenantId() {
             return tenantId;
+        }
+
+        /**
+         * Get the {@code claims} parameter from the challenge response.
+         */
+        public String getClaims() {
+            return claims;
+        }
+
+        /**
+         * Set the {@code claims} parameter from the challenge response.
+         */
+        public ChallengeParameters setClaims(String claims) {
+            this.claims = claims;
+
+            return this;
         }
     }
 
