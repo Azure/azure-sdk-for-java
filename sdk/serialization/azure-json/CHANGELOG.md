@@ -4,7 +4,7 @@
 
 ### Features Added
 
-- Added the ability to configure JSONC parsing with `JsonOptions`.
+- Added the ability to configure JSONC parsing with `JsonOptions.setJsoncSupported`.
 
 ### Other Changes
 
