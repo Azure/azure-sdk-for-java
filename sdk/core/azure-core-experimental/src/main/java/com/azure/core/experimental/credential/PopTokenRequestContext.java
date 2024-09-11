@@ -4,16 +4,13 @@
 package com.azure.core.experimental.credential;
 
 import com.azure.core.credential.TokenRequestContext;
-import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpMethod;
 import com.azure.core.util.logging.ClientLogger;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * The context for a Proof of Possession token request.
@@ -26,8 +23,9 @@ public final class PopTokenRequestContext extends TokenRequestContext {
     private String tenantId;
     private boolean isCaeEnabled;
     private String proofOfPossessionNonce;
-    private HttpRequest request;
     private boolean isProofOfPossessionEnabled;
+    private URL requestUrl;
+    private HttpMethod requestMethod;
 
     /**
      * Creates a new instance of the PopTokenRequestContext.
@@ -86,16 +84,6 @@ public final class PopTokenRequestContext extends TokenRequestContext {
     }
 
     /**
-     * Sets the scopes required for the token.
-     * @param request The HTTP request.
-     * @return The updated PopTokenRequestContext object.
-     */
-    public PopTokenRequestContext setRequest(HttpRequest request) {
-        this.request = request;
-        return this;
-    }
-
-    /**
      * Gets the claims required for the token.
      * @return The claims required for the token.
      */
@@ -131,16 +119,38 @@ public final class PopTokenRequestContext extends TokenRequestContext {
      * Gets the HTTP method.
      * @return The HTTP method.
      */
-    public String getResourceMethod() {
-        return request != null ? request.getHttpMethod().toString() : null;
+    public String getResourceRequestMethod() {
+        return requestMethod.toString();
+    }
+
+    /**
+     * Sets the HTTP method for the resource.
+     *
+     * @param resourceRequestMethod the HTTP method to set
+     * @return The updated PopTokenRequestContext
+     */
+    public PopTokenRequestContext setResourceRequestMethod(HttpMethod resourceRequestMethod) {
+        this.requestMethod = resourceRequestMethod;
+        return this;
     }
 
     /**
      * Gets the Request resource URL for PoP authentication flow.
      * @return The URL.
      */
-    public URL getRequestResourceUrl() {
-        return request != null ? request.getUrl() : null;
+    public URL getResourceRequestUrl() {
+        return requestUrl;
+    }
+
+    /**
+     * Sets the Request resource URL for PoP authentication flow.
+     *
+     * @param resourceRequestUrl the request URL to set.
+     * @return The updated PopTokenRequestContext.
+     */
+    public PopTokenRequestContext setResourceRequestUrl(URL resourceRequestUrl) {
+        this.requestUrl = resourceRequestUrl;
+        return this;
     }
 
     /**
