@@ -47,11 +47,13 @@ final class AzureJsonUtils {
 
     private static JsonParser configureParser(JsonParser parser, JsonOptions options) {
         boolean nonNumericSupported = options == null || options.isNonNumericNumbersSupported();
-
-        return parser.configure(JsonReadFeature.ALLOW_NON_NUMERIC_NUMBERS.mappedFeature(), nonNumericSupported);
+        boolean jsoncSupported = options != null && options.isJsoncSupported();
+        return parser
+            .configure(JsonReadFeature.ALLOW_NON_NUMERIC_NUMBERS.mappedFeature(), nonNumericSupported)
+            .configure(JsonParser.Feature.ALLOW_COMMENTS, jsoncSupported);
     }
 
-    /**
+     /**
      * Creates an instance of {@link JacksonJsonReader}.
      *
      * @param parser The {@link JsonParser} parsing JSON.

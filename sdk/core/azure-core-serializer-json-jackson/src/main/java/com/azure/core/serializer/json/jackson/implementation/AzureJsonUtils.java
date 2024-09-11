@@ -79,8 +79,11 @@ public final class AzureJsonUtils {
 
     private static JsonParser configureParser(JsonParser parser, JsonOptions options) {
         boolean nonNumericSupported = options == null || options.isNonNumericNumbersSupported();
+        boolean commentsSupported = options != null && options.isJsoncSupported();
 
-        return parser.configure(JsonReadFeature.ALLOW_NON_NUMERIC_NUMBERS.mappedFeature(), nonNumericSupported);
+        return parser
+            .configure(JsonReadFeature.ALLOW_NON_NUMERIC_NUMBERS.mappedFeature(), nonNumericSupported)
+            .configure(JsonParser.Feature.ALLOW_COMMENTS, commentsSupported);
     }
 
     /**
