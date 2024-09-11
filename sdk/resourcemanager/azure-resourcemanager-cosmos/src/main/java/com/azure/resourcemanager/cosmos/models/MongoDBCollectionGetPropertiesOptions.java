@@ -46,7 +46,9 @@ public final class MongoDBCollectionGetPropertiesOptions extends OptionsResource
      */
     @Override
     public void validate() {
-        super.validate();
+        if (autoscaleSettings() != null) {
+            autoscaleSettings().validate();
+        }
     }
 
     /**
