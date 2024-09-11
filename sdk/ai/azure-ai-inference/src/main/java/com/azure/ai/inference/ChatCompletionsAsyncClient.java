@@ -239,7 +239,7 @@ public final class ChatCompletionsAsyncClient {
      * generate text that continues from or "completes" provided prompt data.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Flux<StreamingChatCompletionsUpdate> completeStreaming(ChatCompletionsOptions options) {
+    public Flux<StreamingChatCompletionsUpdate> completeStream(ChatCompletionsOptions options) {
         options.setStream(true);
         RequestOptions requestOptions = new RequestOptions();
         Flux<ByteBuffer> responseStream = completeWithBinaryResponse(BinaryData.fromObject(options), requestOptions)

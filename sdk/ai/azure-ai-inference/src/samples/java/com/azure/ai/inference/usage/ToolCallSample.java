@@ -45,7 +45,7 @@ public final class ToolCallSample {
         ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(chatMessages);
         chatCompletionsOptions.setTools(Arrays.asList(toolDefinition));
 
-        IterableStream<StreamingChatCompletionsUpdate> chatCompletionsStream = client.completeStreaming(chatCompletionsOptions);
+        IterableStream<StreamingChatCompletionsUpdate> chatCompletionsStream = client.completeStream(chatCompletionsOptions);
 
         String toolCallId = null;
         String functionName = null;
@@ -115,7 +115,7 @@ public final class ToolCallSample {
                 toolRequestMessage
             );
 
-            IterableStream<StreamingChatCompletionsUpdate> followUpChatCompletionsStream = client.completeStreaming(
+            IterableStream<StreamingChatCompletionsUpdate> followUpChatCompletionsStream = client.completeStream(
                 new ChatCompletionsOptions(followUpMessages));
 
             StringBuilder finalResult = new StringBuilder();

@@ -34,7 +34,7 @@ public final class StreamingChatSampleAsync {
         chatMessages.add(new ChatRequestUserMessage("What's the best way to train a parrot?"));
 
 
-        client.completeStreaming(new ChatCompletionsOptions(chatMessages))
+        client.completeStream(new ChatCompletionsOptions(chatMessages))
             .map(chatCompletions -> {
                 /* The delta is the message content for a streaming response.
                  * Subsequence of streaming delta will be like:

@@ -4,8 +4,6 @@ package com.azure.ai.inference;
 
 import com.azure.ai.inference.models.*;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.rest.RequestOptions;
-import com.azure.core.util.BinaryData;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
@@ -58,7 +56,7 @@ public class ChatCompletionsAsyncClientTest extends ChatCompletionsClientTestBas
     public void testGetCompletionsStream(HttpClient httpClient) {
         client = getChatCompletionsAsyncClient(httpClient);
         getChatCompletionsFromMessagesRunner((chatMessages) -> {
-            StepVerifier.create(client.completeStreaming(new ChatCompletionsOptions(chatMessages)))
+            StepVerifier.create(client.completeStream(new ChatCompletionsOptions(chatMessages)))
                 .recordWith(ArrayList::new)
                 .thenConsumeWhile(chatCompletions -> {
                     assertCompletionsStream(chatCompletions);

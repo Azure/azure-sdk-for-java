@@ -134,7 +134,7 @@ chatMessages.add(new ChatRequestUserMessage("Can you help me?"));
 chatMessages.add(new ChatRequestAssistantMessage("Of course, me hearty! What can I do for ye?"));
 chatMessages.add(new ChatRequestUserMessage("What's the best way to train a parrot?"));
 
-client.completeStreaming(new ChatCompletionsOptions(chatMessages))
+client.completeStream(new ChatCompletionsOptions(chatMessages))
     .forEach(chatCompletions -> {
         if (CoreUtils.isNullOrEmpty(chatCompletions.getChoices())) {
             return;

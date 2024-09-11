@@ -34,7 +34,7 @@ public final class StreamingChatSample {
         chatMessages.add(new ChatRequestAssistantMessage("Of course, me hearty! What can I do for ye?"));
         chatMessages.add(new ChatRequestUserMessage("What's the best way to train a parrot?"));
 
-        IterableStream<StreamingChatCompletionsUpdate> chatCompletionsStream = client.completeStreaming(
+        IterableStream<StreamingChatCompletionsUpdate> chatCompletionsStream = client.completeStream(
             new ChatCompletionsOptions(chatMessages));
 
         // The delta is the message content for a streaming response.

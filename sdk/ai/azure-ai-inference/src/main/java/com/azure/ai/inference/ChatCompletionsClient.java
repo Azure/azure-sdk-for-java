@@ -260,7 +260,7 @@ public final class ChatCompletionsClient {
      * generate text that continues from or "completes" provided prompt data.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public IterableStream<StreamingChatCompletionsUpdate> completeStreaming(ChatCompletionsOptions options) {
+    public IterableStream<StreamingChatCompletionsUpdate> completeStream(ChatCompletionsOptions options) {
         options.setStream(true);
         RequestOptions requestOptions = new RequestOptions();
         CompleteRequest completeRequestObj
@@ -282,7 +282,7 @@ public final class ChatCompletionsClient {
             requestOptions.setHeader(HttpHeaderName.fromString("extra-parameters"), extraParams.toString());
         }
         Flux<ByteBuffer> responseStream
-            = completeStreamingWithResponse(completeRequest, requestOptions).getValue().toFluxByteBuffer();
+            = completeStreamWithResponse(completeRequest, requestOptions).getValue().toFluxByteBuffer();
         InferenceServerSentEvents<StreamingChatCompletionsUpdate> chatCompletionsStream
             = new InferenceServerSentEvents<>(responseStream, StreamingChatCompletionsUpdate.class);
         return new IterableStream<>(chatCompletionsStream.getEvents());
@@ -363,8 +363,8 @@ public final class ChatCompletionsClient {
      * text that continues from or "completes" provided prompt data along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> completeStreamingWithResponse(BinaryData chatCompletionsOptions,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> completeStreamWithResponse(BinaryData chatCompletionsOptions,
+                                                           RequestOptions requestOptions) {
         return serviceClient.completeWithResponse(chatCompletionsOptions, requestOptions);
     }
 

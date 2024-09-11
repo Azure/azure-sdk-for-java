@@ -4,8 +4,6 @@
 
 package com.azure.ai.inference;
 
-import com.azure.ai.inference.ChatCompletionsClient;
-import com.azure.ai.inference.ChatCompletionsClientBuilder;
 import com.azure.ai.inference.models.ChatCompletionsOptions;
 import com.azure.ai.inference.models.*;
 import com.azure.core.credential.AzureKeyCredential;
@@ -14,14 +12,11 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.IterableStream;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public final class ReadmeSamples {
@@ -83,7 +78,7 @@ public final class ReadmeSamples {
         chatMessages.add(new ChatRequestAssistantMessage("Of course, me hearty! What can I do for ye?"));
         chatMessages.add(new ChatRequestUserMessage("What's the best way to train a parrot?"));
 
-        client.completeStreaming(new ChatCompletionsOptions(chatMessages))
+        client.completeStream(new ChatCompletionsOptions(chatMessages))
             .forEach(chatCompletions -> {
                 if (CoreUtils.isNullOrEmpty(chatCompletions.getChoices())) {
                     return;

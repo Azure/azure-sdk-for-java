@@ -47,7 +47,7 @@ public class ChatCompletionsSyncClientTest extends ChatCompletionsClientTestBase
         getChatCompletionsRunner((prompt) -> {
             List<ChatRequestMessage> chatMessages = new ArrayList<>();
             chatMessages.add(new ChatRequestUserMessage(prompt));
-            IterableStream<StreamingChatCompletionsUpdate> resultCompletions = client.completeStreaming(new ChatCompletionsOptions(chatMessages));
+            IterableStream<StreamingChatCompletionsUpdate> resultCompletions = client.completeStream(new ChatCompletionsOptions(chatMessages));
             assertTrue(resultCompletions.stream().toArray().length > 1);
             resultCompletions.forEach(ChatCompletionsClientTestBase::assertCompletionsStream);
         });
@@ -108,7 +108,7 @@ public class ChatCompletionsSyncClientTest extends ChatCompletionsClientTestBase
         client = getChatCompletionsClient(httpClient);
         getChatCompletionsFromOptionsRunner(options -> {
             options.setStream(true);
-            Response<BinaryData> response = client.completeStreamingWithResponse(
+            Response<BinaryData> response = client.completeStreamWithResponse(
                 BinaryData.fromObject(options), new RequestOptions());
             assertResponseRequestHeader(response.getRequest());
             Flux<ByteBuffer> responseStream
