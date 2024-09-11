@@ -30,6 +30,7 @@ import com.azure.messaging.eventhubs.models.PartitionOwnership;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.api.trace.SpanKind;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.trace.SdkTracerProvider;
 import io.opentelemetry.sdk.trace.data.LinkData;
@@ -69,9 +70,12 @@ import static com.azure.messaging.eventhubs.TestUtils.assertAllAttributes;
 import static com.azure.messaging.eventhubs.TestUtils.assertSpanStatus;
 import static com.azure.messaging.eventhubs.TestUtils.attributesToMap;
 import static com.azure.messaging.eventhubs.TestUtils.getSpanName;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.GET_EVENT_HUB_PROPERTIES;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.GET_PARTITION_PROPERTIES;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.PROCESS;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.RECEIVE;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.CHECKPOINT;
+import static io.opentelemetry.api.trace.SpanKind.CLIENT;
 import static io.opentelemetry.api.trace.SpanKind.CONSUMER;
 import static io.opentelemetry.api.trace.SpanKind.INTERNAL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -344,6 +348,46 @@ public class EventHubsConsumerInstrumentationTests {
         }
     }
 
+    @Test
+    @SuppressWarnings("try")
+    public void instrumentGenericOperation() {
+        EventHubsConsumerInstrumentation instrumentation = new EventHubsConsumerInstrumentation(tracer, meter,
+            FQDN, ENTITY_NAME, CONSUMER_GROUP, false);
+
+        String partitionId = "1";
+
+        StepVerifier.create(instrumentation.instrumentMono(Mono.just("partition properties"), GET_PARTITION_PROPERTIES, partitionId))
+            .expectNextCount(1)
+            .expectComplete()
+            .verify();
+
+        assertOperationDuration(GET_PARTITION_PROPERTIES, partitionId, null);
+        assertGenericOperationSpan(GET_PARTITION_PROPERTIES, CLIENT, partitionId, null, null);
+    }
+
+    @ParameterizedTest
+    @MethodSource("genericErrors")
+    @SuppressWarnings("try")
+    public void instrumentGenericOperationErrors(boolean cancel, Throwable error, String expectedErrorType, String spanDescription) {
+        EventHubsConsumerInstrumentation instrumentation = new EventHubsConsumerInstrumentation(tracer, meter,
+            FQDN, ENTITY_NAME, CONSUMER_GROUP, false);
+
+        Mono<String> operation = Mono.defer(() -> error == null ? Mono.just("eh properties") : Mono.error(error));
+        StepVerifier.FirstStep<String> stepVerifier =
+            StepVerifier.create(instrumentation.instrumentMono(operation, GET_EVENT_HUB_PROPERTIES, null));
+
+        if (cancel) {
+            stepVerifier.thenCancel().verify();
+        } else if (error != null) {
+            stepVerifier.expectErrorMessage(error.getMessage()).verify();
+        } else {
+            stepVerifier.expectNextCount(1).expectComplete().verify();
+        }
+
+        assertOperationDuration(GET_EVENT_HUB_PROPERTIES, null, expectedErrorType);
+        assertGenericOperationSpan(GET_EVENT_HUB_PROPERTIES, CLIENT, null, expectedErrorType, spanDescription);
+    }
+
     public static Stream<Arguments> processErrors() {
         AmqpException amqpException = new AmqpException(false, AmqpErrorCondition.SERVER_BUSY_ERROR, null, new RuntimeException("test"), null);
         return Stream.of(
@@ -414,7 +458,7 @@ public class EventHubsConsumerInstrumentationTests {
         }
     }
 
-    public static Stream<Arguments> checkpointErrors() {
+    public static Stream<Arguments> genericErrors() {
         return Stream.of(
                 Arguments.of(false, null, null, null),
                 Arguments.of(true, null, "cancelled", "cancelled"),
@@ -435,7 +479,7 @@ public class EventHubsConsumerInstrumentationTests {
     }
 
     @ParameterizedTest
-    @MethodSource("checkpointErrors")
+    @MethodSource("genericErrors")
     @SuppressWarnings("try")
     public void checkpoint(boolean cancel, Throwable error, String expectedErrorType, String spanDescription) {
         EventHubsConsumerInstrumentation instrumentation = new EventHubsConsumerInstrumentation(tracer, meter,
@@ -540,36 +584,27 @@ public class EventHubsConsumerInstrumentationTests {
     }
 
     private SpanData assertReceiveSpan(int expectedBatchSize, String partitionId, String expectedErrorType, String spanDescription) {
-        assertEquals(1, spanProcessor.getEndedSpans().size());
-        SpanData span = spanProcessor.getEndedSpans().get(0).toSpanData();
-        assertEquals(getSpanName(RECEIVE, ENTITY_NAME), span.getName());
-        assertEquals(CONSUMER, span.getKind());
+        SpanData span = assertGenericOperationSpan(RECEIVE, CLIENT, partitionId, expectedErrorType, spanDescription);
         Map<String, Object> attributes = attributesToMap(span.getAttributes());
-        assertAllAttributes(FQDN, ENTITY_NAME, partitionId, CONSUMER_GROUP, expectedErrorType, RECEIVE, attributes);
-        assertSpanStatus(spanDescription, span);
-
         assertEquals((long) expectedBatchSize, attributes.get("messaging.batch.message_count"));
         return span;
     }
 
     private SpanData assertProcessSpan(String partitionId, String expectedErrorType, String spanDescription) {
-        assertEquals(1, spanProcessor.getEndedSpans().size());
-        SpanData span = spanProcessor.getEndedSpans().get(0).toSpanData();
-        assertEquals(getSpanName(PROCESS, ENTITY_NAME), span.getName());
-        assertEquals(CONSUMER, span.getKind());
-        Map<String, Object> attributes = attributesToMap(span.getAttributes());
-        assertAllAttributes(FQDN, ENTITY_NAME, partitionId, CONSUMER_GROUP, expectedErrorType, PROCESS, attributes);
-        assertSpanStatus(spanDescription, span);
-        return span;
+        return assertGenericOperationSpan(PROCESS, CONSUMER, partitionId, expectedErrorType, spanDescription);
     }
 
     private SpanData assertCheckpointSpan(String partitionId, String expectedErrorType, String spanDescription) {
+        return assertGenericOperationSpan(CHECKPOINT, INTERNAL, partitionId, expectedErrorType, spanDescription);
+    }
+
+    private SpanData assertGenericOperationSpan(OperationName operation, SpanKind kind, String partitionId, String expectedErrorType, String spanDescription) {
         assertEquals(1, spanProcessor.getEndedSpans().size());
         SpanData span = spanProcessor.getEndedSpans().get(0).toSpanData();
-        assertEquals(getSpanName(CHECKPOINT, ENTITY_NAME), span.getName());
-        assertEquals(INTERNAL, span.getKind());
+        assertEquals(getSpanName(operation, ENTITY_NAME), span.getName());
+        assertEquals(kind, span.getKind());
         Map<String, Object> attributes = attributesToMap(span.getAttributes());
-        assertAllAttributes(FQDN, ENTITY_NAME, partitionId, CONSUMER_GROUP, expectedErrorType, CHECKPOINT, attributes);
+        assertAllAttributes(FQDN, ENTITY_NAME, partitionId, CONSUMER_GROUP, expectedErrorType, operation, attributes);
         assertSpanStatus(spanDescription, span);
         return span;
     }

@@ -5,7 +5,6 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.util.Context;
 import com.azure.core.util.metrics.Meter;
-import com.azure.core.util.tracing.SpanKind;
 import com.azure.core.util.tracing.StartSpanOptions;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsMetricsProvider;
@@ -17,8 +16,11 @@ import reactor.core.publisher.Mono;
 
 import java.util.function.BiConsumer;
 
+import static com.azure.core.util.tracing.SpanKind.CLIENT;
+import static com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_BATCH_MESSAGE_COUNT;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_DESTINATION_PARTITION_ID;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.SEND;
 
 class EventHubsProducerInstrumentation {
     private final EventHubsTracer tracer;
@@ -39,7 +41,7 @@ class EventHubsProducerInstrumentation {
 
         return Mono.using(
                 () -> new InstrumentationScope(tracer, meter, reportMetricsCallback)
-                        .setSpan(startPublishSpanWithLinks(batch, Context.NONE)),
+                        .setSpan(startPublishSpanWithLinks(batch)),
                 scope -> publisher
                     .doOnError(scope::setError)
                     .doOnCancel(scope::setCancelled),
@@ -50,12 +52,27 @@ class EventHubsProducerInstrumentation {
         return tracer;
     }
 
-    private Context startPublishSpanWithLinks(EventDataBatch batch, Context context) {
-        if (!tracer.isEnabled()) {
-            return context;
+    public <T> Mono<T> instrumentMono(Mono<T> publisher, OperationName operationName, String partitionId) {
+        if (!isEnabled()) {
+            return publisher;
         }
 
-        StartSpanOptions startOptions = tracer.createStartOptions(SpanKind.CLIENT, OperationName.SEND, null);
+        return Mono.using(
+            () -> new InstrumentationScope(tracer, meter, (m, s) -> m.reportGenericOperationDuration(operationName, partitionId, s))
+                .setSpan(tracer.startGenericOperationSpan(operationName, partitionId, Context.NONE)),
+            scope -> publisher
+                .doOnError(scope::setError)
+                .doOnCancel(scope::setCancelled)
+                .contextWrite(c -> c.put(PARENT_TRACE_CONTEXT_KEY, scope.getSpan())),
+            InstrumentationScope::close);
+    }
+
+    private Context startPublishSpanWithLinks(EventDataBatch batch) {
+        if (!tracer.isEnabled()) {
+            return Context.NONE;
+        }
+
+        StartSpanOptions startOptions = tracer.createStartOptions(CLIENT, SEND, null);
         if (batch != null) {
             startOptions.setAttribute(MESSAGING_BATCH_MESSAGE_COUNT, batch.getCount());
             if (batch.getPartitionId() != null) {
@@ -66,7 +83,7 @@ class EventHubsProducerInstrumentation {
             }
         }
 
-        return tracer.startSpan(OperationName.SEND, startOptions, context);
+        return tracer.startSpan(SEND, startOptions, Context.NONE);
     }
 
     private boolean isEnabled() {

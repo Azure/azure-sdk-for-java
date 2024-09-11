@@ -17,12 +17,12 @@ public final class InstrumentationScope implements AutoCloseable {
     private final EventHubsMetricsProvider meter;
     private final EventHubsTracer tracer;
     private final boolean isEnabled;
+    private final BiConsumer<EventHubsMetricsProvider, InstrumentationScope> reportMetricsCallback;
     private Instant startTime;
     private Throwable error;
     private String errorType;
     private Context span = Context.NONE;
     private AutoCloseable spanScope;
-    private BiConsumer<EventHubsMetricsProvider, InstrumentationScope> reportMetricsCallback;
     private boolean closed = false;
 
     public InstrumentationScope(EventHubsTracer tracer,
@@ -66,6 +66,7 @@ public final class InstrumentationScope implements AutoCloseable {
         if (isEnabled && error == null) {
             errorType = CANCELLED_ERROR_TYPE_VALUE;
         }
+
         return this;
     }
 

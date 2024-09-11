@@ -4,7 +4,6 @@
 package com.azure.messaging.eventhubs.implementation.instrumentation;
 
 import com.azure.core.util.Context;
-import com.azure.core.util.tracing.SpanKind;
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.messaging.eventhubs.models.Checkpoint;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
@@ -13,6 +12,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 
+import static com.azure.core.util.tracing.SpanKind.INTERNAL;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.CHECKPOINT;
 
 public final class InstrumentedCheckpointStore implements CheckpointStore {
@@ -62,7 +62,7 @@ public final class InstrumentedCheckpointStore implements CheckpointStore {
 
     private Context startSpan(String partitionId) {
         return tracer.isEnabled()
-                ? tracer.startSpan(CHECKPOINT, tracer.createStartOptions(SpanKind.INTERNAL, CHECKPOINT, partitionId), Context.NONE)
+                ? tracer.startSpan(CHECKPOINT, tracer.createStartOptions(INTERNAL, CHECKPOINT, partitionId), Context.NONE)
                 : Context.NONE;
     }
 }

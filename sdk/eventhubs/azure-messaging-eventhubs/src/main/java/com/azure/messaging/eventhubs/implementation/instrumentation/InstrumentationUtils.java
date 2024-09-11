@@ -37,9 +37,6 @@ public final class InstrumentationUtils {
     public static final String MESSAGING_SYSTEM_VALUE = "eventhubs";
     public static final String CANCELLED_ERROR_TYPE_VALUE = "cancelled";
 
-    // _OTHER is a magic string defined in OpenTelemetry for 'unknown' errors
-    public static final String OTHER_ERROR_TYPE_VALUE =  "_OTHER";
-
     // context propagation constants
     public static final String TRACEPARENT_KEY = "traceparent";
     public static final String DIAGNOSTIC_ID_KEY = "Diagnostic-Id";
@@ -64,7 +61,7 @@ public final class InstrumentationUtils {
             return ((AmqpException) error).getErrorCondition().getErrorCondition();
         }
 
-        return (error != null) ? error.getClass().getName() : OTHER_ERROR_TYPE_VALUE;
+        return error.getClass().getName();
     }
 
     public static Throwable unwrap(Throwable error) {

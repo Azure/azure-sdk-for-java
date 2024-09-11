@@ -18,6 +18,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.AmqpReceiveLinkProcessor;
 import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
 import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsConsumerInstrumentation;
+import com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentedMessageFlux;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
 import com.azure.messaging.eventhubs.models.ReceiveOptions;
@@ -308,7 +309,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EventHubProperties> getEventHubProperties() {
-        return instrumentation.getTracer().traceMono(connectionProcessor.getManagementNodeWithRetries()
+        return instrumentation.instrumentMono(connectionProcessor.getManagementNodeWithRetries()
                 .flatMap(EventHubManagementNode::getEventHubProperties),
             GET_EVENT_HUB_PROPERTIES, null);
     }
@@ -341,7 +342,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
             return monoError(LOGGER, new IllegalArgumentException("'partitionId' cannot be an empty string."));
         }
 
-        return instrumentation.getTracer().traceMono(
+        return instrumentation.instrumentMono(
             connectionProcessor.getManagementNodeWithRetries().flatMap(node -> node.getPartitionProperties(partitionId)),
             GET_PARTITION_PROPERTIES, partitionId);
     }
@@ -589,8 +590,8 @@ public class EventHubConsumerAsyncClient implements Closeable {
 
         final MessageFluxWrapper linkMessageProcessor;
         if (connectionProcessor.isV2()) {
-            final MessageFlux messageFlux = new MessageFlux(receiveLinkFlux, prefetchCount, CreditFlowMode.EmissionDriven, MessageFlux.NULL_RETRY_POLICY);
-            linkMessageProcessor = new MessageFluxWrapper(messageFlux);
+            MessageFlux messageFlux = new MessageFlux(receiveLinkFlux, prefetchCount, CreditFlowMode.EmissionDriven, MessageFlux.NULL_RETRY_POLICY);
+            linkMessageProcessor = new MessageFluxWrapper(InstrumentedMessageFlux.instrument(messageFlux, partitionId, instrumentation));
         } else {
             final AmqpReceiveLinkProcessor receiveLinkProcessor = receiveLinkFlux.subscribeWith(
                 new AmqpReceiveLinkProcessor(entityPath, prefetchCount, partitionId, connectionProcessor, instrumentation));

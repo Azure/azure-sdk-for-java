@@ -6,6 +6,8 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.tracing.opentelemetry.OpenTelemetryTracingOptions;
 import com.azure.core.util.ClientOptions;
+import com.azure.core.util.Configuration;
+import com.azure.core.util.ConfigurationBuilder;
 import com.azure.core.util.TracingOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.instrumentation.OperationName;
@@ -26,11 +28,13 @@ import io.opentelemetry.sdk.trace.ReadableSpan;
 import io.opentelemetry.sdk.trace.SdkTracerProvider;
 import io.opentelemetry.sdk.trace.data.LinkData;
 import io.opentelemetry.sdk.trace.data.SpanData;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.api.parallel.Isolated;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
@@ -65,7 +69,6 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 @Isolated("Sets global TracingProvider.")
 @Execution(ExecutionMode.SAME_THREAD)
-@Disabled("Tracing tests need to be disabled until the discrepancy with the core is resolved.")
 public class TracingIntegrationTests extends IntegrationTestBase {
     private static final byte[] CONTENTS_BYTES = "Some-contents".getBytes(StandardCharsets.UTF_8);
     private static final String PARTITION_ID = "0";
@@ -91,38 +94,54 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         GlobalOpenTelemetry.resetForTest();
 
         spanProcessor = toClose(new TestSpanProcessor(getFullyQualifiedDomainName(), getEventHubName(), testName));
-        OpenTelemetrySdk.builder()
+        OpenTelemetrySdk otel = OpenTelemetrySdk.builder()
             .setTracerProvider(
                 SdkTracerProvider.builder()
                     .addSpanProcessor(spanProcessor)
                     .build())
             .buildAndRegisterGlobal();
 
-        createClients(null);
+        createClients(otel, null);
 
         testStartTime = Instant.now().minusSeconds(1);
         data = new EventData(CONTENTS_BYTES);
     }
 
-    private void createClients(OpenTelemetrySdk otel) {
+    private Configuration createConfiguration(String v2Stack) {
+        ConfigurationBuilder configBuilder = new ConfigurationBuilder();
+
+        if (v2Stack == null) {
+            return configBuilder.build();
+        }
+
+        return configBuilder
+            .putProperty("com.azure.messaging.eventhubs.v2", v2Stack)
+            .build();
+    }
+
+    private void createClients(OpenTelemetrySdk otel, String v2Stack) {
         dispose();
         ClientOptions options = new ClientOptions();
         if (otel != null) {
             options.setTracingOptions(new OpenTelemetryTracingOptions().setOpenTelemetry(otel));
         }
 
+        Configuration config = createConfiguration(v2Stack);
 
         producer = toClose(createBuilder()
             .clientOptions(options)
+            .configuration(config)
             .buildAsyncProducerClient());
 
         consumer = toClose(createBuilder()
             .clientOptions(options)
+            .configuration(config)
             .consumerGroup("$Default")
             .buildAsyncConsumerClient());
 
         consumerSync = toClose(createBuilder()
             .clientOptions(options)
+            .configuration(config)
             .consumerGroup("$Default")
             .buildConsumerClient());
     }
@@ -132,10 +151,14 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         GlobalOpenTelemetry.resetForTest();
     }
 
-    @Test
-    public void sendAndReceiveFromPartition() throws InterruptedException {
+    @ParameterizedTest
+    @ValueSource(strings = {"true", "false"})
+    @NullSource
+    public void sendAndReceiveFromPartition(String v2) throws InterruptedException {
         AtomicReference<EventData> receivedMessage = new AtomicReference<>();
         AtomicReference<Span> receivedSpan = new AtomicReference<>();
+
+        createClients(null, v2);
 
         CountDownLatch latch = new CountDownLatch(2);
         spanProcessor.notifyIfCondition(latch, span -> span == receivedSpan.get() || hasOperationName(span, SEND));
@@ -176,7 +199,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         spanProcessor.notifyIfCondition(latch, span -> span == receivedSpan.get() || hasOperationName(span, SEND));
         toClose(consumer
             .receive()
-            .take(1)
+            .take(DEFAULT_TIMEOUT)
             .subscribe(pe -> {
                 if (receivedMessage.compareAndSet(null, pe.getData())) {
                     receivedSpan.compareAndSet(null, Span.current());
@@ -213,7 +236,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
                     .build())
             .build();
 
-        createClients(otel);
+        createClients(otel, null);
 
         CountDownLatch latch = new CountDownLatch(2);
         customSpanProcessor.notifyIfCondition(latch, span -> span == receivedSpan.get() || hasOperationName(span, SEND));
@@ -344,8 +367,10 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         assertEquals(2, received.size());
     }
 
-    @Test
-    public void syncReceive() {
+    @ParameterizedTest
+    @ValueSource(strings = {"true", "false"})
+    public void syncReceive(String v2) {
+        createClients(null, v2);
         StepVerifier.create(producer.createBatch(new CreateBatchOptions().setPartitionId(PARTITION_ID))
                 .map(b -> {
                     b.tryAdd(new EventData(CONTENTS_BYTES));
@@ -404,11 +429,13 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         assertSyncConsumerSpan(received.get(0), receivedMessages);
     }
 
-    @Test
-    public void sendAndProcess() throws InterruptedException {
+    @ParameterizedTest
+    @ValueSource(strings = {"true", "false"})
+    public void sendAndProcess(String v2) throws InterruptedException {
         AtomicReference<Span> currentInProcess = new AtomicReference<>();
         AtomicReference<EventData> receivedMessage = new AtomicReference<>();
 
+        createClients(null, v2);
         CountDownLatch latch = new CountDownLatch(2);
         spanProcessor.notifyIfCondition(latch, span -> span == currentInProcess.get() || hasOperationName(span, SEND));
 
@@ -421,6 +448,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .credential(builder.getFullyQualifiedNamespace(), builder.getEventHubName(), builder.getCredentials())
             .initialPartitionEventPosition(Collections.singletonMap(PARTITION_ID, EventPosition.fromEnqueuedTime(testStartTime)))
             .consumerGroup("$Default")
+            .configuration(createConfiguration(v2))
             .checkpointStore(new SampleCheckpointStore())
             .processEvent(ec -> {
                 if (currentInProcess.compareAndSet(null, Span.current())) {
@@ -528,13 +556,16 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         }
     }
 
-    @Test
-    public void sendAndProcessBatch() throws InterruptedException {
+    @ParameterizedTest
+    @ValueSource(strings = {"true", "false"})
+    public void sendAndProcessBatch(String v2) throws InterruptedException {
         EventData message1 = new EventData(CONTENTS_BYTES);
         EventData message2 = new EventData(CONTENTS_BYTES);
         AtomicReference<Span> currentInProcess = new AtomicReference<>();
         AtomicReference<List<EventData>> received = new AtomicReference<>();
         CountDownLatch latch = new CountDownLatch(1);
+
+        createClients(null, v2);
         spanProcessor.notifyIfCondition(latch, span -> span == currentInProcess.get());
         StepVerifier.create(producer.send(Arrays.asList(message1, message2), new SendOptions().setPartitionId(PARTITION_ID)))
             .expectComplete()
@@ -546,6 +577,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .credential(builder.getFullyQualifiedNamespace(), builder.getEventHubName(), builder.getCredentials())
             .initialPartitionEventPosition(Collections.singletonMap(PARTITION_ID, EventPosition.fromEnqueuedTime(testStartTime)))
             .consumerGroup("$Default")
+            .configuration(createConfiguration(v2))
             .checkpointStore(new SampleCheckpointStore())
             .processEventBatch(eb -> {
                 if (currentInProcess.compareAndSet(null, Span.current())) {
@@ -760,4 +792,5 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     private boolean hasOperationName(ReadableSpan span, OperationName operationName) {
         return operationName.toString().equals(span.getAttribute(OPERATION_NAME_ATTRIBUTE));
     }
+
 }

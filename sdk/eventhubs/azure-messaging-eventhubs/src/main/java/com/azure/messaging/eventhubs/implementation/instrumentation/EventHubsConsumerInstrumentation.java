@@ -16,12 +16,14 @@ import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.time.Instant;
 import java.util.function.BiConsumer;
 
 import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
-import static com.azure.core.util.tracing.SpanKind.CONSUMER;
+import static com.azure.core.util.tracing.SpanKind.CLIENT;
+import static com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_BATCH_MESSAGE_COUNT;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_DESTINATION_PARTITION_ID;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.RECEIVE;
@@ -39,6 +41,7 @@ public class EventHubsConsumerInstrumentation {
         this.isSync = isSyncConsumer;
     }
 
+
     public EventHubsTracer getTracer() {
         return tracer;
     }
@@ -52,7 +55,7 @@ public class EventHubsConsumerInstrumentation {
             return NOOP_SCOPE;
         }
 
-        InstrumentationScope scope = createScope((m, s) ->  {
+        InstrumentationScope scope = createScope((m, s) -> {
             if (!isSync) {
                 m.reportProcess(1, partitionId, s);
             }
@@ -62,8 +65,8 @@ public class EventHubsConsumerInstrumentation {
             ApplicationProperties properties = message.getApplicationProperties();
             scope.setSpan(tracer.startProcessSpan(properties == null ? null : properties.getValue(),
                             enqueuedTime,
-                            partitionId,
-                            Context.NONE))
+                            partitionId
+                ))
                     .makeSpanCurrent();
         }
 
@@ -78,7 +81,7 @@ public class EventHubsConsumerInstrumentation {
             return events;
         }
 
-        StartSpanOptions startOptions = tracer.isEnabled() ? tracer.createStartOptions(CONSUMER, RECEIVE, partitionId) : null;
+        StartSpanOptions startOptions = tracer.isEnabled() ? tracer.createStartOptions(CLIENT, RECEIVE, partitionId) : null;
         Integer[] receivedCount = new Integer[]{0};
 
         return Flux.using(
@@ -119,7 +122,7 @@ public class EventHubsConsumerInstrumentation {
                 m.reportProcess(batchContext.getEvents().size(), batchContext.getPartitionContext().getPartitionId(), s));
 
         return scope
-                .setSpan(tracer.startProcessSpan(batchContext, Context.NONE))
+                .setSpan(tracer.startProcessSpan(batchContext))
                 .makeSpanCurrent();
     }
 
@@ -134,15 +137,30 @@ public class EventHubsConsumerInstrumentation {
 
         Context span = tracer.startProcessSpan(event.getProperties(),
                 event.getEnqueuedTime(),
-                eventContext.getPartitionContext().getPartitionId(),
-                Context.NONE);
+                eventContext.getPartitionContext().getPartitionId()
+        );
 
         return scope
                 .setSpan(span)
                 .makeSpanCurrent();
     }
 
-    boolean isEnabled() {
+    public <T> Mono<T> instrumentMono(Mono<T> publisher, OperationName operationName, String partitionId) {
+        if (!isEnabled()) {
+            return publisher;
+        }
+
+        return Mono.using(
+            () -> createScope((m, s) -> m.reportGenericOperationDuration(operationName, partitionId, s))
+                .setSpan(tracer.startGenericOperationSpan(operationName, partitionId, Context.NONE)),
+            scope -> publisher
+                .doOnError(scope::setError)
+                .doOnCancel(scope::setCancelled)
+                .contextWrite(c -> c.put(PARENT_TRACE_CONTEXT_KEY, scope.getSpan())),
+            InstrumentationScope::close);
+    }
+
+    public boolean isEnabled() {
         return tracer.isEnabled() || meter.isEnabled();
     }
 }

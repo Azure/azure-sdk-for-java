@@ -260,7 +260,7 @@ public class EventHubConsumerClient implements Closeable {
         }
 
         if (consumer.isV2()) {
-            // TODO(limolkova) instrument
+            // Sync receiver instrumentation is implemented in the SynchronousReceiver class
             return syncReceiver.receive(partitionId, startingPosition, defaultReceiveOptions, maximumMessageCount,
                 maximumWaitTime);
         }
@@ -315,7 +315,7 @@ public class EventHubConsumerClient implements Closeable {
         }
 
         if (consumer.isV2()) {
-            // TODO (instrument)
+            // Sync receiver instrumentation is implemented in the SynchronousReceiver class
             return syncReceiver.receive(partitionId, startingPosition, receiveOptions, maximumMessageCount,
                 maximumWaitTime);
         }

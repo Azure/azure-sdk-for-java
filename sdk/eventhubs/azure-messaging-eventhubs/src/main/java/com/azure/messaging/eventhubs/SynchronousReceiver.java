@@ -132,8 +132,7 @@ final class SynchronousReceiver {
         final WindowedSubscriberOptions<PartitionEvent> options = new WindowedSubscriberOptions<>();
         options.setWindowDecorator(toDecorate -> {
             // Decorates the provided 'toDecorate' flux for tracing the signals (events, termination) it produces.
-            return toDecorate;
-            //return instrumentation.reportSyncReceiveSpan(SYNC_RECEIVE_SPAN_NAME, startTime, toDecorate, Context.NONE);
+            return instrumentation.syncReceive(toDecorate, partitionId);
         });
         return new WindowedSubscriber<>(Collections.singletonMap(PARTITION_ID_KEY, partitionId), TERMINAL_MESSAGE, options);
     }

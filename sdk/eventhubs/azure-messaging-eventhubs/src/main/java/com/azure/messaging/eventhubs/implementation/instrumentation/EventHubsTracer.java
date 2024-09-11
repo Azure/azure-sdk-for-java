@@ -13,7 +13,6 @@ import com.azure.core.util.tracing.Tracer;
 import com.azure.core.util.tracing.TracingLink;
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.models.EventBatchContext;
-import reactor.core.publisher.Mono;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
@@ -22,7 +21,10 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-import static com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY;
+import static com.azure.core.util.tracing.SpanKind.CLIENT;
+import static com.azure.core.util.tracing.SpanKind.CONSUMER;
+import static com.azure.core.util.tracing.SpanKind.PRODUCER;
+
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 import static com.azure.messaging.eventhubs.EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.DIAGNOSTIC_ID_KEY;
@@ -73,21 +75,14 @@ public class EventHubsTracer {
         return isEnabled() ? tracer.start(getSpanName(operationName), startOptions, context) : context;
     }
 
-    public <T> Mono<T> traceMono(Mono<T> publisher, OperationName operationName, String partitionId) {
+    public Context startGenericOperationSpan(OperationName operationName, String partitionId, Context parent) {
         if (!isEnabled()) {
-            return publisher;
+            return parent;
         }
 
-        return Mono.using(
-                () -> new InstrumentationScope(this, null, null)
-                            .setSpan(tracer.start(getSpanName(operationName),
-                                    createStartOptions(SpanKind.CLIENT, operationName, partitionId),
-                                            Context.NONE)),
-                scope -> publisher
-                        .doOnError(scope::setError)
-                        .doOnCancel(scope::setCancelled)
-                        .contextWrite(c -> c.put(PARENT_TRACE_CONTEXT_KEY, scope.getSpan())),
-                InstrumentationScope::close);
+        return tracer.start(getSpanName(operationName),
+                    createStartOptions(CLIENT, operationName, partitionId),
+                    parent);
     }
 
     /**
@@ -106,7 +101,7 @@ public class EventHubsTracer {
         }
 
         // Starting the span makes the sampling decision (nothing is logged at this time)
-        StartSpanOptions startOptions = createStartOptions(SpanKind.PRODUCER, EVENT, null);
+        StartSpanOptions startOptions = createStartOptions(PRODUCER, EVENT, null);
 
         Context eventSpanContext = tracer.start(getSpanName(EVENT), startOptions, eventContext);
 
@@ -133,9 +128,7 @@ public class EventHubsTracer {
         tracer.end(error, exception, eventSpanContext);
 
         Optional<Object> spanContext = eventSpanContext.getData(SPAN_CONTEXT_KEY);
-        if (spanContext.isPresent()) {
-            eventData.addContext(SPAN_CONTEXT_KEY, spanContext.get());
-        }
+        spanContext.ifPresent(o -> eventData.addContext(SPAN_CONTEXT_KEY, o));
     }
 
     public TracingLink createLink(Map<String, Object> applicationProperties, Instant enqueuedTime) {
@@ -189,10 +182,10 @@ public class EventHubsTracer {
         return isEnabled() ? tracer.makeSpanCurrent(context) : NOOP_AUTOCLOSEABLE;
     }
 
-    Context startProcessSpan(Map<String, Object> applicationProperties, Instant enqueuedTime, String partitionId, Context parent) {
+    Context startProcessSpan(Map<String, Object> applicationProperties, Instant enqueuedTime, String partitionId) {
         if (isEnabled()) {
             Context remoteContext = extractContext(applicationProperties);
-            StartSpanOptions startOptions = createStartOptions(SpanKind.CONSUMER, PROCESS, partitionId)
+            StartSpanOptions startOptions = createStartOptions(CONSUMER, PROCESS, partitionId)
                 .addLink(createLink(remoteContext, null))
                 .setRemoteParent(remoteContext);
 
@@ -201,15 +194,15 @@ public class EventHubsTracer {
                 startOptions.setAttribute(MESSAGING_EVENTHUBS_MESSAGE_ENQUEUED_TIME, enqueuedTime.atOffset(ZoneOffset.UTC).toEpochSecond());
             }
 
-            return tracer.start(getSpanName(PROCESS), startOptions, parent);
+            return tracer.start(getSpanName(PROCESS), startOptions, Context.NONE);
         }
 
-        return parent;
+        return Context.NONE;
     }
 
-    Context startProcessSpan(EventBatchContext batchContext, Context parent) {
+    Context startProcessSpan(EventBatchContext batchContext) {
         if (isEnabled() && batchContext != null && !CoreUtils.isNullOrEmpty(batchContext.getEvents())) {
-            StartSpanOptions startOptions = createStartOptions(SpanKind.CONSUMER, PROCESS,
+            StartSpanOptions startOptions = createStartOptions(CONSUMER, PROCESS,
                     batchContext.getPartitionContext().getPartitionId());
             startOptions.setAttribute(MESSAGING_BATCH_MESSAGE_COUNT, batchContext.getEvents().size());
 
@@ -217,10 +210,10 @@ public class EventHubsTracer {
                 startOptions.addLink(createLink(event.getProperties(), event.getEnqueuedTime()));
             }
 
-            return tracer.start(getSpanName(PROCESS), startOptions, parent);
+            return tracer.start(getSpanName(PROCESS), startOptions, Context.NONE);
         }
 
-        return parent;
+        return Context.NONE;
     }
 
     public StartSpanOptions createStartOptions(SpanKind kind, OperationName operationName, String partitionId) {

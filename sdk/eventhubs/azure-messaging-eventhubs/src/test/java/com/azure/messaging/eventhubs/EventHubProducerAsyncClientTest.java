@@ -35,6 +35,7 @@ import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubConnectionProcessor;
 import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
 import com.azure.messaging.eventhubs.implementation.EventHubReactorAmqpConnection;
+import com.azure.messaging.eventhubs.implementation.instrumentation.OperationName;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.apache.qpid.proton.Proton;
@@ -84,6 +85,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
@@ -1099,7 +1101,7 @@ class EventHubProducerAsyncClientTest {
             .verify(DEFAULT_TIMEOUT);
 
         assertSendCount(meter, null, 1, expectedErrorType, null);
-        assertSendDuration(meter, null, null, expectedErrorType, null);
+        assertOperationDuration(meter, SEND, null, null, expectedErrorType, null);
     }
 
     @Test
@@ -1124,7 +1126,47 @@ class EventHubProducerAsyncClientTest {
             .verify(DEFAULT_TIMEOUT);
 
         assertSendCount(meter, partitionId, 1, null, null);
-        assertSendDuration(meter, partitionId, null, null, null);
+        assertOperationDuration(meter, SEND, partitionId, null, null, null);
+    }
+
+    @Test
+    void getPropertiesReportMetrics() {
+        String partitionId = "1";
+        String entityPath = EVENT_HUB_NAME + "/Partitions/" + partitionId;
+        when(connection.createSendLink(eq(entityPath), eq(entityPath), any(), any())).thenReturn(Mono.just(sendLink));
+        when(sendLink.send(anyList())).thenReturn(Mono.empty());
+        when(sendLink.getHostname()).thenReturn(HOSTNAME);
+        when(sendLink.getEntityPath()).thenReturn(entityPath);
+        when(sendLink.getLinkName()).thenReturn(entityPath);
+        when(sendLink.send(any(Message.class))).thenReturn(Mono.empty());
+
+        EventHubManagementNode managementNode = mock(EventHubManagementNode.class);
+        EventHubProperties ehProperties = new EventHubProperties(EVENT_HUB_NAME, Instant.now(), new String[]{partitionId});
+        PartitionProperties partitionProperties = new PartitionProperties(EVENT_HUB_NAME, partitionId,
+            1L, 2L, OffsetDateTime.now().toString(), Instant.now(), false);
+
+        when(connection.getManagementNode()).thenReturn(Mono.just(managementNode));
+        when(managementNode.getEventHubProperties()).thenReturn(Mono.just(ehProperties));
+        when(managementNode.getPartitionProperties(anyString())).thenReturn(Mono.just(partitionProperties));
+
+        TestMeter meter = new TestMeter();
+        EventHubsProducerInstrumentation instrumentation = new EventHubsProducerInstrumentation(null, meter, HOSTNAME, EVENT_HUB_NAME);
+        EventHubProducerAsyncClient producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
+            connectionProcessor, retryOptions, messageSerializer, testScheduler, false, onClientClosed, CLIENT_IDENTIFIER, instrumentation);
+
+        StepVerifier.create(producer.getPartitionProperties(partitionId))
+            .expectNextCount(1)
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
+
+        assertOperationDuration(meter, GET_PARTITION_PROPERTIES, partitionId, null, null, null);
+
+        StepVerifier.create(producer.getEventHubProperties())
+            .expectNextCount(1)
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
+
+        assertOperationDuration(meter, GET_EVENT_HUB_PROPERTIES, null, null, null, null);
     }
 
     @Test
@@ -1174,7 +1216,7 @@ class EventHubProducerAsyncClientTest {
             .verify(DEFAULT_TIMEOUT);
 
         assertSendCount(meter, null, 1, null, "parent span");
-        assertSendDuration(meter, null, null, null, "parent span");
+        assertOperationDuration(meter, SEND, null, null, null, "parent span");
     }
 
     @Test
@@ -1625,17 +1667,20 @@ class EventHubProducerAsyncClientTest {
         }
     }
 
-    private void assertSendDuration(TestMeter meter, String partitionId, Double expectedValue, String expectedErrorType, Object parentContext) {
-        TestHistogram sendDuration = meter.getHistograms().get("messaging.client.operation.duration");
-        assertNotNull(sendDuration);
-        List<TestMeasurement<Double>> measurements = sendDuration.getMeasurements();
+    private void assertOperationDuration(TestMeter meter, OperationName operation, String partitionId, Double expectedValue, String expectedErrorType, Object parentContext) {
+        TestHistogram duration = meter.getHistograms().get("messaging.client.operation.duration");
+        assertNotNull(duration);
+        List<TestMeasurement<Double>> measurements = duration.getMeasurements()
+            .stream()
+            .filter(m -> operation.toString().equals(m.getAttributes().get("messaging.operation.name")))
+            .collect(Collectors.toList());
         assertEquals(1, measurements.size());
         if (expectedValue != null) {
             assertEquals(expectedValue, measurements.get(0).getValue(), expectedValue);
         }
 
         assertAllAttributes(HOSTNAME, EVENT_HUB_NAME, partitionId, null, expectedErrorType,
-            SEND, measurements.get(0).getAttributes());
+            operation, measurements.get(0).getAttributes());
         if (parentContext != null) {
             assertEquals(parentContext, measurements.get(0).getContext().getData(PARENT_TRACE_CONTEXT_KEY).get());
         }

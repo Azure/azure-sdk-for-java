@@ -46,6 +46,8 @@ public class EventHubsMetricsProvider {
     private AttributeCache receiveAttributeCacheSuccess;
     private AttributeCache checkpointAttributeCacheSuccess;
     private AttributeCache processAttributeCacheSuccess;
+    private AttributeCache getPartitionPropertiesAttributeCacheSuccess;
+    private AttributeCache getEventHubPropertiesAttributeCacheSuccess;
     private AttributeCache lagAttributeCache;
     private LongCounter publishedEventCounter;
     private LongCounter consumedEventCounter;
@@ -61,6 +63,8 @@ public class EventHubsMetricsProvider {
             this.receiveAttributeCacheSuccess = AttributeCache.create(meter, RECEIVE, commonAttributes);
             this.checkpointAttributeCacheSuccess = AttributeCache.create(meter, CHECKPOINT, commonAttributes);
             this.processAttributeCacheSuccess = AttributeCache.create(meter, PROCESS, commonAttributes);
+            this.getPartitionPropertiesAttributeCacheSuccess = AttributeCache.create(meter, OperationName.GET_PARTITION_PROPERTIES, commonAttributes);
+            this.getEventHubPropertiesAttributeCacheSuccess = AttributeCache.create(meter, OperationName.GET_EVENT_HUB_PROPERTIES, commonAttributes);
             this.lagAttributeCache = new AttributeCache(meter, MESSAGING_DESTINATION_PARTITION_ID, commonAttributes);
 
             this.publishedEventCounter = meter.createLongCounter(MESSAGING_CLIENT_PUBLISHED_MESSAGES, "The number of published events", "{event}");
@@ -120,6 +124,13 @@ public class EventHubsMetricsProvider {
         }
     }
 
+    public void reportGenericOperationDuration(OperationName operationName, String partitionId, InstrumentationScope scope) {
+        if (isEnabled && operationDuration.isEnabled()) {
+            operationDuration.record(getDurationInSeconds(scope.getStartTime()),
+                getOrCreateAttributes(operationName, partitionId, scope.getErrorType()), scope.getSpan());
+        }
+    }
+
     private TelemetryAttributes getOrCreateAttributes(OperationName operationName, String partitionId, String errorType) {
         if (errorType == null) {
             switch (operationName) {
@@ -131,6 +142,10 @@ public class EventHubsMetricsProvider {
                     return checkpointAttributeCacheSuccess.getOrCreate(partitionId);
                 case PROCESS:
                     return processAttributeCacheSuccess.getOrCreate(partitionId);
+                case GET_PARTITION_PROPERTIES:
+                    return getPartitionPropertiesAttributeCacheSuccess.getOrCreate(partitionId);
+                case GET_EVENT_HUB_PROPERTIES:
+                    return getEventHubPropertiesAttributeCacheSuccess.getOrCreate(partitionId);
                 default:
                     LOGGER.atVerbose()
                         .addKeyValue("operationName", operationName)

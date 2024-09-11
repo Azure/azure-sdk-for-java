@@ -299,7 +299,7 @@ public class EventHubProducerAsyncClient implements Closeable {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EventHubProperties> getEventHubProperties() {
-        return instrumentation.getTracer().traceMono(
+        return instrumentation.instrumentMono(
             connectionProcessor.getManagementNodeWithRetries().flatMap(EventHubManagementNode::getEventHubProperties),
             GET_EVENT_HUB_PROPERTIES, null);
     }
@@ -324,7 +324,7 @@ public class EventHubProducerAsyncClient implements Closeable {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PartitionProperties> getPartitionProperties(String partitionId) {
-        return instrumentation.getTracer().traceMono(
+        return instrumentation.instrumentMono(
             connectionProcessor.getManagementNodeWithRetries().flatMap(node -> node.getPartitionProperties(partitionId)),
             GET_PARTITION_PROPERTIES, partitionId);
     }
