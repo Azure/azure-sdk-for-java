@@ -331,7 +331,7 @@ com.azure.resourcemanager:azure-resourcemanager-appconfiguration;1.0.0-beta.7;1.
 com.azure.resourcemanager:azure-resourcemanager-attestation;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-azurestack;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-azurestackhci;1.0.0-beta.5;1.0.0-beta.6
-com.azure.resourcemanager:azure-resourcemanager-avs;1.1.0;1.2.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-avs;1.1.0;1.2.0
 com.azure.resourcemanager:azure-resourcemanager-consumption;1.0.0-beta.3;1.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-commerce;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-billing;1.0.0;1.1.0-beta.1
