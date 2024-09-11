@@ -84,6 +84,7 @@ javax.json:javax.json-api;1.1.4
 javax.servlet:javax.servlet-api;4.0.1
 javax.websocket:javax.websocket-api;1.1
 org.apache.commons:commons-compress;1.26.0
+org.apache.ant:ant;1.10.14
 org.apache.avro:avro;1.11.3
 org.apache.avro:avro-maven-plugin;1.11.3
 org.apache.commons:commons-lang3;3.12.0
