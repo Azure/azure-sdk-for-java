@@ -231,7 +231,7 @@ public final class DatabaseAccountGetProperties implements JsonSerializable<Data
     private MinimalTlsVersion minimalTlsVersion;
 
     /*
-     * Flag to indicate enabling/disabling of Burst Capacity Preview feature on the account
+     * Flag to indicate enabling/disabling of Burst Capacity feature on the account
      */
     private Boolean enableBurstCapacity;
 
@@ -910,8 +910,8 @@ public final class DatabaseAccountGetProperties implements JsonSerializable<Data
     }
 
     /**
-     * Get the enableBurstCapacity property: Flag to indicate enabling/disabling of Burst Capacity Preview feature on
-     * the account.
+     * Get the enableBurstCapacity property: Flag to indicate enabling/disabling of Burst Capacity feature on the
+     * account.
      * 
      * @return the enableBurstCapacity value.
      */
@@ -920,8 +920,8 @@ public final class DatabaseAccountGetProperties implements JsonSerializable<Data
     }
 
     /**
-     * Set the enableBurstCapacity property: Flag to indicate enabling/disabling of Burst Capacity Preview feature on
-     * the account.
+     * Set the enableBurstCapacity property: Flag to indicate enabling/disabling of Burst Capacity feature on the
+     * account.
      * 
      * @param enableBurstCapacity the enableBurstCapacity value to set.
      * @return the DatabaseAccountGetProperties object itself.
