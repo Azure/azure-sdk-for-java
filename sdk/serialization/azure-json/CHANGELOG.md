@@ -1,15 +1,14 @@
 # Release History
 
-## 1.3.0-beta.1 (Unreleased)
+## 1.3.0 (Unreleased)
 
 ### Features Added
-- Enabled parsing JSONC in the `DefaultJsonReader`
 
-### Breaking Changes
-
-### Bugs Fixed
+- Added the ability to configure JSONC parsing with `JsonOptions`.
 
 ### Other Changes
+
+- Updated shaded Jackson Core code to 2.17.2.
 
 ## 1.2.0 (2024-07-26)
 
