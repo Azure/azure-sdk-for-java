@@ -20,6 +20,8 @@ import static com.azure.core.implementation.ImplUtils.MAX_CACHE_SIZE;
  */
 public final class UrlBuilder {
     private static final Map<String, UrlBuilder> PARSED_URLS = new ConcurrentHashMap<>();
+    private static final URL HTTP;
+    private static final URL HTTPS;
 
     private String scheme;
     private String host;
@@ -28,6 +30,15 @@ public final class UrlBuilder {
 
     private Map<String, QueryParameter> queryToCopy;
     private Map<String, QueryParameter> query;
+
+    static {
+        try {
+            HTTP = new URL("http://azure.com");
+            HTTPS = new URL("https://azure.com");
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     /**
      * Creates a new instance of {@link UrlBuilder}.
@@ -327,10 +338,20 @@ public final class UrlBuilder {
      * @return The URL that is being built.
      * @throws MalformedURLException if the URL is not fully formed.
      */
+    @SuppressWarnings("deprecation")
     public URL toUrl() throws MalformedURLException {
         // Continue using new URL constructor here as URI either cannot accept certain characters in the path or
         // escapes '/', depending on the API used to create the URI.
-        return ImplUtils.createUrl(toString());
+        if ("http".equals(scheme)) {
+            // Performance enhancement. Using "new URL(URL, String)" circumvents a lookup for the URLStreamHandler
+            // when creating the URL instance. In highly threaded environments this can cause slowdown as this lookup
+            // uses a HashTable which is synchronized, resulting in many threads waiting on the same lock.
+            return new URL(HTTP, toString());
+        } else if ("https".equals(scheme)) {
+            return new URL(HTTPS, toString());
+        } else {
+            return ImplUtils.createUrl(toString());
+        }
     }
 
     /**
