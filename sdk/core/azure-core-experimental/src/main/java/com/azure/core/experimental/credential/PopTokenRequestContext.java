@@ -120,7 +120,7 @@ public final class PopTokenRequestContext extends TokenRequestContext {
      * @return The HTTP method.
      */
     public String getResourceRequestMethod() {
-        return requestMethod.toString();
+        return requestMethod != null ? requestMethod.toString() : null;
     }
 
     /**
