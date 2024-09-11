@@ -22,6 +22,7 @@ public class JacksonJsonReaderContractTests extends JsonReaderContractTests {
     private JsonReader reader;
     String jsonWithComments = "{    // single line comment\n" + "    \"single-line\": \"comment\",\n" + "    /*\n"
         + "    multi-line comment\n" + "    */\n" + "    \"multi-line\": \"comment\"}";
+
     @Override
     public JsonReader getJsonReader(String json) throws IOException {
         this.reader = AzureJsonUtils.createReader(json, null);
@@ -38,7 +39,7 @@ public class JacksonJsonReaderContractTests extends JsonReaderContractTests {
     @Test
     public void readJsonc() throws IOException {
         try (JsonReader jsonReader
-                 = AzureJsonUtils.createReader(jsonWithComments, new JsonOptions().setJsoncSupported(true))) {
+            = AzureJsonUtils.createReader(jsonWithComments, new JsonOptions().setJsoncSupported(true))) {
             jsonReader.nextToken();
             String outputJson = jsonReader.readChildren();
             assertNotNull(outputJson);

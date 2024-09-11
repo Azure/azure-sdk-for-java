@@ -22,6 +22,7 @@ public class GsonJsonReaderContractTests extends JsonReaderContractTests {
     private JsonReader reader;
     String jsonWithComments = "{    // single line comment\n" + "    \"single-line\": \"comment\",\n" + "    /*\n"
         + "    multi-line comment\n" + "    */\n" + "    \"multi-line\": \"comment\"}";
+
     @Override
     public JsonReader getJsonReader(String json) throws IOException {
         this.reader = AzureJsonUtils.createReader(json, new JsonOptions());
@@ -38,7 +39,7 @@ public class GsonJsonReaderContractTests extends JsonReaderContractTests {
     @Test
     public void readJsonc() throws IOException {
         try (JsonReader jsonReader
-                 = AzureJsonUtils.createReader(jsonWithComments, new JsonOptions().setJsoncSupported(true))) {
+            = AzureJsonUtils.createReader(jsonWithComments, new JsonOptions().setJsoncSupported(true))) {
             jsonReader.nextToken();
             String outputJson = jsonReader.readChildren();
             assertNotNull(outputJson);
@@ -50,8 +51,8 @@ public class GsonJsonReaderContractTests extends JsonReaderContractTests {
         assertThrows(MalformedJsonException.class, () -> {
             // need to disable non-numeric number support as Gson only has a single "lenient" concept that both
             // of these control.
-            try (JsonReader jsonReader
-                     = AzureJsonUtils.createReader(jsonWithComments, new JsonOptions().setNonNumericNumbersSupported(false))) {
+            try (JsonReader jsonReader = AzureJsonUtils.createReader(jsonWithComments,
+                new JsonOptions().setNonNumericNumbersSupported(false))) {
                 jsonReader.nextToken();
                 String outputJson = jsonReader.readChildren();
                 assertNotNull(outputJson);

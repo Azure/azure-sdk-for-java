@@ -38,12 +38,11 @@ public class JacksonJsonReaderContractTests extends JsonReaderContractTests {
         }
     }
 
-
     @Test
     public void readJsonc() throws IOException {
 
         try (JsonReader jsonReader
-                 = AzureJsonUtils.createReader(jsonWithComments, new JsonOptions().setJsoncSupported(true))) {
+            = AzureJsonUtils.createReader(jsonWithComments, new JsonOptions().setJsoncSupported(true))) {
             jsonReader.nextToken();
             String outputJson = jsonReader.readChildren();
             assertNotNull(outputJson);
