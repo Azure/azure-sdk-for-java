@@ -4,6 +4,7 @@
 package com.azure.core.util.tracing;
 
 import com.azure.core.implementation.util.Providers;
+import com.azure.core.util.SdkTelemetryOptions;
 import com.azure.core.util.TracingOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
@@ -45,14 +46,27 @@ final class DefaultTracerProvider implements TracerProvider {
         return INSTANCE;
     }
 
-    public Tracer createTracer(String libraryName, String libraryVersion, String azNamespace, TracingOptions options) {
+    @Override
+    public Tracer createTracer(String libraryName, String libraryVersion, String azNamespace,
+        TracingOptions applicationOptions) {
         Objects.requireNonNull(libraryName, "'libraryName' cannot be null.");
 
-        final TracingOptions finalOptions = options != null ? options : DEFAULT_OPTIONS;
+        final SdkTelemetryOptions sdkOptions = new SdkTelemetryOptions().setSdkName(libraryName)
+            .setSdkVersion(libraryVersion)
+            .setResourceProviderNamespace(azNamespace);
+
+        return createTracer(sdkOptions, applicationOptions);
+    }
+
+    @Override
+    public Tracer createTracer(SdkTelemetryOptions sdkOptions, TracingOptions applicationOptions) {
+        Objects.requireNonNull(sdkOptions, "'sdkOptions' cannot be null.");
+        Objects.requireNonNull(sdkOptions.getSdkName(), "'sdkOptions.getSdkName()' name cannot be null.");
+
+        final TracingOptions finalOptions = applicationOptions != null ? applicationOptions : DEFAULT_OPTIONS;
 
         if (finalOptions.isEnabled()) {
-            return TRACER_PROVIDERS.create(
-                (provider) -> provider.createTracer(libraryName, libraryVersion, azNamespace, finalOptions),
+            return TRACER_PROVIDERS.create((provider) -> provider.createTracer(sdkOptions, finalOptions),
                 FALLBACK_TRACER, finalOptions.getTracerProvider());
         }
 

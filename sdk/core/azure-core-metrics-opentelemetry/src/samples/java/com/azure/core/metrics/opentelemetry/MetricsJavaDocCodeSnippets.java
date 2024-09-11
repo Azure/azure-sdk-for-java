@@ -6,6 +6,7 @@ package com.azure.core.metrics.opentelemetry;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Context;
 import com.azure.core.util.MetricsOptions;
+import com.azure.core.util.SdkTelemetryOptions;
 import com.azure.core.util.TelemetryAttributes;
 import com.azure.core.util.metrics.DoubleHistogram;
 import com.azure.core.util.metrics.Meter;
@@ -192,7 +193,12 @@ public class MetricsJavaDocCodeSnippets {
         private final DoubleHistogram callDuration;
         private final TelemetryAttributes attributes;
         AzureClient(String endpoint, ClientOptions options) {
-            meter = DEFAULT_PROVIDER.createMeter("azure-core-samples", "1.0.0", options == null ? null : options.getMetricsOptions());
+            SdkTelemetryOptions sdkTelemetryOptions = new SdkTelemetryOptions()
+                .setSdkName("azure-samples")
+                .setSdkVersion("1.0.0")
+                .setSdkVersion("Microsoft.Sample")
+                .setSchemaUrl("https://opentelemetry.io/schemas/1.23.1");
+            meter = DEFAULT_PROVIDER.createMeter(sdkTelemetryOptions, options == null ? null : options.getMetricsOptions());
             callDuration = meter.createDoubleHistogram("az.sample.method.duration", "Duration of sample method call", "ms");
             attributes = meter.createAttributes(Collections.singletonMap("endpoint", endpoint));
         }
