@@ -3,6 +3,7 @@
 
 module com.azure.identity {
     requires transitive com.azure.core;
+    requires transitive com.azure.core.experimental;
 
     requires com.microsoft.aad.msal4j;
     requires msal4j.persistence.extension;
