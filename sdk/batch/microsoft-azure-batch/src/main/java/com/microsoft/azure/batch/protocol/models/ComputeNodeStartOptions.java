@@ -14,9 +14,9 @@ import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Additional parameters for getRemoteDesktop operation.
+ * Additional parameters for start operation.
  */
-public class ComputeNodeGetRemoteDesktopOptions {
+public class ComputeNodeStartOptions {
     /**
      * The maximum time that the server can spend processing the request, in
      * seconds. The default is 30 seconds. If the value is larger than 30, the
@@ -60,9 +60,9 @@ public class ComputeNodeGetRemoteDesktopOptions {
      * Set the maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used instead.
      *
      * @param timeout the timeout value to set
-     * @return the ComputeNodeGetRemoteDesktopOptions object itself.
+     * @return the ComputeNodeStartOptions object itself.
      */
-    public ComputeNodeGetRemoteDesktopOptions withTimeout(Integer timeout) {
+    public ComputeNodeStartOptions withTimeout(Integer timeout) {
         this.timeout = timeout;
         return this;
     }
@@ -80,9 +80,9 @@ public class ComputeNodeGetRemoteDesktopOptions {
      * Set the caller-generated request identity, in the form of a GUID with no decoration such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
      *
      * @param clientRequestId the clientRequestId value to set
-     * @return the ComputeNodeGetRemoteDesktopOptions object itself.
+     * @return the ComputeNodeStartOptions object itself.
      */
-    public ComputeNodeGetRemoteDesktopOptions withClientRequestId(UUID clientRequestId) {
+    public ComputeNodeStartOptions withClientRequestId(UUID clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -100,9 +100,9 @@ public class ComputeNodeGetRemoteDesktopOptions {
      * Set whether the server should return the client-request-id in the response.
      *
      * @param returnClientRequestId the returnClientRequestId value to set
-     * @return the ComputeNodeGetRemoteDesktopOptions object itself.
+     * @return the ComputeNodeStartOptions object itself.
      */
-    public ComputeNodeGetRemoteDesktopOptions withReturnClientRequestId(Boolean returnClientRequestId) {
+    public ComputeNodeStartOptions withReturnClientRequestId(Boolean returnClientRequestId) {
         this.returnClientRequestId = returnClientRequestId;
         return this;
     }
@@ -123,9 +123,9 @@ public class ComputeNodeGetRemoteDesktopOptions {
      * Set the time the request was issued. Client libraries typically set this to the current system clock time; set it explicitly if you are calling the REST API directly.
      *
      * @param ocpDate the ocpDate value to set
-     * @return the ComputeNodeGetRemoteDesktopOptions object itself.
+     * @return the ComputeNodeStartOptions object itself.
      */
-    public ComputeNodeGetRemoteDesktopOptions withOcpDate(DateTime ocpDate) {
+    public ComputeNodeStartOptions withOcpDate(DateTime ocpDate) {
         if (ocpDate == null) {
             this.ocpDate = null;
         } else {

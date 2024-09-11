@@ -14,30 +14,9 @@ import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Additional parameters for list operation.
+ * Additional parameters for deallocate operation.
  */
-public class ComputeNodeListOptions {
-    /**
-     * An OData $filter clause. For more information on constructing this
-     * filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-nodes-in-a-pool.
-     */
-    @JsonProperty(value = "")
-    private String filter;
-
-    /**
-     * An OData $select clause.
-     */
-    @JsonProperty(value = "")
-    private String select;
-
-    /**
-     * The maximum number of items to return in the response. A maximum of 1000
-     * Compute Nodes can be returned.
-     */
-    @JsonProperty(value = "")
-    private Integer maxResults;
-
+public class ComputeNodeDeallocateOptions {
     /**
      * The maximum time that the server can spend processing the request, in
      * seconds. The default is 30 seconds. If the value is larger than 30, the
@@ -69,66 +48,6 @@ public class ComputeNodeListOptions {
     private DateTimeRfc1123 ocpDate;
 
     /**
-     * Get an OData $filter clause. For more information on constructing this filter, see https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-nodes-in-a-pool.
-     *
-     * @return the filter value
-     */
-    public String filter() {
-        return this.filter;
-    }
-
-    /**
-     * Set an OData $filter clause. For more information on constructing this filter, see https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-nodes-in-a-pool.
-     *
-     * @param filter the filter value to set
-     * @return the ComputeNodeListOptions object itself.
-     */
-    public ComputeNodeListOptions withFilter(String filter) {
-        this.filter = filter;
-        return this;
-    }
-
-    /**
-     * Get an OData $select clause.
-     *
-     * @return the select value
-     */
-    public String select() {
-        return this.select;
-    }
-
-    /**
-     * Set an OData $select clause.
-     *
-     * @param select the select value to set
-     * @return the ComputeNodeListOptions object itself.
-     */
-    public ComputeNodeListOptions withSelect(String select) {
-        this.select = select;
-        return this;
-    }
-
-    /**
-     * Get the maximum number of items to return in the response. A maximum of 1000 Compute Nodes can be returned.
-     *
-     * @return the maxResults value
-     */
-    public Integer maxResults() {
-        return this.maxResults;
-    }
-
-    /**
-     * Set the maximum number of items to return in the response. A maximum of 1000 Compute Nodes can be returned.
-     *
-     * @param maxResults the maxResults value to set
-     * @return the ComputeNodeListOptions object itself.
-     */
-    public ComputeNodeListOptions withMaxResults(Integer maxResults) {
-        this.maxResults = maxResults;
-        return this;
-    }
-
-    /**
      * Get the maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used instead.
      *
      * @return the timeout value
@@ -141,9 +60,9 @@ public class ComputeNodeListOptions {
      * Set the maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used instead.
      *
      * @param timeout the timeout value to set
-     * @return the ComputeNodeListOptions object itself.
+     * @return the ComputeNodeDeallocateOptions object itself.
      */
-    public ComputeNodeListOptions withTimeout(Integer timeout) {
+    public ComputeNodeDeallocateOptions withTimeout(Integer timeout) {
         this.timeout = timeout;
         return this;
     }
@@ -161,9 +80,9 @@ public class ComputeNodeListOptions {
      * Set the caller-generated request identity, in the form of a GUID with no decoration such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
      *
      * @param clientRequestId the clientRequestId value to set
-     * @return the ComputeNodeListOptions object itself.
+     * @return the ComputeNodeDeallocateOptions object itself.
      */
-    public ComputeNodeListOptions withClientRequestId(UUID clientRequestId) {
+    public ComputeNodeDeallocateOptions withClientRequestId(UUID clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -181,9 +100,9 @@ public class ComputeNodeListOptions {
      * Set whether the server should return the client-request-id in the response.
      *
      * @param returnClientRequestId the returnClientRequestId value to set
-     * @return the ComputeNodeListOptions object itself.
+     * @return the ComputeNodeDeallocateOptions object itself.
      */
-    public ComputeNodeListOptions withReturnClientRequestId(Boolean returnClientRequestId) {
+    public ComputeNodeDeallocateOptions withReturnClientRequestId(Boolean returnClientRequestId) {
         this.returnClientRequestId = returnClientRequestId;
         return this;
     }
@@ -204,9 +123,9 @@ public class ComputeNodeListOptions {
      * Set the time the request was issued. Client libraries typically set this to the current system clock time; set it explicitly if you are calling the REST API directly.
      *
      * @param ocpDate the ocpDate value to set
-     * @return the ComputeNodeListOptions object itself.
+     * @return the ComputeNodeDeallocateOptions object itself.
      */
-    public ComputeNodeListOptions withOcpDate(DateTime ocpDate) {
+    public ComputeNodeDeallocateOptions withOcpDate(DateTime ocpDate) {
         if (ocpDate == null) {
             this.ocpDate = null;
         } else {
