@@ -377,7 +377,8 @@ public class RxGatewayStoreModel implements RxStoreModel {
                         rsp = new StoreResponse(httpResponseStatus,
                             HttpUtils.unescape(httpResponseHeaders.toMap()),
                             new ByteBufInputStream(content, true),
-                            size);
+                            size,
+                            request);
                     } else {
                         rsp = new StoreResponse(httpResponseStatus,
                             HttpUtils.unescape(httpResponseHeaders.toMap()),

@@ -3,17 +3,21 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
+import com.azure.core.util.io.IOUtils;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RequestTimeline;
+import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelAcquisitionTimeline;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelStatistics;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpointStatistics;
+import com.azure.cosmos.implementation.guava25.base.Charsets;
 import com.fasterxml.jackson.databind.JsonNode;
+import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
+import io.netty.buffer.Unpooled;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -66,10 +70,88 @@ public class StoreResponse {
         replicaStatusList = new HashMap<>();
         if (contentStream != null) {
             try {
-                logger.info("Invalid Payload : {}", contentStream);
                 this.responsePayload = new JsonNodeStorePayload(contentStream, responsePayloadLength);
             }
             finally {
+                try {
+                    contentStream.close();
+                } catch (IOException e) {
+                    logger.debug("Could not successfully close content stream.", e);
+                }
+            }
+        } else {
+            this.responsePayload = null;
+        }
+    }
+
+    public StoreResponse(
+        int status,
+        Map<String, String> headerMap,
+        ByteBufInputStream contentStream,
+        int responsePayloadLength,
+        RxDocumentServiceRequest request) {
+
+        checkArgument((contentStream == null) == (responsePayloadLength == 0),
+            "Parameter 'contentStream' must be consistent with 'responsePayloadLength'.");
+
+        try {
+            assert contentStream != null;
+
+            // Create a new ByteBuf to store the content
+            //
+            //
+             ByteBuf byteBuf = Unpooled.buffer();
+            // Read the data from ByteBufInputStream and write it into the new ByteBuf
+
+             int byteRead;
+             int limit = 0;
+             StringBuilder sb = new StringBuilder();
+             while ((byteRead = contentStream.read()) != -1) {
+//                 if (limit < 10) {
+//                     logger.info("Byte read {}", byteRead);
+//                     limit++;
+//                 }
+                 byteBuf.writeByte(byteRead);
+                 sb.append(byteRead);
+                 sb.append(",");
+             }
+
+             contentStream = new ByteBufInputStream(byteBuf);
+
+//             byte[] contentStreamByteArray = new byte[byteBuf.readableBytes()];
+
+//             for (byte b : contentStreamByteArray) {
+//                 System.out.println("Byte : " + b);
+//             }
+
+
+//             byteBuf.readBytes(contentStreamByteArray);
+
+            logger.info("Possibly invalid byteBuf -> String : {}", byteBuf.toString(Charsets.UTF_8));
+            logger.info("Possibly invalid byte StringBuilder -> String : {}", sb);
+
+            logger.info("Operation type : {} and Resource Type : {}", request.getOperationType(), request.getResourceType());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        requestTimeline = RequestTimeline.empty();
+        responseHeaderNames = new String[headerMap.size()];
+        responseHeaderValues = new String[headerMap.size()];
+
+        int i = 0;
+        for (Map.Entry<String, String> headerEntry : headerMap.entrySet()) {
+            responseHeaderNames[i] = headerEntry.getKey();
+            responseHeaderValues[i] = headerEntry.getValue();
+            i++;
+        }
+
+        this.status = status;
+        replicaStatusList = new HashMap<>();
+        if (contentStream != null) {
+            try {
+                this.responsePayload = new JsonNodeStorePayload(contentStream, responsePayloadLength);
+            } finally {
                 try {
                     contentStream.close();
                 } catch (IOException e) {

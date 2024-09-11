@@ -23,7 +23,7 @@ public class JsonNodeStorePayload implements StorePayload<JsonNode> {
         }
     }
 
-    private static JsonNode fromJson(ByteBufInputStream bufferStream){
+    private static JsonNode fromJson(ByteBufInputStream bufferStream) {
         try {
             return Utils.getSimpleObjectMapper().readTree(bufferStream);
         } catch (IOException e) {
