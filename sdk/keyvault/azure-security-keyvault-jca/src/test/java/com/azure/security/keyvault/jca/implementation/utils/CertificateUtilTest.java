@@ -30,10 +30,10 @@ public class CertificateUtilTest {
         throws CertificateException, IOException, KeyStoreException, NoSuchAlgorithmException, NoSuchProviderException, PKCSException {
         assertCertNumberInCertChain("src/test/resources/certificate-util/SecretBundle.value/pem-exportable-key.pem", 1);
         assertCertNumberInCertChain("src/test/resources/certificate-util/SecretBundle.value/pem-non-exportable-key.pem", 1);
-        assertCertNumberInCertChain("src/test/resources/certificate-util/SecretBundle.value/pkcs12-exportable-key.pfx", 1);
-        assertCertNumberInCertChain("src/test/resources/certificate-util/SecretBundle.value/pkcs12-non-exportable-key.pfx", 1);
+        assertCertNumberInCertChain("src/test/resources/certificate-util/SecretBundle.value/pkcs12-exportable-key.pfx.test", 1);
+        assertCertNumberInCertChain("src/test/resources/certificate-util/SecretBundle.value/pkcs12-non-exportable-key.pfx.test", 1);
         assertCertNumberInCertChain("src/test/resources/certificate-util/SecretBundle.value/3-certificates-in-chain.pem", 3);
-        assertCertNumberInCertChain("src/test/resources/certificate-util/SecretBundle.value/3-certificates-in-chain.pfx", 3);
+        assertCertNumberInCertChain("src/test/resources/certificate-util/SecretBundle.value/3-certificates-in-chain.pfx.test", 3);
     }
 
     private void assertCertNumberInCertChain(String pemFile, int expectedNumber)
@@ -52,8 +52,8 @@ public class CertificateUtilTest {
         // Now just keep the test files and unit test codes, they may be used when implement the feature.
         // certificateCanBeLoadFromFile("src/test/resources/certificate-util/downloaded-from-portal/pem-exportable-key.pem");
         certificateCanBeLoadFromFile("src/test/resources/certificate-util/downloaded-from-portal/pem-non-exportable-key.pem");
-        // certificateCanBeLoadFromFile("src/test/resources/certificate-util/downloaded-from-portal/pkcs12-exportable-key.pfx");
-        // certificateCanBeLoadFromFile("src/test/resources/certificate-util/downloaded-from-portal/pkcs12-non-exportable-key.pfx");
+        // certificateCanBeLoadFromFile("src/test/resources/certificate-util/downloaded-from-portal/pkcs12-exportable-key.pfx.test");
+        // certificateCanBeLoadFromFile("src/test/resources/certificate-util/downloaded-from-portal/pkcs12-non-exportable-key.pfx.test");
         certificateCanBeLoadFromFile("src/test/resources/custom/sideload.x509");
         certificateCanBeLoadFromFile("src/test/resources/custom/sideload2.pem");
         certificateCanBeLoadFromFile("src/test/resources/keyvault/sideload2.pem");
