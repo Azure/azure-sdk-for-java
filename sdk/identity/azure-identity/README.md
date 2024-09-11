@@ -332,7 +332,7 @@ Credentials can be chained together to be tried in turn until one succeeds using
 
 ## Environment variables
 
-`DefaultAzureCredential` and `EnvironmentCredential` can be configured with environment variables. Each type of authentication requires values for specific variables:
+`DefaultAzureCredential` and `EnvironmentCredential` can be configured with environment variables. Each type of authentication requires values for specific variables.
 
 ### Service principal with secret
 
@@ -359,6 +359,12 @@ Credentials can be chained together to be tried in turn until one succeeds using
 |`AZURE_TENANT_ID`|(optional) ID of the application's Microsoft Entra tenant|
 |`AZURE_USERNAME`|a username (usually an email address)|
 |`AZURE_PASSWORD`|that user's password|
+
+### Managed identity (`DefaultAzureCredential`)
+
+|Variable name|Value|
+|-|-|
+|`AZURE_CLIENT_ID`|The client ID for the user-assigned managed identity.|
 
 Configuration is attempted in the preceding order. For example, if values for a client secret and certificate are both present, the client secret is used.
 
