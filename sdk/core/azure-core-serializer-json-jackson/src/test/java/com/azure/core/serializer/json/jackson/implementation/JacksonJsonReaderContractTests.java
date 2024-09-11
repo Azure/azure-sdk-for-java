@@ -6,11 +6,9 @@ package com.azure.core.serializer.json.jackson.implementation;
 import com.azure.json.JsonOptions;
 import com.azure.json.JsonReader;
 import com.azure.json.contract.JsonReaderContractTests;
-import com.azure.json.implementation.DefaultJsonReader;
 import com.fasterxml.jackson.core.JsonParseException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.aggregator.ArgumentAccessException;
 
 import java.io.IOException;
 
