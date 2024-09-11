@@ -232,7 +232,7 @@
           <artifactId>maven-javadoc-plugin</artifactId>
           <version>3.6.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
           <configuration>
-            <source>1.8</source>
+            <source>8</source>
             <doctitle>Azure SDK for Java Reference Documentation</doctitle>
             <windowtitle>Azure SDK for Java Reference Documentation</windowtitle>
             <failOnError>false</failOnError>
@@ -349,7 +349,7 @@
           <suppressionsLocation>checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
           <headerLocation>checkstyle/java.header</headerLocation>
           <propertyExpansion>samedir=</propertyExpansion>
-          <outputEncoding>UTF-8</outputEncoding>
+          <encoding>UTF-8</encoding>
           <consoleOutput>true</consoleOutput>
           <includeTestSourceDirectory>true</includeTestSourceDirectory>
           <linkXRef>true</linkXRef>
@@ -494,6 +494,29 @@
               <showWarnings>true</showWarnings>
               <showDeprecation>true</showDeprecation>
               <compilerArgument>-Xlint:all</compilerArgument>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <!-- Customize the javadoc plugin to not include module directories in links. We don't
+         currently use modules, so search results were being directed to an 'undefined'
+         directory (for an 'undefined' module). This no-module-directories flag fixes
+         this, but it is only required for JDK 9+ -->
+    <profile>
+      <id>javadoc-no-modules-fix</id>
+      <activation>
+        <jdk>[9,)</jdk>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <version>3.6.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+            <configuration>
+              <additionalJOption>--no-module-directories</additionalJOption>
             </configuration>
           </plugin>
         </plugins>
