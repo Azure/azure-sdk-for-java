@@ -17,8 +17,11 @@ import reactor.core.publisher.Mono;
 import reactor.util.function.Tuple3;
 import reactor.util.function.Tuples;
 
+import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static java.lang.StrictMath.toIntExact;
 
@@ -58,15 +61,21 @@ public class ChunkedDownloadUtils {
                 // Extract the total length of the blob from the contentRange header. e.g. "bytes 1-6/7"
                 long totalLength = extractTotalBlobLength(response.getDeserializedHeaders().getContentRange());
 
-                //if the blob is encrypted, use the unencrypted length for range calculations
-                if (response.getDeserializedHeaders().isServerEncrypted()) {
-                    //values i pulled from CryptographyConstants
-                    int nonce = 12;
-                    int tag = 16;
-                    int regionLength = 4 * Constants.MB;
-                    long region = Math.floorDiv(totalLength, regionLength);
-                    long offset = (nonce + tag) * region;
-                    totalLength = totalLength - offset;
+                //if the blob is encrypted using V2, use the unencrypted length for range calculations
+                String metadetaString = response.getDeserializedHeaders().getMetadata().get("encryptiondata");
+                if (response.getDeserializedHeaders().isServerEncrypted() && metadetaString != null) {
+                    String regex = "\"Protocol\":\"([^\"]+)\"";
+                    Pattern pattern = Pattern.compile(regex);
+                    Matcher matcher = pattern.matcher(metadetaString);
+                    if (matcher.find() && Objects.equals(matcher.group(1), "2.0")) {
+                        //values i pulled from CryptographyConstants
+                        int nonce = 12;
+                        int tag = 16;
+                        int regionLength = 4 * Constants.MB;
+                        long region = Math.floorDiv(totalLength, regionLength);
+                        long offset = (nonce + tag) * region;
+                        totalLength = totalLength - offset;
+                    }
                 }
                 /*
                 If the user either didn't specify a count or they specified a count greater than the size of the

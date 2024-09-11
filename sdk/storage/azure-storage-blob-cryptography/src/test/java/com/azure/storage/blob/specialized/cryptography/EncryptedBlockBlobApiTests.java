@@ -1771,22 +1771,18 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
         return ENV.getServiceVersion() != null;
     }
 
-    @Test
-    public void sampleTest() throws IOException {
-        File file = File.createTempFile(CoreUtils.randomUuid().toString(), ".txt");
-        file.deleteOnExit();
-        Files.write(file.toPath(), getRandomByteArray(33554432));
-
-        ByteArrayOutputStream outStream = new ByteArrayOutputStream();
-
-        bec.uploadFromFile(file.toPath().toString());
-        bec.downloadStream(outStream);
+    private static Stream<Arguments> fourMBUploadsV2Supplier() {
+        return Stream.of(
+            Arguments.of(4194305),
+            Arguments.of(4194304),
+            Arguments.of(4194277),
+            Arguments.of(33554432)
+        );
     }
 
-    @Test
-    public void test4MBUploadsV2() throws IOException {
-        int[] sizes = {4194305, 4194304, 4194277, 33554432};
-
+    @ParameterizedTest
+    @MethodSource("fourMBUploadsV2Supplier")
+    public void fourMBUploadsV2(int fileSize) throws IOException {
         EncryptedBlobClient bec2 = new EncryptedBlobClientBuilder(EncryptionVersion.V2)
             .key(fakeKey, KeyWrapAlgorithm.RSA_OAEP_256.toString())
             .credential(ENV.getPrimaryAccount().getCredential())
@@ -1794,18 +1790,16 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
             .blobName(generateBlobName())
             .buildEncryptedBlobClient();
 
-        for (int size : sizes) {
-            File file = File.createTempFile(CoreUtils.randomUuid().toString(), ".txt");
-            File outFile = File.createTempFile(CoreUtils.randomUuid().toString(), ".txt");
+        File file = File.createTempFile(CoreUtils.randomUuid().toString(), ".txt");
+        File outFile = File.createTempFile(CoreUtils.randomUuid().toString(), ".txt");
 
-            file.deleteOnExit();
-            outFile.deleteOnExit();
+        file.deleteOnExit();
+        outFile.deleteOnExit();
 
-            Files.write(file.toPath(), getRandomByteArray(size));
+        Files.write(file.toPath(), getRandomByteArray(fileSize));
 
-            bec2.uploadFromFile(file.toPath().toString(), true);
-            bec2.downloadToFile(outFile.toPath().toString(), true);
-        }
+        bec2.uploadFromFile(file.toPath().toString(), true);
+        bec2.downloadToFile(outFile.toPath().toString(), true);
+        compareFiles(file, outFile, 0, file.length());
     }
-
 }
