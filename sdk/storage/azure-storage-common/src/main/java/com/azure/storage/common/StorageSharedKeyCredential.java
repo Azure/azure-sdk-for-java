@@ -18,7 +18,6 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 
 import java.net.URL;
-import java.text.Collator;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -41,7 +40,6 @@ public final class StorageSharedKeyCredential {
     private static final String ACCOUNT_NAME = "accountname";
 
     private static final HttpHeaderName X_MS_DATE = HttpHeaderName.fromString("x-ms-date");
-    private static final Collator ROOT_COLLATOR = Collator.getInstance(Locale.ROOT);
 
     private final AzureNamedKeyCredential azureNamedKeyCredential;
 
@@ -239,7 +237,7 @@ public final class StorageSharedKeyCredential {
         final StringBuilder canonicalizedHeaders = new StringBuilder(
             stringBuilderSize + (2 * xmsHeaders.size()) - 1);
 
-        xmsHeaders.sort((o1, o2) -> ROOT_COLLATOR.compare(o1.getName(), o2.getName()));
+        xmsHeaders.sort((o1, o2) -> String.CASE_INSENSITIVE_ORDER.compare(o1.getName(), o2.getName()));
 
         for (Header xmsHeader : xmsHeaders) {
             if (canonicalizedHeaders.length() > 0) {
@@ -277,7 +275,7 @@ public final class StorageSharedKeyCredential {
         //
         // Example 1: prefix=a%2cb => prefix={decode(a%2cb)} => prefix={"a,b"}
         // Example 2: prefix=a,2 => prefix={decode(a),decode(b) => prefix={"a","b"}
-        TreeMap<String, List<String>> pieces = new TreeMap<>(ROOT_COLLATOR);
+        TreeMap<String, List<String>> pieces = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 
         StorageImplUtils.parseQueryParameters(query).forEachRemaining(kvp -> {
             String key = urlDecode(kvp.getKey()).toLowerCase(Locale.ROOT);
@@ -302,7 +300,7 @@ public final class StorageSharedKeyCredential {
 
         for (Map.Entry<String, List<String>> queryParam : pieces.entrySet()) {
             List<String> queryParamValues = queryParam.getValue();
-            queryParamValues.sort(ROOT_COLLATOR);
+            queryParamValues.sort(String::compareTo);
             canonicalizedResource.append('\n').append(queryParam.getKey()).append(':');
 
             int size = queryParamValues.size();
