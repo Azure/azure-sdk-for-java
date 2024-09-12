@@ -13,7 +13,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-messaging-azure-servicebus</artifactId>
-  <version>5.16.0</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure-servicebus;current} -->
+  <version>5.17.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure-servicebus;current} -->
 
   <name>Spring Messaging Azure Service Bus</name>
   <description>Spring Messaging Azure Service Bus</description>
@@ -41,12 +41,12 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-messaging-azure</artifactId>
-      <version>5.16.0</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure;current} -->
+      <version>5.17.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-messaging-azure</artifactId>
-      <version>5.16.0</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure;current} -->
+      <version>5.17.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure;current} -->
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>

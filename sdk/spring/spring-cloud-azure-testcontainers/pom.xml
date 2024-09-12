@@ -12,7 +12,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-cloud-azure-testcontainers</artifactId>
-  <version>5.16.0</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-testcontainers;current} -->
+  <version>5.17.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-testcontainers;current} -->
 
   <name>Spring Cloud Azure Testcontainers</name>
   <description>Spring Cloud Azure Testcontainers</description>
@@ -55,13 +55,13 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-autoconfigure</artifactId>
-      <version>5.16.0</version>  <!-- {x-version-update;com.azure.spring:spring-cloud-azure-autoconfigure;current} -->
+      <version>5.17.0-beta.1</version>  <!-- {x-version-update;com.azure.spring:spring-cloud-azure-autoconfigure;current} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-spring-data-cosmos</artifactId>
-      <version>5.16.0</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;current} -->
+      <version>5.17.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;current} -->
       <optional>true</optional>
     </dependency>
 
