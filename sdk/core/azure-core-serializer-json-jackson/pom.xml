@@ -82,7 +82,11 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-json</artifactId>
+<<<<<<< HEAD
       <version>1.3.0</version> <!-- {x-version-update;com.azure:azure-json;dependency} -->
+=======
+      <version>1.3.0</version> <!-- {x-version-update;unreleased_com.azure:azure-json;dependency} -->
+>>>>>>> ac9ee6330b688f1b3eeea77548f1897be25782da
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>

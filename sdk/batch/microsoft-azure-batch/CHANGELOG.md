@@ -1,14 +1,34 @@
 # Release History
 
-## 11.2.0-beta.1 (Unreleased)
+## 11.2.0 (2024-09-10)
 
 ### Features Added
 
+- Force delete/terminate job or job schedule:
+  - Added `force` parameter of type Boolean to `JobDeleteOptions`, `JobTerminateOptions`, `JobScheduleDeleteOptions`, and `JobScheduleTerminateOptions`.
+
+- Support for compute node start/deallocate operations:
+  - Added `startComputeNode(poolId, nodeId)` and `deallocateComputeNode(poolId, nodeId)` methods to `ComputeNodeOperations`, along with `ComputeNodeStartOptions` and `ComputeNodeDeallocateOptions`.
+
+- Container task data mount isolation:
+  - Added `containerHostBatchBindMounts` of type `List<ContainerHostBatchBindMountEntry>` to `TaskContainerSettings`.
+
+- Patch improvements for pool and job:
+  - Added `displayName`, `vmSize`, `taskSlotsPerNode`, `taskSchedulingPolicy`, `enableInterNodeCommunication`, `virtualMachineConfiguration`, `networkConfiguration`, `userAccounts`, `mountConfiguration`, `upgradePolicy`, and `resourceTags` to `PoolPatchParameter`.
+  - Added `networkConfiguration` to `JobPatchParameter`.
+
+- Confidential VM support:
+  - Added `confidentialVM` to `SecurityTypes`.
+  - Added `securityProfile` of type `VMDiskSecurityProfile` to `ManagedDisk`.
+
+- Support for shared and community gallery images:
+  - Added `sharedGalleryImageId` and `communityGalleryImageId` to `ImageReference`.
+
 ### Breaking Changes
 
-### Bugs Fixed
-
-### Other Changes
+- Removed `getComputeNodeRemoteDesktop(poolId, nodeId)` method from `ComputeNodeOperations`. Use `getComputeNodeRemoteLoginSettings(poolId, nodeId)` instead to remotely login to a compute node.
+- Removed `CloudServiceConfiguration` from pool models and operations. Use `VirtualMachineConfiguration` when creating pools.
+- Removed `ApplicationLicenses` from pool models and operations.
 
 ## 11.1.1 (2024-04-09)
 
