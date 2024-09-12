@@ -1357,8 +1357,7 @@ public final class FaceSessionAsyncClient {
         }
         VerifyImageFileDetails verifyImageFileDetails = new VerifyImageFileDetails(verifyImage);
         CreateLivenessWithVerifySessionMultipartContent realParameters
-            = new CreateLivenessWithVerifySessionMultipartContent(parameters,
-                verifyImageFileDetails);
+            = new CreateLivenessWithVerifySessionMultipartContent(parameters, verifyImageFileDetails);
         return this.createLivenessWithVerifySessionWithVerifyImage(realParameters);
     }
 }

@@ -1328,14 +1328,14 @@ public final class FaceSessionClient {
      * @return response of liveness session with verify creation with verify image provided.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CreateLivenessWithVerifySessionResult createLivenessWithVerifySession(CreateLivenessWithVerifySessionContent parameters, BinaryData verifyImage) {
+    public CreateLivenessWithVerifySessionResult
+        createLivenessWithVerifySession(CreateLivenessWithVerifySessionContent parameters, BinaryData verifyImage) {
         if (verifyImage == null) {
             return createLivenessWithVerifySession(parameters);
         }
         VerifyImageFileDetails verifyImageFileDetails = new VerifyImageFileDetails(verifyImage);
         CreateLivenessWithVerifySessionMultipartContent realParameters
-            = new CreateLivenessWithVerifySessionMultipartContent(parameters,
-                verifyImageFileDetails);
+            = new CreateLivenessWithVerifySessionMultipartContent(parameters, verifyImageFileDetails);
         return this.createLivenessWithVerifySessionWithVerifyImage(realParameters);
     }
 }

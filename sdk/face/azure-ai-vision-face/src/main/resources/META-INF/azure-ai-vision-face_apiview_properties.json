@@ -246,7 +246,7 @@
     "com.azure.ai.vision.face.models.BlurProperties": "Face.BlurProperties",
     "com.azure.ai.vision.face.models.CreateLivenessSessionContent": "Face.CreateLivenessSessionContent",
     "com.azure.ai.vision.face.models.CreateLivenessSessionResult": "Face.CreateLivenessSessionResult",
-    "com.azure.ai.vision.face.models.CreateLivenessWithVerifySessionContent": "Face.CreateLivenessWithVerifySessionContent",
+    "com.azure.ai.vision.face.models.CreateLivenessWithVerifySessionContent": "Face.CreateLivenessWithVerifySessionJsonContent",
     "com.azure.ai.vision.face.models.CreateLivenessWithVerifySessionResult": "Face.CreateLivenessWithVerifySessionResult",
     "com.azure.ai.vision.face.models.CreatePersonResult": "Face.CreatePersonResult",
     "com.azure.ai.vision.face.models.DetectFromSessionImageOptions": "null",
