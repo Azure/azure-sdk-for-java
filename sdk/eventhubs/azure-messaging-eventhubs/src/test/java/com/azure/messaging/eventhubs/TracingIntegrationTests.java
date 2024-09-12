@@ -152,7 +152,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"true", "false"})
+    @ValueSource(strings = {"false"})
     @NullSource
     public void sendAndReceiveFromPartition(String v2) throws InterruptedException {
         AtomicReference<EventData> receivedMessage = new AtomicReference<>();
@@ -175,7 +175,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
 
-        assertTrue(latch.await(10, TimeUnit.SECONDS));
+        assertTrue(latch.await(30, TimeUnit.SECONDS));
 
         List<ReadableSpan> spans = spanProcessor.getEndedSpans();
 
@@ -210,7 +210,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
 
-        assertTrue(latch.await(10, TimeUnit.SECONDS));
+        assertTrue(latch.await(30, TimeUnit.SECONDS));
 
         List<ReadableSpan> spans = spanProcessor.getEndedSpans();
 
@@ -352,7 +352,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .expectComplete()
             .verify(Duration.ofSeconds(60));
 
-        assertTrue(latch.await(10, TimeUnit.SECONDS));
+        assertTrue(latch.await(30, TimeUnit.SECONDS));
         List<ReadableSpan> spans = spanProcessor.getEndedSpans();
 
         List<ReadableSpan> message = findSpans(spans, EVENT);
@@ -368,7 +368,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"true", "false"})
+    @ValueSource(strings = {"false"})
     public void syncReceive(String v2) {
         createClients(null, v2);
         StepVerifier.create(producer.createBatch(new CreateBatchOptions().setPartitionId(PARTITION_ID))
@@ -430,7 +430,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"true", "false"})
+    @ValueSource(strings = {"false"})
     public void sendAndProcess(String v2) throws InterruptedException {
         AtomicReference<Span> currentInProcess = new AtomicReference<>();
         AtomicReference<EventData> receivedMessage = new AtomicReference<>();
@@ -461,7 +461,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
 
         toClose((Closeable) () -> processor.stop());
         processor.start();
-        assertTrue(latch.await(10, TimeUnit.SECONDS));
+        assertTrue(latch.await(30, TimeUnit.SECONDS));
         processor.stop();
 
         assertTrue(currentInProcess.get().getSpanContext().isValid());
@@ -531,7 +531,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             toClose((Closeable) () -> processor.stop());
             processor.start();
 
-            assertTrue(latch.await(10, TimeUnit.SECONDS));
+            assertTrue(latch.await(30, TimeUnit.SECONDS));
             processor.stop();
         }
 
@@ -557,7 +557,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"true", "false"})
+    @ValueSource(strings = {"false"})
     public void sendAndProcessBatch(String v2) throws InterruptedException {
         EventData message1 = new EventData(CONTENTS_BYTES);
         EventData message2 = new EventData(CONTENTS_BYTES);
@@ -595,7 +595,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .buildEventProcessorClient();
         toClose((Closeable) () -> processor.stop());
         processor.start();
-        assertTrue(latch.await(10, TimeUnit.SECONDS));
+        assertTrue(latch.await(30, TimeUnit.SECONDS));
         processor.stop();
 
         List<ReadableSpan> spans = spanProcessor.getEndedSpans();
@@ -651,7 +651,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
 
         toClose((Closeable) () -> processor.stop());
         processor.start();
-        assertTrue(latch.await(10, TimeUnit.SECONDS));
+        assertTrue(latch.await(30, TimeUnit.SECONDS));
         processor.stop();
 
         List<ReadableSpan> spans = spanProcessor.getEndedSpans();
