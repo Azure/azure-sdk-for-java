@@ -90,7 +90,7 @@ input-file:
 - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/4b7fbd8b842b509a0330f20260821dd844328dff/specification/search/data-plane/Azure.Search/preview/2024-09-01-preview/searchindex.json
 models-subpackage: models
 custom-types-subpackage: implementation.models
-custom-types: AutocompleteRequest,IndexAction,IndexBatch,RequestOptions,SearchDocumentsResult,SearchErrorException,SearchOptions,SearchRequest,SearchResult,SuggestDocumentsResult,SuggestRequest,SuggestResult,ErrorAdditionalInfo,ErrorDetail,ErrorResponse,ErrorResponseException
+custom-types: AutocompleteRequest,IndexAction,IndexBatch,RequestOptions,SearchDocumentsResult,SearchErrorException,SearchOptions,SearchRequest,SearchResult,SuggestDocumentsResult,SuggestRequest,SuggestResult,ErrorAdditionalInfo,ErrorDetail,ErrorResponse,ErrorResponseException,Speller
 customization-class: src/main/java/SearchIndexCustomizations.java
 directive:
     - rename-model:
