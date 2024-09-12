@@ -16,8 +16,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.GCM_ENCRYPTION_REGION_LENGTH;
-
 /**
  * This type generates Fluxes that emit ByteBuffers in specific patterns depending on test case. It is used to
  * exercise the decrypt logic and ensure it always returns only the data requested by appropriately trimming data that

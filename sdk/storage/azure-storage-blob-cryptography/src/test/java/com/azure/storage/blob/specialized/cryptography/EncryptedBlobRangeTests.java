@@ -36,7 +36,9 @@ public class EncryptedBlobRangeTests extends BlobCryptographyTestBase {
     @MethodSource("constructorV2Supplier")
     public void constructorV2(Integer offset, Integer count, String expectedString) {
         EncryptedBlobRange ebr = new EncryptedBlobRange(getBlobRange(offset, count),
-            new EncryptionData().setEncryptionAgent(new EncryptionAgent().setProtocol(ENCRYPTION_PROTOCOL_V2)));
+            new EncryptionData()
+                .setEncryptionAgent(new EncryptionAgent().setProtocol(ENCRYPTION_PROTOCOL_V2))
+                .setEncryptedRegionInfo(new EncryptedRegionInfo(GCM_ENCRYPTION_REGION_LENGTH, NONCE_LENGTH)));
 
         assertEquals(expectedString, ebr.toBlobRange().toString());
     }
@@ -58,10 +60,12 @@ public class EncryptedBlobRangeTests extends BlobCryptographyTestBase {
     @ParameterizedTest
     @CsvSource(value = {",", "3,", "17,", "34,", "47,", "48,", "2,6", "18,2", "38,17"})
     public void testFromBlobRangeHeader(Integer offset, Integer count) {
-        EncryptionData encryptionDataV1 = new EncryptionData().setEncryptionAgent(
-            new EncryptionAgent().setProtocol(ENCRYPTION_PROTOCOL_V1));
-        EncryptionData encryptionDataV2 = new EncryptionData().setEncryptionAgent(
-            new EncryptionAgent().setProtocol(ENCRYPTION_PROTOCOL_V2));
+        EncryptionData encryptionDataV1 = new EncryptionData()
+            .setEncryptionAgent(new EncryptionAgent().setProtocol(ENCRYPTION_PROTOCOL_V1))
+            .setEncryptedRegionInfo(new EncryptedRegionInfo(GCM_ENCRYPTION_REGION_LENGTH, NONCE_LENGTH));
+        EncryptionData encryptionDataV2 = new EncryptionData()
+            .setEncryptionAgent(new EncryptionAgent().setProtocol(ENCRYPTION_PROTOCOL_V2))
+            .setEncryptedRegionInfo(new EncryptedRegionInfo(GCM_ENCRYPTION_REGION_LENGTH, NONCE_LENGTH));
         BlobRange range = getBlobRange(offset, count);
 
         EncryptedBlobRange encryptedRangeFromBlobRangeV1 = new EncryptedBlobRange(range, encryptionDataV1);
@@ -94,7 +98,6 @@ public class EncryptedBlobRangeTests extends BlobCryptographyTestBase {
         4 * Constants.MB,
         Constants.GB
     })
-    //
     public void encryptedBlobRangeFromEncryptionData(int regionLength) {
         long dataSize = 4 * Constants.MB;
         EncryptionData encryptionData = new EncryptionData()
@@ -103,7 +106,7 @@ public class EncryptedBlobRangeTests extends BlobCryptographyTestBase {
 
         EncryptedBlobRange encryptedBlobRange = new EncryptedBlobRange(new BlobRange(0, dataSize), encryptionData);
 
-        int expectedRegionCount = (int)(dataSize - 1) / regionLength;
+        int expectedRegionCount = (int) (dataSize - 1) / regionLength;
         int expectedAdjustedDownloadCount = (expectedRegionCount + 1) * (NONCE_LENGTH + regionLength + TAG_LENGTH);
 
         // check if the region length is being used correctly with the expected adjusted download count

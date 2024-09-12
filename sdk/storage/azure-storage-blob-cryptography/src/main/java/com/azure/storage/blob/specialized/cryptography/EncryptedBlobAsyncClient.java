@@ -158,7 +158,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
         String containerName, String blobName, String snapshot, CpkInfo customerProvidedKey,
         EncryptionScope encryptionScope, AsyncKeyEncryptionKey key, String keyWrapAlgorithm, String versionId,
         EncryptionVersion encryptionVersion, boolean requiresEncryption,
-        BlobClientSideEncryptionOptions clientSideEncryptionOptions ) {
+        BlobClientSideEncryptionOptions clientSideEncryptionOptions) {
         super(pipeline, url, serviceVersion, accountName, containerName, blobName, snapshot, customerProvidedKey,
             encryptionScope, versionId);
 
