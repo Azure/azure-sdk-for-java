@@ -4,13 +4,13 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.resourcemanager.cosmos.models.DataTransferServiceResourceCreateUpdateProperties;
+import com.azure.resourcemanager.cosmos.models.DataTransferServiceResourceCreateUpdateParameters;
 import com.azure.resourcemanager.cosmos.models.DedicatedGatewayType;
-import com.azure.resourcemanager.cosmos.models.GraphApiComputeServiceResourceCreateUpdateProperties;
-import com.azure.resourcemanager.cosmos.models.MaterializedViewsBuilderServiceResourceCreateUpdateProperties;
+import com.azure.resourcemanager.cosmos.models.GraphApiComputeServiceResourceCreateUpdateParameters;
+import com.azure.resourcemanager.cosmos.models.MaterializedViewsBuilderServiceResourceCreateUpdateParameters;
 import com.azure.resourcemanager.cosmos.models.ServiceResourceCreateUpdateParameters;
 import com.azure.resourcemanager.cosmos.models.ServiceSize;
-import com.azure.resourcemanager.cosmos.models.SqlDedicatedGatewayServiceResourceCreateUpdateProperties;
+import com.azure.resourcemanager.cosmos.models.SqlDedicatedGatewayServiceResourceCreateUpdateParameters;
 
 /**
  * Samples for Service Create.
@@ -32,7 +32,7 @@ public final class ServiceCreateSamples {
             .serviceClient()
             .getServices()
             .create("rg1", "ddb1", "SqlDedicatedGateway", new ServiceResourceCreateUpdateParameters().withProperties(
-                new SqlDedicatedGatewayServiceResourceCreateUpdateProperties().withInstanceSize(ServiceSize.COSMOS_D4S)
+                new SqlDedicatedGatewayServiceResourceCreateUpdateParameters().withInstanceSize(ServiceSize.COSMOS_D4S)
                     .withInstanceCount(1)
                     .withDedicatedGatewayType(DedicatedGatewayType.INTEGRATED_CACHE)),
                 com.azure.core.util.Context.NONE);
@@ -54,7 +54,7 @@ public final class ServiceCreateSamples {
             .getServices()
             .create("rg1", "ddb1", "DataTransfer",
                 new ServiceResourceCreateUpdateParameters().withProperties(
-                    new DataTransferServiceResourceCreateUpdateProperties().withInstanceSize(ServiceSize.COSMOS_D4S)
+                    new DataTransferServiceResourceCreateUpdateParameters().withInstanceSize(ServiceSize.COSMOS_D4S)
                         .withInstanceCount(1)),
                 com.azure.core.util.Context.NONE);
     }
@@ -75,7 +75,7 @@ public final class ServiceCreateSamples {
             .getServices()
             .create("rg1", "ddb1", "MaterializedViewsBuilder",
                 new ServiceResourceCreateUpdateParameters()
-                    .withProperties(new MaterializedViewsBuilderServiceResourceCreateUpdateProperties()
+                    .withProperties(new MaterializedViewsBuilderServiceResourceCreateUpdateParameters()
                         .withInstanceSize(ServiceSize.COSMOS_D4S)
                         .withInstanceCount(1)),
                 com.azure.core.util.Context.NONE);
@@ -97,7 +97,7 @@ public final class ServiceCreateSamples {
             .getServices()
             .create("rg1", "ddb1", "GraphAPICompute",
                 new ServiceResourceCreateUpdateParameters().withProperties(
-                    new GraphApiComputeServiceResourceCreateUpdateProperties().withInstanceSize(ServiceSize.COSMOS_D4S)
+                    new GraphApiComputeServiceResourceCreateUpdateParameters().withInstanceSize(ServiceSize.COSMOS_D4S)
                         .withInstanceCount(1)),
                 com.azure.core.util.Context.NONE);
     }

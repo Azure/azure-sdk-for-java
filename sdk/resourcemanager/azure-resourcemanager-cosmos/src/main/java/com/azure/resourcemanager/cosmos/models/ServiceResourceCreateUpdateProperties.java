@@ -131,13 +131,13 @@ public class ServiceResourceCreateUpdateProperties implements JsonSerializable<S
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("DataTransfer".equals(discriminatorValue)) {
-                    return DataTransferServiceResourceCreateUpdateProperties.fromJson(readerToUse.reset());
+                    return DataTransferServiceResourceCreateUpdateParameters.fromJson(readerToUse.reset());
                 } else if ("SqlDedicatedGateway".equals(discriminatorValue)) {
-                    return SqlDedicatedGatewayServiceResourceCreateUpdateProperties.fromJson(readerToUse.reset());
+                    return SqlDedicatedGatewayServiceResourceCreateUpdateParameters.fromJson(readerToUse.reset());
                 } else if ("GraphAPICompute".equals(discriminatorValue)) {
-                    return GraphApiComputeServiceResourceCreateUpdateProperties.fromJson(readerToUse.reset());
+                    return GraphApiComputeServiceResourceCreateUpdateParameters.fromJson(readerToUse.reset());
                 } else if ("MaterializedViewsBuilder".equals(discriminatorValue)) {
-                    return MaterializedViewsBuilderServiceResourceCreateUpdateProperties.fromJson(readerToUse.reset());
+                    return MaterializedViewsBuilderServiceResourceCreateUpdateParameters.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }
