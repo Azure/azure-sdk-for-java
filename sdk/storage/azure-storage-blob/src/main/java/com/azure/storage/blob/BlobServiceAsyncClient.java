@@ -25,12 +25,15 @@ import com.azure.storage.blob.implementation.models.ServicesGetAccountInfoHeader
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.BlobContainerEncryptionScope;
 import com.azure.storage.blob.models.BlobContainerItem;
+import com.azure.storage.blob.models.BlobContainerListDetails;
 import com.azure.storage.blob.models.BlobCorsRule;
+import com.azure.storage.blob.models.BlobRetentionPolicy;
 import com.azure.storage.blob.models.BlobServiceProperties;
 import com.azure.storage.blob.models.BlobServiceStatistics;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.KeyInfo;
+import com.azure.storage.blob.models.ListBlobContainersIncludeType;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
@@ -174,22 +177,6 @@ public final class BlobServiceAsyncClient {
      */
     public BlobServiceVersion getServiceVersion() {
         return serviceVersion;
-    }
-
-    CpkInfo getCustomerProvidedKey() {
-        return customerProvidedKey;
-    }
-
-    EncryptionScope getEncryptionScope() {
-        return encryptionScope;
-    }
-
-    BlobContainerEncryptionScope getBlobContainerEncryptionScope() {
-        return blobContainerEncryptionScope;
-    }
-
-    boolean isAnonymousAccess() {
-        return anonymousAccess;
     }
 
     /**
@@ -551,7 +538,7 @@ public final class BlobServiceAsyncClient {
         return StorageImplUtils.applyOptionalTimeout(
             this.azureBlobStorage.getServices().listBlobContainersSegmentSinglePageAsync(
                 options.getPrefix(), marker, options.getMaxResultsPerPage(),
-                ModelHelper.toIncludeTypes(options.getDetails()),
+                toIncludeTypes(options.getDetails()),
                 null, null, Context.NONE), timeout);
     }
 
@@ -639,6 +626,35 @@ public final class BlobServiceAsyncClient {
                     response.getValue().getNextMarker(),
                     response.getDeserializedHeaders());
             });
+    }
+
+    /**
+     * Converts {@link BlobContainerListDetails} into list of {@link ListBlobContainersIncludeType}
+     * that contains only options selected. If no option is selected then null is returned.
+     *
+     * @return a list of selected options converted into {@link ListBlobContainersIncludeType}, null if none
+     * of options has been selected.
+     */
+    private List<ListBlobContainersIncludeType> toIncludeTypes(BlobContainerListDetails blobContainerListDetails) {
+        boolean hasDetails = blobContainerListDetails != null
+            && (blobContainerListDetails.getRetrieveMetadata()
+            || blobContainerListDetails.getRetrieveDeleted()
+            || blobContainerListDetails.getRetrieveSystemContainers());
+        if (hasDetails) {
+            List<ListBlobContainersIncludeType> flags = new ArrayList<>(3);
+            if (blobContainerListDetails.getRetrieveDeleted()) {
+                flags.add(ListBlobContainersIncludeType.DELETED);
+            }
+            if (blobContainerListDetails.getRetrieveMetadata()) {
+                flags.add(ListBlobContainersIncludeType.METADATA);
+            }
+            if (blobContainerListDetails.getRetrieveSystemContainers()) {
+                flags.add(ListBlobContainersIncludeType.SYSTEM);
+            }
+            return flags;
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -791,14 +807,14 @@ public final class BlobServiceAsyncClient {
             finalProperties.setLogging(properties.getLogging());
             if (finalProperties.getLogging() != null) {
                 StorageImplUtils.assertNotNull("Logging Version", finalProperties.getLogging().getVersion());
-                ModelHelper.validateRetentionPolicy(finalProperties.getLogging().getRetentionPolicy(), "Logging Retention Policy");
+                validateRetentionPolicy(finalProperties.getLogging().getRetentionPolicy(), "Logging Retention Policy");
             }
 
             // Hour Metrics
             finalProperties.setHourMetrics(properties.getHourMetrics());
             if (finalProperties.getHourMetrics() != null) {
                 StorageImplUtils.assertNotNull("HourMetrics Version", finalProperties.getHourMetrics().getVersion());
-                ModelHelper.validateRetentionPolicy(finalProperties.getHourMetrics().getRetentionPolicy(), "HourMetrics Retention "
+                validateRetentionPolicy(finalProperties.getHourMetrics().getRetentionPolicy(), "HourMetrics Retention "
                     + "Policy");
                 if (finalProperties.getHourMetrics().isEnabled()) {
                     StorageImplUtils.assertNotNull("HourMetrics IncludeApis",
@@ -811,7 +827,7 @@ public final class BlobServiceAsyncClient {
             if (finalProperties.getMinuteMetrics() != null) {
                 StorageImplUtils.assertNotNull("MinuteMetrics Version",
                     finalProperties.getMinuteMetrics().getVersion());
-                ModelHelper.validateRetentionPolicy(finalProperties.getMinuteMetrics().getRetentionPolicy(), "MinuteMetrics "
+                validateRetentionPolicy(finalProperties.getMinuteMetrics().getRetentionPolicy(), "MinuteMetrics "
                     + "Retention Policy");
                 if (finalProperties.getMinuteMetrics().isEnabled()) {
                     StorageImplUtils.assertNotNull("MinuteMetrics IncludeApis",
@@ -822,7 +838,7 @@ public final class BlobServiceAsyncClient {
             // CORS
             List<BlobCorsRule> corsRules = new ArrayList<>();
             for (BlobCorsRule rule : properties.getCors()) {
-                corsRules.add(ModelHelper.validatedCorsRule(rule));
+                corsRules.add(validatedCorsRule(rule));
             }
             finalProperties.setCors(corsRules);
 
@@ -831,7 +847,7 @@ public final class BlobServiceAsyncClient {
 
             // Delete Retention Policy
             finalProperties.setDeleteRetentionPolicy(properties.getDeleteRetentionPolicy());
-            ModelHelper.validateRetentionPolicy(finalProperties.getDeleteRetentionPolicy(), "DeleteRetentionPolicy Days");
+            validateRetentionPolicy(finalProperties.getDeleteRetentionPolicy(), "DeleteRetentionPolicy Days");
 
             // Static Website
             finalProperties.setStaticWebsite(properties.getStaticWebsite());
@@ -841,6 +857,38 @@ public final class BlobServiceAsyncClient {
 
         return this.azureBlobStorage.getServices()
             .setPropertiesNoCustomHeadersWithResponseAsync(finalProperties, null, null, context);
+    }
+
+    /**
+     * Sets any null fields to "" since the service requires all Cors rules to be set if some are set.
+     * @param originalRule {@link BlobCorsRule}
+     * @return The validated {@link BlobCorsRule}
+     */
+    private BlobCorsRule validatedCorsRule(BlobCorsRule originalRule) {
+        if (originalRule == null) {
+            return null;
+        }
+        BlobCorsRule validRule = new BlobCorsRule();
+        validRule.setAllowedHeaders(StorageImplUtils.emptyIfNull(originalRule.getAllowedHeaders()));
+        validRule.setAllowedMethods(StorageImplUtils.emptyIfNull(originalRule.getAllowedMethods()));
+        validRule.setAllowedOrigins(StorageImplUtils.emptyIfNull(originalRule.getAllowedOrigins()));
+        validRule.setExposedHeaders(StorageImplUtils.emptyIfNull(originalRule.getExposedHeaders()));
+        validRule.setMaxAgeInSeconds(originalRule.getMaxAgeInSeconds());
+        return validRule;
+    }
+
+    /**
+     * Validates a {@link BlobRetentionPolicy} according to service specs for set properties.
+     * @param retentionPolicy {@link BlobRetentionPolicy}
+     * @param policyName The name of the variable for errors.
+     */
+    private void validateRetentionPolicy(BlobRetentionPolicy retentionPolicy, String policyName) {
+        if (retentionPolicy == null) {
+            return;
+        }
+        if (retentionPolicy.isEnabled()) {
+            StorageImplUtils.assertInBounds(policyName, retentionPolicy.getDays(), 1, 365);
+        }
     }
 
     /**
