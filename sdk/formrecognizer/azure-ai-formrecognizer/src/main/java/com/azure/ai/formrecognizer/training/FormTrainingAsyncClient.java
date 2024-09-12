@@ -66,7 +66,7 @@ import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 
 /**
- * <p>This class provides an asynchronous client to connect to the Form Recognizer Azure Cognitive customModelsImpl.</p>
+ * <p>This class provides an asynchronous client to connect to the Form Recognizer Azure Cognitive Service.</p>
  * <p>This client provides asynchronous methods to:</p>
  *
  * <ol>
@@ -1044,6 +1044,4 @@ public final class FormTrainingAsyncClient {
         }
         return Mono.just(new PollResponse<>(status, trainingModelOperationResponse.getValue()));
     }
-
-
 }

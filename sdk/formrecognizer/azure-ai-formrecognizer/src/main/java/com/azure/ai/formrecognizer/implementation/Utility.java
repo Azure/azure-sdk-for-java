@@ -354,7 +354,7 @@ public final class Utility {
     }
 
     public static CreateComposedModelOptions
-    getCreateComposeModelOptions(CreateComposedModelOptions userProvidedOptions) {
+        getCreateComposeModelOptions(CreateComposedModelOptions userProvidedOptions) {
         return userProvidedOptions == null ? new CreateComposedModelOptions() : userProvidedOptions;
     }
 }

@@ -105,7 +105,7 @@ import static com.azure.ai.formrecognizer.implementation.Utility.parseModelId;
  *
  * <p>The following code sample demonstrates the creation of a {@link FormRecognizerClient}, using the
  * `DefaultAzureCredentialBuilder` to configure it.</p>
- * <p>
+ *
  * <!-- src_embed readme-sample-createFormRecognizerClientWithAAD -->
  * <pre>
  * FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder&#40;&#41;
@@ -117,7 +117,7 @@ import static com.azure.ai.formrecognizer.implementation.Utility.parseModelId;
  *
  * <p>Further, see the code sample below to use
  * {@link com.azure.core.credential.AzureKeyCredential AzureKeyCredential} for client creation.</p>
- * <p>
+ *
  * <!-- src_embed readme-sample-createFormRecognizerClient -->
  * <pre>
  * FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder&#40;&#41;
@@ -184,7 +184,7 @@ public final class FormRecognizerClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>>
-    beginRecognizeCustomFormsFromUrl(String modelId, String formUrl) {
+        beginRecognizeCustomFormsFromUrl(String modelId, String formUrl) {
         return beginRecognizeCustomFormsFromUrl(modelId, formUrl, null, Context.NONE);
     }
 
@@ -1549,16 +1549,17 @@ public final class FormRecognizerClient {
 
         return SyncPoller.createPoller(DEFAULT_POLL_INTERVAL,
             (cxt) -> {
-            try {
-                ResponseBase<AnalyzersAnalyzeInvoiceHeaders, Void> analyzeInvoiceWithResponse = analyzersImpl.analyzeInvoiceWithResponse(
-                    isFieldElementsIncluded,
-                    Locale.fromString(Objects.toString(localeInfo, null)),
-                    finalRecognizeInvoicesOptions.getPages(),
-                    new SourcePath().setSource(invoiceUrl), context);
-                return new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, new FormRecognizerOperationResult(parseModelId(analyzeInvoiceWithResponse.getDeserializedHeaders().getOperationLocation())));
-            } catch (ErrorResponseException ex) {
-                throw LOGGER.logExceptionAsError(Utility.getHttpResponseException(ex));
-            }},
+                try {
+                    ResponseBase<AnalyzersAnalyzeInvoiceHeaders, Void> analyzeInvoiceWithResponse = analyzersImpl.analyzeInvoiceWithResponse(
+                        isFieldElementsIncluded,
+                        Locale.fromString(Objects.toString(localeInfo, null)),
+                        finalRecognizeInvoicesOptions.getPages(),
+                        new SourcePath().setSource(invoiceUrl), context);
+                    return new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, new FormRecognizerOperationResult(parseModelId(analyzeInvoiceWithResponse.getDeserializedHeaders().getOperationLocation())));
+                } catch (ErrorResponseException ex) {
+                    throw LOGGER.logExceptionAsError(Utility.getHttpResponseException(ex));
+                }
+            },
             pollingOperation(resultId -> {
                 try {
                     return analyzersImpl.getAnalyzeInvoiceResultWithResponse(resultId, context);
@@ -1719,7 +1720,8 @@ public final class FormRecognizerClient {
                     return analyzersImpl.getAnalyzeInvoiceResultWithResponse(resultId, context);
                 } catch (ErrorResponseException ex) {
                     throw LOGGER.logExceptionAsError(Utility.getHttpResponseException(ex));
-                }}),
+                }
+            }),
             getCancellationIsNotSupported(),
             pollingContext -> {
                 final String resultId = pollingContext.getLatestResponse().getValue().getResultId();
@@ -2099,16 +2101,17 @@ public final class FormRecognizerClient {
      * </pre>
      * <!-- end com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeIdentityDocuments#InputStream-long-Options-Context -->
      *
-     * @param identityDocument                 The data of the identity document to recognize information from.
-     * @param length                           The exact length of the data.
+     * @param identityDocument The data of the identity document to recognize information from.
+     * @param length The exact length of the data.
      * @param recognizeIdentityDocumentOptions The additional configurable
-     *                                         {@link RecognizeIdentityDocumentOptions options} that may be passed when analyzing an identity document.
-     * @param context                          Additional context that is passed through the HTTP pipeline during the service call.
+     * {@link RecognizeIdentityDocumentOptions options} that may be passed when analyzing an identity document.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     *
      * @return A {@link SyncPoller} that polls the recognize identity document operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
-     *                                 an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException    If {@code identityDocument} is null.
+     * an {@link OperationStatus#FAILED}.
+     * @throws NullPointerException If {@code identityDocument} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeIdentityDocuments(
@@ -2140,9 +2143,9 @@ public final class FormRecognizerClient {
                     throw LOGGER.logExceptionAsError(Utility.getHttpResponseException(ex));
                 }
             },
-            pollingOperation(resultId ->  {
+            pollingOperation(resultId -> {
                 try {
-                   return analyzersImpl.getAnalyzeIdDocumentResultWithResponse(resultId, context);
+                    return analyzersImpl.getAnalyzeIdDocumentResultWithResponse(resultId, context);
                 } catch (ErrorResponseException ex) {
                     throw LOGGER.logExceptionAsError(Utility.getHttpResponseException(ex));
                 }
@@ -2162,7 +2165,7 @@ public final class FormRecognizerClient {
      * Poller's POLLING operation.
      */
     private Function<PollingContext<FormRecognizerOperationResult>, PollResponse<FormRecognizerOperationResult>>
-    pollingOperation(Function<UUID, Response<AnalyzeOperationResult>> pollingFunction) {
+        pollingOperation(Function<UUID, Response<AnalyzeOperationResult>> pollingFunction) {
         return pollingContext -> {
             final PollResponse<FormRecognizerOperationResult> operationResultPollResponse =
                 pollingContext.getLatestResponse();
@@ -2173,7 +2176,7 @@ public final class FormRecognizerClient {
     }
 
     private Function<PollingContext<FormRecognizerOperationResult>, List<RecognizedForm>>
-    fetchingOperation(Function<UUID, Response<AnalyzeOperationResult>> fetchingFunction,
+        fetchingOperation(Function<UUID, Response<AnalyzeOperationResult>> fetchingFunction,
         boolean isFieldElementsIncluded, String modelId) {
         return pollingContext -> {
             try {
@@ -2213,7 +2216,7 @@ public final class FormRecognizerClient {
     }
 
     private BiFunction<PollingContext<FormRecognizerOperationResult>, PollResponse<FormRecognizerOperationResult>, FormRecognizerOperationResult>
-    getCancellationIsNotSupported() {
+        getCancellationIsNotSupported() {
         return (pollingContext, activationResponse) -> {
             throw LOGGER.logExceptionAsError(new RuntimeException("Cancellation is not supported"));
         };

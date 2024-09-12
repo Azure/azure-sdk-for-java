@@ -3,7 +3,6 @@
 
 package com.azure.ai.formrecognizer.training;
 
-import com.azure.ai.formrecognizer.FormRecognizerClient;
 import com.azure.ai.formrecognizer.FormRecognizerServiceVersion;
 import com.azure.ai.formrecognizer.implementation.Constants;
 import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImpl;
