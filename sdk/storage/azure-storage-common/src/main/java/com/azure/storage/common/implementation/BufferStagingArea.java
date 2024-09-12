@@ -92,7 +92,8 @@ public final class BufferStagingArea {
 
             /*
             This logic is to handle when the buffer provided is larger than the remaining capacity of the current buffer
-            + the fixed size of the new BufferAggregator.
+            and the fixed size of the new BufferAggregator. It handles it by looping through the buffer emitting full
+            BufferAggregators until the range does not exceed the buffer size.
              */
             // calculate how many chunks remain given the total size of the buffer and the staging area window
             int remainingChunks = buf.remaining() / (int) this.buffSize;

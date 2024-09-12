@@ -4,7 +4,7 @@
 package com.azure.storage.blob.specialized.cryptography;
 
 import com.azure.storage.blob.models.BlobRange;
-import com.nimbusds.oauth2.sdk.Scope;
+import com.azure.storage.common.implementation.Constants;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -16,6 +16,8 @@ import java.util.stream.Stream;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_PROTOCOL_V1;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_PROTOCOL_V2;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.GCM_ENCRYPTION_REGION_LENGTH;
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.NONCE_LENGTH;
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.TAG_LENGTH;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class EncryptedBlobRangeTests extends BlobCryptographyTestBase {
@@ -83,5 +85,28 @@ public class EncryptedBlobRangeTests extends BlobCryptographyTestBase {
         } else {
             return new BlobRange(offset, (long) count);
         }
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {
+        16,
+        4 * Constants.KB,
+        4 * Constants.MB,
+        Constants.GB
+    })
+    //
+    public void encryptedBlobRangeFromEncryptionData(int regionLength) {
+        long dataSize = 4 * Constants.MB;
+        EncryptionData encryptionData = new EncryptionData()
+            .setEncryptionAgent(new EncryptionAgent(ENCRYPTION_PROTOCOL_V2, EncryptionAlgorithm.AES_GCM_256))
+            .setEncryptedRegionInfo(new EncryptedRegionInfo(regionLength, NONCE_LENGTH));
+
+        EncryptedBlobRange encryptedBlobRange = new EncryptedBlobRange(new BlobRange(0, dataSize), encryptionData);
+
+        int expectedRegionCount = (int)(dataSize - 1) / regionLength;
+        int expectedAdjustedDownloadCount = (expectedRegionCount + 1) * (NONCE_LENGTH + regionLength + TAG_LENGTH);
+
+        // check if the region length is being used correctly with the expected adjusted download count
+        assertEquals(expectedAdjustedDownloadCount, encryptedBlobRange.getAdjustedDownloadCount());
     }
 }
