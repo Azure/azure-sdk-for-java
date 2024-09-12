@@ -73,7 +73,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static com.azure.storage.blob.implementation.util.BuilderHelper.createTracer;
-import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.GCM_ENCRYPTION_REGION_LENGTH;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.USER_AGENT_PROPERTIES;
 
 /**
@@ -153,7 +152,7 @@ public final class EncryptedBlobClientBuilder implements
     private BlobServiceVersion version;
     private CpkInfo customerProvidedKey;
     private EncryptionScope encryptionScope;
-    private BlobClientSideEncryptionOptions blobEncryptionOptions;
+    private BlobClientSideEncryptionOptions clientSideEncryptionOptions;
 
     /**
      * Creates a new instance of the EncryptedBlobClientBuilder
@@ -250,11 +249,11 @@ public final class EncryptedBlobClientBuilder implements
         }
         BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
 
-        this.blobEncryptionOptions = this.blobEncryptionOptions == null ? new BlobClientSideEncryptionOptions() : this.blobEncryptionOptions;
+        this.clientSideEncryptionOptions = this.clientSideEncryptionOptions == null ? new BlobClientSideEncryptionOptions() : this.clientSideEncryptionOptions;
 
         return new EncryptedBlobAsyncClient(addBlobUserAgentModificationPolicy(getHttpPipeline()), endpoint,
             serviceVersion, accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope,
-            keyWrapper, keyWrapAlgorithm, versionId, encryptionVersion, requiresEncryption, blobEncryptionOptions);
+            keyWrapper, keyWrapAlgorithm, versionId, encryptionVersion, requiresEncryption, clientSideEncryptionOptions);
     }
 
 
@@ -312,7 +311,6 @@ public final class EncryptedBlobClientBuilder implements
                 policies.add(currPolicy);
             }
             // There is guaranteed not to be a decryption policy in the provided pipeline. Add one to the front.
-            // add the gcm length here
             policies.add(0, new BlobDecryptionPolicy(keyWrapper, keyResolver, requiresEncryption));
 
             return new HttpPipelineBuilder()
@@ -924,11 +922,12 @@ public final class EncryptedBlobClientBuilder implements
     /**
      * Sets the encryption options for the blob.
      *
-     * @param options The {@link BlobClientSideEncryptionOptions} for the blob.
+     * @param clientSideEncryptionOptions The {@link BlobClientSideEncryptionOptions} for the blob.
      * @return the updated EncryptedBlobClientBuilder object
      */
-    public EncryptedBlobClientBuilder blobClientSideEncryptionOptions(BlobClientSideEncryptionOptions options) {
-        this.blobEncryptionOptions = options;
+    public EncryptedBlobClientBuilder clientSideEncryptionOptions(
+        BlobClientSideEncryptionOptions clientSideEncryptionOptions) {
+        this.clientSideEncryptionOptions = clientSideEncryptionOptions;
         return this;
     }
 }

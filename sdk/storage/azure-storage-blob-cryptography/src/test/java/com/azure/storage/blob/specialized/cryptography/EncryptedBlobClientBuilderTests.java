@@ -295,10 +295,10 @@ public class EncryptedBlobClientBuilderTests {
             .blobName("foo")
             .containerName("container")
             .key(new FakeKey("keyId", randomData), "keyWrapAlgorithm")
-            .blobClientSideEncryptionOptions(new BlobClientSideEncryptionOptions()
+            .clientSideEncryptionOptions(new BlobClientSideEncryptionOptions()
                     .setAuthenticatedRegionDataLength(regionLength))
                 .buildEncryptedBlobClient();
-        assertEquals(regionLength, encryptedBlobClient.getBlobClientSideEncryptionOptions().getAuthenticatedRegionDataLength());
+        assertEquals(regionLength, encryptedBlobClient.getClientSideEncryptionOptions().getAuthenticatedRegionDataLength());
     }
 
     @Test
@@ -308,7 +308,7 @@ public class EncryptedBlobClientBuilderTests {
             .containerName("container")
             .key(new FakeKey("keyId", randomData), "keyWrapAlgorithm")
             .buildEncryptedBlobClient();
-        assertEquals(4 * Constants.MB, encryptedBlobClient.getBlobClientSideEncryptionOptions().getAuthenticatedRegionDataLength());
+        assertEquals(4 * Constants.MB, encryptedBlobClient.getClientSideEncryptionOptions().getAuthenticatedRegionDataLength());
     }
 
 

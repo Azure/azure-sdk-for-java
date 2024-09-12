@@ -1735,7 +1735,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
         ebc = new EncryptedBlobClient(mockAesKey(getEncryptedClientBuilder(fakeKey, null, ENV.getPrimaryAccount().getCredential(),
             cc.getBlobContainerUrl(), EncryptionVersion.V2)
             .blobName(generateBlobName())
-            .blobClientSideEncryptionOptions(new BlobClientSideEncryptionOptions().setAuthenticatedRegionDataLength(regionLength))
+            .clientSideEncryptionOptions(new BlobClientSideEncryptionOptions().setAuthenticatedRegionDataLength(regionLength))
             .buildEncryptedBlobAsyncClient()));
         ebc.uploadWithResponse(new BlobParallelUploadOptions(BinaryData.fromByteBuffer(data.duplicate())), null, null);
 
@@ -1752,7 +1752,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
         ebc = new EncryptedBlobClient(mockAesKey(getEncryptedClientBuilder(fakeKey, null,
             ENV.getPrimaryAccount().getCredential(), cc.getBlobContainerUrl(), EncryptionVersion.V2)
             .blobName(generateBlobName())
-            .blobClientSideEncryptionOptions(new BlobClientSideEncryptionOptions()
+            .clientSideEncryptionOptions(new BlobClientSideEncryptionOptions()
                 .setAuthenticatedRegionDataLength(regionLength))
             .buildEncryptedBlobAsyncClient()));
         ebc.uploadFromFile(file.toPath().toString(), true);
@@ -1775,7 +1775,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
         ebc = new EncryptedBlobClient(mockAesKey(getEncryptedClientBuilder(fakeKey, null,
             ENV.getPrimaryAccount().getCredential(), cc.getBlobContainerUrl(), EncryptionVersion.V2)
             .blobName(blobName)
-            .blobClientSideEncryptionOptions(new BlobClientSideEncryptionOptions()
+            .clientSideEncryptionOptions(new BlobClientSideEncryptionOptions()
                 .setAuthenticatedRegionDataLength(regionLength))
             .buildEncryptedBlobAsyncClient()));
         ebc.uploadWithResponse(new BlobParallelUploadOptions(BinaryData.fromByteBuffer(data.duplicate())), null, null);

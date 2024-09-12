@@ -24,7 +24,8 @@ public class BlobClientSideEncryptionOptions {
     }
 
     /**
-     * Creates a new instance of BlobEncryptionOptions.
+     * Sets the authenticated region length to use when encrypting blobs.
+     *
      * @param authenticatedRegionDataLength authenticatedRegionDataLength The authenticated region length in bytes to
      * use when encrypting the blob. This value only is used when uploading blobs. Downloads use the authenticated
      * region data length from the blob encryption metadata when decrypting blobs. Minimum value for the length is 16

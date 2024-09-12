@@ -133,7 +133,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
         return requiresEncryption;
     }
 
-    BlobClientSideEncryptionOptions getBlobClientSideEncryptionOptions() {
+    BlobClientSideEncryptionOptions getClientSideEncryptionOptions() {
         return clientSideEncryptionOptions;
     }
 
@@ -157,7 +157,8 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
     EncryptedBlobAsyncClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion, String accountName,
         String containerName, String blobName, String snapshot, CpkInfo customerProvidedKey,
         EncryptionScope encryptionScope, AsyncKeyEncryptionKey key, String keyWrapAlgorithm, String versionId,
-        EncryptionVersion encryptionVersion, boolean requiresEncryption, BlobClientSideEncryptionOptions encryptionOptions) {
+        EncryptionVersion encryptionVersion, boolean requiresEncryption,
+        BlobClientSideEncryptionOptions clientSideEncryptionOptions ) {
         super(pipeline, url, serviceVersion, accountName, containerName, blobName, snapshot, customerProvidedKey,
             encryptionScope, versionId);
 
@@ -165,7 +166,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
         this.keyWrapAlgorithm = keyWrapAlgorithm;
         this.encryptionVersion = encryptionVersion;
         this.requiresEncryption = requiresEncryption;
-        this.clientSideEncryptionOptions = encryptionOptions;
+        this.clientSideEncryptionOptions = clientSideEncryptionOptions;
     }
 
     /**
