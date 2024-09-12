@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
+import com.azure.core.management.serializer.SerializerFactory;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.cosmos.models.CommandPostBody;
+import java.io.IOException;
 
 /**
  * Samples for CassandraClusters InvokeCommand.
  */
 public final class CassandraClustersInvokeCommandSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/
+     * x-ms-original-file:
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-09-01-preview/examples/
      * CosmosDBManagedCassandraCommand.json
      */
     /**
@@ -19,13 +23,17 @@ public final class CassandraClustersInvokeCommandSamples {
      * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBManagedCassandraCommand(com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void cosmosDBManagedCassandraCommand(com.azure.resourcemanager.AzureResourceManager azure)
+        throws IOException {
         azure.cosmosDBAccounts()
             .manager()
             .serviceClient()
             .getCassandraClusters()
             .invokeCommand("cassandra-prod-rg", "cassandra-prod",
-                new CommandPostBody().withCommand("nodetool status").withHost("10.0.1.12"),
+                new CommandPostBody().withCommand("nodetool")
+                    .withArguments(SerializerFactory.createDefaultManagementSerializerAdapter()
+                        .deserialize("{\"status\":\"\"}", Object.class, SerializerEncoding.JSON))
+                    .withHost("10.0.1.12"),
                 com.azure.core.util.Context.NONE);
     }
 }

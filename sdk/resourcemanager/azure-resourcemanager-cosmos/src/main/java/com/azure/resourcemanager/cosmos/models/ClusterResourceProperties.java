@@ -74,6 +74,11 @@ public final class ClusterResourceProperties implements JsonSerializable<Cluster
     private Boolean repairEnabled;
 
     /*
+     * The form of AutoReplicate that is being used by this cluster.
+     */
+    private AutoReplicate autoReplicate;
+
+    /*
      * List of TLS certificates used to authorize clients connecting to the cluster. All connections are TLS encrypted
      * whether clientCertificates is set or not, but if clientCertificates is set, the managed Cassandra cluster will
      * reject all connections not bearing a TLS client certificate that can be validated from one or more of the public
@@ -106,6 +111,11 @@ public final class ClusterResourceProperties implements JsonSerializable<Cluster
     private List<SeedNode> seedNodes;
 
     /*
+     * List of the data center names for unmanaged data centers in this cluster to be included in auto-replication.
+     */
+    private List<String> externalDataCenters;
+
+    /*
      * (Deprecated) Number of hours to wait between taking a backup of the cluster.
      */
     private Integer hoursBetweenBackups;
@@ -121,9 +131,29 @@ public final class ClusterResourceProperties implements JsonSerializable<Cluster
     private Boolean cassandraAuditLoggingEnabled;
 
     /*
+     * Type of the cluster. If set to Production, some operations might not be permitted on cluster.
+     */
+    private ClusterType clusterType;
+
+    /*
      * Error related to resource provisioning.
      */
     private CassandraError provisionError;
+
+    /*
+     * Extensions to be added or updated on cluster.
+     */
+    private List<String> extensions;
+
+    /*
+     * List of backup schedules that define when you want to back up your data.
+     */
+    private List<BackupSchedule> backupSchedules;
+
+    /*
+     * How the nodes in the cluster react to scheduled events
+     */
+    private ScheduledEventStrategy scheduledEventStrategy;
 
     /*
      * How to connect to the azure services needed for running the cluster
@@ -131,7 +161,7 @@ public final class ClusterResourceProperties implements JsonSerializable<Cluster
     private AzureConnectionType azureConnectionMethod;
 
     /*
-     * If the Connection Method is VPN, this is the Id of the private link resource that the datacenters need to connect
+     * If the Connection Method is Vpn, this is the Id of the private link resource that the datacenters need to connect
      * to.
      */
     private String privateLinkResourceId;
@@ -349,6 +379,26 @@ public final class ClusterResourceProperties implements JsonSerializable<Cluster
     }
 
     /**
+     * Get the autoReplicate property: The form of AutoReplicate that is being used by this cluster.
+     * 
+     * @return the autoReplicate value.
+     */
+    public AutoReplicate autoReplicate() {
+        return this.autoReplicate;
+    }
+
+    /**
+     * Set the autoReplicate property: The form of AutoReplicate that is being used by this cluster.
+     * 
+     * @param autoReplicate the autoReplicate value to set.
+     * @return the ClusterResourceProperties object itself.
+     */
+    public ClusterResourceProperties withAutoReplicate(AutoReplicate autoReplicate) {
+        this.autoReplicate = autoReplicate;
+        return this;
+    }
+
+    /**
      * Get the clientCertificates property: List of TLS certificates used to authorize clients connecting to the
      * cluster. All connections are TLS encrypted whether clientCertificates is set or not, but if clientCertificates is
      * set, the managed Cassandra cluster will reject all connections not bearing a TLS client certificate that can be
@@ -442,6 +492,28 @@ public final class ClusterResourceProperties implements JsonSerializable<Cluster
     }
 
     /**
+     * Get the externalDataCenters property: List of the data center names for unmanaged data centers in this cluster to
+     * be included in auto-replication.
+     * 
+     * @return the externalDataCenters value.
+     */
+    public List<String> externalDataCenters() {
+        return this.externalDataCenters;
+    }
+
+    /**
+     * Set the externalDataCenters property: List of the data center names for unmanaged data centers in this cluster to
+     * be included in auto-replication.
+     * 
+     * @param externalDataCenters the externalDataCenters value to set.
+     * @return the ClusterResourceProperties object itself.
+     */
+    public ClusterResourceProperties withExternalDataCenters(List<String> externalDataCenters) {
+        this.externalDataCenters = externalDataCenters;
+        return this;
+    }
+
+    /**
      * Get the hoursBetweenBackups property: (Deprecated) Number of hours to wait between taking a backup of the
      * cluster.
      * 
@@ -504,6 +576,28 @@ public final class ClusterResourceProperties implements JsonSerializable<Cluster
     }
 
     /**
+     * Get the clusterType property: Type of the cluster. If set to Production, some operations might not be permitted
+     * on cluster.
+     * 
+     * @return the clusterType value.
+     */
+    public ClusterType clusterType() {
+        return this.clusterType;
+    }
+
+    /**
+     * Set the clusterType property: Type of the cluster. If set to Production, some operations might not be permitted
+     * on cluster.
+     * 
+     * @param clusterType the clusterType value to set.
+     * @return the ClusterResourceProperties object itself.
+     */
+    public ClusterResourceProperties withClusterType(ClusterType clusterType) {
+        this.clusterType = clusterType;
+        return this;
+    }
+
+    /**
      * Get the provisionError property: Error related to resource provisioning.
      * 
      * @return the provisionError value.
@@ -520,6 +614,66 @@ public final class ClusterResourceProperties implements JsonSerializable<Cluster
      */
     public ClusterResourceProperties withProvisionError(CassandraError provisionError) {
         this.provisionError = provisionError;
+        return this;
+    }
+
+    /**
+     * Get the extensions property: Extensions to be added or updated on cluster.
+     * 
+     * @return the extensions value.
+     */
+    public List<String> extensions() {
+        return this.extensions;
+    }
+
+    /**
+     * Set the extensions property: Extensions to be added or updated on cluster.
+     * 
+     * @param extensions the extensions value to set.
+     * @return the ClusterResourceProperties object itself.
+     */
+    public ClusterResourceProperties withExtensions(List<String> extensions) {
+        this.extensions = extensions;
+        return this;
+    }
+
+    /**
+     * Get the backupSchedules property: List of backup schedules that define when you want to back up your data.
+     * 
+     * @return the backupSchedules value.
+     */
+    public List<BackupSchedule> backupSchedules() {
+        return this.backupSchedules;
+    }
+
+    /**
+     * Set the backupSchedules property: List of backup schedules that define when you want to back up your data.
+     * 
+     * @param backupSchedules the backupSchedules value to set.
+     * @return the ClusterResourceProperties object itself.
+     */
+    public ClusterResourceProperties withBackupSchedules(List<BackupSchedule> backupSchedules) {
+        this.backupSchedules = backupSchedules;
+        return this;
+    }
+
+    /**
+     * Get the scheduledEventStrategy property: How the nodes in the cluster react to scheduled events.
+     * 
+     * @return the scheduledEventStrategy value.
+     */
+    public ScheduledEventStrategy scheduledEventStrategy() {
+        return this.scheduledEventStrategy;
+    }
+
+    /**
+     * Set the scheduledEventStrategy property: How the nodes in the cluster react to scheduled events.
+     * 
+     * @param scheduledEventStrategy the scheduledEventStrategy value to set.
+     * @return the ClusterResourceProperties object itself.
+     */
+    public ClusterResourceProperties withScheduledEventStrategy(ScheduledEventStrategy scheduledEventStrategy) {
+        this.scheduledEventStrategy = scheduledEventStrategy;
         return this;
     }
 
@@ -544,7 +698,7 @@ public final class ClusterResourceProperties implements JsonSerializable<Cluster
     }
 
     /**
-     * Get the privateLinkResourceId property: If the Connection Method is VPN, this is the Id of the private link
+     * Get the privateLinkResourceId property: If the Connection Method is Vpn, this is the Id of the private link
      * resource that the datacenters need to connect to.
      * 
      * @return the privateLinkResourceId value.
@@ -580,6 +734,9 @@ public final class ClusterResourceProperties implements JsonSerializable<Cluster
         if (provisionError() != null) {
             provisionError().validate();
         }
+        if (backupSchedules() != null) {
+            backupSchedules().forEach(e -> e.validate());
+        }
     }
 
     /**
@@ -599,16 +756,25 @@ public final class ClusterResourceProperties implements JsonSerializable<Cluster
         jsonWriter.writeStringField("initialCassandraAdminPassword", this.initialCassandraAdminPassword);
         jsonWriter.writeJsonField("prometheusEndpoint", this.prometheusEndpoint);
         jsonWriter.writeBooleanField("repairEnabled", this.repairEnabled);
+        jsonWriter.writeStringField("autoReplicate", this.autoReplicate == null ? null : this.autoReplicate.toString());
         jsonWriter.writeArrayField("clientCertificates", this.clientCertificates,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("externalGossipCertificates", this.externalGossipCertificates,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("externalSeedNodes", this.externalSeedNodes,
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("externalDataCenters", this.externalDataCenters,
+            (writer, element) -> writer.writeString(element));
         jsonWriter.writeNumberField("hoursBetweenBackups", this.hoursBetweenBackups);
         jsonWriter.writeBooleanField("deallocated", this.deallocated);
         jsonWriter.writeBooleanField("cassandraAuditLoggingEnabled", this.cassandraAuditLoggingEnabled);
+        jsonWriter.writeStringField("clusterType", this.clusterType == null ? null : this.clusterType.toString());
         jsonWriter.writeJsonField("provisionError", this.provisionError);
+        jsonWriter.writeArrayField("extensions", this.extensions, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("backupSchedules", this.backupSchedules,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("scheduledEventStrategy",
+            this.scheduledEventStrategy == null ? null : this.scheduledEventStrategy.toString());
         jsonWriter.writeStringField("azureConnectionMethod",
             this.azureConnectionMethod == null ? null : this.azureConnectionMethod.toString());
         return jsonWriter.writeEndObject();
@@ -649,6 +815,8 @@ public final class ClusterResourceProperties implements JsonSerializable<Cluster
                     deserializedClusterResourceProperties.prometheusEndpoint = SeedNode.fromJson(reader);
                 } else if ("repairEnabled".equals(fieldName)) {
                     deserializedClusterResourceProperties.repairEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("autoReplicate".equals(fieldName)) {
+                    deserializedClusterResourceProperties.autoReplicate = AutoReplicate.fromString(reader.getString());
                 } else if ("clientCertificates".equals(fieldName)) {
                     List<Certificate> clientCertificates = reader.readArray(reader1 -> Certificate.fromJson(reader1));
                     deserializedClusterResourceProperties.clientCertificates = clientCertificates;
@@ -665,6 +833,9 @@ public final class ClusterResourceProperties implements JsonSerializable<Cluster
                 } else if ("seedNodes".equals(fieldName)) {
                     List<SeedNode> seedNodes = reader.readArray(reader1 -> SeedNode.fromJson(reader1));
                     deserializedClusterResourceProperties.seedNodes = seedNodes;
+                } else if ("externalDataCenters".equals(fieldName)) {
+                    List<String> externalDataCenters = reader.readArray(reader1 -> reader1.getString());
+                    deserializedClusterResourceProperties.externalDataCenters = externalDataCenters;
                 } else if ("hoursBetweenBackups".equals(fieldName)) {
                     deserializedClusterResourceProperties.hoursBetweenBackups = reader.getNullable(JsonReader::getInt);
                 } else if ("deallocated".equals(fieldName)) {
@@ -672,8 +843,20 @@ public final class ClusterResourceProperties implements JsonSerializable<Cluster
                 } else if ("cassandraAuditLoggingEnabled".equals(fieldName)) {
                     deserializedClusterResourceProperties.cassandraAuditLoggingEnabled
                         = reader.getNullable(JsonReader::getBoolean);
+                } else if ("clusterType".equals(fieldName)) {
+                    deserializedClusterResourceProperties.clusterType = ClusterType.fromString(reader.getString());
                 } else if ("provisionError".equals(fieldName)) {
                     deserializedClusterResourceProperties.provisionError = CassandraError.fromJson(reader);
+                } else if ("extensions".equals(fieldName)) {
+                    List<String> extensions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedClusterResourceProperties.extensions = extensions;
+                } else if ("backupSchedules".equals(fieldName)) {
+                    List<BackupSchedule> backupSchedules
+                        = reader.readArray(reader1 -> BackupSchedule.fromJson(reader1));
+                    deserializedClusterResourceProperties.backupSchedules = backupSchedules;
+                } else if ("scheduledEventStrategy".equals(fieldName)) {
+                    deserializedClusterResourceProperties.scheduledEventStrategy
+                        = ScheduledEventStrategy.fromString(reader.getString());
                 } else if ("azureConnectionMethod".equals(fieldName)) {
                     deserializedClusterResourceProperties.azureConnectionMethod
                         = AzureConnectionType.fromString(reader.getString());

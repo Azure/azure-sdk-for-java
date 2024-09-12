@@ -4,9 +4,12 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
+import com.azure.resourcemanager.cosmos.models.CreateMode;
 import com.azure.resourcemanager.cosmos.models.CreateUpdateOptions;
 import com.azure.resourcemanager.cosmos.models.MongoDBDatabaseCreateUpdateParameters;
 import com.azure.resourcemanager.cosmos.models.MongoDBDatabaseResource;
+import com.azure.resourcemanager.cosmos.models.ResourceRestoreParameters;
+import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,7 +18,8 @@ import java.util.Map;
  */
 public final class MongoDBResourcesCreateUpdateMongoDBDatabaseSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/
+     * x-ms-original-file:
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-09-01-preview/examples/
      * CosmosDBMongoDBDatabaseCreateUpdate.json
      */
     /**
@@ -34,6 +38,33 @@ public final class MongoDBResourcesCreateUpdateMongoDBDatabaseSamples {
                     .withResource(new MongoDBDatabaseResource().withId("databaseName"))
                     .withOptions(new CreateUpdateOptions()),
                 com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-09-01-preview/examples/
+     * CosmosDBMongoDBDatabaseRestore.json
+     */
+    /**
+     * Sample code: CosmosDBMongoDBDatabaseRestore.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void cosmosDBMongoDBDatabaseRestore(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
+            .getMongoDBResources()
+            .createUpdateMongoDBDatabase("rg1", "ddb1", "databaseName", new MongoDBDatabaseCreateUpdateParameters()
+                .withLocation("West US")
+                .withTags(mapOf())
+                .withResource(new MongoDBDatabaseResource().withId("databaseName")
+                    .withRestoreParameters(new ResourceRestoreParameters().withRestoreSource(
+                        "/subscriptions/subid/providers/Microsoft.DocumentDB/locations/WestUS/restorableDatabaseAccounts/restorableDatabaseAccountId")
+                        .withRestoreTimestampInUtc(OffsetDateTime.parse("2022-07-20T18:28:00Z"))
+                        .withRestoreWithTtlDisabled(false))
+                    .withCreateMode(CreateMode.RESTORE))
+                .withOptions(new CreateUpdateOptions()), com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

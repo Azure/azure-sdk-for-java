@@ -11,7 +11,6 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.Map;
 
 /**
  * Specification of which command to run where.
@@ -26,7 +25,7 @@ public final class CommandPostBody implements JsonSerializable<CommandPostBody> 
     /*
      * The arguments for the command to be run
      */
-    private Map<String, String> arguments;
+    private Object arguments;
 
     /*
      * IP address of the cassandra host to run the command on
@@ -41,7 +40,7 @@ public final class CommandPostBody implements JsonSerializable<CommandPostBody> 
     /*
      * If true, allows the command to *write* to the cassandra directory, otherwise read-only.
      */
-    private Boolean readwrite;
+    private Boolean readWrite;
 
     /**
      * Creates an instance of CommandPostBody class.
@@ -74,7 +73,7 @@ public final class CommandPostBody implements JsonSerializable<CommandPostBody> 
      * 
      * @return the arguments value.
      */
-    public Map<String, String> arguments() {
+    public Object arguments() {
         return this.arguments;
     }
 
@@ -84,7 +83,7 @@ public final class CommandPostBody implements JsonSerializable<CommandPostBody> 
      * @param arguments the arguments value to set.
      * @return the CommandPostBody object itself.
      */
-    public CommandPostBody withArguments(Map<String, String> arguments) {
+    public CommandPostBody withArguments(Object arguments) {
         this.arguments = arguments;
         return this;
     }
@@ -132,24 +131,24 @@ public final class CommandPostBody implements JsonSerializable<CommandPostBody> 
     }
 
     /**
-     * Get the readwrite property: If true, allows the command to *write* to the cassandra directory, otherwise
+     * Get the readWrite property: If true, allows the command to *write* to the cassandra directory, otherwise
      * read-only.
      * 
-     * @return the readwrite value.
+     * @return the readWrite value.
      */
-    public Boolean readwrite() {
-        return this.readwrite;
+    public Boolean readWrite() {
+        return this.readWrite;
     }
 
     /**
-     * Set the readwrite property: If true, allows the command to *write* to the cassandra directory, otherwise
+     * Set the readWrite property: If true, allows the command to *write* to the cassandra directory, otherwise
      * read-only.
      * 
-     * @param readwrite the readwrite value to set.
+     * @param readWrite the readWrite value to set.
      * @return the CommandPostBody object itself.
      */
-    public CommandPostBody withReadwrite(Boolean readwrite) {
-        this.readwrite = readwrite;
+    public CommandPostBody withReadWrite(Boolean readWrite) {
+        this.readWrite = readWrite;
         return this;
     }
 
@@ -179,9 +178,9 @@ public final class CommandPostBody implements JsonSerializable<CommandPostBody> 
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("command", this.command);
         jsonWriter.writeStringField("host", this.host);
-        jsonWriter.writeMapField("arguments", this.arguments, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeUntypedField("arguments", this.arguments);
         jsonWriter.writeBooleanField("cassandra-stop-start", this.cassandraStopStart);
-        jsonWriter.writeBooleanField("readwrite", this.readwrite);
+        jsonWriter.writeBooleanField("readWrite", this.readWrite);
         return jsonWriter.writeEndObject();
     }
 
@@ -206,12 +205,11 @@ public final class CommandPostBody implements JsonSerializable<CommandPostBody> 
                 } else if ("host".equals(fieldName)) {
                     deserializedCommandPostBody.host = reader.getString();
                 } else if ("arguments".equals(fieldName)) {
-                    Map<String, String> arguments = reader.readMap(reader1 -> reader1.getString());
-                    deserializedCommandPostBody.arguments = arguments;
+                    deserializedCommandPostBody.arguments = reader.readUntyped();
                 } else if ("cassandra-stop-start".equals(fieldName)) {
                     deserializedCommandPostBody.cassandraStopStart = reader.getNullable(JsonReader::getBoolean);
-                } else if ("readwrite".equals(fieldName)) {
-                    deserializedCommandPostBody.readwrite = reader.getNullable(JsonReader::getBoolean);
+                } else if ("readWrite".equals(fieldName)) {
+                    deserializedCommandPostBody.readWrite = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

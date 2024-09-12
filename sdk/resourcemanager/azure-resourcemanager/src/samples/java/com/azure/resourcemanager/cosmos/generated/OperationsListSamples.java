@@ -10,8 +10,8 @@ package com.azure.resourcemanager.cosmos.generated;
 public final class OperationsListSamples {
     /*
      * x-ms-original-file:
-     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBOperationsList.
-     * json
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-09-01-preview/examples/
+     * CosmosDBOperationsList.json
      */
     /**
      * Sample code: CosmosDBOperationsList.

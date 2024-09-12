@@ -10,8 +10,8 @@ package com.azure.resourcemanager.cosmos.generated;
 public final class GremlinResourcesGetGremlinGraphSamples {
     /*
      * x-ms-original-file:
-     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBGremlinGraphGet.
-     * json
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-09-01-preview/examples/
+     * CosmosDBGremlinGraphGet.json
      */
     /**
      * Sample code: CosmosDBGremlinGraphGet.

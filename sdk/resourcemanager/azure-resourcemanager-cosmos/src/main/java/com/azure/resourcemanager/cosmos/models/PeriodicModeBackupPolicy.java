@@ -77,9 +77,11 @@ public final class PeriodicModeBackupPolicy extends BackupPolicy {
      */
     @Override
     public void validate() {
-        super.validate();
         if (periodicModeProperties() != null) {
             periodicModeProperties().validate();
+        }
+        if (migrationState() != null) {
+            migrationState().validate();
         }
     }
 

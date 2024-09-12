@@ -155,31 +155,6 @@ public final class RestorableDatabaseAccountGetResultInner
     }
 
     /**
-     * Get the deletionTime property: The time at which the restorable database account has been deleted (ISO-8601
-     * format).
-     * 
-     * @return the deletionTime value.
-     */
-    public OffsetDateTime deletionTime() {
-        return this.innerProperties() == null ? null : this.innerProperties().deletionTime();
-    }
-
-    /**
-     * Set the deletionTime property: The time at which the restorable database account has been deleted (ISO-8601
-     * format).
-     * 
-     * @param deletionTime the deletionTime value to set.
-     * @return the RestorableDatabaseAccountGetResultInner object itself.
-     */
-    public RestorableDatabaseAccountGetResultInner withDeletionTime(OffsetDateTime deletionTime) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new RestorableDatabaseAccountProperties();
-        }
-        this.innerProperties().withDeletionTime(deletionTime);
-        return this;
-    }
-
-    /**
      * Get the oldestRestorableTime property: The least recent time at which the database account can be restored to
      * (ISO-8601 format).
      * 
@@ -201,6 +176,31 @@ public final class RestorableDatabaseAccountGetResultInner
             this.innerProperties = new RestorableDatabaseAccountProperties();
         }
         this.innerProperties().withOldestRestorableTime(oldestRestorableTime);
+        return this;
+    }
+
+    /**
+     * Get the deletionTime property: The time at which the restorable database account has been deleted (ISO-8601
+     * format).
+     * 
+     * @return the deletionTime value.
+     */
+    public OffsetDateTime deletionTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().deletionTime();
+    }
+
+    /**
+     * Set the deletionTime property: The time at which the restorable database account has been deleted (ISO-8601
+     * format).
+     * 
+     * @param deletionTime the deletionTime value to set.
+     * @return the RestorableDatabaseAccountGetResultInner object itself.
+     */
+    public RestorableDatabaseAccountGetResultInner withDeletionTime(OffsetDateTime deletionTime) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RestorableDatabaseAccountProperties();
+        }
+        this.innerProperties().withDeletionTime(deletionTime);
         return this;
     }
 

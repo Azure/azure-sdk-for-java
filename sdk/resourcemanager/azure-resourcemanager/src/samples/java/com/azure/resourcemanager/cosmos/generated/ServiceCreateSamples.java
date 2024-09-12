@@ -4,13 +4,13 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.resourcemanager.cosmos.models.DataTransferServiceResourceCreateUpdateParameters;
+import com.azure.resourcemanager.cosmos.models.DataTransferServiceResourceCreateUpdateProperties;
 import com.azure.resourcemanager.cosmos.models.DedicatedGatewayType;
-import com.azure.resourcemanager.cosmos.models.GraphApiComputeServiceResourceCreateUpdateParameters;
-import com.azure.resourcemanager.cosmos.models.MaterializedViewsBuilderServiceResourceCreateUpdateParameters;
+import com.azure.resourcemanager.cosmos.models.GraphApiComputeServiceResourceCreateUpdateProperties;
+import com.azure.resourcemanager.cosmos.models.MaterializedViewsBuilderServiceResourceCreateUpdateProperties;
 import com.azure.resourcemanager.cosmos.models.ServiceResourceCreateUpdateParameters;
 import com.azure.resourcemanager.cosmos.models.ServiceSize;
-import com.azure.resourcemanager.cosmos.models.SqlDedicatedGatewayServiceResourceCreateUpdateParameters;
+import com.azure.resourcemanager.cosmos.models.SqlDedicatedGatewayServiceResourceCreateUpdateProperties;
 
 /**
  * Samples for Service Create.
@@ -18,7 +18,7 @@ import com.azure.resourcemanager.cosmos.models.SqlDedicatedGatewayServiceResourc
 public final class ServiceCreateSamples {
     /*
      * x-ms-original-file:
-     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/services/
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-09-01-preview/examples/services/
      * sqldedicatedgateway/CosmosDBSqlDedicatedGatewayServiceCreate.json
      */
     /**
@@ -32,14 +32,15 @@ public final class ServiceCreateSamples {
             .serviceClient()
             .getServices()
             .create("rg1", "ddb1", "SqlDedicatedGateway", new ServiceResourceCreateUpdateParameters().withProperties(
-                new SqlDedicatedGatewayServiceResourceCreateUpdateParameters().withInstanceSize(ServiceSize.COSMOS_D4S)
+                new SqlDedicatedGatewayServiceResourceCreateUpdateProperties().withInstanceSize(ServiceSize.COSMOS_D4S)
                     .withInstanceCount(1)
                     .withDedicatedGatewayType(DedicatedGatewayType.INTEGRATED_CACHE)),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/
+     * x-ms-original-file:
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-09-01-preview/examples/
      * CosmosDBDataTransferServiceCreate.json
      */
     /**
@@ -54,13 +55,14 @@ public final class ServiceCreateSamples {
             .getServices()
             .create("rg1", "ddb1", "DataTransfer",
                 new ServiceResourceCreateUpdateParameters().withProperties(
-                    new DataTransferServiceResourceCreateUpdateParameters().withInstanceSize(ServiceSize.COSMOS_D4S)
+                    new DataTransferServiceResourceCreateUpdateProperties().withInstanceSize(ServiceSize.COSMOS_D4S)
                         .withInstanceCount(1)),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/
+     * x-ms-original-file:
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-09-01-preview/examples/
      * CosmosDBMaterializedViewsBuilderServiceCreate.json
      */
     /**
@@ -75,14 +77,15 @@ public final class ServiceCreateSamples {
             .getServices()
             .create("rg1", "ddb1", "MaterializedViewsBuilder",
                 new ServiceResourceCreateUpdateParameters()
-                    .withProperties(new MaterializedViewsBuilderServiceResourceCreateUpdateParameters()
+                    .withProperties(new MaterializedViewsBuilderServiceResourceCreateUpdateProperties()
                         .withInstanceSize(ServiceSize.COSMOS_D4S)
                         .withInstanceCount(1)),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/
+     * x-ms-original-file:
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-09-01-preview/examples/
      * CosmosDBGraphAPIComputeServiceCreate.json
      */
     /**
@@ -97,7 +100,7 @@ public final class ServiceCreateSamples {
             .getServices()
             .create("rg1", "ddb1", "GraphAPICompute",
                 new ServiceResourceCreateUpdateParameters().withProperties(
-                    new GraphApiComputeServiceResourceCreateUpdateParameters().withInstanceSize(ServiceSize.COSMOS_D4S)
+                    new GraphApiComputeServiceResourceCreateUpdateProperties().withInstanceSize(ServiceSize.COSMOS_D4S)
                         .withInstanceCount(1)),
                 com.azure.core.util.Context.NONE);
     }

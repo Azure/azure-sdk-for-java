@@ -20,7 +20,8 @@ import java.util.Map;
  */
 public final class CassandraResourcesCreateUpdateCassandraTableSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/
+     * x-ms-original-file:
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-09-01-preview/examples/
      * CosmosDBCassandraTableCreateUpdate.json
      */
     /**
@@ -41,7 +42,8 @@ public final class CassandraResourcesCreateUpdateCassandraTableSamples {
                         .withSchema(new CassandraSchema()
                             .withColumns(Arrays.asList(new Column().withName("columnA").withType("Ascii")))
                             .withPartitionKeys(Arrays.asList(new CassandraPartitionKey().withName("columnA")))
-                            .withClusterKeys(Arrays.asList(new ClusterKey().withName("columnA").withOrderBy("Asc")))))
+                            .withClusterKeys(Arrays.asList(new ClusterKey().withName("columnA").withOrderBy("Asc"))))
+                        .withAnalyticalStorageTtl(500))
                     .withOptions(new CreateUpdateOptions()),
                 com.azure.core.util.Context.NONE);
     }
