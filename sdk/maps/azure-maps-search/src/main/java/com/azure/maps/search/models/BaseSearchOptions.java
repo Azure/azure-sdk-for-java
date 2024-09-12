@@ -251,8 +251,8 @@ public  class BaseSearchOptions {
     }
 
     /**
-     * Return GeoBoundingBox
-     * @return {@link Optional<GeoBoundingBox>}
+     * Returns the GeoBoundingBox.
+     * @return GeoBoundingBox
      */
     public Optional<GeoBoundingBox> getBoundingBox() {
         return Optional.ofNullable(boundingBox);

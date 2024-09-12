@@ -28,8 +28,7 @@ public class SearchCustomization extends Customization {
         customizeErrorDetail(implementationModels);
         customizeReverseGeocodingBatchRequestItem(implementationModels);
         customizeGeoJsonObject(models);
-        //customizeGeoJsonGeometry(models);
-        //customizeGeoJsonFeature(models);
+        customizeBoundary(models);
 
     }
 
@@ -42,6 +41,16 @@ public class SearchCustomization extends Customization {
                 .addImport("com.azure.maps.search.implementation.models.GeoJsonPolygon")
                 .addImport("com.azure.maps.search.implementation.models.GeoJsonMultiPolygon")
                 .addImport("com.azure.maps.search.implementation.models.GeoJsonGeometryCollection");
+        });
+    }
+
+    private void customizeBoundary(PackageCustomization models) {
+        models.getClass("Boundary").customizeAst(ast -> {
+            ast.getClassByName("Boundary").ifPresent(clazz -> clazz.getMethodsByName("getCopyrightURL").get(0)
+                .setName("getCopyrightUrl"));
+
+            ast.getClassByName("Boundary").ifPresent(clazz -> clazz.getMethodsByName("setCopyrightURL").get(0)
+                .setName("setCopyrightUrl"));
         });
     }
 

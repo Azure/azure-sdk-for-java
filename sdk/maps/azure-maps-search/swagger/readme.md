@@ -73,7 +73,7 @@ generate-sync-async-clients: false
 polling: {}
 models-subpackage: implementation.models
 custom-types-subpackage: models
-custom-types: MapsSearchAddress,Boundary,BoundaryResultTypeEnum,ResolutionEnum,GeoJsonFeature,GeoJsonObjectType,GeocodingResponse,GeocodingBatchResponse,GeocodingBatchRequestBody,ReverseGeocodingBatchRequestBody,GeoJsonGeometry,GeocodingBatchResponseSummary,FeatureCollectionEnum,Intersection,GeoJsonObject
+custom-types: MapsSearchAddress,Boundary,BoundaryResultTypeEnum,ResolutionEnum,GeoJsonFeature,GeoJsonObjectType,GeocodingResponse,GeocodingBatchResponse,GeocodingBatchRequestBody,ReverseGeocodingBatchRequestBody,GeoJsonGeometry,GeocodingBatchResponseSummary,FeatureCollectionEnum,Intersection,GeoJsonObject,MapsSearchAddressCountryRegion
 customization-class: src/main/java/SearchCustomization.java
 generic-response-type: true
 no-custom-headers: true
