@@ -3,18 +3,18 @@
 
 package io.clientcore.core.implementation.util;
 
-class UrlTokenizer {
+class UriTokenizer {
     private final String text;
     private final int textLength;
-    private UrlTokenizerState state;
+    private UriTokenizerState state;
     private int currentIndex;
-    private UrlToken currentToken;
+    private UriToken currentToken;
 
-    UrlTokenizer(String text) {
-        this(text, UrlTokenizerState.SCHEME_OR_HOST);
+    UriTokenizer(String text) {
+        this(text, UriTokenizerState.SCHEME_OR_HOST);
     }
 
-    UrlTokenizer(String text, UrlTokenizerState state) {
+    UriTokenizer(String text, UriTokenizerState state) {
         this.text = text;
         this.textLength = (text == null ? 0 : text.length());
         this.state = state;
@@ -50,7 +50,7 @@ class UrlTokenizer {
         return false;
     }
 
-    UrlToken current() {
+    UriToken current() {
         return currentToken;
     }
 
@@ -62,37 +62,37 @@ class UrlTokenizer {
             switch (state) {
                 case SCHEME:
                     final String scheme = readUntilNotLetterOrDigit();
-                    currentToken = UrlToken.scheme(scheme);
+                    currentToken = UriToken.scheme(scheme);
                     if (!hasCurrentCharacter()) {
-                        state = UrlTokenizerState.DONE;
+                        state = UriTokenizerState.DONE;
                     } else {
-                        state = UrlTokenizerState.HOST;
+                        state = UriTokenizerState.HOST;
                     }
                     break;
 
                 case SCHEME_OR_HOST:
                     final String schemeOrHost = readUntil(true);
                     if (!hasCurrentCharacter()) {
-                        currentToken = UrlToken.host(schemeOrHost);
-                        state = UrlTokenizerState.DONE;
+                        currentToken = UriToken.host(schemeOrHost);
+                        state = UriTokenizerState.DONE;
                         break;
                     }
 
                     c = currentCharacter();
                     if (c == ':') {
                         if (peekMatchesSchemeSeparator(false)) {
-                            currentToken = UrlToken.scheme(schemeOrHost);
-                            state = UrlTokenizerState.HOST;
+                            currentToken = UriToken.scheme(schemeOrHost);
+                            state = UriTokenizerState.HOST;
                         } else {
-                            currentToken = UrlToken.host(schemeOrHost);
-                            state = UrlTokenizerState.PORT;
+                            currentToken = UriToken.host(schemeOrHost);
+                            state = UriTokenizerState.PORT;
                         }
                     } else if (c == '/') {
-                        currentToken = UrlToken.host(schemeOrHost);
-                        state = UrlTokenizerState.PATH;
+                        currentToken = UriToken.host(schemeOrHost);
+                        state = UriTokenizerState.PATH;
                     } else if (c == '?') {
-                        currentToken = UrlToken.host(schemeOrHost);
-                        state = UrlTokenizerState.QUERY;
+                        currentToken = UriToken.host(schemeOrHost);
+                        state = UriTokenizerState.QUERY;
                     }
                     break;
 
@@ -100,20 +100,20 @@ class UrlTokenizer {
                     peekMatchesSchemeSeparator(true);
 
                     final String host = readUntil(true);
-                    currentToken = UrlToken.host(host);
+                    currentToken = UriToken.host(host);
 
                     if (!hasCurrentCharacter()) {
-                        state = UrlTokenizerState.DONE;
+                        state = UriTokenizerState.DONE;
                         break;
                     }
 
                     c = currentCharacter();
                     if (c == ':') {
-                        state = UrlTokenizerState.PORT;
+                        state = UriTokenizerState.PORT;
                     } else if (c == '/') {
-                        state = UrlTokenizerState.PATH;
+                        state = UriTokenizerState.PATH;
                     } else {
-                        state = UrlTokenizerState.QUERY;
+                        state = UriTokenizerState.QUERY;
                     }
                     break;
 
@@ -124,17 +124,17 @@ class UrlTokenizer {
                     }
 
                     final String port = readUntil(false);
-                    currentToken = UrlToken.port(port);
+                    currentToken = UriToken.port(port);
 
                     if (!hasCurrentCharacter()) {
-                        state = UrlTokenizerState.DONE;
+                        state = UriTokenizerState.DONE;
                         break;
                     }
 
                     if (currentCharacter() == '/') {
-                        state = UrlTokenizerState.PATH;
+                        state = UriTokenizerState.PATH;
                     } else {
-                        state = UrlTokenizerState.QUERY;
+                        state = UriTokenizerState.QUERY;
                     }
                     break;
 
@@ -149,12 +149,12 @@ class UrlTokenizer {
                         currentIndex = index;
                     }
 
-                    currentToken = UrlToken.path(path);
+                    currentToken = UriToken.path(path);
 
                     if (!hasCurrentCharacter()) {
-                        state = UrlTokenizerState.DONE;
+                        state = UriTokenizerState.DONE;
                     } else {
-                        state = UrlTokenizerState.QUERY;
+                        state = UriTokenizerState.QUERY;
                     }
                     break;
 
@@ -164,8 +164,8 @@ class UrlTokenizer {
                     }
 
                     final String query = readRemaining();
-                    currentToken = UrlToken.query(query);
-                    state = UrlTokenizerState.DONE;
+                    currentToken = UriToken.query(query);
+                    state = UriTokenizerState.DONE;
                     break;
 
                 default:

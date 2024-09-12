@@ -13,11 +13,8 @@ import io.clientcore.core.http.models.Response;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static io.clientcore.core.util.TestUtils.createUrl;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class HttpPipelinePolicyTests {
@@ -25,7 +22,6 @@ public class HttpPipelinePolicyTests {
     public void verifySend() throws IOException {
         SyncPolicy policy1 = new SyncPolicy();
         SyncPolicy policy2 = new SyncPolicy();
-        URL url = createUrl("http://localhost/");
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(new NoOpHttpClient())
@@ -33,7 +29,7 @@ public class HttpPipelinePolicyTests {
             .build();
 
 
-        pipeline.send(new HttpRequest(HttpMethod.GET, url)).close();
+        pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/")).close();
 
         assertEquals(1, policy1.syncCalls.get());
         assertEquals(1, policy2.syncCalls.get());
@@ -42,14 +38,13 @@ public class HttpPipelinePolicyTests {
     @Test
     public void defaultImplementationShouldCallRightStack() throws IOException {
         DefaultImplementationSyncPolicy policyWithDefaultSyncImplementation = new DefaultImplementationSyncPolicy();
-        URL url = createUrl("http://localhost/");
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(new NoOpHttpClient())
             .policies(policyWithDefaultSyncImplementation)
             .build();
 
-        pipeline.send(new HttpRequest(HttpMethod.GET, url)).close();
+        pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/")).close();
 
         assertEquals(1, policyWithDefaultSyncImplementation.syncCalls.get());
         assertEquals(1, policyWithDefaultSyncImplementation.syncCalls.get());
@@ -57,8 +52,6 @@ public class HttpPipelinePolicyTests {
 
     /**
      * This is to cover case when reactor could complain about blocking on non-blocking thread.
-     *
-     * @throws MalformedURLException ignored.
      */
     @Test
     public void doesNotThrowThatThreadIsNonBlocking() throws IOException {
@@ -91,14 +84,13 @@ public class HttpPipelinePolicyTests {
             }
             return new HttpResponse<>(request, 200, new HttpHeaders(), null);
         };
-        URL url = createUrl("http://localhost/");
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(badClient)
             .policies(policy1, badPolicy1, badPolicy2)
             .build();
 
-        pipeline.send(new HttpRequest(HttpMethod.GET, url)).close();
+        pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/")).close();
     }
 
 

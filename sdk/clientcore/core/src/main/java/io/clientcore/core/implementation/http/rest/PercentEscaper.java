@@ -10,7 +10,7 @@ import java.util.Arrays;
 import static io.clientcore.core.implementation.util.ImplUtils.isNullOrEmpty;
 
 /**
- * An escaper that escapes URL data through percent encoding.
+ * An escaper that escapes URI data through percent encoding.
  */
 public final class PercentEscaper {
     private static final char[] HEX_CHARACTERS = "0123456789ABCDEF".toCharArray();

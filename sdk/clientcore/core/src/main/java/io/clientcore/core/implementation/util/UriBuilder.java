@@ -3,9 +3,8 @@
 
 package io.clientcore.core.implementation.util;
 
-import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URL;
+import java.net.URISyntaxException;
 import java.util.AbstractMap;
 import java.util.Collections;
 import java.util.Iterator;
@@ -19,10 +18,10 @@ import java.util.stream.Collectors;
 import static io.clientcore.core.implementation.util.ImplUtils.isNullOrEmpty;
 
 /**
- * A builder class that is used to create URLs.
+ * A builder class that is used to create URIs.
  */
-public final class UrlBuilder {
-    private static final Map<String, UrlBuilder> PARSED_URLS = new ConcurrentHashMap<>();
+public final class UriBuilder {
+    private static final Map<String, UriBuilder> PARSED_URIS = new ConcurrentHashMap<>();
     private static final int MAX_CACHE_SIZE = 10000;
 
     private String scheme;
@@ -34,139 +33,132 @@ public final class UrlBuilder {
     private Map<String, QueryParameter> query;
 
     /**
-     * Creates a new instance of {@link UrlBuilder}.
+     * Creates a new instance of {@link UriBuilder}.
      */
-    public UrlBuilder() {
+    public UriBuilder() {
         this(null);
     }
 
-    private UrlBuilder(Map<String, QueryParameter> queryToCopy) {
+    private UriBuilder(Map<String, QueryParameter> queryToCopy) {
         this.queryToCopy = queryToCopy;
     }
 
     /**
-     * Set the scheme/protocol that will be used to build the final URL.
+     * Set the scheme/protocol that will be used to build the final URI.
      *
-     * @param scheme The scheme/protocol that will be used to build the final URL.
-     *
-     * @return This UrlBuilder so that multiple setters can be chained together.
+     * @param scheme The scheme/protocol that will be used to build the final URI.
+     * @return This UriBuilder so that multiple setters can be chained together.
      */
-    public UrlBuilder setScheme(String scheme) {
+    public UriBuilder setScheme(String scheme) {
         if (scheme == null || scheme.isEmpty()) {
             this.scheme = null;
         } else {
-            with(scheme, UrlTokenizerState.SCHEME);
+            with(scheme, UriTokenizerState.SCHEME);
         }
         return this;
     }
 
     /**
-     * Get the scheme/protocol that has been assigned to this UrlBuilder.
+     * Get the scheme/protocol that has been assigned to this UriBuilder.
      *
-     * @return the scheme/protocol that has been assigned to this UrlBuilder.
+     * @return the scheme/protocol that has been assigned to this UriBuilder.
      */
     public String getScheme() {
         return scheme;
     }
 
     /**
-     * Set the host that will be used to build the final URL.
+     * Set the host that will be used to build the final URI.
      *
-     * @param host The host that will be used to build the final URL.
-     *
-     * @return This UrlBuilder so that multiple setters can be chained together.
+     * @param host The host that will be used to build the final URI.
+     * @return This UriBuilder so that multiple setters can be chained together.
      */
-    public UrlBuilder setHost(String host) {
+    public UriBuilder setHost(String host) {
         if (host == null || host.isEmpty()) {
             this.host = null;
         } else {
-            with(host, UrlTokenizerState.SCHEME_OR_HOST);
+            with(host, UriTokenizerState.SCHEME_OR_HOST);
         }
         return this;
     }
 
     /**
-     * Get the host that has been assigned to this UrlBuilder.
+     * Get the host that has been assigned to this UriBuilder.
      *
-     * @return the host that has been assigned to this UrlBuilder.
+     * @return the host that has been assigned to this UriBuilder.
      */
     public String getHost() {
         return host;
     }
 
     /**
-     * Set the port that will be used to build the final URL.
+     * Set the port that will be used to build the final URI.
      *
-     * @param port The port that will be used to build the final URL.
-     *
-     * @return This UrlBuilder so that multiple setters can be chained together.
+     * @param port The port that will be used to build the final URI.
+     * @return This UriBuilder so that multiple setters can be chained together.
      */
-    public UrlBuilder setPort(String port) {
+    public UriBuilder setPort(String port) {
         if (isNullOrEmpty(port)) {
             this.port = null;
             return this;
         }
 
-        return with(port, UrlTokenizerState.PORT);
+        return with(port, UriTokenizerState.PORT);
     }
 
     /**
-     * Set the port that will be used to build the final URL.
+     * Set the port that will be used to build the final URI.
      *
-     * @param port The port that will be used to build the final URL.
-     *
-     * @return This UrlBuilder so that multiple setters can be chained together.
+     * @param port The port that will be used to build the final URI.
+     * @return This UriBuilder so that multiple setters can be chained together.
      */
-    public UrlBuilder setPort(int port) {
+    public UriBuilder setPort(int port) {
         this.port = port;
         return this;
     }
 
     /**
-     * Get the port that has been assigned to this UrlBuilder.
+     * Get the port that has been assigned to this UriBuilder.
      *
-     * @return the port that has been assigned to this UrlBuilder.
+     * @return the port that has been assigned to this UriBuilder.
      */
     public Integer getPort() {
         return port;
     }
 
     /**
-     * Set the path that will be used to build the final URL.
+     * Set the path that will be used to build the final URI.
      *
-     * @param path The path that will be used to build the final URL.
-     *
-     * @return This UrlBuilder so that multiple setters can be chained together.
+     * @param path The path that will be used to build the final URI.
+     * @return This UriBuilder so that multiple setters can be chained together.
      */
-    public UrlBuilder setPath(String path) {
+    public UriBuilder setPath(String path) {
         if (path == null || path.isEmpty()) {
             this.path = null;
         } else {
-            with(path, UrlTokenizerState.PATH);
+            with(path, UriTokenizerState.PATH);
         }
         return this;
     }
 
     /**
-     * Get the path that has been assigned to this UrlBuilder.
+     * Get the path that has been assigned to this UriBuilder.
      *
-     * @return the path that has been assigned to this UrlBuilder.
+     * @return the path that has been assigned to this UriBuilder.
      */
     public String getPath() {
         return path;
     }
 
     /**
-     * Set the provided query parameter name and encoded value to query string for the final URL.
+     * Set the provided query parameter name and encoded value to query string for the final URI.
      *
      * @param queryParameterName The name of the query parameter.
      * @param queryParameterEncodedValue The encoded value of the query parameter.
-     *
-     * @return The provided query parameter name and encoded value to query string for the final URL.
-     *
+     * @return The provided query parameter name and encoded value to query string for the final URI.
      * @throws NullPointerException if {@code queryParameterName} or {@code queryParameterEncodedValue} are null.
      */
-    public UrlBuilder setQueryParameter(String queryParameterName, String queryParameterEncodedValue) {
+    public UriBuilder setQueryParameter(String queryParameterName, String queryParameterEncodedValue) {
         initializeQuery();
 
         query.put(queryParameterName, new QueryParameter(queryParameterName, queryParameterEncodedValue));
@@ -174,16 +166,14 @@ public final class UrlBuilder {
     }
 
     /**
-     * Append the provided query parameter name and encoded value to query string for the final URL.
+     * Append the provided query parameter name and encoded value to query string for the final URI.
      *
      * @param queryParameterName The name of the query parameter.
      * @param queryParameterEncodedValue The encoded value of the query parameter.
-     *
-     * @return The provided query parameter name and encoded value to query string for the final URL.
-     *
+     * @return The provided query parameter name and encoded value to query string for the final URI.
      * @throws NullPointerException if {@code queryParameterName} or {@code queryParameterEncodedValue} are null.
      */
-    public UrlBuilder addQueryParameter(String queryParameterName, String queryParameterEncodedValue) {
+    public UriBuilder addQueryParameter(String queryParameterName, String queryParameterEncodedValue) {
         initializeQuery();
 
         query.compute(queryParameterName, (key, value) -> {
@@ -197,22 +187,21 @@ public final class UrlBuilder {
     }
 
     /**
-     * Set the query that will be used to build the final URL.
+     * Set the query that will be used to build the final URI.
      *
-     * @param query The query that will be used to build the final URL.
-     *
-     * @return This UrlBuilder so that multiple setters can be chained together.
+     * @param query The query that will be used to build the final URI.
+     * @return This UriBuilder so that multiple setters can be chained together.
      */
-    public UrlBuilder setQuery(String query) {
-        return (query == null || query.isEmpty()) ? clearQuery() : with(query, UrlTokenizerState.QUERY);
+    public UriBuilder setQuery(String query) {
+        return (query == null || query.isEmpty()) ? clearQuery() : with(query, UriTokenizerState.QUERY);
     }
 
     /**
-     * Clear the query that will be used to build the final URL.
+     * Clear the query that will be used to build the final URI.
      *
-     * @return This UrlBuilder so that multiple setters can be chained together.
+     * @return This UriBuilder so that multiple setters can be chained together.
      */
-    public UrlBuilder clearQuery() {
+    public UriBuilder clearQuery() {
         if (isNullOrEmpty(query)) {
             return this;
         }
@@ -222,11 +211,11 @@ public final class UrlBuilder {
     }
 
     /**
-     * Get a view of the query that has been assigned to this UrlBuilder.
+     * Get a view of the query that has been assigned to this UriBuilder.
      * <p>
-     * Changes to the {@link Map} returned by this API won't be reflected in the UrlBuilder.
+     * Changes to the {@link Map} returned by this API won't be reflected in the UriBuilder.
      *
-     * @return A view of the query that has been assigned to this UrlBuilder.
+     * @return A view of the query that has been assigned to this UriBuilder.
      */
     public Map<String, String> getQuery() {
         initializeQuery();
@@ -241,7 +230,7 @@ public final class UrlBuilder {
     }
 
     /**
-     * Returns the query string currently configured in this UrlBuilder instance.
+     * Returns the query string currently configured in this UriBuilder instance.
      *
      * @return A String containing the currently configured query string.
      */
@@ -266,7 +255,7 @@ public final class UrlBuilder {
         boolean first = true;
 
         // queryToCopy hasn't been copied yet as no operations on query parameters have been applied since creating
-        // this UrlBuilder. Use queryToCopy to create the query string and while doing so copy it into query.
+        // this UriBuilder. Use queryToCopy to create the query string and while doing so copy it into query.
         if (query == null) {
             query = new LinkedHashMap<>(queryToCopy.size());
 
@@ -307,13 +296,13 @@ public final class UrlBuilder {
         return first;
     }
 
-    private UrlBuilder with(String text, UrlTokenizerState startState) {
-        final UrlTokenizer tokenizer = new UrlTokenizer(text, startState);
+    private UriBuilder with(String text, UriTokenizerState startState) {
+        final UriTokenizer tokenizer = new UriTokenizer(text, startState);
 
         while (tokenizer.next()) {
-            final UrlToken token = tokenizer.current();
+            final UriToken token = tokenizer.current();
             final String tokenText = emptyToNull(token.text());
-            final UrlTokenType tokenType = token.type();
+            final UriTokenType tokenType = token.type();
             switch (tokenType) {
                 case SCHEME:
                     scheme = tokenText;
@@ -334,8 +323,8 @@ public final class UrlBuilder {
                     break;
 
                 case QUERY:
-                    parseQueryParameters(tokenText).forEachRemaining(queryParam ->
-                        addQueryParameter(queryParam.getKey(), queryParam.getValue()));
+                    parseQueryParameters(tokenText).forEachRemaining(
+                        queryParam -> addQueryParameter(queryParam.getKey(), queryParam.getValue()));
                     break;
 
                 default:
@@ -346,39 +335,21 @@ public final class UrlBuilder {
     }
 
     /**
-     * Get the URL that is being built.
+     * Get the URI that is being built.
      *
-     * @return The URL that is being built.
-     *
-     * @throws MalformedURLException if the URL is not fully formed.
+     * @return The URI that is being built.
+     * @throws URISyntaxException if the URI is not fully formed.
      */
-    public URL toUrl() throws MalformedURLException {
-        // Continue using new URL constructor here as URI either cannot accept certain characters in the path or
+    public URI toUri() throws URISyntaxException {
+        // Continue using new URI constructor here as URI either cannot accept certain characters in the path or
         // escapes '/', depending on the API used to create the URI.
-        return createUrl(toString());
+        return new URI(toString());
     }
 
     /**
-     * Creates a new {@link URL} from the given {@code urlString}.
-     * <p>
-     * This is a temporary method that will be removed once all usages of {@link URL#URL(String)} are migrated to
-     * {@link URI}-based methods given the deprecation of the URL methods in Java 20.
+     * Get the string representation of the URI that is being built.
      *
-     * @param urlString The string to convert to a {@link URL}.
-     *
-     * @return The {@link URL} representing the {@code urlString}.
-     *
-     * @throws MalformedURLException If the {@code urlString} isn't a valid {@link URL}.
-     */
-    @SuppressWarnings("deprecation")
-    private static URL createUrl(String urlString) throws MalformedURLException {
-        return new URL(urlString);
-    }
-
-    /**
-     * Get the string representation of the URL that is being built.
-     *
-     * @return The string representation of the URL that is being built.
+     * @return The string representation of the URI that is being built.
      */
     @Override
     public String toString() {
@@ -417,84 +388,81 @@ public final class UrlBuilder {
     }
 
     /**
-     * Returns the map of parsed URLs and their {@link UrlBuilder UrlBuilders}
+     * Returns the map of parsed URIs and their {@link UriBuilder UriBuilders}
      *
-     * @return the map of parsed URLs and their {@link UrlBuilder UrlBuilders}
+     * @return the map of parsed URIs and their {@link UriBuilder UriBuilders}
      */
-    static Map<String, UrlBuilder> getParsedUrls() {
-        return PARSED_URLS;
+    static Map<String, UriBuilder> getParsedUris() {
+        return PARSED_URIS;
     }
 
     /**
-     * Parses the passed {@code url} string into a UrlBuilder.
+     * Parses the passed {@code uri} string into a UriBuilder.
      *
-     * @param url The URL string to parse.
-     *
-     * @return The UrlBuilder that was created from parsing the passed URL string.
+     * @param uri The URI string to parse.
+     * @return The UriBuilder that was created from parsing the passed URI string.
      */
-    public static UrlBuilder parse(String url) {
+    public static UriBuilder parse(String uri) {
         /*
-         * Parsing the URL string into a UrlBuilder is a non-trivial operation and many calls into RestProxy will use
-         * the same root URL string. To save CPU costs we retain a parsed version of the URL string in memory. Given
-         * that UrlBuilder is mutable we must return a cloned version of the cached UrlBuilder.
+         * Parsing the URI string into a UriBuilder is a non-trivial operation and many calls into RestProxy will use
+         * the same root URI string. To save CPU costs we retain a parsed version of the URI string in memory. Given
+         * that UriBuilder is mutable we must return a cloned version of the cached UriBuilder.
          */
         // ConcurrentHashMap doesn't allow for null keys, coerce it into an empty string.
-        String concurrentSafeUrl = (url == null) ? "" : url;
+        String concurrentSafeUri = (uri == null) ? "" : uri;
 
-        // If the number of parsed urls are above threshold, clear the map and start fresh.
-        // This prevents the map from growing without bounds if too many unique URLs are parsed.
+        // If the number of parsed uris are above threshold, clear the map and start fresh.
+        // This prevents the map from growing without bounds if too many unique URIs are parsed.
         // TODO (srnagar): consider using an LRU cache to evict selectively
-        if (PARSED_URLS.size() >= MAX_CACHE_SIZE) {
-            PARSED_URLS.clear();
+        if (PARSED_URIS.size() >= MAX_CACHE_SIZE) {
+            PARSED_URIS.clear();
         }
-        return PARSED_URLS.computeIfAbsent(concurrentSafeUrl, u ->
-            new UrlBuilder().with(u, UrlTokenizerState.SCHEME_OR_HOST)).copy();
+        return PARSED_URIS.computeIfAbsent(concurrentSafeUri,
+            u -> new UriBuilder().with(u, UriTokenizerState.SCHEME_OR_HOST)).copy();
     }
 
     /**
-     * Parse a UrlBuilder from the provided URL object.
+     * Parse a UriBuilder from the provided URI object.
      *
-     * @param url The URL object to parse.
-     *
-     * @return The UrlBuilder that was parsed from the URL object.
+     * @param uri The URI object to parse.
+     * @return The UriBuilder that was parsed from the URI object.
      */
-    public static UrlBuilder parse(URL url) {
-        return parseUrl(url, true);
+    public static UriBuilder parse(URI uri) {
+        return parseUri(uri, true);
     }
 
     /**
-     * Utility method for parsing a {@link URL} into a {@link UrlBuilder}.
+     * Utility method for parsing a {@link URI} into a {@link UriBuilder}.
      *
-     * @param url The URL being parsed.
+     * @param uri The URI being parsed.
      * @param includeQuery Whether the query string should be excluded.
-     *
-     * @return The UrlBuilder that represents the parsed URL.
+     * @return The UriBuilder that represents the parsed URI.
      */
-    private static UrlBuilder parseUrl(URL url, boolean includeQuery) {
-        final UrlBuilder result = new UrlBuilder();
+    private static UriBuilder parseUri(URI uri, boolean includeQuery) {
+        final UriBuilder result = new UriBuilder();
 
-        if (url != null) {
-            final String protocol = url.getProtocol();
-            if (protocol != null && !protocol.isEmpty()) {
-                result.setScheme(protocol);
+        if (uri != null) {
+            String scheme = uri.getScheme();
+            if (scheme != null && !scheme.isEmpty()) {
+                result.setScheme(scheme);
             }
 
-            final String host = url.getHost();
+            final String host = uri.getHost();
             if (host != null && !host.isEmpty()) {
                 result.setHost(host);
             }
 
-            final int port = url.getPort();
+            final int port = uri.getPort();
             if (port != -1) {
                 result.setPort(port);
             }
 
-            final String path = url.getPath();
+            final String path = uri.getPath();
             if (path != null && !path.isEmpty()) {
                 result.setPath(path);
             }
 
-            final String query = url.getQuery();
+            final String query = uri.getQuery();
             if (query != null && !query.isEmpty() && includeQuery) {
                 result.setQuery(query);
             }
@@ -507,8 +475,8 @@ public final class UrlBuilder {
         return value == null || value.isEmpty() ? null : value;
     }
 
-    private UrlBuilder copy() {
-        UrlBuilder copy = new UrlBuilder(query);
+    private UriBuilder copy() {
+        UriBuilder copy = new UriBuilder(query);
 
         copy.scheme = this.scheme;
         copy.host = this.host;
@@ -541,7 +509,6 @@ public final class UrlBuilder {
      * query parameters without a value, {@code key=} or just {@code key}, the value will be an empty string.
      *
      * @param queryParameters The query parameter string.
-     *
      * @return An {@link Iterator} over the query parameter key-value pairs.
      */
     private static Iterator<Map.Entry<String, String>> parseQueryParameters(String queryParameters) {
@@ -561,7 +528,7 @@ public final class UrlBuilder {
             this.queryParameters = queryParameters;
             this.queryParametersLength = queryParameters.length();
 
-            // If the URL query begins with '?' the first possible start of a query parameter key is the
+            // If the URI query begins with '?' the first possible start of a query parameter key is the
             // second character in the query.
             position = (queryParameters.startsWith("?")) ? 1 : 0;
         }

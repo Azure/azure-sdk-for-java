@@ -4,7 +4,6 @@
 package io.clientcore.http.stress;
 
 import com.azure.perf.test.core.PerfStressOptions;
-import io.clientcore.http.stress.util.TelemetryHelper;
 import io.clientcore.core.http.client.DefaultHttpClientBuilder;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpLogOptions;
@@ -18,12 +17,13 @@ import io.clientcore.core.http.pipeline.HttpRetryPolicy;
 import io.clientcore.core.util.ClientLogger;
 import io.clientcore.http.jdk.httpclient.JdkHttpClientProvider;
 import io.clientcore.http.okhttp3.OkHttpHttpClientProvider;
+import io.clientcore.http.stress.util.TelemetryHelper;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.time.Instant;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -35,7 +35,7 @@ public class HttpGet extends ScenarioBase<StressOptions> {
     private static final TelemetryHelper TELEMETRY_HELPER = new TelemetryHelper(HttpGet.class);
     private static final ClientLogger LOGGER = new ClientLogger(HttpGet.class);
     private final HttpPipeline pipeline;
-    private final URL url;
+    private final URI uri;
 
     // This is almost-unique-id generator. We could use UUID, but it's a bit more expensive to use.
     private final AtomicLong clientRequestId = new AtomicLong(Instant.now().getEpochSecond());
@@ -48,9 +48,9 @@ public class HttpGet extends ScenarioBase<StressOptions> {
         super(options, TELEMETRY_HELPER);
         pipeline = getPipelineBuilder().build();
         try {
-            url = new URL(options.getServiceEndpoint());
-        } catch (MalformedURLException ex) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'url' must be a valid URL.", ex));
+            uri = new URI(options.getServiceEndpoint());
+        } catch (URISyntaxException ex) {
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'uri' must be a valid URI.", ex));
         }
     }
 
@@ -75,7 +75,7 @@ public class HttpGet extends ScenarioBase<StressOptions> {
     }
 
     private HttpRequest createRequest() {
-        HttpRequest request = new HttpRequest(HttpMethod.GET, url);
+        HttpRequest request = new HttpRequest(HttpMethod.GET, uri);
         request.getHeaders().set(HttpHeaderName.USER_AGENT, "azsdk-java-clientcore-stress");
         request.getHeaders().set(HttpHeaderName.fromString("x-client-id"), String.valueOf(clientRequestId.incrementAndGet()));
         return request;

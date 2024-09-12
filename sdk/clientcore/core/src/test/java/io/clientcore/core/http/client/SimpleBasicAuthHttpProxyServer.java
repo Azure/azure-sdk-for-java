@@ -37,9 +37,9 @@ public final class SimpleBasicAuthHttpProxyServer {
 
     public ProxyEndpoint start() {
         this.proxyServer = new LocalTestServer((req, resp, requestBody) -> {
-            String requestUrl = req.getServletPath();
+            String requestUri = req.getServletPath();
 
-            if (!Objects.equals(requestUrl, serviceEndpoint)) {
+            if (!Objects.equals(requestUri, serviceEndpoint)) {
                 throw new ServletException("Unexpected request to proxy server");
             }
 

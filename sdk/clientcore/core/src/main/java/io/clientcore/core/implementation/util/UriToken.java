@@ -3,11 +3,11 @@
 
 package io.clientcore.core.implementation.util;
 
-class UrlToken {
+class UriToken {
     private final String text;
-    private final UrlTokenType type;
+    private final UriTokenType type;
 
-    UrlToken(String text, UrlTokenType type) {
+    UriToken(String text, UriTokenType type) {
         this.text = text;
         this.type = type;
     }
@@ -16,16 +16,16 @@ class UrlToken {
         return text;
     }
 
-    UrlTokenType type() {
+    UriTokenType type() {
         return type;
     }
 
     @Override
     public boolean equals(Object rhs) {
-        return rhs instanceof UrlToken && equals((UrlToken) rhs);
+        return rhs instanceof UriToken && equals((UriToken) rhs);
     }
 
-    public boolean equals(UrlToken rhs) {
+    public boolean equals(UriToken rhs) {
         return rhs != null && text.equals(rhs.text) && type == rhs.type;
     }
 
@@ -39,23 +39,23 @@ class UrlToken {
         return (text == null ? 0 : text.hashCode()) ^ type.hashCode();
     }
 
-    static UrlToken scheme(String text) {
-        return new UrlToken(text, UrlTokenType.SCHEME);
+    static UriToken scheme(String text) {
+        return new UriToken(text, UriTokenType.SCHEME);
     }
 
-    static UrlToken host(String text) {
-        return new UrlToken(text, UrlTokenType.HOST);
+    static UriToken host(String text) {
+        return new UriToken(text, UriTokenType.HOST);
     }
 
-    static UrlToken port(String text) {
-        return new UrlToken(text, UrlTokenType.PORT);
+    static UriToken port(String text) {
+        return new UriToken(text, UriTokenType.PORT);
     }
 
-    static UrlToken path(String text) {
-        return new UrlToken(text, UrlTokenType.PATH);
+    static UriToken path(String text) {
+        return new UriToken(text, UriTokenType.PATH);
     }
 
-    static UrlToken query(String text) {
-        return new UrlToken(text, UrlTokenType.QUERY);
+    static UriToken query(String text) {
+        return new UriToken(text, UriTokenType.QUERY);
     }
 }
