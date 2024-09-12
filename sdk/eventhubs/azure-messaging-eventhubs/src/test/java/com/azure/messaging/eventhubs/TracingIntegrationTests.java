@@ -175,7 +175,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
 
-        assertTrue(latch.await(30, TimeUnit.SECONDS));
+        assertTrue(latch.await(10, TimeUnit.SECONDS));
 
         List<ReadableSpan> spans = spanProcessor.getEndedSpans();
 
@@ -389,7 +389,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         assertEquals(0, findSpans(spans, PROCESS).size());
 
         List<ReadableSpan> received = findSpans(spans, RECEIVE);
-        assertSyncConsumerSpan(received.get(0), receivedMessages);
+        assertSyncReceiveSpan(received.get(0), receivedMessages);
     }
 
     @Test
@@ -413,7 +413,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         assertEquals(0, findSpans(spans, PROCESS).size());
 
         List<ReadableSpan> received = findSpans(spans, RECEIVE);
-        assertSyncConsumerSpan(received.get(0), receivedMessages);
+        assertSyncReceiveSpan(received.get(0), receivedMessages);
     }
 
     @Test
@@ -426,7 +426,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         assertEquals(0, findSpans(spans, PROCESS).size());
 
         List<ReadableSpan> received = findSpans(spans, RECEIVE);
-        assertSyncConsumerSpan(received.get(0), receivedMessages);
+        assertSyncReceiveSpan(received.get(0), receivedMessages);
     }
 
     @ParameterizedTest
@@ -698,8 +698,8 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         }
     }
 
-    private void assertSyncConsumerSpan(ReadableSpan actual, List<PartitionEvent> messages) {
-        assertEquals(SpanKind.CONSUMER, actual.getKind());
+    private void assertSyncReceiveSpan(ReadableSpan actual, List<PartitionEvent> messages) {
+        assertEquals(SpanKind.CLIENT, actual.getKind());
         assertEquals(StatusCode.UNSET, actual.toSpanData().getStatus().getStatusCode());
         List<LinkData> links = actual.toSpanData().getLinks();
         assertEquals("receive", actual.getAttribute(OPERATION_NAME_ATTRIBUTE));
