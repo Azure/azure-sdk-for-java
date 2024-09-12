@@ -79,46 +79,48 @@ public final class BufferStagingArea {
                 result = Flux.empty();
             }
         } else {
-            // We will overflow the current buffer and require another one.
-            // Duplicate and adjust the window of buf so that we fill up currentBuf without going out of bounds.
+            // When the incoming buffer size exceeds the remaining capacity of the current buffer,
+            // we need to handle overflow by creating new BufferAggregators.
+
+            // Duplicate the buffer to manipulate its position and limit without affecting the original buffer.
             ByteBuffer duplicate = buf.duplicate();
+            // Calculate the new limit for the duplicate buffer to exactly fill up the current buffer.
             int newLimit = buf.position() + (int) this.currentBuf.remainingCapacity();
             duplicate.limit(newLimit);
             this.currentBuf.append(duplicate);
             // Adjust the window of original buffer to represent remaining part.
             buf.position(newLimit);
-
+            // Add the current buffer to the result as it is now full.
             result = Flux.just(this.currentBuf);
 
-            /*
-            This logic is to handle when the buffer provided is larger than the remaining capacity of the current buffer
-            and the fixed size of the new BufferAggregator. It handles it by looping through the buffer emitting full
-            BufferAggregators until the range does not exceed the buffer size.
-             */
-            // calculate how many chunks remain given the total size of the buffer and the staging area window
+            // Calculate the number of complete chunks that can be formed from the remaining data.
             int remainingChunks = buf.remaining() / (int) this.buffSize;
             if (remainingChunks >= 1) {
-                // if there is more than one chunk left, we need to create more BufferAggregators and iterate over them
-                // to ensure we don't hit a negative limit.
+                // If there are complete chunks to be processed, create new BufferAggregators for each.
                 BufferAggregator[] aggregators = new BufferAggregator[remainingChunks];
                 for (int i = 0; i < remainingChunks; i++) {
                     BufferAggregator overflowBuffer = new BufferAggregator(this.buffSize);
                     ByteBuffer overflowDup = buf.duplicate();
+                    // Determine the limit for this chunk's buffer.
                     int overflowLimit = buf.position() + (int) overflowBuffer.remainingCapacity();
                     overflowDup.limit(overflowLimit);
+                    // Append the chunk to the new buffer aggregator.
                     overflowBuffer.append(overflowDup);
-                    // Adjust the window of original buffer to represent remaining part.
+                    // Update the original buffer's position to the end of this chunk.
                     buf.position(overflowLimit);
+                    // Store the new buffer aggregator.
                     aggregators[i] = overflowBuffer;
                 }
+                // Concatenate the new aggregators to the result Flux.
                 result = result.concatWith(Flux.fromArray(aggregators));
             }
 
+            // If there is remaining data that does not form a complete chunk, store it in a new current buffer.
             if (buf.remaining() > 0) {
                 this.currentBuf = new BufferAggregator(this.buffSize);
                 this.currentBuf.append(buf);
             } else {
-                // If we have written all the data, we don't need to keep the buffer around.
+                // Clear the current buffer if all data has been assigned.
                 this.currentBuf = null;
             }
         }

@@ -1732,15 +1732,15 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
     @MethodSource("uploadAndDownloadDifferentRegionLengthSupplier")
     public void uploadAndDownloadDifferentRegionLength(int regionLength, int dataSize) {
         ByteBuffer data = getRandomData(dataSize);
-        beac = mockAesKey(getEncryptedClientBuilder(fakeKey, null, ENV.getPrimaryAccount().getCredential(),
+        ebc = new EncryptedBlobClient(mockAesKey(getEncryptedClientBuilder(fakeKey, null, ENV.getPrimaryAccount().getCredential(),
             cc.getBlobContainerUrl(), EncryptionVersion.V2)
             .blobName(generateBlobName())
             .blobClientSideEncryptionOptions(new BlobClientSideEncryptionOptions().setAuthenticatedRegionDataLength(regionLength))
-            .buildEncryptedBlobAsyncClient());
-        beac.uploadWithResponse(new BlobParallelUploadOptions(Flux.just(data.duplicate()))).block();
-        ByteArrayOutputStream plaintextOut = new ByteArrayOutputStream();
+            .buildEncryptedBlobAsyncClient()));
+        ebc.uploadWithResponse(new BlobParallelUploadOptions(BinaryData.fromByteBuffer(data.duplicate())), null, null);
 
-        new EncryptedBlobClient(beac).downloadStream(plaintextOut);
+        ByteArrayOutputStream plaintextOut = new ByteArrayOutputStream();
+        ebc.downloadStream(plaintextOut);
 
         assertArraysEqual(data.array(), plaintextOut.toByteArray());
     }
@@ -1749,10 +1749,11 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
     @MethodSource("uploadAndDownloadFileDifferentRegionLengthSupplier")
     public void uploadAndDownloadToFileDifferentRegionLength(int regionLength, int fileSize) throws IOException {
         File file = getRandomFile(fileSize);
-        ebc = new EncryptedBlobClient(mockAesKey(getEncryptedClientBuilder(fakeKey, null, ENV.getPrimaryAccount().getCredential(),
-            cc.getBlobContainerUrl(), EncryptionVersion.V2)
+        ebc = new EncryptedBlobClient(mockAesKey(getEncryptedClientBuilder(fakeKey, null,
+            ENV.getPrimaryAccount().getCredential(), cc.getBlobContainerUrl(), EncryptionVersion.V2)
             .blobName(generateBlobName())
-            .blobClientSideEncryptionOptions(new BlobClientSideEncryptionOptions().setAuthenticatedRegionDataLength(regionLength))
+            .blobClientSideEncryptionOptions(new BlobClientSideEncryptionOptions()
+                .setAuthenticatedRegionDataLength(regionLength))
             .buildEncryptedBlobAsyncClient()));
         ebc.uploadFromFile(file.toPath().toString(), true);
 
@@ -1764,6 +1765,33 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
 
         Files.deleteIfExists(outFile.toPath());
         Files.deleteIfExists(file.toPath());
+    }
+
+    @ParameterizedTest
+    @MethodSource("uploadAndDownloadDifferentRegionLengthSupplier")
+    public void uploadAndDownloadRegionLengthWithDiffBlobClients(int regionLength, int dataSize) {
+        ByteBuffer data = getRandomData(dataSize);
+        String blobName = generateBlobName();
+        ebc = new EncryptedBlobClient(mockAesKey(getEncryptedClientBuilder(fakeKey, null,
+            ENV.getPrimaryAccount().getCredential(), cc.getBlobContainerUrl(), EncryptionVersion.V2)
+            .blobName(blobName)
+            .blobClientSideEncryptionOptions(new BlobClientSideEncryptionOptions()
+                .setAuthenticatedRegionDataLength(regionLength))
+            .buildEncryptedBlobAsyncClient()));
+        ebc.uploadWithResponse(new BlobParallelUploadOptions(BinaryData.fromByteBuffer(data.duplicate())), null, null);
+
+        ByteArrayOutputStream plaintextOut = new ByteArrayOutputStream();
+
+        // Create another client without the authenticated region data length set
+        // This client should be using the default 4MB region size
+        EncryptedBlobClient ebc2 = new EncryptedBlobClient(mockAesKey(getEncryptedClientBuilder(fakeKey, null,
+            ENV.getPrimaryAccount().getCredential(), cc.getBlobContainerUrl(), EncryptionVersion.V2)
+            .blobName(blobName)
+            .buildEncryptedBlobAsyncClient()));
+
+        ebc2.downloadStream(plaintextOut);
+
+        assertArraysEqual(data.array(), plaintextOut.toByteArray());
     }
 
     private static Stream<Arguments> uploadAndDownloadDifferentRegionLengthSupplier() {
