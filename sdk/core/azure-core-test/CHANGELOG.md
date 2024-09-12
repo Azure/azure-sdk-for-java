@@ -1,6 +1,6 @@
 # Release History
 
-## 1.27.0-beta.1 (Unreleased)
+## 1.27.0-beta.1 (2024-09-12)
 
 ### Features Added
 
@@ -13,9 +13,11 @@
 - Replaced dependency `commons-compress` with `ant` to handle tar.gz files. `ant` has fewer transitive dependencies,
   reducing the likelihood of dependency conflicts.
 
-### Bugs Fixed
-
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.51.0` to `1.52.0`.
 
 ## 1.26.2 (2024-07-31)
 
