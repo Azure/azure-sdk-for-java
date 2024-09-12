@@ -57,7 +57,7 @@ public class VersionUtil {
      *
      * @param cls Class for which to look version information
      *
-     * @return Version information discovered if any; 
+     * @return Version information discovered if any;
      *  {@link Version#unknownVersion()} if none
      */
     public static Version versionFor(Class<?> cls) {
@@ -72,7 +72,6 @@ public class VersionUtil {
                 throw new IllegalArgumentException("Failed to get Versioned out of " + vClass);
             }
         } catch (Exception e) { // ok to be missing (not good but acceptable)
-            ;
         }
         return (v == null) ? Version.unknownVersion() : v;
     }
@@ -82,7 +81,7 @@ public class VersionUtil {
      *
      * @param cls Class for which to look version information
      *
-     * @return Version information discovered if any; 
+     * @return Version information discovered if any;
      *  {@link Version#unknownVersion()} if none
      *
      * @deprecated Since 2.12 simply use {@link #versionFor(Class)} instead
@@ -102,7 +101,7 @@ public class VersionUtil {
      * @param groupId the groupId of the library
      * @param artifactId the artifactId of the library
      * @return The version
-     * 
+     *
      * @deprecated Since 2.6: functionality not used by any official Jackson component, should be
      *   moved out if anyone needs it
      */
@@ -139,7 +138,7 @@ public class VersionUtil {
      *    {@link Version#unknownVersion()} if parsing of components fail
      */
     public static Version parseVersion(String s, String groupId, String artifactId) {
-        if (s != null && (s = s.trim()).length() > 0) {
+        if (s != null && !(s = s.trim()).isEmpty()) {
             String[] parts = V_SEP.split(s);
             return new Version(parseVersionPart(parts[0]), (parts.length > 1) ? parseVersionPart(parts[1]) : 0,
                 (parts.length > 2) ? parseVersionPart(parts[2]) : 0, (parts.length > 3) ? parts[3] : null, groupId,
@@ -159,7 +158,7 @@ public class VersionUtil {
         return number;
     }
 
-    private final static void _close(Closeable c) {
+    private static void _close(Closeable c) {
         try {
             c.close();
         } catch (IOException e) {
@@ -172,7 +171,7 @@ public class VersionUtil {
      * /**********************************************************************
      */
 
-    public final static void throwInternal() {
+    public static void throwInternal() {
         throw new RuntimeException("Internal error: this code path should never get executed");
     }
 }

@@ -1,16 +1,21 @@
 # Release History
 
-## 2.10.0-beta.1 (Unreleased)
+## 2.9.9 (2024-09-12)
 
 ### Features Added
 
-### Breaking Changes
+- Integrated RequestResponseChannelCache (CBS, Management channel cache) and ReactorSessionCache, removing the dependency on AmqpChannelProcessor. ([39107](https://github.com/Azure/azure-sdk-for-java/pull/39107))
 
 ### Bugs Fixed
 
-Fixes the endpoint state subscription to log errors using ClientLogger so that error do not reach Reactor global OnErrorDropped hook. ([41637](https://github.com/Azure/azure-sdk-for-java/issues/41637))
+- Fixes the endpoint state subscription to log errors using ClientLogger so that error do not reach Reactor global OnErrorDropped hook. ([41637](https://github.com/Azure/azure-sdk-for-java/issues/41637))
+- Fixes thread unsafe operation in AMQP session by introducing ReactorSessionCache. ([39107](https://github.com/Azure/azure-sdk-for-java/pull/39107))
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.51.0` to `1.52.0`.
 
 ## 2.9.8 (2024-07-31)
 
@@ -29,7 +34,7 @@ Fixes the endpoint state subscription to log errors using ClientLogger so that e
 
 ### Features Added
 
-- Added feature to enable/disable SSL when initially creating connection to support amqp calls on port 5672.
+- Added feature to enable/disable SSL when initially creating connection to support AMQP calls on port 5672.
 
 ## 2.9.5 (2024-06-06)
 
@@ -554,7 +559,7 @@ Fixes the endpoint state subscription to log errors using ClientLogger so that e
 
 ## 2.0.6 (2021-05-24)
 ### Bug Fixes
-- Fixed a bug that caused amqp connection not to retry when network error happened.
+- Fixed a bug that caused AMQP connection not to retry when network error happened.
 
 ## 2.0.5 (2021-05-07)
 

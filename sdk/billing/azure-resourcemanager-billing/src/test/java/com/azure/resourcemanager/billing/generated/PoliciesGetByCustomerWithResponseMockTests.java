@@ -6,66 +6,43 @@ package com.azure.resourcemanager.billing.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.billing.BillingManager;
 import com.azure.resourcemanager.billing.models.CustomerPolicy;
-import com.azure.resourcemanager.billing.models.ViewCharges;
-import java.nio.ByteBuffer;
+import com.azure.resourcemanager.billing.models.PolicyType;
+import com.azure.resourcemanager.billing.models.ServiceDefinedResourceName;
+import com.azure.resourcemanager.billing.models.ViewChargesPolicy;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class PoliciesGetByCustomerWithResponseMockTests {
     @Test
     public void testGetByCustomerWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"provisioningState\":\"Failed\",\"viewCharges\":\"Other\",\"policies\":[{\"name\":\"u\",\"value\":\"fsfruenqfnzwy\",\"policyType\":\"UserControlled\",\"scope\":\"larnupp\"}]},\"tags\":{\"zxoyanlhjeuewa\":\"fepsoz\"},\"id\":\"xkvruryyqyt\",\"name\":\"qjhokhij\",\"type\":\"hpvjqpxkikdatb\"}";
 
-        String responseStr =
-            "{\"properties\":{\"viewCharges\":\"Allowed\"},\"id\":\"skbruffgllukkut\",\"name\":\"lxhrp\",\"type\":\"hvmblcouqehbhbc\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        BillingManager manager = BillingManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        CustomerPolicy response = manager.policies()
+            .getByCustomerWithResponse("jqjjt", "vdzytsdlpbkor", "u", ServiceDefinedResourceName.DEFAULT,
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
-        BillingManager manager =
-            BillingManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        CustomerPolicy response =
-            manager
-                .policies()
-                .getByCustomerWithResponse("ttxpnrupza", "mrdixtreki", com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals(ViewCharges.ALLOWED, response.viewCharges());
+        Assertions.assertEquals("fepsoz", response.tags().get("zxoyanlhjeuewa"));
+        Assertions.assertEquals(ViewChargesPolicy.OTHER, response.properties().viewCharges());
+        Assertions.assertEquals("u", response.properties().policies().get(0).name());
+        Assertions.assertEquals("fsfruenqfnzwy", response.properties().policies().get(0).value());
+        Assertions.assertEquals(PolicyType.USER_CONTROLLED, response.properties().policies().get(0).policyType());
+        Assertions.assertEquals("larnupp", response.properties().policies().get(0).scope());
     }
 }

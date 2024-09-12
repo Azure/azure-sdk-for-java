@@ -60,22 +60,6 @@ public class WritableTypeId {
         METADATA_PROPERTY,
 
         /**
-         * Inclusion as a "regular" property within Object to write; this implies that
-         * its value should come from regular POJO property on serialization, and
-         * be deserialized into such property. This handling, however, is up to databinding.
-         *<p>
-         * Regarding handling, type id is ONLY written as native type id; if no native
-         * type ids available, caller is assumed to handle output some other way.
-         * This is different from {@link #METADATA_PROPERTY}.
-         *<p>
-         * NOTE: if shape of typed value to write is NOT Object, will instead use
-         * {@link #WRAPPER_ARRAY} inclusion.
-         *<p>
-         * Corresponds to <code>JsonTypeInfo.As.EXISTING_PROPERTY</code>.
-         */
-        PAYLOAD_PROPERTY,
-
-        /**
          * Inclusion as a property within "parent" Object of value Object to write.
          * This typically requires slightly convoluted processing in which property
          * that contains type id is actually written <b>after</b> typed value object
@@ -89,11 +73,8 @@ public class WritableTypeId {
          *<p>
          * Corresponds to <code>JsonTypeInfo.As.EXTERNAL_PROPERTY</code>.
          */
-        PARENT_PROPERTY;
+        PARENT_PROPERTY
 
-        public boolean requiresObjectContext() {
-            return (this == METADATA_PROPERTY) || (this == PAYLOAD_PROPERTY);
-        }
     }
 
     /**
@@ -103,26 +84,9 @@ public class WritableTypeId {
     public Object forValue;
 
     /**
-     * (optional) Super-type of {@link #forValue} to use for type id generation (if no
-     * explicit id passed): used instead of actual class of {@link #forValue} in cases
-     * where we do not want to use the "real" type but something more generic, usually
-     * to work around specific problem with implementation type, or its deserializer.
-     */
-    public Class<?> forValueType;
-
-    /**
      * Actual type id to use: usually {link java.lang.String}.
      */
     public Object id;
-
-    /**
-     * If type id is to be embedded as a regular property, name of the property;
-     * otherwise `null`.
-     *<p>
-     * NOTE: if "wrap-as-Object" is used, this does NOT contain property name to
-     * use but `null`.
-     */
-    public String asProperty;
 
     /**
      * Property used to indicate style of inclusion for this type id, in cases where
@@ -142,44 +106,10 @@ public class WritableTypeId {
     public JsonToken valueShape;
 
     /**
-     * Flag that can be set to indicate that wrapper structure was written (during
-     * prefix-writing); used to determine if suffix requires matching close markers.
-     */
-    public boolean wrapperWritten;
-
-    /**
      * Optional additional information that generator may add during "prefix write",
      * to be available on matching "suffix write".
      */
     public Object extra;
-
-    public WritableTypeId() {
-    }
-
-    /**
-     * Constructor used when calling a method for generating and writing Type Id;
-     * caller only knows value object and its intended shape.
-     *
-     * @param value Actual value for which type information is written
-     * @param valueShape Serialize shape writer will use for value
-     */
-    public WritableTypeId(Object value, JsonToken valueShape) {
-        this(value, valueShape, null);
-    }
-
-    /**
-     * Constructor used when calling a method for generating and writing Type Id,
-     * but where actual type to use for generating id is NOT the type of value
-     * (but its supertype).
-     *
-     * @param value Actual value for which type information is written
-     * @param valueType Effective type of {@code value} to use for Type Id generation
-     * @param valueShape Serialize shape writer will use for value
-     */
-    public WritableTypeId(Object value, Class<?> valueType, JsonToken valueShape) {
-        this(value, valueShape, null);
-        forValueType = valueType;
-    }
 
     /**
      * Constructor used when calling a method for writing Type Id;

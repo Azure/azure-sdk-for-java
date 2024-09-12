@@ -14,7 +14,7 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-avs</artifactId>
-  <version>1.2.0-beta.2</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-avs;current} -->
+  <version>1.3.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-avs;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Avs Management</name>
@@ -51,7 +51,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-json</artifactId>
-      <version>1.2.0</version> <!-- {x-version-update;com.azure:azure-json;dependency} -->
+      <version>1.3.0</version> <!-- {x-version-update;com.azure:azure-json;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>

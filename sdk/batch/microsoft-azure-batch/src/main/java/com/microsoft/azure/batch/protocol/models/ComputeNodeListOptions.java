@@ -20,7 +20,7 @@ public class ComputeNodeListOptions {
     /**
      * An OData $filter clause. For more information on constructing this
      * filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-nodes-in-a-pool.
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-nodes-in-a-pool.
      */
     @JsonProperty(value = "")
     private String filter;
@@ -69,7 +69,7 @@ public class ComputeNodeListOptions {
     private DateTimeRfc1123 ocpDate;
 
     /**
-     * Get an OData $filter clause. For more information on constructing this filter, see https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-nodes-in-a-pool.
+     * Get an OData $filter clause. For more information on constructing this filter, see https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-nodes-in-a-pool.
      *
      * @return the filter value
      */
@@ -78,7 +78,7 @@ public class ComputeNodeListOptions {
     }
 
     /**
-     * Set an OData $filter clause. For more information on constructing this filter, see https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-nodes-in-a-pool.
+     * Set an OData $filter clause. For more information on constructing this filter, see https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-nodes-in-a-pool.
      *
      * @param filter the filter value to set
      * @return the ComputeNodeListOptions object itself.
