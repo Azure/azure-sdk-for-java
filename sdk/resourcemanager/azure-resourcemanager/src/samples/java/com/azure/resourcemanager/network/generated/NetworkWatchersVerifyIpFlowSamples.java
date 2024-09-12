@@ -14,7 +14,7 @@ import com.azure.resourcemanager.network.models.VerificationIpFlowParameters;
 public final class NetworkWatchersVerifyIpFlowSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/NetworkWatcherIpFlowVerify.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/NetworkWatcherIpFlowVerify.
      * json
      */
     /**

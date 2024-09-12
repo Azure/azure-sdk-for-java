@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class NetworkInterfaceTapConfigurationsListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * NetworkInterfaceTapConfigurationList.json
      */
     /**
@@ -22,6 +22,6 @@ public final class NetworkInterfaceTapConfigurationsListSamples {
             .manager()
             .serviceClient()
             .getNetworkInterfaceTapConfigurations()
-            .list("rg1", "mynic", com.azure.core.util.Context.NONE);
+            .list("testrg", "mynic", com.azure.core.util.Context.NONE);
     }
 }

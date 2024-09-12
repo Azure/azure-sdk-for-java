@@ -46,14 +46,14 @@ public final class VirtualNetworkGatewayConnectionInner extends Resource {
     private String id;
 
     /*
-     * The name of the resource.
-     */
-    private String name;
-
-    /*
      * The type of the resource.
      */
     private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
 
     /**
      * Creates an instance of VirtualNetworkGatewayConnectionInner class.
@@ -100,16 +100,6 @@ public final class VirtualNetworkGatewayConnectionInner extends Resource {
     }
 
     /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
-    }
-
-    /**
      * Get the type property: The type of the resource.
      * 
      * @return the type value.
@@ -117,6 +107,16 @@ public final class VirtualNetworkGatewayConnectionInner extends Resource {
     @Override
     public String type() {
         return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -697,6 +697,11 @@ public final class VirtualNetworkGatewayConnectionInner extends Resource {
                     "Missing required property innerProperties in model VirtualNetworkGatewayConnectionInner"));
         } else {
             innerProperties().validate();
+        }
+        if (location() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property location in model VirtualNetworkGatewayConnectionInner"));
         }
     }
 
