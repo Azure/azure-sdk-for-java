@@ -94,11 +94,13 @@ public class AzureSpringMonitorAutoConfig {
 
                 if (connectionString == null || connectionString.isEmpty()) {
                     LOG.warn("Unable to find the Application Insights connection string. The telemetry data won't be sent to Azure.");
+                    // If the user does not provide a connection, we disable the export and leave the instrumentation enabled to spot potential failures from
+                    // the instrumentation, in the customer automatic tests for example.
                     autoConfigurationCustomizer.addPropertiesCustomizer(NO_EXPORT_CONFIG);
                     return;
                 }
 
-                if (!connectionString.startsWith("InstrumentationKey=")) {
+                if (!connectionString.contains("InstrumentationKey=")) {
                     throw new WrongConnectionStringException();
                 }
 
