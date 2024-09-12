@@ -19,8 +19,10 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BufferStagingAreaTests {
     static Tuple2<ByteBuffer[], ByteBuffer[]> generateData(int numBuffs, int minBuffSize, int maxBuffSize) {
@@ -123,26 +125,39 @@ public class BufferStagingAreaTests {
             .collectList().block();
 
         assertNotNull(collectedBuffers);
+        assertFalse(collectedBuffers.isEmpty());
 
         // Convert list of ByteBuffers to a single byte array
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         int sizeRemaining = dataSize % stagingSize;
-        collectedBuffers.forEach(bb -> {
-            byte[] array = new byte[bb.remaining()];
 
-            if (array.length % stagingSize != 0) {
-                // for unaligned staging size, the last buffer will have a different size. assert with the remaining size
-                assertEquals(sizeRemaining, array.length);
-            } else {
-                assertEquals(stagingSize, array.length);
-            }
+        for (int i = 0; i < collectedBuffers.size() - 1; i++) {
+            ByteBuffer bb = collectedBuffers.get(i);
+            byte[] array = new byte[bb.remaining()];
+            assertEquals(stagingSize, array.length);
             bb.get(array);
             try {
                 outputStream.write(array);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-        });
+        }
+
+        // Handle the last buffer separately
+        ByteBuffer lastBuffer = collectedBuffers.get(collectedBuffers.size() - 1);
+        byte[] lastArray = new byte[lastBuffer.remaining()];
+        lastBuffer.get(lastArray);
+        if (sizeRemaining != 0) {
+            assertEquals(sizeRemaining, lastArray.length, "The last buffer's size should match the remaining size.");
+        } else {
+            assertEquals(stagingSize, lastArray.length, "The last buffer should match the staging size if no remainder.");
+        }
+        try {
+            outputStream.write(lastArray);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
         byte[] reconstructedData = outputStream.toByteArray();
 
         // Assert that the original data and the reconstructed data are the same

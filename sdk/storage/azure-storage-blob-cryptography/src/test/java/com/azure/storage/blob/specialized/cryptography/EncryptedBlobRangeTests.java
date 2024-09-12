@@ -61,8 +61,7 @@ public class EncryptedBlobRangeTests extends BlobCryptographyTestBase {
     @CsvSource(value = {",", "3,", "17,", "34,", "47,", "48,", "2,6", "18,2", "38,17"})
     public void testFromBlobRangeHeader(Integer offset, Integer count) {
         EncryptionData encryptionDataV1 = new EncryptionData()
-            .setEncryptionAgent(new EncryptionAgent().setProtocol(ENCRYPTION_PROTOCOL_V1))
-            .setEncryptedRegionInfo(new EncryptedRegionInfo(GCM_ENCRYPTION_REGION_LENGTH, NONCE_LENGTH));
+            .setEncryptionAgent(new EncryptionAgent().setProtocol(ENCRYPTION_PROTOCOL_V1));
         EncryptionData encryptionDataV2 = new EncryptionData()
             .setEncryptionAgent(new EncryptionAgent().setProtocol(ENCRYPTION_PROTOCOL_V2))
             .setEncryptedRegionInfo(new EncryptedRegionInfo(GCM_ENCRYPTION_REGION_LENGTH, NONCE_LENGTH));

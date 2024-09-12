@@ -127,8 +127,6 @@ final class EncryptedBlobRange {
             case ENCRYPTION_PROTOCOL_V2:
                 // Calculate offsetAdjustment.
                 // Get the start of the encryption region for the original offset
-//                long authenticatedRegionDataLength = encryptionData.getEncryptedRegionInfo() == null
-//                    ? GCM_ENCRYPTION_REGION_LENGTH : encryptionData.getEncryptedRegionInfo().getDataLength();
                 long authenticatedRegionDataLength = encryptionData.getEncryptedRegionInfo().getDataLength();
                 long regionNumber = originalRange.getOffset() / authenticatedRegionDataLength;
 

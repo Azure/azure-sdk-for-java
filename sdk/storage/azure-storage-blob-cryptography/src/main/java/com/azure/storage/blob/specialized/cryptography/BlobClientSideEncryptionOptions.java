@@ -19,7 +19,7 @@ public class BlobClientSideEncryptionOptions {
      * Gets the length of the authenticated region data.
      * @return the length of the authenticated region data.
      */
-    public long getAuthenticatedRegionDataLength() {
+    public long getAuthenticatedRegionDataLengthInBytes() {
         return authenticatedRegionDataLength;
     }
 
@@ -34,7 +34,7 @@ public class BlobClientSideEncryptionOptions {
      * @return the updated BlobEncryptionOptions object.
      * @throws IllegalArgumentException If {@code authenticatedRegionDataLength} is less than 16 or greater than 1GB.
      */
-    public BlobClientSideEncryptionOptions setAuthenticatedRegionDataLength(long authenticatedRegionDataLength) {
+    public BlobClientSideEncryptionOptions setAuthenticatedRegionDataLengthInBytes(long authenticatedRegionDataLength) {
         // We can increase the upper bound limit to 2^39 - 256 bits per GC specification, we are constraining it to 1GB
         // because the underlying encryption/decryption implementations do not full support byte lengths longer than MAX_INT
         StorageImplUtils.assertInBounds("authenticatedRegionDataLength", authenticatedRegionDataLength, 16, Constants.GB);

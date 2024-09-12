@@ -1735,7 +1735,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
         ebc = new EncryptedBlobClient(mockAesKey(getEncryptedClientBuilder(fakeKey, null, ENV.getPrimaryAccount().getCredential(),
             cc.getBlobContainerUrl(), EncryptionVersion.V2)
             .blobName(generateBlobName())
-            .clientSideEncryptionOptions(new BlobClientSideEncryptionOptions().setAuthenticatedRegionDataLength(regionLength))
+            .clientSideEncryptionOptions(new BlobClientSideEncryptionOptions().setAuthenticatedRegionDataLengthInBytes(regionLength))
             .buildEncryptedBlobAsyncClient()));
         ebc.uploadWithResponse(new BlobParallelUploadOptions(BinaryData.fromByteBuffer(data.duplicate())), null, null);
 
@@ -1753,7 +1753,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
             ENV.getPrimaryAccount().getCredential(), cc.getBlobContainerUrl(), EncryptionVersion.V2)
             .blobName(generateBlobName())
             .clientSideEncryptionOptions(new BlobClientSideEncryptionOptions()
-                .setAuthenticatedRegionDataLength(regionLength))
+                .setAuthenticatedRegionDataLengthInBytes(regionLength))
             .buildEncryptedBlobAsyncClient()));
         ebc.uploadFromFile(file.toPath().toString(), true);
 
@@ -1776,7 +1776,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
             ENV.getPrimaryAccount().getCredential(), cc.getBlobContainerUrl(), EncryptionVersion.V2)
             .blobName(blobName)
             .clientSideEncryptionOptions(new BlobClientSideEncryptionOptions()
-                .setAuthenticatedRegionDataLength(regionLength))
+                .setAuthenticatedRegionDataLengthInBytes(regionLength))
             .buildEncryptedBlobAsyncClient()));
         ebc.uploadWithResponse(new BlobParallelUploadOptions(BinaryData.fromByteBuffer(data.duplicate())), null, null);
 

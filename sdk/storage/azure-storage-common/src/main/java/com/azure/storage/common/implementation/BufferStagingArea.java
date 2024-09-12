@@ -99,17 +99,17 @@ public final class BufferStagingArea {
                 // If there are complete chunks to be processed, create new BufferAggregators for each.
                 BufferAggregator[] aggregators = new BufferAggregator[remainingChunks];
                 for (int i = 0; i < remainingChunks; i++) {
-                    BufferAggregator overflowBuffer = new BufferAggregator(this.buffSize);
+                    BufferAggregator aggregator = new BufferAggregator(this.buffSize);
                     ByteBuffer overflowDup = buf.duplicate();
                     // Determine the limit for this chunk's buffer.
-                    int overflowLimit = buf.position() + (int) overflowBuffer.remainingCapacity();
+                    int overflowLimit = buf.position() + (int) this.buffSize;
                     overflowDup.limit(overflowLimit);
                     // Append the chunk to the new buffer aggregator.
-                    overflowBuffer.append(overflowDup);
+                    aggregator.append(overflowDup);
                     // Update the original buffer's position to the end of this chunk.
                     buf.position(overflowLimit);
                     // Store the new buffer aggregator.
-                    aggregators[i] = overflowBuffer;
+                    aggregators[i] = aggregator;
                 }
                 // Concatenate the new aggregators to the result Flux.
                 result = result.concatWith(Flux.fromArray(aggregators));

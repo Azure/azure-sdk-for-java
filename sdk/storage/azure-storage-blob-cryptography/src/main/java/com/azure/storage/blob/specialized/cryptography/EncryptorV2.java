@@ -63,7 +63,7 @@ class EncryptorV2 extends Encryptor {
         return super.buildEncryptionData(keyWrappingMetadata, wrappedKey)
             .setEncryptionAgent(new EncryptionAgent(ENCRYPTION_PROTOCOL_V2,
                 EncryptionAlgorithm.AES_GCM_256))
-            .setEncryptedRegionInfo(new EncryptedRegionInfo(encryptionOptions.getAuthenticatedRegionDataLength(), NONCE_LENGTH));
+            .setEncryptedRegionInfo(new EncryptedRegionInfo(encryptionOptions.getAuthenticatedRegionDataLengthInBytes(), NONCE_LENGTH));
     }
 
     private Cipher getCipher(int index) throws GeneralSecurityException {
@@ -77,7 +77,7 @@ class EncryptorV2 extends Encryptor {
     @Override
     protected Flux<ByteBuffer> encrypt(Flux<ByteBuffer> plainTextFlux) {
         Flux<ByteBuffer> encryptedTextFlux;
-        long authenticatedRegionDataLength = encryptionOptions.getAuthenticatedRegionDataLength();
+        long authenticatedRegionDataLength = encryptionOptions.getAuthenticatedRegionDataLengthInBytes();
         BufferStagingArea stagingArea =
             new BufferStagingArea(authenticatedRegionDataLength, authenticatedRegionDataLength);
 

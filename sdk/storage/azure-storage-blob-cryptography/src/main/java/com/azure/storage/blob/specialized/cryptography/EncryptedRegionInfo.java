@@ -77,7 +77,7 @@ final class EncryptedRegionInfo implements JsonSerializable<EncryptedRegionInfo>
                 reader.nextToken();
 
                 if ("DataLength".equals(fieldName)) {
-                    encryptedRegionInfo.dataLength = reader.getInt();
+                    encryptedRegionInfo.dataLength = reader.getLong();
                 } else if ("NonceLength".equals(fieldName)) {
                     encryptedRegionInfo.nonceLength = reader.getInt();
                 } else {

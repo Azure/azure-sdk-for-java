@@ -285,7 +285,7 @@ public class EncryptedBlobClientBuilderTests {
     @ValueSource(longs = { 0, -1, 15, 4L * Constants.GB })
     public void illegalRegionLength(long regionLength) {
         assertThrows(IllegalArgumentException.class, () -> new BlobClientSideEncryptionOptions()
-                    .setAuthenticatedRegionDataLength(regionLength));
+                    .setAuthenticatedRegionDataLengthInBytes(regionLength));
     }
 
     @ParameterizedTest
@@ -296,9 +296,9 @@ public class EncryptedBlobClientBuilderTests {
             .containerName("container")
             .key(new FakeKey("keyId", randomData), "keyWrapAlgorithm")
             .clientSideEncryptionOptions(new BlobClientSideEncryptionOptions()
-                    .setAuthenticatedRegionDataLength(regionLength))
+                    .setAuthenticatedRegionDataLengthInBytes(regionLength))
                 .buildEncryptedBlobClient();
-        assertEquals(regionLength, encryptedBlobClient.getClientSideEncryptionOptions().getAuthenticatedRegionDataLength());
+        assertEquals(regionLength, encryptedBlobClient.getClientSideEncryptionOptions().getAuthenticatedRegionDataLengthInBytes());
     }
 
     @Test
@@ -308,7 +308,7 @@ public class EncryptedBlobClientBuilderTests {
             .containerName("container")
             .key(new FakeKey("keyId", randomData), "keyWrapAlgorithm")
             .buildEncryptedBlobClient();
-        assertEquals(4 * Constants.MB, encryptedBlobClient.getClientSideEncryptionOptions().getAuthenticatedRegionDataLength());
+        assertEquals(4 * Constants.MB, encryptedBlobClient.getClientSideEncryptionOptions().getAuthenticatedRegionDataLengthInBytes());
     }
 
 
