@@ -54,7 +54,7 @@ public abstract class IntegrationTestBase extends TestBase {
     // This is a good idea to do in any production application as well - no point in waiting too long
     protected static final AmqpRetryOptions RETRY_OPTIONS = new AmqpRetryOptions()
         .setTryTimeout(Duration.ofSeconds(3))
-        .setMaxDelay(Duration.ofSeconds(3))
+        .setMaxDelay(Duration.ofSeconds(1))
         .setMaxRetries(10);
 
     protected final ClientLogger logger;

@@ -36,7 +36,7 @@ final class MessageFluxWrapper {
 
     void cancel() {
         if (!isV2) {
-            receiveLinkProcessor.cancel();
+            receiveLinkProcessor.dispose();
         }
     }
 }

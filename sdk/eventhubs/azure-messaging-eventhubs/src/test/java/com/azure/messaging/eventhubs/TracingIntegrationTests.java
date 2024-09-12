@@ -116,6 +116,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
 
         return configBuilder
             .putProperty("com.azure.messaging.eventhubs.v2", v2Stack)
+            .putProperty("com.azure.core.amqp.cache", v2Stack)
             .build();
     }
 
@@ -152,7 +153,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"false"})
+    @ValueSource(strings = {"true", "false"})
     @NullSource
     public void sendAndReceiveFromPartition(String v2) throws InterruptedException {
         AtomicReference<EventData> receivedMessage = new AtomicReference<>();
@@ -272,6 +273,11 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         int messageCount = 5;
         CountDownLatch latch = new CountDownLatch(messageCount);
         spanProcessor.notifyIfCondition(latch, span -> hasOperationName(span, PROCESS));
+
+        StepVerifier.create(producer.send(data, new SendOptions()))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
+
         StepVerifier.create(consumer
                 .receive()
                 .take(messageCount)
@@ -288,10 +294,6 @@ public class TracingIntegrationTests extends IntegrationTestBase {
                 .parallel(messageCount, 1)
                 .runOn(Schedulers.boundedElastic(), 2))
             .expectNextCount(messageCount)
-            .expectComplete()
-            .verify(DEFAULT_TIMEOUT);
-
-        StepVerifier.create(producer.send(data, new SendOptions()))
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
 
@@ -368,7 +370,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"false"})
+    @ValueSource(strings = {"true", "false"})
     public void syncReceive(String v2) {
         createClients(null, v2);
         StepVerifier.create(producer.createBatch(new CreateBatchOptions().setPartitionId(PARTITION_ID))
@@ -430,7 +432,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"false"})
+    @ValueSource(strings = {"true", "false"})
     public void sendAndProcess(String v2) throws InterruptedException {
         AtomicReference<Span> currentInProcess = new AtomicReference<>();
         AtomicReference<EventData> receivedMessage = new AtomicReference<>();
@@ -557,7 +559,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"false"})
+    @ValueSource(strings = {"true", "false"})
     public void sendAndProcessBatch(String v2) throws InterruptedException {
         EventData message1 = new EventData(CONTENTS_BYTES);
         EventData message2 = new EventData(CONTENTS_BYTES);

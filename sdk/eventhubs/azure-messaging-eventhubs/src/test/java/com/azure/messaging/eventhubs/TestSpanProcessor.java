@@ -6,6 +6,7 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LoggingEventBuilder;
 import io.opentelemetry.api.common.AttributeKey;
+import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.context.Context;
 import io.opentelemetry.sdk.common.CompletableResultCode;
 import io.opentelemetry.sdk.common.InstrumentationScopeInfo;
@@ -56,6 +57,7 @@ public class TestSpanProcessor implements SpanProcessor {
     @Override
     public void onEnd(ReadableSpan readableSpan) {
         SpanData span = readableSpan.toSpanData();
+        Attributes attributes = span.getAttributes();
 
         InstrumentationScopeInfo instrumentationScopeInfo = span.getInstrumentationScopeInfo();
         LoggingEventBuilder log = LOGGER.atInfo()
@@ -67,7 +69,7 @@ public class TestSpanProcessor implements SpanProcessor {
                 .addKeyValue("kind", span.getKind())
                 .addKeyValue("tracerName", instrumentationScopeInfo.getName())
                 .addKeyValue("tracerVersion", instrumentationScopeInfo.getVersion())
-                .addKeyValue("attributes", span.getAttributes());
+                .addKeyValue("attributes", attributes);
 
         for (int i = 0; i < span.getLinks().size(); i++) {
             LinkData link = span.getLinks().get(i);
@@ -86,10 +88,10 @@ public class TestSpanProcessor implements SpanProcessor {
         // Various attribute keys can be found in:
         // sdk/core/azure-core-metrics-opentelemetry/src/main/java/com/azure/core/metrics/opentelemetry/OpenTelemetryAttributes.java
         // sdk/core/azure-core-tracing-opentelemetry/src/main/java/com/azure/core/tracing/opentelemetry/OpenTelemetryUtils.java
-        assertEquals("Microsoft.EventHub", readableSpan.getAttribute(AttributeKey.stringKey("az.namespace")));
-        assertEquals("eventhubs", readableSpan.getAttribute(AttributeKey.stringKey("messaging.system")));
-        assertEquals(entityName, readableSpan.getAttribute(AttributeKey.stringKey("messaging.destination.name")));
-        assertEquals(namespace, readableSpan.getAttribute(AttributeKey.stringKey("server.address")));
+        assertEquals("Microsoft.EventHub", attributes.get(AttributeKey.stringKey("az.namespace")));
+        assertEquals("eventhubs", attributes.get(AttributeKey.stringKey("messaging.system")));
+        assertEquals(entityName, attributes.get(AttributeKey.stringKey("messaging.destination.name")));
+        assertEquals(namespace, attributes.get(AttributeKey.stringKey("server.address")));
     }
 
     public void notifyIfCondition(CountDownLatch countDownLatch, Predicate<ReadableSpan> filter) {
