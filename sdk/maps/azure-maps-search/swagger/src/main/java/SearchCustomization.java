@@ -27,15 +27,21 @@ public class SearchCustomization extends Customization {
 
         customizeErrorDetail(implementationModels);
         customizeReverseGeocodingBatchRequestItem(implementationModels);
-        customizeGeoJsonObject(implementationModels);
-        customizeGeoJsonGeometry(models);
-        customizeGeoJsonFeature(models);
+        customizeGeoJsonObject(models);
+        //customizeGeoJsonGeometry(models);
+        //customizeGeoJsonFeature(models);
 
     }
 
     private void customizeGeoJsonObject(PackageCustomization models) {
         models.getClass("GeoJsonObject").customizeAst(ast -> {
-            ast.addImport("com.azure.maps.search.models.Boundary");
+            ast.addImport("com.azure.maps.search.implementation.models.GeoJsonPoint")
+                .addImport("com.azure.maps.search.implementation.models.GeoJsonMultiPoint")
+                .addImport("com.azure.maps.search.implementation.models.GeoJsonLineString")
+                .addImport("com.azure.maps.search.implementation.models.GeoJsonMultiLineString")
+                .addImport("com.azure.maps.search.implementation.models.GeoJsonPolygon")
+                .addImport("com.azure.maps.search.implementation.models.GeoJsonMultiPolygon")
+                .addImport("com.azure.maps.search.implementation.models.GeoJsonGeometryCollection");
         });
     }
 

@@ -3,7 +3,6 @@
 
 package com.azure.maps.search.models;
 
-import java.util.List;
 import java.util.Optional;
 
 import com.azure.core.models.GeoBoundingBox;
@@ -252,7 +251,7 @@ public  class BaseSearchOptions {
     }
 
     /**
-     *
+     * Return GeoBoundingBox
      * @return {@link Optional<GeoBoundingBox>}
      */
     public Optional<GeoBoundingBox> getBoundingBox() {

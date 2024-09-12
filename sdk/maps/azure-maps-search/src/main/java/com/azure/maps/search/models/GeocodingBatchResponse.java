@@ -10,7 +10,6 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.maps.search.implementation.models.GeocodingBatchResponseItem;
-import com.azure.maps.search.implementation.models.GeocodingBatchResponseSummary;
 import java.io.IOException;
 import java.util.List;
 

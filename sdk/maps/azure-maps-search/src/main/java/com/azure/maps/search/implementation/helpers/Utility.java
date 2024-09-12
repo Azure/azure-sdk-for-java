@@ -9,7 +9,7 @@ import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.JsonSerializerProviders;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.maps.search.implementation.models.GeoJsonFeatureCollection;
-import com.azure.maps.search.implementation.models.GeoJsonObject;
+import com.azure.maps.search.models.GeoJsonObject;
 
 import java.io.ByteArrayOutputStream;
 import java.util.List;

@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.maps.search.models.GeoJsonFeature;
+import com.azure.maps.search.models.GeoJsonObject;
 import com.azure.maps.search.models.GeoJsonObjectType;
 import java.io.IOException;
 import java.util.List;
