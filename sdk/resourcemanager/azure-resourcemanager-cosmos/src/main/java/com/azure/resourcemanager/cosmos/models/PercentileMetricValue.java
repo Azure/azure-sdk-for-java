@@ -53,24 +53,9 @@ public final class PercentileMetricValue extends MetricValue {
     private Double p99;
 
     /*
-     * The number of values for the metric.
+     * The total value of the metric.
      */
-    private Integer count;
-
-    /*
-     * The average value of the metric.
-     */
-    private Double average;
-
-    /*
-     * The max value of the metric.
-     */
-    private Double maximum;
-
-    /*
-     * The min value of the metric.
-     */
-    private Double minimum;
+    private Double total;
 
     /*
      * The metric timestamp (ISO-8601 format).
@@ -78,9 +63,24 @@ public final class PercentileMetricValue extends MetricValue {
     private OffsetDateTime timestamp;
 
     /*
-     * The total value of the metric.
+     * The min value of the metric.
      */
-    private Double total;
+    private Double minimum;
+
+    /*
+     * The max value of the metric.
+     */
+    private Double maximum;
+
+    /*
+     * The average value of the metric.
+     */
+    private Double average;
+
+    /*
+     * The number of values for the metric.
+     */
+    private Integer count;
 
     /**
      * Creates an instance of PercentileMetricValue class.
@@ -152,43 +152,13 @@ public final class PercentileMetricValue extends MetricValue {
     }
 
     /**
-     * Get the count property: The number of values for the metric.
+     * Get the total property: The total value of the metric.
      * 
-     * @return the count value.
+     * @return the total value.
      */
     @Override
-    public Integer count() {
-        return this.count;
-    }
-
-    /**
-     * Get the average property: The average value of the metric.
-     * 
-     * @return the average value.
-     */
-    @Override
-    public Double average() {
-        return this.average;
-    }
-
-    /**
-     * Get the maximum property: The max value of the metric.
-     * 
-     * @return the maximum value.
-     */
-    @Override
-    public Double maximum() {
-        return this.maximum;
-    }
-
-    /**
-     * Get the minimum property: The min value of the metric.
-     * 
-     * @return the minimum value.
-     */
-    @Override
-    public Double minimum() {
-        return this.minimum;
+    public Double total() {
+        return this.total;
     }
 
     /**
@@ -202,13 +172,43 @@ public final class PercentileMetricValue extends MetricValue {
     }
 
     /**
-     * Get the total property: The total value of the metric.
+     * Get the minimum property: The min value of the metric.
      * 
-     * @return the total value.
+     * @return the minimum value.
      */
     @Override
-    public Double total() {
-        return this.total;
+    public Double minimum() {
+        return this.minimum;
+    }
+
+    /**
+     * Get the maximum property: The max value of the metric.
+     * 
+     * @return the maximum value.
+     */
+    @Override
+    public Double maximum() {
+        return this.maximum;
+    }
+
+    /**
+     * Get the average property: The average value of the metric.
+     * 
+     * @return the average value.
+     */
+    @Override
+    public Double average() {
+        return this.average;
+    }
+
+    /**
+     * Get the count property: The number of values for the metric.
+     * 
+     * @return the count value.
+     */
+    @Override
+    public Integer count() {
+        return this.count;
     }
 
     /**
@@ -218,7 +218,6 @@ public final class PercentileMetricValue extends MetricValue {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

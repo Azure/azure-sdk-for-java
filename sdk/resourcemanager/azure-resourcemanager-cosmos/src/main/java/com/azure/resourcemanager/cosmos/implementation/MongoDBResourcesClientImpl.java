@@ -38,8 +38,11 @@ import com.azure.resourcemanager.cosmos.fluent.models.MongoDBCollectionGetResult
 import com.azure.resourcemanager.cosmos.fluent.models.MongoDBDatabaseGetResultsInner;
 import com.azure.resourcemanager.cosmos.fluent.models.MongoRoleDefinitionGetResultsInner;
 import com.azure.resourcemanager.cosmos.fluent.models.MongoUserDefinitionGetResultsInner;
+import com.azure.resourcemanager.cosmos.fluent.models.PhysicalPartitionStorageInfoCollectionInner;
+import com.azure.resourcemanager.cosmos.fluent.models.PhysicalPartitionThroughputInfoResultInner;
 import com.azure.resourcemanager.cosmos.fluent.models.ThroughputSettingsGetResultsInner;
 import com.azure.resourcemanager.cosmos.models.ContinuousBackupRestoreLocation;
+import com.azure.resourcemanager.cosmos.models.MergeParameters;
 import com.azure.resourcemanager.cosmos.models.MongoDBCollectionCreateUpdateParameters;
 import com.azure.resourcemanager.cosmos.models.MongoDBCollectionListResult;
 import com.azure.resourcemanager.cosmos.models.MongoDBDatabaseCreateUpdateParameters;
@@ -48,6 +51,8 @@ import com.azure.resourcemanager.cosmos.models.MongoRoleDefinitionCreateUpdatePa
 import com.azure.resourcemanager.cosmos.models.MongoRoleDefinitionListResult;
 import com.azure.resourcemanager.cosmos.models.MongoUserDefinitionCreateUpdateParameters;
 import com.azure.resourcemanager.cosmos.models.MongoUserDefinitionListResult;
+import com.azure.resourcemanager.cosmos.models.RedistributeThroughputParameters;
+import com.azure.resourcemanager.cosmos.models.RetrieveThroughputParameters;
 import com.azure.resourcemanager.cosmos.models.ThroughputSettingsUpdateParameters;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -167,6 +172,52 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}/throughputSettings/default/retrieveThroughputDistribution")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> mongoDBDatabaseRetrieveThroughputDistribution(
+            @HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("databaseName") String databaseName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") RetrieveThroughputParameters retrieveThroughputParameters,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}/throughputSettings/default/redistributeThroughput")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> mongoDBDatabaseRedistributeThroughput(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("databaseName") String databaseName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") RedistributeThroughputParameters redistributeThroughputParameters,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}/collections/{collectionName}/throughputSettings/default/retrieveThroughputDistribution")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> mongoDBContainerRetrieveThroughputDistribution(
+            @HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("databaseName") String databaseName, @PathParam("collectionName") String collectionName,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") RetrieveThroughputParameters retrieveThroughputParameters,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}/collections/{collectionName}/throughputSettings/default/redistributeThroughput")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> mongoDBContainerRedistributeThroughput(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("databaseName") String databaseName, @PathParam("collectionName") String collectionName,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") RedistributeThroughputParameters redistributeThroughputParameters,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}/collections")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -207,6 +258,29 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("databaseName") String databaseName, @PathParam("collectionName") String collectionName,
             @QueryParam("api-version") String apiVersion, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}/partitionMerge")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> mongoDBDatabasePartitionMerge(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("databaseName") String databaseName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") MergeParameters mergeParameters, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}/collections/{collectionName}/partitionMerge")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> listMongoDBCollectionPartitionMerge(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("databaseName") String databaseName, @PathParam("collectionName") String collectionName,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") MergeParameters mergeParameters, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}/collections/{collectionName}/throughputSettings/default")
@@ -2025,6 +2099,1199 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
     }
 
     /**
+     * Retrieve throughput distribution for an Azure Cosmos DB MongoDB database.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param retrieveThroughputParameters The parameters to provide for retrieving throughput distribution for the
+     * current MongoDB database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> mongoDBDatabaseRetrieveThroughputDistributionWithResponseAsync(
+        String resourceGroupName, String accountName, String databaseName,
+        RetrieveThroughputParameters retrieveThroughputParameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (retrieveThroughputParameters == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter retrieveThroughputParameters is required and cannot be null."));
+        } else {
+            retrieveThroughputParameters.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.mongoDBDatabaseRetrieveThroughputDistribution(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName,
+                this.client.getApiVersion(), retrieveThroughputParameters, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Retrieve throughput distribution for an Azure Cosmos DB MongoDB database.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param retrieveThroughputParameters The parameters to provide for retrieving throughput distribution for the
+     * current MongoDB database.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> mongoDBDatabaseRetrieveThroughputDistributionWithResponseAsync(
+        String resourceGroupName, String accountName, String databaseName,
+        RetrieveThroughputParameters retrieveThroughputParameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (retrieveThroughputParameters == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter retrieveThroughputParameters is required and cannot be null."));
+        } else {
+            retrieveThroughputParameters.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.mongoDBDatabaseRetrieveThroughputDistribution(this.client.getEndpoint(),
+            this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, this.client.getApiVersion(),
+            retrieveThroughputParameters, accept, context);
+    }
+
+    /**
+     * Retrieve throughput distribution for an Azure Cosmos DB MongoDB database.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param retrieveThroughputParameters The parameters to provide for retrieving throughput distribution for the
+     * current MongoDB database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        PollerFlux<PollResult<PhysicalPartitionThroughputInfoResultInner>, PhysicalPartitionThroughputInfoResultInner>
+        beginMongoDBDatabaseRetrieveThroughputDistributionAsync(String resourceGroupName, String accountName,
+            String databaseName, RetrieveThroughputParameters retrieveThroughputParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono = mongoDBDatabaseRetrieveThroughputDistributionWithResponseAsync(
+            resourceGroupName, accountName, databaseName, retrieveThroughputParameters);
+        return this.client
+            .<PhysicalPartitionThroughputInfoResultInner, PhysicalPartitionThroughputInfoResultInner>getLroResult(mono,
+                this.client.getHttpPipeline(), PhysicalPartitionThroughputInfoResultInner.class,
+                PhysicalPartitionThroughputInfoResultInner.class, this.client.getContext());
+    }
+
+    /**
+     * Retrieve throughput distribution for an Azure Cosmos DB MongoDB database.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param retrieveThroughputParameters The parameters to provide for retrieving throughput distribution for the
+     * current MongoDB database.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private
+        PollerFlux<PollResult<PhysicalPartitionThroughputInfoResultInner>, PhysicalPartitionThroughputInfoResultInner>
+        beginMongoDBDatabaseRetrieveThroughputDistributionAsync(String resourceGroupName, String accountName,
+            String databaseName, RetrieveThroughputParameters retrieveThroughputParameters, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = mongoDBDatabaseRetrieveThroughputDistributionWithResponseAsync(
+            resourceGroupName, accountName, databaseName, retrieveThroughputParameters, context);
+        return this.client
+            .<PhysicalPartitionThroughputInfoResultInner, PhysicalPartitionThroughputInfoResultInner>getLroResult(mono,
+                this.client.getHttpPipeline(), PhysicalPartitionThroughputInfoResultInner.class,
+                PhysicalPartitionThroughputInfoResultInner.class, context);
+    }
+
+    /**
+     * Retrieve throughput distribution for an Azure Cosmos DB MongoDB database.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param retrieveThroughputParameters The parameters to provide for retrieving throughput distribution for the
+     * current MongoDB database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        SyncPoller<PollResult<PhysicalPartitionThroughputInfoResultInner>, PhysicalPartitionThroughputInfoResultInner>
+        beginMongoDBDatabaseRetrieveThroughputDistribution(String resourceGroupName, String accountName,
+            String databaseName, RetrieveThroughputParameters retrieveThroughputParameters) {
+        return this
+            .beginMongoDBDatabaseRetrieveThroughputDistributionAsync(resourceGroupName, accountName, databaseName,
+                retrieveThroughputParameters)
+            .getSyncPoller();
+    }
+
+    /**
+     * Retrieve throughput distribution for an Azure Cosmos DB MongoDB database.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param retrieveThroughputParameters The parameters to provide for retrieving throughput distribution for the
+     * current MongoDB database.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        SyncPoller<PollResult<PhysicalPartitionThroughputInfoResultInner>, PhysicalPartitionThroughputInfoResultInner>
+        beginMongoDBDatabaseRetrieveThroughputDistribution(String resourceGroupName, String accountName,
+            String databaseName, RetrieveThroughputParameters retrieveThroughputParameters, Context context) {
+        return this
+            .beginMongoDBDatabaseRetrieveThroughputDistributionAsync(resourceGroupName, accountName, databaseName,
+                retrieveThroughputParameters, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Retrieve throughput distribution for an Azure Cosmos DB MongoDB database.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param retrieveThroughputParameters The parameters to provide for retrieving throughput distribution for the
+     * current MongoDB database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PhysicalPartitionThroughputInfoResultInner> mongoDBDatabaseRetrieveThroughputDistributionAsync(
+        String resourceGroupName, String accountName, String databaseName,
+        RetrieveThroughputParameters retrieveThroughputParameters) {
+        return beginMongoDBDatabaseRetrieveThroughputDistributionAsync(resourceGroupName, accountName, databaseName,
+            retrieveThroughputParameters).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Retrieve throughput distribution for an Azure Cosmos DB MongoDB database.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param retrieveThroughputParameters The parameters to provide for retrieving throughput distribution for the
+     * current MongoDB database.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PhysicalPartitionThroughputInfoResultInner> mongoDBDatabaseRetrieveThroughputDistributionAsync(
+        String resourceGroupName, String accountName, String databaseName,
+        RetrieveThroughputParameters retrieveThroughputParameters, Context context) {
+        return beginMongoDBDatabaseRetrieveThroughputDistributionAsync(resourceGroupName, accountName, databaseName,
+            retrieveThroughputParameters, context).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Retrieve throughput distribution for an Azure Cosmos DB MongoDB database.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param retrieveThroughputParameters The parameters to provide for retrieving throughput distribution for the
+     * current MongoDB database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PhysicalPartitionThroughputInfoResultInner mongoDBDatabaseRetrieveThroughputDistribution(
+        String resourceGroupName, String accountName, String databaseName,
+        RetrieveThroughputParameters retrieveThroughputParameters) {
+        return mongoDBDatabaseRetrieveThroughputDistributionAsync(resourceGroupName, accountName, databaseName,
+            retrieveThroughputParameters).block();
+    }
+
+    /**
+     * Retrieve throughput distribution for an Azure Cosmos DB MongoDB database.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param retrieveThroughputParameters The parameters to provide for retrieving throughput distribution for the
+     * current MongoDB database.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PhysicalPartitionThroughputInfoResultInner mongoDBDatabaseRetrieveThroughputDistribution(
+        String resourceGroupName, String accountName, String databaseName,
+        RetrieveThroughputParameters retrieveThroughputParameters, Context context) {
+        return mongoDBDatabaseRetrieveThroughputDistributionAsync(resourceGroupName, accountName, databaseName,
+            retrieveThroughputParameters, context).block();
+    }
+
+    /**
+     * Redistribute throughput for an Azure Cosmos DB MongoDB database.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param redistributeThroughputParameters The parameters to provide for redistributing throughput for the current
+     * MongoDB database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> mongoDBDatabaseRedistributeThroughputWithResponseAsync(
+        String resourceGroupName, String accountName, String databaseName,
+        RedistributeThroughputParameters redistributeThroughputParameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (redistributeThroughputParameters == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter redistributeThroughputParameters is required and cannot be null."));
+        } else {
+            redistributeThroughputParameters.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.mongoDBDatabaseRedistributeThroughput(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName,
+                this.client.getApiVersion(), redistributeThroughputParameters, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Redistribute throughput for an Azure Cosmos DB MongoDB database.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param redistributeThroughputParameters The parameters to provide for redistributing throughput for the current
+     * MongoDB database.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> mongoDBDatabaseRedistributeThroughputWithResponseAsync(
+        String resourceGroupName, String accountName, String databaseName,
+        RedistributeThroughputParameters redistributeThroughputParameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (redistributeThroughputParameters == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter redistributeThroughputParameters is required and cannot be null."));
+        } else {
+            redistributeThroughputParameters.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.mongoDBDatabaseRedistributeThroughput(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, accountName, databaseName, this.client.getApiVersion(), redistributeThroughputParameters,
+            accept, context);
+    }
+
+    /**
+     * Redistribute throughput for an Azure Cosmos DB MongoDB database.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param redistributeThroughputParameters The parameters to provide for redistributing throughput for the current
+     * MongoDB database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        PollerFlux<PollResult<PhysicalPartitionThroughputInfoResultInner>, PhysicalPartitionThroughputInfoResultInner>
+        beginMongoDBDatabaseRedistributeThroughputAsync(String resourceGroupName, String accountName,
+            String databaseName, RedistributeThroughputParameters redistributeThroughputParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono = mongoDBDatabaseRedistributeThroughputWithResponseAsync(
+            resourceGroupName, accountName, databaseName, redistributeThroughputParameters);
+        return this.client
+            .<PhysicalPartitionThroughputInfoResultInner, PhysicalPartitionThroughputInfoResultInner>getLroResult(mono,
+                this.client.getHttpPipeline(), PhysicalPartitionThroughputInfoResultInner.class,
+                PhysicalPartitionThroughputInfoResultInner.class, this.client.getContext());
+    }
+
+    /**
+     * Redistribute throughput for an Azure Cosmos DB MongoDB database.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param redistributeThroughputParameters The parameters to provide for redistributing throughput for the current
+     * MongoDB database.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private
+        PollerFlux<PollResult<PhysicalPartitionThroughputInfoResultInner>, PhysicalPartitionThroughputInfoResultInner>
+        beginMongoDBDatabaseRedistributeThroughputAsync(String resourceGroupName, String accountName,
+            String databaseName, RedistributeThroughputParameters redistributeThroughputParameters, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = mongoDBDatabaseRedistributeThroughputWithResponseAsync(
+            resourceGroupName, accountName, databaseName, redistributeThroughputParameters, context);
+        return this.client
+            .<PhysicalPartitionThroughputInfoResultInner, PhysicalPartitionThroughputInfoResultInner>getLroResult(mono,
+                this.client.getHttpPipeline(), PhysicalPartitionThroughputInfoResultInner.class,
+                PhysicalPartitionThroughputInfoResultInner.class, context);
+    }
+
+    /**
+     * Redistribute throughput for an Azure Cosmos DB MongoDB database.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param redistributeThroughputParameters The parameters to provide for redistributing throughput for the current
+     * MongoDB database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        SyncPoller<PollResult<PhysicalPartitionThroughputInfoResultInner>, PhysicalPartitionThroughputInfoResultInner>
+        beginMongoDBDatabaseRedistributeThroughput(String resourceGroupName, String accountName, String databaseName,
+            RedistributeThroughputParameters redistributeThroughputParameters) {
+        return this
+            .beginMongoDBDatabaseRedistributeThroughputAsync(resourceGroupName, accountName, databaseName,
+                redistributeThroughputParameters)
+            .getSyncPoller();
+    }
+
+    /**
+     * Redistribute throughput for an Azure Cosmos DB MongoDB database.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param redistributeThroughputParameters The parameters to provide for redistributing throughput for the current
+     * MongoDB database.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        SyncPoller<PollResult<PhysicalPartitionThroughputInfoResultInner>, PhysicalPartitionThroughputInfoResultInner>
+        beginMongoDBDatabaseRedistributeThroughput(String resourceGroupName, String accountName, String databaseName,
+            RedistributeThroughputParameters redistributeThroughputParameters, Context context) {
+        return this
+            .beginMongoDBDatabaseRedistributeThroughputAsync(resourceGroupName, accountName, databaseName,
+                redistributeThroughputParameters, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Redistribute throughput for an Azure Cosmos DB MongoDB database.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param redistributeThroughputParameters The parameters to provide for redistributing throughput for the current
+     * MongoDB database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PhysicalPartitionThroughputInfoResultInner> mongoDBDatabaseRedistributeThroughputAsync(
+        String resourceGroupName, String accountName, String databaseName,
+        RedistributeThroughputParameters redistributeThroughputParameters) {
+        return beginMongoDBDatabaseRedistributeThroughputAsync(resourceGroupName, accountName, databaseName,
+            redistributeThroughputParameters).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Redistribute throughput for an Azure Cosmos DB MongoDB database.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param redistributeThroughputParameters The parameters to provide for redistributing throughput for the current
+     * MongoDB database.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PhysicalPartitionThroughputInfoResultInner> mongoDBDatabaseRedistributeThroughputAsync(
+        String resourceGroupName, String accountName, String databaseName,
+        RedistributeThroughputParameters redistributeThroughputParameters, Context context) {
+        return beginMongoDBDatabaseRedistributeThroughputAsync(resourceGroupName, accountName, databaseName,
+            redistributeThroughputParameters, context).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Redistribute throughput for an Azure Cosmos DB MongoDB database.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param redistributeThroughputParameters The parameters to provide for redistributing throughput for the current
+     * MongoDB database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PhysicalPartitionThroughputInfoResultInner mongoDBDatabaseRedistributeThroughput(String resourceGroupName,
+        String accountName, String databaseName, RedistributeThroughputParameters redistributeThroughputParameters) {
+        return mongoDBDatabaseRedistributeThroughputAsync(resourceGroupName, accountName, databaseName,
+            redistributeThroughputParameters).block();
+    }
+
+    /**
+     * Redistribute throughput for an Azure Cosmos DB MongoDB database.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param redistributeThroughputParameters The parameters to provide for redistributing throughput for the current
+     * MongoDB database.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PhysicalPartitionThroughputInfoResultInner mongoDBDatabaseRedistributeThroughput(String resourceGroupName,
+        String accountName, String databaseName, RedistributeThroughputParameters redistributeThroughputParameters,
+        Context context) {
+        return mongoDBDatabaseRedistributeThroughputAsync(resourceGroupName, accountName, databaseName,
+            redistributeThroughputParameters, context).block();
+    }
+
+    /**
+     * Retrieve throughput distribution for an Azure Cosmos DB MongoDB container.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param retrieveThroughputParameters The parameters to provide for retrieving throughput distribution for the
+     * current MongoDB container.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> mongoDBContainerRetrieveThroughputDistributionWithResponseAsync(
+        String resourceGroupName, String accountName, String databaseName, String collectionName,
+        RetrieveThroughputParameters retrieveThroughputParameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (collectionName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter collectionName is required and cannot be null."));
+        }
+        if (retrieveThroughputParameters == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter retrieveThroughputParameters is required and cannot be null."));
+        } else {
+            retrieveThroughputParameters.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.mongoDBContainerRetrieveThroughputDistribution(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, collectionName,
+                this.client.getApiVersion(), retrieveThroughputParameters, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Retrieve throughput distribution for an Azure Cosmos DB MongoDB container.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param retrieveThroughputParameters The parameters to provide for retrieving throughput distribution for the
+     * current MongoDB container.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> mongoDBContainerRetrieveThroughputDistributionWithResponseAsync(
+        String resourceGroupName, String accountName, String databaseName, String collectionName,
+        RetrieveThroughputParameters retrieveThroughputParameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (collectionName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter collectionName is required and cannot be null."));
+        }
+        if (retrieveThroughputParameters == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter retrieveThroughputParameters is required and cannot be null."));
+        } else {
+            retrieveThroughputParameters.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.mongoDBContainerRetrieveThroughputDistribution(this.client.getEndpoint(),
+            this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, collectionName,
+            this.client.getApiVersion(), retrieveThroughputParameters, accept, context);
+    }
+
+    /**
+     * Retrieve throughput distribution for an Azure Cosmos DB MongoDB container.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param retrieveThroughputParameters The parameters to provide for retrieving throughput distribution for the
+     * current MongoDB container.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        PollerFlux<PollResult<PhysicalPartitionThroughputInfoResultInner>, PhysicalPartitionThroughputInfoResultInner>
+        beginMongoDBContainerRetrieveThroughputDistributionAsync(String resourceGroupName, String accountName,
+            String databaseName, String collectionName, RetrieveThroughputParameters retrieveThroughputParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono = mongoDBContainerRetrieveThroughputDistributionWithResponseAsync(
+            resourceGroupName, accountName, databaseName, collectionName, retrieveThroughputParameters);
+        return this.client
+            .<PhysicalPartitionThroughputInfoResultInner, PhysicalPartitionThroughputInfoResultInner>getLroResult(mono,
+                this.client.getHttpPipeline(), PhysicalPartitionThroughputInfoResultInner.class,
+                PhysicalPartitionThroughputInfoResultInner.class, this.client.getContext());
+    }
+
+    /**
+     * Retrieve throughput distribution for an Azure Cosmos DB MongoDB container.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param retrieveThroughputParameters The parameters to provide for retrieving throughput distribution for the
+     * current MongoDB container.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private
+        PollerFlux<PollResult<PhysicalPartitionThroughputInfoResultInner>, PhysicalPartitionThroughputInfoResultInner>
+        beginMongoDBContainerRetrieveThroughputDistributionAsync(String resourceGroupName, String accountName,
+            String databaseName, String collectionName, RetrieveThroughputParameters retrieveThroughputParameters,
+            Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = mongoDBContainerRetrieveThroughputDistributionWithResponseAsync(
+            resourceGroupName, accountName, databaseName, collectionName, retrieveThroughputParameters, context);
+        return this.client
+            .<PhysicalPartitionThroughputInfoResultInner, PhysicalPartitionThroughputInfoResultInner>getLroResult(mono,
+                this.client.getHttpPipeline(), PhysicalPartitionThroughputInfoResultInner.class,
+                PhysicalPartitionThroughputInfoResultInner.class, context);
+    }
+
+    /**
+     * Retrieve throughput distribution for an Azure Cosmos DB MongoDB container.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param retrieveThroughputParameters The parameters to provide for retrieving throughput distribution for the
+     * current MongoDB container.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        SyncPoller<PollResult<PhysicalPartitionThroughputInfoResultInner>, PhysicalPartitionThroughputInfoResultInner>
+        beginMongoDBContainerRetrieveThroughputDistribution(String resourceGroupName, String accountName,
+            String databaseName, String collectionName, RetrieveThroughputParameters retrieveThroughputParameters) {
+        return this
+            .beginMongoDBContainerRetrieveThroughputDistributionAsync(resourceGroupName, accountName, databaseName,
+                collectionName, retrieveThroughputParameters)
+            .getSyncPoller();
+    }
+
+    /**
+     * Retrieve throughput distribution for an Azure Cosmos DB MongoDB container.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param retrieveThroughputParameters The parameters to provide for retrieving throughput distribution for the
+     * current MongoDB container.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        SyncPoller<PollResult<PhysicalPartitionThroughputInfoResultInner>, PhysicalPartitionThroughputInfoResultInner>
+        beginMongoDBContainerRetrieveThroughputDistribution(String resourceGroupName, String accountName,
+            String databaseName, String collectionName, RetrieveThroughputParameters retrieveThroughputParameters,
+            Context context) {
+        return this
+            .beginMongoDBContainerRetrieveThroughputDistributionAsync(resourceGroupName, accountName, databaseName,
+                collectionName, retrieveThroughputParameters, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Retrieve throughput distribution for an Azure Cosmos DB MongoDB container.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param retrieveThroughputParameters The parameters to provide for retrieving throughput distribution for the
+     * current MongoDB container.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PhysicalPartitionThroughputInfoResultInner> mongoDBContainerRetrieveThroughputDistributionAsync(
+        String resourceGroupName, String accountName, String databaseName, String collectionName,
+        RetrieveThroughputParameters retrieveThroughputParameters) {
+        return beginMongoDBContainerRetrieveThroughputDistributionAsync(resourceGroupName, accountName, databaseName,
+            collectionName, retrieveThroughputParameters).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Retrieve throughput distribution for an Azure Cosmos DB MongoDB container.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param retrieveThroughputParameters The parameters to provide for retrieving throughput distribution for the
+     * current MongoDB container.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PhysicalPartitionThroughputInfoResultInner> mongoDBContainerRetrieveThroughputDistributionAsync(
+        String resourceGroupName, String accountName, String databaseName, String collectionName,
+        RetrieveThroughputParameters retrieveThroughputParameters, Context context) {
+        return beginMongoDBContainerRetrieveThroughputDistributionAsync(resourceGroupName, accountName, databaseName,
+            collectionName, retrieveThroughputParameters, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Retrieve throughput distribution for an Azure Cosmos DB MongoDB container.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param retrieveThroughputParameters The parameters to provide for retrieving throughput distribution for the
+     * current MongoDB container.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PhysicalPartitionThroughputInfoResultInner mongoDBContainerRetrieveThroughputDistribution(
+        String resourceGroupName, String accountName, String databaseName, String collectionName,
+        RetrieveThroughputParameters retrieveThroughputParameters) {
+        return mongoDBContainerRetrieveThroughputDistributionAsync(resourceGroupName, accountName, databaseName,
+            collectionName, retrieveThroughputParameters).block();
+    }
+
+    /**
+     * Retrieve throughput distribution for an Azure Cosmos DB MongoDB container.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param retrieveThroughputParameters The parameters to provide for retrieving throughput distribution for the
+     * current MongoDB container.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PhysicalPartitionThroughputInfoResultInner mongoDBContainerRetrieveThroughputDistribution(
+        String resourceGroupName, String accountName, String databaseName, String collectionName,
+        RetrieveThroughputParameters retrieveThroughputParameters, Context context) {
+        return mongoDBContainerRetrieveThroughputDistributionAsync(resourceGroupName, accountName, databaseName,
+            collectionName, retrieveThroughputParameters, context).block();
+    }
+
+    /**
+     * Redistribute throughput for an Azure Cosmos DB MongoDB container.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param redistributeThroughputParameters The parameters to provide for redistributing throughput for the current
+     * MongoDB container.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> mongoDBContainerRedistributeThroughputWithResponseAsync(
+        String resourceGroupName, String accountName, String databaseName, String collectionName,
+        RedistributeThroughputParameters redistributeThroughputParameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (collectionName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter collectionName is required and cannot be null."));
+        }
+        if (redistributeThroughputParameters == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter redistributeThroughputParameters is required and cannot be null."));
+        } else {
+            redistributeThroughputParameters.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.mongoDBContainerRedistributeThroughput(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, collectionName,
+                this.client.getApiVersion(), redistributeThroughputParameters, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Redistribute throughput for an Azure Cosmos DB MongoDB container.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param redistributeThroughputParameters The parameters to provide for redistributing throughput for the current
+     * MongoDB container.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> mongoDBContainerRedistributeThroughputWithResponseAsync(
+        String resourceGroupName, String accountName, String databaseName, String collectionName,
+        RedistributeThroughputParameters redistributeThroughputParameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (collectionName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter collectionName is required and cannot be null."));
+        }
+        if (redistributeThroughputParameters == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter redistributeThroughputParameters is required and cannot be null."));
+        } else {
+            redistributeThroughputParameters.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.mongoDBContainerRedistributeThroughput(this.client.getEndpoint(),
+            this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, collectionName,
+            this.client.getApiVersion(), redistributeThroughputParameters, accept, context);
+    }
+
+    /**
+     * Redistribute throughput for an Azure Cosmos DB MongoDB container.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param redistributeThroughputParameters The parameters to provide for redistributing throughput for the current
+     * MongoDB container.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        PollerFlux<PollResult<PhysicalPartitionThroughputInfoResultInner>, PhysicalPartitionThroughputInfoResultInner>
+        beginMongoDBContainerRedistributeThroughputAsync(String resourceGroupName, String accountName,
+            String databaseName, String collectionName,
+            RedistributeThroughputParameters redistributeThroughputParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono = mongoDBContainerRedistributeThroughputWithResponseAsync(
+            resourceGroupName, accountName, databaseName, collectionName, redistributeThroughputParameters);
+        return this.client
+            .<PhysicalPartitionThroughputInfoResultInner, PhysicalPartitionThroughputInfoResultInner>getLroResult(mono,
+                this.client.getHttpPipeline(), PhysicalPartitionThroughputInfoResultInner.class,
+                PhysicalPartitionThroughputInfoResultInner.class, this.client.getContext());
+    }
+
+    /**
+     * Redistribute throughput for an Azure Cosmos DB MongoDB container.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param redistributeThroughputParameters The parameters to provide for redistributing throughput for the current
+     * MongoDB container.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private
+        PollerFlux<PollResult<PhysicalPartitionThroughputInfoResultInner>, PhysicalPartitionThroughputInfoResultInner>
+        beginMongoDBContainerRedistributeThroughputAsync(String resourceGroupName, String accountName,
+            String databaseName, String collectionName,
+            RedistributeThroughputParameters redistributeThroughputParameters, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = mongoDBContainerRedistributeThroughputWithResponseAsync(
+            resourceGroupName, accountName, databaseName, collectionName, redistributeThroughputParameters, context);
+        return this.client
+            .<PhysicalPartitionThroughputInfoResultInner, PhysicalPartitionThroughputInfoResultInner>getLroResult(mono,
+                this.client.getHttpPipeline(), PhysicalPartitionThroughputInfoResultInner.class,
+                PhysicalPartitionThroughputInfoResultInner.class, context);
+    }
+
+    /**
+     * Redistribute throughput for an Azure Cosmos DB MongoDB container.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param redistributeThroughputParameters The parameters to provide for redistributing throughput for the current
+     * MongoDB container.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        SyncPoller<PollResult<PhysicalPartitionThroughputInfoResultInner>, PhysicalPartitionThroughputInfoResultInner>
+        beginMongoDBContainerRedistributeThroughput(String resourceGroupName, String accountName, String databaseName,
+            String collectionName, RedistributeThroughputParameters redistributeThroughputParameters) {
+        return this
+            .beginMongoDBContainerRedistributeThroughputAsync(resourceGroupName, accountName, databaseName,
+                collectionName, redistributeThroughputParameters)
+            .getSyncPoller();
+    }
+
+    /**
+     * Redistribute throughput for an Azure Cosmos DB MongoDB container.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param redistributeThroughputParameters The parameters to provide for redistributing throughput for the current
+     * MongoDB container.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        SyncPoller<PollResult<PhysicalPartitionThroughputInfoResultInner>, PhysicalPartitionThroughputInfoResultInner>
+        beginMongoDBContainerRedistributeThroughput(String resourceGroupName, String accountName, String databaseName,
+            String collectionName, RedistributeThroughputParameters redistributeThroughputParameters, Context context) {
+        return this
+            .beginMongoDBContainerRedistributeThroughputAsync(resourceGroupName, accountName, databaseName,
+                collectionName, redistributeThroughputParameters, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Redistribute throughput for an Azure Cosmos DB MongoDB container.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param redistributeThroughputParameters The parameters to provide for redistributing throughput for the current
+     * MongoDB container.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PhysicalPartitionThroughputInfoResultInner> mongoDBContainerRedistributeThroughputAsync(
+        String resourceGroupName, String accountName, String databaseName, String collectionName,
+        RedistributeThroughputParameters redistributeThroughputParameters) {
+        return beginMongoDBContainerRedistributeThroughputAsync(resourceGroupName, accountName, databaseName,
+            collectionName, redistributeThroughputParameters).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Redistribute throughput for an Azure Cosmos DB MongoDB container.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param redistributeThroughputParameters The parameters to provide for redistributing throughput for the current
+     * MongoDB container.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PhysicalPartitionThroughputInfoResultInner> mongoDBContainerRedistributeThroughputAsync(
+        String resourceGroupName, String accountName, String databaseName, String collectionName,
+        RedistributeThroughputParameters redistributeThroughputParameters, Context context) {
+        return beginMongoDBContainerRedistributeThroughputAsync(resourceGroupName, accountName, databaseName,
+            collectionName, redistributeThroughputParameters, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Redistribute throughput for an Azure Cosmos DB MongoDB container.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param redistributeThroughputParameters The parameters to provide for redistributing throughput for the current
+     * MongoDB container.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PhysicalPartitionThroughputInfoResultInner mongoDBContainerRedistributeThroughput(String resourceGroupName,
+        String accountName, String databaseName, String collectionName,
+        RedistributeThroughputParameters redistributeThroughputParameters) {
+        return mongoDBContainerRedistributeThroughputAsync(resourceGroupName, accountName, databaseName, collectionName,
+            redistributeThroughputParameters).block();
+    }
+
+    /**
+     * Redistribute throughput for an Azure Cosmos DB MongoDB container.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param redistributeThroughputParameters The parameters to provide for redistributing throughput for the current
+     * MongoDB container.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PhysicalPartitionThroughputInfoResultInner mongoDBContainerRedistributeThroughput(String resourceGroupName,
+        String accountName, String databaseName, String collectionName,
+        RedistributeThroughputParameters redistributeThroughputParameters, Context context) {
+        return mongoDBContainerRedistributeThroughputAsync(resourceGroupName, accountName, databaseName, collectionName,
+            redistributeThroughputParameters, context).block();
+    }
+
+    /**
      * Lists the MongoDB collection under an existing Azure Cosmos DB database account.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -2867,6 +4134,586 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
     public void deleteMongoDBCollection(String resourceGroupName, String accountName, String databaseName,
         String collectionName, Context context) {
         deleteMongoDBCollectionAsync(resourceGroupName, accountName, databaseName, collectionName, context).block();
+    }
+
+    /**
+     * Merges the partitions of a MongoDB database.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param mergeParameters The parameters for the merge operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of physical partitions and their properties returned by a merge operation along with
+     * {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> mongoDBDatabasePartitionMergeWithResponseAsync(String resourceGroupName,
+        String accountName, String databaseName, MergeParameters mergeParameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (mergeParameters == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter mergeParameters is required and cannot be null."));
+        } else {
+            mergeParameters.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.mongoDBDatabasePartitionMerge(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName,
+                this.client.getApiVersion(), mergeParameters, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Merges the partitions of a MongoDB database.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param mergeParameters The parameters for the merge operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of physical partitions and their properties returned by a merge operation along with
+     * {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> mongoDBDatabasePartitionMergeWithResponseAsync(String resourceGroupName,
+        String accountName, String databaseName, MergeParameters mergeParameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (mergeParameters == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter mergeParameters is required and cannot be null."));
+        } else {
+            mergeParameters.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.mongoDBDatabasePartitionMerge(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, accountName, databaseName, this.client.getApiVersion(), mergeParameters, accept,
+            context);
+    }
+
+    /**
+     * Merges the partitions of a MongoDB database.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param mergeParameters The parameters for the merge operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of list of physical partitions and their properties returned by a
+     * merge operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        PollerFlux<PollResult<PhysicalPartitionStorageInfoCollectionInner>, PhysicalPartitionStorageInfoCollectionInner>
+        beginMongoDBDatabasePartitionMergeAsync(String resourceGroupName, String accountName, String databaseName,
+            MergeParameters mergeParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono = mongoDBDatabasePartitionMergeWithResponseAsync(resourceGroupName,
+            accountName, databaseName, mergeParameters);
+        return this.client
+            .<PhysicalPartitionStorageInfoCollectionInner, PhysicalPartitionStorageInfoCollectionInner>getLroResult(
+                mono, this.client.getHttpPipeline(), PhysicalPartitionStorageInfoCollectionInner.class,
+                PhysicalPartitionStorageInfoCollectionInner.class, this.client.getContext());
+    }
+
+    /**
+     * Merges the partitions of a MongoDB database.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param mergeParameters The parameters for the merge operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of list of physical partitions and their properties returned by a
+     * merge operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private
+        PollerFlux<PollResult<PhysicalPartitionStorageInfoCollectionInner>, PhysicalPartitionStorageInfoCollectionInner>
+        beginMongoDBDatabasePartitionMergeAsync(String resourceGroupName, String accountName, String databaseName,
+            MergeParameters mergeParameters, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = mongoDBDatabasePartitionMergeWithResponseAsync(resourceGroupName,
+            accountName, databaseName, mergeParameters, context);
+        return this.client
+            .<PhysicalPartitionStorageInfoCollectionInner, PhysicalPartitionStorageInfoCollectionInner>getLroResult(
+                mono, this.client.getHttpPipeline(), PhysicalPartitionStorageInfoCollectionInner.class,
+                PhysicalPartitionStorageInfoCollectionInner.class, context);
+    }
+
+    /**
+     * Merges the partitions of a MongoDB database.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param mergeParameters The parameters for the merge operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of list of physical partitions and their properties returned by a
+     * merge operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        SyncPoller<PollResult<PhysicalPartitionStorageInfoCollectionInner>, PhysicalPartitionStorageInfoCollectionInner>
+        beginMongoDBDatabasePartitionMerge(String resourceGroupName, String accountName, String databaseName,
+            MergeParameters mergeParameters) {
+        return this
+            .beginMongoDBDatabasePartitionMergeAsync(resourceGroupName, accountName, databaseName, mergeParameters)
+            .getSyncPoller();
+    }
+
+    /**
+     * Merges the partitions of a MongoDB database.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param mergeParameters The parameters for the merge operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of list of physical partitions and their properties returned by a
+     * merge operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        SyncPoller<PollResult<PhysicalPartitionStorageInfoCollectionInner>, PhysicalPartitionStorageInfoCollectionInner>
+        beginMongoDBDatabasePartitionMerge(String resourceGroupName, String accountName, String databaseName,
+            MergeParameters mergeParameters, Context context) {
+        return this
+            .beginMongoDBDatabasePartitionMergeAsync(resourceGroupName, accountName, databaseName, mergeParameters,
+                context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Merges the partitions of a MongoDB database.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param mergeParameters The parameters for the merge operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of physical partitions and their properties returned by a merge operation on successful completion
+     * of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PhysicalPartitionStorageInfoCollectionInner> mongoDBDatabasePartitionMergeAsync(
+        String resourceGroupName, String accountName, String databaseName, MergeParameters mergeParameters) {
+        return beginMongoDBDatabasePartitionMergeAsync(resourceGroupName, accountName, databaseName, mergeParameters)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Merges the partitions of a MongoDB database.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param mergeParameters The parameters for the merge operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of physical partitions and their properties returned by a merge operation on successful completion
+     * of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PhysicalPartitionStorageInfoCollectionInner> mongoDBDatabasePartitionMergeAsync(
+        String resourceGroupName, String accountName, String databaseName, MergeParameters mergeParameters,
+        Context context) {
+        return beginMongoDBDatabasePartitionMergeAsync(resourceGroupName, accountName, databaseName, mergeParameters,
+            context).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Merges the partitions of a MongoDB database.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param mergeParameters The parameters for the merge operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of physical partitions and their properties returned by a merge operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PhysicalPartitionStorageInfoCollectionInner mongoDBDatabasePartitionMerge(String resourceGroupName,
+        String accountName, String databaseName, MergeParameters mergeParameters) {
+        return mongoDBDatabasePartitionMergeAsync(resourceGroupName, accountName, databaseName, mergeParameters)
+            .block();
+    }
+
+    /**
+     * Merges the partitions of a MongoDB database.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param mergeParameters The parameters for the merge operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of physical partitions and their properties returned by a merge operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PhysicalPartitionStorageInfoCollectionInner mongoDBDatabasePartitionMerge(String resourceGroupName,
+        String accountName, String databaseName, MergeParameters mergeParameters, Context context) {
+        return mongoDBDatabasePartitionMergeAsync(resourceGroupName, accountName, databaseName, mergeParameters,
+            context).block();
+    }
+
+    /**
+     * Merges the partitions of a MongoDB Collection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param mergeParameters The parameters for the merge operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of physical partitions and their properties returned by a merge operation along with
+     * {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> listMongoDBCollectionPartitionMergeWithResponseAsync(
+        String resourceGroupName, String accountName, String databaseName, String collectionName,
+        MergeParameters mergeParameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (collectionName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter collectionName is required and cannot be null."));
+        }
+        if (mergeParameters == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter mergeParameters is required and cannot be null."));
+        } else {
+            mergeParameters.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listMongoDBCollectionPartitionMerge(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, collectionName,
+                this.client.getApiVersion(), mergeParameters, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Merges the partitions of a MongoDB Collection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param mergeParameters The parameters for the merge operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of physical partitions and their properties returned by a merge operation along with
+     * {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> listMongoDBCollectionPartitionMergeWithResponseAsync(
+        String resourceGroupName, String accountName, String databaseName, String collectionName,
+        MergeParameters mergeParameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (collectionName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter collectionName is required and cannot be null."));
+        }
+        if (mergeParameters == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter mergeParameters is required and cannot be null."));
+        } else {
+            mergeParameters.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.listMongoDBCollectionPartitionMerge(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, accountName, databaseName, collectionName, this.client.getApiVersion(), mergeParameters,
+            accept, context);
+    }
+
+    /**
+     * Merges the partitions of a MongoDB Collection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param mergeParameters The parameters for the merge operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of list of physical partitions and their properties returned by a
+     * merge operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        PollerFlux<PollResult<PhysicalPartitionStorageInfoCollectionInner>, PhysicalPartitionStorageInfoCollectionInner>
+        beginListMongoDBCollectionPartitionMergeAsync(String resourceGroupName, String accountName, String databaseName,
+            String collectionName, MergeParameters mergeParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono = listMongoDBCollectionPartitionMergeWithResponseAsync(resourceGroupName,
+            accountName, databaseName, collectionName, mergeParameters);
+        return this.client
+            .<PhysicalPartitionStorageInfoCollectionInner, PhysicalPartitionStorageInfoCollectionInner>getLroResult(
+                mono, this.client.getHttpPipeline(), PhysicalPartitionStorageInfoCollectionInner.class,
+                PhysicalPartitionStorageInfoCollectionInner.class, this.client.getContext());
+    }
+
+    /**
+     * Merges the partitions of a MongoDB Collection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param mergeParameters The parameters for the merge operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of list of physical partitions and their properties returned by a
+     * merge operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private
+        PollerFlux<PollResult<PhysicalPartitionStorageInfoCollectionInner>, PhysicalPartitionStorageInfoCollectionInner>
+        beginListMongoDBCollectionPartitionMergeAsync(String resourceGroupName, String accountName, String databaseName,
+            String collectionName, MergeParameters mergeParameters, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = listMongoDBCollectionPartitionMergeWithResponseAsync(resourceGroupName,
+            accountName, databaseName, collectionName, mergeParameters, context);
+        return this.client
+            .<PhysicalPartitionStorageInfoCollectionInner, PhysicalPartitionStorageInfoCollectionInner>getLroResult(
+                mono, this.client.getHttpPipeline(), PhysicalPartitionStorageInfoCollectionInner.class,
+                PhysicalPartitionStorageInfoCollectionInner.class, context);
+    }
+
+    /**
+     * Merges the partitions of a MongoDB Collection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param mergeParameters The parameters for the merge operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of list of physical partitions and their properties returned by a
+     * merge operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        SyncPoller<PollResult<PhysicalPartitionStorageInfoCollectionInner>, PhysicalPartitionStorageInfoCollectionInner>
+        beginListMongoDBCollectionPartitionMerge(String resourceGroupName, String accountName, String databaseName,
+            String collectionName, MergeParameters mergeParameters) {
+        return this
+            .beginListMongoDBCollectionPartitionMergeAsync(resourceGroupName, accountName, databaseName, collectionName,
+                mergeParameters)
+            .getSyncPoller();
+    }
+
+    /**
+     * Merges the partitions of a MongoDB Collection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param mergeParameters The parameters for the merge operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of list of physical partitions and their properties returned by a
+     * merge operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        SyncPoller<PollResult<PhysicalPartitionStorageInfoCollectionInner>, PhysicalPartitionStorageInfoCollectionInner>
+        beginListMongoDBCollectionPartitionMerge(String resourceGroupName, String accountName, String databaseName,
+            String collectionName, MergeParameters mergeParameters, Context context) {
+        return this
+            .beginListMongoDBCollectionPartitionMergeAsync(resourceGroupName, accountName, databaseName, collectionName,
+                mergeParameters, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Merges the partitions of a MongoDB Collection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param mergeParameters The parameters for the merge operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of physical partitions and their properties returned by a merge operation on successful completion
+     * of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PhysicalPartitionStorageInfoCollectionInner> listMongoDBCollectionPartitionMergeAsync(
+        String resourceGroupName, String accountName, String databaseName, String collectionName,
+        MergeParameters mergeParameters) {
+        return beginListMongoDBCollectionPartitionMergeAsync(resourceGroupName, accountName, databaseName,
+            collectionName, mergeParameters).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Merges the partitions of a MongoDB Collection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param mergeParameters The parameters for the merge operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of physical partitions and their properties returned by a merge operation on successful completion
+     * of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PhysicalPartitionStorageInfoCollectionInner> listMongoDBCollectionPartitionMergeAsync(
+        String resourceGroupName, String accountName, String databaseName, String collectionName,
+        MergeParameters mergeParameters, Context context) {
+        return beginListMongoDBCollectionPartitionMergeAsync(resourceGroupName, accountName, databaseName,
+            collectionName, mergeParameters, context).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Merges the partitions of a MongoDB Collection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param mergeParameters The parameters for the merge operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of physical partitions and their properties returned by a merge operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PhysicalPartitionStorageInfoCollectionInner listMongoDBCollectionPartitionMerge(String resourceGroupName,
+        String accountName, String databaseName, String collectionName, MergeParameters mergeParameters) {
+        return listMongoDBCollectionPartitionMergeAsync(resourceGroupName, accountName, databaseName, collectionName,
+            mergeParameters).block();
+    }
+
+    /**
+     * Merges the partitions of a MongoDB Collection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param mergeParameters The parameters for the merge operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of physical partitions and their properties returned by a merge operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PhysicalPartitionStorageInfoCollectionInner listMongoDBCollectionPartitionMerge(String resourceGroupName,
+        String accountName, String databaseName, String collectionName, MergeParameters mergeParameters,
+        Context context) {
+        return listMongoDBCollectionPartitionMergeAsync(resourceGroupName, accountName, databaseName, collectionName,
+            mergeParameters, context).block();
     }
 
     /**

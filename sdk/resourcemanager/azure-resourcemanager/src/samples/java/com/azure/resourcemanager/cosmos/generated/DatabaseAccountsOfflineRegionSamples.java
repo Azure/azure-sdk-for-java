@@ -11,7 +11,8 @@ import com.azure.resourcemanager.cosmos.models.RegionForOnlineOffline;
  */
 public final class DatabaseAccountsOfflineRegionSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/
+     * x-ms-original-file:
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-09-01-preview/examples/
      * CosmosDBDatabaseAccountOfflineRegion.json
      */
     /**
@@ -24,6 +25,7 @@ public final class DatabaseAccountsOfflineRegionSamples {
             .manager()
             .serviceClient()
             .getDatabaseAccounts()
-            .offlineRegion("rg1", "ddb1", new RegionForOnlineOffline(), com.azure.core.util.Context.NONE);
+            .offlineRegion("rg1", "ddb1", new RegionForOnlineOffline().withRegion("North Europe"),
+                com.azure.core.util.Context.NONE);
     }
 }

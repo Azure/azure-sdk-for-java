@@ -11,20 +11,19 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Parameters for Create or Update request for MaterializedViewsBuilderServiceResource.
+ * Properties for Create or Update request for DataTransferServiceResource.
  */
 @Fluent
-public final class MaterializedViewsBuilderServiceResourceCreateUpdateParameters
-    extends ServiceResourceCreateUpdateProperties {
+public final class DataTransferServiceResourceCreateUpdateProperties extends ServiceResourceCreateUpdateProperties {
     /*
      * ServiceType for the service.
      */
-    private ServiceType serviceType = ServiceType.MATERIALIZED_VIEWS_BUILDER;
+    private ServiceType serviceType = ServiceType.DATA_TRANSFER;
 
     /**
-     * Creates an instance of MaterializedViewsBuilderServiceResourceCreateUpdateParameters class.
+     * Creates an instance of DataTransferServiceResourceCreateUpdateProperties class.
      */
-    public MaterializedViewsBuilderServiceResourceCreateUpdateParameters() {
+    public DataTransferServiceResourceCreateUpdateProperties() {
     }
 
     /**
@@ -41,7 +40,7 @@ public final class MaterializedViewsBuilderServiceResourceCreateUpdateParameters
      * {@inheritDoc}
      */
     @Override
-    public MaterializedViewsBuilderServiceResourceCreateUpdateParameters withInstanceSize(ServiceSize instanceSize) {
+    public DataTransferServiceResourceCreateUpdateProperties withInstanceSize(ServiceSize instanceSize) {
         super.withInstanceSize(instanceSize);
         return this;
     }
@@ -50,7 +49,7 @@ public final class MaterializedViewsBuilderServiceResourceCreateUpdateParameters
      * {@inheritDoc}
      */
     @Override
-    public MaterializedViewsBuilderServiceResourceCreateUpdateParameters withInstanceCount(Integer instanceCount) {
+    public DataTransferServiceResourceCreateUpdateProperties withInstanceCount(Integer instanceCount) {
         super.withInstanceCount(instanceCount);
         return this;
     }
@@ -62,7 +61,6 @@ public final class MaterializedViewsBuilderServiceResourceCreateUpdateParameters
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**
@@ -78,38 +76,36 @@ public final class MaterializedViewsBuilderServiceResourceCreateUpdateParameters
     }
 
     /**
-     * Reads an instance of MaterializedViewsBuilderServiceResourceCreateUpdateParameters from the JsonReader.
+     * Reads an instance of DataTransferServiceResourceCreateUpdateProperties from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of MaterializedViewsBuilderServiceResourceCreateUpdateParameters if the JsonReader was
-     * pointing to an instance of it, or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the
-     * MaterializedViewsBuilderServiceResourceCreateUpdateParameters.
+     * @return An instance of DataTransferServiceResourceCreateUpdateProperties if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DataTransferServiceResourceCreateUpdateProperties.
      */
-    public static MaterializedViewsBuilderServiceResourceCreateUpdateParameters fromJson(JsonReader jsonReader)
-        throws IOException {
+    public static DataTransferServiceResourceCreateUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            MaterializedViewsBuilderServiceResourceCreateUpdateParameters deserializedMaterializedViewsBuilderServiceResourceCreateUpdateParameters
-                = new MaterializedViewsBuilderServiceResourceCreateUpdateParameters();
+            DataTransferServiceResourceCreateUpdateProperties deserializedDataTransferServiceResourceCreateUpdateProperties
+                = new DataTransferServiceResourceCreateUpdateProperties();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("instanceSize".equals(fieldName)) {
-                    deserializedMaterializedViewsBuilderServiceResourceCreateUpdateParameters
+                    deserializedDataTransferServiceResourceCreateUpdateProperties
                         .withInstanceSize(ServiceSize.fromString(reader.getString()));
                 } else if ("instanceCount".equals(fieldName)) {
-                    deserializedMaterializedViewsBuilderServiceResourceCreateUpdateParameters
+                    deserializedDataTransferServiceResourceCreateUpdateProperties
                         .withInstanceCount(reader.getNullable(JsonReader::getInt));
                 } else if ("serviceType".equals(fieldName)) {
-                    deserializedMaterializedViewsBuilderServiceResourceCreateUpdateParameters.serviceType
+                    deserializedDataTransferServiceResourceCreateUpdateProperties.serviceType
                         = ServiceType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedMaterializedViewsBuilderServiceResourceCreateUpdateParameters;
+            return deserializedDataTransferServiceResourceCreateUpdateProperties;
         });
     }
 }

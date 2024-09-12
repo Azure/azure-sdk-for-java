@@ -24,9 +24,9 @@ public final class CassandraTableCreateUpdateParameters extends ArmResourcePrope
     private CassandraTableCreateUpdateProperties innerProperties = new CassandraTableCreateUpdateProperties();
 
     /*
-     * Fully qualified resource Id for the resource.
+     * The type of the resource.
      */
-    private String id;
+    private String type;
 
     /*
      * The name of the resource.
@@ -34,9 +34,9 @@ public final class CassandraTableCreateUpdateParameters extends ArmResourcePrope
     private String name;
 
     /*
-     * The type of the resource.
+     * Fully qualified resource Id for the resource.
      */
-    private String type;
+    private String id;
 
     /**
      * Creates an instance of CassandraTableCreateUpdateParameters class.
@@ -54,13 +54,13 @@ public final class CassandraTableCreateUpdateParameters extends ArmResourcePrope
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
+     * Get the type property: The type of the resource.
      * 
-     * @return the id value.
+     * @return the type value.
      */
     @Override
-    public String id() {
-        return this.id;
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -74,13 +74,22 @@ public final class CassandraTableCreateUpdateParameters extends ArmResourcePrope
     }
 
     /**
-     * Get the type property: The type of the resource.
+     * Get the id property: Fully qualified resource Id for the resource.
      * 
-     * @return the type value.
+     * @return the id value.
      */
     @Override
-    public String type() {
-        return this.type;
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public CassandraTableCreateUpdateParameters withIdentity(ManagedServiceIdentity identity) {
+        super.withIdentity(identity);
+        return this;
     }
 
     /**
@@ -156,13 +165,20 @@ public final class CassandraTableCreateUpdateParameters extends ArmResourcePrope
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
                     "Missing required property innerProperties in model CassandraTableCreateUpdateParameters"));
         } else {
             innerProperties().validate();
+        }
+        if (location() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property location in model CassandraTableCreateUpdateParameters"));
+        }
+        if (identity() != null) {
+            identity().validate();
         }
     }
 
@@ -176,6 +192,7 @@ public final class CassandraTableCreateUpdateParameters extends ArmResourcePrope
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("location", location());
         jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identity", identity());
         jsonWriter.writeJsonField("properties", this.innerProperties);
         return jsonWriter.writeEndObject();
     }
@@ -208,6 +225,9 @@ public final class CassandraTableCreateUpdateParameters extends ArmResourcePrope
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedCassandraTableCreateUpdateParameters.withTags(tags);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedCassandraTableCreateUpdateParameters
+                        .withIdentity(ManagedServiceIdentity.fromJson(reader));
                 } else if ("properties".equals(fieldName)) {
                     deserializedCassandraTableCreateUpdateParameters.innerProperties
                         = CassandraTableCreateUpdateProperties.fromJson(reader);

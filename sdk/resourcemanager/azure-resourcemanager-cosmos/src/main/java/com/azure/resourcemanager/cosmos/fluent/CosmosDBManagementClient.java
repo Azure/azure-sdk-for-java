@@ -138,6 +138,13 @@ public interface CosmosDBManagementClient {
     PartitionKeyRangeIdRegionsClient getPartitionKeyRangeIdRegions();
 
     /**
+     * Gets the GraphResourcesClient object to access its operations.
+     * 
+     * @return the GraphResourcesClient object.
+     */
+    GraphResourcesClient getGraphResources();
+
+    /**
      * Gets the SqlResourcesClient object to access its operations.
      * 
      * @return the SqlResourcesClient object.
@@ -180,6 +187,13 @@ public interface CosmosDBManagementClient {
     LocationsClient getLocations();
 
     /**
+     * Gets the DataTransferJobsClient object to access its operations.
+     * 
+     * @return the DataTransferJobsClient object.
+     */
+    DataTransferJobsClient getDataTransferJobs();
+
+    /**
      * Gets the CassandraClustersClient object to access its operations.
      * 
      * @return the CassandraClustersClient object.
@@ -192,6 +206,13 @@ public interface CosmosDBManagementClient {
      * @return the CassandraDataCentersClient object.
      */
     CassandraDataCentersClient getCassandraDataCenters();
+
+    /**
+     * Gets the NetworkSecurityPerimeterConfigurationsClient object to access its operations.
+     * 
+     * @return the NetworkSecurityPerimeterConfigurationsClient object.
+     */
+    NetworkSecurityPerimeterConfigurationsClient getNetworkSecurityPerimeterConfigurations();
 
     /**
      * Gets the NotebookWorkspacesClient object to access its operations.
@@ -304,4 +325,39 @@ public interface CosmosDBManagementClient {
      * @return the ServicesClient object.
      */
     ServicesClient getServices();
+
+    /**
+     * Gets the ThroughputPoolsClient object to access its operations.
+     * 
+     * @return the ThroughputPoolsClient object.
+     */
+    ThroughputPoolsClient getThroughputPools();
+
+    /**
+     * Gets the ThroughputPoolOperationsClient object to access its operations.
+     * 
+     * @return the ThroughputPoolOperationsClient object.
+     */
+    ThroughputPoolOperationsClient getThroughputPoolOperations();
+
+    /**
+     * Gets the ThroughputPoolAccountsClient object to access its operations.
+     * 
+     * @return the ThroughputPoolAccountsClient object.
+     */
+    ThroughputPoolAccountsClient getThroughputPoolAccounts();
+
+    /**
+     * Gets the ThroughputPoolAccountOperationsClient object to access its operations.
+     * 
+     * @return the ThroughputPoolAccountOperationsClient object.
+     */
+    ThroughputPoolAccountOperationsClient getThroughputPoolAccountOperations();
+
+    /**
+     * Gets the ChaosFaultsClient object to access its operations.
+     * 
+     * @return the ChaosFaultsClient object.
+     */
+    ChaosFaultsClient getChaosFaults();
 }

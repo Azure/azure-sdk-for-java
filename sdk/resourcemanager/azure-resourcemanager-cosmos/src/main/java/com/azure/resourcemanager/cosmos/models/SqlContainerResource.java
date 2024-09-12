@@ -71,6 +71,12 @@ public class SqlContainerResource implements JsonSerializable<SqlContainerResour
     private CreateMode createMode;
 
     /*
+     * The configuration for defining Materialized Views. This must be specified only for creating a Materialized View
+     * container.
+     */
+    private MaterializedViewDefinition materializedViewDefinition;
+
+    /*
      * List of computed properties
      */
     private List<ComputedProperty> computedProperties;
@@ -288,6 +294,28 @@ public class SqlContainerResource implements JsonSerializable<SqlContainerResour
     }
 
     /**
+     * Get the materializedViewDefinition property: The configuration for defining Materialized Views. This must be
+     * specified only for creating a Materialized View container.
+     * 
+     * @return the materializedViewDefinition value.
+     */
+    public MaterializedViewDefinition materializedViewDefinition() {
+        return this.materializedViewDefinition;
+    }
+
+    /**
+     * Set the materializedViewDefinition property: The configuration for defining Materialized Views. This must be
+     * specified only for creating a Materialized View container.
+     * 
+     * @param materializedViewDefinition the materializedViewDefinition value to set.
+     * @return the SqlContainerResource object itself.
+     */
+    public SqlContainerResource withMaterializedViewDefinition(MaterializedViewDefinition materializedViewDefinition) {
+        this.materializedViewDefinition = materializedViewDefinition;
+        return this;
+    }
+
+    /**
      * Get the computedProperties property: List of computed properties.
      * 
      * @return the computedProperties value.
@@ -335,6 +363,9 @@ public class SqlContainerResource implements JsonSerializable<SqlContainerResour
         if (restoreParameters() != null) {
             restoreParameters().validate();
         }
+        if (materializedViewDefinition() != null) {
+            materializedViewDefinition().validate();
+        }
         if (computedProperties() != null) {
             computedProperties().forEach(e -> e.validate());
         }
@@ -358,6 +389,7 @@ public class SqlContainerResource implements JsonSerializable<SqlContainerResour
         jsonWriter.writeNumberField("analyticalStorageTtl", this.analyticalStorageTtl);
         jsonWriter.writeJsonField("restoreParameters", this.restoreParameters);
         jsonWriter.writeStringField("createMode", this.createMode == null ? null : this.createMode.toString());
+        jsonWriter.writeJsonField("materializedViewDefinition", this.materializedViewDefinition);
         jsonWriter.writeArrayField("computedProperties", this.computedProperties,
             (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
@@ -400,6 +432,9 @@ public class SqlContainerResource implements JsonSerializable<SqlContainerResour
                     deserializedSqlContainerResource.restoreParameters = ResourceRestoreParameters.fromJson(reader);
                 } else if ("createMode".equals(fieldName)) {
                     deserializedSqlContainerResource.createMode = CreateMode.fromString(reader.getString());
+                } else if ("materializedViewDefinition".equals(fieldName)) {
+                    deserializedSqlContainerResource.materializedViewDefinition
+                        = MaterializedViewDefinition.fromJson(reader);
                 } else if ("computedProperties".equals(fieldName)) {
                     List<ComputedProperty> computedProperties
                         = reader.readArray(reader1 -> ComputedProperty.fromJson(reader1));

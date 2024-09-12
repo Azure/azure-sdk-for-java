@@ -11,6 +11,7 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.cosmos.fluent.CassandraClustersClient;
 import com.azure.resourcemanager.cosmos.fluent.CassandraDataCentersClient;
 import com.azure.resourcemanager.cosmos.fluent.CassandraResourcesClient;
+import com.azure.resourcemanager.cosmos.fluent.ChaosFaultsClient;
 import com.azure.resourcemanager.cosmos.fluent.CollectionPartitionRegionsClient;
 import com.azure.resourcemanager.cosmos.fluent.CollectionPartitionsClient;
 import com.azure.resourcemanager.cosmos.fluent.CollectionRegionsClient;
@@ -19,9 +20,12 @@ import com.azure.resourcemanager.cosmos.fluent.CosmosDBManagementClient;
 import com.azure.resourcemanager.cosmos.fluent.DatabaseAccountRegionsClient;
 import com.azure.resourcemanager.cosmos.fluent.DatabaseAccountsClient;
 import com.azure.resourcemanager.cosmos.fluent.DatabasesClient;
+import com.azure.resourcemanager.cosmos.fluent.DataTransferJobsClient;
+import com.azure.resourcemanager.cosmos.fluent.GraphResourcesClient;
 import com.azure.resourcemanager.cosmos.fluent.GremlinResourcesClient;
 import com.azure.resourcemanager.cosmos.fluent.LocationsClient;
 import com.azure.resourcemanager.cosmos.fluent.MongoDBResourcesClient;
+import com.azure.resourcemanager.cosmos.fluent.NetworkSecurityPerimeterConfigurationsClient;
 import com.azure.resourcemanager.cosmos.fluent.NotebookWorkspacesClient;
 import com.azure.resourcemanager.cosmos.fluent.OperationsClient;
 import com.azure.resourcemanager.cosmos.fluent.PartitionKeyRangeIdRegionsClient;
@@ -46,6 +50,10 @@ import com.azure.resourcemanager.cosmos.fluent.RestorableTablesClient;
 import com.azure.resourcemanager.cosmos.fluent.ServicesClient;
 import com.azure.resourcemanager.cosmos.fluent.SqlResourcesClient;
 import com.azure.resourcemanager.cosmos.fluent.TableResourcesClient;
+import com.azure.resourcemanager.cosmos.fluent.ThroughputPoolAccountOperationsClient;
+import com.azure.resourcemanager.cosmos.fluent.ThroughputPoolAccountsClient;
+import com.azure.resourcemanager.cosmos.fluent.ThroughputPoolOperationsClient;
+import com.azure.resourcemanager.cosmos.fluent.ThroughputPoolsClient;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import java.time.Duration;
 
@@ -321,6 +329,20 @@ public final class CosmosDBManagementClientImpl extends AzureServiceClient imple
     }
 
     /**
+     * The GraphResourcesClient object to access its operations.
+     */
+    private final GraphResourcesClient graphResources;
+
+    /**
+     * Gets the GraphResourcesClient object to access its operations.
+     * 
+     * @return the GraphResourcesClient object.
+     */
+    public GraphResourcesClient getGraphResources() {
+        return this.graphResources;
+    }
+
+    /**
      * The SqlResourcesClient object to access its operations.
      */
     private final SqlResourcesClient sqlResources;
@@ -405,6 +427,20 @@ public final class CosmosDBManagementClientImpl extends AzureServiceClient imple
     }
 
     /**
+     * The DataTransferJobsClient object to access its operations.
+     */
+    private final DataTransferJobsClient dataTransferJobs;
+
+    /**
+     * Gets the DataTransferJobsClient object to access its operations.
+     * 
+     * @return the DataTransferJobsClient object.
+     */
+    public DataTransferJobsClient getDataTransferJobs() {
+        return this.dataTransferJobs;
+    }
+
+    /**
      * The CassandraClustersClient object to access its operations.
      */
     private final CassandraClustersClient cassandraClusters;
@@ -430,6 +466,20 @@ public final class CosmosDBManagementClientImpl extends AzureServiceClient imple
      */
     public CassandraDataCentersClient getCassandraDataCenters() {
         return this.cassandraDataCenters;
+    }
+
+    /**
+     * The NetworkSecurityPerimeterConfigurationsClient object to access its operations.
+     */
+    private final NetworkSecurityPerimeterConfigurationsClient networkSecurityPerimeterConfigurations;
+
+    /**
+     * Gets the NetworkSecurityPerimeterConfigurationsClient object to access its operations.
+     * 
+     * @return the NetworkSecurityPerimeterConfigurationsClient object.
+     */
+    public NetworkSecurityPerimeterConfigurationsClient getNetworkSecurityPerimeterConfigurations() {
+        return this.networkSecurityPerimeterConfigurations;
     }
 
     /**
@@ -657,6 +707,76 @@ public final class CosmosDBManagementClientImpl extends AzureServiceClient imple
     }
 
     /**
+     * The ThroughputPoolsClient object to access its operations.
+     */
+    private final ThroughputPoolsClient throughputPools;
+
+    /**
+     * Gets the ThroughputPoolsClient object to access its operations.
+     * 
+     * @return the ThroughputPoolsClient object.
+     */
+    public ThroughputPoolsClient getThroughputPools() {
+        return this.throughputPools;
+    }
+
+    /**
+     * The ThroughputPoolOperationsClient object to access its operations.
+     */
+    private final ThroughputPoolOperationsClient throughputPoolOperations;
+
+    /**
+     * Gets the ThroughputPoolOperationsClient object to access its operations.
+     * 
+     * @return the ThroughputPoolOperationsClient object.
+     */
+    public ThroughputPoolOperationsClient getThroughputPoolOperations() {
+        return this.throughputPoolOperations;
+    }
+
+    /**
+     * The ThroughputPoolAccountsClient object to access its operations.
+     */
+    private final ThroughputPoolAccountsClient throughputPoolAccounts;
+
+    /**
+     * Gets the ThroughputPoolAccountsClient object to access its operations.
+     * 
+     * @return the ThroughputPoolAccountsClient object.
+     */
+    public ThroughputPoolAccountsClient getThroughputPoolAccounts() {
+        return this.throughputPoolAccounts;
+    }
+
+    /**
+     * The ThroughputPoolAccountOperationsClient object to access its operations.
+     */
+    private final ThroughputPoolAccountOperationsClient throughputPoolAccountOperations;
+
+    /**
+     * Gets the ThroughputPoolAccountOperationsClient object to access its operations.
+     * 
+     * @return the ThroughputPoolAccountOperationsClient object.
+     */
+    public ThroughputPoolAccountOperationsClient getThroughputPoolAccountOperations() {
+        return this.throughputPoolAccountOperations;
+    }
+
+    /**
+     * The ChaosFaultsClient object to access its operations.
+     */
+    private final ChaosFaultsClient chaosFaults;
+
+    /**
+     * Gets the ChaosFaultsClient object to access its operations.
+     * 
+     * @return the ChaosFaultsClient object.
+     */
+    public ChaosFaultsClient getChaosFaults() {
+        return this.chaosFaults;
+    }
+
+    /**
      * Initializes an instance of CosmosDBManagementClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
@@ -674,7 +794,7 @@ public final class CosmosDBManagementClientImpl extends AzureServiceClient imple
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2024-05-15";
+        this.apiVersion = "2024-09-01-preview";
         this.databaseAccounts = new DatabaseAccountsClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.databases = new DatabasesClientImpl(this);
@@ -688,14 +808,17 @@ public final class CosmosDBManagementClientImpl extends AzureServiceClient imple
         this.collectionPartitions = new CollectionPartitionsClientImpl(this);
         this.partitionKeyRangeIds = new PartitionKeyRangeIdsClientImpl(this);
         this.partitionKeyRangeIdRegions = new PartitionKeyRangeIdRegionsClientImpl(this);
+        this.graphResources = new GraphResourcesClientImpl(this);
         this.sqlResources = new SqlResourcesClientImpl(this);
         this.mongoDBResources = new MongoDBResourcesClientImpl(this);
         this.tableResources = new TableResourcesClientImpl(this);
         this.cassandraResources = new CassandraResourcesClientImpl(this);
         this.gremlinResources = new GremlinResourcesClientImpl(this);
         this.locations = new LocationsClientImpl(this);
+        this.dataTransferJobs = new DataTransferJobsClientImpl(this);
         this.cassandraClusters = new CassandraClustersClientImpl(this);
         this.cassandraDataCenters = new CassandraDataCentersClientImpl(this);
+        this.networkSecurityPerimeterConfigurations = new NetworkSecurityPerimeterConfigurationsClientImpl(this);
         this.notebookWorkspaces = new NotebookWorkspacesClientImpl(this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
@@ -712,5 +835,10 @@ public final class CosmosDBManagementClientImpl extends AzureServiceClient imple
         this.restorableTables = new RestorableTablesClientImpl(this);
         this.restorableTableResources = new RestorableTableResourcesClientImpl(this);
         this.services = new ServicesClientImpl(this);
+        this.throughputPools = new ThroughputPoolsClientImpl(this);
+        this.throughputPoolOperations = new ThroughputPoolOperationsClientImpl(this);
+        this.throughputPoolAccounts = new ThroughputPoolAccountsClientImpl(this);
+        this.throughputPoolAccountOperations = new ThroughputPoolAccountOperationsClientImpl(this);
+        this.chaosFaults = new ChaosFaultsClientImpl(this);
     }
 }

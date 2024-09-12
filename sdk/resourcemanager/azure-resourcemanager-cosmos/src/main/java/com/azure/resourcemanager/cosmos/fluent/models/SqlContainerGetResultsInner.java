@@ -5,10 +5,12 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cosmos.models.ArmResourceProperties;
+import com.azure.resourcemanager.cosmos.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.cosmos.models.SqlContainerGetPropertiesOptions;
 import com.azure.resourcemanager.cosmos.models.SqlContainerGetPropertiesResource;
 import java.io.IOException;
@@ -25,9 +27,9 @@ public final class SqlContainerGetResultsInner extends ArmResourceProperties {
     private SqlContainerGetProperties innerProperties;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * The type of the resource.
      */
-    private String id;
+    private String type;
 
     /*
      * The name of the resource.
@@ -35,9 +37,9 @@ public final class SqlContainerGetResultsInner extends ArmResourceProperties {
     private String name;
 
     /*
-     * The type of the resource.
+     * Fully qualified resource Id for the resource.
      */
-    private String type;
+    private String id;
 
     /**
      * Creates an instance of SqlContainerGetResultsInner class.
@@ -55,13 +57,13 @@ public final class SqlContainerGetResultsInner extends ArmResourceProperties {
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
+     * Get the type property: The type of the resource.
      * 
-     * @return the id value.
+     * @return the type value.
      */
     @Override
-    public String id() {
-        return this.id;
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -75,13 +77,22 @@ public final class SqlContainerGetResultsInner extends ArmResourceProperties {
     }
 
     /**
-     * Get the type property: The type of the resource.
+     * Get the id property: Fully qualified resource Id for the resource.
      * 
-     * @return the type value.
+     * @return the id value.
      */
     @Override
-    public String type() {
-        return this.type;
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SqlContainerGetResultsInner withIdentity(ManagedServiceIdentity identity) {
+        super.withIdentity(identity);
+        return this;
     }
 
     /**
@@ -155,11 +166,20 @@ public final class SqlContainerGetResultsInner extends ArmResourceProperties {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+        if (location() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property location in model SqlContainerGetResultsInner"));
+        }
+        if (identity() != null) {
+            identity().validate();
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SqlContainerGetResultsInner.class);
 
     /**
      * {@inheritDoc}
@@ -169,6 +189,7 @@ public final class SqlContainerGetResultsInner extends ArmResourceProperties {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("location", location());
         jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identity", identity());
         jsonWriter.writeJsonField("properties", this.innerProperties);
         return jsonWriter.writeEndObject();
     }
@@ -200,6 +221,8 @@ public final class SqlContainerGetResultsInner extends ArmResourceProperties {
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedSqlContainerGetResultsInner.withTags(tags);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedSqlContainerGetResultsInner.withIdentity(ManagedServiceIdentity.fromJson(reader));
                 } else if ("properties".equals(fieldName)) {
                     deserializedSqlContainerGetResultsInner.innerProperties
                         = SqlContainerGetProperties.fromJson(reader);
