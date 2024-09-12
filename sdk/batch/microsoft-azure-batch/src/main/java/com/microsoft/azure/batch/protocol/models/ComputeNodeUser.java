@@ -38,11 +38,9 @@ public class ComputeNodeUser {
 
     /**
      * The password of the Account.
-     * The password is required for Windows Compute Nodes (those created with
-     * 'cloudServiceConfiguration', or created with
-     * 'virtualMachineConfiguration' using a Windows Image reference). For
-     * Linux Compute Nodes, the password can optionally be specified along with
-     * the sshPublicKey property.
+     * The password is required for Windows Compute Nodes. For Linux Compute
+     * Nodes, the password can optionally be specified along with the
+     * sshPublicKey property.
      */
     @JsonProperty(value = "password")
     private String password;
@@ -120,7 +118,7 @@ public class ComputeNodeUser {
     }
 
     /**
-     * Get the password is required for Windows Compute Nodes (those created with 'cloudServiceConfiguration', or created with 'virtualMachineConfiguration' using a Windows Image reference). For Linux Compute Nodes, the password can optionally be specified along with the sshPublicKey property.
+     * Get the password is required for Windows Compute Nodes. For Linux Compute Nodes, the password can optionally be specified along with the sshPublicKey property.
      *
      * @return the password value
      */
@@ -129,7 +127,7 @@ public class ComputeNodeUser {
     }
 
     /**
-     * Set the password is required for Windows Compute Nodes (those created with 'cloudServiceConfiguration', or created with 'virtualMachineConfiguration' using a Windows Image reference). For Linux Compute Nodes, the password can optionally be specified along with the sshPublicKey property.
+     * Set the password is required for Windows Compute Nodes. For Linux Compute Nodes, the password can optionally be specified along with the sshPublicKey property.
      *
      * @param password the password value to set
      * @return the ComputeNodeUser object itself.

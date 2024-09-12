@@ -12,7 +12,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-messaging-azure-storage-queue</artifactId>
-  <version>5.16.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure-storage-queue;current} -->
+  <version>5.17.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure-storage-queue;current} -->
 
   <name>Spring Messaging Azure Storage Queue</name>
   <description>Spring Messaging Azure Storage Queue</description>
@@ -40,19 +40,19 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-messaging-azure</artifactId>
-      <version>5.16.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure;current} -->
+      <version>5.17.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-messaging-azure</artifactId>
-      <version>5.16.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure;current} -->
+      <version>5.17.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure;current} -->
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-queue</artifactId>
-      <version>12.22.0</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
+      <version>12.22.1</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
     </dependency>
 
     <dependency>
@@ -66,13 +66,13 @@
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy</artifactId>
-      <version>1.14.18</version> <!-- {x-version-update;springboot3_net.bytebuddy:byte-buddy;external_dependency} -->
+      <version>1.14.19</version> <!-- {x-version-update;springboot3_net.bytebuddy:byte-buddy;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy-agent</artifactId>
-      <version>1.14.18</version> <!-- {x-version-update;springboot3_net.bytebuddy:byte-buddy-agent;external_dependency} -->
+      <version>1.14.19</version> <!-- {x-version-update;springboot3_net.bytebuddy:byte-buddy-agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -84,7 +84,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
-      <version>3.3.2</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-starter-test;external_dependency} -->
+      <version>3.3.3</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-starter-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -103,38 +103,6 @@
 
   <build>
     <plugins>
-      <plugin>
-        <groupId>com.github.spotbugs</groupId>
-        <artifactId>spotbugs-maven-plugin</artifactId>
-        <version>4.8.2.0</version> <!-- {x-version-update;springboot3_com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
-        <configuration>
-          <skip>true</skip>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>com.diffplug.spotless</groupId>
-        <artifactId>spotless-maven-plugin</artifactId>
-        <version>2.30.0</version> <!-- {x-version-update;springboot3_com.diffplug.spotless:spotless-maven-plugin;external_dependency} -->
-        <configuration>
-          <skip>true</skip>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.revapi</groupId>
-        <artifactId>revapi-maven-plugin</artifactId>
-        <version>0.14.6</version> <!-- {x-version-update;springboot3_org.revapi:revapi-maven-plugin;external_dependency} -->
-        <configuration>
-          <skip>true</skip>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>com.azure.tools</groupId>
-        <artifactId>codesnippet-maven-plugin</artifactId>
-        <version>1.0.0-beta.10</version> <!-- {x-version-update;com.azure.tools:codesnippet-maven-plugin;external_dependency} -->
-        <configuration>
-          <skip>true</skip>
-        </configuration>
-      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>

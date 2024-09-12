@@ -10,6 +10,11 @@
 
 #### Other Changes
 
+### 2.14.1 (2024-09-10)
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.63.3`.
+
 ### 2.14.0 (2024-07-26)
 #### Other Changes
 * Updated `azure-cosmos` to version `4.63.0`.

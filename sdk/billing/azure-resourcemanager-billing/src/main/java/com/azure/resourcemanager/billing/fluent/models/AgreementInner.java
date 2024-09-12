@@ -5,132 +5,178 @@
 package com.azure.resourcemanager.billing.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.ProxyResource;
-import com.azure.resourcemanager.billing.models.AcceptanceMode;
-import com.azure.resourcemanager.billing.models.BillingProfileInfo;
-import com.azure.resourcemanager.billing.models.Category;
-import com.azure.resourcemanager.billing.models.Participants;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.time.OffsetDateTime;
-import java.util.List;
+import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.billing.models.AgreementProperties;
+import com.azure.resourcemanager.billing.models.ProxyResourceWithTags;
+import java.io.IOException;
+import java.util.Map;
 
-/** An agreement. */
+/**
+ * An agreement.
+ */
 @Fluent
-public final class AgreementInner extends ProxyResource {
+public final class AgreementInner extends ProxyResourceWithTags {
     /*
-     * The properties of an agreement.
+     * An agreement.
      */
-    @JsonProperty(value = "properties")
-    private AgreementProperties innerProperties;
+    private AgreementProperties properties;
 
-    /** Creates an instance of AgreementInner class. */
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of AgreementInner class.
+     */
     public AgreementInner() {
     }
 
     /**
-     * Get the innerProperties property: The properties of an agreement.
-     *
-     * @return the innerProperties value.
+     * Get the properties property: An agreement.
+     * 
+     * @return the properties value.
      */
-    private AgreementProperties innerProperties() {
-        return this.innerProperties;
+    public AgreementProperties properties() {
+        return this.properties;
     }
 
     /**
-     * Get the agreementLink property: The URL to download the agreement.
-     *
-     * @return the agreementLink value.
-     */
-    public String agreementLink() {
-        return this.innerProperties() == null ? null : this.innerProperties().agreementLink();
-    }
-
-    /**
-     * Get the category property: The category of the agreement signed by a customer.
-     *
-     * @return the category value.
-     */
-    public Category category() {
-        return this.innerProperties() == null ? null : this.innerProperties().category();
-    }
-
-    /**
-     * Get the acceptanceMode property: The mode of acceptance for an agreement.
-     *
-     * @return the acceptanceMode value.
-     */
-    public AcceptanceMode acceptanceMode() {
-        return this.innerProperties() == null ? null : this.innerProperties().acceptanceMode();
-    }
-
-    /**
-     * Get the billingProfileInfo property: The list of billing profiles associated with agreement and present only for
-     * specific agreements.
-     *
-     * @return the billingProfileInfo value.
-     */
-    public BillingProfileInfo billingProfileInfo() {
-        return this.innerProperties() == null ? null : this.innerProperties().billingProfileInfo();
-    }
-
-    /**
-     * Get the effectiveDate property: The date from which the agreement is effective.
-     *
-     * @return the effectiveDate value.
-     */
-    public OffsetDateTime effectiveDate() {
-        return this.innerProperties() == null ? null : this.innerProperties().effectiveDate();
-    }
-
-    /**
-     * Get the expirationDate property: The date when the agreement expires.
-     *
-     * @return the expirationDate value.
-     */
-    public OffsetDateTime expirationDate() {
-        return this.innerProperties() == null ? null : this.innerProperties().expirationDate();
-    }
-
-    /**
-     * Get the participants property: The list of participants that participates in acceptance of an agreement.
-     *
-     * @return the participants value.
-     */
-    public List<Participants> participants() {
-        return this.innerProperties() == null ? null : this.innerProperties().participants();
-    }
-
-    /**
-     * Set the participants property: The list of participants that participates in acceptance of an agreement.
-     *
-     * @param participants the participants value to set.
+     * Set the properties property: An agreement.
+     * 
+     * @param properties the properties value to set.
      * @return the AgreementInner object itself.
      */
-    public AgreementInner withParticipants(List<Participants> participants) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AgreementProperties();
-        }
-        this.innerProperties().withParticipants(participants);
+    public AgreementInner withProperties(AgreementProperties properties) {
+        this.properties = properties;
         return this;
     }
 
     /**
-     * Get the status property: The current status of the agreement.
-     *
-     * @return the status value.
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
      */
-    public String status() {
-        return this.innerProperties() == null ? null : this.innerProperties().status();
+    @Override
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AgreementInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
+        if (properties() != null) {
+            properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AgreementInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AgreementInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AgreementInner.
+     */
+    public static AgreementInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AgreementInner deserializedAgreementInner = new AgreementInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedAgreementInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedAgreementInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedAgreementInner.type = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAgreementInner.withTags(tags);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedAgreementInner.systemData = SystemData.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAgreementInner.properties = AgreementProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAgreementInner;
+        });
     }
 }

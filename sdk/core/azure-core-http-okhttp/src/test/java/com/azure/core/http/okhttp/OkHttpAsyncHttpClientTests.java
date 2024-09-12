@@ -46,8 +46,7 @@ import static com.azure.core.http.okhttp.OkHttpClientLocalTestServer.RETURN_HEAD
 import static com.azure.core.http.okhttp.OkHttpClientLocalTestServer.SHORT_BODY;
 import static com.azure.core.http.okhttp.OkHttpClientLocalTestServer.TIMEOUT;
 import static com.azure.core.http.okhttp.TestUtils.createQuietDispatcher;
-import static com.azure.core.test.utils.TestUtils.assertArraysEqual;
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static com.azure.core.validation.http.HttpValidatonUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertLinesMatch;
@@ -171,7 +170,7 @@ public class OkHttpAsyncHttpClientTests {
             .flatMap(response -> Mono.using(() -> response, HttpResponse::getBodyAsByteArray, HttpResponse::close));
 
         StepVerifier.create(responses).thenConsumeWhile(response -> {
-            com.azure.core.test.utils.TestUtils.assertArraysEqual(LONG_BODY, response);
+            assertArraysEqual(LONG_BODY, response);
             return true;
         }).expectComplete().verify(Duration.ofSeconds(60));
     }
@@ -188,7 +187,7 @@ public class OkHttpAsyncHttpClientTests {
                 requests.add(() -> {
                     try (HttpResponse response = doRequestSync(client, "/long")) {
                         byte[] body = response.getBodyAsBinaryData().toBytes();
-                        com.azure.core.test.utils.TestUtils.assertArraysEqual(LONG_BODY, body);
+                        assertArraysEqual(LONG_BODY, body);
                         return null;
                     }
                 });
@@ -293,7 +292,7 @@ public class OkHttpAsyncHttpClientTests {
     private static void checkBodyReceived(byte[] expectedBody, String path) {
         HttpClient client = new OkHttpAsyncHttpClientBuilder().build();
         StepVerifier.create(doRequest(client, path).flatMap(HttpResponse::getBodyAsByteArray))
-            .assertNext(bytes -> assertArrayEquals(expectedBody, bytes))
+            .assertNext(bytes -> assertArraysEqual(expectedBody, bytes))
             .verifyComplete();
     }
 

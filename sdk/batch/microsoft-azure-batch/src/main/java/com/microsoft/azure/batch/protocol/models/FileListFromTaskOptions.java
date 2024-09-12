@@ -20,7 +20,7 @@ public class FileListFromTaskOptions {
     /**
      * An OData $filter clause. For more information on constructing this
      * filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-task-files.
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-task-files.
      */
     @JsonProperty(value = "")
     private String filter;
@@ -63,7 +63,7 @@ public class FileListFromTaskOptions {
     private DateTimeRfc1123 ocpDate;
 
     /**
-     * Get an OData $filter clause. For more information on constructing this filter, see https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-task-files.
+     * Get an OData $filter clause. For more information on constructing this filter, see https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-task-files.
      *
      * @return the filter value
      */
@@ -72,7 +72,7 @@ public class FileListFromTaskOptions {
     }
 
     /**
-     * Set an OData $filter clause. For more information on constructing this filter, see https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-task-files.
+     * Set an OData $filter clause. For more information on constructing this filter, see https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-task-files.
      *
      * @param filter the filter value to set
      * @return the FileListFromTaskOptions object itself.

@@ -7,25 +7,27 @@ package com.azure.resourcemanager.machinelearning.generated;
 import com.azure.resourcemanager.machinelearning.models.ConnectionCategory;
 import com.azure.resourcemanager.machinelearning.models.NoneAuthTypeWorkspaceConnectionProperties;
 
-/** Samples for WorkspaceConnections Create. */
+/**
+ * Samples for WorkspaceConnections Create.
+ */
 public final class WorkspaceConnectionsCreateSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/WorkspaceConnection/create.json
+     * x-ms-original-file:
+     * specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/
+     * examples/WorkspaceConnection/create.json
      */
     /**
      * Sample code: CreateWorkspaceConnection.
-     *
+     * 
      * @param manager Entry point to MachineLearningManager.
      */
-    public static void createWorkspaceConnection(
-        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager
-            .workspaceConnections()
+    public static void
+        createWorkspaceConnection(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
+        manager.workspaceConnections()
             .define("connection-1")
             .withExistingWorkspace("resourceGroup-1", "workspace-1")
             .withProperties(
-                new NoneAuthTypeWorkspaceConnectionProperties()
-                    .withCategory(ConnectionCategory.CONTAINER_REGISTRY)
+                new NoneAuthTypeWorkspaceConnectionProperties().withCategory(ConnectionCategory.CONTAINER_REGISTRY)
                     .withTarget("www.facebook.com"))
             .create();
     }

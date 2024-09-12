@@ -6,28 +6,45 @@ package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Account key datastore credentials configuration. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "credentialsType")
-@JsonTypeName("AccountKey")
+/**
+ * Account key datastore credentials configuration.
+ */
 @Fluent
 public final class AccountKeyDatastoreCredentials extends DatastoreCredentials {
     /*
+     * [Required] Credential type used to authentication with storage.
+     */
+    private CredentialsType credentialsType = CredentialsType.ACCOUNT_KEY;
+
+    /*
      * [Required] Storage account secrets.
      */
-    @JsonProperty(value = "secrets", required = true)
     private AccountKeyDatastoreSecrets secrets;
 
-    /** Creates an instance of AccountKeyDatastoreCredentials class. */
+    /**
+     * Creates an instance of AccountKeyDatastoreCredentials class.
+     */
     public AccountKeyDatastoreCredentials() {
     }
 
     /**
+     * Get the credentialsType property: [Required] Credential type used to authentication with storage.
+     * 
+     * @return the credentialsType value.
+     */
+    @Override
+    public CredentialsType credentialsType() {
+        return this.credentialsType;
+    }
+
+    /**
      * Get the secrets property: [Required] Storage account secrets.
-     *
+     * 
      * @return the secrets value.
      */
     public AccountKeyDatastoreSecrets secrets() {
@@ -36,7 +53,7 @@ public final class AccountKeyDatastoreCredentials extends DatastoreCredentials {
 
     /**
      * Set the secrets property: [Required] Storage account secrets.
-     *
+     * 
      * @param secrets the secrets value to set.
      * @return the AccountKeyDatastoreCredentials object itself.
      */
@@ -47,21 +64,63 @@ public final class AccountKeyDatastoreCredentials extends DatastoreCredentials {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (secrets() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property secrets in model AccountKeyDatastoreCredentials"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property secrets in model AccountKeyDatastoreCredentials"));
         } else {
             secrets().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AccountKeyDatastoreCredentials.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("secrets", this.secrets);
+        jsonWriter.writeStringField("credentialsType",
+            this.credentialsType == null ? null : this.credentialsType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AccountKeyDatastoreCredentials from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AccountKeyDatastoreCredentials if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AccountKeyDatastoreCredentials.
+     */
+    public static AccountKeyDatastoreCredentials fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AccountKeyDatastoreCredentials deserializedAccountKeyDatastoreCredentials
+                = new AccountKeyDatastoreCredentials();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("secrets".equals(fieldName)) {
+                    deserializedAccountKeyDatastoreCredentials.secrets = AccountKeyDatastoreSecrets.fromJson(reader);
+                } else if ("credentialsType".equals(fieldName)) {
+                    deserializedAccountKeyDatastoreCredentials.credentialsType
+                        = CredentialsType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAccountKeyDatastoreCredentials;
+        });
+    }
 }

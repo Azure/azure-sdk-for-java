@@ -5,72 +5,52 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** Base definition for endpoint deployment. */
+/**
+ * Base definition for endpoint deployment.
+ */
 @Fluent
-public class EndpointDeploymentPropertiesBase {
-    /*
-     * Code configuration for the endpoint deployment.
-     */
-    @JsonProperty(value = "codeConfiguration")
-    private CodeConfiguration codeConfiguration;
-
+public class EndpointDeploymentPropertiesBase implements JsonSerializable<EndpointDeploymentPropertiesBase> {
     /*
      * Description of the endpoint deployment.
      */
-    @JsonProperty(value = "description")
     private String description;
+
+    /*
+     * Property dictionary. Properties can be added, but not removed or altered.
+     */
+    private Map<String, String> properties;
+
+    /*
+     * Code configuration for the endpoint deployment.
+     */
+    private CodeConfiguration codeConfiguration;
 
     /*
      * ARM resource ID or AssetId of the environment specification for the endpoint deployment.
      */
-    @JsonProperty(value = "environmentId")
     private String environmentId;
 
     /*
      * Environment variables configuration for the deployment.
      */
-    @JsonProperty(value = "environmentVariables")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> environmentVariables;
 
-    /*
-     * Property dictionary. Properties can be added, but not removed or altered.
+    /**
+     * Creates an instance of EndpointDeploymentPropertiesBase class.
      */
-    @JsonProperty(value = "properties")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
-    private Map<String, String> properties;
-
-    /** Creates an instance of EndpointDeploymentPropertiesBase class. */
     public EndpointDeploymentPropertiesBase() {
     }
 
     /**
-     * Get the codeConfiguration property: Code configuration for the endpoint deployment.
-     *
-     * @return the codeConfiguration value.
-     */
-    public CodeConfiguration codeConfiguration() {
-        return this.codeConfiguration;
-    }
-
-    /**
-     * Set the codeConfiguration property: Code configuration for the endpoint deployment.
-     *
-     * @param codeConfiguration the codeConfiguration value to set.
-     * @return the EndpointDeploymentPropertiesBase object itself.
-     */
-    public EndpointDeploymentPropertiesBase withCodeConfiguration(CodeConfiguration codeConfiguration) {
-        this.codeConfiguration = codeConfiguration;
-        return this;
-    }
-
-    /**
      * Get the description property: Description of the endpoint deployment.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -79,7 +59,7 @@ public class EndpointDeploymentPropertiesBase {
 
     /**
      * Set the description property: Description of the endpoint deployment.
-     *
+     * 
      * @param description the description value to set.
      * @return the EndpointDeploymentPropertiesBase object itself.
      */
@@ -89,9 +69,49 @@ public class EndpointDeploymentPropertiesBase {
     }
 
     /**
+     * Get the properties property: Property dictionary. Properties can be added, but not removed or altered.
+     * 
+     * @return the properties value.
+     */
+    public Map<String, String> properties() {
+        return this.properties;
+    }
+
+    /**
+     * Set the properties property: Property dictionary. Properties can be added, but not removed or altered.
+     * 
+     * @param properties the properties value to set.
+     * @return the EndpointDeploymentPropertiesBase object itself.
+     */
+    public EndpointDeploymentPropertiesBase withProperties(Map<String, String> properties) {
+        this.properties = properties;
+        return this;
+    }
+
+    /**
+     * Get the codeConfiguration property: Code configuration for the endpoint deployment.
+     * 
+     * @return the codeConfiguration value.
+     */
+    public CodeConfiguration codeConfiguration() {
+        return this.codeConfiguration;
+    }
+
+    /**
+     * Set the codeConfiguration property: Code configuration for the endpoint deployment.
+     * 
+     * @param codeConfiguration the codeConfiguration value to set.
+     * @return the EndpointDeploymentPropertiesBase object itself.
+     */
+    public EndpointDeploymentPropertiesBase withCodeConfiguration(CodeConfiguration codeConfiguration) {
+        this.codeConfiguration = codeConfiguration;
+        return this;
+    }
+
+    /**
      * Get the environmentId property: ARM resource ID or AssetId of the environment specification for the endpoint
      * deployment.
-     *
+     * 
      * @return the environmentId value.
      */
     public String environmentId() {
@@ -101,7 +121,7 @@ public class EndpointDeploymentPropertiesBase {
     /**
      * Set the environmentId property: ARM resource ID or AssetId of the environment specification for the endpoint
      * deployment.
-     *
+     * 
      * @param environmentId the environmentId value to set.
      * @return the EndpointDeploymentPropertiesBase object itself.
      */
@@ -112,7 +132,7 @@ public class EndpointDeploymentPropertiesBase {
 
     /**
      * Get the environmentVariables property: Environment variables configuration for the deployment.
-     *
+     * 
      * @return the environmentVariables value.
      */
     public Map<String, String> environmentVariables() {
@@ -121,7 +141,7 @@ public class EndpointDeploymentPropertiesBase {
 
     /**
      * Set the environmentVariables property: Environment variables configuration for the deployment.
-     *
+     * 
      * @param environmentVariables the environmentVariables value to set.
      * @return the EndpointDeploymentPropertiesBase object itself.
      */
@@ -131,33 +151,65 @@ public class EndpointDeploymentPropertiesBase {
     }
 
     /**
-     * Get the properties property: Property dictionary. Properties can be added, but not removed or altered.
-     *
-     * @return the properties value.
-     */
-    public Map<String, String> properties() {
-        return this.properties;
-    }
-
-    /**
-     * Set the properties property: Property dictionary. Properties can be added, but not removed or altered.
-     *
-     * @param properties the properties value to set.
-     * @return the EndpointDeploymentPropertiesBase object itself.
-     */
-    public EndpointDeploymentPropertiesBase withProperties(Map<String, String> properties) {
-        this.properties = properties;
-        return this;
-    }
-
-    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (codeConfiguration() != null) {
             codeConfiguration().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeMapField("properties", this.properties, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("codeConfiguration", this.codeConfiguration);
+        jsonWriter.writeStringField("environmentId", this.environmentId);
+        jsonWriter.writeMapField("environmentVariables", this.environmentVariables,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EndpointDeploymentPropertiesBase from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EndpointDeploymentPropertiesBase if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EndpointDeploymentPropertiesBase.
+     */
+    public static EndpointDeploymentPropertiesBase fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EndpointDeploymentPropertiesBase deserializedEndpointDeploymentPropertiesBase
+                = new EndpointDeploymentPropertiesBase();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedEndpointDeploymentPropertiesBase.description = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    Map<String, String> properties = reader.readMap(reader1 -> reader1.getString());
+                    deserializedEndpointDeploymentPropertiesBase.properties = properties;
+                } else if ("codeConfiguration".equals(fieldName)) {
+                    deserializedEndpointDeploymentPropertiesBase.codeConfiguration = CodeConfiguration.fromJson(reader);
+                } else if ("environmentId".equals(fieldName)) {
+                    deserializedEndpointDeploymentPropertiesBase.environmentId = reader.getString();
+                } else if ("environmentVariables".equals(fieldName)) {
+                    Map<String, String> environmentVariables = reader.readMap(reader1 -> reader1.getString());
+                    deserializedEndpointDeploymentPropertiesBase.environmentVariables = environmentVariables;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEndpointDeploymentPropertiesBase;
+        });
     }
 }

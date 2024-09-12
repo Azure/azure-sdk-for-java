@@ -43,7 +43,7 @@ public abstract class TSFBuilder<F extends JsonFactory, B extends TSFBuilder<F, 
      */
 
     /**
-     * Set of {@link com.azure.json.implementation.jackson.core.JsonFactory.Feature}s enabled,
+     * Set of {@link JsonFactory.Feature}s enabled,
      * as bitmask.
      */
     protected int _factoryFeatures;
@@ -90,37 +90,7 @@ public abstract class TSFBuilder<F extends JsonFactory, B extends TSFBuilder<F, 
         _outputDecorator = null;
     }
 
-    protected TSFBuilder(JsonFactory base) {
-        this(base._factoryFeatures, base._parserFeatures, base._generatorFeatures);
-    }
-
-    protected TSFBuilder(int factoryFeatures, int parserFeatures, int generatorFeatures) {
-        _factoryFeatures = factoryFeatures;
-        _streamReadFeatures = parserFeatures;
-        _streamWriteFeatures = generatorFeatures;
-    }
-
     // // // Accessors
-
-    public int factoryFeaturesMask() {
-        return _factoryFeatures;
-    }
-
-    public int streamReadFeatures() {
-        return _streamReadFeatures;
-    }
-
-    public int streamWriteFeatures() {
-        return _streamWriteFeatures;
-    }
-
-    public InputDecorator inputDecorator() {
-        return _inputDecorator;
-    }
-
-    public OutputDecorator outputDecorator() {
-        return _outputDecorator;
-    }
 
     // // // Factory features
 
@@ -233,8 +203,8 @@ public abstract class TSFBuilder<F extends JsonFactory, B extends TSFBuilder<F, 
     }
 
     private B _failNonJSON(Object feature) {
-        throw new IllegalArgumentException("Feature " + feature.getClass().getName() + "#" + feature.toString()
-            + " not supported for non-JSON backend");
+        throw new IllegalArgumentException(
+            "Feature " + feature.getClass().getName() + "#" + feature + " not supported for non-JSON backend");
     }
 
     // // // JSON-specific, writes

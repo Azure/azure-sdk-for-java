@@ -5,78 +5,76 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The SynapseSparkProperties model. */
+/**
+ * The SynapseSparkProperties model.
+ */
 @Fluent
-public final class SynapseSparkProperties {
+public final class SynapseSparkProperties implements JsonSerializable<SynapseSparkProperties> {
     /*
      * Auto scale properties.
      */
-    @JsonProperty(value = "autoScaleProperties")
     private AutoScaleProperties autoScaleProperties;
 
     /*
      * Auto pause properties.
      */
-    @JsonProperty(value = "autoPauseProperties")
     private AutoPauseProperties autoPauseProperties;
 
     /*
      * Spark version.
      */
-    @JsonProperty(value = "sparkVersion")
     private String sparkVersion;
 
     /*
      * The number of compute nodes currently assigned to the compute.
      */
-    @JsonProperty(value = "nodeCount")
     private Integer nodeCount;
 
     /*
      * Node size.
      */
-    @JsonProperty(value = "nodeSize")
     private String nodeSize;
 
     /*
      * Node size family.
      */
-    @JsonProperty(value = "nodeSizeFamily")
     private String nodeSizeFamily;
 
     /*
      * Azure subscription identifier.
      */
-    @JsonProperty(value = "subscriptionId")
     private String subscriptionId;
 
     /*
      * Name of the resource group in which workspace is located.
      */
-    @JsonProperty(value = "resourceGroup")
     private String resourceGroup;
 
     /*
      * Name of Azure Machine Learning workspace.
      */
-    @JsonProperty(value = "workspaceName")
     private String workspaceName;
 
     /*
      * Pool name.
      */
-    @JsonProperty(value = "poolName")
     private String poolName;
 
-    /** Creates an instance of SynapseSparkProperties class. */
+    /**
+     * Creates an instance of SynapseSparkProperties class.
+     */
     public SynapseSparkProperties() {
     }
 
     /**
      * Get the autoScaleProperties property: Auto scale properties.
-     *
+     * 
      * @return the autoScaleProperties value.
      */
     public AutoScaleProperties autoScaleProperties() {
@@ -85,7 +83,7 @@ public final class SynapseSparkProperties {
 
     /**
      * Set the autoScaleProperties property: Auto scale properties.
-     *
+     * 
      * @param autoScaleProperties the autoScaleProperties value to set.
      * @return the SynapseSparkProperties object itself.
      */
@@ -96,7 +94,7 @@ public final class SynapseSparkProperties {
 
     /**
      * Get the autoPauseProperties property: Auto pause properties.
-     *
+     * 
      * @return the autoPauseProperties value.
      */
     public AutoPauseProperties autoPauseProperties() {
@@ -105,7 +103,7 @@ public final class SynapseSparkProperties {
 
     /**
      * Set the autoPauseProperties property: Auto pause properties.
-     *
+     * 
      * @param autoPauseProperties the autoPauseProperties value to set.
      * @return the SynapseSparkProperties object itself.
      */
@@ -116,7 +114,7 @@ public final class SynapseSparkProperties {
 
     /**
      * Get the sparkVersion property: Spark version.
-     *
+     * 
      * @return the sparkVersion value.
      */
     public String sparkVersion() {
@@ -125,7 +123,7 @@ public final class SynapseSparkProperties {
 
     /**
      * Set the sparkVersion property: Spark version.
-     *
+     * 
      * @param sparkVersion the sparkVersion value to set.
      * @return the SynapseSparkProperties object itself.
      */
@@ -136,7 +134,7 @@ public final class SynapseSparkProperties {
 
     /**
      * Get the nodeCount property: The number of compute nodes currently assigned to the compute.
-     *
+     * 
      * @return the nodeCount value.
      */
     public Integer nodeCount() {
@@ -145,7 +143,7 @@ public final class SynapseSparkProperties {
 
     /**
      * Set the nodeCount property: The number of compute nodes currently assigned to the compute.
-     *
+     * 
      * @param nodeCount the nodeCount value to set.
      * @return the SynapseSparkProperties object itself.
      */
@@ -156,7 +154,7 @@ public final class SynapseSparkProperties {
 
     /**
      * Get the nodeSize property: Node size.
-     *
+     * 
      * @return the nodeSize value.
      */
     public String nodeSize() {
@@ -165,7 +163,7 @@ public final class SynapseSparkProperties {
 
     /**
      * Set the nodeSize property: Node size.
-     *
+     * 
      * @param nodeSize the nodeSize value to set.
      * @return the SynapseSparkProperties object itself.
      */
@@ -176,7 +174,7 @@ public final class SynapseSparkProperties {
 
     /**
      * Get the nodeSizeFamily property: Node size family.
-     *
+     * 
      * @return the nodeSizeFamily value.
      */
     public String nodeSizeFamily() {
@@ -185,7 +183,7 @@ public final class SynapseSparkProperties {
 
     /**
      * Set the nodeSizeFamily property: Node size family.
-     *
+     * 
      * @param nodeSizeFamily the nodeSizeFamily value to set.
      * @return the SynapseSparkProperties object itself.
      */
@@ -196,7 +194,7 @@ public final class SynapseSparkProperties {
 
     /**
      * Get the subscriptionId property: Azure subscription identifier.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String subscriptionId() {
@@ -205,7 +203,7 @@ public final class SynapseSparkProperties {
 
     /**
      * Set the subscriptionId property: Azure subscription identifier.
-     *
+     * 
      * @param subscriptionId the subscriptionId value to set.
      * @return the SynapseSparkProperties object itself.
      */
@@ -216,7 +214,7 @@ public final class SynapseSparkProperties {
 
     /**
      * Get the resourceGroup property: Name of the resource group in which workspace is located.
-     *
+     * 
      * @return the resourceGroup value.
      */
     public String resourceGroup() {
@@ -225,7 +223,7 @@ public final class SynapseSparkProperties {
 
     /**
      * Set the resourceGroup property: Name of the resource group in which workspace is located.
-     *
+     * 
      * @param resourceGroup the resourceGroup value to set.
      * @return the SynapseSparkProperties object itself.
      */
@@ -236,7 +234,7 @@ public final class SynapseSparkProperties {
 
     /**
      * Get the workspaceName property: Name of Azure Machine Learning workspace.
-     *
+     * 
      * @return the workspaceName value.
      */
     public String workspaceName() {
@@ -245,7 +243,7 @@ public final class SynapseSparkProperties {
 
     /**
      * Set the workspaceName property: Name of Azure Machine Learning workspace.
-     *
+     * 
      * @param workspaceName the workspaceName value to set.
      * @return the SynapseSparkProperties object itself.
      */
@@ -256,7 +254,7 @@ public final class SynapseSparkProperties {
 
     /**
      * Get the poolName property: Pool name.
-     *
+     * 
      * @return the poolName value.
      */
     public String poolName() {
@@ -265,7 +263,7 @@ public final class SynapseSparkProperties {
 
     /**
      * Set the poolName property: Pool name.
-     *
+     * 
      * @param poolName the poolName value to set.
      * @return the SynapseSparkProperties object itself.
      */
@@ -276,7 +274,7 @@ public final class SynapseSparkProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -286,5 +284,68 @@ public final class SynapseSparkProperties {
         if (autoPauseProperties() != null) {
             autoPauseProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("autoScaleProperties", this.autoScaleProperties);
+        jsonWriter.writeJsonField("autoPauseProperties", this.autoPauseProperties);
+        jsonWriter.writeStringField("sparkVersion", this.sparkVersion);
+        jsonWriter.writeNumberField("nodeCount", this.nodeCount);
+        jsonWriter.writeStringField("nodeSize", this.nodeSize);
+        jsonWriter.writeStringField("nodeSizeFamily", this.nodeSizeFamily);
+        jsonWriter.writeStringField("subscriptionId", this.subscriptionId);
+        jsonWriter.writeStringField("resourceGroup", this.resourceGroup);
+        jsonWriter.writeStringField("workspaceName", this.workspaceName);
+        jsonWriter.writeStringField("poolName", this.poolName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SynapseSparkProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SynapseSparkProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SynapseSparkProperties.
+     */
+    public static SynapseSparkProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SynapseSparkProperties deserializedSynapseSparkProperties = new SynapseSparkProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("autoScaleProperties".equals(fieldName)) {
+                    deserializedSynapseSparkProperties.autoScaleProperties = AutoScaleProperties.fromJson(reader);
+                } else if ("autoPauseProperties".equals(fieldName)) {
+                    deserializedSynapseSparkProperties.autoPauseProperties = AutoPauseProperties.fromJson(reader);
+                } else if ("sparkVersion".equals(fieldName)) {
+                    deserializedSynapseSparkProperties.sparkVersion = reader.getString();
+                } else if ("nodeCount".equals(fieldName)) {
+                    deserializedSynapseSparkProperties.nodeCount = reader.getNullable(JsonReader::getInt);
+                } else if ("nodeSize".equals(fieldName)) {
+                    deserializedSynapseSparkProperties.nodeSize = reader.getString();
+                } else if ("nodeSizeFamily".equals(fieldName)) {
+                    deserializedSynapseSparkProperties.nodeSizeFamily = reader.getString();
+                } else if ("subscriptionId".equals(fieldName)) {
+                    deserializedSynapseSparkProperties.subscriptionId = reader.getString();
+                } else if ("resourceGroup".equals(fieldName)) {
+                    deserializedSynapseSparkProperties.resourceGroup = reader.getString();
+                } else if ("workspaceName".equals(fieldName)) {
+                    deserializedSynapseSparkProperties.workspaceName = reader.getString();
+                } else if ("poolName".equals(fieldName)) {
+                    deserializedSynapseSparkProperties.poolName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSynapseSparkProperties;
+        });
     }
 }

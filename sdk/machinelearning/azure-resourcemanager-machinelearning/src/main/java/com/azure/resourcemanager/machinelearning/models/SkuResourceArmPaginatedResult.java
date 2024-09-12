@@ -5,54 +5,38 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.machinelearning.fluent.models.SkuResourceInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** A paginated list of SkuResource entities. */
+/**
+ * A paginated list of SkuResource entities.
+ */
 @Fluent
-public final class SkuResourceArmPaginatedResult {
-    /*
-     * The link to the next page of SkuResource objects. If null, there are no additional pages.
-     */
-    @JsonProperty(value = "nextLink")
-    private String nextLink;
-
+public final class SkuResourceArmPaginatedResult implements JsonSerializable<SkuResourceArmPaginatedResult> {
     /*
      * An array of objects of type SkuResource.
      */
-    @JsonProperty(value = "value")
     private List<SkuResourceInner> value;
 
-    /** Creates an instance of SkuResourceArmPaginatedResult class. */
+    /*
+     * The link to the next page of SkuResource objects. If null, there are no additional pages.
+     */
+    private String nextLink;
+
+    /**
+     * Creates an instance of SkuResourceArmPaginatedResult class.
+     */
     public SkuResourceArmPaginatedResult() {
     }
 
     /**
-     * Get the nextLink property: The link to the next page of SkuResource objects. If null, there are no additional
-     * pages.
-     *
-     * @return the nextLink value.
-     */
-    public String nextLink() {
-        return this.nextLink;
-    }
-
-    /**
-     * Set the nextLink property: The link to the next page of SkuResource objects. If null, there are no additional
-     * pages.
-     *
-     * @param nextLink the nextLink value to set.
-     * @return the SkuResourceArmPaginatedResult object itself.
-     */
-    public SkuResourceArmPaginatedResult withNextLink(String nextLink) {
-        this.nextLink = nextLink;
-        return this;
-    }
-
-    /**
      * Get the value property: An array of objects of type SkuResource.
-     *
+     * 
      * @return the value value.
      */
     public List<SkuResourceInner> value() {
@@ -61,7 +45,7 @@ public final class SkuResourceArmPaginatedResult {
 
     /**
      * Set the value property: An array of objects of type SkuResource.
-     *
+     * 
      * @param value the value value to set.
      * @return the SkuResourceArmPaginatedResult object itself.
      */
@@ -71,13 +55,76 @@ public final class SkuResourceArmPaginatedResult {
     }
 
     /**
+     * Get the nextLink property: The link to the next page of SkuResource objects. If null, there are no additional
+     * pages.
+     * 
+     * @return the nextLink value.
+     */
+    public String nextLink() {
+        return this.nextLink;
+    }
+
+    /**
+     * Set the nextLink property: The link to the next page of SkuResource objects. If null, there are no additional
+     * pages.
+     * 
+     * @param nextLink the nextLink value to set.
+     * @return the SkuResourceArmPaginatedResult object itself.
+     */
+    public SkuResourceArmPaginatedResult withNextLink(String nextLink) {
+        this.nextLink = nextLink;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SkuResourceArmPaginatedResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SkuResourceArmPaginatedResult if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SkuResourceArmPaginatedResult.
+     */
+    public static SkuResourceArmPaginatedResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SkuResourceArmPaginatedResult deserializedSkuResourceArmPaginatedResult
+                = new SkuResourceArmPaginatedResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<SkuResourceInner> value = reader.readArray(reader1 -> SkuResourceInner.fromJson(reader1));
+                    deserializedSkuResourceArmPaginatedResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedSkuResourceArmPaginatedResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSkuResourceArmPaginatedResult;
+        });
     }
 }

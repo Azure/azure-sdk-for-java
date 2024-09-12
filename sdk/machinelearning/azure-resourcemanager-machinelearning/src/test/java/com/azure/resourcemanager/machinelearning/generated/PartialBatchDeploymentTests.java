@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class PartialBatchDeploymentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PartialBatchDeployment model =
-            BinaryData.fromString("{\"description\":\"wwa\"}").toObject(PartialBatchDeployment.class);
-        Assertions.assertEquals("wwa", model.description());
+        PartialBatchDeployment model
+            = BinaryData.fromString("{\"description\":\"pzvuqdflvo\"}").toObject(PartialBatchDeployment.class);
+        Assertions.assertEquals("pzvuqdflvo", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PartialBatchDeployment model = new PartialBatchDeployment().withDescription("wwa");
+        PartialBatchDeployment model = new PartialBatchDeployment().withDescription("pzvuqdflvo");
         model = BinaryData.fromObject(model).toObject(PartialBatchDeployment.class);
-        Assertions.assertEquals("wwa", model.description());
+        Assertions.assertEquals("pzvuqdflvo", model.description());
     }
 }

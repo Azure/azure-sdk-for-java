@@ -6,32 +6,33 @@ package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Profile of schedule based Autoscale.
  */
 @Fluent
-public final class ScheduleBasedConfig {
+public final class ScheduleBasedConfig implements JsonSerializable<ScheduleBasedConfig> {
     /*
      * User has to specify the timezone on which the schedule has to be set for schedule based autoscale configuration.
      */
-    @JsonProperty(value = "timeZone", required = true)
     private String timeZone;
 
     /*
      * Setting default node count of current schedule configuration. Default node count specifies the number of nodes
      * which are default when an specified scaling operation is executed (scale up/scale down)
      */
-    @JsonProperty(value = "defaultCount", required = true)
     private int defaultCount;
 
     /*
-     * This specifies the schedules where scheduled based Autoscale to be enabled, the user has a choice to set
-     * multiple rules within the schedule across days and times (start/end).
+     * This specifies the schedules where scheduled based Autoscale to be enabled, the user has a choice to set multiple
+     * rules within the schedule across days and times (start/end).
      */
-    @JsonProperty(value = "schedules", required = true)
     private List<Schedule> schedules;
 
     /**
@@ -115,16 +116,60 @@ public final class ScheduleBasedConfig {
      */
     public void validate() {
         if (timeZone() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property timeZone in model ScheduleBasedConfig"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property timeZone in model ScheduleBasedConfig"));
         }
         if (schedules() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property schedules in model ScheduleBasedConfig"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property schedules in model ScheduleBasedConfig"));
         } else {
             schedules().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ScheduleBasedConfig.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("timeZone", this.timeZone);
+        jsonWriter.writeIntField("defaultCount", this.defaultCount);
+        jsonWriter.writeArrayField("schedules", this.schedules, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScheduleBasedConfig from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScheduleBasedConfig if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ScheduleBasedConfig.
+     */
+    public static ScheduleBasedConfig fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScheduleBasedConfig deserializedScheduleBasedConfig = new ScheduleBasedConfig();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("timeZone".equals(fieldName)) {
+                    deserializedScheduleBasedConfig.timeZone = reader.getString();
+                } else if ("defaultCount".equals(fieldName)) {
+                    deserializedScheduleBasedConfig.defaultCount = reader.getInt();
+                } else if ("schedules".equals(fieldName)) {
+                    List<Schedule> schedules = reader.readArray(reader1 -> Schedule.fromJson(reader1));
+                    deserializedScheduleBasedConfig.schedules = schedules;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScheduleBasedConfig;
+        });
+    }
 }

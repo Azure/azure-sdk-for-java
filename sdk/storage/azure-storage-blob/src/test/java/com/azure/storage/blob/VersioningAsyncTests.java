@@ -26,7 +26,6 @@ import com.azure.storage.common.sas.AccountSasPermission;
 import com.azure.storage.common.sas.AccountSasResourceType;
 import com.azure.storage.common.sas.AccountSasService;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
-import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -82,7 +81,7 @@ public class VersioningAsyncTests extends BlobTestBase {
             .assertNext(r -> {
                 assertNotNull(r.getT1().getVersionId());
                 assertNotNull(r.getT2().getVersionId());
-                assertFalse(StringUtils.equals(r.getT1().getVersionId(), r.getT2().getVersionId()));
+                assertNotEquals(r.getT1().getVersionId(), r.getT2().getVersionId());
             })
             .verifyComplete();
     }
@@ -96,7 +95,7 @@ public class VersioningAsyncTests extends BlobTestBase {
             .assertNext(r -> {
                 assertNotNull(r.getT1().getVersionId());
                 assertNotNull(r.getT2().getVersionId());
-                assertFalse(StringUtils.equals(r.getT1().getVersionId(), r.getT2().getVersionId()));
+                assertNotEquals(r.getT1().getVersionId(), r.getT2().getVersionId());
             })
             .verifyComplete();
     }
@@ -110,7 +109,7 @@ public class VersioningAsyncTests extends BlobTestBase {
             .assertNext(r -> {
                 assertNotNull(r.getT1().getVersionId());
                 assertNotNull(r.getT2().getVersionId());
-                assertFalse(StringUtils.equals(r.getT1().getVersionId(), r.getT2().getVersionId()));
+                assertNotEquals(r.getT1().getVersionId(), r.getT2().getVersionId());
             })
             .verifyComplete();
     }

@@ -164,10 +164,7 @@
   <!-- Suppress non-null warning in the case that we change the code and it is possible for
   KeyVaultCredentials.getAuthenticationCredentials to return null. -->
   <Match>
-    <Or>
-      <Class name="com.microsoft.azure.keyvault.authentication.KeyVaultCredentials"/>
-      <Class name="com.azure.storage.blob.FileTransferExample"/>
-    </Or>
+    <Class name="com.microsoft.azure.keyvault.authentication.KeyVaultCredentials"/>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
   </Match>
 
@@ -411,19 +408,6 @@
     <Package name="~com\.microsoft\.azure\.storage\.blob\.model(.+)"/>
   </Match>
 
-  <!-- Exclude the confusing name bugs as it is designed to name the same as autorest. -->
-  <Match>
-    <Or>
-      <Class name="com.azure.storage.blob.HttpGetterInfo"/>
-      <Class name="com.azure.storage.blob.BlobProperties"/>
-      <Class name="com.azure.storage.blob.BlobContainerProperties"/>
-      <Class name="com.azure.storage.file.share.implementation.models.DirectoryCreateHeaders"/>
-      <Class name="com.azure.storage.blob.implementation.models.BlobDownloadHeaders"/>
-      <Class name="com.azure.storage.blob.models.BlobQueryHeaders"/>
-    </Or>
-    <Bug pattern="NM_CONFUSING"/>
-  </Match>
-
   <!-- The public field already exists in the public API surface area -->
   <Match>
     <Class name="~com\.microsoft\.azure\.servicebus\.(TransactionContext|management\.ManagementClientConstants)"/>
@@ -482,24 +466,6 @@
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>
 
-  <!-- Incorrect flagging, if the response is null a StorageException would have been thrown -->
-  <Match>
-    <Or>
-      <Class name="com.azure.storage.blob.specialized.BlobInputStream"/>
-      <Class name="com.azure.storage.file.share.StorageFileInputStream"/>
-      <Class name="com.azure.storage.blob.specialized.BlobOutputStream$AppendBlobOutputStream"/>
-      <Class name="com.azure.storage.queue.QueueServiceClient"/>
-    </Or>
-    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
-  </Match>
-
-  <!-- Incorrect flagging, all the optional values can be null -->
-  <Match>
-    <Class name="com.azure.storage.blob.BlobClient"/>
-    <Method name="downloadToFile"/>
-    <Bug pattern="NP_NULL_PARAM_DEREF_ALL_TARGETS_DANGEROUS"/>
-  </Match>
-
   <!-- Jackson property setter method is private -->
   <Match>
     <Or>
@@ -541,8 +507,6 @@
     <Or>
       <Class name="~.*JavaDoc(CodeSnippets|CodeSamples|Samples)"/>
       <Class name="~.*ReadmeSamples"/>
-      <Class name="com.azure.storage.blob.batch.ReadmeCodeSamples"/>
-      <Class name="com.azure.storage.file.datalake.GetSetAccessControlExample"/>
     </Or>
     <Bug pattern="DLS_DEAD_LOCAL_STORE,
                   URF_UNREAD_FIELD,
@@ -575,12 +539,6 @@
     <Bug pattern="NM_CONFUSING"/>
   </Match>
 
-  <!-- This is a false positive, it is possible for usingUserDelegation to be false. -->
-  <Match>
-    <Class name="com.azure.storage.blob.specialized.BlobServiceSasSignatureValues"/>
-    <Bug pattern="UC_USELESS_CONDITION"/>
-  </Match>
-
   <!-- Retry thus does not throw.
     SharedTokenCacheCredential needs to catch any catch exception that gets thrown.-->
   <Match>
@@ -594,48 +552,6 @@
   <Match>
     <Class name="com.azure.identity.implementation.msalextensions.cachepersister.windows.WindowsDPAPICacheProtector"/>
     <Bug pattern="RV_RETURN_VALUE_IGNORED_BAD_PRACTICE"/>
-  </Match>
-
-  <!-- The field is read by parent class StorageOutputStream methods. -->
-  <Match>
-    <Class name="com.azure.storage.file.share.StorageFileOutputStream"/>
-    <Bug pattern="URF_UNREAD_FIELD"/>
-  </Match>
-
-  <!-- Initial implementation of Storage Blob Batch is using an inline class -->
-  <Match>
-    <Class name="com.azure.storage.blob.batch.BlobBatchAsyncClient"/>
-    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
-  </Match>
-
-  <!-- Implementation name confusing with public API name and non-public API -->
-  <Match>
-    <Or>
-      <Class name="com.azure.storage.blob.implementation.models.AppendBlobAppendBlockFromUrlHeaders"/>
-      <Class name="com.azure.storage.file.share.implementation.models.FileGetPropertiesHeaders"/>
-      <Class name="com.azure.storage.file.datalake.implementation.models.PathAppendDataHeaders"/>
-    </Or>
-    <Bug pattern="NM_CONFUSING"/>
-  </Match>
-
-  <!-- Returning null is correct in these cases as it represents the not-applicable case -->
-  <Match>
-    <Or>
-      <And>
-        <Class name="com.azure.storage.blob.nio.AzureBlobFileAttributes"/>
-        <Method name="isServerEncrypted"/>
-      </And>
-      <And>
-        <Class name="com.azure.storage.blob.nio.AzureBlobFileAttributes"/>
-        <Method name="isAccessTierInferred"/>
-      </And>
-    </Or>
-    <Bug pattern="NP_BOOLEAN_RETURN_NULL"/>
-  </Match>
-
-  <Match>
-    <Class name="com.azure.storage.blob.implementation.models.BlobPropertiesInternalDownload"/>
-    <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE,SIC_INNER_SHOULD_BE_STATIC_ANON,UMAC_UNCALLABLE_METHOD_OF_ANONYMOUS_CLASS,NP_BOOLEAN_RETURN_NULL"/>
   </Match>
 
   <!-- Disable some spotbugs rules on perf-tests -->
@@ -1889,37 +1805,6 @@
       <Class name="~com.azure.cosmos.test.implementation.ImplementationBridgeHelpers(\$.*)?"/>
     </Or>
     <Bug pattern="DM_EXIT"/>
-  </Match>
-
-  <!-- Internal Avro Parser does read the blockCount field. Seems to be a false positive.  -->
-  <Match>
-    <Or>
-      <Class name="com.azure.storage.internal.avro.implementation.schema.complex.AvroArraySchema"/>
-      <Class name="com.azure.storage.internal.avro.implementation.schema.complex.AvroMapSchema"/>
-      <Class name="com.azure.storage.internal.avro.implementation.schema.file.AvroBlockSchema"/>
-    </Or>
-    <Bug pattern="DLS_DEAD_LOCAL_STORE"/>
-  </Match>
-
-  <!-- Internal Avro Parser does check the types before casting. Seems to be a false positive.  -->
-  <Match>
-    <Class name="com.azure.storage.internal.avro.implementation.schema.AvroSchema"/>
-    <Method name="getSchema"/>
-    <Bug pattern="BC_UNCONFIRMED_CAST"/>
-  </Match>
-
-  <!-- FluxInputStream definitely throws an IOException since this.lastError is an IOException. -->
-  <Match>
-    <Class name="com.azure.storage.common.implementation.FluxInputStream"/>
-    <Method name="read"/>
-    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
-  </Match>
-
-  <!-- This dead store is due to a deficiency in the Customization class. We need to reference the original return type but we have no use for it so we just comment it out -->
-  <Match>
-    <Class name="com.azure.storage.blob.models.Block"/>
-    <Method name="getSize"/>
-    <Bug pattern="DLS_DEAD_LOCAL_STORE"/>
   </Match>
 
   <!-- Exclude REC_CATCH_EXCEPTION and false positive error for management samples. All samples in management catch Exception instead of throw it. -->

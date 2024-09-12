@@ -5,37 +5,33 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The TriggerBase model. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "triggerType",
-    defaultImpl = TriggerBase.class)
-@JsonTypeName("TriggerBase")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "Recurrence", value = RecurrenceTrigger.class),
-    @JsonSubTypes.Type(name = "Cron", value = CronTrigger.class)
-})
+/**
+ * The TriggerBase model.
+ */
 @Fluent
-public class TriggerBase {
+public class TriggerBase implements JsonSerializable<TriggerBase> {
+    /*
+     * [Required]
+     */
+    private TriggerType triggerType = TriggerType.fromString("TriggerBase");
+
     /*
      * Specifies end time of schedule in ISO 8601, but without a UTC offset. Refer
      * https://en.wikipedia.org/wiki/ISO_8601.
      * Recommented format would be "2022-06-01T00:00:01"
      * If not present, the schedule will run indefinitely
      */
-    @JsonProperty(value = "endTime")
     private String endTime;
 
     /*
      * Specifies start time of schedule in ISO 8601 format, but without a UTC offset.
      */
-    @JsonProperty(value = "startTime")
     private String startTime;
 
     /*
@@ -43,18 +39,29 @@ public class TriggerBase {
      * TimeZone should follow Windows time zone format. Refer:
      * https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/default-time-zones?view=windows-11
      */
-    @JsonProperty(value = "timeZone")
     private String timeZone;
 
-    /** Creates an instance of TriggerBase class. */
+    /**
+     * Creates an instance of TriggerBase class.
+     */
     public TriggerBase() {
     }
 
     /**
+     * Get the triggerType property: [Required].
+     * 
+     * @return the triggerType value.
+     */
+    public TriggerType triggerType() {
+        return this.triggerType;
+    }
+
+    /**
      * Get the endTime property: Specifies end time of schedule in ISO 8601, but without a UTC offset. Refer
-     * https://en.wikipedia.org/wiki/ISO_8601. Recommented format would be "2022-06-01T00:00:01" If not present, the
-     * schedule will run indefinitely.
-     *
+     * https://en.wikipedia.org/wiki/ISO_8601.
+     * Recommented format would be "2022-06-01T00:00:01"
+     * If not present, the schedule will run indefinitely.
+     * 
      * @return the endTime value.
      */
     public String endTime() {
@@ -63,9 +70,10 @@ public class TriggerBase {
 
     /**
      * Set the endTime property: Specifies end time of schedule in ISO 8601, but without a UTC offset. Refer
-     * https://en.wikipedia.org/wiki/ISO_8601. Recommented format would be "2022-06-01T00:00:01" If not present, the
-     * schedule will run indefinitely.
-     *
+     * https://en.wikipedia.org/wiki/ISO_8601.
+     * Recommented format would be "2022-06-01T00:00:01"
+     * If not present, the schedule will run indefinitely.
+     * 
      * @param endTime the endTime value to set.
      * @return the TriggerBase object itself.
      */
@@ -76,7 +84,7 @@ public class TriggerBase {
 
     /**
      * Get the startTime property: Specifies start time of schedule in ISO 8601 format, but without a UTC offset.
-     *
+     * 
      * @return the startTime value.
      */
     public String startTime() {
@@ -85,7 +93,7 @@ public class TriggerBase {
 
     /**
      * Set the startTime property: Specifies start time of schedule in ISO 8601 format, but without a UTC offset.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the TriggerBase object itself.
      */
@@ -95,10 +103,10 @@ public class TriggerBase {
     }
 
     /**
-     * Get the timeZone property: Specifies time zone in which the schedule runs. TimeZone should follow Windows time
-     * zone format. Refer:
+     * Get the timeZone property: Specifies time zone in which the schedule runs.
+     * TimeZone should follow Windows time zone format. Refer:
      * https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/default-time-zones?view=windows-11.
-     *
+     * 
      * @return the timeZone value.
      */
     public String timeZone() {
@@ -106,10 +114,10 @@ public class TriggerBase {
     }
 
     /**
-     * Set the timeZone property: Specifies time zone in which the schedule runs. TimeZone should follow Windows time
-     * zone format. Refer:
+     * Set the timeZone property: Specifies time zone in which the schedule runs.
+     * TimeZone should follow Windows time zone format. Refer:
      * https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/default-time-zones?view=windows-11.
-     *
+     * 
      * @param timeZone the timeZone value to set.
      * @return the TriggerBase object itself.
      */
@@ -120,9 +128,81 @@ public class TriggerBase {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("triggerType", this.triggerType == null ? null : this.triggerType.toString());
+        jsonWriter.writeStringField("endTime", this.endTime);
+        jsonWriter.writeStringField("startTime", this.startTime);
+        jsonWriter.writeStringField("timeZone", this.timeZone);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TriggerBase from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TriggerBase if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TriggerBase.
+     */
+    public static TriggerBase fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("triggerType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("Recurrence".equals(discriminatorValue)) {
+                    return RecurrenceTrigger.fromJson(readerToUse.reset());
+                } else if ("Cron".equals(discriminatorValue)) {
+                    return CronTrigger.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static TriggerBase fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TriggerBase deserializedTriggerBase = new TriggerBase();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("triggerType".equals(fieldName)) {
+                    deserializedTriggerBase.triggerType = TriggerType.fromString(reader.getString());
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedTriggerBase.endTime = reader.getString();
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedTriggerBase.startTime = reader.getString();
+                } else if ("timeZone".equals(fieldName)) {
+                    deserializedTriggerBase.timeZone = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTriggerBase;
+        });
     }
 }

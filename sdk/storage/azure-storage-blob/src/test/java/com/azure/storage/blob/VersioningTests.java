@@ -26,7 +26,6 @@ import com.azure.storage.common.sas.AccountSasPermission;
 import com.azure.storage.common.sas.AccountSasResourceType;
 import com.azure.storage.common.sas.AccountSasService;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
-import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -73,7 +72,7 @@ public class VersioningTests extends BlobTestBase {
 
         assertNotNull(blobItemV1.getVersionId());
         assertNotNull(blobItemV2.getVersionId());
-        assertFalse(StringUtils.equals(blobItemV1.getVersionId(), blobItemV2.getVersionId()));
+        assertNotEquals(blobItemV1.getVersionId(), blobItemV2.getVersionId());
     }
 
     @Test
@@ -83,7 +82,7 @@ public class VersioningTests extends BlobTestBase {
 
         assertNotNull(blobItemV1.getVersionId());
         assertNotNull(blobItemV2.getVersionId());
-        assertFalse(StringUtils.equals(blobItemV1.getVersionId(), blobItemV2.getVersionId()));
+        assertNotEquals(blobItemV1.getVersionId(), blobItemV2.getVersionId());
     }
 
     @Test
@@ -93,7 +92,7 @@ public class VersioningTests extends BlobTestBase {
 
         assertNotNull(blobItemV1.getVersionId());
         assertNotNull(blobItemV2.getVersionId());
-        assertFalse(StringUtils.equals(blobItemV1.getVersionId(), blobItemV2.getVersionId()));
+        assertNotEquals(blobItemV1.getVersionId(), blobItemV2.getVersionId());
     }
 
     @SuppressWarnings("deprecation")

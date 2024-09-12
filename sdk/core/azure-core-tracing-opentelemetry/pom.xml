@@ -67,7 +67,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.52.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.52.0</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
     <dependency>
       <groupId>com.google.code.findbugs</groupId>
@@ -98,7 +98,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.16.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;current} -->
+      <version>1.15.4</version> <!-- {x-version-update;com.azure:azure-core-http-netty;current} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -118,6 +118,12 @@
       <artifactId>opentelemetry-sdk-testing</artifactId>
       <scope>test</scope>
       <version>1.41.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk-testing;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>io.projectreactor</groupId>
+      <artifactId>reactor-test</artifactId>
+      <version>3.4.38</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.openjdk.jmh</groupId>

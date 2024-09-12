@@ -5,49 +5,41 @@
 package com.azure.resourcemanager.qumulo.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The updatable properties of the FileSystemResource. */
+/**
+ * The updatable properties of the FileSystemResource.
+ */
 @Fluent
-public final class FileSystemResourceUpdateProperties {
+public final class FileSystemResourceUpdateProperties implements JsonSerializable<FileSystemResourceUpdateProperties> {
     /*
      * Marketplace details
      */
-    @JsonProperty(value = "marketplaceDetails")
     private MarketplaceDetails marketplaceDetails;
 
     /*
      * User Details
      */
-    @JsonProperty(value = "userDetails")
     private UserDetails userDetails;
 
     /*
      * Delegated subnet id for Vnet injection
      */
-    @JsonProperty(value = "delegatedSubnetId")
     private String delegatedSubnetId;
 
-    /*
-     * File system Id of the resource
+    /**
+     * Creates an instance of FileSystemResourceUpdateProperties class.
      */
-    @JsonProperty(value = "clusterLoginUrl")
-    private String clusterLoginUrl;
-
-    /*
-     * Private IPs of the resource
-     */
-    @JsonProperty(value = "privateIPs")
-    private List<String> privateIPs;
-
-    /** Creates an instance of FileSystemResourceUpdateProperties class. */
     public FileSystemResourceUpdateProperties() {
     }
 
     /**
      * Get the marketplaceDetails property: Marketplace details.
-     *
+     * 
      * @return the marketplaceDetails value.
      */
     public MarketplaceDetails marketplaceDetails() {
@@ -56,7 +48,7 @@ public final class FileSystemResourceUpdateProperties {
 
     /**
      * Set the marketplaceDetails property: Marketplace details.
-     *
+     * 
      * @param marketplaceDetails the marketplaceDetails value to set.
      * @return the FileSystemResourceUpdateProperties object itself.
      */
@@ -67,7 +59,7 @@ public final class FileSystemResourceUpdateProperties {
 
     /**
      * Get the userDetails property: User Details.
-     *
+     * 
      * @return the userDetails value.
      */
     public UserDetails userDetails() {
@@ -76,7 +68,7 @@ public final class FileSystemResourceUpdateProperties {
 
     /**
      * Set the userDetails property: User Details.
-     *
+     * 
      * @param userDetails the userDetails value to set.
      * @return the FileSystemResourceUpdateProperties object itself.
      */
@@ -87,7 +79,7 @@ public final class FileSystemResourceUpdateProperties {
 
     /**
      * Get the delegatedSubnetId property: Delegated subnet id for Vnet injection.
-     *
+     * 
      * @return the delegatedSubnetId value.
      */
     public String delegatedSubnetId() {
@@ -96,7 +88,7 @@ public final class FileSystemResourceUpdateProperties {
 
     /**
      * Set the delegatedSubnetId property: Delegated subnet id for Vnet injection.
-     *
+     * 
      * @param delegatedSubnetId the delegatedSubnetId value to set.
      * @return the FileSystemResourceUpdateProperties object itself.
      */
@@ -106,48 +98,8 @@ public final class FileSystemResourceUpdateProperties {
     }
 
     /**
-     * Get the clusterLoginUrl property: File system Id of the resource.
-     *
-     * @return the clusterLoginUrl value.
-     */
-    public String clusterLoginUrl() {
-        return this.clusterLoginUrl;
-    }
-
-    /**
-     * Set the clusterLoginUrl property: File system Id of the resource.
-     *
-     * @param clusterLoginUrl the clusterLoginUrl value to set.
-     * @return the FileSystemResourceUpdateProperties object itself.
-     */
-    public FileSystemResourceUpdateProperties withClusterLoginUrl(String clusterLoginUrl) {
-        this.clusterLoginUrl = clusterLoginUrl;
-        return this;
-    }
-
-    /**
-     * Get the privateIPs property: Private IPs of the resource.
-     *
-     * @return the privateIPs value.
-     */
-    public List<String> privateIPs() {
-        return this.privateIPs;
-    }
-
-    /**
-     * Set the privateIPs property: Private IPs of the resource.
-     *
-     * @param privateIPs the privateIPs value to set.
-     * @return the FileSystemResourceUpdateProperties object itself.
-     */
-    public FileSystemResourceUpdateProperties withPrivateIPs(List<String> privateIPs) {
-        this.privateIPs = privateIPs;
-        return this;
-    }
-
-    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -157,5 +109,49 @@ public final class FileSystemResourceUpdateProperties {
         if (userDetails() != null) {
             userDetails().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("marketplaceDetails", this.marketplaceDetails);
+        jsonWriter.writeJsonField("userDetails", this.userDetails);
+        jsonWriter.writeStringField("delegatedSubnetId", this.delegatedSubnetId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FileSystemResourceUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FileSystemResourceUpdateProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FileSystemResourceUpdateProperties.
+     */
+    public static FileSystemResourceUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FileSystemResourceUpdateProperties deserializedFileSystemResourceUpdateProperties
+                = new FileSystemResourceUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("marketplaceDetails".equals(fieldName)) {
+                    deserializedFileSystemResourceUpdateProperties.marketplaceDetails
+                        = MarketplaceDetails.fromJson(reader);
+                } else if ("userDetails".equals(fieldName)) {
+                    deserializedFileSystemResourceUpdateProperties.userDetails = UserDetails.fromJson(reader);
+                } else if ("delegatedSubnetId".equals(fieldName)) {
+                    deserializedFileSystemResourceUpdateProperties.delegatedSubnetId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFileSystemResourceUpdateProperties;
+        });
     }
 }

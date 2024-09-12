@@ -10,7 +10,7 @@ package com.azure.resourcemanager.hdinsight.containers.generated;
 public final class ClustersGetInstanceViewSamples {
     /*
      * x-ms-original-file:
-     * specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2023-11-01-preview/examples/
+     * specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2024-05-01-preview/examples/
      * GetClusterInstanceView.json
      */
     /**
@@ -20,7 +20,7 @@ public final class ClustersGetInstanceViewSamples {
      */
     public static void hDInsightClusterGetInstanceView(
         com.azure.resourcemanager.hdinsight.containers.HDInsightContainersManager manager) {
-        manager.clusters().getInstanceViewWithResponse("rg1", "clusterPool1", "cluster1",
-            com.azure.core.util.Context.NONE);
+        manager.clusters()
+            .getInstanceViewWithResponse("rg1", "clusterPool1", "cluster1", com.azure.core.util.Context.NONE);
     }
 }

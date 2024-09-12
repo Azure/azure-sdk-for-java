@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.core.http.jdk.httpclient;
 
-import com.azure.core.test.http.LocalTestServer;
+import com.azure.core.validation.http.LocalTestServer;
 import org.eclipse.jetty.util.Callback;
 
 import javax.servlet.ServletException;
