@@ -57,7 +57,7 @@ public class AzureSpringMonitorAutoConfig {
      * @param connectionString connection string system property
      * @param httpPipeline an instance of HttpPipeline
      */
-    public AzureSpringMonitorAutoConfig(@Value("${applicationinsights.connection.string:}") String connectionString, ObjectProvider<HttpPipeline> httpPipeline) {
+    AzureSpringMonitorAutoConfig(@Value("${applicationinsights.connection.string:}") String connectionString, ObjectProvider<HttpPipeline> httpPipeline) {
         this.connectionString = connectionString;
         this.httpPipeline = httpPipeline;
         if (!isNativeRuntimeExecution()) {
@@ -125,7 +125,7 @@ public class AzureSpringMonitorAutoConfig {
      * @return OpenTelemetryVersionCheckRunner
      */
     @Bean
-    public OpenTelemetryVersionCheckRunner openTelemetryVersionCheckRunner() {
+    OpenTelemetryVersionCheckRunner openTelemetryVersionCheckRunner() {
         return new OpenTelemetryVersionCheckRunner();
     }
 }
