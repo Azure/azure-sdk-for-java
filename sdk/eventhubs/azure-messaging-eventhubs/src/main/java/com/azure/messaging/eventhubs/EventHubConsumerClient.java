@@ -127,7 +127,7 @@ public class EventHubConsumerClient implements Closeable {
     private final Duration timeout;
     private final AtomicInteger idGenerator = new AtomicInteger();
     private final EventHubsTracer tracer;
-    private final SynchronousReceiver syncReceiver;
+    private final SynchronousPartitionReceiver syncReceiver;
 
     EventHubConsumerClient(EventHubConsumerAsyncClient consumer, Duration tryTimeout) {
         Objects.requireNonNull(tryTimeout, "'tryTimeout' cannot be null.");
@@ -135,7 +135,7 @@ public class EventHubConsumerClient implements Closeable {
         this.consumer = Objects.requireNonNull(consumer, "'consumer' cannot be null.");
         this.timeout = tryTimeout;
         this.tracer = consumer.getInstrumentation().getTracer();
-        this.syncReceiver = new SynchronousReceiver(LOGGER, consumer);
+        this.syncReceiver = new SynchronousPartitionReceiver(consumer); // used in V2 mode.
     }
 
     /**
@@ -337,6 +337,7 @@ public class EventHubConsumerClient implements Closeable {
      */
     @Override
     public void close() {
+        syncReceiver.dispose();
         consumer.close();
     }
 
