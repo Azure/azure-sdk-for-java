@@ -58,7 +58,7 @@ public final class PrivateEndpointsClientImpl implements InnerSupportsGet<Privat
 
     /**
      * Initializes an instance of PrivateEndpointsClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     PrivateEndpointsClientImpl(NetworkManagementClientImpl client) {
@@ -139,7 +139,7 @@ public final class PrivateEndpointsClientImpl implements InnerSupportsGet<Privat
 
     /**
      * Deletes the specified private endpoint.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -166,7 +166,7 @@ public final class PrivateEndpointsClientImpl implements InnerSupportsGet<Privat
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, privateEndpointName,
@@ -176,7 +176,7 @@ public final class PrivateEndpointsClientImpl implements InnerSupportsGet<Privat
 
     /**
      * Deletes the specified private endpoint.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param context The context to associate with this operation.
@@ -204,7 +204,7 @@ public final class PrivateEndpointsClientImpl implements InnerSupportsGet<Privat
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, privateEndpointName, apiVersion,
@@ -213,7 +213,7 @@ public final class PrivateEndpointsClientImpl implements InnerSupportsGet<Privat
 
     /**
      * Deletes the specified private endpoint.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -230,7 +230,7 @@ public final class PrivateEndpointsClientImpl implements InnerSupportsGet<Privat
 
     /**
      * Deletes the specified private endpoint.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param context The context to associate with this operation.
@@ -251,7 +251,7 @@ public final class PrivateEndpointsClientImpl implements InnerSupportsGet<Privat
 
     /**
      * Deletes the specified private endpoint.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -266,7 +266,7 @@ public final class PrivateEndpointsClientImpl implements InnerSupportsGet<Privat
 
     /**
      * Deletes the specified private endpoint.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param context The context to associate with this operation.
@@ -283,7 +283,7 @@ public final class PrivateEndpointsClientImpl implements InnerSupportsGet<Privat
 
     /**
      * Deletes the specified private endpoint.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -299,7 +299,7 @@ public final class PrivateEndpointsClientImpl implements InnerSupportsGet<Privat
 
     /**
      * Deletes the specified private endpoint.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param context The context to associate with this operation.
@@ -316,7 +316,7 @@ public final class PrivateEndpointsClientImpl implements InnerSupportsGet<Privat
 
     /**
      * Deletes the specified private endpoint.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -330,7 +330,7 @@ public final class PrivateEndpointsClientImpl implements InnerSupportsGet<Privat
 
     /**
      * Deletes the specified private endpoint.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param context The context to associate with this operation.
@@ -345,7 +345,7 @@ public final class PrivateEndpointsClientImpl implements InnerSupportsGet<Privat
 
     /**
      * Gets the specified private endpoint by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param expand Expands referenced resources.
@@ -374,7 +374,7 @@ public final class PrivateEndpointsClientImpl implements InnerSupportsGet<Privat
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -384,7 +384,7 @@ public final class PrivateEndpointsClientImpl implements InnerSupportsGet<Privat
 
     /**
      * Gets the specified private endpoint by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param expand Expands referenced resources.
@@ -414,7 +414,7 @@ public final class PrivateEndpointsClientImpl implements InnerSupportsGet<Privat
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, privateEndpointName, apiVersion,
@@ -423,7 +423,7 @@ public final class PrivateEndpointsClientImpl implements InnerSupportsGet<Privat
 
     /**
      * Gets the specified private endpoint by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -440,7 +440,7 @@ public final class PrivateEndpointsClientImpl implements InnerSupportsGet<Privat
 
     /**
      * Gets the specified private endpoint by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param expand Expands referenced resources.
@@ -458,7 +458,7 @@ public final class PrivateEndpointsClientImpl implements InnerSupportsGet<Privat
 
     /**
      * Gets the specified private endpoint by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -474,7 +474,7 @@ public final class PrivateEndpointsClientImpl implements InnerSupportsGet<Privat
 
     /**
      * Creates or updates an private endpoint in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param parameters Parameters supplied to the create or update private endpoint operation.
@@ -507,7 +507,7 @@ public final class PrivateEndpointsClientImpl implements InnerSupportsGet<Privat
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName,
@@ -517,7 +517,7 @@ public final class PrivateEndpointsClientImpl implements InnerSupportsGet<Privat
 
     /**
      * Creates or updates an private endpoint in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param parameters Parameters supplied to the create or update private endpoint operation.
@@ -551,7 +551,7 @@ public final class PrivateEndpointsClientImpl implements InnerSupportsGet<Privat
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, privateEndpointName, apiVersion,
@@ -560,7 +560,7 @@ public final class PrivateEndpointsClientImpl implements InnerSupportsGet<Privat
 
     /**
      * Creates or updates an private endpoint in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param parameters Parameters supplied to the create or update private endpoint operation.
@@ -580,7 +580,7 @@ public final class PrivateEndpointsClientImpl implements InnerSupportsGet<Privat
 
     /**
      * Creates or updates an private endpoint in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param parameters Parameters supplied to the create or update private endpoint operation.
@@ -602,7 +602,7 @@ public final class PrivateEndpointsClientImpl implements InnerSupportsGet<Privat
 
     /**
      * Creates or updates an private endpoint in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param parameters Parameters supplied to the create or update private endpoint operation.
@@ -619,7 +619,7 @@ public final class PrivateEndpointsClientImpl implements InnerSupportsGet<Privat
 
     /**
      * Creates or updates an private endpoint in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param parameters Parameters supplied to the create or update private endpoint operation.
@@ -638,7 +638,7 @@ public final class PrivateEndpointsClientImpl implements InnerSupportsGet<Privat
 
     /**
      * Creates or updates an private endpoint in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param parameters Parameters supplied to the create or update private endpoint operation.
@@ -656,7 +656,7 @@ public final class PrivateEndpointsClientImpl implements InnerSupportsGet<Privat
 
     /**
      * Creates or updates an private endpoint in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param parameters Parameters supplied to the create or update private endpoint operation.
@@ -675,7 +675,7 @@ public final class PrivateEndpointsClientImpl implements InnerSupportsGet<Privat
 
     /**
      * Creates or updates an private endpoint in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param parameters Parameters supplied to the create or update private endpoint operation.
@@ -692,7 +692,7 @@ public final class PrivateEndpointsClientImpl implements InnerSupportsGet<Privat
 
     /**
      * Creates or updates an private endpoint in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param parameters Parameters supplied to the create or update private endpoint operation.
@@ -710,7 +710,7 @@ public final class PrivateEndpointsClientImpl implements InnerSupportsGet<Privat
 
     /**
      * Gets all private endpoints in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -732,7 +732,7 @@ public final class PrivateEndpointsClientImpl implements InnerSupportsGet<Privat
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -744,7 +744,7 @@ public final class PrivateEndpointsClientImpl implements InnerSupportsGet<Privat
 
     /**
      * Gets all private endpoints in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -768,7 +768,7 @@ public final class PrivateEndpointsClientImpl implements InnerSupportsGet<Privat
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -780,7 +780,7 @@ public final class PrivateEndpointsClientImpl implements InnerSupportsGet<Privat
 
     /**
      * Gets all private endpoints in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -795,7 +795,7 @@ public final class PrivateEndpointsClientImpl implements InnerSupportsGet<Privat
 
     /**
      * Gets all private endpoints in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -811,7 +811,7 @@ public final class PrivateEndpointsClientImpl implements InnerSupportsGet<Privat
 
     /**
      * Gets all private endpoints in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -825,7 +825,7 @@ public final class PrivateEndpointsClientImpl implements InnerSupportsGet<Privat
 
     /**
      * Gets all private endpoints in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -840,7 +840,7 @@ public final class PrivateEndpointsClientImpl implements InnerSupportsGet<Privat
 
     /**
      * Gets all private endpoints in a subscription.
-     * 
+     *
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all private endpoints in a subscription along with {@link PagedResponse} on successful completion of
@@ -856,7 +856,7 @@ public final class PrivateEndpointsClientImpl implements InnerSupportsGet<Privat
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -868,7 +868,7 @@ public final class PrivateEndpointsClientImpl implements InnerSupportsGet<Privat
 
     /**
      * Gets all private endpoints in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -886,7 +886,7 @@ public final class PrivateEndpointsClientImpl implements InnerSupportsGet<Privat
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
@@ -896,7 +896,7 @@ public final class PrivateEndpointsClientImpl implements InnerSupportsGet<Privat
 
     /**
      * Gets all private endpoints in a subscription.
-     * 
+     *
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all private endpoints in a subscription as paginated response with {@link PagedFlux}.
@@ -909,7 +909,7 @@ public final class PrivateEndpointsClientImpl implements InnerSupportsGet<Privat
 
     /**
      * Gets all private endpoints in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -924,7 +924,7 @@ public final class PrivateEndpointsClientImpl implements InnerSupportsGet<Privat
 
     /**
      * Gets all private endpoints in a subscription.
-     * 
+     *
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all private endpoints in a subscription as paginated response with {@link PagedIterable}.
@@ -936,7 +936,7 @@ public final class PrivateEndpointsClientImpl implements InnerSupportsGet<Privat
 
     /**
      * Gets all private endpoints in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -950,7 +950,7 @@ public final class PrivateEndpointsClientImpl implements InnerSupportsGet<Privat
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -976,7 +976,7 @@ public final class PrivateEndpointsClientImpl implements InnerSupportsGet<Privat
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1003,7 +1003,7 @@ public final class PrivateEndpointsClientImpl implements InnerSupportsGet<Privat
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -1031,7 +1031,7 @@ public final class PrivateEndpointsClientImpl implements InnerSupportsGet<Privat
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

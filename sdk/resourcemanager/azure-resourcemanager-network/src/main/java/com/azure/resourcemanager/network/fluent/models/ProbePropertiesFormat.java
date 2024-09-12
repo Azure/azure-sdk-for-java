@@ -84,7 +84,7 @@ public final class ProbePropertiesFormat implements JsonSerializable<ProbeProper
 
     /**
      * Get the loadBalancingRules property: The load balancer rules that use this probe.
-     * 
+     *
      * @return the loadBalancingRules value.
      */
     public List<SubResource> loadBalancingRules() {
@@ -95,7 +95,7 @@ public final class ProbePropertiesFormat implements JsonSerializable<ProbeProper
      * Get the protocol property: The protocol of the end point. If 'Tcp' is specified, a received ACK is required for
      * the probe to be successful. If 'Http' or 'Https' is specified, a 200 OK response from the specifies URI is
      * required for the probe to be successful.
-     * 
+     *
      * @return the protocol value.
      */
     public ProbeProtocol protocol() {
@@ -106,7 +106,7 @@ public final class ProbePropertiesFormat implements JsonSerializable<ProbeProper
      * Set the protocol property: The protocol of the end point. If 'Tcp' is specified, a received ACK is required for
      * the probe to be successful. If 'Http' or 'Https' is specified, a 200 OK response from the specifies URI is
      * required for the probe to be successful.
-     * 
+     *
      * @param protocol the protocol value to set.
      * @return the ProbePropertiesFormat object itself.
      */
@@ -117,7 +117,7 @@ public final class ProbePropertiesFormat implements JsonSerializable<ProbeProper
 
     /**
      * Get the port property: The port for communicating the probe. Possible values range from 1 to 65535, inclusive.
-     * 
+     *
      * @return the port value.
      */
     public int port() {
@@ -126,7 +126,7 @@ public final class ProbePropertiesFormat implements JsonSerializable<ProbeProper
 
     /**
      * Set the port property: The port for communicating the probe. Possible values range from 1 to 65535, inclusive.
-     * 
+     *
      * @param port the port value to set.
      * @return the ProbePropertiesFormat object itself.
      */
@@ -139,7 +139,7 @@ public final class ProbePropertiesFormat implements JsonSerializable<ProbeProper
      * Get the intervalInSeconds property: The interval, in seconds, for how frequently to probe the endpoint for health
      * status. Typically, the interval is slightly less than half the allocated timeout period (in seconds) which allows
      * two full probes before taking the instance out of rotation. The default value is 15, the minimum value is 5.
-     * 
+     *
      * @return the intervalInSeconds value.
      */
     public Integer intervalInSeconds() {
@@ -150,7 +150,7 @@ public final class ProbePropertiesFormat implements JsonSerializable<ProbeProper
      * Set the intervalInSeconds property: The interval, in seconds, for how frequently to probe the endpoint for health
      * status. Typically, the interval is slightly less than half the allocated timeout period (in seconds) which allows
      * two full probes before taking the instance out of rotation. The default value is 15, the minimum value is 5.
-     * 
+     *
      * @param intervalInSeconds the intervalInSeconds value to set.
      * @return the ProbePropertiesFormat object itself.
      */
@@ -162,7 +162,7 @@ public final class ProbePropertiesFormat implements JsonSerializable<ProbeProper
     /**
      * Get the noHealthyBackendsBehavior property: Determines how new connections are handled by the load balancer when
      * all backend instances are probed down.
-     * 
+     *
      * @return the noHealthyBackendsBehavior value.
      */
     public ProbeNoHealthyBackendsBehavior noHealthyBackendsBehavior() {
@@ -172,7 +172,7 @@ public final class ProbePropertiesFormat implements JsonSerializable<ProbeProper
     /**
      * Set the noHealthyBackendsBehavior property: Determines how new connections are handled by the load balancer when
      * all backend instances are probed down.
-     * 
+     *
      * @param noHealthyBackendsBehavior the noHealthyBackendsBehavior value to set.
      * @return the ProbePropertiesFormat object itself.
      */
@@ -186,7 +186,7 @@ public final class ProbePropertiesFormat implements JsonSerializable<ProbeProper
      * Get the numberOfProbes property: The number of probes where if no response, will result in stopping further
      * traffic from being delivered to the endpoint. This values allows endpoints to be taken out of rotation faster or
      * slower than the typical times used in Azure.
-     * 
+     *
      * @return the numberOfProbes value.
      */
     public Integer numberOfProbes() {
@@ -197,7 +197,7 @@ public final class ProbePropertiesFormat implements JsonSerializable<ProbeProper
      * Set the numberOfProbes property: The number of probes where if no response, will result in stopping further
      * traffic from being delivered to the endpoint. This values allows endpoints to be taken out of rotation faster or
      * slower than the typical times used in Azure.
-     * 
+     *
      * @param numberOfProbes the numberOfProbes value to set.
      * @return the ProbePropertiesFormat object itself.
      */
@@ -211,7 +211,7 @@ public final class ProbePropertiesFormat implements JsonSerializable<ProbeProper
      * traffic from being delivered to this endpoint. After failing the number of consecutive probes equal to this
      * value, the endpoint will be taken out of rotation and require the same number of successful consecutive probes to
      * be placed back in rotation.
-     * 
+     *
      * @return the probeThreshold value.
      */
     public Integer probeThreshold() {
@@ -223,7 +223,7 @@ public final class ProbePropertiesFormat implements JsonSerializable<ProbeProper
      * traffic from being delivered to this endpoint. After failing the number of consecutive probes equal to this
      * value, the endpoint will be taken out of rotation and require the same number of successful consecutive probes to
      * be placed back in rotation.
-     * 
+     *
      * @param probeThreshold the probeThreshold value to set.
      * @return the ProbePropertiesFormat object itself.
      */
@@ -235,7 +235,7 @@ public final class ProbePropertiesFormat implements JsonSerializable<ProbeProper
     /**
      * Get the requestPath property: The URI used for requesting health status from the VM. Path is required if a
      * protocol is set to http. Otherwise, it is not allowed. There is no default value.
-     * 
+     *
      * @return the requestPath value.
      */
     public String requestPath() {
@@ -245,7 +245,7 @@ public final class ProbePropertiesFormat implements JsonSerializable<ProbeProper
     /**
      * Set the requestPath property: The URI used for requesting health status from the VM. Path is required if a
      * protocol is set to http. Otherwise, it is not allowed. There is no default value.
-     * 
+     *
      * @param requestPath the requestPath value to set.
      * @return the ProbePropertiesFormat object itself.
      */
@@ -256,7 +256,7 @@ public final class ProbePropertiesFormat implements JsonSerializable<ProbeProper
 
     /**
      * Get the provisioningState property: The provisioning state of the probe resource.
-     * 
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -265,7 +265,7 @@ public final class ProbePropertiesFormat implements JsonSerializable<ProbeProper
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -286,7 +286,7 @@ public final class ProbePropertiesFormat implements JsonSerializable<ProbeProper
         jsonWriter.writeStringField("protocol", this.protocol == null ? null : this.protocol.toString());
         jsonWriter.writeIntField("port", this.port);
         jsonWriter.writeNumberField("intervalInSeconds", this.intervalInSeconds);
-        jsonWriter.writeStringField("NoHealthyBackendsBehavior",
+        jsonWriter.writeStringField("noHealthyBackendsBehavior",
             this.noHealthyBackendsBehavior == null ? null : this.noHealthyBackendsBehavior.toString());
         jsonWriter.writeNumberField("numberOfProbes", this.numberOfProbes);
         jsonWriter.writeNumberField("probeThreshold", this.probeThreshold);
@@ -296,7 +296,7 @@ public final class ProbePropertiesFormat implements JsonSerializable<ProbeProper
 
     /**
      * Reads an instance of ProbePropertiesFormat from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of ProbePropertiesFormat if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
@@ -319,7 +319,7 @@ public final class ProbePropertiesFormat implements JsonSerializable<ProbeProper
                     deserializedProbePropertiesFormat.loadBalancingRules = loadBalancingRules;
                 } else if ("intervalInSeconds".equals(fieldName)) {
                     deserializedProbePropertiesFormat.intervalInSeconds = reader.getNullable(JsonReader::getInt);
-                } else if ("NoHealthyBackendsBehavior".equals(fieldName)) {
+                } else if ("noHealthyBackendsBehavior".equals(fieldName)) {
                     deserializedProbePropertiesFormat.noHealthyBackendsBehavior
                         = ProbeNoHealthyBackendsBehavior.fromString(reader.getString());
                 } else if ("numberOfProbes".equals(fieldName)) {

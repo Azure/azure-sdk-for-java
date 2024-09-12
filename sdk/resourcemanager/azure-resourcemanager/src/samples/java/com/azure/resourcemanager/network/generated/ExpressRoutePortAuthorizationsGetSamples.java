@@ -9,12 +9,12 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ExpressRoutePortAuthorizationsGetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * ExpressRoutePortAuthorizationGet.json
      */
     /**
      * Sample code: Get ExpressRoutePort Authorization.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getExpressRoutePortAuthorization(com.azure.resourcemanager.AzureResourceManager azure) {

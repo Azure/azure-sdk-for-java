@@ -18,11 +18,11 @@ import java.util.Map;
 public final class RouteFiltersCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/RouteFilterCreate.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/RouteFilterCreate.json
      */
     /**
      * Sample code: RouteFilterCreate.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void routeFilterCreate(com.azure.resourcemanager.AzureResourceManager azure) {

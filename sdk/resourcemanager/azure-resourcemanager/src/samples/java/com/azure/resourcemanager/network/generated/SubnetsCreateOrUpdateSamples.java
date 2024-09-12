@@ -15,11 +15,11 @@ import java.util.Arrays;
 public final class SubnetsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/SubnetCreate.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/SubnetCreate.json
      */
     /**
      * Sample code: Create subnet.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createSubnet(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -32,12 +32,12 @@ public final class SubnetsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * SubnetCreateServiceEndpointNetworkIdentifier.json
      */
     /**
      * Sample code: Create subnet with service endpoints with network identifier.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
@@ -56,12 +56,12 @@ public final class SubnetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/SubnetCreateServiceEndpoint.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/SubnetCreateServiceEndpoint.
      * json
      */
     /**
      * Sample code: Create subnet with service endpoints.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createSubnetWithServiceEndpoints(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -78,12 +78,12 @@ public final class SubnetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/SubnetCreateWithDelegation.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/SubnetCreateWithDelegation.
      * json
      */
     /**
      * Sample code: Create subnet with a delegation.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createSubnetWithADelegation(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -97,12 +97,12 @@ public final class SubnetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/SubnetCreateWithSharingScope.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/SubnetCreateWithSharingScope.
      * json
      */
     /**
      * Sample code: Create subnet with sharing scope.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createSubnetWithSharingScope(com.azure.resourcemanager.AzureResourceManager azure) {

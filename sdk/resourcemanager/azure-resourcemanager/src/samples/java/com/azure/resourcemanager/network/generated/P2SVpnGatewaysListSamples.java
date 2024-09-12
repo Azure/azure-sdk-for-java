@@ -10,11 +10,11 @@ package com.azure.resourcemanager.network.generated;
 public final class P2SVpnGatewaysListSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/P2SVpnGatewayList.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/P2SVpnGatewayList.json
      */
     /**
      * Sample code: P2SVpnGatewayListBySubscription.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void p2SVpnGatewayListBySubscription(com.azure.resourcemanager.AzureResourceManager azure) {

@@ -66,7 +66,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Initializes an instance of P2SVpnGatewaysClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     P2SVpnGatewaysClientImpl(NetworkManagementClientImpl client) {
@@ -208,7 +208,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Retrieves the details of a virtual wan p2s vpn gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param gatewayName The name of the gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -234,7 +234,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
         if (gatewayName == null) {
             return Mono.error(new IllegalArgumentException("Parameter gatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(),
@@ -244,7 +244,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Retrieves the details of a virtual wan p2s vpn gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param gatewayName The name of the gateway.
      * @param context The context to associate with this operation.
@@ -271,7 +271,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
         if (gatewayName == null) {
             return Mono.error(new IllegalArgumentException("Parameter gatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -280,7 +280,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Retrieves the details of a virtual wan p2s vpn gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param gatewayName The name of the gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -296,7 +296,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Retrieves the details of a virtual wan p2s vpn gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param gatewayName The name of the gateway.
      * @param context The context to associate with this operation.
@@ -313,7 +313,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Retrieves the details of a virtual wan p2s vpn gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param gatewayName The name of the gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -328,7 +328,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Creates a virtual wan p2s vpn gateway if it doesn't exist else updates the existing gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param gatewayName The name of the gateway.
      * @param p2SVpnGatewayParameters Parameters supplied to create or Update a virtual wan p2s vpn gateway.
@@ -361,7 +361,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
         } else {
             p2SVpnGatewayParameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -371,7 +371,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Creates a virtual wan p2s vpn gateway if it doesn't exist else updates the existing gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param gatewayName The name of the gateway.
      * @param p2SVpnGatewayParameters Parameters supplied to create or Update a virtual wan p2s vpn gateway.
@@ -405,7 +405,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
         } else {
             p2SVpnGatewayParameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -414,7 +414,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Creates a virtual wan p2s vpn gateway if it doesn't exist else updates the existing gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param gatewayName The name of the gateway.
      * @param p2SVpnGatewayParameters Parameters supplied to create or Update a virtual wan p2s vpn gateway.
@@ -434,7 +434,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Creates a virtual wan p2s vpn gateway if it doesn't exist else updates the existing gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param gatewayName The name of the gateway.
      * @param p2SVpnGatewayParameters Parameters supplied to create or Update a virtual wan p2s vpn gateway.
@@ -456,7 +456,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Creates a virtual wan p2s vpn gateway if it doesn't exist else updates the existing gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param gatewayName The name of the gateway.
      * @param p2SVpnGatewayParameters Parameters supplied to create or Update a virtual wan p2s vpn gateway.
@@ -473,7 +473,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Creates a virtual wan p2s vpn gateway if it doesn't exist else updates the existing gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param gatewayName The name of the gateway.
      * @param p2SVpnGatewayParameters Parameters supplied to create or Update a virtual wan p2s vpn gateway.
@@ -492,7 +492,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Creates a virtual wan p2s vpn gateway if it doesn't exist else updates the existing gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param gatewayName The name of the gateway.
      * @param p2SVpnGatewayParameters Parameters supplied to create or Update a virtual wan p2s vpn gateway.
@@ -510,7 +510,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Creates a virtual wan p2s vpn gateway if it doesn't exist else updates the existing gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param gatewayName The name of the gateway.
      * @param p2SVpnGatewayParameters Parameters supplied to create or Update a virtual wan p2s vpn gateway.
@@ -529,7 +529,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Creates a virtual wan p2s vpn gateway if it doesn't exist else updates the existing gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param gatewayName The name of the gateway.
      * @param p2SVpnGatewayParameters Parameters supplied to create or Update a virtual wan p2s vpn gateway.
@@ -546,7 +546,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Creates a virtual wan p2s vpn gateway if it doesn't exist else updates the existing gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param gatewayName The name of the gateway.
      * @param p2SVpnGatewayParameters Parameters supplied to create or Update a virtual wan p2s vpn gateway.
@@ -564,7 +564,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Updates virtual wan p2s vpn gateway tags.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param gatewayName The name of the gateway.
      * @param p2SVpnGatewayParameters Parameters supplied to update a virtual wan p2s vpn gateway tags.
@@ -597,7 +597,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
         } else {
             p2SVpnGatewayParameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.updateTags(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -607,7 +607,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Updates virtual wan p2s vpn gateway tags.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param gatewayName The name of the gateway.
      * @param p2SVpnGatewayParameters Parameters supplied to update a virtual wan p2s vpn gateway tags.
@@ -641,7 +641,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
         } else {
             p2SVpnGatewayParameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.updateTags(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -650,7 +650,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Updates virtual wan p2s vpn gateway tags.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param gatewayName The name of the gateway.
      * @param p2SVpnGatewayParameters Parameters supplied to update a virtual wan p2s vpn gateway tags.
@@ -670,7 +670,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Updates virtual wan p2s vpn gateway tags.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param gatewayName The name of the gateway.
      * @param p2SVpnGatewayParameters Parameters supplied to update a virtual wan p2s vpn gateway tags.
@@ -692,7 +692,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Updates virtual wan p2s vpn gateway tags.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param gatewayName The name of the gateway.
      * @param p2SVpnGatewayParameters Parameters supplied to update a virtual wan p2s vpn gateway tags.
@@ -709,7 +709,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Updates virtual wan p2s vpn gateway tags.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param gatewayName The name of the gateway.
      * @param p2SVpnGatewayParameters Parameters supplied to update a virtual wan p2s vpn gateway tags.
@@ -728,7 +728,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Updates virtual wan p2s vpn gateway tags.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param gatewayName The name of the gateway.
      * @param p2SVpnGatewayParameters Parameters supplied to update a virtual wan p2s vpn gateway tags.
@@ -746,7 +746,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Updates virtual wan p2s vpn gateway tags.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param gatewayName The name of the gateway.
      * @param p2SVpnGatewayParameters Parameters supplied to update a virtual wan p2s vpn gateway tags.
@@ -765,7 +765,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Updates virtual wan p2s vpn gateway tags.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param gatewayName The name of the gateway.
      * @param p2SVpnGatewayParameters Parameters supplied to update a virtual wan p2s vpn gateway tags.
@@ -782,7 +782,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Updates virtual wan p2s vpn gateway tags.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param gatewayName The name of the gateway.
      * @param p2SVpnGatewayParameters Parameters supplied to update a virtual wan p2s vpn gateway tags.
@@ -800,7 +800,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Deletes a virtual wan p2s vpn gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param gatewayName The name of the gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -825,7 +825,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
         if (gatewayName == null) {
             return Mono.error(new IllegalArgumentException("Parameter gatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -835,7 +835,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Deletes a virtual wan p2s vpn gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param gatewayName The name of the gateway.
      * @param context The context to associate with this operation.
@@ -862,7 +862,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
         if (gatewayName == null) {
             return Mono.error(new IllegalArgumentException("Parameter gatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -871,7 +871,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Deletes a virtual wan p2s vpn gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param gatewayName The name of the gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -888,7 +888,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Deletes a virtual wan p2s vpn gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param gatewayName The name of the gateway.
      * @param context The context to associate with this operation.
@@ -908,7 +908,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Deletes a virtual wan p2s vpn gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param gatewayName The name of the gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -923,7 +923,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Deletes a virtual wan p2s vpn gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param gatewayName The name of the gateway.
      * @param context The context to associate with this operation.
@@ -940,7 +940,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Deletes a virtual wan p2s vpn gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param gatewayName The name of the gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -955,7 +955,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Deletes a virtual wan p2s vpn gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param gatewayName The name of the gateway.
      * @param context The context to associate with this operation.
@@ -972,7 +972,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Deletes a virtual wan p2s vpn gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param gatewayName The name of the gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -986,7 +986,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Deletes a virtual wan p2s vpn gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param gatewayName The name of the gateway.
      * @param context The context to associate with this operation.
@@ -1001,7 +1001,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Lists all the P2SVpnGateways in a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1023,7 +1023,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(),
@@ -1035,7 +1035,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Lists all the P2SVpnGateways in a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1059,7 +1059,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1071,7 +1071,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Lists all the P2SVpnGateways in a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1086,7 +1086,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Lists all the P2SVpnGateways in a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1102,7 +1102,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Lists all the P2SVpnGateways in a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1116,7 +1116,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Lists all the P2SVpnGateways in a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1131,7 +1131,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Lists all the P2SVpnGateways in a subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list P2SVpnGateways along with {@link PagedResponse} on successful completion of
@@ -1147,7 +1147,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion,
@@ -1159,7 +1159,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Lists all the P2SVpnGateways in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1177,7 +1177,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, accept, context)
@@ -1187,7 +1187,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Lists all the P2SVpnGateways in a subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list P2SVpnGateways as paginated response with {@link PagedFlux}.
@@ -1199,7 +1199,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Lists all the P2SVpnGateways in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1214,7 +1214,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Lists all the P2SVpnGateways in a subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list P2SVpnGateways as paginated response with {@link PagedIterable}.
@@ -1226,7 +1226,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Lists all the P2SVpnGateways in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1240,7 +1240,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Resets the primary of the p2s vpn gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param gatewayName The name of the gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1265,7 +1265,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.reset(this.client.getEndpoint(), resourceGroupName, gatewayName, apiVersion,
@@ -1275,7 +1275,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Resets the primary of the p2s vpn gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param gatewayName The name of the gateway.
      * @param context The context to associate with this operation.
@@ -1302,7 +1302,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.reset(this.client.getEndpoint(), resourceGroupName, gatewayName, apiVersion,
@@ -1311,7 +1311,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Resets the primary of the p2s vpn gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param gatewayName The name of the gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1329,7 +1329,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Resets the primary of the p2s vpn gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param gatewayName The name of the gateway.
      * @param context The context to associate with this operation.
@@ -1349,7 +1349,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Resets the primary of the p2s vpn gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param gatewayName The name of the gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1365,7 +1365,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Resets the primary of the p2s vpn gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param gatewayName The name of the gateway.
      * @param context The context to associate with this operation.
@@ -1382,7 +1382,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Resets the primary of the p2s vpn gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param gatewayName The name of the gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1397,7 +1397,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Resets the primary of the p2s vpn gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param gatewayName The name of the gateway.
      * @param context The context to associate with this operation.
@@ -1414,7 +1414,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Resets the primary of the p2s vpn gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param gatewayName The name of the gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1429,7 +1429,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Resets the primary of the p2s vpn gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param gatewayName The name of the gateway.
      * @param context The context to associate with this operation.
@@ -1445,7 +1445,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Generates VPN profile for P2S client of the P2SVpnGateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the P2SVpnGateway.
      * @param parameters Parameters supplied to the generate P2SVpnGateway VPN client package operation.
@@ -1478,7 +1478,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.generateVpnProfile(this.client.getEndpoint(), resourceGroupName,
@@ -1488,7 +1488,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Generates VPN profile for P2S client of the P2SVpnGateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the P2SVpnGateway.
      * @param parameters Parameters supplied to the generate P2SVpnGateway VPN client package operation.
@@ -1522,7 +1522,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.generateVpnProfile(this.client.getEndpoint(), resourceGroupName, gatewayName, apiVersion,
@@ -1531,7 +1531,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Generates VPN profile for P2S client of the P2SVpnGateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the P2SVpnGateway.
      * @param parameters Parameters supplied to the generate P2SVpnGateway VPN client package operation.
@@ -1552,7 +1552,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Generates VPN profile for P2S client of the P2SVpnGateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the P2SVpnGateway.
      * @param parameters Parameters supplied to the generate P2SVpnGateway VPN client package operation.
@@ -1574,7 +1574,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Generates VPN profile for P2S client of the P2SVpnGateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the P2SVpnGateway.
      * @param parameters Parameters supplied to the generate P2SVpnGateway VPN client package operation.
@@ -1591,7 +1591,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Generates VPN profile for P2S client of the P2SVpnGateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the P2SVpnGateway.
      * @param parameters Parameters supplied to the generate P2SVpnGateway VPN client package operation.
@@ -1609,7 +1609,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Generates VPN profile for P2S client of the P2SVpnGateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the P2SVpnGateway.
      * @param parameters Parameters supplied to the generate P2SVpnGateway VPN client package operation.
@@ -1627,7 +1627,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Generates VPN profile for P2S client of the P2SVpnGateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the P2SVpnGateway.
      * @param parameters Parameters supplied to the generate P2SVpnGateway VPN client package operation.
@@ -1646,7 +1646,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Generates VPN profile for P2S client of the P2SVpnGateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the P2SVpnGateway.
      * @param parameters Parameters supplied to the generate P2SVpnGateway VPN client package operation.
@@ -1663,7 +1663,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Generates VPN profile for P2S client of the P2SVpnGateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the P2SVpnGateway.
      * @param parameters Parameters supplied to the generate P2SVpnGateway VPN client package operation.
@@ -1681,7 +1681,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Gets the connection health of P2S clients of the virtual wan P2SVpnGateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the P2SVpnGateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1708,7 +1708,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getP2SVpnConnectionHealth(this.client.getEndpoint(), resourceGroupName,
@@ -1718,7 +1718,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Gets the connection health of P2S clients of the virtual wan P2SVpnGateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the P2SVpnGateway.
      * @param context The context to associate with this operation.
@@ -1746,7 +1746,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getP2SVpnConnectionHealth(this.client.getEndpoint(), resourceGroupName, gatewayName, apiVersion,
@@ -1755,7 +1755,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Gets the connection health of P2S clients of the virtual wan P2SVpnGateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the P2SVpnGateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1775,7 +1775,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Gets the connection health of P2S clients of the virtual wan P2SVpnGateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the P2SVpnGateway.
      * @param context The context to associate with this operation.
@@ -1797,7 +1797,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Gets the connection health of P2S clients of the virtual wan P2SVpnGateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the P2SVpnGateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1814,7 +1814,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Gets the connection health of P2S clients of the virtual wan P2SVpnGateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the P2SVpnGateway.
      * @param context The context to associate with this operation.
@@ -1832,7 +1832,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Gets the connection health of P2S clients of the virtual wan P2SVpnGateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the P2SVpnGateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1849,7 +1849,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Gets the connection health of P2S clients of the virtual wan P2SVpnGateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the P2SVpnGateway.
      * @param context The context to associate with this operation.
@@ -1868,7 +1868,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Gets the connection health of P2S clients of the virtual wan P2SVpnGateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the P2SVpnGateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1883,7 +1883,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Gets the connection health of P2S clients of the virtual wan P2SVpnGateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the P2SVpnGateway.
      * @param context The context to associate with this operation.
@@ -1900,7 +1900,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
     /**
      * Gets the sas url to get the connection health detail of P2S clients of the virtual wan P2SVpnGateway in the
      * specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the P2SVpnGateway.
      * @param request Request parameters supplied to get p2s vpn connections detailed health.
@@ -1933,7 +1933,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
         } else {
             request.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getP2SVpnConnectionHealthDetailed(this.client.getEndpoint(),
@@ -1944,7 +1944,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
     /**
      * Gets the sas url to get the connection health detail of P2S clients of the virtual wan P2SVpnGateway in the
      * specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the P2SVpnGateway.
      * @param request Request parameters supplied to get p2s vpn connections detailed health.
@@ -1978,7 +1978,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
         } else {
             request.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getP2SVpnConnectionHealthDetailed(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -1988,7 +1988,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
     /**
      * Gets the sas url to get the connection health detail of P2S clients of the virtual wan P2SVpnGateway in the
      * specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the P2SVpnGateway.
      * @param request Request parameters supplied to get p2s vpn connections detailed health.
@@ -2012,7 +2012,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
     /**
      * Gets the sas url to get the connection health detail of P2S clients of the virtual wan P2SVpnGateway in the
      * specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the P2SVpnGateway.
      * @param request Request parameters supplied to get p2s vpn connections detailed health.
@@ -2038,7 +2038,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
     /**
      * Gets the sas url to get the connection health detail of P2S clients of the virtual wan P2SVpnGateway in the
      * specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the P2SVpnGateway.
      * @param request Request parameters supplied to get p2s vpn connections detailed health.
@@ -2059,7 +2059,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
     /**
      * Gets the sas url to get the connection health detail of P2S clients of the virtual wan P2SVpnGateway in the
      * specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the P2SVpnGateway.
      * @param request Request parameters supplied to get p2s vpn connections detailed health.
@@ -2081,7 +2081,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
     /**
      * Gets the sas url to get the connection health detail of P2S clients of the virtual wan P2SVpnGateway in the
      * specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the P2SVpnGateway.
      * @param request Request parameters supplied to get p2s vpn connections detailed health.
@@ -2101,7 +2101,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
     /**
      * Gets the sas url to get the connection health detail of P2S clients of the virtual wan P2SVpnGateway in the
      * specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the P2SVpnGateway.
      * @param request Request parameters supplied to get p2s vpn connections detailed health.
@@ -2122,7 +2122,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
     /**
      * Gets the sas url to get the connection health detail of P2S clients of the virtual wan P2SVpnGateway in the
      * specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the P2SVpnGateway.
      * @param request Request parameters supplied to get p2s vpn connections detailed health.
@@ -2141,7 +2141,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
     /**
      * Gets the sas url to get the connection health detail of P2S clients of the virtual wan P2SVpnGateway in the
      * specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the P2SVpnGateway.
      * @param request Request parameters supplied to get p2s vpn connections detailed health.
@@ -2160,7 +2160,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Disconnect P2S vpn connections of the virtual wan P2SVpnGateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param p2SVpnGatewayName The name of the P2S Vpn Gateway.
      * @param request The parameters are supplied to disconnect p2s vpn connections.
@@ -2193,7 +2193,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
         } else {
             request.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.disconnectP2SVpnConnections(this.client.getEndpoint(),
@@ -2204,7 +2204,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Disconnect P2S vpn connections of the virtual wan P2SVpnGateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param p2SVpnGatewayName The name of the P2S Vpn Gateway.
      * @param request The parameters are supplied to disconnect p2s vpn connections.
@@ -2238,7 +2238,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
         } else {
             request.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.disconnectP2SVpnConnections(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -2247,7 +2247,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Disconnect P2S vpn connections of the virtual wan P2SVpnGateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param p2SVpnGatewayName The name of the P2S Vpn Gateway.
      * @param request The parameters are supplied to disconnect p2s vpn connections.
@@ -2267,7 +2267,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Disconnect P2S vpn connections of the virtual wan P2SVpnGateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param p2SVpnGatewayName The name of the P2S Vpn Gateway.
      * @param request The parameters are supplied to disconnect p2s vpn connections.
@@ -2289,7 +2289,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Disconnect P2S vpn connections of the virtual wan P2SVpnGateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param p2SVpnGatewayName The name of the P2S Vpn Gateway.
      * @param request The parameters are supplied to disconnect p2s vpn connections.
@@ -2307,7 +2307,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Disconnect P2S vpn connections of the virtual wan P2SVpnGateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param p2SVpnGatewayName The name of the P2S Vpn Gateway.
      * @param request The parameters are supplied to disconnect p2s vpn connections.
@@ -2326,7 +2326,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Disconnect P2S vpn connections of the virtual wan P2SVpnGateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param p2SVpnGatewayName The name of the P2S Vpn Gateway.
      * @param request The parameters are supplied to disconnect p2s vpn connections.
@@ -2344,7 +2344,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Disconnect P2S vpn connections of the virtual wan P2SVpnGateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param p2SVpnGatewayName The name of the P2S Vpn Gateway.
      * @param request The parameters are supplied to disconnect p2s vpn connections.
@@ -2363,7 +2363,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Disconnect P2S vpn connections of the virtual wan P2SVpnGateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param p2SVpnGatewayName The name of the P2S Vpn Gateway.
      * @param request The parameters are supplied to disconnect p2s vpn connections.
@@ -2379,7 +2379,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Disconnect P2S vpn connections of the virtual wan P2SVpnGateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param p2SVpnGatewayName The name of the P2S Vpn Gateway.
      * @param request The parameters are supplied to disconnect p2s vpn connections.
@@ -2396,7 +2396,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2424,7 +2424,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2452,7 +2452,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2478,7 +2478,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

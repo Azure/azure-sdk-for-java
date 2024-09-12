@@ -15,11 +15,11 @@ import java.util.Arrays;
 public final class RouteTablesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/RouteTableCreate.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/RouteTableCreate.json
      */
     /**
      * Sample code: Create route table.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createRouteTable(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -33,12 +33,12 @@ public final class RouteTablesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/RouteTableCreateWithRoute.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/RouteTableCreateWithRoute.
      * json
      */
     /**
      * Sample code: Create route table with route.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createRouteTableWithRoute(com.azure.resourcemanager.AzureResourceManager azure) {

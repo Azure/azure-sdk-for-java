@@ -62,7 +62,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
 
     /**
      * Initializes an instance of NetworkVirtualAppliancesClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     NetworkVirtualAppliancesClientImpl(NetworkManagementClientImpl client) {
@@ -166,7 +166,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
 
     /**
      * Deletes the specified Network Virtual Appliance.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of Network Virtual Appliance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -193,7 +193,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName,
@@ -203,7 +203,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
 
     /**
      * Deletes the specified Network Virtual Appliance.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of Network Virtual Appliance.
      * @param context The context to associate with this operation.
@@ -231,7 +231,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, networkVirtualApplianceName, apiVersion,
@@ -240,7 +240,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
 
     /**
      * Deletes the specified Network Virtual Appliance.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of Network Virtual Appliance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -258,7 +258,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
 
     /**
      * Deletes the specified Network Virtual Appliance.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of Network Virtual Appliance.
      * @param context The context to associate with this operation.
@@ -279,7 +279,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
 
     /**
      * Deletes the specified Network Virtual Appliance.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of Network Virtual Appliance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -295,7 +295,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
 
     /**
      * Deletes the specified Network Virtual Appliance.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of Network Virtual Appliance.
      * @param context The context to associate with this operation.
@@ -312,7 +312,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
 
     /**
      * Deletes the specified Network Virtual Appliance.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of Network Virtual Appliance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -328,7 +328,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
 
     /**
      * Deletes the specified Network Virtual Appliance.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of Network Virtual Appliance.
      * @param context The context to associate with this operation.
@@ -345,7 +345,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
 
     /**
      * Deletes the specified Network Virtual Appliance.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of Network Virtual Appliance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -359,7 +359,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
 
     /**
      * Deletes the specified Network Virtual Appliance.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of Network Virtual Appliance.
      * @param context The context to associate with this operation.
@@ -374,7 +374,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
 
     /**
      * Gets the specified Network Virtual Appliance.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of Network Virtual Appliance.
      * @param expand Expands referenced resources.
@@ -403,7 +403,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -413,7 +413,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
 
     /**
      * Gets the specified Network Virtual Appliance.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of Network Virtual Appliance.
      * @param expand Expands referenced resources.
@@ -443,7 +443,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, networkVirtualApplianceName,
@@ -452,7 +452,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
 
     /**
      * Gets the specified Network Virtual Appliance.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of Network Virtual Appliance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -470,7 +470,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
 
     /**
      * Gets the specified Network Virtual Appliance.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of Network Virtual Appliance.
      * @param expand Expands referenced resources.
@@ -489,7 +489,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
 
     /**
      * Gets the specified Network Virtual Appliance.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of Network Virtual Appliance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -507,7 +507,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
 
     /**
      * Updates a Network Virtual Appliance.
-     * 
+     *
      * @param resourceGroupName The resource group name of Network Virtual Appliance.
      * @param networkVirtualApplianceName The name of Network Virtual Appliance being updated.
      * @param parameters Parameters supplied to Update Network Virtual Appliance Tags.
@@ -540,7 +540,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.updateTags(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -550,7 +550,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
 
     /**
      * Updates a Network Virtual Appliance.
-     * 
+     *
      * @param resourceGroupName The resource group name of Network Virtual Appliance.
      * @param networkVirtualApplianceName The name of Network Virtual Appliance being updated.
      * @param parameters Parameters supplied to Update Network Virtual Appliance Tags.
@@ -584,7 +584,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.updateTags(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -593,7 +593,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
 
     /**
      * Updates a Network Virtual Appliance.
-     * 
+     *
      * @param resourceGroupName The resource group name of Network Virtual Appliance.
      * @param networkVirtualApplianceName The name of Network Virtual Appliance being updated.
      * @param parameters Parameters supplied to Update Network Virtual Appliance Tags.
@@ -611,7 +611,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
 
     /**
      * Updates a Network Virtual Appliance.
-     * 
+     *
      * @param resourceGroupName The resource group name of Network Virtual Appliance.
      * @param networkVirtualApplianceName The name of Network Virtual Appliance being updated.
      * @param parameters Parameters supplied to Update Network Virtual Appliance Tags.
@@ -629,7 +629,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
 
     /**
      * Updates a Network Virtual Appliance.
-     * 
+     *
      * @param resourceGroupName The resource group name of Network Virtual Appliance.
      * @param networkVirtualApplianceName The name of Network Virtual Appliance being updated.
      * @param parameters Parameters supplied to Update Network Virtual Appliance Tags.
@@ -647,7 +647,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
 
     /**
      * Creates or updates the specified Network Virtual Appliance.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of Network Virtual Appliance.
      * @param parameters Parameters supplied to the create or update Network Virtual Appliance.
@@ -680,7 +680,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName,
@@ -690,7 +690,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
 
     /**
      * Creates or updates the specified Network Virtual Appliance.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of Network Virtual Appliance.
      * @param parameters Parameters supplied to the create or update Network Virtual Appliance.
@@ -724,7 +724,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, networkVirtualApplianceName,
@@ -733,7 +733,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
 
     /**
      * Creates or updates the specified Network Virtual Appliance.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of Network Virtual Appliance.
      * @param parameters Parameters supplied to the create or update Network Virtual Appliance.
@@ -754,7 +754,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
 
     /**
      * Creates or updates the specified Network Virtual Appliance.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of Network Virtual Appliance.
      * @param parameters Parameters supplied to the create or update Network Virtual Appliance.
@@ -778,7 +778,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
 
     /**
      * Creates or updates the specified Network Virtual Appliance.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of Network Virtual Appliance.
      * @param parameters Parameters supplied to the create or update Network Virtual Appliance.
@@ -796,7 +796,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
 
     /**
      * Creates or updates the specified Network Virtual Appliance.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of Network Virtual Appliance.
      * @param parameters Parameters supplied to the create or update Network Virtual Appliance.
@@ -816,7 +816,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
 
     /**
      * Creates or updates the specified Network Virtual Appliance.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of Network Virtual Appliance.
      * @param parameters Parameters supplied to the create or update Network Virtual Appliance.
@@ -834,7 +834,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
 
     /**
      * Creates or updates the specified Network Virtual Appliance.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of Network Virtual Appliance.
      * @param parameters Parameters supplied to the create or update Network Virtual Appliance.
@@ -853,7 +853,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
 
     /**
      * Creates or updates the specified Network Virtual Appliance.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of Network Virtual Appliance.
      * @param parameters Parameters supplied to the create or update Network Virtual Appliance.
@@ -870,7 +870,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
 
     /**
      * Creates or updates the specified Network Virtual Appliance.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of Network Virtual Appliance.
      * @param parameters Parameters supplied to the create or update Network Virtual Appliance.
@@ -888,7 +888,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
 
     /**
      * Restarts one or more VMs belonging to the specified Network Virtual Appliance.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of Network Virtual Appliance.
      * @param networkVirtualApplianceInstanceIds Specifies a list of virtual machine instance IDs from the Network
@@ -922,7 +922,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
         if (networkVirtualApplianceInstanceIds != null) {
             networkVirtualApplianceInstanceIds.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -933,7 +933,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
 
     /**
      * Restarts one or more VMs belonging to the specified Network Virtual Appliance.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of Network Virtual Appliance.
      * @param networkVirtualApplianceInstanceIds Specifies a list of virtual machine instance IDs from the Network
@@ -968,7 +968,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
         if (networkVirtualApplianceInstanceIds != null) {
             networkVirtualApplianceInstanceIds.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.restart(this.client.getEndpoint(), resourceGroupName, networkVirtualApplianceName, apiVersion,
@@ -977,7 +977,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
 
     /**
      * Restarts one or more VMs belonging to the specified Network Virtual Appliance.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of Network Virtual Appliance.
      * @param networkVirtualApplianceInstanceIds Specifies a list of virtual machine instance IDs from the Network
@@ -1002,7 +1002,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
 
     /**
      * Restarts one or more VMs belonging to the specified Network Virtual Appliance.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of Network Virtual Appliance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1025,7 +1025,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
 
     /**
      * Restarts one or more VMs belonging to the specified Network Virtual Appliance.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of Network Virtual Appliance.
      * @param networkVirtualApplianceInstanceIds Specifies a list of virtual machine instance IDs from the Network
@@ -1052,7 +1052,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
 
     /**
      * Restarts one or more VMs belonging to the specified Network Virtual Appliance.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of Network Virtual Appliance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1072,7 +1072,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
 
     /**
      * Restarts one or more VMs belonging to the specified Network Virtual Appliance.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of Network Virtual Appliance.
      * @param networkVirtualApplianceInstanceIds Specifies a list of virtual machine instance IDs from the Network
@@ -1096,7 +1096,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
 
     /**
      * Restarts one or more VMs belonging to the specified Network Virtual Appliance.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of Network Virtual Appliance.
      * @param networkVirtualApplianceInstanceIds Specifies a list of virtual machine instance IDs from the Network
@@ -1118,7 +1118,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
 
     /**
      * Restarts one or more VMs belonging to the specified Network Virtual Appliance.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of Network Virtual Appliance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1138,7 +1138,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
 
     /**
      * Restarts one or more VMs belonging to the specified Network Virtual Appliance.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of Network Virtual Appliance.
      * @param networkVirtualApplianceInstanceIds Specifies a list of virtual machine instance IDs from the Network
@@ -1160,7 +1160,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
 
     /**
      * Restarts one or more VMs belonging to the specified Network Virtual Appliance.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of Network Virtual Appliance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1177,7 +1177,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
 
     /**
      * Restarts one or more VMs belonging to the specified Network Virtual Appliance.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of Network Virtual Appliance.
      * @param networkVirtualApplianceInstanceIds Specifies a list of virtual machine instance IDs from the Network
@@ -1197,7 +1197,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
 
     /**
      * Lists all Network Virtual Appliances in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1220,7 +1220,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -1232,7 +1232,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
 
     /**
      * Lists all Network Virtual Appliances in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1256,7 +1256,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1268,7 +1268,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
 
     /**
      * Lists all Network Virtual Appliances in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1283,7 +1283,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
 
     /**
      * Lists all Network Virtual Appliances in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1300,7 +1300,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
 
     /**
      * Lists all Network Virtual Appliances in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1315,7 +1315,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
 
     /**
      * Lists all Network Virtual Appliances in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1331,7 +1331,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
 
     /**
      * Gets all Network Virtual Appliances in a subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all Network Virtual Appliances in a subscription along with {@link PagedResponse} on successful
@@ -1347,7 +1347,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -1359,7 +1359,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
 
     /**
      * Gets all Network Virtual Appliances in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1377,7 +1377,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
@@ -1387,7 +1387,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
 
     /**
      * Gets all Network Virtual Appliances in a subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all Network Virtual Appliances in a subscription as paginated response with {@link PagedFlux}.
@@ -1399,7 +1399,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
 
     /**
      * Gets all Network Virtual Appliances in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1414,7 +1414,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
 
     /**
      * Gets all Network Virtual Appliances in a subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all Network Virtual Appliances in a subscription as paginated response with {@link PagedIterable}.
@@ -1426,7 +1426,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
 
     /**
      * Gets all Network Virtual Appliances in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1440,7 +1440,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1468,7 +1468,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1496,7 +1496,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1522,7 +1522,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

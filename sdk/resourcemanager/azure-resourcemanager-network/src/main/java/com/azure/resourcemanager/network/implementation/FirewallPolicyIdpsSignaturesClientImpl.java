@@ -43,7 +43,7 @@ public final class FirewallPolicyIdpsSignaturesClientImpl implements FirewallPol
 
     /**
      * Initializes an instance of FirewallPolicyIdpsSignaturesClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     FirewallPolicyIdpsSignaturesClientImpl(NetworkManagementClientImpl client) {
@@ -74,7 +74,7 @@ public final class FirewallPolicyIdpsSignaturesClientImpl implements FirewallPol
     /**
      * Retrieves the current status of IDPS signatures for the relevant policy. Maximal amount of returned signatures is
      * 1000.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @param parameters The parameters parameter.
@@ -107,7 +107,7 @@ public final class FirewallPolicyIdpsSignaturesClientImpl implements FirewallPol
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), resourceGroupName, firewallPolicyName,
@@ -118,7 +118,7 @@ public final class FirewallPolicyIdpsSignaturesClientImpl implements FirewallPol
     /**
      * Retrieves the current status of IDPS signatures for the relevant policy. Maximal amount of returned signatures is
      * 1000.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @param parameters The parameters parameter.
@@ -152,7 +152,7 @@ public final class FirewallPolicyIdpsSignaturesClientImpl implements FirewallPol
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), resourceGroupName, firewallPolicyName,
@@ -162,7 +162,7 @@ public final class FirewallPolicyIdpsSignaturesClientImpl implements FirewallPol
     /**
      * Retrieves the current status of IDPS signatures for the relevant policy. Maximal amount of returned signatures is
      * 1000.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @param parameters The parameters parameter.
@@ -181,7 +181,7 @@ public final class FirewallPolicyIdpsSignaturesClientImpl implements FirewallPol
     /**
      * Retrieves the current status of IDPS signatures for the relevant policy. Maximal amount of returned signatures is
      * 1000.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @param parameters The parameters parameter.
@@ -200,7 +200,7 @@ public final class FirewallPolicyIdpsSignaturesClientImpl implements FirewallPol
     /**
      * Retrieves the current status of IDPS signatures for the relevant policy. Maximal amount of returned signatures is
      * 1000.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @param parameters The parameters parameter.

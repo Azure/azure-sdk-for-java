@@ -9,12 +9,12 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ServiceTagInformationListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * ServiceTagInformationListResultWithNoAddressPrefixes.json
      */
     /**
      * Sample code: Get list of service tags with no address prefixes.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getListOfServiceTagsWithNoAddressPrefixes(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -26,12 +26,12 @@ public final class ServiceTagInformationListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * ServiceTagInformationListResult.json
      */
     /**
      * Sample code: Get list of service tags.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getListOfServiceTags(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -43,12 +43,12 @@ public final class ServiceTagInformationListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * ServiceTagInformationListResultWithTagname.json
      */
     /**
      * Sample code: Get list of service tags with tag name.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getListOfServiceTagsWithTagName(com.azure.resourcemanager.AzureResourceManager azure) {

@@ -10,11 +10,11 @@ package com.azure.resourcemanager.network.generated;
 public final class RouteTablesDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/RouteTableDelete.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/RouteTableDelete.json
      */
     /**
      * Sample code: Delete route table.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void deleteRouteTable(com.azure.resourcemanager.AzureResourceManager azure) {

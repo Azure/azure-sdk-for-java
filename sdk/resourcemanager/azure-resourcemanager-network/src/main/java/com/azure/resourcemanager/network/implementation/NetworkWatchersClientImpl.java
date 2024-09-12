@@ -82,7 +82,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Initializes an instance of NetworkWatchersClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     NetworkWatchersClientImpl(NetworkManagementClientImpl client) {
@@ -288,7 +288,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Creates or updates a network watcher in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the network watcher resource.
@@ -321,7 +321,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName,
@@ -331,7 +331,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Creates or updates a network watcher in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the network watcher resource.
@@ -365,7 +365,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, networkWatcherName, apiVersion,
@@ -374,7 +374,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Creates or updates a network watcher in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the network watcher resource.
@@ -392,7 +392,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Creates or updates a network watcher in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the network watcher resource.
@@ -410,7 +410,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Creates or updates a network watcher in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the network watcher resource.
@@ -427,7 +427,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Gets the specified network watcher by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -455,7 +455,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -465,7 +465,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Gets the specified network watcher by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param context The context to associate with this operation.
@@ -494,7 +494,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, networkWatcherName, apiVersion,
@@ -503,7 +503,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Gets the specified network watcher by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -519,7 +519,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Gets the specified network watcher by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param context The context to associate with this operation.
@@ -536,7 +536,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Gets the specified network watcher by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -551,7 +551,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Deletes the specified network watcher resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -578,7 +578,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, networkWatcherName,
@@ -588,7 +588,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Deletes the specified network watcher resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param context The context to associate with this operation.
@@ -616,7 +616,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, networkWatcherName, apiVersion,
@@ -625,7 +625,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Deletes the specified network watcher resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -642,7 +642,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Deletes the specified network watcher resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param context The context to associate with this operation.
@@ -662,7 +662,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Deletes the specified network watcher resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -677,7 +677,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Deletes the specified network watcher resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param context The context to associate with this operation.
@@ -694,7 +694,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Deletes the specified network watcher resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -710,7 +710,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Deletes the specified network watcher resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param context The context to associate with this operation.
@@ -727,7 +727,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Deletes the specified network watcher resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -741,7 +741,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Deletes the specified network watcher resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param context The context to associate with this operation.
@@ -756,7 +756,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Updates a network watcher tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters supplied to update network watcher tags.
@@ -789,7 +789,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.updateTags(this.client.getEndpoint(), resourceGroupName, networkWatcherName,
@@ -799,7 +799,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Updates a network watcher tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters supplied to update network watcher tags.
@@ -833,7 +833,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.updateTags(this.client.getEndpoint(), resourceGroupName, networkWatcherName, apiVersion,
@@ -842,7 +842,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Updates a network watcher tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters supplied to update network watcher tags.
@@ -860,7 +860,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Updates a network watcher tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters supplied to update network watcher tags.
@@ -878,7 +878,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Updates a network watcher tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters supplied to update network watcher tags.
@@ -894,7 +894,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Gets all network watchers by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -916,7 +916,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -928,7 +928,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Gets all network watchers by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -952,7 +952,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -964,7 +964,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Gets all network watchers by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -978,7 +978,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Gets all network watchers by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -993,7 +993,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Gets all network watchers by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1007,7 +1007,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Gets all network watchers by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1022,7 +1022,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Gets all network watchers by subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all network watchers by subscription along with {@link PagedResponse} on successful completion of
@@ -1038,7 +1038,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -1050,7 +1050,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Gets all network watchers by subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1068,7 +1068,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
@@ -1078,7 +1078,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Gets all network watchers by subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all network watchers by subscription as paginated response with {@link PagedFlux}.
@@ -1090,7 +1090,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Gets all network watchers by subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1104,7 +1104,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Gets all network watchers by subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all network watchers by subscription as paginated response with {@link PagedIterable}.
@@ -1116,7 +1116,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Gets all network watchers by subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1130,7 +1130,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Gets the current network topology by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the representation of topology.
@@ -1164,7 +1164,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getTopology(this.client.getEndpoint(), resourceGroupName,
@@ -1174,7 +1174,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Gets the current network topology by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the representation of topology.
@@ -1209,7 +1209,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getTopology(this.client.getEndpoint(), resourceGroupName, networkWatcherName, apiVersion,
@@ -1218,7 +1218,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Gets the current network topology by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the representation of topology.
@@ -1236,7 +1236,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Gets the current network topology by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the representation of topology.
@@ -1254,7 +1254,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Gets the current network topology by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the representation of topology.
@@ -1271,7 +1271,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Verify IP flow from the specified VM to a location given the currently configured NSG rules.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the IP flow to be verified.
@@ -1305,7 +1305,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.verifyIpFlow(this.client.getEndpoint(), resourceGroupName,
@@ -1315,7 +1315,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Verify IP flow from the specified VM to a location given the currently configured NSG rules.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the IP flow to be verified.
@@ -1350,7 +1350,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.verifyIpFlow(this.client.getEndpoint(), resourceGroupName, networkWatcherName, apiVersion,
@@ -1359,7 +1359,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Verify IP flow from the specified VM to a location given the currently configured NSG rules.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the IP flow to be verified.
@@ -1380,7 +1380,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Verify IP flow from the specified VM to a location given the currently configured NSG rules.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the IP flow to be verified.
@@ -1403,7 +1403,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Verify IP flow from the specified VM to a location given the currently configured NSG rules.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the IP flow to be verified.
@@ -1420,7 +1420,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Verify IP flow from the specified VM to a location given the currently configured NSG rules.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the IP flow to be verified.
@@ -1438,7 +1438,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Verify IP flow from the specified VM to a location given the currently configured NSG rules.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the IP flow to be verified.
@@ -1456,7 +1456,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Verify IP flow from the specified VM to a location given the currently configured NSG rules.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the IP flow to be verified.
@@ -1475,7 +1475,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Verify IP flow from the specified VM to a location given the currently configured NSG rules.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the IP flow to be verified.
@@ -1492,7 +1492,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Verify IP flow from the specified VM to a location given the currently configured NSG rules.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the IP flow to be verified.
@@ -1510,7 +1510,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Gets the next hop from the specified VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the source and destination endpoint.
@@ -1543,7 +1543,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getNextHop(this.client.getEndpoint(), resourceGroupName, networkWatcherName,
@@ -1553,7 +1553,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Gets the next hop from the specified VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the source and destination endpoint.
@@ -1587,7 +1587,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getNextHop(this.client.getEndpoint(), resourceGroupName, networkWatcherName, apiVersion,
@@ -1596,7 +1596,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Gets the next hop from the specified VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the source and destination endpoint.
@@ -1616,7 +1616,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Gets the next hop from the specified VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the source and destination endpoint.
@@ -1638,7 +1638,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Gets the next hop from the specified VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the source and destination endpoint.
@@ -1655,7 +1655,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Gets the next hop from the specified VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the source and destination endpoint.
@@ -1673,7 +1673,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Gets the next hop from the specified VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the source and destination endpoint.
@@ -1691,7 +1691,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Gets the next hop from the specified VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the source and destination endpoint.
@@ -1710,7 +1710,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Gets the next hop from the specified VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the source and destination endpoint.
@@ -1727,7 +1727,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Gets the next hop from the specified VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the source and destination endpoint.
@@ -1745,7 +1745,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Gets the configured and effective security group rules on the specified VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the VM to check security groups for.
@@ -1779,7 +1779,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getVMSecurityRules(this.client.getEndpoint(), resourceGroupName,
@@ -1789,7 +1789,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Gets the configured and effective security group rules on the specified VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the VM to check security groups for.
@@ -1824,7 +1824,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getVMSecurityRules(this.client.getEndpoint(), resourceGroupName, networkWatcherName, apiVersion,
@@ -1833,7 +1833,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Gets the configured and effective security group rules on the specified VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the VM to check security groups for.
@@ -1856,7 +1856,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Gets the configured and effective security group rules on the specified VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the VM to check security groups for.
@@ -1881,7 +1881,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Gets the configured and effective security group rules on the specified VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the VM to check security groups for.
@@ -1899,7 +1899,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Gets the configured and effective security group rules on the specified VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the VM to check security groups for.
@@ -1919,7 +1919,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Gets the configured and effective security group rules on the specified VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the VM to check security groups for.
@@ -1938,7 +1938,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Gets the configured and effective security group rules on the specified VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the VM to check security groups for.
@@ -1958,7 +1958,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Gets the configured and effective security group rules on the specified VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the VM to check security groups for.
@@ -1975,7 +1975,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Gets the configured and effective security group rules on the specified VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the VM to check security groups for.
@@ -1993,7 +1993,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Initiate troubleshooting on a specified resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the resource to troubleshoot.
@@ -2027,7 +2027,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getTroubleshooting(this.client.getEndpoint(), resourceGroupName,
@@ -2037,7 +2037,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Initiate troubleshooting on a specified resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the resource to troubleshoot.
@@ -2072,7 +2072,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getTroubleshooting(this.client.getEndpoint(), resourceGroupName, networkWatcherName, apiVersion,
@@ -2081,7 +2081,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Initiate troubleshooting on a specified resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the resource to troubleshoot.
@@ -2102,7 +2102,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Initiate troubleshooting on a specified resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the resource to troubleshoot.
@@ -2124,7 +2124,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Initiate troubleshooting on a specified resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the resource to troubleshoot.
@@ -2141,7 +2141,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Initiate troubleshooting on a specified resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the resource to troubleshoot.
@@ -2160,7 +2160,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Initiate troubleshooting on a specified resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the resource to troubleshoot.
@@ -2178,7 +2178,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Initiate troubleshooting on a specified resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the resource to troubleshoot.
@@ -2197,7 +2197,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Initiate troubleshooting on a specified resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the resource to troubleshoot.
@@ -2214,7 +2214,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Initiate troubleshooting on a specified resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the resource to troubleshoot.
@@ -2232,7 +2232,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Get the last completed troubleshooting result on a specified resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the resource to query the troubleshooting result.
@@ -2266,7 +2266,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getTroubleshootingResult(this.client.getEndpoint(), resourceGroupName,
@@ -2276,7 +2276,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Get the last completed troubleshooting result on a specified resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the resource to query the troubleshooting result.
@@ -2311,7 +2311,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getTroubleshootingResult(this.client.getEndpoint(), resourceGroupName, networkWatcherName,
@@ -2320,7 +2320,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Get the last completed troubleshooting result on a specified resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the resource to query the troubleshooting result.
@@ -2342,7 +2342,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Get the last completed troubleshooting result on a specified resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the resource to query the troubleshooting result.
@@ -2365,7 +2365,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Get the last completed troubleshooting result on a specified resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the resource to query the troubleshooting result.
@@ -2383,7 +2383,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Get the last completed troubleshooting result on a specified resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the resource to query the troubleshooting result.
@@ -2403,7 +2403,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Get the last completed troubleshooting result on a specified resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the resource to query the troubleshooting result.
@@ -2422,7 +2422,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Get the last completed troubleshooting result on a specified resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the resource to query the troubleshooting result.
@@ -2442,7 +2442,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Get the last completed troubleshooting result on a specified resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the resource to query the troubleshooting result.
@@ -2459,7 +2459,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Get the last completed troubleshooting result on a specified resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the resource to query the troubleshooting result.
@@ -2477,7 +2477,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Configures flow log and traffic analytics (optional) on a specified resource.
-     * 
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the configuration of flow log.
@@ -2511,7 +2511,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.setFlowLogConfiguration(this.client.getEndpoint(), resourceGroupName,
@@ -2521,7 +2521,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Configures flow log and traffic analytics (optional) on a specified resource.
-     * 
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the configuration of flow log.
@@ -2556,7 +2556,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.setFlowLogConfiguration(this.client.getEndpoint(), resourceGroupName, networkWatcherName,
@@ -2565,7 +2565,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Configures flow log and traffic analytics (optional) on a specified resource.
-     * 
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the configuration of flow log.
@@ -2587,7 +2587,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Configures flow log and traffic analytics (optional) on a specified resource.
-     * 
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the configuration of flow log.
@@ -2610,7 +2610,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Configures flow log and traffic analytics (optional) on a specified resource.
-     * 
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the configuration of flow log.
@@ -2629,7 +2629,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Configures flow log and traffic analytics (optional) on a specified resource.
-     * 
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the configuration of flow log.
@@ -2649,7 +2649,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Configures flow log and traffic analytics (optional) on a specified resource.
-     * 
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the configuration of flow log.
@@ -2668,7 +2668,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Configures flow log and traffic analytics (optional) on a specified resource.
-     * 
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the configuration of flow log.
@@ -2688,7 +2688,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Configures flow log and traffic analytics (optional) on a specified resource.
-     * 
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the configuration of flow log.
@@ -2705,7 +2705,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Configures flow log and traffic analytics (optional) on a specified resource.
-     * 
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the configuration of flow log.
@@ -2723,7 +2723,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Queries status of flow log and traffic analytics (optional) on a specified resource.
-     * 
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define a resource to query flow log and traffic analytics (optional) status.
@@ -2757,7 +2757,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getFlowLogStatus(this.client.getEndpoint(), resourceGroupName,
@@ -2767,7 +2767,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Queries status of flow log and traffic analytics (optional) on a specified resource.
-     * 
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define a resource to query flow log and traffic analytics (optional) status.
@@ -2802,7 +2802,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getFlowLogStatus(this.client.getEndpoint(), resourceGroupName, networkWatcherName, apiVersion,
@@ -2811,7 +2811,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Queries status of flow log and traffic analytics (optional) on a specified resource.
-     * 
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define a resource to query flow log and traffic analytics (optional) status.
@@ -2833,7 +2833,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Queries status of flow log and traffic analytics (optional) on a specified resource.
-     * 
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define a resource to query flow log and traffic analytics (optional) status.
@@ -2856,7 +2856,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Queries status of flow log and traffic analytics (optional) on a specified resource.
-     * 
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define a resource to query flow log and traffic analytics (optional) status.
@@ -2874,7 +2874,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Queries status of flow log and traffic analytics (optional) on a specified resource.
-     * 
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define a resource to query flow log and traffic analytics (optional) status.
@@ -2894,7 +2894,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Queries status of flow log and traffic analytics (optional) on a specified resource.
-     * 
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define a resource to query flow log and traffic analytics (optional) status.
@@ -2913,7 +2913,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Queries status of flow log and traffic analytics (optional) on a specified resource.
-     * 
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define a resource to query flow log and traffic analytics (optional) status.
@@ -2933,7 +2933,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Queries status of flow log and traffic analytics (optional) on a specified resource.
-     * 
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define a resource to query flow log and traffic analytics (optional) status.
@@ -2950,7 +2950,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Queries status of flow log and traffic analytics (optional) on a specified resource.
-     * 
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define a resource to query flow log and traffic analytics (optional) status.
@@ -2969,7 +2969,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
     /**
      * Verifies the possibility of establishing a direct TCP connection from a virtual machine to a given endpoint
      * including another VM or an arbitrary remote server.
-     * 
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that determine how the connectivity check will be performed.
@@ -3003,7 +3003,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.checkConnectivity(this.client.getEndpoint(), resourceGroupName,
@@ -3014,7 +3014,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
     /**
      * Verifies the possibility of establishing a direct TCP connection from a virtual machine to a given endpoint
      * including another VM or an arbitrary remote server.
-     * 
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that determine how the connectivity check will be performed.
@@ -3049,7 +3049,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.checkConnectivity(this.client.getEndpoint(), resourceGroupName, networkWatcherName, apiVersion,
@@ -3059,7 +3059,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
     /**
      * Verifies the possibility of establishing a direct TCP connection from a virtual machine to a given endpoint
      * including another VM or an arbitrary remote server.
-     * 
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that determine how the connectivity check will be performed.
@@ -3082,7 +3082,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
     /**
      * Verifies the possibility of establishing a direct TCP connection from a virtual machine to a given endpoint
      * including another VM or an arbitrary remote server.
-     * 
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that determine how the connectivity check will be performed.
@@ -3107,7 +3107,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
     /**
      * Verifies the possibility of establishing a direct TCP connection from a virtual machine to a given endpoint
      * including another VM or an arbitrary remote server.
-     * 
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that determine how the connectivity check will be performed.
@@ -3125,7 +3125,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
     /**
      * Verifies the possibility of establishing a direct TCP connection from a virtual machine to a given endpoint
      * including another VM or an arbitrary remote server.
-     * 
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that determine how the connectivity check will be performed.
@@ -3145,7 +3145,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
     /**
      * Verifies the possibility of establishing a direct TCP connection from a virtual machine to a given endpoint
      * including another VM or an arbitrary remote server.
-     * 
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that determine how the connectivity check will be performed.
@@ -3164,7 +3164,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
     /**
      * Verifies the possibility of establishing a direct TCP connection from a virtual machine to a given endpoint
      * including another VM or an arbitrary remote server.
-     * 
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that determine how the connectivity check will be performed.
@@ -3184,7 +3184,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
     /**
      * Verifies the possibility of establishing a direct TCP connection from a virtual machine to a given endpoint
      * including another VM or an arbitrary remote server.
-     * 
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that determine how the connectivity check will be performed.
@@ -3202,7 +3202,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
     /**
      * Verifies the possibility of establishing a direct TCP connection from a virtual machine to a given endpoint
      * including another VM or an arbitrary remote server.
-     * 
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that determine how the connectivity check will be performed.
@@ -3221,7 +3221,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
     /**
      * NOTE: This feature is currently in preview and still being tested for stability. Gets the relative latency score
      * for internet service providers from a specified location to Azure regions.
-     * 
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that determine Azure reachability report configuration.
@@ -3254,7 +3254,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getAzureReachabilityReport(this.client.getEndpoint(), resourceGroupName,
@@ -3265,7 +3265,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
     /**
      * NOTE: This feature is currently in preview and still being tested for stability. Gets the relative latency score
      * for internet service providers from a specified location to Azure regions.
-     * 
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that determine Azure reachability report configuration.
@@ -3299,7 +3299,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getAzureReachabilityReport(this.client.getEndpoint(), resourceGroupName, networkWatcherName,
@@ -3309,7 +3309,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
     /**
      * NOTE: This feature is currently in preview and still being tested for stability. Gets the relative latency score
      * for internet service providers from a specified location to Azure regions.
-     * 
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that determine Azure reachability report configuration.
@@ -3332,7 +3332,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
     /**
      * NOTE: This feature is currently in preview and still being tested for stability. Gets the relative latency score
      * for internet service providers from a specified location to Azure regions.
-     * 
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that determine Azure reachability report configuration.
@@ -3357,7 +3357,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
     /**
      * NOTE: This feature is currently in preview and still being tested for stability. Gets the relative latency score
      * for internet service providers from a specified location to Azure regions.
-     * 
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that determine Azure reachability report configuration.
@@ -3377,7 +3377,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
     /**
      * NOTE: This feature is currently in preview and still being tested for stability. Gets the relative latency score
      * for internet service providers from a specified location to Azure regions.
-     * 
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that determine Azure reachability report configuration.
@@ -3398,7 +3398,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
     /**
      * NOTE: This feature is currently in preview and still being tested for stability. Gets the relative latency score
      * for internet service providers from a specified location to Azure regions.
-     * 
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that determine Azure reachability report configuration.
@@ -3417,7 +3417,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
     /**
      * NOTE: This feature is currently in preview and still being tested for stability. Gets the relative latency score
      * for internet service providers from a specified location to Azure regions.
-     * 
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that determine Azure reachability report configuration.
@@ -3437,7 +3437,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
     /**
      * NOTE: This feature is currently in preview and still being tested for stability. Gets the relative latency score
      * for internet service providers from a specified location to Azure regions.
-     * 
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that determine Azure reachability report configuration.
@@ -3455,7 +3455,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
     /**
      * NOTE: This feature is currently in preview and still being tested for stability. Gets the relative latency score
      * for internet service providers from a specified location to Azure regions.
-     * 
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that determine Azure reachability report configuration.
@@ -3474,7 +3474,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
     /**
      * NOTE: This feature is currently in preview and still being tested for stability. Lists all available internet
      * service providers for a specified Azure region.
-     * 
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that scope the list of available providers.
@@ -3508,7 +3508,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listAvailableProviders(this.client.getEndpoint(), resourceGroupName,
@@ -3519,7 +3519,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
     /**
      * NOTE: This feature is currently in preview and still being tested for stability. Lists all available internet
      * service providers for a specified Azure region.
-     * 
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that scope the list of available providers.
@@ -3554,7 +3554,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listAvailableProviders(this.client.getEndpoint(), resourceGroupName, networkWatcherName,
@@ -3564,7 +3564,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
     /**
      * NOTE: This feature is currently in preview and still being tested for stability. Lists all available internet
      * service providers for a specified Azure region.
-     * 
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that scope the list of available providers.
@@ -3587,7 +3587,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
     /**
      * NOTE: This feature is currently in preview and still being tested for stability. Lists all available internet
      * service providers for a specified Azure region.
-     * 
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that scope the list of available providers.
@@ -3612,7 +3612,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
     /**
      * NOTE: This feature is currently in preview and still being tested for stability. Lists all available internet
      * service providers for a specified Azure region.
-     * 
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that scope the list of available providers.
@@ -3630,7 +3630,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
     /**
      * NOTE: This feature is currently in preview and still being tested for stability. Lists all available internet
      * service providers for a specified Azure region.
-     * 
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that scope the list of available providers.
@@ -3651,7 +3651,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
     /**
      * NOTE: This feature is currently in preview and still being tested for stability. Lists all available internet
      * service providers for a specified Azure region.
-     * 
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that scope the list of available providers.
@@ -3670,7 +3670,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
     /**
      * NOTE: This feature is currently in preview and still being tested for stability. Lists all available internet
      * service providers for a specified Azure region.
-     * 
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that scope the list of available providers.
@@ -3690,7 +3690,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
     /**
      * NOTE: This feature is currently in preview and still being tested for stability. Lists all available internet
      * service providers for a specified Azure region.
-     * 
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that scope the list of available providers.
@@ -3708,7 +3708,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
     /**
      * NOTE: This feature is currently in preview and still being tested for stability. Lists all available internet
      * service providers for a specified Azure region.
-     * 
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that scope the list of available providers.
@@ -3729,7 +3729,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
      * detailed information on what security rules were applied to a specified traffic flow and the result of evaluating
      * these rules. Customers must provide details of a flow like source, destination, protocol, etc. The API returns
      * whether traffic was allowed or denied, the rules evaluated for the specified flow and the evaluation results.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters to get network configuration diagnostic.
@@ -3763,7 +3763,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3777,7 +3777,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
      * detailed information on what security rules were applied to a specified traffic flow and the result of evaluating
      * these rules. Customers must provide details of a flow like source, destination, protocol, etc. The API returns
      * whether traffic was allowed or denied, the rules evaluated for the specified flow and the evaluation results.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters to get network configuration diagnostic.
@@ -3813,7 +3813,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getNetworkConfigurationDiagnostic(this.client.getEndpoint(), resourceGroupName,
@@ -3825,7 +3825,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
      * detailed information on what security rules were applied to a specified traffic flow and the result of evaluating
      * these rules. Customers must provide details of a flow like source, destination, protocol, etc. The API returns
      * whether traffic was allowed or denied, the rules evaluated for the specified flow and the evaluation results.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters to get network configuration diagnostic.
@@ -3853,7 +3853,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
      * detailed information on what security rules were applied to a specified traffic flow and the result of evaluating
      * these rules. Customers must provide details of a flow like source, destination, protocol, etc. The API returns
      * whether traffic was allowed or denied, the rules evaluated for the specified flow and the evaluation results.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters to get network configuration diagnostic.
@@ -3883,7 +3883,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
      * detailed information on what security rules were applied to a specified traffic flow and the result of evaluating
      * these rules. Customers must provide details of a flow like source, destination, protocol, etc. The API returns
      * whether traffic was allowed or denied, the rules evaluated for the specified flow and the evaluation results.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters to get network configuration diagnostic.
@@ -3907,7 +3907,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
      * detailed information on what security rules were applied to a specified traffic flow and the result of evaluating
      * these rules. Customers must provide details of a flow like source, destination, protocol, etc. The API returns
      * whether traffic was allowed or denied, the rules evaluated for the specified flow and the evaluation results.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters to get network configuration diagnostic.
@@ -3933,7 +3933,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
      * detailed information on what security rules were applied to a specified traffic flow and the result of evaluating
      * these rules. Customers must provide details of a flow like source, destination, protocol, etc. The API returns
      * whether traffic was allowed or denied, the rules evaluated for the specified flow and the evaluation results.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters to get network configuration diagnostic.
@@ -3955,7 +3955,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
      * detailed information on what security rules were applied to a specified traffic flow and the result of evaluating
      * these rules. Customers must provide details of a flow like source, destination, protocol, etc. The API returns
      * whether traffic was allowed or denied, the rules evaluated for the specified flow and the evaluation results.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters to get network configuration diagnostic.
@@ -3980,7 +3980,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
      * detailed information on what security rules were applied to a specified traffic flow and the result of evaluating
      * these rules. Customers must provide details of a flow like source, destination, protocol, etc. The API returns
      * whether traffic was allowed or denied, the rules evaluated for the specified flow and the evaluation results.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters to get network configuration diagnostic.
@@ -4000,7 +4000,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
      * detailed information on what security rules were applied to a specified traffic flow and the result of evaluating
      * these rules. Customers must provide details of a flow like source, destination, protocol, etc. The API returns
      * whether traffic was allowed or denied, the rules evaluated for the specified flow and the evaluation results.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters to get network configuration diagnostic.

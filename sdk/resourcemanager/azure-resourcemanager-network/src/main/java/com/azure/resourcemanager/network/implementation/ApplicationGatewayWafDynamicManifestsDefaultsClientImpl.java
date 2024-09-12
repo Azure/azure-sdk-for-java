@@ -43,7 +43,7 @@ public final class ApplicationGatewayWafDynamicManifestsDefaultsClientImpl
 
     /**
      * Initializes an instance of ApplicationGatewayWafDynamicManifestsDefaultsClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     ApplicationGatewayWafDynamicManifestsDefaultsClientImpl(NetworkManagementClientImpl client) {
@@ -70,7 +70,7 @@ public final class ApplicationGatewayWafDynamicManifestsDefaultsClientImpl
 
     /**
      * Gets the regional application gateway waf manifest.
-     * 
+     *
      * @param location The region where the nrp are located at.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -91,7 +91,7 @@ public final class ApplicationGatewayWafDynamicManifestsDefaultsClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), location, apiVersion,
@@ -101,7 +101,7 @@ public final class ApplicationGatewayWafDynamicManifestsDefaultsClientImpl
 
     /**
      * Gets the regional application gateway waf manifest.
-     * 
+     *
      * @param location The region where the nrp are located at.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -124,7 +124,7 @@ public final class ApplicationGatewayWafDynamicManifestsDefaultsClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), location, apiVersion, this.client.getSubscriptionId(), accept,
@@ -133,7 +133,7 @@ public final class ApplicationGatewayWafDynamicManifestsDefaultsClientImpl
 
     /**
      * Gets the regional application gateway waf manifest.
-     * 
+     *
      * @param location The region where the nrp are located at.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -147,7 +147,7 @@ public final class ApplicationGatewayWafDynamicManifestsDefaultsClientImpl
 
     /**
      * Gets the regional application gateway waf manifest.
-     * 
+     *
      * @param location The region where the nrp are located at.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -162,7 +162,7 @@ public final class ApplicationGatewayWafDynamicManifestsDefaultsClientImpl
 
     /**
      * Gets the regional application gateway waf manifest.
-     * 
+     *
      * @param location The region where the nrp are located at.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

@@ -7,6 +7,7 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -50,14 +51,14 @@ public final class CustomIpPrefixInner extends Resource {
     private String id;
 
     /*
-     * The name of the resource.
-     */
-    private String name;
-
-    /*
      * The type of the resource.
      */
     private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
 
     /**
      * Creates an instance of CustomIpPrefixInner class.
@@ -67,7 +68,7 @@ public final class CustomIpPrefixInner extends Resource {
 
     /**
      * Get the extendedLocation property: The extended location of the custom IP prefix.
-     * 
+     *
      * @return the extendedLocation value.
      */
     public ExtendedLocation extendedLocation() {
@@ -76,7 +77,7 @@ public final class CustomIpPrefixInner extends Resource {
 
     /**
      * Set the extendedLocation property: The extended location of the custom IP prefix.
-     * 
+     *
      * @param extendedLocation the extendedLocation value to set.
      * @return the CustomIpPrefixInner object itself.
      */
@@ -87,7 +88,7 @@ public final class CustomIpPrefixInner extends Resource {
 
     /**
      * Get the innerProperties property: Custom IP prefix properties.
-     * 
+     *
      * @return the innerProperties value.
      */
     private CustomIpPrefixPropertiesFormat innerProperties() {
@@ -96,7 +97,7 @@ public final class CustomIpPrefixInner extends Resource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     * 
+     *
      * @return the etag value.
      */
     public String etag() {
@@ -106,7 +107,7 @@ public final class CustomIpPrefixInner extends Resource {
     /**
      * Get the zones property: A list of availability zones denoting the IP allocated for the resource needs to come
      * from.
-     * 
+     *
      * @return the zones value.
      */
     public List<String> zones() {
@@ -116,7 +117,7 @@ public final class CustomIpPrefixInner extends Resource {
     /**
      * Set the zones property: A list of availability zones denoting the IP allocated for the resource needs to come
      * from.
-     * 
+     *
      * @param zones the zones value to set.
      * @return the CustomIpPrefixInner object itself.
      */
@@ -127,7 +128,7 @@ public final class CustomIpPrefixInner extends Resource {
 
     /**
      * Get the id property: Resource ID.
-     * 
+     *
      * @return the id value.
      */
     public String id() {
@@ -136,7 +137,7 @@ public final class CustomIpPrefixInner extends Resource {
 
     /**
      * Set the id property: Resource ID.
-     * 
+     *
      * @param id the id value to set.
      * @return the CustomIpPrefixInner object itself.
      */
@@ -146,23 +147,23 @@ public final class CustomIpPrefixInner extends Resource {
     }
 
     /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
-    }
-
-    /**
      * Get the type property: The type of the resource.
-     * 
+     *
      * @return the type value.
      */
     @Override
     public String type() {
         return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     *
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -185,7 +186,7 @@ public final class CustomIpPrefixInner extends Resource {
 
     /**
      * Get the asn property: The ASN for CIDR advertising. Should be an integer as string.
-     * 
+     *
      * @return the asn value.
      */
     public String asn() {
@@ -194,7 +195,7 @@ public final class CustomIpPrefixInner extends Resource {
 
     /**
      * Set the asn property: The ASN for CIDR advertising. Should be an integer as string.
-     * 
+     *
      * @param asn the asn value to set.
      * @return the CustomIpPrefixInner object itself.
      */
@@ -208,7 +209,7 @@ public final class CustomIpPrefixInner extends Resource {
 
     /**
      * Get the cidr property: The prefix range in CIDR notation. Should include the start address and the prefix length.
-     * 
+     *
      * @return the cidr value.
      */
     public String cidr() {
@@ -217,7 +218,7 @@ public final class CustomIpPrefixInner extends Resource {
 
     /**
      * Set the cidr property: The prefix range in CIDR notation. Should include the start address and the prefix length.
-     * 
+     *
      * @param cidr the cidr value to set.
      * @return the CustomIpPrefixInner object itself.
      */
@@ -231,7 +232,7 @@ public final class CustomIpPrefixInner extends Resource {
 
     /**
      * Get the signedMessage property: Signed message for WAN validation.
-     * 
+     *
      * @return the signedMessage value.
      */
     public String signedMessage() {
@@ -240,7 +241,7 @@ public final class CustomIpPrefixInner extends Resource {
 
     /**
      * Set the signedMessage property: Signed message for WAN validation.
-     * 
+     *
      * @param signedMessage the signedMessage value to set.
      * @return the CustomIpPrefixInner object itself.
      */
@@ -254,7 +255,7 @@ public final class CustomIpPrefixInner extends Resource {
 
     /**
      * Get the authorizationMessage property: Authorization message for WAN validation.
-     * 
+     *
      * @return the authorizationMessage value.
      */
     public String authorizationMessage() {
@@ -263,7 +264,7 @@ public final class CustomIpPrefixInner extends Resource {
 
     /**
      * Set the authorizationMessage property: Authorization message for WAN validation.
-     * 
+     *
      * @param authorizationMessage the authorizationMessage value to set.
      * @return the CustomIpPrefixInner object itself.
      */
@@ -277,7 +278,7 @@ public final class CustomIpPrefixInner extends Resource {
 
     /**
      * Get the customIpPrefixParent property: The Parent CustomIpPrefix for IPv6 /64 CustomIpPrefix.
-     * 
+     *
      * @return the customIpPrefixParent value.
      */
     public SubResource customIpPrefixParent() {
@@ -286,7 +287,7 @@ public final class CustomIpPrefixInner extends Resource {
 
     /**
      * Set the customIpPrefixParent property: The Parent CustomIpPrefix for IPv6 /64 CustomIpPrefix.
-     * 
+     *
      * @param customIpPrefixParent the customIpPrefixParent value to set.
      * @return the CustomIpPrefixInner object itself.
      */
@@ -300,7 +301,7 @@ public final class CustomIpPrefixInner extends Resource {
 
     /**
      * Get the childCustomIpPrefixes property: The list of all Children for IPv6 /48 CustomIpPrefix.
-     * 
+     *
      * @return the childCustomIpPrefixes value.
      */
     public List<SubResource> childCustomIpPrefixes() {
@@ -309,7 +310,7 @@ public final class CustomIpPrefixInner extends Resource {
 
     /**
      * Get the commissionedState property: The commissioned state of the Custom IP Prefix.
-     * 
+     *
      * @return the commissionedState value.
      */
     public CommissionedState commissionedState() {
@@ -318,7 +319,7 @@ public final class CustomIpPrefixInner extends Resource {
 
     /**
      * Set the commissionedState property: The commissioned state of the Custom IP Prefix.
-     * 
+     *
      * @param commissionedState the commissionedState value to set.
      * @return the CustomIpPrefixInner object itself.
      */
@@ -332,7 +333,7 @@ public final class CustomIpPrefixInner extends Resource {
 
     /**
      * Get the expressRouteAdvertise property: Whether to do express route advertise.
-     * 
+     *
      * @return the expressRouteAdvertise value.
      */
     public Boolean expressRouteAdvertise() {
@@ -341,7 +342,7 @@ public final class CustomIpPrefixInner extends Resource {
 
     /**
      * Set the expressRouteAdvertise property: Whether to do express route advertise.
-     * 
+     *
      * @param expressRouteAdvertise the expressRouteAdvertise value to set.
      * @return the CustomIpPrefixInner object itself.
      */
@@ -355,7 +356,7 @@ public final class CustomIpPrefixInner extends Resource {
 
     /**
      * Get the geo property: The Geo for CIDR advertising. Should be an Geo code.
-     * 
+     *
      * @return the geo value.
      */
     public Geo geo() {
@@ -364,7 +365,7 @@ public final class CustomIpPrefixInner extends Resource {
 
     /**
      * Set the geo property: The Geo for CIDR advertising. Should be an Geo code.
-     * 
+     *
      * @param geo the geo value to set.
      * @return the CustomIpPrefixInner object itself.
      */
@@ -378,7 +379,7 @@ public final class CustomIpPrefixInner extends Resource {
 
     /**
      * Get the noInternetAdvertise property: Whether to Advertise the range to Internet.
-     * 
+     *
      * @return the noInternetAdvertise value.
      */
     public Boolean noInternetAdvertise() {
@@ -387,7 +388,7 @@ public final class CustomIpPrefixInner extends Resource {
 
     /**
      * Set the noInternetAdvertise property: Whether to Advertise the range to Internet.
-     * 
+     *
      * @param noInternetAdvertise the noInternetAdvertise value to set.
      * @return the CustomIpPrefixInner object itself.
      */
@@ -401,7 +402,7 @@ public final class CustomIpPrefixInner extends Resource {
 
     /**
      * Get the prefixType property: Type of custom IP prefix. Should be Singular, Parent, or Child.
-     * 
+     *
      * @return the prefixType value.
      */
     public CustomIpPrefixType prefixType() {
@@ -410,7 +411,7 @@ public final class CustomIpPrefixInner extends Resource {
 
     /**
      * Set the prefixType property: Type of custom IP prefix. Should be Singular, Parent, or Child.
-     * 
+     *
      * @param prefixType the prefixType value to set.
      * @return the CustomIpPrefixInner object itself.
      */
@@ -424,7 +425,7 @@ public final class CustomIpPrefixInner extends Resource {
 
     /**
      * Get the publicIpPrefixes property: The list of all referenced PublicIpPrefixes.
-     * 
+     *
      * @return the publicIpPrefixes value.
      */
     public List<SubResource> publicIpPrefixes() {
@@ -433,7 +434,7 @@ public final class CustomIpPrefixInner extends Resource {
 
     /**
      * Get the resourceGuid property: The resource GUID property of the custom IP prefix resource.
-     * 
+     *
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -442,7 +443,7 @@ public final class CustomIpPrefixInner extends Resource {
 
     /**
      * Get the failedReason property: The reason why resource is in failed state.
-     * 
+     *
      * @return the failedReason value.
      */
     public String failedReason() {
@@ -451,7 +452,7 @@ public final class CustomIpPrefixInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the custom IP prefix resource.
-     * 
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -460,7 +461,7 @@ public final class CustomIpPrefixInner extends Resource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -470,7 +471,13 @@ public final class CustomIpPrefixInner extends Resource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+        if (location() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property location in model CustomIpPrefixInner"));
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CustomIpPrefixInner.class);
 
     /**
      * {@inheritDoc}
@@ -489,7 +496,7 @@ public final class CustomIpPrefixInner extends Resource {
 
     /**
      * Reads an instance of CustomIpPrefixInner from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of CustomIpPrefixInner if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.

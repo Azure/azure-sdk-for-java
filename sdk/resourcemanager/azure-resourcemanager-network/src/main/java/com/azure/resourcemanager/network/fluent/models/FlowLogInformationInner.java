@@ -50,7 +50,7 @@ public final class FlowLogInformationInner implements JsonSerializable<FlowLogIn
     /**
      * Get the targetResourceId property: The ID of the resource to configure for flow log and traffic analytics
      * (optional) .
-     * 
+     *
      * @return the targetResourceId value.
      */
     public String targetResourceId() {
@@ -60,7 +60,7 @@ public final class FlowLogInformationInner implements JsonSerializable<FlowLogIn
     /**
      * Set the targetResourceId property: The ID of the resource to configure for flow log and traffic analytics
      * (optional) .
-     * 
+     *
      * @param targetResourceId the targetResourceId value to set.
      * @return the FlowLogInformationInner object itself.
      */
@@ -71,7 +71,7 @@ public final class FlowLogInformationInner implements JsonSerializable<FlowLogIn
 
     /**
      * Get the innerProperties property: Properties of the flow log.
-     * 
+     *
      * @return the innerProperties value.
      */
     private FlowLogProperties innerProperties() {
@@ -80,7 +80,7 @@ public final class FlowLogInformationInner implements JsonSerializable<FlowLogIn
 
     /**
      * Get the flowAnalyticsConfiguration property: Parameters that define the configuration of traffic analytics.
-     * 
+     *
      * @return the flowAnalyticsConfiguration value.
      */
     public TrafficAnalyticsProperties flowAnalyticsConfiguration() {
@@ -89,7 +89,7 @@ public final class FlowLogInformationInner implements JsonSerializable<FlowLogIn
 
     /**
      * Set the flowAnalyticsConfiguration property: Parameters that define the configuration of traffic analytics.
-     * 
+     *
      * @param flowAnalyticsConfiguration the flowAnalyticsConfiguration value to set.
      * @return the FlowLogInformationInner object itself.
      */
@@ -101,7 +101,7 @@ public final class FlowLogInformationInner implements JsonSerializable<FlowLogIn
 
     /**
      * Get the identity property: FlowLog resource Managed Identity.
-     * 
+     *
      * @return the identity value.
      */
     public ManagedServiceIdentity identity() {
@@ -110,7 +110,7 @@ public final class FlowLogInformationInner implements JsonSerializable<FlowLogIn
 
     /**
      * Set the identity property: FlowLog resource Managed Identity.
-     * 
+     *
      * @param identity the identity value to set.
      * @return the FlowLogInformationInner object itself.
      */
@@ -121,7 +121,7 @@ public final class FlowLogInformationInner implements JsonSerializable<FlowLogIn
 
     /**
      * Get the storageId property: ID of the storage account which is used to store the flow log.
-     * 
+     *
      * @return the storageId value.
      */
     public String storageId() {
@@ -130,7 +130,7 @@ public final class FlowLogInformationInner implements JsonSerializable<FlowLogIn
 
     /**
      * Set the storageId property: ID of the storage account which is used to store the flow log.
-     * 
+     *
      * @param storageId the storageId value to set.
      * @return the FlowLogInformationInner object itself.
      */
@@ -143,8 +143,33 @@ public final class FlowLogInformationInner implements JsonSerializable<FlowLogIn
     }
 
     /**
+     * Get the enabledFilteringCriteria property: Optional field to filter network traffic logs based on SrcIP, SrcPort,
+     * DstIP, DstPort, Protocol, Encryption, Direction and Action. If not specified, all network traffic will be logged.
+     *
+     * @return the enabledFilteringCriteria value.
+     */
+    public String enabledFilteringCriteria() {
+        return this.innerProperties() == null ? null : this.innerProperties().enabledFilteringCriteria();
+    }
+
+    /**
+     * Set the enabledFilteringCriteria property: Optional field to filter network traffic logs based on SrcIP, SrcPort,
+     * DstIP, DstPort, Protocol, Encryption, Direction and Action. If not specified, all network traffic will be logged.
+     *
+     * @param enabledFilteringCriteria the enabledFilteringCriteria value to set.
+     * @return the FlowLogInformationInner object itself.
+     */
+    public FlowLogInformationInner withEnabledFilteringCriteria(String enabledFilteringCriteria) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FlowLogProperties();
+        }
+        this.innerProperties().withEnabledFilteringCriteria(enabledFilteringCriteria);
+        return this;
+    }
+
+    /**
      * Get the enabled property: Flag to enable/disable flow logging.
-     * 
+     *
      * @return the enabled value.
      */
     public boolean enabled() {
@@ -153,7 +178,7 @@ public final class FlowLogInformationInner implements JsonSerializable<FlowLogIn
 
     /**
      * Set the enabled property: Flag to enable/disable flow logging.
-     * 
+     *
      * @param enabled the enabled value to set.
      * @return the FlowLogInformationInner object itself.
      */
@@ -167,7 +192,7 @@ public final class FlowLogInformationInner implements JsonSerializable<FlowLogIn
 
     /**
      * Get the retentionPolicy property: Parameters that define the retention policy for flow log.
-     * 
+     *
      * @return the retentionPolicy value.
      */
     public RetentionPolicyParameters retentionPolicy() {
@@ -176,7 +201,7 @@ public final class FlowLogInformationInner implements JsonSerializable<FlowLogIn
 
     /**
      * Set the retentionPolicy property: Parameters that define the retention policy for flow log.
-     * 
+     *
      * @param retentionPolicy the retentionPolicy value to set.
      * @return the FlowLogInformationInner object itself.
      */
@@ -190,7 +215,7 @@ public final class FlowLogInformationInner implements JsonSerializable<FlowLogIn
 
     /**
      * Get the format property: Parameters that define the flow log format.
-     * 
+     *
      * @return the format value.
      */
     public FlowLogFormatParameters format() {
@@ -199,7 +224,7 @@ public final class FlowLogInformationInner implements JsonSerializable<FlowLogIn
 
     /**
      * Set the format property: Parameters that define the flow log format.
-     * 
+     *
      * @param format the format value to set.
      * @return the FlowLogInformationInner object itself.
      */
@@ -213,7 +238,7 @@ public final class FlowLogInformationInner implements JsonSerializable<FlowLogIn
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -254,7 +279,7 @@ public final class FlowLogInformationInner implements JsonSerializable<FlowLogIn
 
     /**
      * Reads an instance of FlowLogInformationInner from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of FlowLogInformationInner if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.

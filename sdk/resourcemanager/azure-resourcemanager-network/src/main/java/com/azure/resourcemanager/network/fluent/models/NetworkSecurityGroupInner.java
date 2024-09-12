@@ -6,6 +6,7 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -35,14 +36,14 @@ public final class NetworkSecurityGroupInner extends Resource {
     private String id;
 
     /*
-     * The name of the resource.
-     */
-    private String name;
-
-    /*
      * The type of the resource.
      */
     private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
 
     /**
      * Creates an instance of NetworkSecurityGroupInner class.
@@ -52,7 +53,7 @@ public final class NetworkSecurityGroupInner extends Resource {
 
     /**
      * Get the innerProperties property: Properties of the network security group.
-     * 
+     *
      * @return the innerProperties value.
      */
     private NetworkSecurityGroupPropertiesFormat innerProperties() {
@@ -61,7 +62,7 @@ public final class NetworkSecurityGroupInner extends Resource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     * 
+     *
      * @return the etag value.
      */
     public String etag() {
@@ -70,7 +71,7 @@ public final class NetworkSecurityGroupInner extends Resource {
 
     /**
      * Get the id property: Resource ID.
-     * 
+     *
      * @return the id value.
      */
     public String id() {
@@ -79,7 +80,7 @@ public final class NetworkSecurityGroupInner extends Resource {
 
     /**
      * Set the id property: Resource ID.
-     * 
+     *
      * @param id the id value to set.
      * @return the NetworkSecurityGroupInner object itself.
      */
@@ -89,23 +90,23 @@ public final class NetworkSecurityGroupInner extends Resource {
     }
 
     /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
-    }
-
-    /**
      * Get the type property: The type of the resource.
-     * 
+     *
      * @return the type value.
      */
     @Override
     public String type() {
         return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     *
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -129,7 +130,7 @@ public final class NetworkSecurityGroupInner extends Resource {
     /**
      * Get the flushConnection property: When enabled, flows created from Network Security Group connections will be
      * re-evaluated when rules are updates. Initial enablement will trigger re-evaluation.
-     * 
+     *
      * @return the flushConnection value.
      */
     public Boolean flushConnection() {
@@ -139,7 +140,7 @@ public final class NetworkSecurityGroupInner extends Resource {
     /**
      * Set the flushConnection property: When enabled, flows created from Network Security Group connections will be
      * re-evaluated when rules are updates. Initial enablement will trigger re-evaluation.
-     * 
+     *
      * @param flushConnection the flushConnection value to set.
      * @return the NetworkSecurityGroupInner object itself.
      */
@@ -153,7 +154,7 @@ public final class NetworkSecurityGroupInner extends Resource {
 
     /**
      * Get the securityRules property: A collection of security rules of the network security group.
-     * 
+     *
      * @return the securityRules value.
      */
     public List<SecurityRuleInner> securityRules() {
@@ -162,7 +163,7 @@ public final class NetworkSecurityGroupInner extends Resource {
 
     /**
      * Set the securityRules property: A collection of security rules of the network security group.
-     * 
+     *
      * @param securityRules the securityRules value to set.
      * @return the NetworkSecurityGroupInner object itself.
      */
@@ -176,7 +177,7 @@ public final class NetworkSecurityGroupInner extends Resource {
 
     /**
      * Get the defaultSecurityRules property: The default security rules of network security group.
-     * 
+     *
      * @return the defaultSecurityRules value.
      */
     public List<SecurityRuleInner> defaultSecurityRules() {
@@ -185,7 +186,7 @@ public final class NetworkSecurityGroupInner extends Resource {
 
     /**
      * Get the networkInterfaces property: A collection of references to network interfaces.
-     * 
+     *
      * @return the networkInterfaces value.
      */
     public List<NetworkInterfaceInner> networkInterfaces() {
@@ -194,7 +195,7 @@ public final class NetworkSecurityGroupInner extends Resource {
 
     /**
      * Get the subnets property: A collection of references to subnets.
-     * 
+     *
      * @return the subnets value.
      */
     public List<SubnetInner> subnets() {
@@ -203,7 +204,7 @@ public final class NetworkSecurityGroupInner extends Resource {
 
     /**
      * Get the flowLogs property: A collection of references to flow log resources.
-     * 
+     *
      * @return the flowLogs value.
      */
     public List<FlowLogInner> flowLogs() {
@@ -212,7 +213,7 @@ public final class NetworkSecurityGroupInner extends Resource {
 
     /**
      * Get the resourceGuid property: The resource GUID property of the network security group resource.
-     * 
+     *
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -221,7 +222,7 @@ public final class NetworkSecurityGroupInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the network security group resource.
-     * 
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -230,14 +231,21 @@ public final class NetworkSecurityGroupInner extends Resource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+        if (location() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property location in model NetworkSecurityGroupInner"));
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(NetworkSecurityGroupInner.class);
 
     /**
      * {@inheritDoc}
@@ -254,7 +262,7 @@ public final class NetworkSecurityGroupInner extends Resource {
 
     /**
      * Reads an instance of NetworkSecurityGroupInner from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of NetworkSecurityGroupInner if the JsonReader was pointing to an instance of it, or null if
      * it was pointing to JSON null.

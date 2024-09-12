@@ -53,7 +53,7 @@ public final class RoutePropertiesFormat implements JsonSerializable<RouteProper
 
     /**
      * Get the addressPrefix property: The destination CIDR to which the route applies.
-     * 
+     *
      * @return the addressPrefix value.
      */
     public String addressPrefix() {
@@ -62,7 +62,7 @@ public final class RoutePropertiesFormat implements JsonSerializable<RouteProper
 
     /**
      * Set the addressPrefix property: The destination CIDR to which the route applies.
-     * 
+     *
      * @param addressPrefix the addressPrefix value to set.
      * @return the RoutePropertiesFormat object itself.
      */
@@ -73,7 +73,7 @@ public final class RoutePropertiesFormat implements JsonSerializable<RouteProper
 
     /**
      * Get the nextHopType property: The type of Azure hop the packet should be sent to.
-     * 
+     *
      * @return the nextHopType value.
      */
     public RouteNextHopType nextHopType() {
@@ -82,7 +82,7 @@ public final class RoutePropertiesFormat implements JsonSerializable<RouteProper
 
     /**
      * Set the nextHopType property: The type of Azure hop the packet should be sent to.
-     * 
+     *
      * @param nextHopType the nextHopType value to set.
      * @return the RoutePropertiesFormat object itself.
      */
@@ -94,7 +94,7 @@ public final class RoutePropertiesFormat implements JsonSerializable<RouteProper
     /**
      * Get the nextHopIpAddress property: The IP address packets should be forwarded to. Next hop values are only
      * allowed in routes where the next hop type is VirtualAppliance.
-     * 
+     *
      * @return the nextHopIpAddress value.
      */
     public String nextHopIpAddress() {
@@ -104,7 +104,7 @@ public final class RoutePropertiesFormat implements JsonSerializable<RouteProper
     /**
      * Set the nextHopIpAddress property: The IP address packets should be forwarded to. Next hop values are only
      * allowed in routes where the next hop type is VirtualAppliance.
-     * 
+     *
      * @param nextHopIpAddress the nextHopIpAddress value to set.
      * @return the RoutePropertiesFormat object itself.
      */
@@ -115,7 +115,7 @@ public final class RoutePropertiesFormat implements JsonSerializable<RouteProper
 
     /**
      * Get the provisioningState property: The provisioning state of the route resource.
-     * 
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -125,7 +125,7 @@ public final class RoutePropertiesFormat implements JsonSerializable<RouteProper
     /**
      * Get the hasBgpOverride property: A value indicating whether this route overrides overlapping BGP routes
      * regardless of LPM.
-     * 
+     *
      * @return the hasBgpOverride value.
      */
     public Boolean hasBgpOverride() {
@@ -133,20 +133,8 @@ public final class RoutePropertiesFormat implements JsonSerializable<RouteProper
     }
 
     /**
-     * Set the hasBgpOverride property: A value indicating whether this route overrides overlapping BGP routes
-     * regardless of LPM.
-     * 
-     * @param hasBgpOverride the hasBgpOverride value to set.
-     * @return the RoutePropertiesFormat object itself.
-     */
-    public RoutePropertiesFormat withHasBgpOverride(Boolean hasBgpOverride) {
-        this.hasBgpOverride = hasBgpOverride;
-        return this;
-    }
-
-    /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -168,13 +156,12 @@ public final class RoutePropertiesFormat implements JsonSerializable<RouteProper
         jsonWriter.writeStringField("nextHopType", this.nextHopType == null ? null : this.nextHopType.toString());
         jsonWriter.writeStringField("addressPrefix", this.addressPrefix);
         jsonWriter.writeStringField("nextHopIpAddress", this.nextHopIpAddress);
-        jsonWriter.writeBooleanField("hasBgpOverride", this.hasBgpOverride);
         return jsonWriter.writeEndObject();
     }
 
     /**
      * Reads an instance of RoutePropertiesFormat from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of RoutePropertiesFormat if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.

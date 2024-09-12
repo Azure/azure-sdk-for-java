@@ -10,12 +10,12 @@ package com.azure.resourcemanager.network.generated;
 public final class AdminRulesDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/NetworkManagerAdminRuleDelete
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/NetworkManagerAdminRuleDelete
      * .json
      */
     /**
      * Sample code: Deletes an admin rule.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void deletesAnAdminRule(com.azure.resourcemanager.AzureResourceManager azure) {

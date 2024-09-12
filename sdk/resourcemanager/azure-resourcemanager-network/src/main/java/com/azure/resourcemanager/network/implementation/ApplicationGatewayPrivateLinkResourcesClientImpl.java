@@ -48,7 +48,7 @@ public final class ApplicationGatewayPrivateLinkResourcesClientImpl
 
     /**
      * Initializes an instance of ApplicationGatewayPrivateLinkResourcesClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     ApplicationGatewayPrivateLinkResourcesClientImpl(NetworkManagementClientImpl client) {
@@ -85,7 +85,7 @@ public final class ApplicationGatewayPrivateLinkResourcesClientImpl
 
     /**
      * Lists all private link resources on an application gateway.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -113,7 +113,7 @@ public final class ApplicationGatewayPrivateLinkResourcesClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), resourceGroupName, applicationGatewayName,
@@ -126,7 +126,7 @@ public final class ApplicationGatewayPrivateLinkResourcesClientImpl
 
     /**
      * Lists all private link resources on an application gateway.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param context The context to associate with this operation.
@@ -155,7 +155,7 @@ public final class ApplicationGatewayPrivateLinkResourcesClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -167,7 +167,7 @@ public final class ApplicationGatewayPrivateLinkResourcesClientImpl
 
     /**
      * Lists all private link resources on an application gateway.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -185,7 +185,7 @@ public final class ApplicationGatewayPrivateLinkResourcesClientImpl
 
     /**
      * Lists all private link resources on an application gateway.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param context The context to associate with this operation.
@@ -204,7 +204,7 @@ public final class ApplicationGatewayPrivateLinkResourcesClientImpl
 
     /**
      * Lists all private link resources on an application gateway.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -221,7 +221,7 @@ public final class ApplicationGatewayPrivateLinkResourcesClientImpl
 
     /**
      * Lists all private link resources on an application gateway.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param context The context to associate with this operation.
@@ -239,7 +239,7 @@ public final class ApplicationGatewayPrivateLinkResourcesClientImpl
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -266,7 +266,7 @@ public final class ApplicationGatewayPrivateLinkResourcesClientImpl
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

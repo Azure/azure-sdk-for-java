@@ -6,6 +6,7 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -35,14 +36,14 @@ public final class RouteTableInner extends Resource {
     private String id;
 
     /*
-     * The name of the resource.
-     */
-    private String name;
-
-    /*
      * The type of the resource.
      */
     private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
 
     /**
      * Creates an instance of RouteTableInner class.
@@ -52,7 +53,7 @@ public final class RouteTableInner extends Resource {
 
     /**
      * Get the innerProperties property: Properties of the route table.
-     * 
+     *
      * @return the innerProperties value.
      */
     private RouteTablePropertiesFormat innerProperties() {
@@ -61,7 +62,7 @@ public final class RouteTableInner extends Resource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     * 
+     *
      * @return the etag value.
      */
     public String etag() {
@@ -70,7 +71,7 @@ public final class RouteTableInner extends Resource {
 
     /**
      * Get the id property: Resource ID.
-     * 
+     *
      * @return the id value.
      */
     public String id() {
@@ -79,7 +80,7 @@ public final class RouteTableInner extends Resource {
 
     /**
      * Set the id property: Resource ID.
-     * 
+     *
      * @param id the id value to set.
      * @return the RouteTableInner object itself.
      */
@@ -89,23 +90,23 @@ public final class RouteTableInner extends Resource {
     }
 
     /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
-    }
-
-    /**
      * Get the type property: The type of the resource.
-     * 
+     *
      * @return the type value.
      */
     @Override
     public String type() {
         return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     *
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -128,7 +129,7 @@ public final class RouteTableInner extends Resource {
 
     /**
      * Get the routes property: Collection of routes contained within a route table.
-     * 
+     *
      * @return the routes value.
      */
     public List<RouteInner> routes() {
@@ -137,7 +138,7 @@ public final class RouteTableInner extends Resource {
 
     /**
      * Set the routes property: Collection of routes contained within a route table.
-     * 
+     *
      * @param routes the routes value to set.
      * @return the RouteTableInner object itself.
      */
@@ -151,7 +152,7 @@ public final class RouteTableInner extends Resource {
 
     /**
      * Get the subnets property: A collection of references to subnets.
-     * 
+     *
      * @return the subnets value.
      */
     public List<SubnetInner> subnets() {
@@ -161,7 +162,7 @@ public final class RouteTableInner extends Resource {
     /**
      * Get the disableBgpRoutePropagation property: Whether to disable the routes learned by BGP on that route table.
      * True means disable.
-     * 
+     *
      * @return the disableBgpRoutePropagation value.
      */
     public Boolean disableBgpRoutePropagation() {
@@ -171,7 +172,7 @@ public final class RouteTableInner extends Resource {
     /**
      * Set the disableBgpRoutePropagation property: Whether to disable the routes learned by BGP on that route table.
      * True means disable.
-     * 
+     *
      * @param disableBgpRoutePropagation the disableBgpRoutePropagation value to set.
      * @return the RouteTableInner object itself.
      */
@@ -185,7 +186,7 @@ public final class RouteTableInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the route table resource.
-     * 
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -194,7 +195,7 @@ public final class RouteTableInner extends Resource {
 
     /**
      * Get the resourceGuid property: The resource GUID property of the route table.
-     * 
+     *
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -203,14 +204,20 @@ public final class RouteTableInner extends Resource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+        if (location() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property location in model RouteTableInner"));
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RouteTableInner.class);
 
     /**
      * {@inheritDoc}
@@ -227,7 +234,7 @@ public final class RouteTableInner extends Resource {
 
     /**
      * Reads an instance of RouteTableInner from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of RouteTableInner if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.

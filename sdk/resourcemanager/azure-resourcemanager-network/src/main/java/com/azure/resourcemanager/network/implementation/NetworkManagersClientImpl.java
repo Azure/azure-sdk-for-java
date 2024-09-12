@@ -60,7 +60,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Initializes an instance of NetworkManagersClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     NetworkManagersClientImpl(NetworkManagementClientImpl client) {
@@ -156,7 +156,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Gets the specified Network Manager.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -183,7 +183,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
             return Mono
                 .error(new IllegalArgumentException("Parameter networkManagerName is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(),
@@ -193,7 +193,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Gets the specified Network Manager.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param context The context to associate with this operation.
@@ -221,7 +221,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
             return Mono
                 .error(new IllegalArgumentException("Parameter networkManagerName is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -230,7 +230,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Gets the specified Network Manager.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -246,7 +246,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Gets the specified Network Manager.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param context The context to associate with this operation.
@@ -263,7 +263,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Gets the specified Network Manager.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -278,7 +278,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Creates or updates a Network Manager.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param parameters Parameters supplied to specify which network manager is.
@@ -311,7 +311,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -321,7 +321,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Creates or updates a Network Manager.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param parameters Parameters supplied to specify which network manager is.
@@ -355,7 +355,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -364,7 +364,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Creates or updates a Network Manager.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param parameters Parameters supplied to specify which network manager is.
@@ -382,7 +382,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Creates or updates a Network Manager.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param parameters Parameters supplied to specify which network manager is.
@@ -400,7 +400,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Creates or updates a Network Manager.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param parameters Parameters supplied to specify which network manager is.
@@ -417,7 +417,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Deletes a network manager.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param force Deletes the resource even if it is part of a deployed configuration. If the configuration has been
@@ -446,7 +446,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
             return Mono
                 .error(new IllegalArgumentException("Parameter networkManagerName is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -456,7 +456,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Deletes a network manager.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param force Deletes the resource even if it is part of a deployed configuration. If the configuration has been
@@ -486,7 +486,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
             return Mono
                 .error(new IllegalArgumentException("Parameter networkManagerName is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -495,7 +495,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Deletes a network manager.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param force Deletes the resource even if it is part of a deployed configuration. If the configuration has been
@@ -515,7 +515,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Deletes a network manager.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -533,7 +533,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Deletes a network manager.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param force Deletes the resource even if it is part of a deployed configuration. If the configuration has been
@@ -556,7 +556,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Deletes a network manager.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -572,7 +572,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Deletes a network manager.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param force Deletes the resource even if it is part of a deployed configuration. If the configuration has been
@@ -591,7 +591,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Deletes a network manager.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param force Deletes the resource even if it is part of a deployed configuration. If the configuration has been
@@ -609,7 +609,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Deletes a network manager.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -626,7 +626,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Deletes a network manager.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param force Deletes the resource even if it is part of a deployed configuration. If the configuration has been
@@ -646,7 +646,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Deletes a network manager.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -661,7 +661,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Deletes a network manager.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param force Deletes the resource even if it is part of a deployed configuration. If the configuration has been
@@ -678,7 +678,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Patch NetworkManager.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param parameters Parameters supplied to specify which network manager is.
@@ -711,7 +711,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.patch(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -721,7 +721,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Patch NetworkManager.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param parameters Parameters supplied to specify which network manager is.
@@ -755,7 +755,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.patch(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -764,7 +764,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Patch NetworkManager.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param parameters Parameters supplied to specify which network manager is.
@@ -782,7 +782,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Patch NetworkManager.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param parameters Parameters supplied to specify which network manager is.
@@ -800,7 +800,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Patch NetworkManager.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param parameters Parameters supplied to specify which network manager is.
@@ -816,7 +816,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
 
     /**
      * List all network managers in a subscription.
-     * 
+     *
      * @param top An optional query parameter which specifies the maximum number of records to be returned by the
      * server.
      * @param skipToken SkipToken is only used if a previous operation returned a partial result. If a previous response
@@ -838,7 +838,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion,
@@ -850,7 +850,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
 
     /**
      * List all network managers in a subscription.
-     * 
+     *
      * @param top An optional query parameter which specifies the maximum number of records to be returned by the
      * server.
      * @param skipToken SkipToken is only used if a previous operation returned a partial result. If a previous response
@@ -874,7 +874,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -886,7 +886,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
 
     /**
      * List all network managers in a subscription.
-     * 
+     *
      * @param top An optional query parameter which specifies the maximum number of records to be returned by the
      * server.
      * @param skipToken SkipToken is only used if a previous operation returned a partial result. If a previous response
@@ -905,7 +905,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
 
     /**
      * List all network managers in a subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list NetworkManager as paginated response with {@link PagedFlux}.
@@ -920,7 +920,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
 
     /**
      * List all network managers in a subscription.
-     * 
+     *
      * @param top An optional query parameter which specifies the maximum number of records to be returned by the
      * server.
      * @param skipToken SkipToken is only used if a previous operation returned a partial result. If a previous response
@@ -940,7 +940,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
 
     /**
      * List all network managers in a subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list NetworkManager as paginated response with {@link PagedIterable}.
@@ -954,7 +954,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
 
     /**
      * List all network managers in a subscription.
-     * 
+     *
      * @param top An optional query parameter which specifies the maximum number of records to be returned by the
      * server.
      * @param skipToken SkipToken is only used if a previous operation returned a partial result. If a previous response
@@ -973,7 +973,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
 
     /**
      * List network managers in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param top An optional query parameter which specifies the maximum number of records to be returned by the
      * server.
@@ -1001,7 +1001,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(),
@@ -1013,7 +1013,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
 
     /**
      * List network managers in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param top An optional query parameter which specifies the maximum number of records to be returned by the
      * server.
@@ -1042,7 +1042,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1054,7 +1054,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
 
     /**
      * List network managers in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param top An optional query parameter which specifies the maximum number of records to be returned by the
      * server.
@@ -1075,7 +1075,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
 
     /**
      * List network managers in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1092,7 +1092,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
 
     /**
      * List network managers in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param top An optional query parameter which specifies the maximum number of records to be returned by the
      * server.
@@ -1114,7 +1114,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
 
     /**
      * List network managers in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1130,7 +1130,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
 
     /**
      * List network managers in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param top An optional query parameter which specifies the maximum number of records to be returned by the
      * server.
@@ -1151,7 +1151,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1179,7 +1179,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1207,7 +1207,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1233,7 +1233,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

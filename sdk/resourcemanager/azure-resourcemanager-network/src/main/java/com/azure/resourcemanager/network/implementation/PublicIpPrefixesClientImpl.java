@@ -60,7 +60,7 @@ public final class PublicIpPrefixesClientImpl implements InnerSupportsGet<Public
 
     /**
      * Initializes an instance of PublicIpPrefixesClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     PublicIpPrefixesClientImpl(NetworkManagementClientImpl client) {
@@ -151,7 +151,7 @@ public final class PublicIpPrefixesClientImpl implements InnerSupportsGet<Public
 
     /**
      * Deletes the specified public IP prefix.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpPrefixName The name of the PublicIpPrefix.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -178,7 +178,7 @@ public final class PublicIpPrefixesClientImpl implements InnerSupportsGet<Public
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, publicIpPrefixName,
@@ -188,7 +188,7 @@ public final class PublicIpPrefixesClientImpl implements InnerSupportsGet<Public
 
     /**
      * Deletes the specified public IP prefix.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpPrefixName The name of the PublicIpPrefix.
      * @param context The context to associate with this operation.
@@ -216,7 +216,7 @@ public final class PublicIpPrefixesClientImpl implements InnerSupportsGet<Public
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, publicIpPrefixName, apiVersion,
@@ -225,7 +225,7 @@ public final class PublicIpPrefixesClientImpl implements InnerSupportsGet<Public
 
     /**
      * Deletes the specified public IP prefix.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpPrefixName The name of the PublicIpPrefix.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -242,7 +242,7 @@ public final class PublicIpPrefixesClientImpl implements InnerSupportsGet<Public
 
     /**
      * Deletes the specified public IP prefix.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpPrefixName The name of the PublicIpPrefix.
      * @param context The context to associate with this operation.
@@ -262,7 +262,7 @@ public final class PublicIpPrefixesClientImpl implements InnerSupportsGet<Public
 
     /**
      * Deletes the specified public IP prefix.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpPrefixName The name of the PublicIpPrefix.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -277,7 +277,7 @@ public final class PublicIpPrefixesClientImpl implements InnerSupportsGet<Public
 
     /**
      * Deletes the specified public IP prefix.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpPrefixName The name of the PublicIpPrefix.
      * @param context The context to associate with this operation.
@@ -294,7 +294,7 @@ public final class PublicIpPrefixesClientImpl implements InnerSupportsGet<Public
 
     /**
      * Deletes the specified public IP prefix.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpPrefixName The name of the PublicIpPrefix.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -310,7 +310,7 @@ public final class PublicIpPrefixesClientImpl implements InnerSupportsGet<Public
 
     /**
      * Deletes the specified public IP prefix.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpPrefixName The name of the PublicIpPrefix.
      * @param context The context to associate with this operation.
@@ -327,7 +327,7 @@ public final class PublicIpPrefixesClientImpl implements InnerSupportsGet<Public
 
     /**
      * Deletes the specified public IP prefix.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpPrefixName The name of the PublicIpPrefix.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -341,7 +341,7 @@ public final class PublicIpPrefixesClientImpl implements InnerSupportsGet<Public
 
     /**
      * Deletes the specified public IP prefix.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpPrefixName The name of the PublicIpPrefix.
      * @param context The context to associate with this operation.
@@ -356,7 +356,7 @@ public final class PublicIpPrefixesClientImpl implements InnerSupportsGet<Public
 
     /**
      * Gets the specified public IP prefix in a specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpPrefixName The name of the public IP prefix.
      * @param expand Expands referenced resources.
@@ -385,7 +385,7 @@ public final class PublicIpPrefixesClientImpl implements InnerSupportsGet<Public
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -395,7 +395,7 @@ public final class PublicIpPrefixesClientImpl implements InnerSupportsGet<Public
 
     /**
      * Gets the specified public IP prefix in a specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpPrefixName The name of the public IP prefix.
      * @param expand Expands referenced resources.
@@ -425,7 +425,7 @@ public final class PublicIpPrefixesClientImpl implements InnerSupportsGet<Public
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, publicIpPrefixName, apiVersion,
@@ -434,7 +434,7 @@ public final class PublicIpPrefixesClientImpl implements InnerSupportsGet<Public
 
     /**
      * Gets the specified public IP prefix in a specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpPrefixName The name of the public IP prefix.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -451,7 +451,7 @@ public final class PublicIpPrefixesClientImpl implements InnerSupportsGet<Public
 
     /**
      * Gets the specified public IP prefix in a specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpPrefixName The name of the public IP prefix.
      * @param expand Expands referenced resources.
@@ -469,7 +469,7 @@ public final class PublicIpPrefixesClientImpl implements InnerSupportsGet<Public
 
     /**
      * Gets the specified public IP prefix in a specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpPrefixName The name of the public IP prefix.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -485,7 +485,7 @@ public final class PublicIpPrefixesClientImpl implements InnerSupportsGet<Public
 
     /**
      * Creates or updates a static or dynamic public IP prefix.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpPrefixName The name of the public IP prefix.
      * @param parameters Parameters supplied to the create or update public IP prefix operation.
@@ -518,7 +518,7 @@ public final class PublicIpPrefixesClientImpl implements InnerSupportsGet<Public
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName,
@@ -528,7 +528,7 @@ public final class PublicIpPrefixesClientImpl implements InnerSupportsGet<Public
 
     /**
      * Creates or updates a static or dynamic public IP prefix.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpPrefixName The name of the public IP prefix.
      * @param parameters Parameters supplied to the create or update public IP prefix operation.
@@ -562,7 +562,7 @@ public final class PublicIpPrefixesClientImpl implements InnerSupportsGet<Public
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, publicIpPrefixName, apiVersion,
@@ -571,7 +571,7 @@ public final class PublicIpPrefixesClientImpl implements InnerSupportsGet<Public
 
     /**
      * Creates or updates a static or dynamic public IP prefix.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpPrefixName The name of the public IP prefix.
      * @param parameters Parameters supplied to the create or update public IP prefix operation.
@@ -591,7 +591,7 @@ public final class PublicIpPrefixesClientImpl implements InnerSupportsGet<Public
 
     /**
      * Creates or updates a static or dynamic public IP prefix.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpPrefixName The name of the public IP prefix.
      * @param parameters Parameters supplied to the create or update public IP prefix operation.
@@ -613,7 +613,7 @@ public final class PublicIpPrefixesClientImpl implements InnerSupportsGet<Public
 
     /**
      * Creates or updates a static or dynamic public IP prefix.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpPrefixName The name of the public IP prefix.
      * @param parameters Parameters supplied to the create or update public IP prefix operation.
@@ -630,7 +630,7 @@ public final class PublicIpPrefixesClientImpl implements InnerSupportsGet<Public
 
     /**
      * Creates or updates a static or dynamic public IP prefix.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpPrefixName The name of the public IP prefix.
      * @param parameters Parameters supplied to the create or update public IP prefix operation.
@@ -649,7 +649,7 @@ public final class PublicIpPrefixesClientImpl implements InnerSupportsGet<Public
 
     /**
      * Creates or updates a static or dynamic public IP prefix.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpPrefixName The name of the public IP prefix.
      * @param parameters Parameters supplied to the create or update public IP prefix operation.
@@ -667,7 +667,7 @@ public final class PublicIpPrefixesClientImpl implements InnerSupportsGet<Public
 
     /**
      * Creates or updates a static or dynamic public IP prefix.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpPrefixName The name of the public IP prefix.
      * @param parameters Parameters supplied to the create or update public IP prefix operation.
@@ -686,7 +686,7 @@ public final class PublicIpPrefixesClientImpl implements InnerSupportsGet<Public
 
     /**
      * Creates or updates a static or dynamic public IP prefix.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpPrefixName The name of the public IP prefix.
      * @param parameters Parameters supplied to the create or update public IP prefix operation.
@@ -703,7 +703,7 @@ public final class PublicIpPrefixesClientImpl implements InnerSupportsGet<Public
 
     /**
      * Creates or updates a static or dynamic public IP prefix.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpPrefixName The name of the public IP prefix.
      * @param parameters Parameters supplied to the create or update public IP prefix operation.
@@ -721,7 +721,7 @@ public final class PublicIpPrefixesClientImpl implements InnerSupportsGet<Public
 
     /**
      * Updates public IP prefix tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpPrefixName The name of the public IP prefix.
      * @param parameters Parameters supplied to update public IP prefix tags.
@@ -754,7 +754,7 @@ public final class PublicIpPrefixesClientImpl implements InnerSupportsGet<Public
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.updateTags(this.client.getEndpoint(), resourceGroupName, publicIpPrefixName,
@@ -764,7 +764,7 @@ public final class PublicIpPrefixesClientImpl implements InnerSupportsGet<Public
 
     /**
      * Updates public IP prefix tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpPrefixName The name of the public IP prefix.
      * @param parameters Parameters supplied to update public IP prefix tags.
@@ -798,7 +798,7 @@ public final class PublicIpPrefixesClientImpl implements InnerSupportsGet<Public
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.updateTags(this.client.getEndpoint(), resourceGroupName, publicIpPrefixName, apiVersion,
@@ -807,7 +807,7 @@ public final class PublicIpPrefixesClientImpl implements InnerSupportsGet<Public
 
     /**
      * Updates public IP prefix tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpPrefixName The name of the public IP prefix.
      * @param parameters Parameters supplied to update public IP prefix tags.
@@ -825,7 +825,7 @@ public final class PublicIpPrefixesClientImpl implements InnerSupportsGet<Public
 
     /**
      * Updates public IP prefix tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpPrefixName The name of the public IP prefix.
      * @param parameters Parameters supplied to update public IP prefix tags.
@@ -843,7 +843,7 @@ public final class PublicIpPrefixesClientImpl implements InnerSupportsGet<Public
 
     /**
      * Updates public IP prefix tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpPrefixName The name of the public IP prefix.
      * @param parameters Parameters supplied to update public IP prefix tags.
@@ -859,7 +859,7 @@ public final class PublicIpPrefixesClientImpl implements InnerSupportsGet<Public
 
     /**
      * Gets all the public IP prefixes in a subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the public IP prefixes in a subscription along with {@link PagedResponse} on successful completion of
@@ -875,7 +875,7 @@ public final class PublicIpPrefixesClientImpl implements InnerSupportsGet<Public
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -887,7 +887,7 @@ public final class PublicIpPrefixesClientImpl implements InnerSupportsGet<Public
 
     /**
      * Gets all the public IP prefixes in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -905,7 +905,7 @@ public final class PublicIpPrefixesClientImpl implements InnerSupportsGet<Public
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
@@ -915,7 +915,7 @@ public final class PublicIpPrefixesClientImpl implements InnerSupportsGet<Public
 
     /**
      * Gets all the public IP prefixes in a subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the public IP prefixes in a subscription as paginated response with {@link PagedFlux}.
@@ -927,7 +927,7 @@ public final class PublicIpPrefixesClientImpl implements InnerSupportsGet<Public
 
     /**
      * Gets all the public IP prefixes in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -942,7 +942,7 @@ public final class PublicIpPrefixesClientImpl implements InnerSupportsGet<Public
 
     /**
      * Gets all the public IP prefixes in a subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the public IP prefixes in a subscription as paginated response with {@link PagedIterable}.
@@ -954,7 +954,7 @@ public final class PublicIpPrefixesClientImpl implements InnerSupportsGet<Public
 
     /**
      * Gets all the public IP prefixes in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -968,7 +968,7 @@ public final class PublicIpPrefixesClientImpl implements InnerSupportsGet<Public
 
     /**
      * Gets all public IP prefixes in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -990,7 +990,7 @@ public final class PublicIpPrefixesClientImpl implements InnerSupportsGet<Public
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -1002,7 +1002,7 @@ public final class PublicIpPrefixesClientImpl implements InnerSupportsGet<Public
 
     /**
      * Gets all public IP prefixes in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1026,7 +1026,7 @@ public final class PublicIpPrefixesClientImpl implements InnerSupportsGet<Public
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1038,7 +1038,7 @@ public final class PublicIpPrefixesClientImpl implements InnerSupportsGet<Public
 
     /**
      * Gets all public IP prefixes in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1053,7 +1053,7 @@ public final class PublicIpPrefixesClientImpl implements InnerSupportsGet<Public
 
     /**
      * Gets all public IP prefixes in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1069,7 +1069,7 @@ public final class PublicIpPrefixesClientImpl implements InnerSupportsGet<Public
 
     /**
      * Gets all public IP prefixes in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1083,7 +1083,7 @@ public final class PublicIpPrefixesClientImpl implements InnerSupportsGet<Public
 
     /**
      * Gets all public IP prefixes in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1098,7 +1098,7 @@ public final class PublicIpPrefixesClientImpl implements InnerSupportsGet<Public
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1125,7 +1125,7 @@ public final class PublicIpPrefixesClientImpl implements InnerSupportsGet<Public
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1152,7 +1152,7 @@ public final class PublicIpPrefixesClientImpl implements InnerSupportsGet<Public
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1178,7 +1178,7 @@ public final class PublicIpPrefixesClientImpl implements InnerSupportsGet<Public
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

@@ -17,11 +17,11 @@ import java.util.Arrays;
 public final class BastionHostsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/BastionHostDeveloperPut.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/BastionHostDeveloperPut.json
      */
     /**
      * Sample code: Create Developer Bastion Host.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createDeveloperBastionHost(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -40,11 +40,11 @@ public final class BastionHostsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/BastionHostPut.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/BastionHostPut.json
      */
     /**
      * Sample code: Create Bastion Host.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createBastionHost(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -64,11 +64,11 @@ public final class BastionHostsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/BastionHostPutWithZones.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/BastionHostPutWithZones.json
      */
     /**
      * Sample code: Create Bastion Host With Zones.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createBastionHostWithZones(com.azure.resourcemanager.AzureResourceManager azure) {

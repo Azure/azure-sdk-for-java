@@ -9,12 +9,12 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class NetworkProfilesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * NetworkProfileGetWithContainerNic.json
      */
     /**
      * Sample code: Get network profile with container network interfaces.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
@@ -28,12 +28,12 @@ public final class NetworkProfilesGetByResourceGroupSamples {
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/NetworkProfileGetConfigOnly.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/NetworkProfileGetConfigOnly.
      * json
      */
     /**
      * Sample code: Get network profile.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getNetworkProfile(com.azure.resourcemanager.AzureResourceManager azure) {

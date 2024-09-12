@@ -29,14 +29,9 @@ public final class ScopeConnectionInner extends ChildResource {
     private SystemData systemData;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * A unique read-only string that changes whenever the resource is updated.
      */
-    private String id;
-
-    /*
-     * The name of the resource.
-     */
-    private String name;
+    private String etag;
 
     /*
      * The type of the resource.
@@ -44,9 +39,14 @@ public final class ScopeConnectionInner extends ChildResource {
     private String type;
 
     /*
-     * A unique read-only string that changes whenever the resource is updated.
+     * The name of the resource.
      */
-    private String etag;
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
      * Creates an instance of ScopeConnectionInner class.
@@ -56,7 +56,7 @@ public final class ScopeConnectionInner extends ChildResource {
 
     /**
      * Get the innerProperties property: The scope connection properties.
-     * 
+     *
      * @return the innerProperties value.
      */
     private ScopeConnectionProperties innerProperties() {
@@ -65,7 +65,7 @@ public final class ScopeConnectionInner extends ChildResource {
 
     /**
      * Get the systemData property: The system metadata related to this resource.
-     * 
+     *
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -73,38 +73,8 @@ public final class ScopeConnectionInner extends ChildResource {
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
-     * 
-     * @return the id value.
-     */
-    @Override
-    public String id() {
-        return this.id;
-    }
-
-    /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
-    }
-
-    /**
-     * Get the type property: The type of the resource.
-     * 
-     * @return the type value.
-     */
-    @Override
-    public String type() {
-        return this.type;
-    }
-
-    /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     * 
+     *
      * @return the etag value.
      */
     @Override
@@ -113,8 +83,38 @@ public final class ScopeConnectionInner extends ChildResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     *
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     *
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     *
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the tenantId property: Tenant ID.
-     * 
+     *
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -123,7 +123,7 @@ public final class ScopeConnectionInner extends ChildResource {
 
     /**
      * Set the tenantId property: Tenant ID.
-     * 
+     *
      * @param tenantId the tenantId value to set.
      * @return the ScopeConnectionInner object itself.
      */
@@ -137,7 +137,7 @@ public final class ScopeConnectionInner extends ChildResource {
 
     /**
      * Get the resourceId property: Resource ID.
-     * 
+     *
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -146,7 +146,7 @@ public final class ScopeConnectionInner extends ChildResource {
 
     /**
      * Set the resourceId property: Resource ID.
-     * 
+     *
      * @param resourceId the resourceId value to set.
      * @return the ScopeConnectionInner object itself.
      */
@@ -160,7 +160,7 @@ public final class ScopeConnectionInner extends ChildResource {
 
     /**
      * Get the connectionState property: Connection State.
-     * 
+     *
      * @return the connectionState value.
      */
     public ScopeConnectionState connectionState() {
@@ -169,7 +169,7 @@ public final class ScopeConnectionInner extends ChildResource {
 
     /**
      * Get the description property: A description of the scope connection.
-     * 
+     *
      * @return the description value.
      */
     public String description() {
@@ -178,7 +178,7 @@ public final class ScopeConnectionInner extends ChildResource {
 
     /**
      * Set the description property: A description of the scope connection.
-     * 
+     *
      * @param description the description value to set.
      * @return the ScopeConnectionInner object itself.
      */
@@ -192,12 +192,11 @@ public final class ScopeConnectionInner extends ChildResource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
@@ -215,7 +214,7 @@ public final class ScopeConnectionInner extends ChildResource {
 
     /**
      * Reads an instance of ScopeConnectionInner from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of ScopeConnectionInner if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.

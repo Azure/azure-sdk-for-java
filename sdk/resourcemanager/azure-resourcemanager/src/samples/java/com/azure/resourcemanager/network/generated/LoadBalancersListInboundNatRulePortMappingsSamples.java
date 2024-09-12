@@ -11,12 +11,12 @@ import com.azure.resourcemanager.network.models.QueryInboundNatRulePortMappingRe
  */
 public final class LoadBalancersListInboundNatRulePortMappingsSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * QueryInboundNatRulePortMapping.json
      */
     /**
      * Sample code: Query inbound NAT rule port mapping.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void queryInboundNATRulePortMapping(com.azure.resourcemanager.AzureResourceManager azure) {

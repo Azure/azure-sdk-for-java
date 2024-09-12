@@ -25,11 +25,11 @@ import java.util.Map;
 public final class VpnGatewaysCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/VpnGatewayPut.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/VpnGatewayPut.json
      */
     /**
      * Sample code: VpnGatewayPut.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void vpnGatewayPut(com.azure.resourcemanager.AzureResourceManager azure) {

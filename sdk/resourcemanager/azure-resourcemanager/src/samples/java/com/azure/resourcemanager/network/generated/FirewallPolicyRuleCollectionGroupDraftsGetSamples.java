@@ -9,12 +9,12 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class FirewallPolicyRuleCollectionGroupDraftsGetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * FirewallPolicyRuleCollectionGroupDraftGet.json
      */
     /**
      * Sample code: get rule collection group draft.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getRuleCollectionGroupDraft(com.azure.resourcemanager.AzureResourceManager azure) {

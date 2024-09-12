@@ -10,11 +10,11 @@ package com.azure.resourcemanager.network.generated;
 public final class ExpressRouteCircuitsGetStatsSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/ExpressRouteCircuitStats.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/ExpressRouteCircuitStats.json
      */
     /**
      * Sample code: Get ExpressRoute Circuit Traffic Stats.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getExpressRouteCircuitTrafficStats(com.azure.resourcemanager.AzureResourceManager azure) {

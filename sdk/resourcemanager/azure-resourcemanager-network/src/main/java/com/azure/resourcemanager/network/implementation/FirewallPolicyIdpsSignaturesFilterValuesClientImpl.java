@@ -45,7 +45,7 @@ public final class FirewallPolicyIdpsSignaturesFilterValuesClientImpl
 
     /**
      * Initializes an instance of FirewallPolicyIdpsSignaturesFilterValuesClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     FirewallPolicyIdpsSignaturesFilterValuesClientImpl(NetworkManagementClientImpl client) {
@@ -75,7 +75,7 @@ public final class FirewallPolicyIdpsSignaturesFilterValuesClientImpl
 
     /**
      * Retrieves the current filter values for the signatures overrides.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @param parameters The parameters parameter.
@@ -109,7 +109,7 @@ public final class FirewallPolicyIdpsSignaturesFilterValuesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), resourceGroupName, firewallPolicyName,
@@ -119,7 +119,7 @@ public final class FirewallPolicyIdpsSignaturesFilterValuesClientImpl
 
     /**
      * Retrieves the current filter values for the signatures overrides.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @param parameters The parameters parameter.
@@ -154,7 +154,7 @@ public final class FirewallPolicyIdpsSignaturesFilterValuesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), resourceGroupName, firewallPolicyName,
@@ -163,7 +163,7 @@ public final class FirewallPolicyIdpsSignaturesFilterValuesClientImpl
 
     /**
      * Retrieves the current filter values for the signatures overrides.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @param parameters The parameters parameter.
@@ -182,7 +182,7 @@ public final class FirewallPolicyIdpsSignaturesFilterValuesClientImpl
 
     /**
      * Retrieves the current filter values for the signatures overrides.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @param parameters The parameters parameter.
@@ -200,7 +200,7 @@ public final class FirewallPolicyIdpsSignaturesFilterValuesClientImpl
 
     /**
      * Retrieves the current filter values for the signatures overrides.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @param parameters The parameters parameter.

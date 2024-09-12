@@ -12,12 +12,12 @@ import java.util.Arrays;
  */
 public final class P2SVpnGatewaysDisconnectP2SVpnConnectionsSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * P2sVpnGatewaysDisconnectP2sVpnConnections.json
      */
     /**
      * Sample code: Disconnect VpnConnections from P2sVpn Gateway.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void disconnectVpnConnectionsFromP2sVpnGateway(com.azure.resourcemanager.AzureResourceManager azure) {

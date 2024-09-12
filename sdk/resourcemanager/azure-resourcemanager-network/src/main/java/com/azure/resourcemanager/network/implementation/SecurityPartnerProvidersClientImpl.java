@@ -60,7 +60,7 @@ public final class SecurityPartnerProvidersClientImpl implements InnerSupportsGe
 
     /**
      * Initializes an instance of SecurityPartnerProvidersClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     SecurityPartnerProvidersClientImpl(NetworkManagementClientImpl client) {
@@ -153,7 +153,7 @@ public final class SecurityPartnerProvidersClientImpl implements InnerSupportsGe
 
     /**
      * Deletes the specified Security Partner Provider.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param securityPartnerProviderName The name of the Security Partner Provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -180,7 +180,7 @@ public final class SecurityPartnerProvidersClientImpl implements InnerSupportsGe
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName,
@@ -190,7 +190,7 @@ public final class SecurityPartnerProvidersClientImpl implements InnerSupportsGe
 
     /**
      * Deletes the specified Security Partner Provider.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param securityPartnerProviderName The name of the Security Partner Provider.
      * @param context The context to associate with this operation.
@@ -218,7 +218,7 @@ public final class SecurityPartnerProvidersClientImpl implements InnerSupportsGe
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, securityPartnerProviderName, apiVersion,
@@ -227,7 +227,7 @@ public final class SecurityPartnerProvidersClientImpl implements InnerSupportsGe
 
     /**
      * Deletes the specified Security Partner Provider.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param securityPartnerProviderName The name of the Security Partner Provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -245,7 +245,7 @@ public final class SecurityPartnerProvidersClientImpl implements InnerSupportsGe
 
     /**
      * Deletes the specified Security Partner Provider.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param securityPartnerProviderName The name of the Security Partner Provider.
      * @param context The context to associate with this operation.
@@ -266,7 +266,7 @@ public final class SecurityPartnerProvidersClientImpl implements InnerSupportsGe
 
     /**
      * Deletes the specified Security Partner Provider.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param securityPartnerProviderName The name of the Security Partner Provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -282,7 +282,7 @@ public final class SecurityPartnerProvidersClientImpl implements InnerSupportsGe
 
     /**
      * Deletes the specified Security Partner Provider.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param securityPartnerProviderName The name of the Security Partner Provider.
      * @param context The context to associate with this operation.
@@ -299,7 +299,7 @@ public final class SecurityPartnerProvidersClientImpl implements InnerSupportsGe
 
     /**
      * Deletes the specified Security Partner Provider.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param securityPartnerProviderName The name of the Security Partner Provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -315,7 +315,7 @@ public final class SecurityPartnerProvidersClientImpl implements InnerSupportsGe
 
     /**
      * Deletes the specified Security Partner Provider.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param securityPartnerProviderName The name of the Security Partner Provider.
      * @param context The context to associate with this operation.
@@ -332,7 +332,7 @@ public final class SecurityPartnerProvidersClientImpl implements InnerSupportsGe
 
     /**
      * Deletes the specified Security Partner Provider.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param securityPartnerProviderName The name of the Security Partner Provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -346,7 +346,7 @@ public final class SecurityPartnerProvidersClientImpl implements InnerSupportsGe
 
     /**
      * Deletes the specified Security Partner Provider.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param securityPartnerProviderName The name of the Security Partner Provider.
      * @param context The context to associate with this operation.
@@ -361,7 +361,7 @@ public final class SecurityPartnerProvidersClientImpl implements InnerSupportsGe
 
     /**
      * Gets the specified Security Partner Provider.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param securityPartnerProviderName The name of the Security Partner Provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -389,7 +389,7 @@ public final class SecurityPartnerProvidersClientImpl implements InnerSupportsGe
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -399,7 +399,7 @@ public final class SecurityPartnerProvidersClientImpl implements InnerSupportsGe
 
     /**
      * Gets the specified Security Partner Provider.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param securityPartnerProviderName The name of the Security Partner Provider.
      * @param context The context to associate with this operation.
@@ -428,7 +428,7 @@ public final class SecurityPartnerProvidersClientImpl implements InnerSupportsGe
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, securityPartnerProviderName,
@@ -437,7 +437,7 @@ public final class SecurityPartnerProvidersClientImpl implements InnerSupportsGe
 
     /**
      * Gets the specified Security Partner Provider.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param securityPartnerProviderName The name of the Security Partner Provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -454,7 +454,7 @@ public final class SecurityPartnerProvidersClientImpl implements InnerSupportsGe
 
     /**
      * Gets the specified Security Partner Provider.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param securityPartnerProviderName The name of the Security Partner Provider.
      * @param context The context to associate with this operation.
@@ -471,7 +471,7 @@ public final class SecurityPartnerProvidersClientImpl implements InnerSupportsGe
 
     /**
      * Gets the specified Security Partner Provider.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param securityPartnerProviderName The name of the Security Partner Provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -487,7 +487,7 @@ public final class SecurityPartnerProvidersClientImpl implements InnerSupportsGe
 
     /**
      * Creates or updates the specified Security Partner Provider.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param securityPartnerProviderName The name of the Security Partner Provider.
      * @param parameters Parameters supplied to the create or update Security Partner Provider operation.
@@ -520,7 +520,7 @@ public final class SecurityPartnerProvidersClientImpl implements InnerSupportsGe
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName,
@@ -530,7 +530,7 @@ public final class SecurityPartnerProvidersClientImpl implements InnerSupportsGe
 
     /**
      * Creates or updates the specified Security Partner Provider.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param securityPartnerProviderName The name of the Security Partner Provider.
      * @param parameters Parameters supplied to the create or update Security Partner Provider operation.
@@ -564,7 +564,7 @@ public final class SecurityPartnerProvidersClientImpl implements InnerSupportsGe
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, securityPartnerProviderName,
@@ -573,7 +573,7 @@ public final class SecurityPartnerProvidersClientImpl implements InnerSupportsGe
 
     /**
      * Creates or updates the specified Security Partner Provider.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param securityPartnerProviderName The name of the Security Partner Provider.
      * @param parameters Parameters supplied to the create or update Security Partner Provider operation.
@@ -594,7 +594,7 @@ public final class SecurityPartnerProvidersClientImpl implements InnerSupportsGe
 
     /**
      * Creates or updates the specified Security Partner Provider.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param securityPartnerProviderName The name of the Security Partner Provider.
      * @param parameters Parameters supplied to the create or update Security Partner Provider operation.
@@ -618,7 +618,7 @@ public final class SecurityPartnerProvidersClientImpl implements InnerSupportsGe
 
     /**
      * Creates or updates the specified Security Partner Provider.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param securityPartnerProviderName The name of the Security Partner Provider.
      * @param parameters Parameters supplied to the create or update Security Partner Provider operation.
@@ -636,7 +636,7 @@ public final class SecurityPartnerProvidersClientImpl implements InnerSupportsGe
 
     /**
      * Creates or updates the specified Security Partner Provider.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param securityPartnerProviderName The name of the Security Partner Provider.
      * @param parameters Parameters supplied to the create or update Security Partner Provider operation.
@@ -656,7 +656,7 @@ public final class SecurityPartnerProvidersClientImpl implements InnerSupportsGe
 
     /**
      * Creates or updates the specified Security Partner Provider.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param securityPartnerProviderName The name of the Security Partner Provider.
      * @param parameters Parameters supplied to the create or update Security Partner Provider operation.
@@ -674,7 +674,7 @@ public final class SecurityPartnerProvidersClientImpl implements InnerSupportsGe
 
     /**
      * Creates or updates the specified Security Partner Provider.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param securityPartnerProviderName The name of the Security Partner Provider.
      * @param parameters Parameters supplied to the create or update Security Partner Provider operation.
@@ -693,7 +693,7 @@ public final class SecurityPartnerProvidersClientImpl implements InnerSupportsGe
 
     /**
      * Creates or updates the specified Security Partner Provider.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param securityPartnerProviderName The name of the Security Partner Provider.
      * @param parameters Parameters supplied to the create or update Security Partner Provider operation.
@@ -710,7 +710,7 @@ public final class SecurityPartnerProvidersClientImpl implements InnerSupportsGe
 
     /**
      * Creates or updates the specified Security Partner Provider.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param securityPartnerProviderName The name of the Security Partner Provider.
      * @param parameters Parameters supplied to the create or update Security Partner Provider operation.
@@ -728,7 +728,7 @@ public final class SecurityPartnerProvidersClientImpl implements InnerSupportsGe
 
     /**
      * Updates tags of a Security Partner Provider resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param securityPartnerProviderName The name of the Security Partner Provider.
      * @param parameters Parameters supplied to update Security Partner Provider tags.
@@ -761,7 +761,7 @@ public final class SecurityPartnerProvidersClientImpl implements InnerSupportsGe
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.updateTags(this.client.getEndpoint(), resourceGroupName,
@@ -771,7 +771,7 @@ public final class SecurityPartnerProvidersClientImpl implements InnerSupportsGe
 
     /**
      * Updates tags of a Security Partner Provider resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param securityPartnerProviderName The name of the Security Partner Provider.
      * @param parameters Parameters supplied to update Security Partner Provider tags.
@@ -805,7 +805,7 @@ public final class SecurityPartnerProvidersClientImpl implements InnerSupportsGe
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.updateTags(this.client.getEndpoint(), resourceGroupName, securityPartnerProviderName, apiVersion,
@@ -814,7 +814,7 @@ public final class SecurityPartnerProvidersClientImpl implements InnerSupportsGe
 
     /**
      * Updates tags of a Security Partner Provider resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param securityPartnerProviderName The name of the Security Partner Provider.
      * @param parameters Parameters supplied to update Security Partner Provider tags.
@@ -832,7 +832,7 @@ public final class SecurityPartnerProvidersClientImpl implements InnerSupportsGe
 
     /**
      * Updates tags of a Security Partner Provider resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param securityPartnerProviderName The name of the Security Partner Provider.
      * @param parameters Parameters supplied to update Security Partner Provider tags.
@@ -850,7 +850,7 @@ public final class SecurityPartnerProvidersClientImpl implements InnerSupportsGe
 
     /**
      * Updates tags of a Security Partner Provider resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param securityPartnerProviderName The name of the Security Partner Provider.
      * @param parameters Parameters supplied to update Security Partner Provider tags.
@@ -868,7 +868,7 @@ public final class SecurityPartnerProvidersClientImpl implements InnerSupportsGe
 
     /**
      * Lists all Security Partner Providers in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -891,7 +891,7 @@ public final class SecurityPartnerProvidersClientImpl implements InnerSupportsGe
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -903,7 +903,7 @@ public final class SecurityPartnerProvidersClientImpl implements InnerSupportsGe
 
     /**
      * Lists all Security Partner Providers in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -927,7 +927,7 @@ public final class SecurityPartnerProvidersClientImpl implements InnerSupportsGe
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -939,7 +939,7 @@ public final class SecurityPartnerProvidersClientImpl implements InnerSupportsGe
 
     /**
      * Lists all Security Partner Providers in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -954,7 +954,7 @@ public final class SecurityPartnerProvidersClientImpl implements InnerSupportsGe
 
     /**
      * Lists all Security Partner Providers in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -971,7 +971,7 @@ public final class SecurityPartnerProvidersClientImpl implements InnerSupportsGe
 
     /**
      * Lists all Security Partner Providers in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -986,7 +986,7 @@ public final class SecurityPartnerProvidersClientImpl implements InnerSupportsGe
 
     /**
      * Lists all Security Partner Providers in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1002,7 +1002,7 @@ public final class SecurityPartnerProvidersClientImpl implements InnerSupportsGe
 
     /**
      * Gets all the Security Partner Providers in a subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the Security Partner Providers in a subscription along with {@link PagedResponse} on successful
@@ -1018,7 +1018,7 @@ public final class SecurityPartnerProvidersClientImpl implements InnerSupportsGe
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -1030,7 +1030,7 @@ public final class SecurityPartnerProvidersClientImpl implements InnerSupportsGe
 
     /**
      * Gets all the Security Partner Providers in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1048,7 +1048,7 @@ public final class SecurityPartnerProvidersClientImpl implements InnerSupportsGe
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
@@ -1058,7 +1058,7 @@ public final class SecurityPartnerProvidersClientImpl implements InnerSupportsGe
 
     /**
      * Gets all the Security Partner Providers in a subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the Security Partner Providers in a subscription as paginated response with {@link PagedFlux}.
@@ -1070,7 +1070,7 @@ public final class SecurityPartnerProvidersClientImpl implements InnerSupportsGe
 
     /**
      * Gets all the Security Partner Providers in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1085,7 +1085,7 @@ public final class SecurityPartnerProvidersClientImpl implements InnerSupportsGe
 
     /**
      * Gets all the Security Partner Providers in a subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the Security Partner Providers in a subscription as paginated response with {@link PagedIterable}.
@@ -1097,7 +1097,7 @@ public final class SecurityPartnerProvidersClientImpl implements InnerSupportsGe
 
     /**
      * Gets all the Security Partner Providers in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1111,7 +1111,7 @@ public final class SecurityPartnerProvidersClientImpl implements InnerSupportsGe
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1139,7 +1139,7 @@ public final class SecurityPartnerProvidersClientImpl implements InnerSupportsGe
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1167,7 +1167,7 @@ public final class SecurityPartnerProvidersClientImpl implements InnerSupportsGe
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1193,7 +1193,7 @@ public final class SecurityPartnerProvidersClientImpl implements InnerSupportsGe
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

@@ -12,12 +12,12 @@ import java.util.Arrays;
  */
 public final class P2SVpnGatewaysGetP2SVpnConnectionHealthDetailedSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * P2SVpnGatewayGetConnectionHealthDetailed.json
      */
     /**
      * Sample code: P2SVpnGatewayGetConnectionHealthDetailed.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void p2SVpnGatewayGetConnectionHealthDetailed(com.azure.resourcemanager.AzureResourceManager azure) {

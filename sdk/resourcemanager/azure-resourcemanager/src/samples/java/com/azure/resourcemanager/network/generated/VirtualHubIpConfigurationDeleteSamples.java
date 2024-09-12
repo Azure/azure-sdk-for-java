@@ -9,12 +9,12 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class VirtualHubIpConfigurationDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * VirtualHubIpConfigurationDelete.json
      */
     /**
      * Sample code: VirtualHubIpConfigurationDelete.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void virtualHubIpConfigurationDelete(com.azure.resourcemanager.AzureResourceManager azure) {

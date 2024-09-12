@@ -11,6 +11,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.AzureFirewallApplicationRuleCollection;
+import com.azure.resourcemanager.network.models.AzureFirewallAutoscaleConfiguration;
 import com.azure.resourcemanager.network.models.AzureFirewallIpConfiguration;
 import com.azure.resourcemanager.network.models.AzureFirewallIpGroups;
 import com.azure.resourcemanager.network.models.AzureFirewallNatRuleCollection;
@@ -93,6 +94,11 @@ public final class AzureFirewallPropertiesFormat implements JsonSerializable<Azu
      */
     private Map<String, String> additionalProperties;
 
+    /*
+     * Properties to provide a custom autoscale configuration to this azure firewall.
+     */
+    private AzureFirewallAutoscaleConfiguration autoscaleConfiguration;
+
     /**
      * Creates an instance of AzureFirewallPropertiesFormat class.
      */
@@ -101,7 +107,7 @@ public final class AzureFirewallPropertiesFormat implements JsonSerializable<Azu
 
     /**
      * Get the applicationRuleCollections property: Collection of application rule collections used by Azure Firewall.
-     * 
+     *
      * @return the applicationRuleCollections value.
      */
     public List<AzureFirewallApplicationRuleCollection> applicationRuleCollections() {
@@ -110,7 +116,7 @@ public final class AzureFirewallPropertiesFormat implements JsonSerializable<Azu
 
     /**
      * Set the applicationRuleCollections property: Collection of application rule collections used by Azure Firewall.
-     * 
+     *
      * @param applicationRuleCollections the applicationRuleCollections value to set.
      * @return the AzureFirewallPropertiesFormat object itself.
      */
@@ -122,7 +128,7 @@ public final class AzureFirewallPropertiesFormat implements JsonSerializable<Azu
 
     /**
      * Get the natRuleCollections property: Collection of NAT rule collections used by Azure Firewall.
-     * 
+     *
      * @return the natRuleCollections value.
      */
     public List<AzureFirewallNatRuleCollection> natRuleCollections() {
@@ -131,7 +137,7 @@ public final class AzureFirewallPropertiesFormat implements JsonSerializable<Azu
 
     /**
      * Set the natRuleCollections property: Collection of NAT rule collections used by Azure Firewall.
-     * 
+     *
      * @param natRuleCollections the natRuleCollections value to set.
      * @return the AzureFirewallPropertiesFormat object itself.
      */
@@ -143,7 +149,7 @@ public final class AzureFirewallPropertiesFormat implements JsonSerializable<Azu
 
     /**
      * Get the networkRuleCollections property: Collection of network rule collections used by Azure Firewall.
-     * 
+     *
      * @return the networkRuleCollections value.
      */
     public List<AzureFirewallNetworkRuleCollection> networkRuleCollections() {
@@ -152,7 +158,7 @@ public final class AzureFirewallPropertiesFormat implements JsonSerializable<Azu
 
     /**
      * Set the networkRuleCollections property: Collection of network rule collections used by Azure Firewall.
-     * 
+     *
      * @param networkRuleCollections the networkRuleCollections value to set.
      * @return the AzureFirewallPropertiesFormat object itself.
      */
@@ -164,7 +170,7 @@ public final class AzureFirewallPropertiesFormat implements JsonSerializable<Azu
 
     /**
      * Get the ipConfigurations property: IP configuration of the Azure Firewall resource.
-     * 
+     *
      * @return the ipConfigurations value.
      */
     public List<AzureFirewallIpConfiguration> ipConfigurations() {
@@ -173,7 +179,7 @@ public final class AzureFirewallPropertiesFormat implements JsonSerializable<Azu
 
     /**
      * Set the ipConfigurations property: IP configuration of the Azure Firewall resource.
-     * 
+     *
      * @param ipConfigurations the ipConfigurations value to set.
      * @return the AzureFirewallPropertiesFormat object itself.
      */
@@ -184,7 +190,7 @@ public final class AzureFirewallPropertiesFormat implements JsonSerializable<Azu
 
     /**
      * Get the managementIpConfiguration property: IP configuration of the Azure Firewall used for management traffic.
-     * 
+     *
      * @return the managementIpConfiguration value.
      */
     public AzureFirewallIpConfiguration managementIpConfiguration() {
@@ -193,7 +199,7 @@ public final class AzureFirewallPropertiesFormat implements JsonSerializable<Azu
 
     /**
      * Set the managementIpConfiguration property: IP configuration of the Azure Firewall used for management traffic.
-     * 
+     *
      * @param managementIpConfiguration the managementIpConfiguration value to set.
      * @return the AzureFirewallPropertiesFormat object itself.
      */
@@ -205,7 +211,7 @@ public final class AzureFirewallPropertiesFormat implements JsonSerializable<Azu
 
     /**
      * Get the provisioningState property: The provisioning state of the Azure firewall resource.
-     * 
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -214,7 +220,7 @@ public final class AzureFirewallPropertiesFormat implements JsonSerializable<Azu
 
     /**
      * Get the threatIntelMode property: The operation mode for Threat Intelligence.
-     * 
+     *
      * @return the threatIntelMode value.
      */
     public AzureFirewallThreatIntelMode threatIntelMode() {
@@ -223,7 +229,7 @@ public final class AzureFirewallPropertiesFormat implements JsonSerializable<Azu
 
     /**
      * Set the threatIntelMode property: The operation mode for Threat Intelligence.
-     * 
+     *
      * @param threatIntelMode the threatIntelMode value to set.
      * @return the AzureFirewallPropertiesFormat object itself.
      */
@@ -234,7 +240,7 @@ public final class AzureFirewallPropertiesFormat implements JsonSerializable<Azu
 
     /**
      * Get the virtualHub property: The virtualHub to which the firewall belongs.
-     * 
+     *
      * @return the virtualHub value.
      */
     public SubResource virtualHub() {
@@ -243,7 +249,7 @@ public final class AzureFirewallPropertiesFormat implements JsonSerializable<Azu
 
     /**
      * Set the virtualHub property: The virtualHub to which the firewall belongs.
-     * 
+     *
      * @param virtualHub the virtualHub value to set.
      * @return the AzureFirewallPropertiesFormat object itself.
      */
@@ -254,7 +260,7 @@ public final class AzureFirewallPropertiesFormat implements JsonSerializable<Azu
 
     /**
      * Get the firewallPolicy property: The firewallPolicy associated with this azure firewall.
-     * 
+     *
      * @return the firewallPolicy value.
      */
     public SubResource firewallPolicy() {
@@ -263,7 +269,7 @@ public final class AzureFirewallPropertiesFormat implements JsonSerializable<Azu
 
     /**
      * Set the firewallPolicy property: The firewallPolicy associated with this azure firewall.
-     * 
+     *
      * @param firewallPolicy the firewallPolicy value to set.
      * @return the AzureFirewallPropertiesFormat object itself.
      */
@@ -274,7 +280,7 @@ public final class AzureFirewallPropertiesFormat implements JsonSerializable<Azu
 
     /**
      * Get the hubIpAddresses property: IP addresses associated with AzureFirewall.
-     * 
+     *
      * @return the hubIpAddresses value.
      */
     public HubIpAddresses hubIpAddresses() {
@@ -283,7 +289,7 @@ public final class AzureFirewallPropertiesFormat implements JsonSerializable<Azu
 
     /**
      * Set the hubIpAddresses property: IP addresses associated with AzureFirewall.
-     * 
+     *
      * @param hubIpAddresses the hubIpAddresses value to set.
      * @return the AzureFirewallPropertiesFormat object itself.
      */
@@ -294,7 +300,7 @@ public final class AzureFirewallPropertiesFormat implements JsonSerializable<Azu
 
     /**
      * Get the ipGroups property: IpGroups associated with AzureFirewall.
-     * 
+     *
      * @return the ipGroups value.
      */
     public List<AzureFirewallIpGroups> ipGroups() {
@@ -303,7 +309,7 @@ public final class AzureFirewallPropertiesFormat implements JsonSerializable<Azu
 
     /**
      * Get the sku property: The Azure Firewall Resource SKU.
-     * 
+     *
      * @return the sku value.
      */
     public AzureFirewallSku sku() {
@@ -312,7 +318,7 @@ public final class AzureFirewallPropertiesFormat implements JsonSerializable<Azu
 
     /**
      * Set the sku property: The Azure Firewall Resource SKU.
-     * 
+     *
      * @param sku the sku value to set.
      * @return the AzureFirewallPropertiesFormat object itself.
      */
@@ -323,7 +329,7 @@ public final class AzureFirewallPropertiesFormat implements JsonSerializable<Azu
 
     /**
      * Get the additionalProperties property: The additional properties used to further config this azure firewall.
-     * 
+     *
      * @return the additionalProperties value.
      */
     public Map<String, String> additionalProperties() {
@@ -332,7 +338,7 @@ public final class AzureFirewallPropertiesFormat implements JsonSerializable<Azu
 
     /**
      * Set the additionalProperties property: The additional properties used to further config this azure firewall.
-     * 
+     *
      * @param additionalProperties the additionalProperties value to set.
      * @return the AzureFirewallPropertiesFormat object itself.
      */
@@ -342,8 +348,31 @@ public final class AzureFirewallPropertiesFormat implements JsonSerializable<Azu
     }
 
     /**
+     * Get the autoscaleConfiguration property: Properties to provide a custom autoscale configuration to this azure
+     * firewall.
+     *
+     * @return the autoscaleConfiguration value.
+     */
+    public AzureFirewallAutoscaleConfiguration autoscaleConfiguration() {
+        return this.autoscaleConfiguration;
+    }
+
+    /**
+     * Set the autoscaleConfiguration property: Properties to provide a custom autoscale configuration to this azure
+     * firewall.
+     *
+     * @param autoscaleConfiguration the autoscaleConfiguration value to set.
+     * @return the AzureFirewallPropertiesFormat object itself.
+     */
+    public AzureFirewallPropertiesFormat
+        withAutoscaleConfiguration(AzureFirewallAutoscaleConfiguration autoscaleConfiguration) {
+        this.autoscaleConfiguration = autoscaleConfiguration;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -371,6 +400,9 @@ public final class AzureFirewallPropertiesFormat implements JsonSerializable<Azu
         if (sku() != null) {
             sku().validate();
         }
+        if (autoscaleConfiguration() != null) {
+            autoscaleConfiguration().validate();
+        }
     }
 
     /**
@@ -396,12 +428,13 @@ public final class AzureFirewallPropertiesFormat implements JsonSerializable<Azu
         jsonWriter.writeJsonField("sku", this.sku);
         jsonWriter.writeMapField("additionalProperties", this.additionalProperties,
             (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("autoscaleConfiguration", this.autoscaleConfiguration);
         return jsonWriter.writeEndObject();
     }
 
     /**
      * Reads an instance of AzureFirewallPropertiesFormat from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of AzureFirewallPropertiesFormat if the JsonReader was pointing to an instance of it, or null
      * if it was pointing to JSON null.
@@ -455,6 +488,9 @@ public final class AzureFirewallPropertiesFormat implements JsonSerializable<Azu
                 } else if ("additionalProperties".equals(fieldName)) {
                     Map<String, String> additionalProperties = reader.readMap(reader1 -> reader1.getString());
                     deserializedAzureFirewallPropertiesFormat.additionalProperties = additionalProperties;
+                } else if ("autoscaleConfiguration".equals(fieldName)) {
+                    deserializedAzureFirewallPropertiesFormat.autoscaleConfiguration
+                        = AzureFirewallAutoscaleConfiguration.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

@@ -6,6 +6,7 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -44,14 +45,14 @@ public final class PrivateEndpointInner extends Resource {
     private String id;
 
     /*
-     * The name of the resource.
-     */
-    private String name;
-
-    /*
      * The type of the resource.
      */
     private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
 
     /**
      * Creates an instance of PrivateEndpointInner class.
@@ -61,7 +62,7 @@ public final class PrivateEndpointInner extends Resource {
 
     /**
      * Get the extendedLocation property: The extended location of the load balancer.
-     * 
+     *
      * @return the extendedLocation value.
      */
     public ExtendedLocation extendedLocation() {
@@ -70,7 +71,7 @@ public final class PrivateEndpointInner extends Resource {
 
     /**
      * Set the extendedLocation property: The extended location of the load balancer.
-     * 
+     *
      * @param extendedLocation the extendedLocation value to set.
      * @return the PrivateEndpointInner object itself.
      */
@@ -81,7 +82,7 @@ public final class PrivateEndpointInner extends Resource {
 
     /**
      * Get the innerProperties property: Properties of the private endpoint.
-     * 
+     *
      * @return the innerProperties value.
      */
     private PrivateEndpointPropertiesInner innerProperties() {
@@ -90,7 +91,7 @@ public final class PrivateEndpointInner extends Resource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     * 
+     *
      * @return the etag value.
      */
     public String etag() {
@@ -99,7 +100,7 @@ public final class PrivateEndpointInner extends Resource {
 
     /**
      * Get the id property: Resource ID.
-     * 
+     *
      * @return the id value.
      */
     public String id() {
@@ -108,7 +109,7 @@ public final class PrivateEndpointInner extends Resource {
 
     /**
      * Set the id property: Resource ID.
-     * 
+     *
      * @param id the id value to set.
      * @return the PrivateEndpointInner object itself.
      */
@@ -118,23 +119,23 @@ public final class PrivateEndpointInner extends Resource {
     }
 
     /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
-    }
-
-    /**
      * Get the type property: The type of the resource.
-     * 
+     *
      * @return the type value.
      */
     @Override
     public String type() {
         return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     *
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -157,7 +158,7 @@ public final class PrivateEndpointInner extends Resource {
 
     /**
      * Get the subnet property: The ID of the subnet from which the private IP will be allocated.
-     * 
+     *
      * @return the subnet value.
      */
     public SubnetInner subnet() {
@@ -166,7 +167,7 @@ public final class PrivateEndpointInner extends Resource {
 
     /**
      * Set the subnet property: The ID of the subnet from which the private IP will be allocated.
-     * 
+     *
      * @param subnet the subnet value to set.
      * @return the PrivateEndpointInner object itself.
      */
@@ -181,7 +182,7 @@ public final class PrivateEndpointInner extends Resource {
     /**
      * Get the networkInterfaces property: An array of references to the network interfaces created for this private
      * endpoint.
-     * 
+     *
      * @return the networkInterfaces value.
      */
     public List<NetworkInterfaceInner> networkInterfaces() {
@@ -190,7 +191,7 @@ public final class PrivateEndpointInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the private endpoint resource.
-     * 
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -200,7 +201,7 @@ public final class PrivateEndpointInner extends Resource {
     /**
      * Get the privateLinkServiceConnections property: A grouping of information about the connection to the remote
      * resource.
-     * 
+     *
      * @return the privateLinkServiceConnections value.
      */
     public List<PrivateLinkServiceConnection> privateLinkServiceConnections() {
@@ -210,7 +211,7 @@ public final class PrivateEndpointInner extends Resource {
     /**
      * Set the privateLinkServiceConnections property: A grouping of information about the connection to the remote
      * resource.
-     * 
+     *
      * @param privateLinkServiceConnections the privateLinkServiceConnections value to set.
      * @return the PrivateEndpointInner object itself.
      */
@@ -226,7 +227,7 @@ public final class PrivateEndpointInner extends Resource {
     /**
      * Get the manualPrivateLinkServiceConnections property: A grouping of information about the connection to the
      * remote resource. Used when the network admin does not have access to approve connections to the remote resource.
-     * 
+     *
      * @return the manualPrivateLinkServiceConnections value.
      */
     public List<PrivateLinkServiceConnection> manualPrivateLinkServiceConnections() {
@@ -236,7 +237,7 @@ public final class PrivateEndpointInner extends Resource {
     /**
      * Set the manualPrivateLinkServiceConnections property: A grouping of information about the connection to the
      * remote resource. Used when the network admin does not have access to approve connections to the remote resource.
-     * 
+     *
      * @param manualPrivateLinkServiceConnections the manualPrivateLinkServiceConnections value to set.
      * @return the PrivateEndpointInner object itself.
      */
@@ -251,7 +252,7 @@ public final class PrivateEndpointInner extends Resource {
 
     /**
      * Get the customDnsConfigs property: An array of custom dns configurations.
-     * 
+     *
      * @return the customDnsConfigs value.
      */
     public List<CustomDnsConfigPropertiesFormat> customDnsConfigs() {
@@ -260,7 +261,7 @@ public final class PrivateEndpointInner extends Resource {
 
     /**
      * Set the customDnsConfigs property: An array of custom dns configurations.
-     * 
+     *
      * @param customDnsConfigs the customDnsConfigs value to set.
      * @return the PrivateEndpointInner object itself.
      */
@@ -275,7 +276,7 @@ public final class PrivateEndpointInner extends Resource {
     /**
      * Get the applicationSecurityGroups property: Application security groups in which the private endpoint IP
      * configuration is included.
-     * 
+     *
      * @return the applicationSecurityGroups value.
      */
     public List<ApplicationSecurityGroupInner> applicationSecurityGroups() {
@@ -285,7 +286,7 @@ public final class PrivateEndpointInner extends Resource {
     /**
      * Set the applicationSecurityGroups property: Application security groups in which the private endpoint IP
      * configuration is included.
-     * 
+     *
      * @param applicationSecurityGroups the applicationSecurityGroups value to set.
      * @return the PrivateEndpointInner object itself.
      */
@@ -301,7 +302,7 @@ public final class PrivateEndpointInner extends Resource {
     /**
      * Get the ipConfigurations property: A list of IP configurations of the private endpoint. This will be used to map
      * to the First Party Service's endpoints.
-     * 
+     *
      * @return the ipConfigurations value.
      */
     public List<PrivateEndpointIpConfiguration> ipConfigurations() {
@@ -311,7 +312,7 @@ public final class PrivateEndpointInner extends Resource {
     /**
      * Set the ipConfigurations property: A list of IP configurations of the private endpoint. This will be used to map
      * to the First Party Service's endpoints.
-     * 
+     *
      * @param ipConfigurations the ipConfigurations value to set.
      * @return the PrivateEndpointInner object itself.
      */
@@ -326,7 +327,7 @@ public final class PrivateEndpointInner extends Resource {
     /**
      * Get the customNetworkInterfaceName property: The custom name of the network interface attached to the private
      * endpoint.
-     * 
+     *
      * @return the customNetworkInterfaceName value.
      */
     public String customNetworkInterfaceName() {
@@ -336,7 +337,7 @@ public final class PrivateEndpointInner extends Resource {
     /**
      * Set the customNetworkInterfaceName property: The custom name of the network interface attached to the private
      * endpoint.
-     * 
+     *
      * @param customNetworkInterfaceName the customNetworkInterfaceName value to set.
      * @return the PrivateEndpointInner object itself.
      */
@@ -350,7 +351,7 @@ public final class PrivateEndpointInner extends Resource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -360,7 +361,13 @@ public final class PrivateEndpointInner extends Resource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+        if (location() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property location in model PrivateEndpointInner"));
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PrivateEndpointInner.class);
 
     /**
      * {@inheritDoc}
@@ -378,7 +385,7 @@ public final class PrivateEndpointInner extends Resource {
 
     /**
      * Reads an instance of PrivateEndpointInner from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of PrivateEndpointInner if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.

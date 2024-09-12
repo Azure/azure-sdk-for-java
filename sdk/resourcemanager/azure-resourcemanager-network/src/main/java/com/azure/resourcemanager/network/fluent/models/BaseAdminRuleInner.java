@@ -31,14 +31,9 @@ public class BaseAdminRuleInner extends ChildResource {
     private SystemData systemData;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * A unique read-only string that changes whenever the resource is updated.
      */
-    private String id;
-
-    /*
-     * The name of the resource.
-     */
-    private String name;
+    private String etag;
 
     /*
      * The type of the resource.
@@ -46,9 +41,14 @@ public class BaseAdminRuleInner extends ChildResource {
     private String type;
 
     /*
-     * A unique read-only string that changes whenever the resource is updated.
+     * The name of the resource.
      */
-    private String etag;
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
      * Creates an instance of BaseAdminRuleInner class.
@@ -58,7 +58,7 @@ public class BaseAdminRuleInner extends ChildResource {
 
     /**
      * Get the kind property: Whether the rule is custom or default.
-     * 
+     *
      * @return the kind value.
      */
     public AdminRuleKind kind() {
@@ -67,7 +67,7 @@ public class BaseAdminRuleInner extends ChildResource {
 
     /**
      * Get the systemData property: The system metadata related to this resource.
-     * 
+     *
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -76,7 +76,7 @@ public class BaseAdminRuleInner extends ChildResource {
 
     /**
      * Set the systemData property: The system metadata related to this resource.
-     * 
+     *
      * @param systemData the systemData value to set.
      * @return the BaseAdminRuleInner object itself.
      */
@@ -86,38 +86,8 @@ public class BaseAdminRuleInner extends ChildResource {
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
-     * 
-     * @return the id value.
-     */
-    @Override
-    public String id() {
-        return this.id;
-    }
-
-    /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
-    }
-
-    /**
-     * Get the type property: The type of the resource.
-     * 
-     * @return the type value.
-     */
-    @Override
-    public String type() {
-        return this.type;
-    }
-
-    /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     * 
+     *
      * @return the etag value.
      */
     @Override
@@ -126,13 +96,42 @@ public class BaseAdminRuleInner extends ChildResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     *
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     *
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     *
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**
@@ -147,7 +146,7 @@ public class BaseAdminRuleInner extends ChildResource {
 
     /**
      * Reads an instance of BaseAdminRuleInner from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of BaseAdminRuleInner if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.

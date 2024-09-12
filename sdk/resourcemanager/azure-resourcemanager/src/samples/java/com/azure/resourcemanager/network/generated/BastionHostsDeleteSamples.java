@@ -10,12 +10,12 @@ package com.azure.resourcemanager.network.generated;
 public final class BastionHostsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/BastionHostDeveloperDelete.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/BastionHostDeveloperDelete.
      * json
      */
     /**
      * Sample code: Delete Developer Bastion Host.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void deleteDeveloperBastionHost(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -28,11 +28,11 @@ public final class BastionHostsDeleteSamples {
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/BastionHostDelete.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/BastionHostDelete.json
      */
     /**
      * Sample code: Delete Bastion Host.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void deleteBastionHost(com.azure.resourcemanager.AzureResourceManager azure) {

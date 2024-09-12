@@ -10,11 +10,11 @@ package com.azure.resourcemanager.network.generated;
 public final class NatGatewaysGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/NatGatewayGet.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/NatGatewayGet.json
      */
     /**
      * Sample code: Get nat gateway.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getNatGateway(com.azure.resourcemanager.AzureResourceManager azure) {

@@ -9,12 +9,12 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ExpressRoutePortAuthorizationsDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * ExpressRoutePortAuthorizationDelete.json
      */
     /**
      * Sample code: Delete ExpressRoutePort Authorization.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void deleteExpressRoutePortAuthorization(com.azure.resourcemanager.AzureResourceManager azure) {

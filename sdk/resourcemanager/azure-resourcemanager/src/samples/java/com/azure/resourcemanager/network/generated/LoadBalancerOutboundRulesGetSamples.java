@@ -10,12 +10,12 @@ package com.azure.resourcemanager.network.generated;
 public final class LoadBalancerOutboundRulesGetSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/LoadBalancerOutboundRuleGet.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/LoadBalancerOutboundRuleGet.
      * json
      */
     /**
      * Sample code: LoadBalancerOutboundRuleGet.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void loadBalancerOutboundRuleGet(com.azure.resourcemanager.AzureResourceManager azure) {

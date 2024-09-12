@@ -10,11 +10,11 @@ package com.azure.resourcemanager.network.generated;
 public final class NetworkWatchersListByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/NetworkWatcherList.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/NetworkWatcherList.json
      */
     /**
      * Sample code: List network watchers.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listNetworkWatchers(com.azure.resourcemanager.AzureResourceManager azure) {

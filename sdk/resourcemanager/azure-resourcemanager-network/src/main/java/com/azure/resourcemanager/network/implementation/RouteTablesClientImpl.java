@@ -60,7 +60,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
 
     /**
      * Initializes an instance of RouteTablesClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     RouteTablesClientImpl(NetworkManagementClientImpl client) {
@@ -149,7 +149,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
 
     /**
      * Deletes the specified route table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -174,7 +174,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, routeTableName,
@@ -184,7 +184,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
 
     /**
      * Deletes the specified route table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param context The context to associate with this operation.
@@ -211,7 +211,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, routeTableName, apiVersion,
@@ -220,7 +220,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
 
     /**
      * Deletes the specified route table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -237,7 +237,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
 
     /**
      * Deletes the specified route table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param context The context to associate with this operation.
@@ -257,7 +257,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
 
     /**
      * Deletes the specified route table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -272,7 +272,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
 
     /**
      * Deletes the specified route table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param context The context to associate with this operation.
@@ -289,7 +289,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
 
     /**
      * Deletes the specified route table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -305,7 +305,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
 
     /**
      * Deletes the specified route table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param context The context to associate with this operation.
@@ -322,7 +322,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
 
     /**
      * Deletes the specified route table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -336,7 +336,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
 
     /**
      * Deletes the specified route table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param context The context to associate with this operation.
@@ -351,7 +351,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
 
     /**
      * Gets the specified route table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param expand Expands referenced resources.
@@ -378,7 +378,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -388,7 +388,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
 
     /**
      * Gets the specified route table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param expand Expands referenced resources.
@@ -416,7 +416,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, routeTableName, apiVersion,
@@ -425,7 +425,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
 
     /**
      * Gets the specified route table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -442,7 +442,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
 
     /**
      * Gets the specified route table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param expand Expands referenced resources.
@@ -460,7 +460,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
 
     /**
      * Gets the specified route table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -476,7 +476,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
 
     /**
      * Create or updates a route table in a specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param parameters Parameters supplied to the create or update route table operation.
@@ -508,7 +508,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, routeTableName,
@@ -518,7 +518,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
 
     /**
      * Create or updates a route table in a specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param parameters Parameters supplied to the create or update route table operation.
@@ -551,7 +551,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, routeTableName, apiVersion,
@@ -560,7 +560,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
 
     /**
      * Create or updates a route table in a specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param parameters Parameters supplied to the create or update route table operation.
@@ -580,7 +580,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
 
     /**
      * Create or updates a route table in a specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param parameters Parameters supplied to the create or update route table operation.
@@ -602,7 +602,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
 
     /**
      * Create or updates a route table in a specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param parameters Parameters supplied to the create or update route table operation.
@@ -619,7 +619,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
 
     /**
      * Create or updates a route table in a specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param parameters Parameters supplied to the create or update route table operation.
@@ -637,7 +637,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
 
     /**
      * Create or updates a route table in a specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param parameters Parameters supplied to the create or update route table operation.
@@ -655,7 +655,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
 
     /**
      * Create or updates a route table in a specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param parameters Parameters supplied to the create or update route table operation.
@@ -674,7 +674,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
 
     /**
      * Create or updates a route table in a specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param parameters Parameters supplied to the create or update route table operation.
@@ -690,7 +690,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
 
     /**
      * Create or updates a route table in a specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param parameters Parameters supplied to the create or update route table operation.
@@ -708,7 +708,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
 
     /**
      * Updates a route table tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param parameters Parameters supplied to update route table tags.
@@ -740,7 +740,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.updateTags(this.client.getEndpoint(), resourceGroupName, routeTableName,
@@ -750,7 +750,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
 
     /**
      * Updates a route table tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param parameters Parameters supplied to update route table tags.
@@ -783,7 +783,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.updateTags(this.client.getEndpoint(), resourceGroupName, routeTableName, apiVersion,
@@ -792,7 +792,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
 
     /**
      * Updates a route table tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param parameters Parameters supplied to update route table tags.
@@ -810,7 +810,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
 
     /**
      * Updates a route table tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param parameters Parameters supplied to update route table tags.
@@ -828,7 +828,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
 
     /**
      * Updates a route table tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param parameters Parameters supplied to update route table tags.
@@ -844,7 +844,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
 
     /**
      * Gets all route tables in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -866,7 +866,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -878,7 +878,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
 
     /**
      * Gets all route tables in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -902,7 +902,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -914,7 +914,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
 
     /**
      * Gets all route tables in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -929,7 +929,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
 
     /**
      * Gets all route tables in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -945,7 +945,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
 
     /**
      * Gets all route tables in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -959,7 +959,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
 
     /**
      * Gets all route tables in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -974,7 +974,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
 
     /**
      * Gets all route tables in a subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all route tables in a subscription along with {@link PagedResponse} on successful completion of
@@ -990,7 +990,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -1002,7 +1002,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
 
     /**
      * Gets all route tables in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1020,7 +1020,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
@@ -1030,7 +1030,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
 
     /**
      * Gets all route tables in a subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all route tables in a subscription as paginated response with {@link PagedFlux}.
@@ -1042,7 +1042,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
 
     /**
      * Gets all route tables in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1057,7 +1057,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
 
     /**
      * Gets all route tables in a subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all route tables in a subscription as paginated response with {@link PagedIterable}.
@@ -1069,7 +1069,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
 
     /**
      * Gets all route tables in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1083,7 +1083,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1109,7 +1109,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1136,7 +1136,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1163,7 +1163,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

@@ -35,14 +35,9 @@ public final class ConnectivityConfigurationInner extends ChildResource {
     private SystemData systemData;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * A unique read-only string that changes whenever the resource is updated.
      */
-    private String id;
-
-    /*
-     * The name of the resource.
-     */
-    private String name;
+    private String etag;
 
     /*
      * The type of the resource.
@@ -50,9 +45,14 @@ public final class ConnectivityConfigurationInner extends ChildResource {
     private String type;
 
     /*
-     * A unique read-only string that changes whenever the resource is updated.
+     * The name of the resource.
      */
-    private String etag;
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
      * Creates an instance of ConnectivityConfigurationInner class.
@@ -62,7 +62,7 @@ public final class ConnectivityConfigurationInner extends ChildResource {
 
     /**
      * Get the innerProperties property: Properties of a network manager connectivity configuration.
-     * 
+     *
      * @return the innerProperties value.
      */
     private ConnectivityConfigurationProperties innerProperties() {
@@ -71,7 +71,7 @@ public final class ConnectivityConfigurationInner extends ChildResource {
 
     /**
      * Get the systemData property: The system metadata related to this resource.
-     * 
+     *
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -79,38 +79,8 @@ public final class ConnectivityConfigurationInner extends ChildResource {
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
-     * 
-     * @return the id value.
-     */
-    @Override
-    public String id() {
-        return this.id;
-    }
-
-    /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
-    }
-
-    /**
-     * Get the type property: The type of the resource.
-     * 
-     * @return the type value.
-     */
-    @Override
-    public String type() {
-        return this.type;
-    }
-
-    /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     * 
+     *
      * @return the etag value.
      */
     @Override
@@ -119,8 +89,38 @@ public final class ConnectivityConfigurationInner extends ChildResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     *
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     *
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     *
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the description property: A description of the connectivity configuration.
-     * 
+     *
      * @return the description value.
      */
     public String description() {
@@ -129,7 +129,7 @@ public final class ConnectivityConfigurationInner extends ChildResource {
 
     /**
      * Set the description property: A description of the connectivity configuration.
-     * 
+     *
      * @param description the description value to set.
      * @return the ConnectivityConfigurationInner object itself.
      */
@@ -143,7 +143,7 @@ public final class ConnectivityConfigurationInner extends ChildResource {
 
     /**
      * Get the connectivityTopology property: Connectivity topology type.
-     * 
+     *
      * @return the connectivityTopology value.
      */
     public ConnectivityTopology connectivityTopology() {
@@ -152,7 +152,7 @@ public final class ConnectivityConfigurationInner extends ChildResource {
 
     /**
      * Set the connectivityTopology property: Connectivity topology type.
-     * 
+     *
      * @param connectivityTopology the connectivityTopology value to set.
      * @return the ConnectivityConfigurationInner object itself.
      */
@@ -166,7 +166,7 @@ public final class ConnectivityConfigurationInner extends ChildResource {
 
     /**
      * Get the hubs property: List of hubItems.
-     * 
+     *
      * @return the hubs value.
      */
     public List<Hub> hubs() {
@@ -175,7 +175,7 @@ public final class ConnectivityConfigurationInner extends ChildResource {
 
     /**
      * Set the hubs property: List of hubItems.
-     * 
+     *
      * @param hubs the hubs value to set.
      * @return the ConnectivityConfigurationInner object itself.
      */
@@ -189,7 +189,7 @@ public final class ConnectivityConfigurationInner extends ChildResource {
 
     /**
      * Get the isGlobal property: Flag if global mesh is supported.
-     * 
+     *
      * @return the isGlobal value.
      */
     public IsGlobal isGlobal() {
@@ -198,7 +198,7 @@ public final class ConnectivityConfigurationInner extends ChildResource {
 
     /**
      * Set the isGlobal property: Flag if global mesh is supported.
-     * 
+     *
      * @param isGlobal the isGlobal value to set.
      * @return the ConnectivityConfigurationInner object itself.
      */
@@ -212,7 +212,7 @@ public final class ConnectivityConfigurationInner extends ChildResource {
 
     /**
      * Get the appliesToGroups property: Groups for configuration.
-     * 
+     *
      * @return the appliesToGroups value.
      */
     public List<ConnectivityGroupItem> appliesToGroups() {
@@ -221,7 +221,7 @@ public final class ConnectivityConfigurationInner extends ChildResource {
 
     /**
      * Set the appliesToGroups property: Groups for configuration.
-     * 
+     *
      * @param appliesToGroups the appliesToGroups value to set.
      * @return the ConnectivityConfigurationInner object itself.
      */
@@ -235,7 +235,7 @@ public final class ConnectivityConfigurationInner extends ChildResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the connectivity configuration resource.
-     * 
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -244,7 +244,7 @@ public final class ConnectivityConfigurationInner extends ChildResource {
 
     /**
      * Get the deleteExistingPeering property: Flag if need to remove current existing peerings.
-     * 
+     *
      * @return the deleteExistingPeering value.
      */
     public DeleteExistingPeering deleteExistingPeering() {
@@ -253,7 +253,7 @@ public final class ConnectivityConfigurationInner extends ChildResource {
 
     /**
      * Set the deleteExistingPeering property: Flag if need to remove current existing peerings.
-     * 
+     *
      * @param deleteExistingPeering the deleteExistingPeering value to set.
      * @return the ConnectivityConfigurationInner object itself.
      */
@@ -267,7 +267,7 @@ public final class ConnectivityConfigurationInner extends ChildResource {
 
     /**
      * Get the resourceGuid property: Unique identifier for this resource.
-     * 
+     *
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -276,12 +276,11 @@ public final class ConnectivityConfigurationInner extends ChildResource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
@@ -299,7 +298,7 @@ public final class ConnectivityConfigurationInner extends ChildResource {
 
     /**
      * Reads an instance of ConnectivityConfigurationInner from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of ConnectivityConfigurationInner if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.

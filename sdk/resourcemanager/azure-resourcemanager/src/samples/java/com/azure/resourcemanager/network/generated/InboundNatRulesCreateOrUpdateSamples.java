@@ -14,11 +14,11 @@ import com.azure.resourcemanager.network.models.TransportProtocol;
 public final class InboundNatRulesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/InboundNatRuleCreate.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/InboundNatRuleCreate.json
      */
     /**
      * Sample code: InboundNatRuleCreate.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void inboundNatRuleCreate(com.azure.resourcemanager.AzureResourceManager azure) {

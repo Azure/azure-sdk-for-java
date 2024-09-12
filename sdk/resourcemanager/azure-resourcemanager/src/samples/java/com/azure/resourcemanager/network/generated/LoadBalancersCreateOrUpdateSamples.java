@@ -35,12 +35,12 @@ import java.util.Arrays;
  */
 public final class LoadBalancersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * LoadBalancerCreateWithSyncModePropertyOnPool.json
      */
     /**
      * Sample code: Create load balancer with Sync Mode Property on Pool.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
@@ -91,12 +91,12 @@ public final class LoadBalancersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * LoadBalancerCreateGatewayLoadBalancerProviderWithTwoBackendPool.json
      */
     /**
      * Sample code: Create load balancer with Gateway Load Balancer Provider configured with two Backend Pool.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createLoadBalancerWithGatewayLoadBalancerProviderConfiguredWithTwoBackendPool(
@@ -140,12 +140,12 @@ public final class LoadBalancersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * LoadBalancerCreateWithInboundNatPool.json
      */
     /**
      * Sample code: Create load balancer with inbound nat pool.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createLoadBalancerWithInboundNatPool(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -183,12 +183,12 @@ public final class LoadBalancersCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/LoadBalancerCreateWithZones.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/LoadBalancerCreateWithZones.
      * json
      */
     /**
      * Sample code: Create load balancer with Frontend IP in Zone 1.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createLoadBalancerWithFrontendIPInZone1(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -236,12 +236,12 @@ public final class LoadBalancersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * LoadBalancerCreateWithOutboundRules.json
      */
     /**
      * Sample code: Create load balancer with outbound rules.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createLoadBalancerWithOutboundRules(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -295,12 +295,12 @@ public final class LoadBalancersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * LoadBalancerCreateGatewayLoadBalancerProviderWithOneBackendPool.json
      */
     /**
      * Sample code: Create load balancer with Gateway Load Balancer Provider configured with one Backend Pool.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createLoadBalancerWithGatewayLoadBalancerProviderConfiguredWithOneBackendPool(
@@ -350,11 +350,11 @@ public final class LoadBalancersCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/LoadBalancerCreate.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/LoadBalancerCreate.json
      */
     /**
      * Sample code: Create load balancer.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createLoadBalancer(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -402,12 +402,12 @@ public final class LoadBalancersCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/LoadBalancerCreateGlobalTier.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/LoadBalancerCreateGlobalTier.
      * json
      */
     /**
      * Sample code: Create load balancer with Global Tier and one regional load balancer in its backend pool.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createLoadBalancerWithGlobalTierAndOneRegionalLoadBalancerInItsBackendPool(
@@ -451,12 +451,12 @@ public final class LoadBalancersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * LoadBalancerCreateGatewayLoadBalancerConsumer.json
      */
     /**
      * Sample code: Create load balancer with Gateway Load Balancer Consumer configured.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createLoadBalancerWithGatewayLoadBalancerConsumerConfigured(
@@ -507,12 +507,12 @@ public final class LoadBalancersCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/LoadBalancerCreateStandardSku
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/LoadBalancerCreateStandardSku
      * .json
      */
     /**
      * Sample code: Create load balancer with Standard SKU.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createLoadBalancerWithStandardSKU(com.azure.resourcemanager.AzureResourceManager azure) {

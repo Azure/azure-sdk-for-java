@@ -14,12 +14,12 @@ import java.util.Arrays;
  */
 public final class VirtualNetworkPeeringsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * VirtualNetworkSubnetPeeringSync.json
      */
     /**
      * Sample code: Sync subnet Peering.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void syncSubnetPeering(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -39,12 +39,12 @@ public final class VirtualNetworkPeeringsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * VirtualNetworkV6SubnetPeeringCreate.json
      */
     /**
      * Sample code: Create V6 Subnet peering.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createV6SubnetPeering(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -67,12 +67,12 @@ public final class VirtualNetworkPeeringsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/VirtualNetworkPeeringSync.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/VirtualNetworkPeeringSync.
      * json
      */
     /**
      * Sample code: Sync Peering.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void syncPeering(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -92,12 +92,12 @@ public final class VirtualNetworkPeeringsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/VirtualNetworkPeeringCreate.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/VirtualNetworkPeeringCreate.
      * json
      */
     /**
      * Sample code: Create peering.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createPeering(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -116,12 +116,12 @@ public final class VirtualNetworkPeeringsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * VirtualNetworkPeeringCreateWithRemoteVirtualNetworkEncryption.json
      */
     /**
      * Sample code: Create peering with remote virtual network encryption.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
@@ -141,12 +141,12 @@ public final class VirtualNetworkPeeringsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * VirtualNetworkSubnetPeeringCreate.json
      */
     /**
      * Sample code: Create subnet peering.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createSubnetPeering(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -168,12 +168,12 @@ public final class VirtualNetworkPeeringsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * VirtualNetworkV6SubnetPeeringSync.json
      */
     /**
      * Sample code: Sync V6 Subnet Peering.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void syncV6SubnetPeering(com.azure.resourcemanager.AzureResourceManager azure) {

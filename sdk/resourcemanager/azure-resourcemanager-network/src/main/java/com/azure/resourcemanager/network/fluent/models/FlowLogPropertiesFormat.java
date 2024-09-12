@@ -37,6 +37,12 @@ public final class FlowLogPropertiesFormat implements JsonSerializable<FlowLogPr
     private String storageId;
 
     /*
+     * Optional field to filter network traffic logs based on SrcIP, SrcPort, DstIP, DstPort, Protocol, Encryption,
+     * Direction and Action. If not specified, all network traffic will be logged.
+     */
+    private String enabledFilteringCriteria;
+
+    /*
      * Flag to enable/disable flow logging.
      */
     private Boolean enabled;
@@ -69,7 +75,7 @@ public final class FlowLogPropertiesFormat implements JsonSerializable<FlowLogPr
 
     /**
      * Get the targetResourceId property: ID of network security group to which flow log will be applied.
-     * 
+     *
      * @return the targetResourceId value.
      */
     public String targetResourceId() {
@@ -78,7 +84,7 @@ public final class FlowLogPropertiesFormat implements JsonSerializable<FlowLogPr
 
     /**
      * Set the targetResourceId property: ID of network security group to which flow log will be applied.
-     * 
+     *
      * @param targetResourceId the targetResourceId value to set.
      * @return the FlowLogPropertiesFormat object itself.
      */
@@ -89,7 +95,7 @@ public final class FlowLogPropertiesFormat implements JsonSerializable<FlowLogPr
 
     /**
      * Get the targetResourceGuid property: Guid of network security group to which flow log will be applied.
-     * 
+     *
      * @return the targetResourceGuid value.
      */
     public String targetResourceGuid() {
@@ -98,7 +104,7 @@ public final class FlowLogPropertiesFormat implements JsonSerializable<FlowLogPr
 
     /**
      * Get the storageId property: ID of the storage account which is used to store the flow log.
-     * 
+     *
      * @return the storageId value.
      */
     public String storageId() {
@@ -107,7 +113,7 @@ public final class FlowLogPropertiesFormat implements JsonSerializable<FlowLogPr
 
     /**
      * Set the storageId property: ID of the storage account which is used to store the flow log.
-     * 
+     *
      * @param storageId the storageId value to set.
      * @return the FlowLogPropertiesFormat object itself.
      */
@@ -117,8 +123,30 @@ public final class FlowLogPropertiesFormat implements JsonSerializable<FlowLogPr
     }
 
     /**
+     * Get the enabledFilteringCriteria property: Optional field to filter network traffic logs based on SrcIP, SrcPort,
+     * DstIP, DstPort, Protocol, Encryption, Direction and Action. If not specified, all network traffic will be logged.
+     *
+     * @return the enabledFilteringCriteria value.
+     */
+    public String enabledFilteringCriteria() {
+        return this.enabledFilteringCriteria;
+    }
+
+    /**
+     * Set the enabledFilteringCriteria property: Optional field to filter network traffic logs based on SrcIP, SrcPort,
+     * DstIP, DstPort, Protocol, Encryption, Direction and Action. If not specified, all network traffic will be logged.
+     *
+     * @param enabledFilteringCriteria the enabledFilteringCriteria value to set.
+     * @return the FlowLogPropertiesFormat object itself.
+     */
+    public FlowLogPropertiesFormat withEnabledFilteringCriteria(String enabledFilteringCriteria) {
+        this.enabledFilteringCriteria = enabledFilteringCriteria;
+        return this;
+    }
+
+    /**
      * Get the enabled property: Flag to enable/disable flow logging.
-     * 
+     *
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -127,7 +155,7 @@ public final class FlowLogPropertiesFormat implements JsonSerializable<FlowLogPr
 
     /**
      * Set the enabled property: Flag to enable/disable flow logging.
-     * 
+     *
      * @param enabled the enabled value to set.
      * @return the FlowLogPropertiesFormat object itself.
      */
@@ -138,7 +166,7 @@ public final class FlowLogPropertiesFormat implements JsonSerializable<FlowLogPr
 
     /**
      * Get the retentionPolicy property: Parameters that define the retention policy for flow log.
-     * 
+     *
      * @return the retentionPolicy value.
      */
     public RetentionPolicyParameters retentionPolicy() {
@@ -147,7 +175,7 @@ public final class FlowLogPropertiesFormat implements JsonSerializable<FlowLogPr
 
     /**
      * Set the retentionPolicy property: Parameters that define the retention policy for flow log.
-     * 
+     *
      * @param retentionPolicy the retentionPolicy value to set.
      * @return the FlowLogPropertiesFormat object itself.
      */
@@ -158,7 +186,7 @@ public final class FlowLogPropertiesFormat implements JsonSerializable<FlowLogPr
 
     /**
      * Get the format property: Parameters that define the flow log format.
-     * 
+     *
      * @return the format value.
      */
     public FlowLogFormatParameters format() {
@@ -167,7 +195,7 @@ public final class FlowLogPropertiesFormat implements JsonSerializable<FlowLogPr
 
     /**
      * Set the format property: Parameters that define the flow log format.
-     * 
+     *
      * @param format the format value to set.
      * @return the FlowLogPropertiesFormat object itself.
      */
@@ -178,7 +206,7 @@ public final class FlowLogPropertiesFormat implements JsonSerializable<FlowLogPr
 
     /**
      * Get the flowAnalyticsConfiguration property: Parameters that define the configuration of traffic analytics.
-     * 
+     *
      * @return the flowAnalyticsConfiguration value.
      */
     public TrafficAnalyticsProperties flowAnalyticsConfiguration() {
@@ -187,7 +215,7 @@ public final class FlowLogPropertiesFormat implements JsonSerializable<FlowLogPr
 
     /**
      * Set the flowAnalyticsConfiguration property: Parameters that define the configuration of traffic analytics.
-     * 
+     *
      * @param flowAnalyticsConfiguration the flowAnalyticsConfiguration value to set.
      * @return the FlowLogPropertiesFormat object itself.
      */
@@ -199,7 +227,7 @@ public final class FlowLogPropertiesFormat implements JsonSerializable<FlowLogPr
 
     /**
      * Get the provisioningState property: The provisioning state of the flow log.
-     * 
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -208,7 +236,7 @@ public final class FlowLogPropertiesFormat implements JsonSerializable<FlowLogPr
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -243,6 +271,7 @@ public final class FlowLogPropertiesFormat implements JsonSerializable<FlowLogPr
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("targetResourceId", this.targetResourceId);
         jsonWriter.writeStringField("storageId", this.storageId);
+        jsonWriter.writeStringField("enabledFilteringCriteria", this.enabledFilteringCriteria);
         jsonWriter.writeBooleanField("enabled", this.enabled);
         jsonWriter.writeJsonField("retentionPolicy", this.retentionPolicy);
         jsonWriter.writeJsonField("format", this.format);
@@ -252,7 +281,7 @@ public final class FlowLogPropertiesFormat implements JsonSerializable<FlowLogPr
 
     /**
      * Reads an instance of FlowLogPropertiesFormat from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of FlowLogPropertiesFormat if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
@@ -272,6 +301,8 @@ public final class FlowLogPropertiesFormat implements JsonSerializable<FlowLogPr
                     deserializedFlowLogPropertiesFormat.storageId = reader.getString();
                 } else if ("targetResourceGuid".equals(fieldName)) {
                     deserializedFlowLogPropertiesFormat.targetResourceGuid = reader.getString();
+                } else if ("enabledFilteringCriteria".equals(fieldName)) {
+                    deserializedFlowLogPropertiesFormat.enabledFilteringCriteria = reader.getString();
                 } else if ("enabled".equals(fieldName)) {
                     deserializedFlowLogPropertiesFormat.enabled = reader.getNullable(JsonReader::getBoolean);
                 } else if ("retentionPolicy".equals(fieldName)) {

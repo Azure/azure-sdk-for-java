@@ -6,6 +6,7 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -35,14 +36,14 @@ public final class VirtualNetworkTapInner extends Resource {
     private String id;
 
     /*
-     * The name of the resource.
-     */
-    private String name;
-
-    /*
      * The type of the resource.
      */
     private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
 
     /**
      * Creates an instance of VirtualNetworkTapInner class.
@@ -52,7 +53,7 @@ public final class VirtualNetworkTapInner extends Resource {
 
     /**
      * Get the innerProperties property: Virtual Network Tap Properties.
-     * 
+     *
      * @return the innerProperties value.
      */
     private VirtualNetworkTapPropertiesFormatInner innerProperties() {
@@ -61,7 +62,7 @@ public final class VirtualNetworkTapInner extends Resource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     * 
+     *
      * @return the etag value.
      */
     public String etag() {
@@ -70,7 +71,7 @@ public final class VirtualNetworkTapInner extends Resource {
 
     /**
      * Get the id property: Resource ID.
-     * 
+     *
      * @return the id value.
      */
     public String id() {
@@ -79,7 +80,7 @@ public final class VirtualNetworkTapInner extends Resource {
 
     /**
      * Set the id property: Resource ID.
-     * 
+     *
      * @param id the id value to set.
      * @return the VirtualNetworkTapInner object itself.
      */
@@ -89,23 +90,23 @@ public final class VirtualNetworkTapInner extends Resource {
     }
 
     /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
-    }
-
-    /**
      * Get the type property: The type of the resource.
-     * 
+     *
      * @return the type value.
      */
     @Override
     public String type() {
         return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     *
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -129,7 +130,7 @@ public final class VirtualNetworkTapInner extends Resource {
     /**
      * Get the networkInterfaceTapConfigurations property: Specifies the list of resource IDs for the network interface
      * IP configuration that needs to be tapped.
-     * 
+     *
      * @return the networkInterfaceTapConfigurations value.
      */
     public List<NetworkInterfaceTapConfigurationInner> networkInterfaceTapConfigurations() {
@@ -138,7 +139,7 @@ public final class VirtualNetworkTapInner extends Resource {
 
     /**
      * Get the resourceGuid property: The resource GUID property of the virtual network tap resource.
-     * 
+     *
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -147,7 +148,7 @@ public final class VirtualNetworkTapInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the virtual network tap resource.
-     * 
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -157,7 +158,7 @@ public final class VirtualNetworkTapInner extends Resource {
     /**
      * Get the destinationNetworkInterfaceIpConfiguration property: The reference to the private IP Address of the
      * collector nic that will receive the tap.
-     * 
+     *
      * @return the destinationNetworkInterfaceIpConfiguration value.
      */
     public NetworkInterfaceIpConfigurationInner destinationNetworkInterfaceIpConfiguration() {
@@ -169,7 +170,7 @@ public final class VirtualNetworkTapInner extends Resource {
     /**
      * Set the destinationNetworkInterfaceIpConfiguration property: The reference to the private IP Address of the
      * collector nic that will receive the tap.
-     * 
+     *
      * @param destinationNetworkInterfaceIpConfiguration the destinationNetworkInterfaceIpConfiguration value to set.
      * @return the VirtualNetworkTapInner object itself.
      */
@@ -186,7 +187,7 @@ public final class VirtualNetworkTapInner extends Resource {
     /**
      * Get the destinationLoadBalancerFrontEndIpConfiguration property: The reference to the private IP address on the
      * internal Load Balancer that will receive the tap.
-     * 
+     *
      * @return the destinationLoadBalancerFrontEndIpConfiguration value.
      */
     public FrontendIpConfigurationInner destinationLoadBalancerFrontEndIpConfiguration() {
@@ -198,7 +199,7 @@ public final class VirtualNetworkTapInner extends Resource {
     /**
      * Set the destinationLoadBalancerFrontEndIpConfiguration property: The reference to the private IP address on the
      * internal Load Balancer that will receive the tap.
-     * 
+     *
      * @param destinationLoadBalancerFrontEndIpConfiguration the destinationLoadBalancerFrontEndIpConfiguration value to
      * set.
      * @return the VirtualNetworkTapInner object itself.
@@ -215,7 +216,7 @@ public final class VirtualNetworkTapInner extends Resource {
 
     /**
      * Get the destinationPort property: The VXLAN destination port that will receive the tapped traffic.
-     * 
+     *
      * @return the destinationPort value.
      */
     public Integer destinationPort() {
@@ -224,7 +225,7 @@ public final class VirtualNetworkTapInner extends Resource {
 
     /**
      * Set the destinationPort property: The VXLAN destination port that will receive the tapped traffic.
-     * 
+     *
      * @param destinationPort the destinationPort value to set.
      * @return the VirtualNetworkTapInner object itself.
      */
@@ -238,14 +239,21 @@ public final class VirtualNetworkTapInner extends Resource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+        if (location() == null) {
+            throw LOGGER.atError()
+                .log(
+                    new IllegalArgumentException("Missing required property location in model VirtualNetworkTapInner"));
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(VirtualNetworkTapInner.class);
 
     /**
      * {@inheritDoc}
@@ -262,7 +270,7 @@ public final class VirtualNetworkTapInner extends Resource {
 
     /**
      * Reads an instance of VirtualNetworkTapInner from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of VirtualNetworkTapInner if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.

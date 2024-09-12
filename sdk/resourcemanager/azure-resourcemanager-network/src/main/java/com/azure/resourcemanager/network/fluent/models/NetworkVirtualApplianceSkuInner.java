@@ -6,6 +6,7 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -16,7 +17,7 @@ import java.util.Map;
 
 /**
  * Available NetworkVirtualApplianceSkus
- * 
+ *
  * Definition of the NetworkVirtualApplianceSkus resource.
  */
 @Fluent
@@ -37,14 +38,14 @@ public final class NetworkVirtualApplianceSkuInner extends Resource {
     private String id;
 
     /*
-     * The name of the resource.
-     */
-    private String name;
-
-    /*
      * The type of the resource.
      */
     private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
 
     /**
      * Creates an instance of NetworkVirtualApplianceSkuInner class.
@@ -54,7 +55,7 @@ public final class NetworkVirtualApplianceSkuInner extends Resource {
 
     /**
      * Get the innerProperties property: NetworkVirtualApplianceSku properties.
-     * 
+     *
      * @return the innerProperties value.
      */
     private NetworkVirtualApplianceSkuPropertiesFormat innerProperties() {
@@ -63,7 +64,7 @@ public final class NetworkVirtualApplianceSkuInner extends Resource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     * 
+     *
      * @return the etag value.
      */
     public String etag() {
@@ -72,7 +73,7 @@ public final class NetworkVirtualApplianceSkuInner extends Resource {
 
     /**
      * Get the id property: Resource ID.
-     * 
+     *
      * @return the id value.
      */
     public String id() {
@@ -81,7 +82,7 @@ public final class NetworkVirtualApplianceSkuInner extends Resource {
 
     /**
      * Set the id property: Resource ID.
-     * 
+     *
      * @param id the id value to set.
      * @return the NetworkVirtualApplianceSkuInner object itself.
      */
@@ -91,23 +92,23 @@ public final class NetworkVirtualApplianceSkuInner extends Resource {
     }
 
     /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
-    }
-
-    /**
      * Get the type property: The type of the resource.
-     * 
+     *
      * @return the type value.
      */
     @Override
     public String type() {
         return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     *
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -130,7 +131,7 @@ public final class NetworkVirtualApplianceSkuInner extends Resource {
 
     /**
      * Get the vendor property: Network Virtual Appliance Sku vendor.
-     * 
+     *
      * @return the vendor value.
      */
     public String vendor() {
@@ -139,7 +140,7 @@ public final class NetworkVirtualApplianceSkuInner extends Resource {
 
     /**
      * Get the availableVersions property: Available Network Virtual Appliance versions.
-     * 
+     *
      * @return the availableVersions value.
      */
     public List<String> availableVersions() {
@@ -148,7 +149,7 @@ public final class NetworkVirtualApplianceSkuInner extends Resource {
 
     /**
      * Get the availableScaleUnits property: The list of scale units available.
-     * 
+     *
      * @return the availableScaleUnits value.
      */
     public List<NetworkVirtualApplianceSkuInstances> availableScaleUnits() {
@@ -157,7 +158,7 @@ public final class NetworkVirtualApplianceSkuInner extends Resource {
 
     /**
      * Set the availableScaleUnits property: The list of scale units available.
-     * 
+     *
      * @param availableScaleUnits the availableScaleUnits value to set.
      * @return the NetworkVirtualApplianceSkuInner object itself.
      */
@@ -172,14 +173,21 @@ public final class NetworkVirtualApplianceSkuInner extends Resource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+        if (location() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property location in model NetworkVirtualApplianceSkuInner"));
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(NetworkVirtualApplianceSkuInner.class);
 
     /**
      * {@inheritDoc}
@@ -196,7 +204,7 @@ public final class NetworkVirtualApplianceSkuInner extends Resource {
 
     /**
      * Reads an instance of NetworkVirtualApplianceSkuInner from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of NetworkVirtualApplianceSkuInner if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.

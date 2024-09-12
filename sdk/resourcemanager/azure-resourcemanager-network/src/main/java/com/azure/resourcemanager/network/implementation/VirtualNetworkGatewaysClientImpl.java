@@ -72,7 +72,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Initializes an instance of VirtualNetworkGatewaysClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     VirtualNetworkGatewaysClientImpl(NetworkManagementClientImpl client) {
@@ -335,7 +335,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Creates or updates a virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Parameters supplied to create or update virtual network gateway operation.
@@ -369,7 +369,7 @@ public final class VirtualNetworkGatewaysClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName,
@@ -379,7 +379,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Creates or updates a virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Parameters supplied to create or update virtual network gateway operation.
@@ -414,7 +414,7 @@ public final class VirtualNetworkGatewaysClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, virtualNetworkGatewayName,
@@ -423,7 +423,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Creates or updates a virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Parameters supplied to create or update virtual network gateway operation.
@@ -444,7 +444,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Creates or updates a virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Parameters supplied to create or update virtual network gateway operation.
@@ -467,7 +467,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Creates or updates a virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Parameters supplied to create or update virtual network gateway operation.
@@ -484,7 +484,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Creates or updates a virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Parameters supplied to create or update virtual network gateway operation.
@@ -504,7 +504,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Creates or updates a virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Parameters supplied to create or update virtual network gateway operation.
@@ -522,7 +522,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Creates or updates a virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Parameters supplied to create or update virtual network gateway operation.
@@ -541,7 +541,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Creates or updates a virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Parameters supplied to create or update virtual network gateway operation.
@@ -558,7 +558,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Creates or updates a virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Parameters supplied to create or update virtual network gateway operation.
@@ -576,7 +576,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Gets the specified virtual network gateway by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -604,7 +604,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -614,7 +614,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Gets the specified virtual network gateway by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param context The context to associate with this operation.
@@ -643,7 +643,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, virtualNetworkGatewayName,
@@ -652,7 +652,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Gets the specified virtual network gateway by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -669,7 +669,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Gets the specified virtual network gateway by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param context The context to associate with this operation.
@@ -686,7 +686,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Gets the specified virtual network gateway by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -701,7 +701,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Deletes the specified virtual network gateway.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -728,7 +728,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName,
@@ -738,7 +738,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Deletes the specified virtual network gateway.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param context The context to associate with this operation.
@@ -766,7 +766,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, virtualNetworkGatewayName, apiVersion,
@@ -775,7 +775,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Deletes the specified virtual network gateway.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -793,7 +793,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Deletes the specified virtual network gateway.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param context The context to associate with this operation.
@@ -814,7 +814,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Deletes the specified virtual network gateway.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -829,7 +829,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Deletes the specified virtual network gateway.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param context The context to associate with this operation.
@@ -846,7 +846,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Deletes the specified virtual network gateway.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -862,7 +862,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Deletes the specified virtual network gateway.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param context The context to associate with this operation.
@@ -879,7 +879,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Deletes the specified virtual network gateway.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -893,7 +893,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Deletes the specified virtual network gateway.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param context The context to associate with this operation.
@@ -908,7 +908,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Updates a virtual network gateway tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Parameters supplied to update virtual network gateway tags.
@@ -942,7 +942,7 @@ public final class VirtualNetworkGatewaysClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.updateTags(this.client.getEndpoint(), resourceGroupName,
@@ -952,7 +952,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Updates a virtual network gateway tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Parameters supplied to update virtual network gateway tags.
@@ -987,7 +987,7 @@ public final class VirtualNetworkGatewaysClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.updateTags(this.client.getEndpoint(), resourceGroupName, virtualNetworkGatewayName, apiVersion,
@@ -996,7 +996,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Updates a virtual network gateway tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Parameters supplied to update virtual network gateway tags.
@@ -1017,7 +1017,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Updates a virtual network gateway tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Parameters supplied to update virtual network gateway tags.
@@ -1039,7 +1039,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Updates a virtual network gateway tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Parameters supplied to update virtual network gateway tags.
@@ -1056,7 +1056,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Updates a virtual network gateway tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Parameters supplied to update virtual network gateway tags.
@@ -1075,7 +1075,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Updates a virtual network gateway tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Parameters supplied to update virtual network gateway tags.
@@ -1093,7 +1093,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Updates a virtual network gateway tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Parameters supplied to update virtual network gateway tags.
@@ -1112,7 +1112,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Updates a virtual network gateway tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Parameters supplied to update virtual network gateway tags.
@@ -1129,7 +1129,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Updates a virtual network gateway tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Parameters supplied to update virtual network gateway tags.
@@ -1147,7 +1147,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Gets all virtual network gateways by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1170,7 +1170,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -1182,7 +1182,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Gets all virtual network gateways by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1206,7 +1206,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1218,7 +1218,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Gets all virtual network gateways by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1233,7 +1233,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Gets all virtual network gateways by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1249,7 +1249,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Gets all virtual network gateways by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1263,7 +1263,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Gets all virtual network gateways by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1278,7 +1278,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Gets all the connections in a virtual network gateway.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1306,7 +1306,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listConnections(this.client.getEndpoint(), resourceGroupName,
@@ -1319,7 +1319,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Gets all the connections in a virtual network gateway.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param context The context to associate with this operation.
@@ -1348,7 +1348,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1360,7 +1360,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Gets all the connections in a virtual network gateway.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1377,7 +1377,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Gets all the connections in a virtual network gateway.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param context The context to associate with this operation.
@@ -1396,7 +1396,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Gets all the connections in a virtual network gateway.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1412,7 +1412,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Gets all the connections in a virtual network gateway.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param context The context to associate with this operation.
@@ -1429,7 +1429,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Resets the primary of the virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param gatewayVip Virtual network gateway vip address supplied to the begin reset of the active-active feature
@@ -1459,7 +1459,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.reset(this.client.getEndpoint(), resourceGroupName,
@@ -1469,7 +1469,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Resets the primary of the virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param gatewayVip Virtual network gateway vip address supplied to the begin reset of the active-active feature
@@ -1500,7 +1500,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.reset(this.client.getEndpoint(), resourceGroupName, virtualNetworkGatewayName, gatewayVip,
@@ -1509,7 +1509,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Resets the primary of the virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param gatewayVip Virtual network gateway vip address supplied to the begin reset of the active-active feature
@@ -1531,7 +1531,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Resets the primary of the virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1552,7 +1552,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Resets the primary of the virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param gatewayVip Virtual network gateway vip address supplied to the begin reset of the active-active feature
@@ -1575,7 +1575,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Resets the primary of the virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1592,7 +1592,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Resets the primary of the virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param gatewayVip Virtual network gateway vip address supplied to the begin reset of the active-active feature
@@ -1611,7 +1611,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Resets the primary of the virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param gatewayVip Virtual network gateway vip address supplied to the begin reset of the active-active feature
@@ -1630,7 +1630,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Resets the primary of the virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1647,7 +1647,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Resets the primary of the virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param gatewayVip Virtual network gateway vip address supplied to the begin reset of the active-active feature
@@ -1667,7 +1667,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Resets the primary of the virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1683,7 +1683,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Resets the primary of the virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param gatewayVip Virtual network gateway vip address supplied to the begin reset of the active-active feature
@@ -1702,7 +1702,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Resets the VPN client shared key of the virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1729,7 +1729,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.resetVpnClientSharedKey(this.client.getEndpoint(), resourceGroupName,
@@ -1739,7 +1739,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Resets the VPN client shared key of the virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param context The context to associate with this operation.
@@ -1767,7 +1767,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.resetVpnClientSharedKey(this.client.getEndpoint(), resourceGroupName, virtualNetworkGatewayName,
@@ -1776,7 +1776,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Resets the VPN client shared key of the virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1795,7 +1795,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Resets the VPN client shared key of the virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param context The context to associate with this operation.
@@ -1816,7 +1816,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Resets the VPN client shared key of the virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1832,7 +1832,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Resets the VPN client shared key of the virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param context The context to associate with this operation.
@@ -1850,7 +1850,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Resets the VPN client shared key of the virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1866,7 +1866,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Resets the VPN client shared key of the virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param context The context to associate with this operation.
@@ -1884,7 +1884,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Resets the VPN client shared key of the virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1898,7 +1898,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Resets the VPN client shared key of the virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param context The context to associate with this operation.
@@ -1913,7 +1913,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Generates VPN client package for P2S client of the virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Parameters supplied to the generate virtual network gateway VPN client package operation.
@@ -1946,7 +1946,7 @@ public final class VirtualNetworkGatewaysClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.generatevpnclientpackage(this.client.getEndpoint(), resourceGroupName,
@@ -1956,7 +1956,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Generates VPN client package for P2S client of the virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Parameters supplied to the generate virtual network gateway VPN client package operation.
@@ -1990,7 +1990,7 @@ public final class VirtualNetworkGatewaysClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.generatevpnclientpackage(this.client.getEndpoint(), resourceGroupName, virtualNetworkGatewayName,
@@ -1999,7 +1999,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Generates VPN client package for P2S client of the virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Parameters supplied to the generate virtual network gateway VPN client package operation.
@@ -2019,7 +2019,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Generates VPN client package for P2S client of the virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Parameters supplied to the generate virtual network gateway VPN client package operation.
@@ -2041,7 +2041,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Generates VPN client package for P2S client of the virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Parameters supplied to the generate virtual network gateway VPN client package operation.
@@ -2059,7 +2059,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Generates VPN client package for P2S client of the virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Parameters supplied to the generate virtual network gateway VPN client package operation.
@@ -2079,7 +2079,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Generates VPN client package for P2S client of the virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Parameters supplied to the generate virtual network gateway VPN client package operation.
@@ -2097,7 +2097,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Generates VPN client package for P2S client of the virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Parameters supplied to the generate virtual network gateway VPN client package operation.
@@ -2117,7 +2117,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Generates VPN client package for P2S client of the virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Parameters supplied to the generate virtual network gateway VPN client package operation.
@@ -2134,7 +2134,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Generates VPN client package for P2S client of the virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Parameters supplied to the generate virtual network gateway VPN client package operation.
@@ -2153,7 +2153,7 @@ public final class VirtualNetworkGatewaysClientImpl
     /**
      * Generates VPN profile for P2S client of the virtual network gateway in the specified resource group. Used for
      * IKEV2 and radius based authentication.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Parameters supplied to the generate virtual network gateway VPN client package operation.
@@ -2186,7 +2186,7 @@ public final class VirtualNetworkGatewaysClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.generateVpnProfile(this.client.getEndpoint(), resourceGroupName,
@@ -2197,7 +2197,7 @@ public final class VirtualNetworkGatewaysClientImpl
     /**
      * Generates VPN profile for P2S client of the virtual network gateway in the specified resource group. Used for
      * IKEV2 and radius based authentication.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Parameters supplied to the generate virtual network gateway VPN client package operation.
@@ -2231,7 +2231,7 @@ public final class VirtualNetworkGatewaysClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.generateVpnProfile(this.client.getEndpoint(), resourceGroupName, virtualNetworkGatewayName,
@@ -2241,7 +2241,7 @@ public final class VirtualNetworkGatewaysClientImpl
     /**
      * Generates VPN profile for P2S client of the virtual network gateway in the specified resource group. Used for
      * IKEV2 and radius based authentication.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Parameters supplied to the generate virtual network gateway VPN client package operation.
@@ -2262,7 +2262,7 @@ public final class VirtualNetworkGatewaysClientImpl
     /**
      * Generates VPN profile for P2S client of the virtual network gateway in the specified resource group. Used for
      * IKEV2 and radius based authentication.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Parameters supplied to the generate virtual network gateway VPN client package operation.
@@ -2285,7 +2285,7 @@ public final class VirtualNetworkGatewaysClientImpl
     /**
      * Generates VPN profile for P2S client of the virtual network gateway in the specified resource group. Used for
      * IKEV2 and radius based authentication.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Parameters supplied to the generate virtual network gateway VPN client package operation.
@@ -2304,7 +2304,7 @@ public final class VirtualNetworkGatewaysClientImpl
     /**
      * Generates VPN profile for P2S client of the virtual network gateway in the specified resource group. Used for
      * IKEV2 and radius based authentication.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Parameters supplied to the generate virtual network gateway VPN client package operation.
@@ -2324,7 +2324,7 @@ public final class VirtualNetworkGatewaysClientImpl
     /**
      * Generates VPN profile for P2S client of the virtual network gateway in the specified resource group. Used for
      * IKEV2 and radius based authentication.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Parameters supplied to the generate virtual network gateway VPN client package operation.
@@ -2343,7 +2343,7 @@ public final class VirtualNetworkGatewaysClientImpl
     /**
      * Generates VPN profile for P2S client of the virtual network gateway in the specified resource group. Used for
      * IKEV2 and radius based authentication.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Parameters supplied to the generate virtual network gateway VPN client package operation.
@@ -2363,7 +2363,7 @@ public final class VirtualNetworkGatewaysClientImpl
     /**
      * Generates VPN profile for P2S client of the virtual network gateway in the specified resource group. Used for
      * IKEV2 and radius based authentication.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Parameters supplied to the generate virtual network gateway VPN client package operation.
@@ -2381,7 +2381,7 @@ public final class VirtualNetworkGatewaysClientImpl
     /**
      * Generates VPN profile for P2S client of the virtual network gateway in the specified resource group. Used for
      * IKEV2 and radius based authentication.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Parameters supplied to the generate virtual network gateway VPN client package operation.
@@ -2400,7 +2400,7 @@ public final class VirtualNetworkGatewaysClientImpl
     /**
      * Gets pre-generated VPN profile for P2S client of the virtual network gateway in the specified resource group. The
      * profile needs to be generated first using generateVpnProfile.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2428,7 +2428,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getVpnProfilePackageUrl(this.client.getEndpoint(), resourceGroupName,
@@ -2439,7 +2439,7 @@ public final class VirtualNetworkGatewaysClientImpl
     /**
      * Gets pre-generated VPN profile for P2S client of the virtual network gateway in the specified resource group. The
      * profile needs to be generated first using generateVpnProfile.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param context The context to associate with this operation.
@@ -2468,7 +2468,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getVpnProfilePackageUrl(this.client.getEndpoint(), resourceGroupName, virtualNetworkGatewayName,
@@ -2478,7 +2478,7 @@ public final class VirtualNetworkGatewaysClientImpl
     /**
      * Gets pre-generated VPN profile for P2S client of the virtual network gateway in the specified resource group. The
      * profile needs to be generated first using generateVpnProfile.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2499,7 +2499,7 @@ public final class VirtualNetworkGatewaysClientImpl
     /**
      * Gets pre-generated VPN profile for P2S client of the virtual network gateway in the specified resource group. The
      * profile needs to be generated first using generateVpnProfile.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param context The context to associate with this operation.
@@ -2522,7 +2522,7 @@ public final class VirtualNetworkGatewaysClientImpl
     /**
      * Gets pre-generated VPN profile for P2S client of the virtual network gateway in the specified resource group. The
      * profile needs to be generated first using generateVpnProfile.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2540,7 +2540,7 @@ public final class VirtualNetworkGatewaysClientImpl
     /**
      * Gets pre-generated VPN profile for P2S client of the virtual network gateway in the specified resource group. The
      * profile needs to be generated first using generateVpnProfile.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param context The context to associate with this operation.
@@ -2560,7 +2560,7 @@ public final class VirtualNetworkGatewaysClientImpl
     /**
      * Gets pre-generated VPN profile for P2S client of the virtual network gateway in the specified resource group. The
      * profile needs to be generated first using generateVpnProfile.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2578,7 +2578,7 @@ public final class VirtualNetworkGatewaysClientImpl
     /**
      * Gets pre-generated VPN profile for P2S client of the virtual network gateway in the specified resource group. The
      * profile needs to be generated first using generateVpnProfile.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param context The context to associate with this operation.
@@ -2598,7 +2598,7 @@ public final class VirtualNetworkGatewaysClientImpl
     /**
      * Gets pre-generated VPN profile for P2S client of the virtual network gateway in the specified resource group. The
      * profile needs to be generated first using generateVpnProfile.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2614,7 +2614,7 @@ public final class VirtualNetworkGatewaysClientImpl
     /**
      * Gets pre-generated VPN profile for P2S client of the virtual network gateway in the specified resource group. The
      * profile needs to be generated first using generateVpnProfile.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param context The context to associate with this operation.
@@ -2630,7 +2630,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * The GetBgpPeerStatus operation retrieves the status of all BGP peers.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param peer The IP address of the peer to retrieve the status of.
@@ -2659,7 +2659,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getBgpPeerStatus(this.client.getEndpoint(), resourceGroupName,
@@ -2669,7 +2669,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * The GetBgpPeerStatus operation retrieves the status of all BGP peers.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param peer The IP address of the peer to retrieve the status of.
@@ -2699,7 +2699,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getBgpPeerStatus(this.client.getEndpoint(), resourceGroupName, virtualNetworkGatewayName, peer,
@@ -2708,7 +2708,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * The GetBgpPeerStatus operation retrieves the status of all BGP peers.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param peer The IP address of the peer to retrieve the status of.
@@ -2729,7 +2729,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * The GetBgpPeerStatus operation retrieves the status of all BGP peers.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2750,7 +2750,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * The GetBgpPeerStatus operation retrieves the status of all BGP peers.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param peer The IP address of the peer to retrieve the status of.
@@ -2774,7 +2774,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * The GetBgpPeerStatus operation retrieves the status of all BGP peers.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2791,7 +2791,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * The GetBgpPeerStatus operation retrieves the status of all BGP peers.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param peer The IP address of the peer to retrieve the status of.
@@ -2810,7 +2810,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * The GetBgpPeerStatus operation retrieves the status of all BGP peers.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param peer The IP address of the peer to retrieve the status of.
@@ -2828,7 +2828,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * The GetBgpPeerStatus operation retrieves the status of all BGP peers.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2846,7 +2846,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * The GetBgpPeerStatus operation retrieves the status of all BGP peers.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param peer The IP address of the peer to retrieve the status of.
@@ -2865,7 +2865,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * The GetBgpPeerStatus operation retrieves the status of all BGP peers.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2881,7 +2881,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * The GetBgpPeerStatus operation retrieves the status of all BGP peers.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param peer The IP address of the peer to retrieve the status of.
@@ -2899,7 +2899,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Gets a xml format representation for supported vpn devices.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2927,7 +2927,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.supportedVpnDevices(this.client.getEndpoint(), resourceGroupName,
@@ -2937,7 +2937,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Gets a xml format representation for supported vpn devices.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param context The context to associate with this operation.
@@ -2966,7 +2966,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.supportedVpnDevices(this.client.getEndpoint(), resourceGroupName, virtualNetworkGatewayName,
@@ -2975,7 +2975,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Gets a xml format representation for supported vpn devices.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2991,7 +2991,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Gets a xml format representation for supported vpn devices.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param context The context to associate with this operation.
@@ -3008,7 +3008,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Gets a xml format representation for supported vpn devices.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3024,7 +3024,7 @@ public final class VirtualNetworkGatewaysClientImpl
     /**
      * This operation retrieves a list of routes the virtual network gateway has learned, including routes learned from
      * BGP peers.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3052,7 +3052,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getLearnedRoutes(this.client.getEndpoint(), resourceGroupName,
@@ -3063,7 +3063,7 @@ public final class VirtualNetworkGatewaysClientImpl
     /**
      * This operation retrieves a list of routes the virtual network gateway has learned, including routes learned from
      * BGP peers.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param context The context to associate with this operation.
@@ -3092,7 +3092,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getLearnedRoutes(this.client.getEndpoint(), resourceGroupName, virtualNetworkGatewayName,
@@ -3102,7 +3102,7 @@ public final class VirtualNetworkGatewaysClientImpl
     /**
      * This operation retrieves a list of routes the virtual network gateway has learned, including routes learned from
      * BGP peers.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3123,7 +3123,7 @@ public final class VirtualNetworkGatewaysClientImpl
     /**
      * This operation retrieves a list of routes the virtual network gateway has learned, including routes learned from
      * BGP peers.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param context The context to associate with this operation.
@@ -3146,7 +3146,7 @@ public final class VirtualNetworkGatewaysClientImpl
     /**
      * This operation retrieves a list of routes the virtual network gateway has learned, including routes learned from
      * BGP peers.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3163,7 +3163,7 @@ public final class VirtualNetworkGatewaysClientImpl
     /**
      * This operation retrieves a list of routes the virtual network gateway has learned, including routes learned from
      * BGP peers.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param context The context to associate with this operation.
@@ -3181,7 +3181,7 @@ public final class VirtualNetworkGatewaysClientImpl
     /**
      * This operation retrieves a list of routes the virtual network gateway has learned, including routes learned from
      * BGP peers.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3199,7 +3199,7 @@ public final class VirtualNetworkGatewaysClientImpl
     /**
      * This operation retrieves a list of routes the virtual network gateway has learned, including routes learned from
      * BGP peers.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param context The context to associate with this operation.
@@ -3218,7 +3218,7 @@ public final class VirtualNetworkGatewaysClientImpl
     /**
      * This operation retrieves a list of routes the virtual network gateway has learned, including routes learned from
      * BGP peers.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3234,7 +3234,7 @@ public final class VirtualNetworkGatewaysClientImpl
     /**
      * This operation retrieves a list of routes the virtual network gateway has learned, including routes learned from
      * BGP peers.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param context The context to associate with this operation.
@@ -3251,7 +3251,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * This operation retrieves a list of routes the virtual network gateway is advertising to the specified peer.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param peer The IP address of the peer.
@@ -3283,7 +3283,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getAdvertisedRoutes(this.client.getEndpoint(), resourceGroupName,
@@ -3293,7 +3293,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * This operation retrieves a list of routes the virtual network gateway is advertising to the specified peer.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param peer The IP address of the peer.
@@ -3326,7 +3326,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getAdvertisedRoutes(this.client.getEndpoint(), resourceGroupName, virtualNetworkGatewayName,
@@ -3335,7 +3335,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * This operation retrieves a list of routes the virtual network gateway is advertising to the specified peer.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param peer The IP address of the peer.
@@ -3356,7 +3356,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * This operation retrieves a list of routes the virtual network gateway is advertising to the specified peer.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param peer The IP address of the peer.
@@ -3380,7 +3380,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * This operation retrieves a list of routes the virtual network gateway is advertising to the specified peer.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param peer The IP address of the peer.
@@ -3397,7 +3397,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * This operation retrieves a list of routes the virtual network gateway is advertising to the specified peer.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param peer The IP address of the peer.
@@ -3416,7 +3416,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * This operation retrieves a list of routes the virtual network gateway is advertising to the specified peer.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param peer The IP address of the peer.
@@ -3434,7 +3434,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * This operation retrieves a list of routes the virtual network gateway is advertising to the specified peer.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param peer The IP address of the peer.
@@ -3453,7 +3453,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * This operation retrieves a list of routes the virtual network gateway is advertising to the specified peer.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param peer The IP address of the peer.
@@ -3470,7 +3470,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * This operation retrieves a list of routes the virtual network gateway is advertising to the specified peer.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param peer The IP address of the peer.
@@ -3489,7 +3489,7 @@ public final class VirtualNetworkGatewaysClientImpl
     /**
      * The Set VpnclientIpsecParameters operation sets the vpnclient ipsec policy for P2S client of virtual network
      * gateway in the specified resource group through Network resource provider.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param vpnclientIpsecParams Parameters supplied to the Begin Set vpnclient ipsec parameters of Virtual Network
@@ -3525,7 +3525,7 @@ public final class VirtualNetworkGatewaysClientImpl
         } else {
             vpnclientIpsecParams.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.setVpnclientIpsecParameters(this.client.getEndpoint(), resourceGroupName,
@@ -3537,7 +3537,7 @@ public final class VirtualNetworkGatewaysClientImpl
     /**
      * The Set VpnclientIpsecParameters operation sets the vpnclient ipsec policy for P2S client of virtual network
      * gateway in the specified resource group through Network resource provider.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param vpnclientIpsecParams Parameters supplied to the Begin Set vpnclient ipsec parameters of Virtual Network
@@ -3574,7 +3574,7 @@ public final class VirtualNetworkGatewaysClientImpl
         } else {
             vpnclientIpsecParams.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.setVpnclientIpsecParameters(this.client.getEndpoint(), resourceGroupName,
@@ -3585,7 +3585,7 @@ public final class VirtualNetworkGatewaysClientImpl
     /**
      * The Set VpnclientIpsecParameters operation sets the vpnclient ipsec policy for P2S client of virtual network
      * gateway in the specified resource group through Network resource provider.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param vpnclientIpsecParams Parameters supplied to the Begin Set vpnclient ipsec parameters of Virtual Network
@@ -3609,7 +3609,7 @@ public final class VirtualNetworkGatewaysClientImpl
     /**
      * The Set VpnclientIpsecParameters operation sets the vpnclient ipsec policy for P2S client of virtual network
      * gateway in the specified resource group through Network resource provider.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param vpnclientIpsecParams Parameters supplied to the Begin Set vpnclient ipsec parameters of Virtual Network
@@ -3635,7 +3635,7 @@ public final class VirtualNetworkGatewaysClientImpl
     /**
      * The Set VpnclientIpsecParameters operation sets the vpnclient ipsec policy for P2S client of virtual network
      * gateway in the specified resource group through Network resource provider.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param vpnclientIpsecParams Parameters supplied to the Begin Set vpnclient ipsec parameters of Virtual Network
@@ -3657,7 +3657,7 @@ public final class VirtualNetworkGatewaysClientImpl
     /**
      * The Set VpnclientIpsecParameters operation sets the vpnclient ipsec policy for P2S client of virtual network
      * gateway in the specified resource group through Network resource provider.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param vpnclientIpsecParams Parameters supplied to the Begin Set vpnclient ipsec parameters of Virtual Network
@@ -3681,7 +3681,7 @@ public final class VirtualNetworkGatewaysClientImpl
     /**
      * The Set VpnclientIpsecParameters operation sets the vpnclient ipsec policy for P2S client of virtual network
      * gateway in the specified resource group through Network resource provider.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param vpnclientIpsecParams Parameters supplied to the Begin Set vpnclient ipsec parameters of Virtual Network
@@ -3703,7 +3703,7 @@ public final class VirtualNetworkGatewaysClientImpl
     /**
      * The Set VpnclientIpsecParameters operation sets the vpnclient ipsec policy for P2S client of virtual network
      * gateway in the specified resource group through Network resource provider.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param vpnclientIpsecParams Parameters supplied to the Begin Set vpnclient ipsec parameters of Virtual Network
@@ -3725,7 +3725,7 @@ public final class VirtualNetworkGatewaysClientImpl
     /**
      * The Set VpnclientIpsecParameters operation sets the vpnclient ipsec policy for P2S client of virtual network
      * gateway in the specified resource group through Network resource provider.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param vpnclientIpsecParams Parameters supplied to the Begin Set vpnclient ipsec parameters of Virtual Network
@@ -3745,7 +3745,7 @@ public final class VirtualNetworkGatewaysClientImpl
     /**
      * The Set VpnclientIpsecParameters operation sets the vpnclient ipsec policy for P2S client of virtual network
      * gateway in the specified resource group through Network resource provider.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param vpnclientIpsecParams Parameters supplied to the Begin Set vpnclient ipsec parameters of Virtual Network
@@ -3766,7 +3766,7 @@ public final class VirtualNetworkGatewaysClientImpl
     /**
      * The Get VpnclientIpsecParameters operation retrieves information about the vpnclient ipsec policy for P2S client
      * of virtual network gateway in the specified resource group through Network resource provider.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The virtual network gateway name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3794,7 +3794,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getVpnclientIpsecParameters(this.client.getEndpoint(), resourceGroupName,
@@ -3805,7 +3805,7 @@ public final class VirtualNetworkGatewaysClientImpl
     /**
      * The Get VpnclientIpsecParameters operation retrieves information about the vpnclient ipsec policy for P2S client
      * of virtual network gateway in the specified resource group through Network resource provider.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The virtual network gateway name.
      * @param context The context to associate with this operation.
@@ -3834,7 +3834,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getVpnclientIpsecParameters(this.client.getEndpoint(), resourceGroupName,
@@ -3844,7 +3844,7 @@ public final class VirtualNetworkGatewaysClientImpl
     /**
      * The Get VpnclientIpsecParameters operation retrieves information about the vpnclient ipsec policy for P2S client
      * of virtual network gateway in the specified resource group through Network resource provider.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The virtual network gateway name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3865,7 +3865,7 @@ public final class VirtualNetworkGatewaysClientImpl
     /**
      * The Get VpnclientIpsecParameters operation retrieves information about the vpnclient ipsec policy for P2S client
      * of virtual network gateway in the specified resource group through Network resource provider.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The virtual network gateway name.
      * @param context The context to associate with this operation.
@@ -3889,7 +3889,7 @@ public final class VirtualNetworkGatewaysClientImpl
     /**
      * The Get VpnclientIpsecParameters operation retrieves information about the vpnclient ipsec policy for P2S client
      * of virtual network gateway in the specified resource group through Network resource provider.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The virtual network gateway name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3906,7 +3906,7 @@ public final class VirtualNetworkGatewaysClientImpl
     /**
      * The Get VpnclientIpsecParameters operation retrieves information about the vpnclient ipsec policy for P2S client
      * of virtual network gateway in the specified resource group through Network resource provider.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The virtual network gateway name.
      * @param context The context to associate with this operation.
@@ -3925,7 +3925,7 @@ public final class VirtualNetworkGatewaysClientImpl
     /**
      * The Get VpnclientIpsecParameters operation retrieves information about the vpnclient ipsec policy for P2S client
      * of virtual network gateway in the specified resource group through Network resource provider.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The virtual network gateway name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3944,7 +3944,7 @@ public final class VirtualNetworkGatewaysClientImpl
     /**
      * The Get VpnclientIpsecParameters operation retrieves information about the vpnclient ipsec policy for P2S client
      * of virtual network gateway in the specified resource group through Network resource provider.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The virtual network gateway name.
      * @param context The context to associate with this operation.
@@ -3964,7 +3964,7 @@ public final class VirtualNetworkGatewaysClientImpl
     /**
      * The Get VpnclientIpsecParameters operation retrieves information about the vpnclient ipsec policy for P2S client
      * of virtual network gateway in the specified resource group through Network resource provider.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The virtual network gateway name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3981,7 +3981,7 @@ public final class VirtualNetworkGatewaysClientImpl
     /**
      * The Get VpnclientIpsecParameters operation retrieves information about the vpnclient ipsec policy for P2S client
      * of virtual network gateway in the specified resource group through Network resource provider.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The virtual network gateway name.
      * @param context The context to associate with this operation.
@@ -3998,7 +3998,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Gets a xml format representation for vpn device configuration script.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection for which the
      * configuration script is generated.
@@ -4033,7 +4033,7 @@ public final class VirtualNetworkGatewaysClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.vpnDeviceConfigurationScript(this.client.getEndpoint(), resourceGroupName,
@@ -4044,7 +4044,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Gets a xml format representation for vpn device configuration script.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection for which the
      * configuration script is generated.
@@ -4080,7 +4080,7 @@ public final class VirtualNetworkGatewaysClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.vpnDeviceConfigurationScript(this.client.getEndpoint(), resourceGroupName,
@@ -4090,7 +4090,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Gets a xml format representation for vpn device configuration script.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection for which the
      * configuration script is generated.
@@ -4109,7 +4109,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Gets a xml format representation for vpn device configuration script.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection for which the
      * configuration script is generated.
@@ -4129,7 +4129,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Gets a xml format representation for vpn device configuration script.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection for which the
      * configuration script is generated.
@@ -4148,7 +4148,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Starts packet capture on virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Virtual network gateway packet capture parameters supplied to start packet capture on gateway.
@@ -4179,7 +4179,7 @@ public final class VirtualNetworkGatewaysClientImpl
         if (parameters != null) {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.startPacketCapture(this.client.getEndpoint(), resourceGroupName,
@@ -4189,7 +4189,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Starts packet capture on virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Virtual network gateway packet capture parameters supplied to start packet capture on gateway.
@@ -4221,7 +4221,7 @@ public final class VirtualNetworkGatewaysClientImpl
         if (parameters != null) {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.startPacketCapture(this.client.getEndpoint(), resourceGroupName, virtualNetworkGatewayName,
@@ -4230,7 +4230,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Starts packet capture on virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Virtual network gateway packet capture parameters supplied to start packet capture on gateway.
@@ -4250,7 +4250,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Starts packet capture on virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4270,7 +4270,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Starts packet capture on virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Virtual network gateway packet capture parameters supplied to start packet capture on gateway.
@@ -4292,7 +4292,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Starts packet capture on virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4310,7 +4310,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Starts packet capture on virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Virtual network gateway packet capture parameters supplied to start packet capture on gateway.
@@ -4329,7 +4329,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Starts packet capture on virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Virtual network gateway packet capture parameters supplied to start packet capture on gateway.
@@ -4347,7 +4347,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Starts packet capture on virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4364,7 +4364,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Starts packet capture on virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Virtual network gateway packet capture parameters supplied to start packet capture on gateway.
@@ -4383,7 +4383,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Starts packet capture on virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4399,7 +4399,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Starts packet capture on virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Virtual network gateway packet capture parameters supplied to start packet capture on gateway.
@@ -4417,7 +4417,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Stops packet capture on virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Virtual network gateway packet capture parameters supplied to stop packet capture on gateway.
@@ -4450,7 +4450,7 @@ public final class VirtualNetworkGatewaysClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.stopPacketCapture(this.client.getEndpoint(), resourceGroupName,
@@ -4460,7 +4460,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Stops packet capture on virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Virtual network gateway packet capture parameters supplied to stop packet capture on gateway.
@@ -4494,7 +4494,7 @@ public final class VirtualNetworkGatewaysClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.stopPacketCapture(this.client.getEndpoint(), resourceGroupName, virtualNetworkGatewayName,
@@ -4503,7 +4503,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Stops packet capture on virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Virtual network gateway packet capture parameters supplied to stop packet capture on gateway.
@@ -4523,7 +4523,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Stops packet capture on virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Virtual network gateway packet capture parameters supplied to stop packet capture on gateway.
@@ -4545,7 +4545,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Stops packet capture on virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Virtual network gateway packet capture parameters supplied to stop packet capture on gateway.
@@ -4563,7 +4563,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Stops packet capture on virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Virtual network gateway packet capture parameters supplied to stop packet capture on gateway.
@@ -4582,7 +4582,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Stops packet capture on virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Virtual network gateway packet capture parameters supplied to stop packet capture on gateway.
@@ -4600,7 +4600,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Stops packet capture on virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Virtual network gateway packet capture parameters supplied to stop packet capture on gateway.
@@ -4619,7 +4619,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Stops packet capture on virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Virtual network gateway packet capture parameters supplied to stop packet capture on gateway.
@@ -4636,7 +4636,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Stops packet capture on virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Virtual network gateway packet capture parameters supplied to stop packet capture on gateway.
@@ -4655,7 +4655,7 @@ public final class VirtualNetworkGatewaysClientImpl
     /**
      * Get VPN client connection health detail per P2S client connection of the virtual network gateway in the specified
      * resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4683,7 +4683,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getVpnclientConnectionHealth(this.client.getEndpoint(), resourceGroupName,
@@ -4694,7 +4694,7 @@ public final class VirtualNetworkGatewaysClientImpl
     /**
      * Get VPN client connection health detail per P2S client connection of the virtual network gateway in the specified
      * resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param context The context to associate with this operation.
@@ -4723,7 +4723,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getVpnclientConnectionHealth(this.client.getEndpoint(), resourceGroupName,
@@ -4733,7 +4733,7 @@ public final class VirtualNetworkGatewaysClientImpl
     /**
      * Get VPN client connection health detail per P2S client connection of the virtual network gateway in the specified
      * resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4757,7 +4757,7 @@ public final class VirtualNetworkGatewaysClientImpl
     /**
      * Get VPN client connection health detail per P2S client connection of the virtual network gateway in the specified
      * resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param context The context to associate with this operation.
@@ -4784,7 +4784,7 @@ public final class VirtualNetworkGatewaysClientImpl
     /**
      * Get VPN client connection health detail per P2S client connection of the virtual network gateway in the specified
      * resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4804,7 +4804,7 @@ public final class VirtualNetworkGatewaysClientImpl
     /**
      * Get VPN client connection health detail per P2S client connection of the virtual network gateway in the specified
      * resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param context The context to associate with this operation.
@@ -4825,7 +4825,7 @@ public final class VirtualNetworkGatewaysClientImpl
     /**
      * Get VPN client connection health detail per P2S client connection of the virtual network gateway in the specified
      * resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4844,7 +4844,7 @@ public final class VirtualNetworkGatewaysClientImpl
     /**
      * Get VPN client connection health detail per P2S client connection of the virtual network gateway in the specified
      * resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param context The context to associate with this operation.
@@ -4864,7 +4864,7 @@ public final class VirtualNetworkGatewaysClientImpl
     /**
      * Get VPN client connection health detail per P2S client connection of the virtual network gateway in the specified
      * resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4882,7 +4882,7 @@ public final class VirtualNetworkGatewaysClientImpl
     /**
      * Get VPN client connection health detail per P2S client connection of the virtual network gateway in the specified
      * resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param context The context to associate with this operation.
@@ -4900,7 +4900,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Disconnect vpn connections of virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param request The parameters are supplied to disconnect vpn connections.
@@ -4933,7 +4933,7 @@ public final class VirtualNetworkGatewaysClientImpl
         } else {
             request.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.disconnectVirtualNetworkGatewayVpnConnections(this.client.getEndpoint(),
@@ -4944,7 +4944,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Disconnect vpn connections of virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param request The parameters are supplied to disconnect vpn connections.
@@ -4978,7 +4978,7 @@ public final class VirtualNetworkGatewaysClientImpl
         } else {
             request.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.disconnectVirtualNetworkGatewayVpnConnections(this.client.getEndpoint(),
@@ -4988,7 +4988,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Disconnect vpn connections of virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param request The parameters are supplied to disconnect vpn connections.
@@ -5008,7 +5008,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Disconnect vpn connections of virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param request The parameters are supplied to disconnect vpn connections.
@@ -5030,7 +5030,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Disconnect vpn connections of virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param request The parameters are supplied to disconnect vpn connections.
@@ -5050,7 +5050,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Disconnect vpn connections of virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param request The parameters are supplied to disconnect vpn connections.
@@ -5071,7 +5071,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Disconnect vpn connections of virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param request The parameters are supplied to disconnect vpn connections.
@@ -5089,7 +5089,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Disconnect vpn connections of virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param request The parameters are supplied to disconnect vpn connections.
@@ -5108,7 +5108,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Disconnect vpn connections of virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param request The parameters are supplied to disconnect vpn connections.
@@ -5125,7 +5125,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Disconnect vpn connections of virtual network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param request The parameters are supplied to disconnect vpn connections.
@@ -5143,7 +5143,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -5169,7 +5169,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -5196,7 +5196,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -5225,7 +5225,7 @@ public final class VirtualNetworkGatewaysClientImpl
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

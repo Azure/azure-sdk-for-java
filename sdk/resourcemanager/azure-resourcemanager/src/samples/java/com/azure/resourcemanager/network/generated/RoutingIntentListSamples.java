@@ -10,11 +10,11 @@ package com.azure.resourcemanager.network.generated;
 public final class RoutingIntentListSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/RoutingIntentList.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/RoutingIntentList.json
      */
     /**
      * Sample code: RoutingIntentList.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void routingIntentList(com.azure.resourcemanager.AzureResourceManager azure) {

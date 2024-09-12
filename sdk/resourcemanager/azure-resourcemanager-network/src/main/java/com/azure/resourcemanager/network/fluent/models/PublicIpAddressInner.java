@@ -7,6 +7,7 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -60,14 +61,14 @@ public final class PublicIpAddressInner extends Resource {
     private String id;
 
     /*
-     * The name of the resource.
-     */
-    private String name;
-
-    /*
      * The type of the resource.
      */
     private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
 
     /**
      * Creates an instance of PublicIpAddressInner class.
@@ -77,7 +78,7 @@ public final class PublicIpAddressInner extends Resource {
 
     /**
      * Get the extendedLocation property: The extended location of the public ip address.
-     * 
+     *
      * @return the extendedLocation value.
      */
     public ExtendedLocation extendedLocation() {
@@ -86,7 +87,7 @@ public final class PublicIpAddressInner extends Resource {
 
     /**
      * Set the extendedLocation property: The extended location of the public ip address.
-     * 
+     *
      * @param extendedLocation the extendedLocation value to set.
      * @return the PublicIpAddressInner object itself.
      */
@@ -97,7 +98,7 @@ public final class PublicIpAddressInner extends Resource {
 
     /**
      * Get the sku property: The public IP address SKU.
-     * 
+     *
      * @return the sku value.
      */
     public PublicIpAddressSku sku() {
@@ -106,7 +107,7 @@ public final class PublicIpAddressInner extends Resource {
 
     /**
      * Set the sku property: The public IP address SKU.
-     * 
+     *
      * @param sku the sku value to set.
      * @return the PublicIpAddressInner object itself.
      */
@@ -117,7 +118,7 @@ public final class PublicIpAddressInner extends Resource {
 
     /**
      * Get the innerProperties property: Public IP address properties.
-     * 
+     *
      * @return the innerProperties value.
      */
     private PublicIpAddressPropertiesFormatInner innerProperties() {
@@ -126,7 +127,7 @@ public final class PublicIpAddressInner extends Resource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     * 
+     *
      * @return the etag value.
      */
     public String etag() {
@@ -136,7 +137,7 @@ public final class PublicIpAddressInner extends Resource {
     /**
      * Get the zones property: A list of availability zones denoting the IP allocated for the resource needs to come
      * from.
-     * 
+     *
      * @return the zones value.
      */
     public List<String> zones() {
@@ -146,7 +147,7 @@ public final class PublicIpAddressInner extends Resource {
     /**
      * Set the zones property: A list of availability zones denoting the IP allocated for the resource needs to come
      * from.
-     * 
+     *
      * @param zones the zones value to set.
      * @return the PublicIpAddressInner object itself.
      */
@@ -157,7 +158,7 @@ public final class PublicIpAddressInner extends Resource {
 
     /**
      * Get the id property: Resource ID.
-     * 
+     *
      * @return the id value.
      */
     public String id() {
@@ -166,7 +167,7 @@ public final class PublicIpAddressInner extends Resource {
 
     /**
      * Set the id property: Resource ID.
-     * 
+     *
      * @param id the id value to set.
      * @return the PublicIpAddressInner object itself.
      */
@@ -176,23 +177,23 @@ public final class PublicIpAddressInner extends Resource {
     }
 
     /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
-    }
-
-    /**
      * Get the type property: The type of the resource.
-     * 
+     *
      * @return the type value.
      */
     @Override
     public String type() {
         return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     *
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -215,7 +216,7 @@ public final class PublicIpAddressInner extends Resource {
 
     /**
      * Get the publicIpAllocationMethod property: The public IP address allocation method.
-     * 
+     *
      * @return the publicIpAllocationMethod value.
      */
     public IpAllocationMethod publicIpAllocationMethod() {
@@ -224,7 +225,7 @@ public final class PublicIpAddressInner extends Resource {
 
     /**
      * Set the publicIpAllocationMethod property: The public IP address allocation method.
-     * 
+     *
      * @param publicIpAllocationMethod the publicIpAllocationMethod value to set.
      * @return the PublicIpAddressInner object itself.
      */
@@ -238,7 +239,7 @@ public final class PublicIpAddressInner extends Resource {
 
     /**
      * Get the publicIpAddressVersion property: The public IP address version.
-     * 
+     *
      * @return the publicIpAddressVersion value.
      */
     public IpVersion publicIpAddressVersion() {
@@ -247,7 +248,7 @@ public final class PublicIpAddressInner extends Resource {
 
     /**
      * Set the publicIpAddressVersion property: The public IP address version.
-     * 
+     *
      * @param publicIpAddressVersion the publicIpAddressVersion value to set.
      * @return the PublicIpAddressInner object itself.
      */
@@ -261,7 +262,7 @@ public final class PublicIpAddressInner extends Resource {
 
     /**
      * Get the ipConfiguration property: The IP configuration associated with the public IP address.
-     * 
+     *
      * @return the ipConfiguration value.
      */
     public IpConfigurationInner ipConfiguration() {
@@ -270,7 +271,7 @@ public final class PublicIpAddressInner extends Resource {
 
     /**
      * Get the dnsSettings property: The FQDN of the DNS record associated with the public IP address.
-     * 
+     *
      * @return the dnsSettings value.
      */
     public PublicIpAddressDnsSettings dnsSettings() {
@@ -279,7 +280,7 @@ public final class PublicIpAddressInner extends Resource {
 
     /**
      * Set the dnsSettings property: The FQDN of the DNS record associated with the public IP address.
-     * 
+     *
      * @param dnsSettings the dnsSettings value to set.
      * @return the PublicIpAddressInner object itself.
      */
@@ -293,7 +294,7 @@ public final class PublicIpAddressInner extends Resource {
 
     /**
      * Get the ddosSettings property: The DDoS protection custom policy associated with the public IP address.
-     * 
+     *
      * @return the ddosSettings value.
      */
     public DdosSettings ddosSettings() {
@@ -302,7 +303,7 @@ public final class PublicIpAddressInner extends Resource {
 
     /**
      * Set the ddosSettings property: The DDoS protection custom policy associated with the public IP address.
-     * 
+     *
      * @param ddosSettings the ddosSettings value to set.
      * @return the PublicIpAddressInner object itself.
      */
@@ -316,7 +317,7 @@ public final class PublicIpAddressInner extends Resource {
 
     /**
      * Get the ipTags property: The list of tags associated with the public IP address.
-     * 
+     *
      * @return the ipTags value.
      */
     public List<IpTag> ipTags() {
@@ -325,7 +326,7 @@ public final class PublicIpAddressInner extends Resource {
 
     /**
      * Set the ipTags property: The list of tags associated with the public IP address.
-     * 
+     *
      * @param ipTags the ipTags value to set.
      * @return the PublicIpAddressInner object itself.
      */
@@ -339,7 +340,7 @@ public final class PublicIpAddressInner extends Resource {
 
     /**
      * Get the ipAddress property: The IP address associated with the public IP address resource.
-     * 
+     *
      * @return the ipAddress value.
      */
     public String ipAddress() {
@@ -348,7 +349,7 @@ public final class PublicIpAddressInner extends Resource {
 
     /**
      * Set the ipAddress property: The IP address associated with the public IP address resource.
-     * 
+     *
      * @param ipAddress the ipAddress value to set.
      * @return the PublicIpAddressInner object itself.
      */
@@ -362,7 +363,7 @@ public final class PublicIpAddressInner extends Resource {
 
     /**
      * Get the publicIpPrefix property: The Public IP Prefix this Public IP Address should be allocated from.
-     * 
+     *
      * @return the publicIpPrefix value.
      */
     public SubResource publicIpPrefix() {
@@ -371,7 +372,7 @@ public final class PublicIpAddressInner extends Resource {
 
     /**
      * Set the publicIpPrefix property: The Public IP Prefix this Public IP Address should be allocated from.
-     * 
+     *
      * @param publicIpPrefix the publicIpPrefix value to set.
      * @return the PublicIpAddressInner object itself.
      */
@@ -385,7 +386,7 @@ public final class PublicIpAddressInner extends Resource {
 
     /**
      * Get the idleTimeoutInMinutes property: The idle timeout of the public IP address.
-     * 
+     *
      * @return the idleTimeoutInMinutes value.
      */
     public Integer idleTimeoutInMinutes() {
@@ -394,7 +395,7 @@ public final class PublicIpAddressInner extends Resource {
 
     /**
      * Set the idleTimeoutInMinutes property: The idle timeout of the public IP address.
-     * 
+     *
      * @param idleTimeoutInMinutes the idleTimeoutInMinutes value to set.
      * @return the PublicIpAddressInner object itself.
      */
@@ -408,7 +409,7 @@ public final class PublicIpAddressInner extends Resource {
 
     /**
      * Get the resourceGuid property: The resource GUID property of the public IP address resource.
-     * 
+     *
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -417,7 +418,7 @@ public final class PublicIpAddressInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the public IP address resource.
-     * 
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -426,7 +427,7 @@ public final class PublicIpAddressInner extends Resource {
 
     /**
      * Get the servicePublicIpAddress property: The service public IP address of the public IP address resource.
-     * 
+     *
      * @return the servicePublicIpAddress value.
      */
     public PublicIpAddressInner servicePublicIpAddress() {
@@ -435,7 +436,7 @@ public final class PublicIpAddressInner extends Resource {
 
     /**
      * Set the servicePublicIpAddress property: The service public IP address of the public IP address resource.
-     * 
+     *
      * @param servicePublicIpAddress the servicePublicIpAddress value to set.
      * @return the PublicIpAddressInner object itself.
      */
@@ -449,7 +450,7 @@ public final class PublicIpAddressInner extends Resource {
 
     /**
      * Get the natGateway property: The NatGateway for the Public IP address.
-     * 
+     *
      * @return the natGateway value.
      */
     public NatGatewayInner natGateway() {
@@ -458,7 +459,7 @@ public final class PublicIpAddressInner extends Resource {
 
     /**
      * Set the natGateway property: The NatGateway for the Public IP address.
-     * 
+     *
      * @param natGateway the natGateway value to set.
      * @return the PublicIpAddressInner object itself.
      */
@@ -472,7 +473,7 @@ public final class PublicIpAddressInner extends Resource {
 
     /**
      * Get the migrationPhase property: Migration phase of Public IP Address.
-     * 
+     *
      * @return the migrationPhase value.
      */
     public PublicIpAddressMigrationPhase migrationPhase() {
@@ -481,7 +482,7 @@ public final class PublicIpAddressInner extends Resource {
 
     /**
      * Set the migrationPhase property: Migration phase of Public IP Address.
-     * 
+     *
      * @param migrationPhase the migrationPhase value to set.
      * @return the PublicIpAddressInner object itself.
      */
@@ -495,7 +496,7 @@ public final class PublicIpAddressInner extends Resource {
 
     /**
      * Get the linkedPublicIpAddress property: The linked public IP address of the public IP address resource.
-     * 
+     *
      * @return the linkedPublicIpAddress value.
      */
     public PublicIpAddressInner linkedPublicIpAddress() {
@@ -504,7 +505,7 @@ public final class PublicIpAddressInner extends Resource {
 
     /**
      * Set the linkedPublicIpAddress property: The linked public IP address of the public IP address resource.
-     * 
+     *
      * @param linkedPublicIpAddress the linkedPublicIpAddress value to set.
      * @return the PublicIpAddressInner object itself.
      */
@@ -518,7 +519,7 @@ public final class PublicIpAddressInner extends Resource {
 
     /**
      * Get the deleteOption property: Specify what happens to the public IP address when the VM using it is deleted.
-     * 
+     *
      * @return the deleteOption value.
      */
     public DeleteOptions deleteOption() {
@@ -527,7 +528,7 @@ public final class PublicIpAddressInner extends Resource {
 
     /**
      * Set the deleteOption property: Specify what happens to the public IP address when the VM using it is deleted.
-     * 
+     *
      * @param deleteOption the deleteOption value to set.
      * @return the PublicIpAddressInner object itself.
      */
@@ -541,7 +542,7 @@ public final class PublicIpAddressInner extends Resource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -554,7 +555,13 @@ public final class PublicIpAddressInner extends Resource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+        if (location() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property location in model PublicIpAddressInner"));
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PublicIpAddressInner.class);
 
     /**
      * {@inheritDoc}
@@ -574,7 +581,7 @@ public final class PublicIpAddressInner extends Resource {
 
     /**
      * Reads an instance of PublicIpAddressInner from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of PublicIpAddressInner if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.

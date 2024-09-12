@@ -64,7 +64,7 @@ public final class NetworkRule extends FirewallPolicyRule {
 
     /**
      * Get the ruleType property: Rule Type.
-     * 
+     *
      * @return the ruleType value.
      */
     @Override
@@ -74,7 +74,7 @@ public final class NetworkRule extends FirewallPolicyRule {
 
     /**
      * Get the ipProtocols property: Array of FirewallPolicyRuleNetworkProtocols.
-     * 
+     *
      * @return the ipProtocols value.
      */
     public List<FirewallPolicyRuleNetworkProtocol> ipProtocols() {
@@ -83,7 +83,7 @@ public final class NetworkRule extends FirewallPolicyRule {
 
     /**
      * Set the ipProtocols property: Array of FirewallPolicyRuleNetworkProtocols.
-     * 
+     *
      * @param ipProtocols the ipProtocols value to set.
      * @return the NetworkRule object itself.
      */
@@ -94,7 +94,7 @@ public final class NetworkRule extends FirewallPolicyRule {
 
     /**
      * Get the sourceAddresses property: List of source IP addresses for this rule.
-     * 
+     *
      * @return the sourceAddresses value.
      */
     public List<String> sourceAddresses() {
@@ -103,7 +103,7 @@ public final class NetworkRule extends FirewallPolicyRule {
 
     /**
      * Set the sourceAddresses property: List of source IP addresses for this rule.
-     * 
+     *
      * @param sourceAddresses the sourceAddresses value to set.
      * @return the NetworkRule object itself.
      */
@@ -114,7 +114,7 @@ public final class NetworkRule extends FirewallPolicyRule {
 
     /**
      * Get the destinationAddresses property: List of destination IP addresses or Service Tags.
-     * 
+     *
      * @return the destinationAddresses value.
      */
     public List<String> destinationAddresses() {
@@ -123,7 +123,7 @@ public final class NetworkRule extends FirewallPolicyRule {
 
     /**
      * Set the destinationAddresses property: List of destination IP addresses or Service Tags.
-     * 
+     *
      * @param destinationAddresses the destinationAddresses value to set.
      * @return the NetworkRule object itself.
      */
@@ -134,7 +134,7 @@ public final class NetworkRule extends FirewallPolicyRule {
 
     /**
      * Get the destinationPorts property: List of destination ports.
-     * 
+     *
      * @return the destinationPorts value.
      */
     public List<String> destinationPorts() {
@@ -143,7 +143,7 @@ public final class NetworkRule extends FirewallPolicyRule {
 
     /**
      * Set the destinationPorts property: List of destination ports.
-     * 
+     *
      * @param destinationPorts the destinationPorts value to set.
      * @return the NetworkRule object itself.
      */
@@ -154,7 +154,7 @@ public final class NetworkRule extends FirewallPolicyRule {
 
     /**
      * Get the sourceIpGroups property: List of source IpGroups for this rule.
-     * 
+     *
      * @return the sourceIpGroups value.
      */
     public List<String> sourceIpGroups() {
@@ -163,7 +163,7 @@ public final class NetworkRule extends FirewallPolicyRule {
 
     /**
      * Set the sourceIpGroups property: List of source IpGroups for this rule.
-     * 
+     *
      * @param sourceIpGroups the sourceIpGroups value to set.
      * @return the NetworkRule object itself.
      */
@@ -174,7 +174,7 @@ public final class NetworkRule extends FirewallPolicyRule {
 
     /**
      * Get the destinationIpGroups property: List of destination IpGroups for this rule.
-     * 
+     *
      * @return the destinationIpGroups value.
      */
     public List<String> destinationIpGroups() {
@@ -183,7 +183,7 @@ public final class NetworkRule extends FirewallPolicyRule {
 
     /**
      * Set the destinationIpGroups property: List of destination IpGroups for this rule.
-     * 
+     *
      * @param destinationIpGroups the destinationIpGroups value to set.
      * @return the NetworkRule object itself.
      */
@@ -194,7 +194,7 @@ public final class NetworkRule extends FirewallPolicyRule {
 
     /**
      * Get the destinationFqdns property: List of destination FQDNs.
-     * 
+     *
      * @return the destinationFqdns value.
      */
     public List<String> destinationFqdns() {
@@ -203,7 +203,7 @@ public final class NetworkRule extends FirewallPolicyRule {
 
     /**
      * Set the destinationFqdns property: List of destination FQDNs.
-     * 
+     *
      * @param destinationFqdns the destinationFqdns value to set.
      * @return the NetworkRule object itself.
      */
@@ -232,12 +232,11 @@ public final class NetworkRule extends FirewallPolicyRule {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**
@@ -268,7 +267,7 @@ public final class NetworkRule extends FirewallPolicyRule {
 
     /**
      * Reads an instance of NetworkRule from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of NetworkRule if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.

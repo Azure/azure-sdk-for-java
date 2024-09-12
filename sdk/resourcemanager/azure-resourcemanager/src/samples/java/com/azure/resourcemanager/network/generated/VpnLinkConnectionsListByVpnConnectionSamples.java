@@ -10,12 +10,12 @@ package com.azure.resourcemanager.network.generated;
 public final class VpnLinkConnectionsListByVpnConnectionSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/VpnSiteLinkConnectionList.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/VpnSiteLinkConnectionList.
      * json
      */
     /**
      * Sample code: VpnSiteLinkConnectionList.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void vpnSiteLinkConnectionList(com.azure.resourcemanager.AzureResourceManager azure) {

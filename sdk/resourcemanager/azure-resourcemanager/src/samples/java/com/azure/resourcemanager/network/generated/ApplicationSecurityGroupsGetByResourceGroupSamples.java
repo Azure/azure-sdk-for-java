@@ -10,12 +10,12 @@ package com.azure.resourcemanager.network.generated;
 public final class ApplicationSecurityGroupsGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/ApplicationSecurityGroupGet.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/ApplicationSecurityGroupGet.
      * json
      */
     /**
      * Sample code: Get application security group.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getApplicationSecurityGroup(com.azure.resourcemanager.AzureResourceManager azure) {

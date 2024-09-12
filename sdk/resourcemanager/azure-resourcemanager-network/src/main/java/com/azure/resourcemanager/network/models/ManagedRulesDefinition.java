@@ -19,6 +19,11 @@ import java.util.List;
 @Fluent
 public final class ManagedRulesDefinition implements JsonSerializable<ManagedRulesDefinition> {
     /*
+     * The exceptions that are applied on the policy.
+     */
+    private List<ExceptionEntry> exceptions;
+
+    /*
      * The Exclusions that are applied on the policy.
      */
     private List<OwaspCrsExclusionEntry> exclusions;
@@ -35,8 +40,28 @@ public final class ManagedRulesDefinition implements JsonSerializable<ManagedRul
     }
 
     /**
+     * Get the exceptions property: The exceptions that are applied on the policy.
+     *
+     * @return the exceptions value.
+     */
+    public List<ExceptionEntry> exceptions() {
+        return this.exceptions;
+    }
+
+    /**
+     * Set the exceptions property: The exceptions that are applied on the policy.
+     *
+     * @param exceptions the exceptions value to set.
+     * @return the ManagedRulesDefinition object itself.
+     */
+    public ManagedRulesDefinition withExceptions(List<ExceptionEntry> exceptions) {
+        this.exceptions = exceptions;
+        return this;
+    }
+
+    /**
      * Get the exclusions property: The Exclusions that are applied on the policy.
-     * 
+     *
      * @return the exclusions value.
      */
     public List<OwaspCrsExclusionEntry> exclusions() {
@@ -45,7 +70,7 @@ public final class ManagedRulesDefinition implements JsonSerializable<ManagedRul
 
     /**
      * Set the exclusions property: The Exclusions that are applied on the policy.
-     * 
+     *
      * @param exclusions the exclusions value to set.
      * @return the ManagedRulesDefinition object itself.
      */
@@ -56,7 +81,7 @@ public final class ManagedRulesDefinition implements JsonSerializable<ManagedRul
 
     /**
      * Get the managedRuleSets property: The managed rule sets that are associated with the policy.
-     * 
+     *
      * @return the managedRuleSets value.
      */
     public List<ManagedRuleSet> managedRuleSets() {
@@ -65,7 +90,7 @@ public final class ManagedRulesDefinition implements JsonSerializable<ManagedRul
 
     /**
      * Set the managedRuleSets property: The managed rule sets that are associated with the policy.
-     * 
+     *
      * @param managedRuleSets the managedRuleSets value to set.
      * @return the ManagedRulesDefinition object itself.
      */
@@ -76,10 +101,13 @@ public final class ManagedRulesDefinition implements JsonSerializable<ManagedRul
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (exceptions() != null) {
+            exceptions().forEach(e -> e.validate());
+        }
         if (exclusions() != null) {
             exclusions().forEach(e -> e.validate());
         }
@@ -102,13 +130,14 @@ public final class ManagedRulesDefinition implements JsonSerializable<ManagedRul
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("managedRuleSets", this.managedRuleSets,
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("exceptions", this.exceptions, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("exclusions", this.exclusions, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
     /**
      * Reads an instance of ManagedRulesDefinition from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of ManagedRulesDefinition if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
@@ -126,6 +155,9 @@ public final class ManagedRulesDefinition implements JsonSerializable<ManagedRul
                     List<ManagedRuleSet> managedRuleSets
                         = reader.readArray(reader1 -> ManagedRuleSet.fromJson(reader1));
                     deserializedManagedRulesDefinition.managedRuleSets = managedRuleSets;
+                } else if ("exceptions".equals(fieldName)) {
+                    List<ExceptionEntry> exceptions = reader.readArray(reader1 -> ExceptionEntry.fromJson(reader1));
+                    deserializedManagedRulesDefinition.exceptions = exceptions;
                 } else if ("exclusions".equals(fieldName)) {
                     List<OwaspCrsExclusionEntry> exclusions
                         = reader.readArray(reader1 -> OwaspCrsExclusionEntry.fromJson(reader1));

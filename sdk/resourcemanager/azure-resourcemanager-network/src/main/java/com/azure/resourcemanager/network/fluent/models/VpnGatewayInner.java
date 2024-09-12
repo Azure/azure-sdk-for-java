@@ -7,6 +7,7 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -38,14 +39,14 @@ public final class VpnGatewayInner extends Resource {
     private String id;
 
     /*
-     * The name of the resource.
-     */
-    private String name;
-
-    /*
      * The type of the resource.
      */
     private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
 
     /**
      * Creates an instance of VpnGatewayInner class.
@@ -55,7 +56,7 @@ public final class VpnGatewayInner extends Resource {
 
     /**
      * Get the innerProperties property: Properties of the VPN gateway.
-     * 
+     *
      * @return the innerProperties value.
      */
     private VpnGatewayProperties innerProperties() {
@@ -64,7 +65,7 @@ public final class VpnGatewayInner extends Resource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     * 
+     *
      * @return the etag value.
      */
     public String etag() {
@@ -73,7 +74,7 @@ public final class VpnGatewayInner extends Resource {
 
     /**
      * Get the id property: Resource ID.
-     * 
+     *
      * @return the id value.
      */
     public String id() {
@@ -82,7 +83,7 @@ public final class VpnGatewayInner extends Resource {
 
     /**
      * Set the id property: Resource ID.
-     * 
+     *
      * @param id the id value to set.
      * @return the VpnGatewayInner object itself.
      */
@@ -92,23 +93,23 @@ public final class VpnGatewayInner extends Resource {
     }
 
     /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
-    }
-
-    /**
      * Get the type property: The type of the resource.
-     * 
+     *
      * @return the type value.
      */
     @Override
     public String type() {
         return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     *
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -131,7 +132,7 @@ public final class VpnGatewayInner extends Resource {
 
     /**
      * Get the virtualHub property: The VirtualHub to which the gateway belongs.
-     * 
+     *
      * @return the virtualHub value.
      */
     public SubResource virtualHub() {
@@ -140,7 +141,7 @@ public final class VpnGatewayInner extends Resource {
 
     /**
      * Set the virtualHub property: The VirtualHub to which the gateway belongs.
-     * 
+     *
      * @param virtualHub the virtualHub value to set.
      * @return the VpnGatewayInner object itself.
      */
@@ -154,7 +155,7 @@ public final class VpnGatewayInner extends Resource {
 
     /**
      * Get the connections property: List of all vpn connections to the gateway.
-     * 
+     *
      * @return the connections value.
      */
     public List<VpnConnectionInner> connections() {
@@ -163,7 +164,7 @@ public final class VpnGatewayInner extends Resource {
 
     /**
      * Set the connections property: List of all vpn connections to the gateway.
-     * 
+     *
      * @param connections the connections value to set.
      * @return the VpnGatewayInner object itself.
      */
@@ -177,7 +178,7 @@ public final class VpnGatewayInner extends Resource {
 
     /**
      * Get the bgpSettings property: Local network gateway's BGP speaker settings.
-     * 
+     *
      * @return the bgpSettings value.
      */
     public BgpSettings bgpSettings() {
@@ -186,7 +187,7 @@ public final class VpnGatewayInner extends Resource {
 
     /**
      * Set the bgpSettings property: Local network gateway's BGP speaker settings.
-     * 
+     *
      * @param bgpSettings the bgpSettings value to set.
      * @return the VpnGatewayInner object itself.
      */
@@ -200,7 +201,7 @@ public final class VpnGatewayInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the VPN gateway resource.
-     * 
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -209,7 +210,7 @@ public final class VpnGatewayInner extends Resource {
 
     /**
      * Get the vpnGatewayScaleUnit property: The scale unit for this vpn gateway.
-     * 
+     *
      * @return the vpnGatewayScaleUnit value.
      */
     public Integer vpnGatewayScaleUnit() {
@@ -218,7 +219,7 @@ public final class VpnGatewayInner extends Resource {
 
     /**
      * Set the vpnGatewayScaleUnit property: The scale unit for this vpn gateway.
-     * 
+     *
      * @param vpnGatewayScaleUnit the vpnGatewayScaleUnit value to set.
      * @return the VpnGatewayInner object itself.
      */
@@ -232,7 +233,7 @@ public final class VpnGatewayInner extends Resource {
 
     /**
      * Get the ipConfigurations property: List of all IPs configured on the gateway.
-     * 
+     *
      * @return the ipConfigurations value.
      */
     public List<VpnGatewayIpConfiguration> ipConfigurations() {
@@ -241,7 +242,7 @@ public final class VpnGatewayInner extends Resource {
 
     /**
      * Get the enableBgpRouteTranslationForNat property: Enable BGP routes translation for NAT on this VpnGateway.
-     * 
+     *
      * @return the enableBgpRouteTranslationForNat value.
      */
     public Boolean enableBgpRouteTranslationForNat() {
@@ -250,7 +251,7 @@ public final class VpnGatewayInner extends Resource {
 
     /**
      * Set the enableBgpRouteTranslationForNat property: Enable BGP routes translation for NAT on this VpnGateway.
-     * 
+     *
      * @param enableBgpRouteTranslationForNat the enableBgpRouteTranslationForNat value to set.
      * @return the VpnGatewayInner object itself.
      */
@@ -265,7 +266,7 @@ public final class VpnGatewayInner extends Resource {
     /**
      * Get the isRoutingPreferenceInternet property: Enable Routing Preference property for the Public IP Interface of
      * the VpnGateway.
-     * 
+     *
      * @return the isRoutingPreferenceInternet value.
      */
     public Boolean isRoutingPreferenceInternet() {
@@ -275,7 +276,7 @@ public final class VpnGatewayInner extends Resource {
     /**
      * Set the isRoutingPreferenceInternet property: Enable Routing Preference property for the Public IP Interface of
      * the VpnGateway.
-     * 
+     *
      * @param isRoutingPreferenceInternet the isRoutingPreferenceInternet value to set.
      * @return the VpnGatewayInner object itself.
      */
@@ -289,7 +290,7 @@ public final class VpnGatewayInner extends Resource {
 
     /**
      * Get the natRules property: List of all the nat Rules associated with the gateway.
-     * 
+     *
      * @return the natRules value.
      */
     public List<VpnGatewayNatRuleInner> natRules() {
@@ -298,7 +299,7 @@ public final class VpnGatewayInner extends Resource {
 
     /**
      * Set the natRules property: List of all the nat Rules associated with the gateway.
-     * 
+     *
      * @param natRules the natRules value to set.
      * @return the VpnGatewayInner object itself.
      */
@@ -312,14 +313,20 @@ public final class VpnGatewayInner extends Resource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+        if (location() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property location in model VpnGatewayInner"));
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(VpnGatewayInner.class);
 
     /**
      * {@inheritDoc}
@@ -336,7 +343,7 @@ public final class VpnGatewayInner extends Resource {
 
     /**
      * Reads an instance of VpnGatewayInner from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of VpnGatewayInner if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.

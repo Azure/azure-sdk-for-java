@@ -10,12 +10,12 @@ package com.azure.resourcemanager.network.generated;
 public final class VirtualNetworkGatewaysResetSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/VirtualNetworkGatewayReset.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/VirtualNetworkGatewayReset.
      * json
      */
     /**
      * Sample code: ResetVirtualNetworkGateway.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void resetVirtualNetworkGateway(com.azure.resourcemanager.AzureResourceManager azure) {

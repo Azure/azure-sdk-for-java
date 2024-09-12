@@ -37,14 +37,14 @@ public final class LocalNetworkGatewayInner extends Resource {
     private String id;
 
     /*
-     * The name of the resource.
-     */
-    private String name;
-
-    /*
      * The type of the resource.
      */
     private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
 
     /**
      * Creates an instance of LocalNetworkGatewayInner class.
@@ -54,7 +54,7 @@ public final class LocalNetworkGatewayInner extends Resource {
 
     /**
      * Get the innerProperties property: Properties of the local network gateway.
-     * 
+     *
      * @return the innerProperties value.
      */
     private LocalNetworkGatewayPropertiesFormat innerProperties() {
@@ -63,7 +63,7 @@ public final class LocalNetworkGatewayInner extends Resource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     * 
+     *
      * @return the etag value.
      */
     public String etag() {
@@ -72,7 +72,7 @@ public final class LocalNetworkGatewayInner extends Resource {
 
     /**
      * Get the id property: Resource ID.
-     * 
+     *
      * @return the id value.
      */
     public String id() {
@@ -81,7 +81,7 @@ public final class LocalNetworkGatewayInner extends Resource {
 
     /**
      * Set the id property: Resource ID.
-     * 
+     *
      * @param id the id value to set.
      * @return the LocalNetworkGatewayInner object itself.
      */
@@ -91,23 +91,23 @@ public final class LocalNetworkGatewayInner extends Resource {
     }
 
     /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
-    }
-
-    /**
      * Get the type property: The type of the resource.
-     * 
+     *
      * @return the type value.
      */
     @Override
     public String type() {
         return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     *
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -130,7 +130,7 @@ public final class LocalNetworkGatewayInner extends Resource {
 
     /**
      * Get the localNetworkAddressSpace property: Local network site address space.
-     * 
+     *
      * @return the localNetworkAddressSpace value.
      */
     public AddressSpace localNetworkAddressSpace() {
@@ -139,7 +139,7 @@ public final class LocalNetworkGatewayInner extends Resource {
 
     /**
      * Set the localNetworkAddressSpace property: Local network site address space.
-     * 
+     *
      * @param localNetworkAddressSpace the localNetworkAddressSpace value to set.
      * @return the LocalNetworkGatewayInner object itself.
      */
@@ -153,7 +153,7 @@ public final class LocalNetworkGatewayInner extends Resource {
 
     /**
      * Get the gatewayIpAddress property: IP address of local network gateway.
-     * 
+     *
      * @return the gatewayIpAddress value.
      */
     public String gatewayIpAddress() {
@@ -162,7 +162,7 @@ public final class LocalNetworkGatewayInner extends Resource {
 
     /**
      * Set the gatewayIpAddress property: IP address of local network gateway.
-     * 
+     *
      * @param gatewayIpAddress the gatewayIpAddress value to set.
      * @return the LocalNetworkGatewayInner object itself.
      */
@@ -176,7 +176,7 @@ public final class LocalNetworkGatewayInner extends Resource {
 
     /**
      * Get the fqdn property: FQDN of local network gateway.
-     * 
+     *
      * @return the fqdn value.
      */
     public String fqdn() {
@@ -185,7 +185,7 @@ public final class LocalNetworkGatewayInner extends Resource {
 
     /**
      * Set the fqdn property: FQDN of local network gateway.
-     * 
+     *
      * @param fqdn the fqdn value to set.
      * @return the LocalNetworkGatewayInner object itself.
      */
@@ -199,7 +199,7 @@ public final class LocalNetworkGatewayInner extends Resource {
 
     /**
      * Get the bgpSettings property: Local network gateway's BGP speaker settings.
-     * 
+     *
      * @return the bgpSettings value.
      */
     public BgpSettings bgpSettings() {
@@ -208,7 +208,7 @@ public final class LocalNetworkGatewayInner extends Resource {
 
     /**
      * Set the bgpSettings property: Local network gateway's BGP speaker settings.
-     * 
+     *
      * @param bgpSettings the bgpSettings value to set.
      * @return the LocalNetworkGatewayInner object itself.
      */
@@ -222,7 +222,7 @@ public final class LocalNetworkGatewayInner extends Resource {
 
     /**
      * Get the resourceGuid property: The resource GUID property of the local network gateway resource.
-     * 
+     *
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -231,7 +231,7 @@ public final class LocalNetworkGatewayInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the local network gateway resource.
-     * 
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -240,7 +240,7 @@ public final class LocalNetworkGatewayInner extends Resource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -250,6 +250,11 @@ public final class LocalNetworkGatewayInner extends Resource {
                     "Missing required property innerProperties in model LocalNetworkGatewayInner"));
         } else {
             innerProperties().validate();
+        }
+        if (location() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property location in model LocalNetworkGatewayInner"));
         }
     }
 
@@ -270,7 +275,7 @@ public final class LocalNetworkGatewayInner extends Resource {
 
     /**
      * Reads an instance of LocalNetworkGatewayInner from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of LocalNetworkGatewayInner if the JsonReader was pointing to an instance of it, or null if
      * it was pointing to JSON null.

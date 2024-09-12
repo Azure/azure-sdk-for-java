@@ -66,7 +66,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Initializes an instance of PrivateLinkServicesClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     PrivateLinkServicesClientImpl(NetworkManagementClientImpl client) {
@@ -247,7 +247,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Deletes the specified private link service.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -272,7 +272,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, serviceName,
@@ -282,7 +282,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Deletes the specified private link service.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param context The context to associate with this operation.
@@ -309,7 +309,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, serviceName, apiVersion,
@@ -318,7 +318,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Deletes the specified private link service.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -335,7 +335,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Deletes the specified private link service.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param context The context to associate with this operation.
@@ -355,7 +355,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Deletes the specified private link service.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -370,7 +370,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Deletes the specified private link service.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param context The context to associate with this operation.
@@ -387,7 +387,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Deletes the specified private link service.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -402,7 +402,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Deletes the specified private link service.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param context The context to associate with this operation.
@@ -419,7 +419,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Deletes the specified private link service.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -433,7 +433,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Deletes the specified private link service.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param context The context to associate with this operation.
@@ -448,7 +448,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Gets the specified private link service by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param expand Expands referenced resources.
@@ -476,7 +476,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -486,7 +486,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Gets the specified private link service by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param expand Expands referenced resources.
@@ -515,7 +515,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, serviceName, apiVersion,
@@ -524,7 +524,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Gets the specified private link service by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -541,7 +541,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Gets the specified private link service by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param expand Expands referenced resources.
@@ -559,7 +559,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Gets the specified private link service by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -575,7 +575,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Creates or updates an private link service in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param parameters Parameters supplied to the create or update private link service operation.
@@ -607,7 +607,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, serviceName,
@@ -617,7 +617,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Creates or updates an private link service in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param parameters Parameters supplied to the create or update private link service operation.
@@ -650,7 +650,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, serviceName, apiVersion,
@@ -659,7 +659,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Creates or updates an private link service in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param parameters Parameters supplied to the create or update private link service operation.
@@ -680,7 +680,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Creates or updates an private link service in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param parameters Parameters supplied to the create or update private link service operation.
@@ -702,7 +702,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Creates or updates an private link service in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param parameters Parameters supplied to the create or update private link service operation.
@@ -719,7 +719,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Creates or updates an private link service in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param parameters Parameters supplied to the create or update private link service operation.
@@ -737,7 +737,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Creates or updates an private link service in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param parameters Parameters supplied to the create or update private link service operation.
@@ -755,7 +755,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Creates or updates an private link service in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param parameters Parameters supplied to the create or update private link service operation.
@@ -774,7 +774,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Creates or updates an private link service in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param parameters Parameters supplied to the create or update private link service operation.
@@ -791,7 +791,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Creates or updates an private link service in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param parameters Parameters supplied to the create or update private link service operation.
@@ -809,7 +809,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Gets all private link services in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -831,7 +831,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -843,7 +843,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Gets all private link services in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -867,7 +867,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -879,7 +879,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Gets all private link services in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -894,7 +894,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Gets all private link services in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -910,7 +910,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Gets all private link services in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -924,7 +924,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Gets all private link services in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -939,7 +939,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Gets all private link service in a subscription.
-     * 
+     *
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all private link service in a subscription along with {@link PagedResponse} on successful completion of
@@ -955,7 +955,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -967,7 +967,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Gets all private link service in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -985,7 +985,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
@@ -995,7 +995,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Gets all private link service in a subscription.
-     * 
+     *
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all private link service in a subscription as paginated response with {@link PagedFlux}.
@@ -1008,7 +1008,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Gets all private link service in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -1023,7 +1023,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Gets all private link service in a subscription.
-     * 
+     *
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all private link service in a subscription as paginated response with {@link PagedIterable}.
@@ -1035,7 +1035,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Gets all private link service in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -1049,7 +1049,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Get the specific private end point connection by specific private link service in the resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param peConnectionName The name of the private end point connection.
@@ -1082,7 +1082,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getPrivateEndpointConnection(this.client.getEndpoint(), resourceGroupName,
@@ -1092,7 +1092,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Get the specific private end point connection by specific private link service in the resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param peConnectionName The name of the private end point connection.
@@ -1126,7 +1126,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getPrivateEndpointConnection(this.client.getEndpoint(), resourceGroupName, serviceName,
@@ -1135,7 +1135,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Get the specific private end point connection by specific private link service in the resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param peConnectionName The name of the private end point connection.
@@ -1155,7 +1155,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Get the specific private end point connection by specific private link service in the resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param peConnectionName The name of the private end point connection.
@@ -1176,7 +1176,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Get the specific private end point connection by specific private link service in the resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param peConnectionName The name of the private end point connection.
@@ -1195,7 +1195,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Approve or reject private end point connection for a private link service in a subscription.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param peConnectionName The name of the private end point connection.
@@ -1233,7 +1233,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.updatePrivateEndpointConnection(this.client.getEndpoint(),
@@ -1244,7 +1244,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Approve or reject private end point connection for a private link service in a subscription.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param peConnectionName The name of the private end point connection.
@@ -1283,7 +1283,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.updatePrivateEndpointConnection(this.client.getEndpoint(), resourceGroupName, serviceName,
@@ -1292,7 +1292,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Approve or reject private end point connection for a private link service in a subscription.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param peConnectionName The name of the private end point connection.
@@ -1311,7 +1311,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Approve or reject private end point connection for a private link service in a subscription.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param peConnectionName The name of the private end point connection.
@@ -1332,7 +1332,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Approve or reject private end point connection for a private link service in a subscription.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param peConnectionName The name of the private end point connection.
@@ -1351,7 +1351,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Delete private end point connection for a private link service in a subscription.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param peConnectionName The name of the private end point connection.
@@ -1382,7 +1382,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1393,7 +1393,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Delete private end point connection for a private link service in a subscription.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param peConnectionName The name of the private end point connection.
@@ -1425,7 +1425,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.deletePrivateEndpointConnection(this.client.getEndpoint(), resourceGroupName, serviceName,
@@ -1434,7 +1434,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Delete private end point connection for a private link service in a subscription.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param peConnectionName The name of the private end point connection.
@@ -1454,7 +1454,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Delete private end point connection for a private link service in a subscription.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param peConnectionName The name of the private end point connection.
@@ -1476,7 +1476,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Delete private end point connection for a private link service in a subscription.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param peConnectionName The name of the private end point connection.
@@ -1494,7 +1494,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Delete private end point connection for a private link service in a subscription.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param peConnectionName The name of the private end point connection.
@@ -1513,7 +1513,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Delete private end point connection for a private link service in a subscription.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param peConnectionName The name of the private end point connection.
@@ -1531,7 +1531,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Delete private end point connection for a private link service in a subscription.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param peConnectionName The name of the private end point connection.
@@ -1551,7 +1551,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Delete private end point connection for a private link service in a subscription.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param peConnectionName The name of the private end point connection.
@@ -1566,7 +1566,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Delete private end point connection for a private link service in a subscription.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param peConnectionName The name of the private end point connection.
@@ -1583,7 +1583,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Gets all private end point connections for a specific private link service.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1610,7 +1610,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listPrivateEndpointConnections(this.client.getEndpoint(), resourceGroupName,
@@ -1622,7 +1622,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Gets all private end point connections for a specific private link service.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param context The context to associate with this operation.
@@ -1650,7 +1650,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1662,7 +1662,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Gets all private end point connections for a specific private link service.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1680,7 +1680,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Gets all private end point connections for a specific private link service.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param context The context to associate with this operation.
@@ -1700,7 +1700,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Gets all private end point connections for a specific private link service.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1717,7 +1717,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Gets all private end point connections for a specific private link service.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param context The context to associate with this operation.
@@ -1735,7 +1735,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Checks whether the subscription is visible to private link service.
-     * 
+     *
      * @param location The location of the domain name.
      * @param parameters The request body of CheckPrivateLinkService API call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1763,7 +1763,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.checkPrivateLinkServiceVisibility(this.client.getEndpoint(), location,
@@ -1773,7 +1773,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Checks whether the subscription is visible to private link service.
-     * 
+     *
      * @param location The location of the domain name.
      * @param parameters The request body of CheckPrivateLinkService API call.
      * @param context The context to associate with this operation.
@@ -1802,7 +1802,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.checkPrivateLinkServiceVisibility(this.client.getEndpoint(), location, apiVersion,
@@ -1811,7 +1811,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Checks whether the subscription is visible to private link service.
-     * 
+     *
      * @param location The location of the domain name.
      * @param parameters The request body of CheckPrivateLinkService API call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1833,7 +1833,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Checks whether the subscription is visible to private link service.
-     * 
+     *
      * @param location The location of the domain name.
      * @param parameters The request body of CheckPrivateLinkService API call.
      * @param context The context to associate with this operation.
@@ -1857,7 +1857,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Checks whether the subscription is visible to private link service.
-     * 
+     *
      * @param location The location of the domain name.
      * @param parameters The request body of CheckPrivateLinkService API call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1874,7 +1874,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Checks whether the subscription is visible to private link service.
-     * 
+     *
      * @param location The location of the domain name.
      * @param parameters The request body of CheckPrivateLinkService API call.
      * @param context The context to associate with this operation.
@@ -1893,7 +1893,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Checks whether the subscription is visible to private link service.
-     * 
+     *
      * @param location The location of the domain name.
      * @param parameters The request body of CheckPrivateLinkService API call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1911,7 +1911,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Checks whether the subscription is visible to private link service.
-     * 
+     *
      * @param location The location of the domain name.
      * @param parameters The request body of CheckPrivateLinkService API call.
      * @param context The context to associate with this operation.
@@ -1930,7 +1930,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Checks whether the subscription is visible to private link service.
-     * 
+     *
      * @param location The location of the domain name.
      * @param parameters The request body of CheckPrivateLinkService API call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1946,7 +1946,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Checks whether the subscription is visible to private link service.
-     * 
+     *
      * @param location The location of the domain name.
      * @param parameters The request body of CheckPrivateLinkService API call.
      * @param context The context to associate with this operation.
@@ -1963,7 +1963,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Checks whether the subscription is visible to private link service in the specified resource group.
-     * 
+     *
      * @param location The location of the domain name.
      * @param resourceGroupName The name of the resource group.
      * @param parameters The request body of CheckPrivateLinkService API call.
@@ -1996,7 +1996,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.checkPrivateLinkServiceVisibilityByResourceGroup(this.client.getEndpoint(),
@@ -2006,7 +2006,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Checks whether the subscription is visible to private link service in the specified resource group.
-     * 
+     *
      * @param location The location of the domain name.
      * @param resourceGroupName The name of the resource group.
      * @param parameters The request body of CheckPrivateLinkService API call.
@@ -2041,7 +2041,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.checkPrivateLinkServiceVisibilityByResourceGroup(this.client.getEndpoint(), location,
@@ -2050,7 +2050,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Checks whether the subscription is visible to private link service in the specified resource group.
-     * 
+     *
      * @param location The location of the domain name.
      * @param resourceGroupName The name of the resource group.
      * @param parameters The request body of CheckPrivateLinkService API call.
@@ -2073,7 +2073,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Checks whether the subscription is visible to private link service in the specified resource group.
-     * 
+     *
      * @param location The location of the domain name.
      * @param resourceGroupName The name of the resource group.
      * @param parameters The request body of CheckPrivateLinkService API call.
@@ -2098,7 +2098,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Checks whether the subscription is visible to private link service in the specified resource group.
-     * 
+     *
      * @param location The location of the domain name.
      * @param resourceGroupName The name of the resource group.
      * @param parameters The request body of CheckPrivateLinkService API call.
@@ -2118,7 +2118,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Checks whether the subscription is visible to private link service in the specified resource group.
-     * 
+     *
      * @param location The location of the domain name.
      * @param resourceGroupName The name of the resource group.
      * @param parameters The request body of CheckPrivateLinkService API call.
@@ -2141,7 +2141,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Checks whether the subscription is visible to private link service in the specified resource group.
-     * 
+     *
      * @param location The location of the domain name.
      * @param resourceGroupName The name of the resource group.
      * @param parameters The request body of CheckPrivateLinkService API call.
@@ -2161,7 +2161,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Checks whether the subscription is visible to private link service in the specified resource group.
-     * 
+     *
      * @param location The location of the domain name.
      * @param resourceGroupName The name of the resource group.
      * @param parameters The request body of CheckPrivateLinkService API call.
@@ -2182,7 +2182,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Checks whether the subscription is visible to private link service in the specified resource group.
-     * 
+     *
      * @param location The location of the domain name.
      * @param resourceGroupName The name of the resource group.
      * @param parameters The request body of CheckPrivateLinkService API call.
@@ -2199,7 +2199,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Checks whether the subscription is visible to private link service in the specified resource group.
-     * 
+     *
      * @param location The location of the domain name.
      * @param resourceGroupName The name of the resource group.
      * @param parameters The request body of CheckPrivateLinkService API call.
@@ -2219,7 +2219,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
     /**
      * Returns all of the private link service ids that can be linked to a Private Endpoint with auto approved in this
      * subscription in this region.
-     * 
+     *
      * @param location The location of the domain name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2241,7 +2241,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listAutoApprovedPrivateLinkServices(this.client.getEndpoint(), location,
@@ -2254,7 +2254,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
     /**
      * Returns all of the private link service ids that can be linked to a Private Endpoint with auto approved in this
      * subscription in this region.
-     * 
+     *
      * @param location The location of the domain name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2277,7 +2277,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2290,7 +2290,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
     /**
      * Returns all of the private link service ids that can be linked to a Private Endpoint with auto approved in this
      * subscription in this region.
-     * 
+     *
      * @param location The location of the domain name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2307,7 +2307,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
     /**
      * Returns all of the private link service ids that can be linked to a Private Endpoint with auto approved in this
      * subscription in this region.
-     * 
+     *
      * @param location The location of the domain name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2326,7 +2326,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
     /**
      * Returns all of the private link service ids that can be linked to a Private Endpoint with auto approved in this
      * subscription in this region.
-     * 
+     *
      * @param location The location of the domain name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2342,7 +2342,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
     /**
      * Returns all of the private link service ids that can be linked to a Private Endpoint with auto approved in this
      * subscription in this region.
-     * 
+     *
      * @param location The location of the domain name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2360,7 +2360,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
     /**
      * Returns all of the private link service ids that can be linked to a Private Endpoint with auto approved in this
      * subscription in this region.
-     * 
+     *
      * @param location The location of the domain name.
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2387,7 +2387,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2401,7 +2401,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
     /**
      * Returns all of the private link service ids that can be linked to a Private Endpoint with auto approved in this
      * subscription in this region.
-     * 
+     *
      * @param location The location of the domain name.
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
@@ -2430,7 +2430,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2443,7 +2443,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
     /**
      * Returns all of the private link service ids that can be linked to a Private Endpoint with auto approved in this
      * subscription in this region.
-     * 
+     *
      * @param location The location of the domain name.
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2463,7 +2463,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
     /**
      * Returns all of the private link service ids that can be linked to a Private Endpoint with auto approved in this
      * subscription in this region.
-     * 
+     *
      * @param location The location of the domain name.
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
@@ -2485,7 +2485,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
     /**
      * Returns all of the private link service ids that can be linked to a Private Endpoint with auto approved in this
      * subscription in this region.
-     * 
+     *
      * @param location The location of the domain name.
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2504,7 +2504,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
     /**
      * Returns all of the private link service ids that can be linked to a Private Endpoint with auto approved in this
      * subscription in this region.
-     * 
+     *
      * @param location The location of the domain name.
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
@@ -2523,7 +2523,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -2549,7 +2549,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2576,7 +2576,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -2604,7 +2604,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2632,7 +2632,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -2660,7 +2660,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2688,7 +2688,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2717,7 +2717,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2745,7 +2745,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2774,7 +2774,7 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

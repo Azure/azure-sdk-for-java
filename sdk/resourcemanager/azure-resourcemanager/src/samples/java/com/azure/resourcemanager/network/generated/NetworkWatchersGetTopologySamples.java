@@ -12,12 +12,12 @@ import com.azure.resourcemanager.network.models.TopologyParameters;
 public final class NetworkWatchersGetTopologySamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/NetworkWatcherTopologyGet.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/NetworkWatcherTopologyGet.
      * json
      */
     /**
      * Sample code: Get Topology.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getTopology(com.azure.resourcemanager.AzureResourceManager azure) {

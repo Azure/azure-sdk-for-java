@@ -9,12 +9,12 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class HubVirtualNetworkConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * HubVirtualNetworkConnectionDelete.json
      */
     /**
      * Sample code: HubVirtualNetworkConnectionDelete.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void hubVirtualNetworkConnectionDelete(com.azure.resourcemanager.AzureResourceManager azure) {

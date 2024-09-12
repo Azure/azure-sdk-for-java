@@ -60,7 +60,7 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
 
     /**
      * Initializes an instance of NetworkSecurityGroupsClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     NetworkSecurityGroupsClientImpl(NetworkManagementClientImpl client) {
@@ -153,7 +153,7 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
 
     /**
      * Deletes the specified network security group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -180,7 +180,7 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName,
@@ -190,7 +190,7 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
 
     /**
      * Deletes the specified network security group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param context The context to associate with this operation.
@@ -218,7 +218,7 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, networkSecurityGroupName, apiVersion,
@@ -227,7 +227,7 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
 
     /**
      * Deletes the specified network security group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -245,7 +245,7 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
 
     /**
      * Deletes the specified network security group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param context The context to associate with this operation.
@@ -266,7 +266,7 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
 
     /**
      * Deletes the specified network security group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -281,7 +281,7 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
 
     /**
      * Deletes the specified network security group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param context The context to associate with this operation.
@@ -298,7 +298,7 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
 
     /**
      * Deletes the specified network security group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -314,7 +314,7 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
 
     /**
      * Deletes the specified network security group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param context The context to associate with this operation.
@@ -331,7 +331,7 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
 
     /**
      * Deletes the specified network security group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -345,7 +345,7 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
 
     /**
      * Deletes the specified network security group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param context The context to associate with this operation.
@@ -360,7 +360,7 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
 
     /**
      * Gets the specified network security group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param expand Expands referenced resources.
@@ -389,7 +389,7 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -399,7 +399,7 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
 
     /**
      * Gets the specified network security group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param expand Expands referenced resources.
@@ -429,7 +429,7 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, networkSecurityGroupName,
@@ -438,7 +438,7 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
 
     /**
      * Gets the specified network security group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -456,7 +456,7 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
 
     /**
      * Gets the specified network security group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param expand Expands referenced resources.
@@ -475,7 +475,7 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
 
     /**
      * Gets the specified network security group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -492,7 +492,7 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
 
     /**
      * Creates or updates a network security group in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param parameters Parameters supplied to the create or update network security group operation.
@@ -525,7 +525,7 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName,
@@ -535,7 +535,7 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
 
     /**
      * Creates or updates a network security group in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param parameters Parameters supplied to the create or update network security group operation.
@@ -569,7 +569,7 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, networkSecurityGroupName,
@@ -578,7 +578,7 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
 
     /**
      * Creates or updates a network security group in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param parameters Parameters supplied to the create or update network security group operation.
@@ -599,7 +599,7 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
 
     /**
      * Creates or updates a network security group in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param parameters Parameters supplied to the create or update network security group operation.
@@ -622,7 +622,7 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
 
     /**
      * Creates or updates a network security group in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param parameters Parameters supplied to the create or update network security group operation.
@@ -639,7 +639,7 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
 
     /**
      * Creates or updates a network security group in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param parameters Parameters supplied to the create or update network security group operation.
@@ -659,7 +659,7 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
 
     /**
      * Creates or updates a network security group in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param parameters Parameters supplied to the create or update network security group operation.
@@ -677,7 +677,7 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
 
     /**
      * Creates or updates a network security group in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param parameters Parameters supplied to the create or update network security group operation.
@@ -696,7 +696,7 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
 
     /**
      * Creates or updates a network security group in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param parameters Parameters supplied to the create or update network security group operation.
@@ -713,7 +713,7 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
 
     /**
      * Creates or updates a network security group in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param parameters Parameters supplied to the create or update network security group operation.
@@ -731,7 +731,7 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
 
     /**
      * Updates a network security group tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param parameters Parameters supplied to update network security group tags.
@@ -764,7 +764,7 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.updateTags(this.client.getEndpoint(), resourceGroupName,
@@ -774,7 +774,7 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
 
     /**
      * Updates a network security group tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param parameters Parameters supplied to update network security group tags.
@@ -808,7 +808,7 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.updateTags(this.client.getEndpoint(), resourceGroupName, networkSecurityGroupName, apiVersion,
@@ -817,7 +817,7 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
 
     /**
      * Updates a network security group tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param parameters Parameters supplied to update network security group tags.
@@ -835,7 +835,7 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
 
     /**
      * Updates a network security group tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param parameters Parameters supplied to update network security group tags.
@@ -853,7 +853,7 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
 
     /**
      * Updates a network security group tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param parameters Parameters supplied to update network security group tags.
@@ -870,7 +870,7 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
 
     /**
      * Gets all network security groups in a subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all network security groups in a subscription along with {@link PagedResponse} on successful completion
@@ -886,7 +886,7 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -898,7 +898,7 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
 
     /**
      * Gets all network security groups in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -916,7 +916,7 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
@@ -926,7 +926,7 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
 
     /**
      * Gets all network security groups in a subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all network security groups in a subscription as paginated response with {@link PagedFlux}.
@@ -938,7 +938,7 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
 
     /**
      * Gets all network security groups in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -953,7 +953,7 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
 
     /**
      * Gets all network security groups in a subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all network security groups in a subscription as paginated response with {@link PagedIterable}.
@@ -965,7 +965,7 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
 
     /**
      * Gets all network security groups in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -979,7 +979,7 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
 
     /**
      * Gets all network security groups in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1002,7 +1002,7 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -1014,7 +1014,7 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
 
     /**
      * Gets all network security groups in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1038,7 +1038,7 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1050,7 +1050,7 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
 
     /**
      * Gets all network security groups in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1065,7 +1065,7 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
 
     /**
      * Gets all network security groups in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1081,7 +1081,7 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
 
     /**
      * Gets all network security groups in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1095,7 +1095,7 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
 
     /**
      * Gets all network security groups in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1110,7 +1110,7 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1137,7 +1137,7 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1165,7 +1165,7 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1191,7 +1191,7 @@ public final class NetworkSecurityGroupsClientImpl implements InnerSupportsGet<N
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

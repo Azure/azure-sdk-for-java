@@ -10,11 +10,11 @@ package com.azure.resourcemanager.network.generated;
 public final class DefaultSecurityRulesListSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/DefaultSecurityRuleList.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/DefaultSecurityRuleList.json
      */
     /**
      * Sample code: DefaultSecurityRuleList.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void defaultSecurityRuleList(com.azure.resourcemanager.AzureResourceManager azure) {

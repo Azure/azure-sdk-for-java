@@ -6,6 +6,7 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -35,14 +36,14 @@ public final class RouteFilterInner extends Resource {
     private String id;
 
     /*
-     * The name of the resource.
-     */
-    private String name;
-
-    /*
      * The type of the resource.
      */
     private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
 
     /**
      * Creates an instance of RouteFilterInner class.
@@ -52,7 +53,7 @@ public final class RouteFilterInner extends Resource {
 
     /**
      * Get the innerProperties property: Properties of the route filter.
-     * 
+     *
      * @return the innerProperties value.
      */
     private RouteFilterPropertiesFormat innerProperties() {
@@ -61,7 +62,7 @@ public final class RouteFilterInner extends Resource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     * 
+     *
      * @return the etag value.
      */
     public String etag() {
@@ -70,7 +71,7 @@ public final class RouteFilterInner extends Resource {
 
     /**
      * Get the id property: Resource ID.
-     * 
+     *
      * @return the id value.
      */
     public String id() {
@@ -79,7 +80,7 @@ public final class RouteFilterInner extends Resource {
 
     /**
      * Set the id property: Resource ID.
-     * 
+     *
      * @param id the id value to set.
      * @return the RouteFilterInner object itself.
      */
@@ -89,23 +90,23 @@ public final class RouteFilterInner extends Resource {
     }
 
     /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
-    }
-
-    /**
      * Get the type property: The type of the resource.
-     * 
+     *
      * @return the type value.
      */
     @Override
     public String type() {
         return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     *
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -128,7 +129,7 @@ public final class RouteFilterInner extends Resource {
 
     /**
      * Get the rules property: Collection of RouteFilterRules contained within a route filter.
-     * 
+     *
      * @return the rules value.
      */
     public List<RouteFilterRuleInner> rules() {
@@ -137,7 +138,7 @@ public final class RouteFilterInner extends Resource {
 
     /**
      * Set the rules property: Collection of RouteFilterRules contained within a route filter.
-     * 
+     *
      * @param rules the rules value to set.
      * @return the RouteFilterInner object itself.
      */
@@ -151,7 +152,7 @@ public final class RouteFilterInner extends Resource {
 
     /**
      * Get the peerings property: A collection of references to express route circuit peerings.
-     * 
+     *
      * @return the peerings value.
      */
     public List<ExpressRouteCircuitPeeringInner> peerings() {
@@ -160,7 +161,7 @@ public final class RouteFilterInner extends Resource {
 
     /**
      * Get the ipv6Peerings property: A collection of references to express route circuit ipv6 peerings.
-     * 
+     *
      * @return the ipv6Peerings value.
      */
     public List<ExpressRouteCircuitPeeringInner> ipv6Peerings() {
@@ -169,7 +170,7 @@ public final class RouteFilterInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the route filter resource.
-     * 
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -178,14 +179,20 @@ public final class RouteFilterInner extends Resource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+        if (location() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property location in model RouteFilterInner"));
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RouteFilterInner.class);
 
     /**
      * {@inheritDoc}
@@ -202,7 +209,7 @@ public final class RouteFilterInner extends Resource {
 
     /**
      * Reads an instance of RouteFilterInner from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of RouteFilterInner if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.

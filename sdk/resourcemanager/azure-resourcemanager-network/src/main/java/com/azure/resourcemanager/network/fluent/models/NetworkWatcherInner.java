@@ -6,6 +6,7 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -34,14 +35,14 @@ public final class NetworkWatcherInner extends Resource {
     private String id;
 
     /*
-     * The name of the resource.
-     */
-    private String name;
-
-    /*
      * The type of the resource.
      */
     private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
 
     /**
      * Creates an instance of NetworkWatcherInner class.
@@ -51,7 +52,7 @@ public final class NetworkWatcherInner extends Resource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     * 
+     *
      * @return the etag value.
      */
     public String etag() {
@@ -60,7 +61,7 @@ public final class NetworkWatcherInner extends Resource {
 
     /**
      * Get the innerProperties property: Properties of the network watcher.
-     * 
+     *
      * @return the innerProperties value.
      */
     private NetworkWatcherPropertiesFormat innerProperties() {
@@ -69,7 +70,7 @@ public final class NetworkWatcherInner extends Resource {
 
     /**
      * Get the id property: Resource ID.
-     * 
+     *
      * @return the id value.
      */
     public String id() {
@@ -78,7 +79,7 @@ public final class NetworkWatcherInner extends Resource {
 
     /**
      * Set the id property: Resource ID.
-     * 
+     *
      * @param id the id value to set.
      * @return the NetworkWatcherInner object itself.
      */
@@ -88,23 +89,23 @@ public final class NetworkWatcherInner extends Resource {
     }
 
     /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
-    }
-
-    /**
      * Get the type property: The type of the resource.
-     * 
+     *
      * @return the type value.
      */
     @Override
     public String type() {
         return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     *
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -127,7 +128,7 @@ public final class NetworkWatcherInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the network watcher resource.
-     * 
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -136,14 +137,20 @@ public final class NetworkWatcherInner extends Resource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+        if (location() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property location in model NetworkWatcherInner"));
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(NetworkWatcherInner.class);
 
     /**
      * {@inheritDoc}
@@ -160,7 +167,7 @@ public final class NetworkWatcherInner extends Resource {
 
     /**
      * Reads an instance of NetworkWatcherInner from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of NetworkWatcherInner if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.

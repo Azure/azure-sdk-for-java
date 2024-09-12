@@ -19,11 +19,11 @@ import com.azure.resourcemanager.network.models.PublicIpAddressSkuTier;
 public final class PublicIpAddressesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/PublicIpAddressCreateDns.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/PublicIpAddressCreateDns.json
      */
     /**
      * Sample code: Create public IP address DNS.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createPublicIPAddressDNS(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -38,12 +38,12 @@ public final class PublicIpAddressesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * PublicIpAddressCreateCustomizedValues.json
      */
     /**
      * Sample code: Create public IP address allocation method.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createPublicIPAddressAllocationMethod(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -63,12 +63,12 @@ public final class PublicIpAddressesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/PublicIpAddressCreateDefaults
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/PublicIpAddressCreateDefaults
      * .json
      */
     /**
      * Sample code: Create public IP address defaults.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createPublicIPAddressDefaults(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -81,12 +81,12 @@ public final class PublicIpAddressesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * PublicIpAddressCreateDnsWithDomainNameLabelScope.json
      */
     /**
      * Sample code: Create public IP address DNS with Domain Name Label Scope.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void

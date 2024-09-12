@@ -65,7 +65,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Initializes an instance of NetworkInterfacesClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     NetworkInterfacesClientImpl(NetworkManagementClientImpl client) {
@@ -306,7 +306,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Gets information about all network interfaces in a role instance in a cloud service.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param cloudServiceName The name of the cloud service.
      * @param roleInstanceName The name of role instance.
@@ -339,7 +339,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listCloudServiceRoleInstanceNetworkInterfaces(this.client.getEndpoint(),
@@ -352,7 +352,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Gets information about all network interfaces in a role instance in a cloud service.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param cloudServiceName The name of the cloud service.
      * @param roleInstanceName The name of role instance.
@@ -386,7 +386,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -398,7 +398,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Gets information about all network interfaces in a role instance in a cloud service.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param cloudServiceName The name of the cloud service.
      * @param roleInstanceName The name of role instance.
@@ -419,7 +419,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Gets information about all network interfaces in a role instance in a cloud service.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param cloudServiceName The name of the cloud service.
      * @param roleInstanceName The name of role instance.
@@ -441,7 +441,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Gets information about all network interfaces in a role instance in a cloud service.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param cloudServiceName The name of the cloud service.
      * @param roleInstanceName The name of role instance.
@@ -460,7 +460,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Gets information about all network interfaces in a role instance in a cloud service.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param cloudServiceName The name of the cloud service.
      * @param roleInstanceName The name of role instance.
@@ -480,7 +480,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Gets all network interfaces in a cloud service.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param cloudServiceName The name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -508,7 +508,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listCloudServiceNetworkInterfaces(this.client.getEndpoint(),
@@ -520,7 +520,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Gets all network interfaces in a cloud service.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param cloudServiceName The name of the cloud service.
      * @param context The context to associate with this operation.
@@ -549,7 +549,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -561,7 +561,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Gets all network interfaces in a cloud service.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param cloudServiceName The name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -579,7 +579,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Gets all network interfaces in a cloud service.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param cloudServiceName The name of the cloud service.
      * @param context The context to associate with this operation.
@@ -598,7 +598,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Gets all network interfaces in a cloud service.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param cloudServiceName The name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -614,7 +614,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Gets all network interfaces in a cloud service.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param cloudServiceName The name of the cloud service.
      * @param context The context to associate with this operation.
@@ -632,7 +632,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Get the specified network interface in a cloud service.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param cloudServiceName The name of the cloud service.
      * @param roleInstanceName The name of role instance.
@@ -672,7 +672,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getCloudServiceNetworkInterface(this.client.getEndpoint(),
@@ -683,7 +683,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Get the specified network interface in a cloud service.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param cloudServiceName The name of the cloud service.
      * @param roleInstanceName The name of role instance.
@@ -724,7 +724,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getCloudServiceNetworkInterface(this.client.getEndpoint(), resourceGroupName, cloudServiceName,
@@ -734,7 +734,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Get the specified network interface in a cloud service.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param cloudServiceName The name of the cloud service.
      * @param roleInstanceName The name of role instance.
@@ -754,7 +754,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Get the specified network interface in a cloud service.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param cloudServiceName The name of the cloud service.
      * @param roleInstanceName The name of role instance.
@@ -775,7 +775,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Get the specified network interface in a cloud service.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param cloudServiceName The name of the cloud service.
      * @param roleInstanceName The name of role instance.
@@ -795,7 +795,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Deletes the specified network interface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -822,7 +822,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, networkInterfaceName,
@@ -832,7 +832,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Deletes the specified network interface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param context The context to associate with this operation.
@@ -860,7 +860,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, networkInterfaceName, apiVersion,
@@ -869,7 +869,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Deletes the specified network interface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -886,7 +886,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Deletes the specified network interface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param context The context to associate with this operation.
@@ -907,7 +907,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Deletes the specified network interface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -922,7 +922,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Deletes the specified network interface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param context The context to associate with this operation.
@@ -939,7 +939,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Deletes the specified network interface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -955,7 +955,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Deletes the specified network interface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param context The context to associate with this operation.
@@ -972,7 +972,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Deletes the specified network interface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -986,7 +986,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Deletes the specified network interface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param context The context to associate with this operation.
@@ -1001,7 +1001,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Gets information about the specified network interface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param expand Expands referenced resources.
@@ -1030,7 +1030,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -1040,7 +1040,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Gets information about the specified network interface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param expand Expands referenced resources.
@@ -1070,7 +1070,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, networkInterfaceName,
@@ -1079,7 +1079,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Gets information about the specified network interface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1096,7 +1096,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Gets information about the specified network interface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param expand Expands referenced resources.
@@ -1114,7 +1114,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Gets information about the specified network interface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1130,7 +1130,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Creates or updates a network interface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param parameters Parameters supplied to the create or update network interface operation.
@@ -1164,7 +1164,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName,
@@ -1174,7 +1174,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Creates or updates a network interface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param parameters Parameters supplied to the create or update network interface operation.
@@ -1209,7 +1209,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, networkInterfaceName, apiVersion,
@@ -1218,7 +1218,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Creates or updates a network interface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param parameters Parameters supplied to the create or update network interface operation.
@@ -1239,7 +1239,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Creates or updates a network interface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param parameters Parameters supplied to the create or update network interface operation.
@@ -1261,7 +1261,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Creates or updates a network interface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param parameters Parameters supplied to the create or update network interface operation.
@@ -1278,7 +1278,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Creates or updates a network interface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param parameters Parameters supplied to the create or update network interface operation.
@@ -1297,7 +1297,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Creates or updates a network interface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param parameters Parameters supplied to the create or update network interface operation.
@@ -1315,7 +1315,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Creates or updates a network interface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param parameters Parameters supplied to the create or update network interface operation.
@@ -1334,7 +1334,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Creates or updates a network interface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param parameters Parameters supplied to the create or update network interface operation.
@@ -1351,7 +1351,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Creates or updates a network interface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param parameters Parameters supplied to the create or update network interface operation.
@@ -1369,7 +1369,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Updates a network interface tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param parameters Parameters supplied to update network interface tags.
@@ -1403,7 +1403,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.updateTags(this.client.getEndpoint(), resourceGroupName,
@@ -1413,7 +1413,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Updates a network interface tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param parameters Parameters supplied to update network interface tags.
@@ -1448,7 +1448,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.updateTags(this.client.getEndpoint(), resourceGroupName, networkInterfaceName, apiVersion,
@@ -1457,7 +1457,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Updates a network interface tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param parameters Parameters supplied to update network interface tags.
@@ -1475,7 +1475,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Updates a network interface tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param parameters Parameters supplied to update network interface tags.
@@ -1493,7 +1493,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Updates a network interface tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param parameters Parameters supplied to update network interface tags.
@@ -1510,7 +1510,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Gets all network interfaces in a subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all network interfaces in a subscription along with {@link PagedResponse} on successful completion of
@@ -1526,7 +1526,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -1538,7 +1538,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Gets all network interfaces in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1556,7 +1556,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
@@ -1566,7 +1566,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Gets all network interfaces in a subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all network interfaces in a subscription as paginated response with {@link PagedFlux}.
@@ -1578,7 +1578,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Gets all network interfaces in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1593,7 +1593,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Gets all network interfaces in a subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all network interfaces in a subscription as paginated response with {@link PagedIterable}.
@@ -1605,7 +1605,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Gets all network interfaces in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1619,7 +1619,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Gets all network interfaces in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1641,7 +1641,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -1653,7 +1653,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Gets all network interfaces in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1677,7 +1677,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1689,7 +1689,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Gets all network interfaces in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1704,7 +1704,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Gets all network interfaces in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1720,7 +1720,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Gets all network interfaces in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1734,7 +1734,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Gets all network interfaces in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1749,7 +1749,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Gets all route tables applied to a network interface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1777,7 +1777,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getEffectiveRouteTable(this.client.getEndpoint(), resourceGroupName,
@@ -1787,7 +1787,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Gets all route tables applied to a network interface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param context The context to associate with this operation.
@@ -1816,7 +1816,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getEffectiveRouteTable(this.client.getEndpoint(), resourceGroupName, networkInterfaceName,
@@ -1825,7 +1825,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Gets all route tables applied to a network interface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1845,7 +1845,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Gets all route tables applied to a network interface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param context The context to associate with this operation.
@@ -1867,7 +1867,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Gets all route tables applied to a network interface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1883,7 +1883,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Gets all route tables applied to a network interface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param context The context to associate with this operation.
@@ -1900,7 +1900,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Gets all route tables applied to a network interface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1917,7 +1917,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Gets all route tables applied to a network interface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param context The context to associate with this operation.
@@ -1935,7 +1935,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Gets all route tables applied to a network interface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1950,7 +1950,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Gets all route tables applied to a network interface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param context The context to associate with this operation.
@@ -1967,7 +1967,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Gets all network security groups applied to a network interface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1995,7 +1995,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listEffectiveNetworkSecurityGroups(this.client.getEndpoint(),
@@ -2005,7 +2005,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Gets all network security groups applied to a network interface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param context The context to associate with this operation.
@@ -2034,7 +2034,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listEffectiveNetworkSecurityGroups(this.client.getEndpoint(), resourceGroupName,
@@ -2043,7 +2043,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Gets all network security groups applied to a network interface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2065,7 +2065,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Gets all network security groups applied to a network interface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param context The context to associate with this operation.
@@ -2090,7 +2090,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Gets all network security groups applied to a network interface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2108,7 +2108,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Gets all network security groups applied to a network interface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param context The context to associate with this operation.
@@ -2128,7 +2128,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Gets all network security groups applied to a network interface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2145,7 +2145,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Gets all network security groups applied to a network interface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param context The context to associate with this operation.
@@ -2163,7 +2163,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Gets all network security groups applied to a network interface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2179,7 +2179,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Gets all network security groups applied to a network interface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param context The context to associate with this operation.
@@ -2196,7 +2196,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Gets information about all network interfaces in a virtual machine in a virtual machine scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @param virtualmachineIndex The virtual machine index.
@@ -2242,7 +2242,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Gets information about all network interfaces in a virtual machine in a virtual machine scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @param virtualmachineIndex The virtual machine index.
@@ -2289,7 +2289,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Gets information about all network interfaces in a virtual machine in a virtual machine scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @param virtualmachineIndex The virtual machine index.
@@ -2310,7 +2310,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Gets information about all network interfaces in a virtual machine in a virtual machine scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @param virtualmachineIndex The virtual machine index.
@@ -2332,7 +2332,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Gets information about all network interfaces in a virtual machine in a virtual machine scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @param virtualmachineIndex The virtual machine index.
@@ -2351,7 +2351,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Gets information about all network interfaces in a virtual machine in a virtual machine scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @param virtualmachineIndex The virtual machine index.
@@ -2371,7 +2371,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Gets all network interfaces in a virtual machine scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2412,7 +2412,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Gets all network interfaces in a virtual machine scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @param context The context to associate with this operation.
@@ -2453,7 +2453,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Gets all network interfaces in a virtual machine scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2472,7 +2472,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Gets all network interfaces in a virtual machine scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @param context The context to associate with this operation.
@@ -2492,7 +2492,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Gets all network interfaces in a virtual machine scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2509,7 +2509,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Gets all network interfaces in a virtual machine scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @param context The context to associate with this operation.
@@ -2527,7 +2527,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Get the specified network interface in a virtual machine scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @param virtualmachineIndex The virtual machine index.
@@ -2578,7 +2578,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Get the specified network interface in a virtual machine scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @param virtualmachineIndex The virtual machine index.
@@ -2629,7 +2629,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Get the specified network interface in a virtual machine scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @param virtualmachineIndex The virtual machine index.
@@ -2649,7 +2649,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Get the specified network interface in a virtual machine scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @param virtualmachineIndex The virtual machine index.
@@ -2671,7 +2671,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Get the specified network interface in a virtual machine scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @param virtualmachineIndex The virtual machine index.
@@ -2691,7 +2691,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Get the specified network interface ip configuration in a virtual machine scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @param virtualmachineIndex The virtual machine index.
@@ -2744,7 +2744,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Get the specified network interface ip configuration in a virtual machine scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @param virtualmachineIndex The virtual machine index.
@@ -2799,7 +2799,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Get the specified network interface ip configuration in a virtual machine scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @param virtualmachineIndex The virtual machine index.
@@ -2823,7 +2823,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Get the specified network interface ip configuration in a virtual machine scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @param virtualmachineIndex The virtual machine index.
@@ -2847,7 +2847,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Get the specified network interface ip configuration in a virtual machine scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @param virtualmachineIndex The virtual machine index.
@@ -2872,7 +2872,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Get the specified network interface ip configuration in a virtual machine scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @param virtualmachineIndex The virtual machine index.
@@ -2894,7 +2894,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Get the specified network interface ip configuration in a virtual machine scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @param virtualmachineIndex The virtual machine index.
@@ -2917,7 +2917,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Get the specified network interface ip configuration in a virtual machine scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @param virtualmachineIndex The virtual machine index.
@@ -2974,7 +2974,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Get the specified network interface ip configuration in a virtual machine scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @param virtualmachineIndex The virtual machine index.
@@ -3031,7 +3031,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Get the specified network interface ip configuration in a virtual machine scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @param virtualmachineIndex The virtual machine index.
@@ -3055,7 +3055,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Get the specified network interface ip configuration in a virtual machine scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @param virtualmachineIndex The virtual machine index.
@@ -3079,7 +3079,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Get the specified network interface ip configuration in a virtual machine scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @param virtualmachineIndex The virtual machine index.
@@ -3101,7 +3101,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3130,7 +3130,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3159,7 +3159,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3188,7 +3188,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3216,7 +3216,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3243,7 +3243,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3270,7 +3270,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3296,7 +3296,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3323,7 +3323,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3352,7 +3352,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3381,7 +3381,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3410,7 +3410,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3439,7 +3439,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3468,7 +3468,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

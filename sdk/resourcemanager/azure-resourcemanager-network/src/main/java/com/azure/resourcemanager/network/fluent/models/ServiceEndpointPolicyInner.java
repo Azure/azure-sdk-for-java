@@ -6,6 +6,7 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -40,14 +41,14 @@ public final class ServiceEndpointPolicyInner extends Resource {
     private String id;
 
     /*
-     * The name of the resource.
-     */
-    private String name;
-
-    /*
      * The type of the resource.
      */
     private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
 
     /**
      * Creates an instance of ServiceEndpointPolicyInner class.
@@ -57,7 +58,7 @@ public final class ServiceEndpointPolicyInner extends Resource {
 
     /**
      * Get the innerProperties property: Properties of the service end point policy.
-     * 
+     *
      * @return the innerProperties value.
      */
     private ServiceEndpointPolicyPropertiesFormat innerProperties() {
@@ -66,7 +67,7 @@ public final class ServiceEndpointPolicyInner extends Resource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     * 
+     *
      * @return the etag value.
      */
     public String etag() {
@@ -75,7 +76,7 @@ public final class ServiceEndpointPolicyInner extends Resource {
 
     /**
      * Get the kind property: Kind of service endpoint policy. This is metadata used for the Azure portal experience.
-     * 
+     *
      * @return the kind value.
      */
     public String kind() {
@@ -84,7 +85,7 @@ public final class ServiceEndpointPolicyInner extends Resource {
 
     /**
      * Get the id property: Resource ID.
-     * 
+     *
      * @return the id value.
      */
     public String id() {
@@ -93,7 +94,7 @@ public final class ServiceEndpointPolicyInner extends Resource {
 
     /**
      * Set the id property: Resource ID.
-     * 
+     *
      * @param id the id value to set.
      * @return the ServiceEndpointPolicyInner object itself.
      */
@@ -103,23 +104,23 @@ public final class ServiceEndpointPolicyInner extends Resource {
     }
 
     /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
-    }
-
-    /**
      * Get the type property: The type of the resource.
-     * 
+     *
      * @return the type value.
      */
     @Override
     public String type() {
         return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     *
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -143,7 +144,7 @@ public final class ServiceEndpointPolicyInner extends Resource {
     /**
      * Get the serviceEndpointPolicyDefinitions property: A collection of service endpoint policy definitions of the
      * service endpoint policy.
-     * 
+     *
      * @return the serviceEndpointPolicyDefinitions value.
      */
     public List<ServiceEndpointPolicyDefinitionInner> serviceEndpointPolicyDefinitions() {
@@ -153,7 +154,7 @@ public final class ServiceEndpointPolicyInner extends Resource {
     /**
      * Set the serviceEndpointPolicyDefinitions property: A collection of service endpoint policy definitions of the
      * service endpoint policy.
-     * 
+     *
      * @param serviceEndpointPolicyDefinitions the serviceEndpointPolicyDefinitions value to set.
      * @return the ServiceEndpointPolicyInner object itself.
      */
@@ -168,7 +169,7 @@ public final class ServiceEndpointPolicyInner extends Resource {
 
     /**
      * Get the subnets property: A collection of references to subnets.
-     * 
+     *
      * @return the subnets value.
      */
     public List<SubnetInner> subnets() {
@@ -177,7 +178,7 @@ public final class ServiceEndpointPolicyInner extends Resource {
 
     /**
      * Get the resourceGuid property: The resource GUID property of the service endpoint policy resource.
-     * 
+     *
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -186,7 +187,7 @@ public final class ServiceEndpointPolicyInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the service endpoint policy resource.
-     * 
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -195,7 +196,7 @@ public final class ServiceEndpointPolicyInner extends Resource {
 
     /**
      * Get the serviceAlias property: The alias indicating if the policy belongs to a service.
-     * 
+     *
      * @return the serviceAlias value.
      */
     public String serviceAlias() {
@@ -204,7 +205,7 @@ public final class ServiceEndpointPolicyInner extends Resource {
 
     /**
      * Set the serviceAlias property: The alias indicating if the policy belongs to a service.
-     * 
+     *
      * @param serviceAlias the serviceAlias value to set.
      * @return the ServiceEndpointPolicyInner object itself.
      */
@@ -218,7 +219,7 @@ public final class ServiceEndpointPolicyInner extends Resource {
 
     /**
      * Get the contextualServiceEndpointPolicies property: A collection of contextual service endpoint policy.
-     * 
+     *
      * @return the contextualServiceEndpointPolicies value.
      */
     public List<String> contextualServiceEndpointPolicies() {
@@ -227,7 +228,7 @@ public final class ServiceEndpointPolicyInner extends Resource {
 
     /**
      * Set the contextualServiceEndpointPolicies property: A collection of contextual service endpoint policy.
-     * 
+     *
      * @param contextualServiceEndpointPolicies the contextualServiceEndpointPolicies value to set.
      * @return the ServiceEndpointPolicyInner object itself.
      */
@@ -242,14 +243,21 @@ public final class ServiceEndpointPolicyInner extends Resource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+        if (location() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property location in model ServiceEndpointPolicyInner"));
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceEndpointPolicyInner.class);
 
     /**
      * {@inheritDoc}
@@ -266,7 +274,7 @@ public final class ServiceEndpointPolicyInner extends Resource {
 
     /**
      * Reads an instance of ServiceEndpointPolicyInner from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of ServiceEndpointPolicyInner if the JsonReader was pointing to an instance of it, or null if
      * it was pointing to JSON null.

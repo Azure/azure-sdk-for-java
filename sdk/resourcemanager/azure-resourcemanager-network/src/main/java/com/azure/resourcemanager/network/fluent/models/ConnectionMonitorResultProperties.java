@@ -54,7 +54,7 @@ public final class ConnectionMonitorResultProperties extends ConnectionMonitorPa
 
     /**
      * Get the provisioningState property: The provisioning state of the connection monitor.
-     * 
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -63,7 +63,7 @@ public final class ConnectionMonitorResultProperties extends ConnectionMonitorPa
 
     /**
      * Get the startTime property: The date and time when the connection monitor was started.
-     * 
+     *
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -72,7 +72,7 @@ public final class ConnectionMonitorResultProperties extends ConnectionMonitorPa
 
     /**
      * Get the monitoringStatus property: The monitoring status of the connection monitor.
-     * 
+     *
      * @return the monitoringStatus value.
      */
     public String monitoringStatus() {
@@ -81,7 +81,7 @@ public final class ConnectionMonitorResultProperties extends ConnectionMonitorPa
 
     /**
      * Get the connectionMonitorType property: Type of connection monitor.
-     * 
+     *
      * @return the connectionMonitorType value.
      */
     public ConnectionMonitorType connectionMonitorType() {
@@ -172,12 +172,29 @@ public final class ConnectionMonitorResultProperties extends ConnectionMonitorPa
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (source() != null) {
+            source().validate();
+        }
+        if (destination() != null) {
+            destination().validate();
+        }
+        if (endpoints() != null) {
+            endpoints().forEach(e -> e.validate());
+        }
+        if (testConfigurations() != null) {
+            testConfigurations().forEach(e -> e.validate());
+        }
+        if (testGroups() != null) {
+            testGroups().forEach(e -> e.validate());
+        }
+        if (outputs() != null) {
+            outputs().forEach(e -> e.validate());
+        }
     }
 
     /**
@@ -201,7 +218,7 @@ public final class ConnectionMonitorResultProperties extends ConnectionMonitorPa
 
     /**
      * Reads an instance of ConnectionMonitorResultProperties from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of ConnectionMonitorResultProperties if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.

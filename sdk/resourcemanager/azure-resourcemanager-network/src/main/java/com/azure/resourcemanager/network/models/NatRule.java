@@ -69,7 +69,7 @@ public final class NatRule extends FirewallPolicyRule {
 
     /**
      * Get the ruleType property: Rule Type.
-     * 
+     *
      * @return the ruleType value.
      */
     @Override
@@ -79,7 +79,7 @@ public final class NatRule extends FirewallPolicyRule {
 
     /**
      * Get the ipProtocols property: Array of FirewallPolicyRuleNetworkProtocols.
-     * 
+     *
      * @return the ipProtocols value.
      */
     public List<FirewallPolicyRuleNetworkProtocol> ipProtocols() {
@@ -88,7 +88,7 @@ public final class NatRule extends FirewallPolicyRule {
 
     /**
      * Set the ipProtocols property: Array of FirewallPolicyRuleNetworkProtocols.
-     * 
+     *
      * @param ipProtocols the ipProtocols value to set.
      * @return the NatRule object itself.
      */
@@ -99,7 +99,7 @@ public final class NatRule extends FirewallPolicyRule {
 
     /**
      * Get the sourceAddresses property: List of source IP addresses for this rule.
-     * 
+     *
      * @return the sourceAddresses value.
      */
     public List<String> sourceAddresses() {
@@ -108,7 +108,7 @@ public final class NatRule extends FirewallPolicyRule {
 
     /**
      * Set the sourceAddresses property: List of source IP addresses for this rule.
-     * 
+     *
      * @param sourceAddresses the sourceAddresses value to set.
      * @return the NatRule object itself.
      */
@@ -119,7 +119,7 @@ public final class NatRule extends FirewallPolicyRule {
 
     /**
      * Get the destinationAddresses property: List of destination IP addresses or Service Tags.
-     * 
+     *
      * @return the destinationAddresses value.
      */
     public List<String> destinationAddresses() {
@@ -128,7 +128,7 @@ public final class NatRule extends FirewallPolicyRule {
 
     /**
      * Set the destinationAddresses property: List of destination IP addresses or Service Tags.
-     * 
+     *
      * @param destinationAddresses the destinationAddresses value to set.
      * @return the NatRule object itself.
      */
@@ -139,7 +139,7 @@ public final class NatRule extends FirewallPolicyRule {
 
     /**
      * Get the destinationPorts property: List of destination ports.
-     * 
+     *
      * @return the destinationPorts value.
      */
     public List<String> destinationPorts() {
@@ -148,7 +148,7 @@ public final class NatRule extends FirewallPolicyRule {
 
     /**
      * Set the destinationPorts property: List of destination ports.
-     * 
+     *
      * @param destinationPorts the destinationPorts value to set.
      * @return the NatRule object itself.
      */
@@ -159,7 +159,7 @@ public final class NatRule extends FirewallPolicyRule {
 
     /**
      * Get the translatedAddress property: The translated address for this NAT rule.
-     * 
+     *
      * @return the translatedAddress value.
      */
     public String translatedAddress() {
@@ -168,7 +168,7 @@ public final class NatRule extends FirewallPolicyRule {
 
     /**
      * Set the translatedAddress property: The translated address for this NAT rule.
-     * 
+     *
      * @param translatedAddress the translatedAddress value to set.
      * @return the NatRule object itself.
      */
@@ -179,7 +179,7 @@ public final class NatRule extends FirewallPolicyRule {
 
     /**
      * Get the translatedPort property: The translated port for this NAT rule.
-     * 
+     *
      * @return the translatedPort value.
      */
     public String translatedPort() {
@@ -188,7 +188,7 @@ public final class NatRule extends FirewallPolicyRule {
 
     /**
      * Set the translatedPort property: The translated port for this NAT rule.
-     * 
+     *
      * @param translatedPort the translatedPort value to set.
      * @return the NatRule object itself.
      */
@@ -199,7 +199,7 @@ public final class NatRule extends FirewallPolicyRule {
 
     /**
      * Get the sourceIpGroups property: List of source IpGroups for this rule.
-     * 
+     *
      * @return the sourceIpGroups value.
      */
     public List<String> sourceIpGroups() {
@@ -208,7 +208,7 @@ public final class NatRule extends FirewallPolicyRule {
 
     /**
      * Set the sourceIpGroups property: List of source IpGroups for this rule.
-     * 
+     *
      * @param sourceIpGroups the sourceIpGroups value to set.
      * @return the NatRule object itself.
      */
@@ -219,7 +219,7 @@ public final class NatRule extends FirewallPolicyRule {
 
     /**
      * Get the translatedFqdn property: The translated FQDN for this NAT rule.
-     * 
+     *
      * @return the translatedFqdn value.
      */
     public String translatedFqdn() {
@@ -228,7 +228,7 @@ public final class NatRule extends FirewallPolicyRule {
 
     /**
      * Set the translatedFqdn property: The translated FQDN for this NAT rule.
-     * 
+     *
      * @param translatedFqdn the translatedFqdn value to set.
      * @return the NatRule object itself.
      */
@@ -257,12 +257,11 @@ public final class NatRule extends FirewallPolicyRule {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**
@@ -292,7 +291,7 @@ public final class NatRule extends FirewallPolicyRule {
 
     /**
      * Reads an instance of NatRule from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of NatRule if the JsonReader was pointing to an instance of it, or null if it was pointing to
      * JSON null.

@@ -6,6 +6,7 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -38,9 +39,9 @@ public final class ConnectionMonitorResultInner extends Resource {
     private ConnectionMonitorResultProperties innerProperties;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * The type of the resource.
      */
-    private String id;
+    private String type;
 
     /*
      * The name of the resource.
@@ -48,9 +49,9 @@ public final class ConnectionMonitorResultInner extends Resource {
     private String name;
 
     /*
-     * The type of the resource.
+     * Fully qualified resource Id for the resource.
      */
-    private String type;
+    private String id;
 
     /**
      * Creates an instance of ConnectionMonitorResultInner class.
@@ -60,7 +61,7 @@ public final class ConnectionMonitorResultInner extends Resource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     * 
+     *
      * @return the etag value.
      */
     public String etag() {
@@ -69,7 +70,7 @@ public final class ConnectionMonitorResultInner extends Resource {
 
     /**
      * Get the innerProperties property: Properties of the connection monitor result.
-     * 
+     *
      * @return the innerProperties value.
      */
     private ConnectionMonitorResultProperties innerProperties() {
@@ -77,18 +78,18 @@ public final class ConnectionMonitorResultInner extends Resource {
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
-     * 
-     * @return the id value.
+     * Get the type property: The type of the resource.
+     *
+     * @return the type value.
      */
     @Override
-    public String id() {
-        return this.id;
+    public String type() {
+        return this.type;
     }
 
     /**
      * Get the name property: The name of the resource.
-     * 
+     *
      * @return the name value.
      */
     @Override
@@ -97,13 +98,13 @@ public final class ConnectionMonitorResultInner extends Resource {
     }
 
     /**
-     * Get the type property: The type of the resource.
-     * 
-     * @return the type value.
+     * Get the id property: Fully qualified resource Id for the resource.
+     *
+     * @return the id value.
      */
     @Override
-    public String type() {
-        return this.type;
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -126,7 +127,7 @@ public final class ConnectionMonitorResultInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the connection monitor.
-     * 
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -135,7 +136,7 @@ public final class ConnectionMonitorResultInner extends Resource {
 
     /**
      * Get the startTime property: The date and time when the connection monitor was started.
-     * 
+     *
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -144,7 +145,7 @@ public final class ConnectionMonitorResultInner extends Resource {
 
     /**
      * Get the monitoringStatus property: The monitoring status of the connection monitor.
-     * 
+     *
      * @return the monitoringStatus value.
      */
     public String monitoringStatus() {
@@ -153,7 +154,7 @@ public final class ConnectionMonitorResultInner extends Resource {
 
     /**
      * Get the connectionMonitorType property: Type of connection monitor.
-     * 
+     *
      * @return the connectionMonitorType value.
      */
     public ConnectionMonitorType connectionMonitorType() {
@@ -162,7 +163,7 @@ public final class ConnectionMonitorResultInner extends Resource {
 
     /**
      * Get the source property: Describes the source of connection monitor.
-     * 
+     *
      * @return the source value.
      */
     public ConnectionMonitorSource source() {
@@ -171,7 +172,7 @@ public final class ConnectionMonitorResultInner extends Resource {
 
     /**
      * Set the source property: Describes the source of connection monitor.
-     * 
+     *
      * @param source the source value to set.
      * @return the ConnectionMonitorResultInner object itself.
      */
@@ -185,7 +186,7 @@ public final class ConnectionMonitorResultInner extends Resource {
 
     /**
      * Get the destination property: Describes the destination of connection monitor.
-     * 
+     *
      * @return the destination value.
      */
     public ConnectionMonitorDestination destination() {
@@ -194,7 +195,7 @@ public final class ConnectionMonitorResultInner extends Resource {
 
     /**
      * Set the destination property: Describes the destination of connection monitor.
-     * 
+     *
      * @param destination the destination value to set.
      * @return the ConnectionMonitorResultInner object itself.
      */
@@ -208,7 +209,7 @@ public final class ConnectionMonitorResultInner extends Resource {
 
     /**
      * Get the autoStart property: Determines if the connection monitor will start automatically once created.
-     * 
+     *
      * @return the autoStart value.
      */
     public Boolean autoStart() {
@@ -217,7 +218,7 @@ public final class ConnectionMonitorResultInner extends Resource {
 
     /**
      * Set the autoStart property: Determines if the connection monitor will start automatically once created.
-     * 
+     *
      * @param autoStart the autoStart value to set.
      * @return the ConnectionMonitorResultInner object itself.
      */
@@ -231,7 +232,7 @@ public final class ConnectionMonitorResultInner extends Resource {
 
     /**
      * Get the monitoringIntervalInSeconds property: Monitoring interval in seconds.
-     * 
+     *
      * @return the monitoringIntervalInSeconds value.
      */
     public Integer monitoringIntervalInSeconds() {
@@ -240,7 +241,7 @@ public final class ConnectionMonitorResultInner extends Resource {
 
     /**
      * Set the monitoringIntervalInSeconds property: Monitoring interval in seconds.
-     * 
+     *
      * @param monitoringIntervalInSeconds the monitoringIntervalInSeconds value to set.
      * @return the ConnectionMonitorResultInner object itself.
      */
@@ -254,7 +255,7 @@ public final class ConnectionMonitorResultInner extends Resource {
 
     /**
      * Get the endpoints property: List of connection monitor endpoints.
-     * 
+     *
      * @return the endpoints value.
      */
     public List<ConnectionMonitorEndpoint> endpoints() {
@@ -263,7 +264,7 @@ public final class ConnectionMonitorResultInner extends Resource {
 
     /**
      * Set the endpoints property: List of connection monitor endpoints.
-     * 
+     *
      * @param endpoints the endpoints value to set.
      * @return the ConnectionMonitorResultInner object itself.
      */
@@ -277,7 +278,7 @@ public final class ConnectionMonitorResultInner extends Resource {
 
     /**
      * Get the testConfigurations property: List of connection monitor test configurations.
-     * 
+     *
      * @return the testConfigurations value.
      */
     public List<ConnectionMonitorTestConfiguration> testConfigurations() {
@@ -286,7 +287,7 @@ public final class ConnectionMonitorResultInner extends Resource {
 
     /**
      * Set the testConfigurations property: List of connection monitor test configurations.
-     * 
+     *
      * @param testConfigurations the testConfigurations value to set.
      * @return the ConnectionMonitorResultInner object itself.
      */
@@ -301,7 +302,7 @@ public final class ConnectionMonitorResultInner extends Resource {
 
     /**
      * Get the testGroups property: List of connection monitor test groups.
-     * 
+     *
      * @return the testGroups value.
      */
     public List<ConnectionMonitorTestGroup> testGroups() {
@@ -310,7 +311,7 @@ public final class ConnectionMonitorResultInner extends Resource {
 
     /**
      * Set the testGroups property: List of connection monitor test groups.
-     * 
+     *
      * @param testGroups the testGroups value to set.
      * @return the ConnectionMonitorResultInner object itself.
      */
@@ -324,7 +325,7 @@ public final class ConnectionMonitorResultInner extends Resource {
 
     /**
      * Get the outputs property: List of connection monitor outputs.
-     * 
+     *
      * @return the outputs value.
      */
     public List<ConnectionMonitorOutput> outputs() {
@@ -333,7 +334,7 @@ public final class ConnectionMonitorResultInner extends Resource {
 
     /**
      * Set the outputs property: List of connection monitor outputs.
-     * 
+     *
      * @param outputs the outputs value to set.
      * @return the ConnectionMonitorResultInner object itself.
      */
@@ -347,7 +348,7 @@ public final class ConnectionMonitorResultInner extends Resource {
 
     /**
      * Get the notes property: Optional notes to be associated with the connection monitor.
-     * 
+     *
      * @return the notes value.
      */
     public String notes() {
@@ -356,7 +357,7 @@ public final class ConnectionMonitorResultInner extends Resource {
 
     /**
      * Set the notes property: Optional notes to be associated with the connection monitor.
-     * 
+     *
      * @param notes the notes value to set.
      * @return the ConnectionMonitorResultInner object itself.
      */
@@ -370,14 +371,21 @@ public final class ConnectionMonitorResultInner extends Resource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+        if (location() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property location in model ConnectionMonitorResultInner"));
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ConnectionMonitorResultInner.class);
 
     /**
      * {@inheritDoc}
@@ -393,7 +401,7 @@ public final class ConnectionMonitorResultInner extends Resource {
 
     /**
      * Reads an instance of ConnectionMonitorResultInner from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of ConnectionMonitorResultInner if the JsonReader was pointing to an instance of it, or null
      * if it was pointing to JSON null.

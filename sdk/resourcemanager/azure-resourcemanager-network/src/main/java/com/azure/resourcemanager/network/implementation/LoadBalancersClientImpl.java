@@ -66,7 +66,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * Initializes an instance of LoadBalancersClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     LoadBalancersClientImpl(NetworkManagementClientImpl client) {
@@ -187,7 +187,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * Deletes the specified load balancer.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -213,7 +213,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, loadBalancerName,
@@ -223,7 +223,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * Deletes the specified load balancer.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param context The context to associate with this operation.
@@ -251,7 +251,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, loadBalancerName, apiVersion,
@@ -260,7 +260,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * Deletes the specified load balancer.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -277,7 +277,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * Deletes the specified load balancer.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param context The context to associate with this operation.
@@ -297,7 +297,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * Deletes the specified load balancer.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -312,7 +312,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * Deletes the specified load balancer.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param context The context to associate with this operation.
@@ -329,7 +329,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * Deletes the specified load balancer.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -345,7 +345,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * Deletes the specified load balancer.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param context The context to associate with this operation.
@@ -362,7 +362,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * Deletes the specified load balancer.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -376,7 +376,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * Deletes the specified load balancer.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param context The context to associate with this operation.
@@ -391,7 +391,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * Gets the specified load balancer.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param expand Expands referenced resources.
@@ -419,7 +419,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -429,7 +429,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * Gets the specified load balancer.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param expand Expands referenced resources.
@@ -458,7 +458,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, loadBalancerName, apiVersion,
@@ -467,7 +467,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * Gets the specified load balancer.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -484,7 +484,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * Gets the specified load balancer.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param expand Expands referenced resources.
@@ -502,7 +502,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * Gets the specified load balancer.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -518,7 +518,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * Creates or updates a load balancer.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param parameters Parameters supplied to the create or update load balancer operation.
@@ -551,7 +551,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName,
@@ -561,7 +561,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * Creates or updates a load balancer.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param parameters Parameters supplied to the create or update load balancer operation.
@@ -595,7 +595,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, loadBalancerName, apiVersion,
@@ -604,7 +604,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * Creates or updates a load balancer.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param parameters Parameters supplied to the create or update load balancer operation.
@@ -624,7 +624,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * Creates or updates a load balancer.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param parameters Parameters supplied to the create or update load balancer operation.
@@ -646,7 +646,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * Creates or updates a load balancer.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param parameters Parameters supplied to the create or update load balancer operation.
@@ -663,7 +663,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * Creates or updates a load balancer.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param parameters Parameters supplied to the create or update load balancer operation.
@@ -681,7 +681,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * Creates or updates a load balancer.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param parameters Parameters supplied to the create or update load balancer operation.
@@ -699,7 +699,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * Creates or updates a load balancer.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param parameters Parameters supplied to the create or update load balancer operation.
@@ -718,7 +718,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * Creates or updates a load balancer.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param parameters Parameters supplied to the create or update load balancer operation.
@@ -735,7 +735,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * Creates or updates a load balancer.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param parameters Parameters supplied to the create or update load balancer operation.
@@ -753,7 +753,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * Updates a load balancer tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param parameters Parameters supplied to update load balancer tags.
@@ -786,7 +786,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.updateTags(this.client.getEndpoint(), resourceGroupName, loadBalancerName,
@@ -796,7 +796,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * Updates a load balancer tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param parameters Parameters supplied to update load balancer tags.
@@ -830,7 +830,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.updateTags(this.client.getEndpoint(), resourceGroupName, loadBalancerName, apiVersion,
@@ -839,7 +839,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * Updates a load balancer tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param parameters Parameters supplied to update load balancer tags.
@@ -857,7 +857,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * Updates a load balancer tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param parameters Parameters supplied to update load balancer tags.
@@ -875,7 +875,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * Updates a load balancer tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param parameters Parameters supplied to update load balancer tags.
@@ -891,7 +891,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * Gets all the load balancers in a subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the load balancers in a subscription along with {@link PagedResponse} on successful completion of
@@ -907,7 +907,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -919,7 +919,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * Gets all the load balancers in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -937,7 +937,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
@@ -947,7 +947,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * Gets all the load balancers in a subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the load balancers in a subscription as paginated response with {@link PagedFlux}.
@@ -959,7 +959,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * Gets all the load balancers in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -974,7 +974,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * Gets all the load balancers in a subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the load balancers in a subscription as paginated response with {@link PagedIterable}.
@@ -986,7 +986,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * Gets all the load balancers in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1000,7 +1000,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * Gets all the load balancers in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1022,7 +1022,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -1034,7 +1034,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * Gets all the load balancers in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1058,7 +1058,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1070,7 +1070,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * Gets all the load balancers in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1085,7 +1085,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * Gets all the load balancers in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1101,7 +1101,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * Gets all the load balancers in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1115,7 +1115,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * Gets all the load balancers in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1130,7 +1130,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * Swaps VIPs between two load balancers.
-     * 
+     *
      * @param location The region where load balancers are located at.
      * @param parameters Parameters that define which VIPs should be swapped.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1157,7 +1157,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.swapPublicIpAddresses(this.client.getEndpoint(), location, apiVersion,
@@ -1167,7 +1167,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * Swaps VIPs between two load balancers.
-     * 
+     *
      * @param location The region where load balancers are located at.
      * @param parameters Parameters that define which VIPs should be swapped.
      * @param context The context to associate with this operation.
@@ -1195,7 +1195,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.swapPublicIpAddresses(this.client.getEndpoint(), location, apiVersion,
@@ -1204,7 +1204,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * Swaps VIPs between two load balancers.
-     * 
+     *
      * @param location The region where load balancers are located at.
      * @param parameters Parameters that define which VIPs should be swapped.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1222,7 +1222,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * Swaps VIPs between two load balancers.
-     * 
+     *
      * @param location The region where load balancers are located at.
      * @param parameters Parameters that define which VIPs should be swapped.
      * @param context The context to associate with this operation.
@@ -1242,7 +1242,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * Swaps VIPs between two load balancers.
-     * 
+     *
      * @param location The region where load balancers are located at.
      * @param parameters Parameters that define which VIPs should be swapped.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1258,7 +1258,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * Swaps VIPs between two load balancers.
-     * 
+     *
      * @param location The region where load balancers are located at.
      * @param parameters Parameters that define which VIPs should be swapped.
      * @param context The context to associate with this operation.
@@ -1275,7 +1275,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * Swaps VIPs between two load balancers.
-     * 
+     *
      * @param location The region where load balancers are located at.
      * @param parameters Parameters that define which VIPs should be swapped.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1291,7 +1291,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * Swaps VIPs between two load balancers.
-     * 
+     *
      * @param location The region where load balancers are located at.
      * @param parameters Parameters that define which VIPs should be swapped.
      * @param context The context to associate with this operation.
@@ -1309,7 +1309,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * Swaps VIPs between two load balancers.
-     * 
+     *
      * @param location The region where load balancers are located at.
      * @param parameters Parameters that define which VIPs should be swapped.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1323,7 +1323,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * Swaps VIPs between two load balancers.
-     * 
+     *
      * @param location The region where load balancers are located at.
      * @param parameters Parameters that define which VIPs should be swapped.
      * @param context The context to associate with this operation.
@@ -1338,7 +1338,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * List of inbound NAT rule port mappings.
-     * 
+     *
      * @param groupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param backendPoolName The name of the load balancer backend address pool.
@@ -1376,7 +1376,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listInboundNatRulePortMappings(this.client.getEndpoint(), groupName,
@@ -1387,7 +1387,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * List of inbound NAT rule port mappings.
-     * 
+     *
      * @param groupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param backendPoolName The name of the load balancer backend address pool.
@@ -1427,7 +1427,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listInboundNatRulePortMappings(this.client.getEndpoint(), groupName, loadBalancerName,
@@ -1436,7 +1436,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * List of inbound NAT rule port mappings.
-     * 
+     *
      * @param groupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param backendPoolName The name of the load balancer backend address pool.
@@ -1461,7 +1461,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * List of inbound NAT rule port mappings.
-     * 
+     *
      * @param groupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param backendPoolName The name of the load balancer backend address pool.
@@ -1488,7 +1488,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * List of inbound NAT rule port mappings.
-     * 
+     *
      * @param groupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param backendPoolName The name of the load balancer backend address pool.
@@ -1509,7 +1509,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * List of inbound NAT rule port mappings.
-     * 
+     *
      * @param groupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param backendPoolName The name of the load balancer backend address pool.
@@ -1532,7 +1532,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * List of inbound NAT rule port mappings.
-     * 
+     *
      * @param groupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param backendPoolName The name of the load balancer backend address pool.
@@ -1551,7 +1551,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * List of inbound NAT rule port mappings.
-     * 
+     *
      * @param groupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param backendPoolName The name of the load balancer backend address pool.
@@ -1572,7 +1572,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * List of inbound NAT rule port mappings.
-     * 
+     *
      * @param groupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param backendPoolName The name of the load balancer backend address pool.
@@ -1590,7 +1590,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * List of inbound NAT rule port mappings.
-     * 
+     *
      * @param groupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param backendPoolName The name of the load balancer backend address pool.
@@ -1611,7 +1611,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * Migrate load balancer to IP Based.
-     * 
+     *
      * @param groupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param parameters Parameters supplied to the migrateToIpBased Api.
@@ -1642,7 +1642,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
         if (parameters != null) {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.migrateToIpBased(this.client.getEndpoint(), groupName, loadBalancerName,
@@ -1652,7 +1652,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * Migrate load balancer to IP Based.
-     * 
+     *
      * @param groupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param parameters Parameters supplied to the migrateToIpBased Api.
@@ -1684,7 +1684,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
         if (parameters != null) {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.migrateToIpBased(this.client.getEndpoint(), groupName, loadBalancerName, apiVersion,
@@ -1693,7 +1693,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * Migrate load balancer to IP Based.
-     * 
+     *
      * @param groupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1710,7 +1710,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * Migrate load balancer to IP Based.
-     * 
+     *
      * @param groupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param parameters Parameters supplied to the migrateToIpBased Api.
@@ -1728,7 +1728,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * Migrate load balancer to IP Based.
-     * 
+     *
      * @param groupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1744,7 +1744,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1771,7 +1771,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1798,7 +1798,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1824,7 +1824,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

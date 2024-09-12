@@ -9,12 +9,12 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class AdminRulesGetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * NetworkManagerDefaultAdminRuleGet.json
      */
     /**
      * Sample code: Gets security default admin rule.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getsSecurityDefaultAdminRule(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -28,12 +28,12 @@ public final class AdminRulesGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/NetworkManagerAdminRuleGet.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/NetworkManagerAdminRuleGet.
      * json
      */
     /**
      * Sample code: Gets security admin rule.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getsSecurityAdminRule(com.azure.resourcemanager.AzureResourceManager azure) {

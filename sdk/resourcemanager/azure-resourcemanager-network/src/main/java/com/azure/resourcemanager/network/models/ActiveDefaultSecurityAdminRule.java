@@ -38,7 +38,7 @@ public final class ActiveDefaultSecurityAdminRule extends ActiveBaseSecurityAdmi
 
     /**
      * Get the kind property: Whether the rule is custom or default.
-     * 
+     *
      * @return the kind value.
      */
     @Override
@@ -48,7 +48,7 @@ public final class ActiveDefaultSecurityAdminRule extends ActiveBaseSecurityAdmi
 
     /**
      * Get the innerProperties property: Indicates the properties of the default security admin rule.
-     * 
+     *
      * @return the innerProperties value.
      */
     private DefaultAdminPropertiesFormat innerProperties() {
@@ -121,7 +121,7 @@ public final class ActiveDefaultSecurityAdminRule extends ActiveBaseSecurityAdmi
 
     /**
      * Get the description property: A description for this rule. Restricted to 140 chars.
-     * 
+     *
      * @return the description value.
      */
     public String description() {
@@ -130,7 +130,7 @@ public final class ActiveDefaultSecurityAdminRule extends ActiveBaseSecurityAdmi
 
     /**
      * Get the flag property: Default rule flag.
-     * 
+     *
      * @return the flag value.
      */
     public String flag() {
@@ -139,7 +139,7 @@ public final class ActiveDefaultSecurityAdminRule extends ActiveBaseSecurityAdmi
 
     /**
      * Set the flag property: Default rule flag.
-     * 
+     *
      * @param flag the flag value to set.
      * @return the ActiveDefaultSecurityAdminRule object itself.
      */
@@ -153,7 +153,7 @@ public final class ActiveDefaultSecurityAdminRule extends ActiveBaseSecurityAdmi
 
     /**
      * Get the protocol property: Network protocol this rule applies to.
-     * 
+     *
      * @return the protocol value.
      */
     public SecurityConfigurationRuleProtocol protocol() {
@@ -162,7 +162,7 @@ public final class ActiveDefaultSecurityAdminRule extends ActiveBaseSecurityAdmi
 
     /**
      * Get the sources property: The CIDR or source IP ranges.
-     * 
+     *
      * @return the sources value.
      */
     public List<AddressPrefixItem> sources() {
@@ -171,7 +171,7 @@ public final class ActiveDefaultSecurityAdminRule extends ActiveBaseSecurityAdmi
 
     /**
      * Get the destinations property: The destination address prefixes. CIDR or destination IP ranges.
-     * 
+     *
      * @return the destinations value.
      */
     public List<AddressPrefixItem> destinations() {
@@ -180,7 +180,7 @@ public final class ActiveDefaultSecurityAdminRule extends ActiveBaseSecurityAdmi
 
     /**
      * Get the sourcePortRanges property: The source port ranges.
-     * 
+     *
      * @return the sourcePortRanges value.
      */
     public List<String> sourcePortRanges() {
@@ -189,7 +189,7 @@ public final class ActiveDefaultSecurityAdminRule extends ActiveBaseSecurityAdmi
 
     /**
      * Get the destinationPortRanges property: The destination port ranges.
-     * 
+     *
      * @return the destinationPortRanges value.
      */
     public List<String> destinationPortRanges() {
@@ -198,7 +198,7 @@ public final class ActiveDefaultSecurityAdminRule extends ActiveBaseSecurityAdmi
 
     /**
      * Get the access property: Indicates the access allowed for this particular rule.
-     * 
+     *
      * @return the access value.
      */
     public SecurityConfigurationRuleAccess access() {
@@ -209,7 +209,7 @@ public final class ActiveDefaultSecurityAdminRule extends ActiveBaseSecurityAdmi
      * Get the priority property: The priority of the rule. The value can be between 1 and 4096. The priority number
      * must be unique for each rule in the collection. The lower the priority number, the higher the priority of the
      * rule.
-     * 
+     *
      * @return the priority value.
      */
     public Integer priority() {
@@ -218,7 +218,7 @@ public final class ActiveDefaultSecurityAdminRule extends ActiveBaseSecurityAdmi
 
     /**
      * Get the direction property: Indicates if the traffic matched against the rule in inbound or outbound.
-     * 
+     *
      * @return the direction value.
      */
     public SecurityConfigurationRuleDirection direction() {
@@ -227,7 +227,7 @@ public final class ActiveDefaultSecurityAdminRule extends ActiveBaseSecurityAdmi
 
     /**
      * Get the provisioningState property: The provisioning state of the resource.
-     * 
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -236,7 +236,7 @@ public final class ActiveDefaultSecurityAdminRule extends ActiveBaseSecurityAdmi
 
     /**
      * Get the resourceGuid property: Unique identifier for this resource.
-     * 
+     *
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -245,14 +245,19 @@ public final class ActiveDefaultSecurityAdminRule extends ActiveBaseSecurityAdmi
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
+        }
+        if (ruleCollectionAppliesToGroups() != null) {
+            ruleCollectionAppliesToGroups().forEach(e -> e.validate());
+        }
+        if (ruleGroups() != null) {
+            ruleGroups().forEach(e -> e.validate());
         }
     }
 
@@ -278,7 +283,7 @@ public final class ActiveDefaultSecurityAdminRule extends ActiveBaseSecurityAdmi
 
     /**
      * Reads an instance of ActiveDefaultSecurityAdminRule from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of ActiveDefaultSecurityAdminRule if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.

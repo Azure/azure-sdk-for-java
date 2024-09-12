@@ -51,7 +51,7 @@ public final class SubscriptionNetworkManagerConnectionsClientImpl
 
     /**
      * Initializes an instance of SubscriptionNetworkManagerConnectionsClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     SubscriptionNetworkManagerConnectionsClientImpl(NetworkManagementClientImpl client) {
@@ -116,7 +116,7 @@ public final class SubscriptionNetworkManagerConnectionsClientImpl
 
     /**
      * Create a network manager connection on this subscription.
-     * 
+     *
      * @param networkManagerConnectionName Name for the network manager connection.
      * @param parameters Network manager connection to be created/updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -145,7 +145,7 @@ public final class SubscriptionNetworkManagerConnectionsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -155,7 +155,7 @@ public final class SubscriptionNetworkManagerConnectionsClientImpl
 
     /**
      * Create a network manager connection on this subscription.
-     * 
+     *
      * @param networkManagerConnectionName Name for the network manager connection.
      * @param parameters Network manager connection to be created/updated.
      * @param context The context to associate with this operation.
@@ -185,7 +185,7 @@ public final class SubscriptionNetworkManagerConnectionsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -194,7 +194,7 @@ public final class SubscriptionNetworkManagerConnectionsClientImpl
 
     /**
      * Create a network manager connection on this subscription.
-     * 
+     *
      * @param networkManagerConnectionName Name for the network manager connection.
      * @param parameters Network manager connection to be created/updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -211,7 +211,7 @@ public final class SubscriptionNetworkManagerConnectionsClientImpl
 
     /**
      * Create a network manager connection on this subscription.
-     * 
+     *
      * @param networkManagerConnectionName Name for the network manager connection.
      * @param parameters Network manager connection to be created/updated.
      * @param context The context to associate with this operation.
@@ -228,7 +228,7 @@ public final class SubscriptionNetworkManagerConnectionsClientImpl
 
     /**
      * Create a network manager connection on this subscription.
-     * 
+     *
      * @param networkManagerConnectionName Name for the network manager connection.
      * @param parameters Network manager connection to be created/updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -244,7 +244,7 @@ public final class SubscriptionNetworkManagerConnectionsClientImpl
 
     /**
      * Get a specified connection created by this subscription.
-     * 
+     *
      * @param networkManagerConnectionName Name for the network manager connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -266,7 +266,7 @@ public final class SubscriptionNetworkManagerConnectionsClientImpl
             return Mono.error(
                 new IllegalArgumentException("Parameter networkManagerConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -276,7 +276,7 @@ public final class SubscriptionNetworkManagerConnectionsClientImpl
 
     /**
      * Get a specified connection created by this subscription.
-     * 
+     *
      * @param networkManagerConnectionName Name for the network manager connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -300,7 +300,7 @@ public final class SubscriptionNetworkManagerConnectionsClientImpl
             return Mono.error(
                 new IllegalArgumentException("Parameter networkManagerConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), networkManagerConnectionName,
@@ -309,7 +309,7 @@ public final class SubscriptionNetworkManagerConnectionsClientImpl
 
     /**
      * Get a specified connection created by this subscription.
-     * 
+     *
      * @param networkManagerConnectionName Name for the network manager connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -323,7 +323,7 @@ public final class SubscriptionNetworkManagerConnectionsClientImpl
 
     /**
      * Get a specified connection created by this subscription.
-     * 
+     *
      * @param networkManagerConnectionName Name for the network manager connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -339,7 +339,7 @@ public final class SubscriptionNetworkManagerConnectionsClientImpl
 
     /**
      * Get a specified connection created by this subscription.
-     * 
+     *
      * @param networkManagerConnectionName Name for the network manager connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -353,7 +353,7 @@ public final class SubscriptionNetworkManagerConnectionsClientImpl
 
     /**
      * Delete specified connection created by this subscription.
-     * 
+     *
      * @param networkManagerConnectionName Name for the network manager connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -374,7 +374,7 @@ public final class SubscriptionNetworkManagerConnectionsClientImpl
             return Mono.error(
                 new IllegalArgumentException("Parameter networkManagerConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -384,7 +384,7 @@ public final class SubscriptionNetworkManagerConnectionsClientImpl
 
     /**
      * Delete specified connection created by this subscription.
-     * 
+     *
      * @param networkManagerConnectionName Name for the network manager connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -406,7 +406,7 @@ public final class SubscriptionNetworkManagerConnectionsClientImpl
             return Mono.error(
                 new IllegalArgumentException("Parameter networkManagerConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), networkManagerConnectionName,
@@ -415,7 +415,7 @@ public final class SubscriptionNetworkManagerConnectionsClientImpl
 
     /**
      * Delete specified connection created by this subscription.
-     * 
+     *
      * @param networkManagerConnectionName Name for the network manager connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -429,7 +429,7 @@ public final class SubscriptionNetworkManagerConnectionsClientImpl
 
     /**
      * Delete specified connection created by this subscription.
-     * 
+     *
      * @param networkManagerConnectionName Name for the network manager connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -444,7 +444,7 @@ public final class SubscriptionNetworkManagerConnectionsClientImpl
 
     /**
      * Delete specified connection created by this subscription.
-     * 
+     *
      * @param networkManagerConnectionName Name for the network manager connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -457,7 +457,7 @@ public final class SubscriptionNetworkManagerConnectionsClientImpl
 
     /**
      * List all network manager connections created by this subscription.
-     * 
+     *
      * @param top An optional query parameter which specifies the maximum number of records to be returned by the
      * server.
      * @param skipToken SkipToken is only used if a previous operation returned a partial result. If a previous response
@@ -479,7 +479,7 @@ public final class SubscriptionNetworkManagerConnectionsClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion,
@@ -491,7 +491,7 @@ public final class SubscriptionNetworkManagerConnectionsClientImpl
 
     /**
      * List all network manager connections created by this subscription.
-     * 
+     *
      * @param top An optional query parameter which specifies the maximum number of records to be returned by the
      * server.
      * @param skipToken SkipToken is only used if a previous operation returned a partial result. If a previous response
@@ -515,7 +515,7 @@ public final class SubscriptionNetworkManagerConnectionsClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -527,7 +527,7 @@ public final class SubscriptionNetworkManagerConnectionsClientImpl
 
     /**
      * List all network manager connections created by this subscription.
-     * 
+     *
      * @param top An optional query parameter which specifies the maximum number of records to be returned by the
      * server.
      * @param skipToken SkipToken is only used if a previous operation returned a partial result. If a previous response
@@ -546,7 +546,7 @@ public final class SubscriptionNetworkManagerConnectionsClientImpl
 
     /**
      * List all network manager connections created by this subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of network manager connections as paginated response with {@link PagedFlux}.
@@ -561,7 +561,7 @@ public final class SubscriptionNetworkManagerConnectionsClientImpl
 
     /**
      * List all network manager connections created by this subscription.
-     * 
+     *
      * @param top An optional query parameter which specifies the maximum number of records to be returned by the
      * server.
      * @param skipToken SkipToken is only used if a previous operation returned a partial result. If a previous response
@@ -581,7 +581,7 @@ public final class SubscriptionNetworkManagerConnectionsClientImpl
 
     /**
      * List all network manager connections created by this subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of network manager connections as paginated response with {@link PagedIterable}.
@@ -595,7 +595,7 @@ public final class SubscriptionNetworkManagerConnectionsClientImpl
 
     /**
      * List all network manager connections created by this subscription.
-     * 
+     *
      * @param top An optional query parameter which specifies the maximum number of records to be returned by the
      * server.
      * @param skipToken SkipToken is only used if a previous operation returned a partial result. If a previous response
@@ -614,7 +614,7 @@ public final class SubscriptionNetworkManagerConnectionsClientImpl
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -640,7 +640,7 @@ public final class SubscriptionNetworkManagerConnectionsClientImpl
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

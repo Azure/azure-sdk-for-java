@@ -6,6 +6,7 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -43,14 +44,14 @@ public final class FlowLogInner extends Resource {
     private String id;
 
     /*
-     * The name of the resource.
-     */
-    private String name;
-
-    /*
      * The type of the resource.
      */
     private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
 
     /**
      * Creates an instance of FlowLogInner class.
@@ -60,7 +61,7 @@ public final class FlowLogInner extends Resource {
 
     /**
      * Get the innerProperties property: Properties of the flow log.
-     * 
+     *
      * @return the innerProperties value.
      */
     private FlowLogPropertiesFormat innerProperties() {
@@ -69,7 +70,7 @@ public final class FlowLogInner extends Resource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     * 
+     *
      * @return the etag value.
      */
     public String etag() {
@@ -78,7 +79,7 @@ public final class FlowLogInner extends Resource {
 
     /**
      * Get the identity property: FlowLog resource Managed Identity.
-     * 
+     *
      * @return the identity value.
      */
     public ManagedServiceIdentity identity() {
@@ -87,7 +88,7 @@ public final class FlowLogInner extends Resource {
 
     /**
      * Set the identity property: FlowLog resource Managed Identity.
-     * 
+     *
      * @param identity the identity value to set.
      * @return the FlowLogInner object itself.
      */
@@ -98,7 +99,7 @@ public final class FlowLogInner extends Resource {
 
     /**
      * Get the id property: Resource ID.
-     * 
+     *
      * @return the id value.
      */
     public String id() {
@@ -107,7 +108,7 @@ public final class FlowLogInner extends Resource {
 
     /**
      * Set the id property: Resource ID.
-     * 
+     *
      * @param id the id value to set.
      * @return the FlowLogInner object itself.
      */
@@ -117,23 +118,23 @@ public final class FlowLogInner extends Resource {
     }
 
     /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
-    }
-
-    /**
      * Get the type property: The type of the resource.
-     * 
+     *
      * @return the type value.
      */
     @Override
     public String type() {
         return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     *
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -156,7 +157,7 @@ public final class FlowLogInner extends Resource {
 
     /**
      * Get the targetResourceId property: ID of network security group to which flow log will be applied.
-     * 
+     *
      * @return the targetResourceId value.
      */
     public String targetResourceId() {
@@ -165,7 +166,7 @@ public final class FlowLogInner extends Resource {
 
     /**
      * Set the targetResourceId property: ID of network security group to which flow log will be applied.
-     * 
+     *
      * @param targetResourceId the targetResourceId value to set.
      * @return the FlowLogInner object itself.
      */
@@ -179,7 +180,7 @@ public final class FlowLogInner extends Resource {
 
     /**
      * Get the targetResourceGuid property: Guid of network security group to which flow log will be applied.
-     * 
+     *
      * @return the targetResourceGuid value.
      */
     public String targetResourceGuid() {
@@ -188,7 +189,7 @@ public final class FlowLogInner extends Resource {
 
     /**
      * Get the storageId property: ID of the storage account which is used to store the flow log.
-     * 
+     *
      * @return the storageId value.
      */
     public String storageId() {
@@ -197,7 +198,7 @@ public final class FlowLogInner extends Resource {
 
     /**
      * Set the storageId property: ID of the storage account which is used to store the flow log.
-     * 
+     *
      * @param storageId the storageId value to set.
      * @return the FlowLogInner object itself.
      */
@@ -210,8 +211,33 @@ public final class FlowLogInner extends Resource {
     }
 
     /**
+     * Get the enabledFilteringCriteria property: Optional field to filter network traffic logs based on SrcIP, SrcPort,
+     * DstIP, DstPort, Protocol, Encryption, Direction and Action. If not specified, all network traffic will be logged.
+     *
+     * @return the enabledFilteringCriteria value.
+     */
+    public String enabledFilteringCriteria() {
+        return this.innerProperties() == null ? null : this.innerProperties().enabledFilteringCriteria();
+    }
+
+    /**
+     * Set the enabledFilteringCriteria property: Optional field to filter network traffic logs based on SrcIP, SrcPort,
+     * DstIP, DstPort, Protocol, Encryption, Direction and Action. If not specified, all network traffic will be logged.
+     *
+     * @param enabledFilteringCriteria the enabledFilteringCriteria value to set.
+     * @return the FlowLogInner object itself.
+     */
+    public FlowLogInner withEnabledFilteringCriteria(String enabledFilteringCriteria) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FlowLogPropertiesFormat();
+        }
+        this.innerProperties().withEnabledFilteringCriteria(enabledFilteringCriteria);
+        return this;
+    }
+
+    /**
      * Get the enabled property: Flag to enable/disable flow logging.
-     * 
+     *
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -220,7 +246,7 @@ public final class FlowLogInner extends Resource {
 
     /**
      * Set the enabled property: Flag to enable/disable flow logging.
-     * 
+     *
      * @param enabled the enabled value to set.
      * @return the FlowLogInner object itself.
      */
@@ -234,7 +260,7 @@ public final class FlowLogInner extends Resource {
 
     /**
      * Get the retentionPolicy property: Parameters that define the retention policy for flow log.
-     * 
+     *
      * @return the retentionPolicy value.
      */
     public RetentionPolicyParameters retentionPolicy() {
@@ -243,7 +269,7 @@ public final class FlowLogInner extends Resource {
 
     /**
      * Set the retentionPolicy property: Parameters that define the retention policy for flow log.
-     * 
+     *
      * @param retentionPolicy the retentionPolicy value to set.
      * @return the FlowLogInner object itself.
      */
@@ -257,7 +283,7 @@ public final class FlowLogInner extends Resource {
 
     /**
      * Get the format property: Parameters that define the flow log format.
-     * 
+     *
      * @return the format value.
      */
     public FlowLogFormatParameters format() {
@@ -266,7 +292,7 @@ public final class FlowLogInner extends Resource {
 
     /**
      * Set the format property: Parameters that define the flow log format.
-     * 
+     *
      * @param format the format value to set.
      * @return the FlowLogInner object itself.
      */
@@ -280,7 +306,7 @@ public final class FlowLogInner extends Resource {
 
     /**
      * Get the flowAnalyticsConfiguration property: Parameters that define the configuration of traffic analytics.
-     * 
+     *
      * @return the flowAnalyticsConfiguration value.
      */
     public TrafficAnalyticsProperties flowAnalyticsConfiguration() {
@@ -289,7 +315,7 @@ public final class FlowLogInner extends Resource {
 
     /**
      * Set the flowAnalyticsConfiguration property: Parameters that define the configuration of traffic analytics.
-     * 
+     *
      * @param flowAnalyticsConfiguration the flowAnalyticsConfiguration value to set.
      * @return the FlowLogInner object itself.
      */
@@ -303,7 +329,7 @@ public final class FlowLogInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the flow log.
-     * 
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -312,7 +338,7 @@ public final class FlowLogInner extends Resource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -322,7 +348,13 @@ public final class FlowLogInner extends Resource {
         if (identity() != null) {
             identity().validate();
         }
+        if (location() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property location in model FlowLogInner"));
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(FlowLogInner.class);
 
     /**
      * {@inheritDoc}
@@ -340,7 +372,7 @@ public final class FlowLogInner extends Resource {
 
     /**
      * Reads an instance of FlowLogInner from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of FlowLogInner if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.

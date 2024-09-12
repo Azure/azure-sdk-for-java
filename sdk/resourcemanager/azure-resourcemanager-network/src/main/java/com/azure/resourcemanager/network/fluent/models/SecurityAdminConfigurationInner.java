@@ -31,14 +31,9 @@ public final class SecurityAdminConfigurationInner extends ChildResource {
     private SystemData systemData;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * A unique read-only string that changes whenever the resource is updated.
      */
-    private String id;
-
-    /*
-     * The name of the resource.
-     */
-    private String name;
+    private String etag;
 
     /*
      * The type of the resource.
@@ -46,9 +41,14 @@ public final class SecurityAdminConfigurationInner extends ChildResource {
     private String type;
 
     /*
-     * A unique read-only string that changes whenever the resource is updated.
+     * The name of the resource.
      */
-    private String etag;
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
      * Creates an instance of SecurityAdminConfigurationInner class.
@@ -58,7 +58,7 @@ public final class SecurityAdminConfigurationInner extends ChildResource {
 
     /**
      * Get the innerProperties property: Indicates the properties for the network manager security admin configuration.
-     * 
+     *
      * @return the innerProperties value.
      */
     private SecurityAdminConfigurationPropertiesFormat innerProperties() {
@@ -67,7 +67,7 @@ public final class SecurityAdminConfigurationInner extends ChildResource {
 
     /**
      * Get the systemData property: The system metadata related to this resource.
-     * 
+     *
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -75,38 +75,8 @@ public final class SecurityAdminConfigurationInner extends ChildResource {
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
-     * 
-     * @return the id value.
-     */
-    @Override
-    public String id() {
-        return this.id;
-    }
-
-    /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
-    }
-
-    /**
-     * Get the type property: The type of the resource.
-     * 
-     * @return the type value.
-     */
-    @Override
-    public String type() {
-        return this.type;
-    }
-
-    /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     * 
+     *
      * @return the etag value.
      */
     @Override
@@ -115,8 +85,38 @@ public final class SecurityAdminConfigurationInner extends ChildResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     *
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     *
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     *
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the description property: A description of the security configuration.
-     * 
+     *
      * @return the description value.
      */
     public String description() {
@@ -125,7 +125,7 @@ public final class SecurityAdminConfigurationInner extends ChildResource {
 
     /**
      * Set the description property: A description of the security configuration.
-     * 
+     *
      * @param description the description value to set.
      * @return the SecurityAdminConfigurationInner object itself.
      */
@@ -139,7 +139,7 @@ public final class SecurityAdminConfigurationInner extends ChildResource {
 
     /**
      * Get the applyOnNetworkIntentPolicyBasedServices property: Enum list of network intent policy based services.
-     * 
+     *
      * @return the applyOnNetworkIntentPolicyBasedServices value.
      */
     public List<NetworkIntentPolicyBasedService> applyOnNetworkIntentPolicyBasedServices() {
@@ -148,7 +148,7 @@ public final class SecurityAdminConfigurationInner extends ChildResource {
 
     /**
      * Set the applyOnNetworkIntentPolicyBasedServices property: Enum list of network intent policy based services.
-     * 
+     *
      * @param applyOnNetworkIntentPolicyBasedServices the applyOnNetworkIntentPolicyBasedServices value to set.
      * @return the SecurityAdminConfigurationInner object itself.
      */
@@ -163,7 +163,7 @@ public final class SecurityAdminConfigurationInner extends ChildResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the resource.
-     * 
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -172,7 +172,7 @@ public final class SecurityAdminConfigurationInner extends ChildResource {
 
     /**
      * Get the resourceGuid property: Unique identifier for this resource.
-     * 
+     *
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -181,12 +181,11 @@ public final class SecurityAdminConfigurationInner extends ChildResource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
@@ -204,7 +203,7 @@ public final class SecurityAdminConfigurationInner extends ChildResource {
 
     /**
      * Reads an instance of SecurityAdminConfigurationInner from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of SecurityAdminConfigurationInner if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.

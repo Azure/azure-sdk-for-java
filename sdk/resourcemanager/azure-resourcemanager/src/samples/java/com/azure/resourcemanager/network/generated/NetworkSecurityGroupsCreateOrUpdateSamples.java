@@ -16,12 +16,12 @@ import java.util.Arrays;
  */
 public final class NetworkSecurityGroupsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * NetworkSecurityGroupCreateWithRule.json
      */
     /**
      * Sample code: Create network security group with rule.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createNetworkSecurityGroupWithRule(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -45,12 +45,12 @@ public final class NetworkSecurityGroupsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/NetworkSecurityGroupCreate.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/NetworkSecurityGroupCreate.
      * json
      */
     /**
      * Sample code: Create network security group.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createNetworkSecurityGroup(com.azure.resourcemanager.AzureResourceManager azure) {

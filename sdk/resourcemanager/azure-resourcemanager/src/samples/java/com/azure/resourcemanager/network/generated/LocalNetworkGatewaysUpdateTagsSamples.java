@@ -14,12 +14,12 @@ import java.util.Map;
 public final class LocalNetworkGatewaysUpdateTagsSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/LocalNetworkGatewayUpdateTags
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/LocalNetworkGatewayUpdateTags
      * .json
      */
     /**
      * Sample code: UpdateLocalNetworkGatewayTags.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateLocalNetworkGatewayTags(com.azure.resourcemanager.AzureResourceManager azure) {

@@ -10,6 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ChildResource;
+import com.azure.resourcemanager.network.models.GroupMemberType;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 
@@ -29,14 +30,9 @@ public final class NetworkGroupInner extends ChildResource {
     private SystemData systemData;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * A unique read-only string that changes whenever the resource is updated.
      */
-    private String id;
-
-    /*
-     * The name of the resource.
-     */
-    private String name;
+    private String etag;
 
     /*
      * The type of the resource.
@@ -44,9 +40,14 @@ public final class NetworkGroupInner extends ChildResource {
     private String type;
 
     /*
-     * A unique read-only string that changes whenever the resource is updated.
+     * The name of the resource.
      */
-    private String etag;
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
      * Creates an instance of NetworkGroupInner class.
@@ -56,7 +57,7 @@ public final class NetworkGroupInner extends ChildResource {
 
     /**
      * Get the innerProperties property: The Network Group properties.
-     * 
+     *
      * @return the innerProperties value.
      */
     private NetworkGroupProperties innerProperties() {
@@ -65,7 +66,7 @@ public final class NetworkGroupInner extends ChildResource {
 
     /**
      * Get the systemData property: The system metadata related to this resource.
-     * 
+     *
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -73,38 +74,8 @@ public final class NetworkGroupInner extends ChildResource {
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
-     * 
-     * @return the id value.
-     */
-    @Override
-    public String id() {
-        return this.id;
-    }
-
-    /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
-    }
-
-    /**
-     * Get the type property: The type of the resource.
-     * 
-     * @return the type value.
-     */
-    @Override
-    public String type() {
-        return this.type;
-    }
-
-    /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     * 
+     *
      * @return the etag value.
      */
     @Override
@@ -113,8 +84,38 @@ public final class NetworkGroupInner extends ChildResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     *
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     *
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     *
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the description property: A description of the network group.
-     * 
+     *
      * @return the description value.
      */
     public String description() {
@@ -123,7 +124,7 @@ public final class NetworkGroupInner extends ChildResource {
 
     /**
      * Set the description property: A description of the network group.
-     * 
+     *
      * @param description the description value to set.
      * @return the NetworkGroupInner object itself.
      */
@@ -136,8 +137,31 @@ public final class NetworkGroupInner extends ChildResource {
     }
 
     /**
+     * Get the memberType property: The type of the group member.
+     *
+     * @return the memberType value.
+     */
+    public GroupMemberType memberType() {
+        return this.innerProperties() == null ? null : this.innerProperties().memberType();
+    }
+
+    /**
+     * Set the memberType property: The type of the group member.
+     *
+     * @param memberType the memberType value to set.
+     * @return the NetworkGroupInner object itself.
+     */
+    public NetworkGroupInner withMemberType(GroupMemberType memberType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkGroupProperties();
+        }
+        this.innerProperties().withMemberType(memberType);
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: The provisioning state of the scope assignment resource.
-     * 
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -146,7 +170,7 @@ public final class NetworkGroupInner extends ChildResource {
 
     /**
      * Get the resourceGuid property: Unique identifier for this resource.
-     * 
+     *
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -155,12 +179,11 @@ public final class NetworkGroupInner extends ChildResource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
@@ -178,7 +201,7 @@ public final class NetworkGroupInner extends ChildResource {
 
     /**
      * Reads an instance of NetworkGroupInner from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of NetworkGroupInner if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.

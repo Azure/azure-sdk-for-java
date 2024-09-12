@@ -28,12 +28,12 @@ import java.util.Map;
  */
 public final class NetworkVirtualAppliancesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * NetworkVirtualApplianceSaaSPut.json
      */
     /**
      * Sample code: Create SaaS NetworkVirtualAppliance.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createSaaSNetworkVirtualAppliance(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -52,12 +52,12 @@ public final class NetworkVirtualAppliancesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/NetworkVirtualAppliancePut.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/NetworkVirtualAppliancePut.
      * json
      */
     /**
      * Sample code: Create NetworkVirtualAppliance.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createNetworkVirtualAppliance(com.azure.resourcemanager.AzureResourceManager azure) {

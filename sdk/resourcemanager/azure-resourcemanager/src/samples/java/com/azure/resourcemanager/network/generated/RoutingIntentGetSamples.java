@@ -10,11 +10,11 @@ package com.azure.resourcemanager.network.generated;
 public final class RoutingIntentGetSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/RoutingIntentGet.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/RoutingIntentGet.json
      */
     /**
      * Sample code: RouteTableGet.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void routeTableGet(com.azure.resourcemanager.AzureResourceManager azure) {

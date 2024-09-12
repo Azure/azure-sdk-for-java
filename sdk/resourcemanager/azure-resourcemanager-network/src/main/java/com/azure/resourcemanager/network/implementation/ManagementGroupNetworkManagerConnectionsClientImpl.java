@@ -52,7 +52,7 @@ public final class ManagementGroupNetworkManagerConnectionsClientImpl
 
     /**
      * Initializes an instance of ManagementGroupNetworkManagerConnectionsClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     ManagementGroupNetworkManagerConnectionsClientImpl(NetworkManagementClientImpl client) {
@@ -117,7 +117,7 @@ public final class ManagementGroupNetworkManagerConnectionsClientImpl
 
     /**
      * Create a network manager connection on this management group.
-     * 
+     *
      * @param managementGroupId The management group Id which uniquely identify the Microsoft Azure management group.
      * @param networkManagerConnectionName Name for the network manager connection.
      * @param parameters Network manager connection to be created/updated.
@@ -147,7 +147,7 @@ public final class ManagementGroupNetworkManagerConnectionsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), managementGroupId,
@@ -157,7 +157,7 @@ public final class ManagementGroupNetworkManagerConnectionsClientImpl
 
     /**
      * Create a network manager connection on this management group.
-     * 
+     *
      * @param managementGroupId The management group Id which uniquely identify the Microsoft Azure management group.
      * @param networkManagerConnectionName Name for the network manager connection.
      * @param parameters Network manager connection to be created/updated.
@@ -188,7 +188,7 @@ public final class ManagementGroupNetworkManagerConnectionsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), managementGroupId, networkManagerConnectionName,
@@ -197,7 +197,7 @@ public final class ManagementGroupNetworkManagerConnectionsClientImpl
 
     /**
      * Create a network manager connection on this management group.
-     * 
+     *
      * @param managementGroupId The management group Id which uniquely identify the Microsoft Azure management group.
      * @param networkManagerConnectionName Name for the network manager connection.
      * @param parameters Network manager connection to be created/updated.
@@ -215,7 +215,7 @@ public final class ManagementGroupNetworkManagerConnectionsClientImpl
 
     /**
      * Create a network manager connection on this management group.
-     * 
+     *
      * @param managementGroupId The management group Id which uniquely identify the Microsoft Azure management group.
      * @param networkManagerConnectionName Name for the network manager connection.
      * @param parameters Network manager connection to be created/updated.
@@ -234,7 +234,7 @@ public final class ManagementGroupNetworkManagerConnectionsClientImpl
 
     /**
      * Create a network manager connection on this management group.
-     * 
+     *
      * @param managementGroupId The management group Id which uniquely identify the Microsoft Azure management group.
      * @param networkManagerConnectionName Name for the network manager connection.
      * @param parameters Network manager connection to be created/updated.
@@ -252,7 +252,7 @@ public final class ManagementGroupNetworkManagerConnectionsClientImpl
 
     /**
      * Get a specified connection created by this management group.
-     * 
+     *
      * @param managementGroupId The management group Id which uniquely identify the Microsoft Azure management group.
      * @param networkManagerConnectionName Name for the network manager connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -276,7 +276,7 @@ public final class ManagementGroupNetworkManagerConnectionsClientImpl
             return Mono.error(
                 new IllegalArgumentException("Parameter networkManagerConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), managementGroupId,
@@ -286,7 +286,7 @@ public final class ManagementGroupNetworkManagerConnectionsClientImpl
 
     /**
      * Get a specified connection created by this management group.
-     * 
+     *
      * @param managementGroupId The management group Id which uniquely identify the Microsoft Azure management group.
      * @param networkManagerConnectionName Name for the network manager connection.
      * @param context The context to associate with this operation.
@@ -311,7 +311,7 @@ public final class ManagementGroupNetworkManagerConnectionsClientImpl
             return Mono.error(
                 new IllegalArgumentException("Parameter networkManagerConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), managementGroupId, networkManagerConnectionName, apiVersion,
@@ -320,7 +320,7 @@ public final class ManagementGroupNetworkManagerConnectionsClientImpl
 
     /**
      * Get a specified connection created by this management group.
-     * 
+     *
      * @param managementGroupId The management group Id which uniquely identify the Microsoft Azure management group.
      * @param networkManagerConnectionName Name for the network manager connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -336,7 +336,7 @@ public final class ManagementGroupNetworkManagerConnectionsClientImpl
 
     /**
      * Get a specified connection created by this management group.
-     * 
+     *
      * @param managementGroupId The management group Id which uniquely identify the Microsoft Azure management group.
      * @param networkManagerConnectionName Name for the network manager connection.
      * @param context The context to associate with this operation.
@@ -353,7 +353,7 @@ public final class ManagementGroupNetworkManagerConnectionsClientImpl
 
     /**
      * Get a specified connection created by this management group.
-     * 
+     *
      * @param managementGroupId The management group Id which uniquely identify the Microsoft Azure management group.
      * @param networkManagerConnectionName Name for the network manager connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -368,7 +368,7 @@ public final class ManagementGroupNetworkManagerConnectionsClientImpl
 
     /**
      * Delete specified pending connection created by this management group.
-     * 
+     *
      * @param managementGroupId The management group Id which uniquely identify the Microsoft Azure management group.
      * @param networkManagerConnectionName Name for the network manager connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -390,7 +390,7 @@ public final class ManagementGroupNetworkManagerConnectionsClientImpl
             return Mono.error(
                 new IllegalArgumentException("Parameter networkManagerConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), managementGroupId,
@@ -400,7 +400,7 @@ public final class ManagementGroupNetworkManagerConnectionsClientImpl
 
     /**
      * Delete specified pending connection created by this management group.
-     * 
+     *
      * @param managementGroupId The management group Id which uniquely identify the Microsoft Azure management group.
      * @param networkManagerConnectionName Name for the network manager connection.
      * @param context The context to associate with this operation.
@@ -424,7 +424,7 @@ public final class ManagementGroupNetworkManagerConnectionsClientImpl
             return Mono.error(
                 new IllegalArgumentException("Parameter networkManagerConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), managementGroupId, networkManagerConnectionName, apiVersion,
@@ -433,7 +433,7 @@ public final class ManagementGroupNetworkManagerConnectionsClientImpl
 
     /**
      * Delete specified pending connection created by this management group.
-     * 
+     *
      * @param managementGroupId The management group Id which uniquely identify the Microsoft Azure management group.
      * @param networkManagerConnectionName Name for the network manager connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -449,7 +449,7 @@ public final class ManagementGroupNetworkManagerConnectionsClientImpl
 
     /**
      * Delete specified pending connection created by this management group.
-     * 
+     *
      * @param managementGroupId The management group Id which uniquely identify the Microsoft Azure management group.
      * @param networkManagerConnectionName Name for the network manager connection.
      * @param context The context to associate with this operation.
@@ -466,7 +466,7 @@ public final class ManagementGroupNetworkManagerConnectionsClientImpl
 
     /**
      * Delete specified pending connection created by this management group.
-     * 
+     *
      * @param managementGroupId The management group Id which uniquely identify the Microsoft Azure management group.
      * @param networkManagerConnectionName Name for the network manager connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -480,7 +480,7 @@ public final class ManagementGroupNetworkManagerConnectionsClientImpl
 
     /**
      * List all network manager connections created by this management group.
-     * 
+     *
      * @param managementGroupId The management group Id which uniquely identify the Microsoft Azure management group.
      * @param top An optional query parameter which specifies the maximum number of records to be returned by the
      * server.
@@ -504,7 +504,7 @@ public final class ManagementGroupNetworkManagerConnectionsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter managementGroupId is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), managementGroupId, apiVersion, top,
@@ -516,7 +516,7 @@ public final class ManagementGroupNetworkManagerConnectionsClientImpl
 
     /**
      * List all network manager connections created by this management group.
-     * 
+     *
      * @param managementGroupId The management group Id which uniquely identify the Microsoft Azure management group.
      * @param top An optional query parameter which specifies the maximum number of records to be returned by the
      * server.
@@ -541,7 +541,7 @@ public final class ManagementGroupNetworkManagerConnectionsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter managementGroupId is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), managementGroupId, apiVersion, top, skipToken, accept, context)
@@ -551,7 +551,7 @@ public final class ManagementGroupNetworkManagerConnectionsClientImpl
 
     /**
      * List all network manager connections created by this management group.
-     * 
+     *
      * @param managementGroupId The management group Id which uniquely identify the Microsoft Azure management group.
      * @param top An optional query parameter which specifies the maximum number of records to be returned by the
      * server.
@@ -571,7 +571,7 @@ public final class ManagementGroupNetworkManagerConnectionsClientImpl
 
     /**
      * List all network manager connections created by this management group.
-     * 
+     *
      * @param managementGroupId The management group Id which uniquely identify the Microsoft Azure management group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -588,7 +588,7 @@ public final class ManagementGroupNetworkManagerConnectionsClientImpl
 
     /**
      * List all network manager connections created by this management group.
-     * 
+     *
      * @param managementGroupId The management group Id which uniquely identify the Microsoft Azure management group.
      * @param top An optional query parameter which specifies the maximum number of records to be returned by the
      * server.
@@ -610,7 +610,7 @@ public final class ManagementGroupNetworkManagerConnectionsClientImpl
 
     /**
      * List all network manager connections created by this management group.
-     * 
+     *
      * @param managementGroupId The management group Id which uniquely identify the Microsoft Azure management group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -626,7 +626,7 @@ public final class ManagementGroupNetworkManagerConnectionsClientImpl
 
     /**
      * List all network manager connections created by this management group.
-     * 
+     *
      * @param managementGroupId The management group Id which uniquely identify the Microsoft Azure management group.
      * @param top An optional query parameter which specifies the maximum number of records to be returned by the
      * server.
@@ -647,7 +647,7 @@ public final class ManagementGroupNetworkManagerConnectionsClientImpl
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -673,7 +673,7 @@ public final class ManagementGroupNetworkManagerConnectionsClientImpl
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

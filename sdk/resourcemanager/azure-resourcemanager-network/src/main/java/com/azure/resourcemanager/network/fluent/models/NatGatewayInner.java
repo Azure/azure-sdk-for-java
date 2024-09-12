@@ -7,6 +7,7 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -47,14 +48,14 @@ public final class NatGatewayInner extends Resource {
     private String id;
 
     /*
-     * The name of the resource.
-     */
-    private String name;
-
-    /*
      * The type of the resource.
      */
     private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
 
     /**
      * Creates an instance of NatGatewayInner class.
@@ -64,7 +65,7 @@ public final class NatGatewayInner extends Resource {
 
     /**
      * Get the sku property: The nat gateway SKU.
-     * 
+     *
      * @return the sku value.
      */
     public NatGatewaySku sku() {
@@ -73,7 +74,7 @@ public final class NatGatewayInner extends Resource {
 
     /**
      * Set the sku property: The nat gateway SKU.
-     * 
+     *
      * @param sku the sku value to set.
      * @return the NatGatewayInner object itself.
      */
@@ -84,7 +85,7 @@ public final class NatGatewayInner extends Resource {
 
     /**
      * Get the innerProperties property: Nat Gateway properties.
-     * 
+     *
      * @return the innerProperties value.
      */
     private NatGatewayPropertiesFormat innerProperties() {
@@ -93,7 +94,7 @@ public final class NatGatewayInner extends Resource {
 
     /**
      * Get the zones property: A list of availability zones denoting the zone in which Nat Gateway should be deployed.
-     * 
+     *
      * @return the zones value.
      */
     public List<String> zones() {
@@ -102,7 +103,7 @@ public final class NatGatewayInner extends Resource {
 
     /**
      * Set the zones property: A list of availability zones denoting the zone in which Nat Gateway should be deployed.
-     * 
+     *
      * @param zones the zones value to set.
      * @return the NatGatewayInner object itself.
      */
@@ -113,7 +114,7 @@ public final class NatGatewayInner extends Resource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     * 
+     *
      * @return the etag value.
      */
     public String etag() {
@@ -122,7 +123,7 @@ public final class NatGatewayInner extends Resource {
 
     /**
      * Get the id property: Resource ID.
-     * 
+     *
      * @return the id value.
      */
     public String id() {
@@ -131,7 +132,7 @@ public final class NatGatewayInner extends Resource {
 
     /**
      * Set the id property: Resource ID.
-     * 
+     *
      * @param id the id value to set.
      * @return the NatGatewayInner object itself.
      */
@@ -141,23 +142,23 @@ public final class NatGatewayInner extends Resource {
     }
 
     /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
-    }
-
-    /**
      * Get the type property: The type of the resource.
-     * 
+     *
      * @return the type value.
      */
     @Override
     public String type() {
         return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     *
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -180,7 +181,7 @@ public final class NatGatewayInner extends Resource {
 
     /**
      * Get the idleTimeoutInMinutes property: The idle timeout of the nat gateway.
-     * 
+     *
      * @return the idleTimeoutInMinutes value.
      */
     public Integer idleTimeoutInMinutes() {
@@ -189,7 +190,7 @@ public final class NatGatewayInner extends Resource {
 
     /**
      * Set the idleTimeoutInMinutes property: The idle timeout of the nat gateway.
-     * 
+     *
      * @param idleTimeoutInMinutes the idleTimeoutInMinutes value to set.
      * @return the NatGatewayInner object itself.
      */
@@ -203,7 +204,7 @@ public final class NatGatewayInner extends Resource {
 
     /**
      * Get the publicIpAddresses property: An array of public ip addresses associated with the nat gateway resource.
-     * 
+     *
      * @return the publicIpAddresses value.
      */
     public List<SubResource> publicIpAddresses() {
@@ -212,7 +213,7 @@ public final class NatGatewayInner extends Resource {
 
     /**
      * Set the publicIpAddresses property: An array of public ip addresses associated with the nat gateway resource.
-     * 
+     *
      * @param publicIpAddresses the publicIpAddresses value to set.
      * @return the NatGatewayInner object itself.
      */
@@ -226,7 +227,7 @@ public final class NatGatewayInner extends Resource {
 
     /**
      * Get the publicIpPrefixes property: An array of public ip prefixes associated with the nat gateway resource.
-     * 
+     *
      * @return the publicIpPrefixes value.
      */
     public List<SubResource> publicIpPrefixes() {
@@ -235,7 +236,7 @@ public final class NatGatewayInner extends Resource {
 
     /**
      * Set the publicIpPrefixes property: An array of public ip prefixes associated with the nat gateway resource.
-     * 
+     *
      * @param publicIpPrefixes the publicIpPrefixes value to set.
      * @return the NatGatewayInner object itself.
      */
@@ -249,7 +250,7 @@ public final class NatGatewayInner extends Resource {
 
     /**
      * Get the subnets property: An array of references to the subnets using this nat gateway resource.
-     * 
+     *
      * @return the subnets value.
      */
     public List<SubResource> subnets() {
@@ -258,7 +259,7 @@ public final class NatGatewayInner extends Resource {
 
     /**
      * Get the resourceGuid property: The resource GUID property of the NAT gateway resource.
-     * 
+     *
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -267,7 +268,7 @@ public final class NatGatewayInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the NAT gateway resource.
-     * 
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -276,7 +277,7 @@ public final class NatGatewayInner extends Resource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -286,7 +287,13 @@ public final class NatGatewayInner extends Resource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+        if (location() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property location in model NatGatewayInner"));
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(NatGatewayInner.class);
 
     /**
      * {@inheritDoc}
@@ -305,7 +312,7 @@ public final class NatGatewayInner extends Resource {
 
     /**
      * Reads an instance of NatGatewayInner from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of NatGatewayInner if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.

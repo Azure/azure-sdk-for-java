@@ -9,12 +9,12 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ScopeConnectionsListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * NetworkManagerScopeConnectionList.json
      */
     /**
      * Sample code: List Network Manager Scope Connection.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listNetworkManagerScopeConnection(com.azure.resourcemanager.AzureResourceManager azure) {

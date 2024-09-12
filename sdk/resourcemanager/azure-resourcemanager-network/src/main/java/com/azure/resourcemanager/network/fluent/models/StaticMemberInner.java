@@ -29,14 +29,9 @@ public final class StaticMemberInner extends ChildResource {
     private SystemData systemData;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * A unique read-only string that changes whenever the resource is updated.
      */
-    private String id;
-
-    /*
-     * The name of the resource.
-     */
-    private String name;
+    private String etag;
 
     /*
      * The type of the resource.
@@ -44,9 +39,14 @@ public final class StaticMemberInner extends ChildResource {
     private String type;
 
     /*
-     * A unique read-only string that changes whenever the resource is updated.
+     * The name of the resource.
      */
-    private String etag;
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
      * Creates an instance of StaticMemberInner class.
@@ -56,7 +56,7 @@ public final class StaticMemberInner extends ChildResource {
 
     /**
      * Get the innerProperties property: The Static Member properties.
-     * 
+     *
      * @return the innerProperties value.
      */
     private StaticMemberProperties innerProperties() {
@@ -65,7 +65,7 @@ public final class StaticMemberInner extends ChildResource {
 
     /**
      * Get the systemData property: The system metadata related to this resource.
-     * 
+     *
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -73,38 +73,8 @@ public final class StaticMemberInner extends ChildResource {
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
-     * 
-     * @return the id value.
-     */
-    @Override
-    public String id() {
-        return this.id;
-    }
-
-    /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
-    }
-
-    /**
-     * Get the type property: The type of the resource.
-     * 
-     * @return the type value.
-     */
-    @Override
-    public String type() {
-        return this.type;
-    }
-
-    /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     * 
+     *
      * @return the etag value.
      */
     @Override
@@ -113,8 +83,38 @@ public final class StaticMemberInner extends ChildResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     *
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     *
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     *
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the resourceId property: Resource Id.
-     * 
+     *
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -123,7 +123,7 @@ public final class StaticMemberInner extends ChildResource {
 
     /**
      * Set the resourceId property: Resource Id.
-     * 
+     *
      * @param resourceId the resourceId value to set.
      * @return the StaticMemberInner object itself.
      */
@@ -137,7 +137,7 @@ public final class StaticMemberInner extends ChildResource {
 
     /**
      * Get the region property: Resource region.
-     * 
+     *
      * @return the region value.
      */
     public String region() {
@@ -146,7 +146,7 @@ public final class StaticMemberInner extends ChildResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the scope assignment resource.
-     * 
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -155,12 +155,11 @@ public final class StaticMemberInner extends ChildResource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
@@ -178,7 +177,7 @@ public final class StaticMemberInner extends ChildResource {
 
     /**
      * Reads an instance of StaticMemberInner from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of StaticMemberInner if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.

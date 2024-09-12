@@ -14,12 +14,12 @@ import java.util.Map;
 public final class NetworkInterfacesUpdateTagsSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/NetworkInterfaceUpdateTags.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/NetworkInterfaceUpdateTags.
      * json
      */
     /**
      * Sample code: Update network interface tags.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateNetworkInterfaceTags(com.azure.resourcemanager.AzureResourceManager azure) {

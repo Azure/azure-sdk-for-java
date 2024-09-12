@@ -10,11 +10,11 @@ package com.azure.resourcemanager.network.generated;
 public final class LoadBalancersGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/LoadBalancerGet.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/LoadBalancerGet.json
      */
     /**
      * Sample code: Get load balancer.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getLoadBalancer(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -26,12 +26,12 @@ public final class LoadBalancersGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * LoadBalancerGetInboundNatRulePortMapping.json
      */
     /**
      * Sample code: Get load balancer with inbound NAT rule port mapping.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void

@@ -10,12 +10,12 @@ package com.azure.resourcemanager.network.generated;
 public final class ApplicationGatewaysListSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/ApplicationGatewayListAll.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/ApplicationGatewayListAll.
      * json
      */
     /**
      * Sample code: Lists all application gateways in a subscription.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void

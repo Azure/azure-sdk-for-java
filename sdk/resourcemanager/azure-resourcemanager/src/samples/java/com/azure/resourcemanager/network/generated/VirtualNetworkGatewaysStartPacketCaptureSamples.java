@@ -11,12 +11,12 @@ import com.azure.resourcemanager.network.models.VpnPacketCaptureStartParameters;
  */
 public final class VirtualNetworkGatewaysStartPacketCaptureSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * VirtualNetworkGatewayStartPacketCaptureFilterData.json
      */
     /**
      * Sample code: Start packet capture on virtual network gateway with filter.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
@@ -31,12 +31,12 @@ public final class VirtualNetworkGatewaysStartPacketCaptureSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * VirtualNetworkGatewayStartPacketCapture.json
      */
     /**
      * Sample code: Start packet capture on virtual network gateway without filter.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void

@@ -15,11 +15,11 @@ import java.util.Map;
 public final class IpAllocationsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/IpAllocationCreate.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/IpAllocationCreate.json
      */
     /**
      * Sample code: Create IpAllocation.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createIpAllocation(com.azure.resourcemanager.AzureResourceManager azure) {

@@ -6,6 +6,7 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -37,14 +38,14 @@ public final class ExpressRouteGatewayInner extends Resource {
     private String id;
 
     /*
-     * The name of the resource.
-     */
-    private String name;
-
-    /*
      * The type of the resource.
      */
     private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
 
     /**
      * Creates an instance of ExpressRouteGatewayInner class.
@@ -54,7 +55,7 @@ public final class ExpressRouteGatewayInner extends Resource {
 
     /**
      * Get the innerProperties property: Properties of the express route gateway.
-     * 
+     *
      * @return the innerProperties value.
      */
     private ExpressRouteGatewayProperties innerProperties() {
@@ -63,7 +64,7 @@ public final class ExpressRouteGatewayInner extends Resource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     * 
+     *
      * @return the etag value.
      */
     public String etag() {
@@ -72,7 +73,7 @@ public final class ExpressRouteGatewayInner extends Resource {
 
     /**
      * Get the id property: Resource ID.
-     * 
+     *
      * @return the id value.
      */
     public String id() {
@@ -81,7 +82,7 @@ public final class ExpressRouteGatewayInner extends Resource {
 
     /**
      * Set the id property: Resource ID.
-     * 
+     *
      * @param id the id value to set.
      * @return the ExpressRouteGatewayInner object itself.
      */
@@ -91,23 +92,23 @@ public final class ExpressRouteGatewayInner extends Resource {
     }
 
     /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
-    }
-
-    /**
      * Get the type property: The type of the resource.
-     * 
+     *
      * @return the type value.
      */
     @Override
     public String type() {
         return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     *
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -130,7 +131,7 @@ public final class ExpressRouteGatewayInner extends Resource {
 
     /**
      * Get the autoScaleConfiguration property: Configuration for auto scaling.
-     * 
+     *
      * @return the autoScaleConfiguration value.
      */
     public ExpressRouteGatewayPropertiesAutoScaleConfiguration autoScaleConfiguration() {
@@ -139,7 +140,7 @@ public final class ExpressRouteGatewayInner extends Resource {
 
     /**
      * Set the autoScaleConfiguration property: Configuration for auto scaling.
-     * 
+     *
      * @param autoScaleConfiguration the autoScaleConfiguration value to set.
      * @return the ExpressRouteGatewayInner object itself.
      */
@@ -154,7 +155,7 @@ public final class ExpressRouteGatewayInner extends Resource {
 
     /**
      * Get the expressRouteConnections property: List of ExpressRoute connections to the ExpressRoute gateway.
-     * 
+     *
      * @return the expressRouteConnections value.
      */
     public List<ExpressRouteConnectionInner> expressRouteConnections() {
@@ -163,7 +164,7 @@ public final class ExpressRouteGatewayInner extends Resource {
 
     /**
      * Set the expressRouteConnections property: List of ExpressRoute connections to the ExpressRoute gateway.
-     * 
+     *
      * @param expressRouteConnections the expressRouteConnections value to set.
      * @return the ExpressRouteGatewayInner object itself.
      */
@@ -178,7 +179,7 @@ public final class ExpressRouteGatewayInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the express route gateway resource.
-     * 
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -187,7 +188,7 @@ public final class ExpressRouteGatewayInner extends Resource {
 
     /**
      * Get the virtualHub property: The Virtual Hub where the ExpressRoute gateway is or will be deployed.
-     * 
+     *
      * @return the virtualHub value.
      */
     public VirtualHubId virtualHub() {
@@ -196,7 +197,7 @@ public final class ExpressRouteGatewayInner extends Resource {
 
     /**
      * Set the virtualHub property: The Virtual Hub where the ExpressRoute gateway is or will be deployed.
-     * 
+     *
      * @param virtualHub the virtualHub value to set.
      * @return the ExpressRouteGatewayInner object itself.
      */
@@ -211,7 +212,7 @@ public final class ExpressRouteGatewayInner extends Resource {
     /**
      * Get the allowNonVirtualWanTraffic property: Configures this gateway to accept traffic from non Virtual WAN
      * networks.
-     * 
+     *
      * @return the allowNonVirtualWanTraffic value.
      */
     public Boolean allowNonVirtualWanTraffic() {
@@ -221,7 +222,7 @@ public final class ExpressRouteGatewayInner extends Resource {
     /**
      * Set the allowNonVirtualWanTraffic property: Configures this gateway to accept traffic from non Virtual WAN
      * networks.
-     * 
+     *
      * @param allowNonVirtualWanTraffic the allowNonVirtualWanTraffic value to set.
      * @return the ExpressRouteGatewayInner object itself.
      */
@@ -235,14 +236,21 @@ public final class ExpressRouteGatewayInner extends Resource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+        if (location() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property location in model ExpressRouteGatewayInner"));
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ExpressRouteGatewayInner.class);
 
     /**
      * {@inheritDoc}
@@ -259,7 +267,7 @@ public final class ExpressRouteGatewayInner extends Resource {
 
     /**
      * Reads an instance of ExpressRouteGatewayInner from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of ExpressRouteGatewayInner if the JsonReader was pointing to an instance of it, or null if
      * it was pointing to JSON null.

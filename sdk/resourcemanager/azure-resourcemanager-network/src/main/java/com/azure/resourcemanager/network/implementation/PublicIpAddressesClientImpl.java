@@ -62,7 +62,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Initializes an instance of PublicIpAddressesClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     PublicIpAddressesClientImpl(NetworkManagementClientImpl client) {
@@ -265,7 +265,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Gets information about all public IP addresses on a cloud service level.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param cloudServiceName The name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -293,7 +293,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listCloudServicePublicIpAddresses(this.client.getEndpoint(),
@@ -305,7 +305,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Gets information about all public IP addresses on a cloud service level.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param cloudServiceName The name of the cloud service.
      * @param context The context to associate with this operation.
@@ -334,7 +334,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -346,7 +346,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Gets information about all public IP addresses on a cloud service level.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param cloudServiceName The name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -365,7 +365,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Gets information about all public IP addresses on a cloud service level.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param cloudServiceName The name of the cloud service.
      * @param context The context to associate with this operation.
@@ -385,7 +385,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Gets information about all public IP addresses on a cloud service level.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param cloudServiceName The name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -402,7 +402,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Gets information about all public IP addresses on a cloud service level.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param cloudServiceName The name of the cloud service.
      * @param context The context to associate with this operation.
@@ -421,7 +421,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Gets information about all public IP addresses in a role instance IP configuration in a cloud service.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param cloudServiceName The name of the cloud service.
      * @param roleInstanceName The name of role instance.
@@ -465,7 +465,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listCloudServiceRoleInstancePublicIpAddresses(this.client.getEndpoint(),
@@ -478,7 +478,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Gets information about all public IP addresses in a role instance IP configuration in a cloud service.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param cloudServiceName The name of the cloud service.
      * @param roleInstanceName The name of role instance.
@@ -523,7 +523,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -536,7 +536,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Gets information about all public IP addresses in a role instance IP configuration in a cloud service.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param cloudServiceName The name of the cloud service.
      * @param roleInstanceName The name of role instance.
@@ -559,7 +559,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Gets information about all public IP addresses in a role instance IP configuration in a cloud service.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param cloudServiceName The name of the cloud service.
      * @param roleInstanceName The name of role instance.
@@ -584,7 +584,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Gets information about all public IP addresses in a role instance IP configuration in a cloud service.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param cloudServiceName The name of the cloud service.
      * @param roleInstanceName The name of role instance.
@@ -605,7 +605,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Gets information about all public IP addresses in a role instance IP configuration in a cloud service.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param cloudServiceName The name of the cloud service.
      * @param roleInstanceName The name of role instance.
@@ -628,7 +628,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Get the specified public IP address in a cloud service.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param cloudServiceName The name of the cloud service.
      * @param roleInstanceName The role instance name.
@@ -678,7 +678,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getCloudServicePublicIpAddress(this.client.getEndpoint(), resourceGroupName,
@@ -689,7 +689,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Get the specified public IP address in a cloud service.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param cloudServiceName The name of the cloud service.
      * @param roleInstanceName The role instance name.
@@ -740,7 +740,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getCloudServicePublicIpAddress(this.client.getEndpoint(), resourceGroupName, cloudServiceName,
@@ -750,7 +750,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Get the specified public IP address in a cloud service.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param cloudServiceName The name of the cloud service.
      * @param roleInstanceName The role instance name.
@@ -774,7 +774,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Get the specified public IP address in a cloud service.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param cloudServiceName The name of the cloud service.
      * @param roleInstanceName The role instance name.
@@ -798,7 +798,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Get the specified public IP address in a cloud service.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param cloudServiceName The name of the cloud service.
      * @param roleInstanceName The role instance name.
@@ -820,7 +820,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Deletes the specified public IP address.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the public IP address.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -847,7 +847,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, publicIpAddressName,
@@ -857,7 +857,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Deletes the specified public IP address.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the public IP address.
      * @param context The context to associate with this operation.
@@ -885,7 +885,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, publicIpAddressName, apiVersion,
@@ -894,7 +894,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Deletes the specified public IP address.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the public IP address.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -911,7 +911,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Deletes the specified public IP address.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the public IP address.
      * @param context The context to associate with this operation.
@@ -932,7 +932,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Deletes the specified public IP address.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the public IP address.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -947,7 +947,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Deletes the specified public IP address.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the public IP address.
      * @param context The context to associate with this operation.
@@ -964,7 +964,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Deletes the specified public IP address.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the public IP address.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -980,7 +980,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Deletes the specified public IP address.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the public IP address.
      * @param context The context to associate with this operation.
@@ -997,7 +997,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Deletes the specified public IP address.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the public IP address.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1011,7 +1011,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Deletes the specified public IP address.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the public IP address.
      * @param context The context to associate with this operation.
@@ -1026,7 +1026,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Gets the specified public IP address in a specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the public IP address.
      * @param expand Expands referenced resources.
@@ -1055,7 +1055,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -1065,7 +1065,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Gets the specified public IP address in a specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the public IP address.
      * @param expand Expands referenced resources.
@@ -1095,7 +1095,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, publicIpAddressName, apiVersion,
@@ -1104,7 +1104,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Gets the specified public IP address in a specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the public IP address.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1121,7 +1121,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Gets the specified public IP address in a specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the public IP address.
      * @param expand Expands referenced resources.
@@ -1139,7 +1139,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Gets the specified public IP address in a specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the public IP address.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1155,7 +1155,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Creates or updates a static or dynamic public IP address.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the public IP address.
      * @param parameters Parameters supplied to the create or update public IP address operation.
@@ -1188,7 +1188,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName,
@@ -1198,7 +1198,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Creates or updates a static or dynamic public IP address.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the public IP address.
      * @param parameters Parameters supplied to the create or update public IP address operation.
@@ -1232,7 +1232,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, publicIpAddressName, apiVersion,
@@ -1241,7 +1241,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Creates or updates a static or dynamic public IP address.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the public IP address.
      * @param parameters Parameters supplied to the create or update public IP address operation.
@@ -1261,7 +1261,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Creates or updates a static or dynamic public IP address.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the public IP address.
      * @param parameters Parameters supplied to the create or update public IP address operation.
@@ -1283,7 +1283,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Creates or updates a static or dynamic public IP address.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the public IP address.
      * @param parameters Parameters supplied to the create or update public IP address operation.
@@ -1300,7 +1300,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Creates or updates a static or dynamic public IP address.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the public IP address.
      * @param parameters Parameters supplied to the create or update public IP address operation.
@@ -1319,7 +1319,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Creates or updates a static or dynamic public IP address.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the public IP address.
      * @param parameters Parameters supplied to the create or update public IP address operation.
@@ -1337,7 +1337,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Creates or updates a static or dynamic public IP address.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the public IP address.
      * @param parameters Parameters supplied to the create or update public IP address operation.
@@ -1356,7 +1356,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Creates or updates a static or dynamic public IP address.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the public IP address.
      * @param parameters Parameters supplied to the create or update public IP address operation.
@@ -1373,7 +1373,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Creates or updates a static or dynamic public IP address.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the public IP address.
      * @param parameters Parameters supplied to the create or update public IP address operation.
@@ -1391,7 +1391,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Updates public IP address tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the public IP address.
      * @param parameters Parameters supplied to update public IP address tags.
@@ -1424,7 +1424,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.updateTags(this.client.getEndpoint(), resourceGroupName,
@@ -1434,7 +1434,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Updates public IP address tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the public IP address.
      * @param parameters Parameters supplied to update public IP address tags.
@@ -1468,7 +1468,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.updateTags(this.client.getEndpoint(), resourceGroupName, publicIpAddressName, apiVersion,
@@ -1477,7 +1477,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Updates public IP address tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the public IP address.
      * @param parameters Parameters supplied to update public IP address tags.
@@ -1495,7 +1495,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Updates public IP address tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the public IP address.
      * @param parameters Parameters supplied to update public IP address tags.
@@ -1513,7 +1513,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Updates public IP address tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the public IP address.
      * @param parameters Parameters supplied to update public IP address tags.
@@ -1530,7 +1530,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Gets all the public IP addresses in a subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the public IP addresses in a subscription along with {@link PagedResponse} on successful completion
@@ -1546,7 +1546,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -1558,7 +1558,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Gets all the public IP addresses in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1576,7 +1576,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
@@ -1586,7 +1586,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Gets all the public IP addresses in a subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the public IP addresses in a subscription as paginated response with {@link PagedFlux}.
@@ -1598,7 +1598,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Gets all the public IP addresses in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1613,7 +1613,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Gets all the public IP addresses in a subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the public IP addresses in a subscription as paginated response with {@link PagedIterable}.
@@ -1625,7 +1625,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Gets all the public IP addresses in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1639,7 +1639,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Gets all public IP addresses in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1661,7 +1661,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -1673,7 +1673,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Gets all public IP addresses in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1697,7 +1697,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1709,7 +1709,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Gets all public IP addresses in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1724,7 +1724,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Gets all public IP addresses in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1740,7 +1740,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Gets all public IP addresses in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1754,7 +1754,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Gets all public IP addresses in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1769,7 +1769,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Gets the Ddos Protection Status of a Public IP Address.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the public IP address.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1797,7 +1797,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.ddosProtectionStatus(this.client.getEndpoint(), resourceGroupName,
@@ -1807,7 +1807,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Gets the Ddos Protection Status of a Public IP Address.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the public IP address.
      * @param context The context to associate with this operation.
@@ -1836,7 +1836,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.ddosProtectionStatus(this.client.getEndpoint(), resourceGroupName, publicIpAddressName,
@@ -1845,7 +1845,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Gets the Ddos Protection Status of a Public IP Address.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the public IP address.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1866,7 +1866,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Gets the Ddos Protection Status of a Public IP Address.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the public IP address.
      * @param context The context to associate with this operation.
@@ -1889,7 +1889,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Gets the Ddos Protection Status of a Public IP Address.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the public IP address.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1905,7 +1905,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Gets the Ddos Protection Status of a Public IP Address.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the public IP address.
      * @param context The context to associate with this operation.
@@ -1922,7 +1922,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Gets the Ddos Protection Status of a Public IP Address.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the public IP address.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1939,7 +1939,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Gets the Ddos Protection Status of a Public IP Address.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the public IP address.
      * @param context The context to associate with this operation.
@@ -1957,7 +1957,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Gets the Ddos Protection Status of a Public IP Address.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the public IP address.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1973,7 +1973,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Gets the Ddos Protection Status of a Public IP Address.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the public IP address.
      * @param context The context to associate with this operation.
@@ -1990,7 +1990,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Gets information about all public IP addresses on a virtual machine scale set level.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2031,7 +2031,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Gets information about all public IP addresses on a virtual machine scale set level.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @param context The context to associate with this operation.
@@ -2072,7 +2072,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Gets information about all public IP addresses on a virtual machine scale set level.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2092,7 +2092,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Gets information about all public IP addresses on a virtual machine scale set level.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @param context The context to associate with this operation.
@@ -2113,7 +2113,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Gets information about all public IP addresses on a virtual machine scale set level.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2131,7 +2131,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Gets information about all public IP addresses on a virtual machine scale set level.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @param context The context to associate with this operation.
@@ -2151,7 +2151,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
     /**
      * Gets information about all public IP addresses in a virtual machine IP configuration in a virtual machine scale
      * set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @param virtualmachineIndex The virtual machine index.
@@ -2209,7 +2209,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
     /**
      * Gets information about all public IP addresses in a virtual machine IP configuration in a virtual machine scale
      * set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @param virtualmachineIndex The virtual machine index.
@@ -2268,7 +2268,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
     /**
      * Gets information about all public IP addresses in a virtual machine IP configuration in a virtual machine scale
      * set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @param virtualmachineIndex The virtual machine index.
@@ -2293,7 +2293,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
     /**
      * Gets information about all public IP addresses in a virtual machine IP configuration in a virtual machine scale
      * set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @param virtualmachineIndex The virtual machine index.
@@ -2319,7 +2319,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
     /**
      * Gets information about all public IP addresses in a virtual machine IP configuration in a virtual machine scale
      * set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @param virtualmachineIndex The virtual machine index.
@@ -2342,7 +2342,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
     /**
      * Gets information about all public IP addresses in a virtual machine IP configuration in a virtual machine scale
      * set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @param virtualmachineIndex The virtual machine index.
@@ -2365,7 +2365,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Get the specified public IP address in a virtual machine scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @param virtualmachineIndex The virtual machine index.
@@ -2427,7 +2427,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Get the specified public IP address in a virtual machine scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @param virtualmachineIndex The virtual machine index.
@@ -2489,7 +2489,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Get the specified public IP address in a virtual machine scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @param virtualmachineIndex The virtual machine index.
@@ -2513,7 +2513,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Get the specified public IP address in a virtual machine scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @param virtualmachineIndex The virtual machine index.
@@ -2538,7 +2538,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Get the specified public IP address in a virtual machine scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @param virtualmachineIndex The virtual machine index.
@@ -2562,7 +2562,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2591,7 +2591,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2619,7 +2619,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2648,7 +2648,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2677,7 +2677,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2704,7 +2704,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2731,7 +2731,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2757,7 +2757,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2784,7 +2784,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2813,7 +2813,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2842,7 +2842,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2871,7 +2871,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

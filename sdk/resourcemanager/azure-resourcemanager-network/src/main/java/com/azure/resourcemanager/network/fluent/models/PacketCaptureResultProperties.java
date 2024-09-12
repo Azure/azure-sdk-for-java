@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -35,7 +36,7 @@ public final class PacketCaptureResultProperties extends PacketCaptureParameters
 
     /**
      * Get the provisioningState property: The provisioning state of the packet capture session.
-     * 
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -134,13 +135,35 @@ public final class PacketCaptureResultProperties extends PacketCaptureParameters
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (target() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property target in model PacketCaptureResultProperties"));
+        }
+        if (scope() != null) {
+            scope().validate();
+        }
+        if (storageLocation() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property storageLocation in model PacketCaptureResultProperties"));
+        } else {
+            storageLocation().validate();
+        }
+        if (filters() != null) {
+            filters().forEach(e -> e.validate());
+        }
+        if (captureSettings() != null) {
+            captureSettings().validate();
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PacketCaptureResultProperties.class);
 
     /**
      * {@inheritDoc}
@@ -163,7 +186,7 @@ public final class PacketCaptureResultProperties extends PacketCaptureParameters
 
     /**
      * Reads an instance of PacketCaptureResultProperties from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of PacketCaptureResultProperties if the JsonReader was pointing to an instance of it, or null
      * if it was pointing to JSON null.

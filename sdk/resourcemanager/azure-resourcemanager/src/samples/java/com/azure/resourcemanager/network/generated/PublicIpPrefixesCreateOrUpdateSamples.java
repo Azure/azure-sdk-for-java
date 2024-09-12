@@ -16,12 +16,12 @@ import com.azure.resourcemanager.network.models.PublicIpPrefixSkuTier;
 public final class PublicIpPrefixesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/PublicIpPrefixCreateDefaults.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/PublicIpPrefixCreateDefaults.
      * json
      */
     /**
      * Sample code: Create public IP prefix defaults.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createPublicIPPrefixDefaults(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -37,12 +37,12 @@ public final class PublicIpPrefixesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * PublicIpPrefixCreateCustomizedValues.json
      */
     /**
      * Sample code: Create public IP prefix allocation method.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createPublicIPPrefixAllocationMethod(com.azure.resourcemanager.AzureResourceManager azure) {

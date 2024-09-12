@@ -11,6 +11,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.network.models.ApplicationGatewayForContainersReferenceDefinition;
 import com.azure.resourcemanager.network.models.ManagedRulesDefinition;
 import com.azure.resourcemanager.network.models.PolicySettings;
 import com.azure.resourcemanager.network.models.ProvisioningState;
@@ -65,6 +66,11 @@ public final class WebApplicationFirewallPolicyPropertiesFormat
      */
     private List<SubResource> pathBasedRules;
 
+    /*
+     * A collection of references to application gateway for containers.
+     */
+    private List<ApplicationGatewayForContainersReferenceDefinition> applicationGatewayForContainers;
+
     /**
      * Creates an instance of WebApplicationFirewallPolicyPropertiesFormat class.
      */
@@ -73,7 +79,7 @@ public final class WebApplicationFirewallPolicyPropertiesFormat
 
     /**
      * Get the policySettings property: The PolicySettings for policy.
-     * 
+     *
      * @return the policySettings value.
      */
     public PolicySettings policySettings() {
@@ -82,7 +88,7 @@ public final class WebApplicationFirewallPolicyPropertiesFormat
 
     /**
      * Set the policySettings property: The PolicySettings for policy.
-     * 
+     *
      * @param policySettings the policySettings value to set.
      * @return the WebApplicationFirewallPolicyPropertiesFormat object itself.
      */
@@ -93,7 +99,7 @@ public final class WebApplicationFirewallPolicyPropertiesFormat
 
     /**
      * Get the customRules property: The custom rules inside the policy.
-     * 
+     *
      * @return the customRules value.
      */
     public List<WebApplicationFirewallCustomRule> customRules() {
@@ -102,7 +108,7 @@ public final class WebApplicationFirewallPolicyPropertiesFormat
 
     /**
      * Set the customRules property: The custom rules inside the policy.
-     * 
+     *
      * @param customRules the customRules value to set.
      * @return the WebApplicationFirewallPolicyPropertiesFormat object itself.
      */
@@ -114,7 +120,7 @@ public final class WebApplicationFirewallPolicyPropertiesFormat
 
     /**
      * Get the applicationGateways property: A collection of references to application gateways.
-     * 
+     *
      * @return the applicationGateways value.
      */
     public List<ApplicationGatewayInner> applicationGateways() {
@@ -123,7 +129,7 @@ public final class WebApplicationFirewallPolicyPropertiesFormat
 
     /**
      * Get the provisioningState property: The provisioning state of the web application firewall policy resource.
-     * 
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -132,7 +138,7 @@ public final class WebApplicationFirewallPolicyPropertiesFormat
 
     /**
      * Get the resourceState property: Resource status of the policy.
-     * 
+     *
      * @return the resourceState value.
      */
     public WebApplicationFirewallPolicyResourceState resourceState() {
@@ -141,7 +147,7 @@ public final class WebApplicationFirewallPolicyPropertiesFormat
 
     /**
      * Get the managedRules property: Describes the managedRules structure.
-     * 
+     *
      * @return the managedRules value.
      */
     public ManagedRulesDefinition managedRules() {
@@ -150,7 +156,7 @@ public final class WebApplicationFirewallPolicyPropertiesFormat
 
     /**
      * Set the managedRules property: Describes the managedRules structure.
-     * 
+     *
      * @param managedRules the managedRules value to set.
      * @return the WebApplicationFirewallPolicyPropertiesFormat object itself.
      */
@@ -161,7 +167,7 @@ public final class WebApplicationFirewallPolicyPropertiesFormat
 
     /**
      * Get the httpListeners property: A collection of references to application gateway http listeners.
-     * 
+     *
      * @return the httpListeners value.
      */
     public List<SubResource> httpListeners() {
@@ -170,7 +176,7 @@ public final class WebApplicationFirewallPolicyPropertiesFormat
 
     /**
      * Get the pathBasedRules property: A collection of references to application gateway path rules.
-     * 
+     *
      * @return the pathBasedRules value.
      */
     public List<SubResource> pathBasedRules() {
@@ -178,8 +184,18 @@ public final class WebApplicationFirewallPolicyPropertiesFormat
     }
 
     /**
+     * Get the applicationGatewayForContainers property: A collection of references to application gateway for
+     * containers.
+     *
+     * @return the applicationGatewayForContainers value.
+     */
+    public List<ApplicationGatewayForContainersReferenceDefinition> applicationGatewayForContainers() {
+        return this.applicationGatewayForContainers;
+    }
+
+    /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -199,6 +215,9 @@ public final class WebApplicationFirewallPolicyPropertiesFormat
         } else {
             managedRules().validate();
         }
+        if (applicationGatewayForContainers() != null) {
+            applicationGatewayForContainers().forEach(e -> e.validate());
+        }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(WebApplicationFirewallPolicyPropertiesFormat.class);
@@ -217,7 +236,7 @@ public final class WebApplicationFirewallPolicyPropertiesFormat
 
     /**
      * Reads an instance of WebApplicationFirewallPolicyPropertiesFormat from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of WebApplicationFirewallPolicyPropertiesFormat if the JsonReader was pointing to an instance
      * of it, or null if it was pointing to JSON null.
@@ -258,6 +277,11 @@ public final class WebApplicationFirewallPolicyPropertiesFormat
                 } else if ("pathBasedRules".equals(fieldName)) {
                     List<SubResource> pathBasedRules = reader.readArray(reader1 -> SubResource.fromJson(reader1));
                     deserializedWebApplicationFirewallPolicyPropertiesFormat.pathBasedRules = pathBasedRules;
+                } else if ("applicationGatewayForContainers".equals(fieldName)) {
+                    List<ApplicationGatewayForContainersReferenceDefinition> applicationGatewayForContainers = reader
+                        .readArray(reader1 -> ApplicationGatewayForContainersReferenceDefinition.fromJson(reader1));
+                    deserializedWebApplicationFirewallPolicyPropertiesFormat.applicationGatewayForContainers
+                        = applicationGatewayForContainers;
                 } else {
                     reader.skipChildren();
                 }

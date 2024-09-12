@@ -7,6 +7,7 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -37,14 +38,14 @@ public final class SecurityPartnerProviderInner extends Resource {
     private String id;
 
     /*
-     * The name of the resource.
-     */
-    private String name;
-
-    /*
      * The type of the resource.
      */
     private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
 
     /**
      * Creates an instance of SecurityPartnerProviderInner class.
@@ -54,7 +55,7 @@ public final class SecurityPartnerProviderInner extends Resource {
 
     /**
      * Get the innerProperties property: Properties of the Security Partner Provider.
-     * 
+     *
      * @return the innerProperties value.
      */
     private SecurityPartnerProviderPropertiesFormat innerProperties() {
@@ -63,7 +64,7 @@ public final class SecurityPartnerProviderInner extends Resource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     * 
+     *
      * @return the etag value.
      */
     public String etag() {
@@ -72,7 +73,7 @@ public final class SecurityPartnerProviderInner extends Resource {
 
     /**
      * Get the id property: Resource ID.
-     * 
+     *
      * @return the id value.
      */
     public String id() {
@@ -81,7 +82,7 @@ public final class SecurityPartnerProviderInner extends Resource {
 
     /**
      * Set the id property: Resource ID.
-     * 
+     *
      * @param id the id value to set.
      * @return the SecurityPartnerProviderInner object itself.
      */
@@ -91,23 +92,23 @@ public final class SecurityPartnerProviderInner extends Resource {
     }
 
     /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
-    }
-
-    /**
      * Get the type property: The type of the resource.
-     * 
+     *
      * @return the type value.
      */
     @Override
     public String type() {
         return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     *
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -130,7 +131,7 @@ public final class SecurityPartnerProviderInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the Security Partner Provider resource.
-     * 
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -139,7 +140,7 @@ public final class SecurityPartnerProviderInner extends Resource {
 
     /**
      * Get the securityProviderName property: The security provider name.
-     * 
+     *
      * @return the securityProviderName value.
      */
     public SecurityProviderName securityProviderName() {
@@ -148,7 +149,7 @@ public final class SecurityPartnerProviderInner extends Resource {
 
     /**
      * Set the securityProviderName property: The security provider name.
-     * 
+     *
      * @param securityProviderName the securityProviderName value to set.
      * @return the SecurityPartnerProviderInner object itself.
      */
@@ -162,7 +163,7 @@ public final class SecurityPartnerProviderInner extends Resource {
 
     /**
      * Get the connectionStatus property: The connection status with the Security Partner Provider.
-     * 
+     *
      * @return the connectionStatus value.
      */
     public SecurityPartnerProviderConnectionStatus connectionStatus() {
@@ -171,7 +172,7 @@ public final class SecurityPartnerProviderInner extends Resource {
 
     /**
      * Get the virtualHub property: The virtualHub to which the Security Partner Provider belongs.
-     * 
+     *
      * @return the virtualHub value.
      */
     public SubResource virtualHub() {
@@ -180,7 +181,7 @@ public final class SecurityPartnerProviderInner extends Resource {
 
     /**
      * Set the virtualHub property: The virtualHub to which the Security Partner Provider belongs.
-     * 
+     *
      * @param virtualHub the virtualHub value to set.
      * @return the SecurityPartnerProviderInner object itself.
      */
@@ -194,14 +195,21 @@ public final class SecurityPartnerProviderInner extends Resource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+        if (location() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property location in model SecurityPartnerProviderInner"));
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SecurityPartnerProviderInner.class);
 
     /**
      * {@inheritDoc}
@@ -218,7 +226,7 @@ public final class SecurityPartnerProviderInner extends Resource {
 
     /**
      * Reads an instance of SecurityPartnerProviderInner from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of SecurityPartnerProviderInner if the JsonReader was pointing to an instance of it, or null
      * if it was pointing to JSON null.

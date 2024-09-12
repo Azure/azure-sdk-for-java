@@ -41,7 +41,7 @@ public final class ResourceNavigationLinksClientImpl implements ResourceNavigati
 
     /**
      * Initializes an instance of ResourceNavigationLinksClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     ResourceNavigationLinksClientImpl(NetworkManagementClientImpl client) {
@@ -70,7 +70,7 @@ public final class ResourceNavigationLinksClientImpl implements ResourceNavigati
 
     /**
      * Gets a list of resource navigation links for a subnet.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -102,7 +102,7 @@ public final class ResourceNavigationLinksClientImpl implements ResourceNavigati
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), resourceGroupName, virtualNetworkName,
@@ -112,7 +112,7 @@ public final class ResourceNavigationLinksClientImpl implements ResourceNavigati
 
     /**
      * Gets a list of resource navigation links for a subnet.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -145,7 +145,7 @@ public final class ResourceNavigationLinksClientImpl implements ResourceNavigati
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), resourceGroupName, virtualNetworkName, subnetName, apiVersion,
@@ -154,7 +154,7 @@ public final class ResourceNavigationLinksClientImpl implements ResourceNavigati
 
     /**
      * Gets a list of resource navigation links for a subnet.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -172,7 +172,7 @@ public final class ResourceNavigationLinksClientImpl implements ResourceNavigati
 
     /**
      * Gets a list of resource navigation links for a subnet.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -190,7 +190,7 @@ public final class ResourceNavigationLinksClientImpl implements ResourceNavigati
 
     /**
      * Gets a list of resource navigation links for a subnet.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.

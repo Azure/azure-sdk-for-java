@@ -10,11 +10,11 @@ package com.azure.resourcemanager.network.generated;
 public final class InboundNatRulesListSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/InboundNatRuleList.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/InboundNatRuleList.json
      */
     /**
      * Sample code: InboundNatRuleList.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void inboundNatRuleList(com.azure.resourcemanager.AzureResourceManager azure) {

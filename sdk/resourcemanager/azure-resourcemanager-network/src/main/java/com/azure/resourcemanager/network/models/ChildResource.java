@@ -22,9 +22,9 @@ public class ChildResource extends ProxyResource {
     private String etag;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * The type of the resource.
      */
-    private String id;
+    private String type;
 
     /*
      * The name of the resource.
@@ -32,9 +32,9 @@ public class ChildResource extends ProxyResource {
     private String name;
 
     /*
-     * The type of the resource.
+     * Fully qualified resource Id for the resource.
      */
-    private String type;
+    private String id;
 
     /**
      * Creates an instance of ChildResource class.
@@ -44,7 +44,7 @@ public class ChildResource extends ProxyResource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     * 
+     *
      * @return the etag value.
      */
     public String etag() {
@@ -53,7 +53,7 @@ public class ChildResource extends ProxyResource {
 
     /**
      * Set the etag property: A unique read-only string that changes whenever the resource is updated.
-     * 
+     *
      * @param etag the etag value to set.
      * @return the ChildResource object itself.
      */
@@ -63,28 +63,8 @@ public class ChildResource extends ProxyResource {
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
-     * 
-     * @return the id value.
-     */
-    @Override
-    public String id() {
-        return this.id;
-    }
-
-    /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
-    }
-
-    /**
      * Get the type property: The type of the resource.
-     * 
+     *
      * @return the type value.
      */
     @Override
@@ -93,8 +73,28 @@ public class ChildResource extends ProxyResource {
     }
 
     /**
+     * Get the name property: The name of the resource.
+     *
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     *
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -111,7 +111,7 @@ public class ChildResource extends ProxyResource {
 
     /**
      * Reads an instance of ChildResource from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of ChildResource if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.

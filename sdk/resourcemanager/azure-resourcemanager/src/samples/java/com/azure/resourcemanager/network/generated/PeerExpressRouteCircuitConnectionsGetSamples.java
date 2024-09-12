@@ -9,12 +9,12 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class PeerExpressRouteCircuitConnectionsGetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * PeerExpressRouteCircuitConnectionGet.json
      */
     /**
      * Sample code: PeerExpressRouteCircuitConnectionGet.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void peerExpressRouteCircuitConnectionGet(com.azure.resourcemanager.AzureResourceManager azure) {

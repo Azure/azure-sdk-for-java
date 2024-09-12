@@ -56,7 +56,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
 
     /**
      * Initializes an instance of FlowLogsClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     FlowLogsClientImpl(NetworkManagementClientImpl client) {
@@ -132,7 +132,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
 
     /**
      * Create or update a flow log for the specified network security group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param flowLogName The name of the flow log.
@@ -169,7 +169,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -180,7 +180,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
 
     /**
      * Create or update a flow log for the specified network security group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param flowLogName The name of the flow log.
@@ -218,7 +218,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, networkWatcherName, flowLogName,
@@ -227,7 +227,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
 
     /**
      * Create or update a flow log for the specified network security group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param flowLogName The name of the flow log.
@@ -248,7 +248,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
 
     /**
      * Create or update a flow log for the specified network security group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param flowLogName The name of the flow log.
@@ -271,7 +271,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
 
     /**
      * Create or update a flow log for the specified network security group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param flowLogName The name of the flow log.
@@ -290,7 +290,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
 
     /**
      * Create or update a flow log for the specified network security group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param flowLogName The name of the flow log.
@@ -310,7 +310,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
 
     /**
      * Create or update a flow log for the specified network security group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param flowLogName The name of the flow log.
@@ -329,7 +329,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
 
     /**
      * Create or update a flow log for the specified network security group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param flowLogName The name of the flow log.
@@ -349,7 +349,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
 
     /**
      * Create or update a flow log for the specified network security group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param flowLogName The name of the flow log.
@@ -367,7 +367,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
 
     /**
      * Create or update a flow log for the specified network security group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param flowLogName The name of the flow log.
@@ -386,7 +386,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
 
     /**
      * Update tags of the specified flow log.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param flowLogName The name of the flow log.
@@ -423,7 +423,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.updateTags(this.client.getEndpoint(), resourceGroupName, networkWatcherName,
@@ -433,7 +433,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
 
     /**
      * Update tags of the specified flow log.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param flowLogName The name of the flow log.
@@ -471,7 +471,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.updateTags(this.client.getEndpoint(), resourceGroupName, networkWatcherName, flowLogName,
@@ -480,7 +480,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
 
     /**
      * Update tags of the specified flow log.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param flowLogName The name of the flow log.
@@ -499,7 +499,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
 
     /**
      * Update tags of the specified flow log.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param flowLogName The name of the flow log.
@@ -519,7 +519,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
 
     /**
      * Update tags of the specified flow log.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param flowLogName The name of the flow log.
@@ -538,7 +538,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
 
     /**
      * Gets a flow log resource by name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param flowLogName The name of the flow log resource.
@@ -569,7 +569,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, networkWatcherName,
@@ -579,7 +579,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
 
     /**
      * Gets a flow log resource by name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param flowLogName The name of the flow log resource.
@@ -611,7 +611,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), resourceGroupName, networkWatcherName, flowLogName, apiVersion,
@@ -620,7 +620,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
 
     /**
      * Gets a flow log resource by name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param flowLogName The name of the flow log resource.
@@ -637,7 +637,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
 
     /**
      * Gets a flow log resource by name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param flowLogName The name of the flow log resource.
@@ -655,7 +655,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
 
     /**
      * Gets a flow log resource by name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param flowLogName The name of the flow log resource.
@@ -671,7 +671,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
 
     /**
      * Deletes the specified flow log resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param flowLogName The name of the flow log resource.
@@ -702,7 +702,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, networkWatcherName,
@@ -712,7 +712,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
 
     /**
      * Deletes the specified flow log resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param flowLogName The name of the flow log resource.
@@ -744,7 +744,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, networkWatcherName, flowLogName, apiVersion,
@@ -753,7 +753,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
 
     /**
      * Deletes the specified flow log resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param flowLogName The name of the flow log resource.
@@ -773,7 +773,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
 
     /**
      * Deletes the specified flow log resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param flowLogName The name of the flow log resource.
@@ -795,7 +795,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
 
     /**
      * Deletes the specified flow log resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param flowLogName The name of the flow log resource.
@@ -812,7 +812,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
 
     /**
      * Deletes the specified flow log resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param flowLogName The name of the flow log resource.
@@ -830,7 +830,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
 
     /**
      * Deletes the specified flow log resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param flowLogName The name of the flow log resource.
@@ -847,7 +847,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
 
     /**
      * Deletes the specified flow log resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param flowLogName The name of the flow log resource.
@@ -866,7 +866,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
 
     /**
      * Deletes the specified flow log resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param flowLogName The name of the flow log resource.
@@ -881,7 +881,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
 
     /**
      * Deletes the specified flow log resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param flowLogName The name of the flow log resource.
@@ -897,7 +897,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
 
     /**
      * Lists all flow log resources for the specified Network Watcher.
-     * 
+     *
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -923,7 +923,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), resourceGroupName, networkWatcherName,
@@ -935,7 +935,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
 
     /**
      * Lists all flow log resources for the specified Network Watcher.
-     * 
+     *
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param context The context to associate with this operation.
@@ -963,7 +963,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -975,7 +975,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
 
     /**
      * Lists all flow log resources for the specified Network Watcher.
-     * 
+     *
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -991,7 +991,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
 
     /**
      * Lists all flow log resources for the specified Network Watcher.
-     * 
+     *
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param context The context to associate with this operation.
@@ -1008,7 +1008,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
 
     /**
      * Lists all flow log resources for the specified Network Watcher.
-     * 
+     *
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1023,7 +1023,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
 
     /**
      * Lists all flow log resources for the specified Network Watcher.
-     * 
+     *
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param context The context to associate with this operation.
@@ -1039,7 +1039,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1064,7 +1064,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

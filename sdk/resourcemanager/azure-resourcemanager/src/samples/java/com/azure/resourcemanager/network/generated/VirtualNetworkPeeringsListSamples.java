@@ -10,12 +10,12 @@ package com.azure.resourcemanager.network.generated;
 public final class VirtualNetworkPeeringsListSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/VirtualNetworkPeeringList.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/VirtualNetworkPeeringList.
      * json
      */
     /**
      * Sample code: List peerings.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listPeerings(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -27,12 +27,12 @@ public final class VirtualNetworkPeeringsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * VirtualNetworkPeeringListWithRemoteVirtualNetworkEncryption.json
      */
     /**
      * Sample code: List peerings with remote virtual network encryption.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void

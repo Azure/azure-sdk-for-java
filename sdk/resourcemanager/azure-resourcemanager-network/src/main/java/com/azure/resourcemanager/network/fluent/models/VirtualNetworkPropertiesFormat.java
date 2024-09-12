@@ -12,6 +12,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.AddressSpace;
 import com.azure.resourcemanager.network.models.DhcpOptions;
+import com.azure.resourcemanager.network.models.PrivateEndpointVNetPolicies;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.VirtualNetworkBgpCommunities;
 import com.azure.resourcemanager.network.models.VirtualNetworkEncryption;
@@ -94,6 +95,11 @@ public final class VirtualNetworkPropertiesFormat implements JsonSerializable<Vi
      */
     private List<FlowLogInner> flowLogs;
 
+    /*
+     * Private Endpoint VNet Policies.
+     */
+    private PrivateEndpointVNetPolicies privateEndpointVNetPolicies;
+
     /**
      * Creates an instance of VirtualNetworkPropertiesFormat class.
      */
@@ -103,7 +109,7 @@ public final class VirtualNetworkPropertiesFormat implements JsonSerializable<Vi
     /**
      * Get the addressSpace property: The AddressSpace that contains an array of IP address ranges that can be used by
      * subnets.
-     * 
+     *
      * @return the addressSpace value.
      */
     public AddressSpace addressSpace() {
@@ -113,7 +119,7 @@ public final class VirtualNetworkPropertiesFormat implements JsonSerializable<Vi
     /**
      * Set the addressSpace property: The AddressSpace that contains an array of IP address ranges that can be used by
      * subnets.
-     * 
+     *
      * @param addressSpace the addressSpace value to set.
      * @return the VirtualNetworkPropertiesFormat object itself.
      */
@@ -125,7 +131,7 @@ public final class VirtualNetworkPropertiesFormat implements JsonSerializable<Vi
     /**
      * Get the dhcpOptions property: The dhcpOptions that contains an array of DNS servers available to VMs deployed in
      * the virtual network.
-     * 
+     *
      * @return the dhcpOptions value.
      */
     public DhcpOptions dhcpOptions() {
@@ -135,7 +141,7 @@ public final class VirtualNetworkPropertiesFormat implements JsonSerializable<Vi
     /**
      * Set the dhcpOptions property: The dhcpOptions that contains an array of DNS servers available to VMs deployed in
      * the virtual network.
-     * 
+     *
      * @param dhcpOptions the dhcpOptions value to set.
      * @return the VirtualNetworkPropertiesFormat object itself.
      */
@@ -146,7 +152,7 @@ public final class VirtualNetworkPropertiesFormat implements JsonSerializable<Vi
 
     /**
      * Get the flowTimeoutInMinutes property: The FlowTimeout value (in minutes) for the Virtual Network.
-     * 
+     *
      * @return the flowTimeoutInMinutes value.
      */
     public Integer flowTimeoutInMinutes() {
@@ -155,7 +161,7 @@ public final class VirtualNetworkPropertiesFormat implements JsonSerializable<Vi
 
     /**
      * Set the flowTimeoutInMinutes property: The FlowTimeout value (in minutes) for the Virtual Network.
-     * 
+     *
      * @param flowTimeoutInMinutes the flowTimeoutInMinutes value to set.
      * @return the VirtualNetworkPropertiesFormat object itself.
      */
@@ -166,7 +172,7 @@ public final class VirtualNetworkPropertiesFormat implements JsonSerializable<Vi
 
     /**
      * Get the subnets property: A list of subnets in a Virtual Network.
-     * 
+     *
      * @return the subnets value.
      */
     public List<SubnetInner> subnets() {
@@ -175,7 +181,7 @@ public final class VirtualNetworkPropertiesFormat implements JsonSerializable<Vi
 
     /**
      * Set the subnets property: A list of subnets in a Virtual Network.
-     * 
+     *
      * @param subnets the subnets value to set.
      * @return the VirtualNetworkPropertiesFormat object itself.
      */
@@ -186,7 +192,7 @@ public final class VirtualNetworkPropertiesFormat implements JsonSerializable<Vi
 
     /**
      * Get the virtualNetworkPeerings property: A list of peerings in a Virtual Network.
-     * 
+     *
      * @return the virtualNetworkPeerings value.
      */
     public List<VirtualNetworkPeeringInner> virtualNetworkPeerings() {
@@ -195,7 +201,7 @@ public final class VirtualNetworkPropertiesFormat implements JsonSerializable<Vi
 
     /**
      * Set the virtualNetworkPeerings property: A list of peerings in a Virtual Network.
-     * 
+     *
      * @param virtualNetworkPeerings the virtualNetworkPeerings value to set.
      * @return the VirtualNetworkPropertiesFormat object itself.
      */
@@ -207,7 +213,7 @@ public final class VirtualNetworkPropertiesFormat implements JsonSerializable<Vi
 
     /**
      * Get the resourceGuid property: The resourceGuid property of the Virtual Network resource.
-     * 
+     *
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -216,7 +222,7 @@ public final class VirtualNetworkPropertiesFormat implements JsonSerializable<Vi
 
     /**
      * Get the provisioningState property: The provisioning state of the virtual network resource.
-     * 
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -226,7 +232,7 @@ public final class VirtualNetworkPropertiesFormat implements JsonSerializable<Vi
     /**
      * Get the enableDdosProtection property: Indicates if DDoS protection is enabled for all the protected resources in
      * the virtual network. It requires a DDoS protection plan associated with the resource.
-     * 
+     *
      * @return the enableDdosProtection value.
      */
     public Boolean enableDdosProtection() {
@@ -236,7 +242,7 @@ public final class VirtualNetworkPropertiesFormat implements JsonSerializable<Vi
     /**
      * Set the enableDdosProtection property: Indicates if DDoS protection is enabled for all the protected resources in
      * the virtual network. It requires a DDoS protection plan associated with the resource.
-     * 
+     *
      * @param enableDdosProtection the enableDdosProtection value to set.
      * @return the VirtualNetworkPropertiesFormat object itself.
      */
@@ -248,7 +254,7 @@ public final class VirtualNetworkPropertiesFormat implements JsonSerializable<Vi
     /**
      * Get the enableVmProtection property: Indicates if VM protection is enabled for all the subnets in the virtual
      * network.
-     * 
+     *
      * @return the enableVmProtection value.
      */
     public Boolean enableVmProtection() {
@@ -258,7 +264,7 @@ public final class VirtualNetworkPropertiesFormat implements JsonSerializable<Vi
     /**
      * Set the enableVmProtection property: Indicates if VM protection is enabled for all the subnets in the virtual
      * network.
-     * 
+     *
      * @param enableVmProtection the enableVmProtection value to set.
      * @return the VirtualNetworkPropertiesFormat object itself.
      */
@@ -269,7 +275,7 @@ public final class VirtualNetworkPropertiesFormat implements JsonSerializable<Vi
 
     /**
      * Get the ddosProtectionPlan property: The DDoS protection plan associated with the virtual network.
-     * 
+     *
      * @return the ddosProtectionPlan value.
      */
     public SubResource ddosProtectionPlan() {
@@ -278,7 +284,7 @@ public final class VirtualNetworkPropertiesFormat implements JsonSerializable<Vi
 
     /**
      * Set the ddosProtectionPlan property: The DDoS protection plan associated with the virtual network.
-     * 
+     *
      * @param ddosProtectionPlan the ddosProtectionPlan value to set.
      * @return the VirtualNetworkPropertiesFormat object itself.
      */
@@ -290,7 +296,7 @@ public final class VirtualNetworkPropertiesFormat implements JsonSerializable<Vi
     /**
      * Get the bgpCommunities property: Bgp Communities sent over ExpressRoute with each route corresponding to a prefix
      * in this VNET.
-     * 
+     *
      * @return the bgpCommunities value.
      */
     public VirtualNetworkBgpCommunities bgpCommunities() {
@@ -300,7 +306,7 @@ public final class VirtualNetworkPropertiesFormat implements JsonSerializable<Vi
     /**
      * Set the bgpCommunities property: Bgp Communities sent over ExpressRoute with each route corresponding to a prefix
      * in this VNET.
-     * 
+     *
      * @param bgpCommunities the bgpCommunities value to set.
      * @return the VirtualNetworkPropertiesFormat object itself.
      */
@@ -312,7 +318,7 @@ public final class VirtualNetworkPropertiesFormat implements JsonSerializable<Vi
     /**
      * Get the encryption property: Indicates if encryption is enabled on virtual network and if VM without encryption
      * is allowed in encrypted VNet.
-     * 
+     *
      * @return the encryption value.
      */
     public VirtualNetworkEncryption encryption() {
@@ -322,7 +328,7 @@ public final class VirtualNetworkPropertiesFormat implements JsonSerializable<Vi
     /**
      * Set the encryption property: Indicates if encryption is enabled on virtual network and if VM without encryption
      * is allowed in encrypted VNet.
-     * 
+     *
      * @param encryption the encryption value to set.
      * @return the VirtualNetworkPropertiesFormat object itself.
      */
@@ -333,7 +339,7 @@ public final class VirtualNetworkPropertiesFormat implements JsonSerializable<Vi
 
     /**
      * Get the ipAllocations property: Array of IpAllocation which reference this VNET.
-     * 
+     *
      * @return the ipAllocations value.
      */
     public List<SubResource> ipAllocations() {
@@ -342,7 +348,7 @@ public final class VirtualNetworkPropertiesFormat implements JsonSerializable<Vi
 
     /**
      * Set the ipAllocations property: Array of IpAllocation which reference this VNET.
-     * 
+     *
      * @param ipAllocations the ipAllocations value to set.
      * @return the VirtualNetworkPropertiesFormat object itself.
      */
@@ -353,7 +359,7 @@ public final class VirtualNetworkPropertiesFormat implements JsonSerializable<Vi
 
     /**
      * Get the flowLogs property: A collection of references to flow log resources.
-     * 
+     *
      * @return the flowLogs value.
      */
     public List<FlowLogInner> flowLogs() {
@@ -361,8 +367,29 @@ public final class VirtualNetworkPropertiesFormat implements JsonSerializable<Vi
     }
 
     /**
+     * Get the privateEndpointVNetPolicies property: Private Endpoint VNet Policies.
+     *
+     * @return the privateEndpointVNetPolicies value.
+     */
+    public PrivateEndpointVNetPolicies privateEndpointVNetPolicies() {
+        return this.privateEndpointVNetPolicies;
+    }
+
+    /**
+     * Set the privateEndpointVNetPolicies property: Private Endpoint VNet Policies.
+     *
+     * @param privateEndpointVNetPolicies the privateEndpointVNetPolicies value to set.
+     * @return the VirtualNetworkPropertiesFormat object itself.
+     */
+    public VirtualNetworkPropertiesFormat
+        withPrivateEndpointVNetPolicies(PrivateEndpointVNetPolicies privateEndpointVNetPolicies) {
+        this.privateEndpointVNetPolicies = privateEndpointVNetPolicies;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -407,12 +434,14 @@ public final class VirtualNetworkPropertiesFormat implements JsonSerializable<Vi
         jsonWriter.writeJsonField("bgpCommunities", this.bgpCommunities);
         jsonWriter.writeJsonField("encryption", this.encryption);
         jsonWriter.writeArrayField("ipAllocations", this.ipAllocations, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("privateEndpointVNetPolicies",
+            this.privateEndpointVNetPolicies == null ? null : this.privateEndpointVNetPolicies.toString());
         return jsonWriter.writeEndObject();
     }
 
     /**
      * Reads an instance of VirtualNetworkPropertiesFormat from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of VirtualNetworkPropertiesFormat if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.
@@ -464,6 +493,9 @@ public final class VirtualNetworkPropertiesFormat implements JsonSerializable<Vi
                 } else if ("flowLogs".equals(fieldName)) {
                     List<FlowLogInner> flowLogs = reader.readArray(reader1 -> FlowLogInner.fromJson(reader1));
                     deserializedVirtualNetworkPropertiesFormat.flowLogs = flowLogs;
+                } else if ("privateEndpointVNetPolicies".equals(fieldName)) {
+                    deserializedVirtualNetworkPropertiesFormat.privateEndpointVNetPolicies
+                        = PrivateEndpointVNetPolicies.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

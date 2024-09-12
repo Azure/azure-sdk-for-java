@@ -48,7 +48,7 @@ public final class ApplicationGatewayWafDynamicManifestsClientImpl
 
     /**
      * Initializes an instance of ApplicationGatewayWafDynamicManifestsClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     ApplicationGatewayWafDynamicManifestsClientImpl(NetworkManagementClientImpl client) {
@@ -83,7 +83,7 @@ public final class ApplicationGatewayWafDynamicManifestsClientImpl
 
     /**
      * Gets the regional application gateway waf manifest.
-     * 
+     *
      * @param location The region where the nrp are located at.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -104,7 +104,7 @@ public final class ApplicationGatewayWafDynamicManifestsClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), location, apiVersion,
@@ -117,7 +117,7 @@ public final class ApplicationGatewayWafDynamicManifestsClientImpl
 
     /**
      * Gets the regional application gateway waf manifest.
-     * 
+     *
      * @param location The region where the nrp are located at.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -140,7 +140,7 @@ public final class ApplicationGatewayWafDynamicManifestsClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -151,7 +151,7 @@ public final class ApplicationGatewayWafDynamicManifestsClientImpl
 
     /**
      * Gets the regional application gateway waf manifest.
-     * 
+     *
      * @param location The region where the nrp are located at.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -165,7 +165,7 @@ public final class ApplicationGatewayWafDynamicManifestsClientImpl
 
     /**
      * Gets the regional application gateway waf manifest.
-     * 
+     *
      * @param location The region where the nrp are located at.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -181,7 +181,7 @@ public final class ApplicationGatewayWafDynamicManifestsClientImpl
 
     /**
      * Gets the regional application gateway waf manifest.
-     * 
+     *
      * @param location The region where the nrp are located at.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -195,7 +195,7 @@ public final class ApplicationGatewayWafDynamicManifestsClientImpl
 
     /**
      * Gets the regional application gateway waf manifest.
-     * 
+     *
      * @param location The region where the nrp are located at.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -210,7 +210,7 @@ public final class ApplicationGatewayWafDynamicManifestsClientImpl
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -238,7 +238,7 @@ public final class ApplicationGatewayWafDynamicManifestsClientImpl
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

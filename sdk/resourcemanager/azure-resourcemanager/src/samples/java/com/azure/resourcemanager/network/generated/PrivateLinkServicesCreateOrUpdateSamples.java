@@ -20,11 +20,11 @@ import java.util.Arrays;
 public final class PrivateLinkServicesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/PrivateLinkServiceCreate.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/PrivateLinkServiceCreate.json
      */
     /**
      * Sample code: Create private link service.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createPrivateLinkService(com.azure.resourcemanager.AzureResourceManager azure) {

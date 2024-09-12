@@ -21,12 +21,12 @@ import java.util.Arrays;
 public final class VirtualNetworksCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/VirtualNetworkCreateSubnet.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/VirtualNetworkCreateSubnet.
      * json
      */
     /**
      * Sample code: Create virtual network with subnet.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createVirtualNetworkWithSubnet(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -42,12 +42,12 @@ public final class VirtualNetworksCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * VirtualNetworkCreateWithBgpCommunities.json
      */
     /**
      * Sample code: Create virtual network with Bgp Communities.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createVirtualNetworkWithBgpCommunities(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -64,12 +64,12 @@ public final class VirtualNetworksCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * VirtualNetworkCreateSubnetWithAddressPrefixes.json
      */
     /**
      * Sample code: Create virtual network with subnet containing address prefixes.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
@@ -87,12 +87,12 @@ public final class VirtualNetworksCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * VirtualNetworkCreateSubnetWithDelegation.json
      */
     /**
      * Sample code: Create virtual network with delegated subnets.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createVirtualNetworkWithDelegatedSubnets(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -110,12 +110,12 @@ public final class VirtualNetworksCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * VirtualNetworkCreateWithEncryption.json
      */
     /**
      * Sample code: Create virtual network with encryption.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createVirtualNetworkWithEncryption(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -134,11 +134,11 @@ public final class VirtualNetworksCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/VirtualNetworkCreate.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/VirtualNetworkCreate.json
      */
     /**
      * Sample code: Create virtual network.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createVirtualNetwork(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -154,12 +154,12 @@ public final class VirtualNetworksCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * VirtualNetworkCreateServiceEndpointPolicy.json
      */
     /**
      * Sample code: Create virtual network with service endpoints and service endpoint policy.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createVirtualNetworkWithServiceEndpointsAndServiceEndpointPolicy(
@@ -180,12 +180,12 @@ public final class VirtualNetworksCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * VirtualNetworkCreateServiceEndpoints.json
      */
     /**
      * Sample code: Create virtual network with service endpoints.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createVirtualNetworkWithServiceEndpoints(com.azure.resourcemanager.AzureResourceManager azure) {

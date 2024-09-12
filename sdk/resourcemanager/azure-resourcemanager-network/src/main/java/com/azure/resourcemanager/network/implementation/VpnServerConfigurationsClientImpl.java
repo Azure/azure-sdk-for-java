@@ -60,7 +60,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
 
     /**
      * Initializes an instance of VpnServerConfigurationsClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     VpnServerConfigurationsClientImpl(NetworkManagementClientImpl client) {
@@ -156,7 +156,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
 
     /**
      * Retrieves the details of a VpnServerConfiguration.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -183,7 +183,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
             return Mono.error(
                 new IllegalArgumentException("Parameter vpnServerConfigurationName is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -194,7 +194,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
 
     /**
      * Retrieves the details of a VpnServerConfiguration.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being retrieved.
      * @param context The context to associate with this operation.
@@ -222,7 +222,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
             return Mono.error(
                 new IllegalArgumentException("Parameter vpnServerConfigurationName is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -231,7 +231,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
 
     /**
      * Retrieves the details of a VpnServerConfiguration.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -248,7 +248,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
 
     /**
      * Retrieves the details of a VpnServerConfiguration.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being retrieved.
      * @param context The context to associate with this operation.
@@ -265,7 +265,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
 
     /**
      * Retrieves the details of a VpnServerConfiguration.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -280,7 +280,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
 
     /**
      * Creates a VpnServerConfiguration resource if it doesn't exist else updates the existing VpnServerConfiguration.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being created or updated.
      * @param vpnServerConfigurationParameters Parameters supplied to create or update VpnServerConfiguration.
@@ -314,7 +314,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
         } else {
             vpnServerConfigurationParameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -325,7 +325,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
 
     /**
      * Creates a VpnServerConfiguration resource if it doesn't exist else updates the existing VpnServerConfiguration.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being created or updated.
      * @param vpnServerConfigurationParameters Parameters supplied to create or update VpnServerConfiguration.
@@ -361,7 +361,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
         } else {
             vpnServerConfigurationParameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -370,7 +370,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
 
     /**
      * Creates a VpnServerConfiguration resource if it doesn't exist else updates the existing VpnServerConfiguration.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being created or updated.
      * @param vpnServerConfigurationParameters Parameters supplied to create or update VpnServerConfiguration.
@@ -392,7 +392,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
 
     /**
      * Creates a VpnServerConfiguration resource if it doesn't exist else updates the existing VpnServerConfiguration.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being created or updated.
      * @param vpnServerConfigurationParameters Parameters supplied to create or update VpnServerConfiguration.
@@ -416,7 +416,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
 
     /**
      * Creates a VpnServerConfiguration resource if it doesn't exist else updates the existing VpnServerConfiguration.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being created or updated.
      * @param vpnServerConfigurationParameters Parameters supplied to create or update VpnServerConfiguration.
@@ -436,7 +436,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
 
     /**
      * Creates a VpnServerConfiguration resource if it doesn't exist else updates the existing VpnServerConfiguration.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being created or updated.
      * @param vpnServerConfigurationParameters Parameters supplied to create or update VpnServerConfiguration.
@@ -458,7 +458,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
 
     /**
      * Creates a VpnServerConfiguration resource if it doesn't exist else updates the existing VpnServerConfiguration.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being created or updated.
      * @param vpnServerConfigurationParameters Parameters supplied to create or update VpnServerConfiguration.
@@ -477,7 +477,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
 
     /**
      * Creates a VpnServerConfiguration resource if it doesn't exist else updates the existing VpnServerConfiguration.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being created or updated.
      * @param vpnServerConfigurationParameters Parameters supplied to create or update VpnServerConfiguration.
@@ -497,7 +497,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
 
     /**
      * Creates a VpnServerConfiguration resource if it doesn't exist else updates the existing VpnServerConfiguration.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being created or updated.
      * @param vpnServerConfigurationParameters Parameters supplied to create or update VpnServerConfiguration.
@@ -515,7 +515,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
 
     /**
      * Creates a VpnServerConfiguration resource if it doesn't exist else updates the existing VpnServerConfiguration.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being created or updated.
      * @param vpnServerConfigurationParameters Parameters supplied to create or update VpnServerConfiguration.
@@ -534,7 +534,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
 
     /**
      * Updates VpnServerConfiguration tags.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being updated.
      * @param vpnServerConfigurationParameters Parameters supplied to update VpnServerConfiguration tags.
@@ -568,7 +568,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
         } else {
             vpnServerConfigurationParameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.updateTags(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -579,7 +579,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
 
     /**
      * Updates VpnServerConfiguration tags.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being updated.
      * @param vpnServerConfigurationParameters Parameters supplied to update VpnServerConfiguration tags.
@@ -614,7 +614,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
         } else {
             vpnServerConfigurationParameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.updateTags(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -623,7 +623,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
 
     /**
      * Updates VpnServerConfiguration tags.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being updated.
      * @param vpnServerConfigurationParameters Parameters supplied to update VpnServerConfiguration tags.
@@ -641,7 +641,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
 
     /**
      * Updates VpnServerConfiguration tags.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being updated.
      * @param vpnServerConfigurationParameters Parameters supplied to update VpnServerConfiguration tags.
@@ -660,7 +660,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
 
     /**
      * Updates VpnServerConfiguration tags.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being updated.
      * @param vpnServerConfigurationParameters Parameters supplied to update VpnServerConfiguration tags.
@@ -678,7 +678,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
 
     /**
      * Deletes a VpnServerConfiguration.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -705,7 +705,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
             return Mono.error(
                 new IllegalArgumentException("Parameter vpnServerConfigurationName is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -715,7 +715,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
 
     /**
      * Deletes a VpnServerConfiguration.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being deleted.
      * @param context The context to associate with this operation.
@@ -743,7 +743,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
             return Mono.error(
                 new IllegalArgumentException("Parameter vpnServerConfigurationName is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -752,7 +752,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
 
     /**
      * Deletes a VpnServerConfiguration.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -770,7 +770,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
 
     /**
      * Deletes a VpnServerConfiguration.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being deleted.
      * @param context The context to associate with this operation.
@@ -791,7 +791,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
 
     /**
      * Deletes a VpnServerConfiguration.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -806,7 +806,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
 
     /**
      * Deletes a VpnServerConfiguration.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being deleted.
      * @param context The context to associate with this operation.
@@ -823,7 +823,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
 
     /**
      * Deletes a VpnServerConfiguration.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -839,7 +839,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
 
     /**
      * Deletes a VpnServerConfiguration.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being deleted.
      * @param context The context to associate with this operation.
@@ -856,7 +856,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
 
     /**
      * Deletes a VpnServerConfiguration.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -870,7 +870,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
 
     /**
      * Deletes a VpnServerConfiguration.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being deleted.
      * @param context The context to associate with this operation.
@@ -885,7 +885,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
 
     /**
      * Lists all the vpnServerConfigurations in a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -908,7 +908,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(),
@@ -920,7 +920,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
 
     /**
      * Lists all the vpnServerConfigurations in a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -944,7 +944,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -956,7 +956,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
 
     /**
      * Lists all the vpnServerConfigurations in a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -971,7 +971,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
 
     /**
      * Lists all the vpnServerConfigurations in a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -987,7 +987,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
 
     /**
      * Lists all the vpnServerConfigurations in a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1002,7 +1002,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
 
     /**
      * Lists all the vpnServerConfigurations in a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1018,7 +1018,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
 
     /**
      * Lists all the VpnServerConfigurations in a subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list all VpnServerConfigurations along with {@link PagedResponse} on successful
@@ -1034,7 +1034,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion,
@@ -1046,7 +1046,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
 
     /**
      * Lists all the VpnServerConfigurations in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1064,7 +1064,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, accept, context)
@@ -1074,7 +1074,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
 
     /**
      * Lists all the VpnServerConfigurations in a subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list all VpnServerConfigurations as paginated response with {@link PagedFlux}.
@@ -1086,7 +1086,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
 
     /**
      * Lists all the VpnServerConfigurations in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1101,7 +1101,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
 
     /**
      * Lists all the VpnServerConfigurations in a subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list all VpnServerConfigurations as paginated response with
@@ -1114,7 +1114,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
 
     /**
      * Lists all the VpnServerConfigurations in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1129,7 +1129,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1157,7 +1157,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1185,7 +1185,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1211,7 +1211,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

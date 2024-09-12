@@ -10,12 +10,12 @@ package com.azure.resourcemanager.network.generated;
 public final class BastionHostsListSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/BastionHostListBySubscription
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/BastionHostListBySubscription
      * .json
      */
     /**
      * Sample code: List all Bastion Hosts for a given subscription.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listAllBastionHostsForAGivenSubscription(com.azure.resourcemanager.AzureResourceManager azure) {

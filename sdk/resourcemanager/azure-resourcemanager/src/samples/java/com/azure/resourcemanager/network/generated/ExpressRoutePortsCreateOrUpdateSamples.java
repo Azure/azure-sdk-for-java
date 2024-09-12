@@ -17,12 +17,12 @@ import java.util.Arrays;
 public final class ExpressRoutePortsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/ExpressRoutePortUpdateLink.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/ExpressRoutePortUpdateLink.
      * json
      */
     /**
      * Sample code: ExpressRoutePortUpdateLink.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void expressRoutePortUpdateLink(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -41,11 +41,11 @@ public final class ExpressRoutePortsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/ExpressRoutePortCreate.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/ExpressRoutePortCreate.json
      */
     /**
      * Sample code: ExpressRoutePortCreate.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void expressRoutePortCreate(com.azure.resourcemanager.AzureResourceManager azure) {

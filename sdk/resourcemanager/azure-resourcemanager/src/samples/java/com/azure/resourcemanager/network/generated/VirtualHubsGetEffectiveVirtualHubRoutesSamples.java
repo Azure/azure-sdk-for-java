@@ -11,12 +11,12 @@ import com.azure.resourcemanager.network.models.EffectiveRoutesParameters;
  */
 public final class VirtualHubsGetEffectiveVirtualHubRoutesSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * EffectiveRoutesListForRouteTable.json
      */
     /**
      * Sample code: Effective Routes for a Route Table resource.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void effectiveRoutesForARouteTableResource(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -30,12 +30,12 @@ public final class VirtualHubsGetEffectiveVirtualHubRoutesSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * EffectiveRoutesListForConnection.json
      */
     /**
      * Sample code: Effective Routes for a Connection resource.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void effectiveRoutesForAConnectionResource(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -49,12 +49,12 @@ public final class VirtualHubsGetEffectiveVirtualHubRoutesSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * EffectiveRoutesListForVirtualHub.json
      */
     /**
      * Sample code: Effective Routes for the Virtual Hub.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void effectiveRoutesForTheVirtualHub(com.azure.resourcemanager.AzureResourceManager azure) {

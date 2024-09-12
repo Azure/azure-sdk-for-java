@@ -6,6 +6,7 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -33,14 +34,14 @@ public final class ExpressRouteProviderPortInner extends Resource {
     private String id;
 
     /*
-     * The name of the resource.
-     */
-    private String name;
-
-    /*
      * The type of the resource.
      */
     private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
 
     /**
      * Creates an instance of ExpressRouteProviderPortInner class.
@@ -50,7 +51,7 @@ public final class ExpressRouteProviderPortInner extends Resource {
 
     /**
      * Get the innerProperties property: Properties of the express route Service Provider Port.
-     * 
+     *
      * @return the innerProperties value.
      */
     private ExpressRouteProviderPortProperties innerProperties() {
@@ -59,7 +60,7 @@ public final class ExpressRouteProviderPortInner extends Resource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     * 
+     *
      * @return the etag value.
      */
     public String etag() {
@@ -68,7 +69,7 @@ public final class ExpressRouteProviderPortInner extends Resource {
 
     /**
      * Get the id property: Resource ID.
-     * 
+     *
      * @return the id value.
      */
     public String id() {
@@ -77,7 +78,7 @@ public final class ExpressRouteProviderPortInner extends Resource {
 
     /**
      * Set the id property: Resource ID.
-     * 
+     *
      * @param id the id value to set.
      * @return the ExpressRouteProviderPortInner object itself.
      */
@@ -87,23 +88,23 @@ public final class ExpressRouteProviderPortInner extends Resource {
     }
 
     /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
-    }
-
-    /**
      * Get the type property: The type of the resource.
-     * 
+     *
      * @return the type value.
      */
     @Override
     public String type() {
         return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     *
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -126,7 +127,7 @@ public final class ExpressRouteProviderPortInner extends Resource {
 
     /**
      * Get the portPairDescriptor property: The name of the port pair.
-     * 
+     *
      * @return the portPairDescriptor value.
      */
     public String portPairDescriptor() {
@@ -135,7 +136,7 @@ public final class ExpressRouteProviderPortInner extends Resource {
 
     /**
      * Get the primaryAzurePort property: The name of the primary port.
-     * 
+     *
      * @return the primaryAzurePort value.
      */
     public String primaryAzurePort() {
@@ -144,7 +145,7 @@ public final class ExpressRouteProviderPortInner extends Resource {
 
     /**
      * Get the secondaryAzurePort property: The name of the secondary port.
-     * 
+     *
      * @return the secondaryAzurePort value.
      */
     public String secondaryAzurePort() {
@@ -153,7 +154,7 @@ public final class ExpressRouteProviderPortInner extends Resource {
 
     /**
      * Get the peeringLocation property: The peering location of the port pair.
-     * 
+     *
      * @return the peeringLocation value.
      */
     public String peeringLocation() {
@@ -162,7 +163,7 @@ public final class ExpressRouteProviderPortInner extends Resource {
 
     /**
      * Set the peeringLocation property: The peering location of the port pair.
-     * 
+     *
      * @param peeringLocation the peeringLocation value to set.
      * @return the ExpressRouteProviderPortInner object itself.
      */
@@ -176,7 +177,7 @@ public final class ExpressRouteProviderPortInner extends Resource {
 
     /**
      * Get the overprovisionFactor property: Overprovisioning factor for the port pair.
-     * 
+     *
      * @return the overprovisionFactor value.
      */
     public Integer overprovisionFactor() {
@@ -185,7 +186,7 @@ public final class ExpressRouteProviderPortInner extends Resource {
 
     /**
      * Set the overprovisionFactor property: Overprovisioning factor for the port pair.
-     * 
+     *
      * @param overprovisionFactor the overprovisionFactor value to set.
      * @return the ExpressRouteProviderPortInner object itself.
      */
@@ -199,7 +200,7 @@ public final class ExpressRouteProviderPortInner extends Resource {
 
     /**
      * Get the portBandwidthInMbps property: Bandwidth of the port in Mbps.
-     * 
+     *
      * @return the portBandwidthInMbps value.
      */
     public Integer portBandwidthInMbps() {
@@ -208,7 +209,7 @@ public final class ExpressRouteProviderPortInner extends Resource {
 
     /**
      * Set the portBandwidthInMbps property: Bandwidth of the port in Mbps.
-     * 
+     *
      * @param portBandwidthInMbps the portBandwidthInMbps value to set.
      * @return the ExpressRouteProviderPortInner object itself.
      */
@@ -222,7 +223,7 @@ public final class ExpressRouteProviderPortInner extends Resource {
 
     /**
      * Get the usedBandwidthInMbps property: Used Bandwidth of the port in Mbps.
-     * 
+     *
      * @return the usedBandwidthInMbps value.
      */
     public Integer usedBandwidthInMbps() {
@@ -231,7 +232,7 @@ public final class ExpressRouteProviderPortInner extends Resource {
 
     /**
      * Set the usedBandwidthInMbps property: Used Bandwidth of the port in Mbps.
-     * 
+     *
      * @param usedBandwidthInMbps the usedBandwidthInMbps value to set.
      * @return the ExpressRouteProviderPortInner object itself.
      */
@@ -245,7 +246,7 @@ public final class ExpressRouteProviderPortInner extends Resource {
 
     /**
      * Get the remainingBandwidthInMbps property: Remaining Bandwidth of the port in Mbps.
-     * 
+     *
      * @return the remainingBandwidthInMbps value.
      */
     public Integer remainingBandwidthInMbps() {
@@ -254,7 +255,7 @@ public final class ExpressRouteProviderPortInner extends Resource {
 
     /**
      * Set the remainingBandwidthInMbps property: Remaining Bandwidth of the port in Mbps.
-     * 
+     *
      * @param remainingBandwidthInMbps the remainingBandwidthInMbps value to set.
      * @return the ExpressRouteProviderPortInner object itself.
      */
@@ -268,14 +269,21 @@ public final class ExpressRouteProviderPortInner extends Resource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+        if (location() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property location in model ExpressRouteProviderPortInner"));
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ExpressRouteProviderPortInner.class);
 
     /**
      * {@inheritDoc}
@@ -292,7 +300,7 @@ public final class ExpressRouteProviderPortInner extends Resource {
 
     /**
      * Reads an instance of ExpressRouteProviderPortInner from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of ExpressRouteProviderPortInner if the JsonReader was pointing to an instance of it, or null
      * if it was pointing to JSON null.

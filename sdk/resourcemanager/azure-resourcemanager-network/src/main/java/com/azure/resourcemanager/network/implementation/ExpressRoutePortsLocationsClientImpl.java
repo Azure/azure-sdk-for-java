@@ -46,7 +46,7 @@ public final class ExpressRoutePortsLocationsClientImpl implements ExpressRouteP
 
     /**
      * Initializes an instance of ExpressRoutePortsLocationsClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     ExpressRoutePortsLocationsClientImpl(NetworkManagementClientImpl client) {
@@ -90,7 +90,7 @@ public final class ExpressRoutePortsLocationsClientImpl implements ExpressRouteP
     /**
      * Retrieves all ExpressRoutePort peering locations. Does not return available bandwidths for each location.
      * Available bandwidths can only be obtained when retrieving a specific peering location.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return expressRoutePorts Location List Result along with {@link PagedResponse} on successful completion of
@@ -106,7 +106,7 @@ public final class ExpressRoutePortsLocationsClientImpl implements ExpressRouteP
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion,
@@ -119,7 +119,7 @@ public final class ExpressRoutePortsLocationsClientImpl implements ExpressRouteP
     /**
      * Retrieves all ExpressRoutePort peering locations. Does not return available bandwidths for each location.
      * Available bandwidths can only be obtained when retrieving a specific peering location.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -137,7 +137,7 @@ public final class ExpressRoutePortsLocationsClientImpl implements ExpressRouteP
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, accept, context)
@@ -148,7 +148,7 @@ public final class ExpressRoutePortsLocationsClientImpl implements ExpressRouteP
     /**
      * Retrieves all ExpressRoutePort peering locations. Does not return available bandwidths for each location.
      * Available bandwidths can only be obtained when retrieving a specific peering location.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return expressRoutePorts Location List Result as paginated response with {@link PagedFlux}.
@@ -161,7 +161,7 @@ public final class ExpressRoutePortsLocationsClientImpl implements ExpressRouteP
     /**
      * Retrieves all ExpressRoutePort peering locations. Does not return available bandwidths for each location.
      * Available bandwidths can only be obtained when retrieving a specific peering location.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -177,7 +177,7 @@ public final class ExpressRoutePortsLocationsClientImpl implements ExpressRouteP
     /**
      * Retrieves all ExpressRoutePort peering locations. Does not return available bandwidths for each location.
      * Available bandwidths can only be obtained when retrieving a specific peering location.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return expressRoutePorts Location List Result as paginated response with {@link PagedIterable}.
@@ -190,7 +190,7 @@ public final class ExpressRoutePortsLocationsClientImpl implements ExpressRouteP
     /**
      * Retrieves all ExpressRoutePort peering locations. Does not return available bandwidths for each location.
      * Available bandwidths can only be obtained when retrieving a specific peering location.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -205,7 +205,7 @@ public final class ExpressRoutePortsLocationsClientImpl implements ExpressRouteP
     /**
      * Retrieves a single ExpressRoutePort peering location, including the list of available bandwidths available at
      * said peering location.
-     * 
+     *
      * @param locationName Name of the requested ExpressRoutePort peering location.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -225,7 +225,7 @@ public final class ExpressRoutePortsLocationsClientImpl implements ExpressRouteP
         if (locationName == null) {
             return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion,
@@ -236,7 +236,7 @@ public final class ExpressRoutePortsLocationsClientImpl implements ExpressRouteP
     /**
      * Retrieves a single ExpressRoutePort peering location, including the list of available bandwidths available at
      * said peering location.
-     * 
+     *
      * @param locationName Name of the requested ExpressRoutePort peering location.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -257,7 +257,7 @@ public final class ExpressRoutePortsLocationsClientImpl implements ExpressRouteP
         if (locationName == null) {
             return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, locationName, accept,
@@ -267,7 +267,7 @@ public final class ExpressRoutePortsLocationsClientImpl implements ExpressRouteP
     /**
      * Retrieves a single ExpressRoutePort peering location, including the list of available bandwidths available at
      * said peering location.
-     * 
+     *
      * @param locationName Name of the requested ExpressRoutePort peering location.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -282,7 +282,7 @@ public final class ExpressRoutePortsLocationsClientImpl implements ExpressRouteP
     /**
      * Retrieves a single ExpressRoutePort peering location, including the list of available bandwidths available at
      * said peering location.
-     * 
+     *
      * @param locationName Name of the requested ExpressRoutePort peering location.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -298,7 +298,7 @@ public final class ExpressRoutePortsLocationsClientImpl implements ExpressRouteP
     /**
      * Retrieves a single ExpressRoutePort peering location, including the list of available bandwidths available at
      * said peering location.
-     * 
+     *
      * @param locationName Name of the requested ExpressRoutePort peering location.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -312,7 +312,7 @@ public final class ExpressRoutePortsLocationsClientImpl implements ExpressRouteP
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -338,7 +338,7 @@ public final class ExpressRoutePortsLocationsClientImpl implements ExpressRouteP
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

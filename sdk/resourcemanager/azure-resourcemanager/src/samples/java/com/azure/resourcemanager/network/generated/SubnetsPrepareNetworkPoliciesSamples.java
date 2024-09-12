@@ -12,12 +12,12 @@ import com.azure.resourcemanager.network.models.PrepareNetworkPoliciesRequest;
 public final class SubnetsPrepareNetworkPoliciesSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/SubnetPrepareNetworkPolicies.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/SubnetPrepareNetworkPolicies.
      * json
      */
     /**
      * Sample code: Prepare Network Policies.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void prepareNetworkPolicies(com.azure.resourcemanager.AzureResourceManager azure) {

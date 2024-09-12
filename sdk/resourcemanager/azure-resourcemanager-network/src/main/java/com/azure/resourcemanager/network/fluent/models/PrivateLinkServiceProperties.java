@@ -31,6 +31,11 @@ public final class PrivateLinkServiceProperties implements JsonSerializable<Priv
     private List<PrivateLinkServiceIpConfigurationInner> ipConfigurations;
 
     /*
+     * The destination IP address of the private link service.
+     */
+    private String destinationIpAddress;
+
+    /*
      * An array of references to the network interfaces created for this private link service.
      */
     private List<NetworkInterfaceInner> networkInterfaces;
@@ -79,7 +84,7 @@ public final class PrivateLinkServiceProperties implements JsonSerializable<Priv
     /**
      * Get the loadBalancerFrontendIpConfigurations property: An array of references to the load balancer IP
      * configurations.
-     * 
+     *
      * @return the loadBalancerFrontendIpConfigurations value.
      */
     public List<FrontendIpConfigurationInner> loadBalancerFrontendIpConfigurations() {
@@ -89,7 +94,7 @@ public final class PrivateLinkServiceProperties implements JsonSerializable<Priv
     /**
      * Set the loadBalancerFrontendIpConfigurations property: An array of references to the load balancer IP
      * configurations.
-     * 
+     *
      * @param loadBalancerFrontendIpConfigurations the loadBalancerFrontendIpConfigurations value to set.
      * @return the PrivateLinkServiceProperties object itself.
      */
@@ -101,7 +106,7 @@ public final class PrivateLinkServiceProperties implements JsonSerializable<Priv
 
     /**
      * Get the ipConfigurations property: An array of private link service IP configurations.
-     * 
+     *
      * @return the ipConfigurations value.
      */
     public List<PrivateLinkServiceIpConfigurationInner> ipConfigurations() {
@@ -110,7 +115,7 @@ public final class PrivateLinkServiceProperties implements JsonSerializable<Priv
 
     /**
      * Set the ipConfigurations property: An array of private link service IP configurations.
-     * 
+     *
      * @param ipConfigurations the ipConfigurations value to set.
      * @return the PrivateLinkServiceProperties object itself.
      */
@@ -121,9 +126,29 @@ public final class PrivateLinkServiceProperties implements JsonSerializable<Priv
     }
 
     /**
+     * Get the destinationIpAddress property: The destination IP address of the private link service.
+     *
+     * @return the destinationIpAddress value.
+     */
+    public String destinationIpAddress() {
+        return this.destinationIpAddress;
+    }
+
+    /**
+     * Set the destinationIpAddress property: The destination IP address of the private link service.
+     *
+     * @param destinationIpAddress the destinationIpAddress value to set.
+     * @return the PrivateLinkServiceProperties object itself.
+     */
+    public PrivateLinkServiceProperties withDestinationIpAddress(String destinationIpAddress) {
+        this.destinationIpAddress = destinationIpAddress;
+        return this;
+    }
+
+    /**
      * Get the networkInterfaces property: An array of references to the network interfaces created for this private
      * link service.
-     * 
+     *
      * @return the networkInterfaces value.
      */
     public List<NetworkInterfaceInner> networkInterfaces() {
@@ -132,7 +157,7 @@ public final class PrivateLinkServiceProperties implements JsonSerializable<Priv
 
     /**
      * Get the provisioningState property: The provisioning state of the private link service resource.
-     * 
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -141,7 +166,7 @@ public final class PrivateLinkServiceProperties implements JsonSerializable<Priv
 
     /**
      * Get the privateEndpointConnections property: An array of list about connections to the private endpoint.
-     * 
+     *
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
@@ -150,7 +175,7 @@ public final class PrivateLinkServiceProperties implements JsonSerializable<Priv
 
     /**
      * Get the visibility property: The visibility list of the private link service.
-     * 
+     *
      * @return the visibility value.
      */
     public PrivateLinkServicePropertiesVisibility visibility() {
@@ -159,7 +184,7 @@ public final class PrivateLinkServiceProperties implements JsonSerializable<Priv
 
     /**
      * Set the visibility property: The visibility list of the private link service.
-     * 
+     *
      * @param visibility the visibility value to set.
      * @return the PrivateLinkServiceProperties object itself.
      */
@@ -170,7 +195,7 @@ public final class PrivateLinkServiceProperties implements JsonSerializable<Priv
 
     /**
      * Get the autoApproval property: The auto-approval list of the private link service.
-     * 
+     *
      * @return the autoApproval value.
      */
     public PrivateLinkServicePropertiesAutoApproval autoApproval() {
@@ -179,7 +204,7 @@ public final class PrivateLinkServiceProperties implements JsonSerializable<Priv
 
     /**
      * Set the autoApproval property: The auto-approval list of the private link service.
-     * 
+     *
      * @param autoApproval the autoApproval value to set.
      * @return the PrivateLinkServiceProperties object itself.
      */
@@ -190,7 +215,7 @@ public final class PrivateLinkServiceProperties implements JsonSerializable<Priv
 
     /**
      * Get the fqdns property: The list of Fqdn.
-     * 
+     *
      * @return the fqdns value.
      */
     public List<String> fqdns() {
@@ -199,7 +224,7 @@ public final class PrivateLinkServiceProperties implements JsonSerializable<Priv
 
     /**
      * Set the fqdns property: The list of Fqdn.
-     * 
+     *
      * @param fqdns the fqdns value to set.
      * @return the PrivateLinkServiceProperties object itself.
      */
@@ -210,7 +235,7 @@ public final class PrivateLinkServiceProperties implements JsonSerializable<Priv
 
     /**
      * Get the alias property: The alias of the private link service.
-     * 
+     *
      * @return the alias value.
      */
     public String alias() {
@@ -219,7 +244,7 @@ public final class PrivateLinkServiceProperties implements JsonSerializable<Priv
 
     /**
      * Get the enableProxyProtocol property: Whether the private link service is enabled for proxy protocol or not.
-     * 
+     *
      * @return the enableProxyProtocol value.
      */
     public Boolean enableProxyProtocol() {
@@ -228,7 +253,7 @@ public final class PrivateLinkServiceProperties implements JsonSerializable<Priv
 
     /**
      * Set the enableProxyProtocol property: Whether the private link service is enabled for proxy protocol or not.
-     * 
+     *
      * @param enableProxyProtocol the enableProxyProtocol value to set.
      * @return the PrivateLinkServiceProperties object itself.
      */
@@ -239,7 +264,7 @@ public final class PrivateLinkServiceProperties implements JsonSerializable<Priv
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -273,6 +298,7 @@ public final class PrivateLinkServiceProperties implements JsonSerializable<Priv
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("ipConfigurations", this.ipConfigurations,
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("destinationIPAddress", this.destinationIpAddress);
         jsonWriter.writeJsonField("visibility", this.visibility);
         jsonWriter.writeJsonField("autoApproval", this.autoApproval);
         jsonWriter.writeArrayField("fqdns", this.fqdns, (writer, element) -> writer.writeString(element));
@@ -282,7 +308,7 @@ public final class PrivateLinkServiceProperties implements JsonSerializable<Priv
 
     /**
      * Reads an instance of PrivateLinkServiceProperties from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of PrivateLinkServiceProperties if the JsonReader was pointing to an instance of it, or null
      * if it was pointing to JSON null.
@@ -304,6 +330,8 @@ public final class PrivateLinkServiceProperties implements JsonSerializable<Priv
                     List<PrivateLinkServiceIpConfigurationInner> ipConfigurations
                         = reader.readArray(reader1 -> PrivateLinkServiceIpConfigurationInner.fromJson(reader1));
                     deserializedPrivateLinkServiceProperties.ipConfigurations = ipConfigurations;
+                } else if ("destinationIPAddress".equals(fieldName)) {
+                    deserializedPrivateLinkServiceProperties.destinationIpAddress = reader.getString();
                 } else if ("networkInterfaces".equals(fieldName)) {
                     List<NetworkInterfaceInner> networkInterfaces
                         = reader.readArray(reader1 -> NetworkInterfaceInner.fromJson(reader1));

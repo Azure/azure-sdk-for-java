@@ -7,6 +7,7 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -44,14 +45,14 @@ public final class ExpressRouteCircuitInner extends Resource {
     private String id;
 
     /*
-     * The name of the resource.
-     */
-    private String name;
-
-    /*
      * The type of the resource.
      */
     private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
 
     /**
      * Creates an instance of ExpressRouteCircuitInner class.
@@ -61,7 +62,7 @@ public final class ExpressRouteCircuitInner extends Resource {
 
     /**
      * Get the sku property: The SKU.
-     * 
+     *
      * @return the sku value.
      */
     public ExpressRouteCircuitSku sku() {
@@ -70,7 +71,7 @@ public final class ExpressRouteCircuitInner extends Resource {
 
     /**
      * Set the sku property: The SKU.
-     * 
+     *
      * @param sku the sku value to set.
      * @return the ExpressRouteCircuitInner object itself.
      */
@@ -81,7 +82,7 @@ public final class ExpressRouteCircuitInner extends Resource {
 
     /**
      * Get the innerProperties property: Properties of the express route circuit.
-     * 
+     *
      * @return the innerProperties value.
      */
     private ExpressRouteCircuitPropertiesFormat innerProperties() {
@@ -90,7 +91,7 @@ public final class ExpressRouteCircuitInner extends Resource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     * 
+     *
      * @return the etag value.
      */
     public String etag() {
@@ -99,7 +100,7 @@ public final class ExpressRouteCircuitInner extends Resource {
 
     /**
      * Get the id property: Resource ID.
-     * 
+     *
      * @return the id value.
      */
     public String id() {
@@ -108,7 +109,7 @@ public final class ExpressRouteCircuitInner extends Resource {
 
     /**
      * Set the id property: Resource ID.
-     * 
+     *
      * @param id the id value to set.
      * @return the ExpressRouteCircuitInner object itself.
      */
@@ -118,23 +119,23 @@ public final class ExpressRouteCircuitInner extends Resource {
     }
 
     /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
-    }
-
-    /**
      * Get the type property: The type of the resource.
-     * 
+     *
      * @return the type value.
      */
     @Override
     public String type() {
         return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     *
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -157,7 +158,7 @@ public final class ExpressRouteCircuitInner extends Resource {
 
     /**
      * Get the allowClassicOperations property: Allow classic operations.
-     * 
+     *
      * @return the allowClassicOperations value.
      */
     public Boolean allowClassicOperations() {
@@ -166,7 +167,7 @@ public final class ExpressRouteCircuitInner extends Resource {
 
     /**
      * Set the allowClassicOperations property: Allow classic operations.
-     * 
+     *
      * @param allowClassicOperations the allowClassicOperations value to set.
      * @return the ExpressRouteCircuitInner object itself.
      */
@@ -180,7 +181,7 @@ public final class ExpressRouteCircuitInner extends Resource {
 
     /**
      * Get the circuitProvisioningState property: The CircuitProvisioningState state of the resource.
-     * 
+     *
      * @return the circuitProvisioningState value.
      */
     public String circuitProvisioningState() {
@@ -189,7 +190,7 @@ public final class ExpressRouteCircuitInner extends Resource {
 
     /**
      * Set the circuitProvisioningState property: The CircuitProvisioningState state of the resource.
-     * 
+     *
      * @param circuitProvisioningState the circuitProvisioningState value to set.
      * @return the ExpressRouteCircuitInner object itself.
      */
@@ -203,7 +204,7 @@ public final class ExpressRouteCircuitInner extends Resource {
 
     /**
      * Get the serviceProviderProvisioningState property: The ServiceProviderProvisioningState state of the resource.
-     * 
+     *
      * @return the serviceProviderProvisioningState value.
      */
     public ServiceProviderProvisioningState serviceProviderProvisioningState() {
@@ -212,7 +213,7 @@ public final class ExpressRouteCircuitInner extends Resource {
 
     /**
      * Set the serviceProviderProvisioningState property: The ServiceProviderProvisioningState state of the resource.
-     * 
+     *
      * @param serviceProviderProvisioningState the serviceProviderProvisioningState value to set.
      * @return the ExpressRouteCircuitInner object itself.
      */
@@ -227,7 +228,7 @@ public final class ExpressRouteCircuitInner extends Resource {
 
     /**
      * Get the authorizations property: The list of authorizations.
-     * 
+     *
      * @return the authorizations value.
      */
     public List<ExpressRouteCircuitAuthorizationInner> authorizations() {
@@ -236,7 +237,7 @@ public final class ExpressRouteCircuitInner extends Resource {
 
     /**
      * Set the authorizations property: The list of authorizations.
-     * 
+     *
      * @param authorizations the authorizations value to set.
      * @return the ExpressRouteCircuitInner object itself.
      */
@@ -250,7 +251,7 @@ public final class ExpressRouteCircuitInner extends Resource {
 
     /**
      * Get the peerings property: The list of peerings.
-     * 
+     *
      * @return the peerings value.
      */
     public List<ExpressRouteCircuitPeeringInner> peerings() {
@@ -259,7 +260,7 @@ public final class ExpressRouteCircuitInner extends Resource {
 
     /**
      * Set the peerings property: The list of peerings.
-     * 
+     *
      * @param peerings the peerings value to set.
      * @return the ExpressRouteCircuitInner object itself.
      */
@@ -273,7 +274,7 @@ public final class ExpressRouteCircuitInner extends Resource {
 
     /**
      * Get the serviceKey property: The ServiceKey.
-     * 
+     *
      * @return the serviceKey value.
      */
     public String serviceKey() {
@@ -282,7 +283,7 @@ public final class ExpressRouteCircuitInner extends Resource {
 
     /**
      * Set the serviceKey property: The ServiceKey.
-     * 
+     *
      * @param serviceKey the serviceKey value to set.
      * @return the ExpressRouteCircuitInner object itself.
      */
@@ -296,7 +297,7 @@ public final class ExpressRouteCircuitInner extends Resource {
 
     /**
      * Get the serviceProviderNotes property: The ServiceProviderNotes.
-     * 
+     *
      * @return the serviceProviderNotes value.
      */
     public String serviceProviderNotes() {
@@ -305,7 +306,7 @@ public final class ExpressRouteCircuitInner extends Resource {
 
     /**
      * Set the serviceProviderNotes property: The ServiceProviderNotes.
-     * 
+     *
      * @param serviceProviderNotes the serviceProviderNotes value to set.
      * @return the ExpressRouteCircuitInner object itself.
      */
@@ -319,7 +320,7 @@ public final class ExpressRouteCircuitInner extends Resource {
 
     /**
      * Get the serviceProviderProperties property: The ServiceProviderProperties.
-     * 
+     *
      * @return the serviceProviderProperties value.
      */
     public ExpressRouteCircuitServiceProviderProperties serviceProviderProperties() {
@@ -328,7 +329,7 @@ public final class ExpressRouteCircuitInner extends Resource {
 
     /**
      * Set the serviceProviderProperties property: The ServiceProviderProperties.
-     * 
+     *
      * @param serviceProviderProperties the serviceProviderProperties value to set.
      * @return the ExpressRouteCircuitInner object itself.
      */
@@ -344,7 +345,7 @@ public final class ExpressRouteCircuitInner extends Resource {
     /**
      * Get the expressRoutePort property: The reference to the ExpressRoutePort resource when the circuit is provisioned
      * on an ExpressRoutePort resource.
-     * 
+     *
      * @return the expressRoutePort value.
      */
     public SubResource expressRoutePort() {
@@ -354,7 +355,7 @@ public final class ExpressRouteCircuitInner extends Resource {
     /**
      * Set the expressRoutePort property: The reference to the ExpressRoutePort resource when the circuit is provisioned
      * on an ExpressRoutePort resource.
-     * 
+     *
      * @param expressRoutePort the expressRoutePort value to set.
      * @return the ExpressRouteCircuitInner object itself.
      */
@@ -369,7 +370,7 @@ public final class ExpressRouteCircuitInner extends Resource {
     /**
      * Get the bandwidthInGbps property: The bandwidth of the circuit when the circuit is provisioned on an
      * ExpressRoutePort resource.
-     * 
+     *
      * @return the bandwidthInGbps value.
      */
     public Float bandwidthInGbps() {
@@ -379,7 +380,7 @@ public final class ExpressRouteCircuitInner extends Resource {
     /**
      * Set the bandwidthInGbps property: The bandwidth of the circuit when the circuit is provisioned on an
      * ExpressRoutePort resource.
-     * 
+     *
      * @param bandwidthInGbps the bandwidthInGbps value to set.
      * @return the ExpressRouteCircuitInner object itself.
      */
@@ -393,7 +394,7 @@ public final class ExpressRouteCircuitInner extends Resource {
 
     /**
      * Get the stag property: The identifier of the circuit traffic. Outer tag for QinQ encapsulation.
-     * 
+     *
      * @return the stag value.
      */
     public Integer stag() {
@@ -402,7 +403,7 @@ public final class ExpressRouteCircuitInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the express route circuit resource.
-     * 
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -411,7 +412,7 @@ public final class ExpressRouteCircuitInner extends Resource {
 
     /**
      * Get the gatewayManagerEtag property: The GatewayManager Etag.
-     * 
+     *
      * @return the gatewayManagerEtag value.
      */
     public String gatewayManagerEtag() {
@@ -420,7 +421,7 @@ public final class ExpressRouteCircuitInner extends Resource {
 
     /**
      * Set the gatewayManagerEtag property: The GatewayManager Etag.
-     * 
+     *
      * @param gatewayManagerEtag the gatewayManagerEtag value to set.
      * @return the ExpressRouteCircuitInner object itself.
      */
@@ -434,7 +435,7 @@ public final class ExpressRouteCircuitInner extends Resource {
 
     /**
      * Get the globalReachEnabled property: Flag denoting global reach status.
-     * 
+     *
      * @return the globalReachEnabled value.
      */
     public Boolean globalReachEnabled() {
@@ -443,7 +444,7 @@ public final class ExpressRouteCircuitInner extends Resource {
 
     /**
      * Set the globalReachEnabled property: Flag denoting global reach status.
-     * 
+     *
      * @param globalReachEnabled the globalReachEnabled value to set.
      * @return the ExpressRouteCircuitInner object itself.
      */
@@ -457,7 +458,7 @@ public final class ExpressRouteCircuitInner extends Resource {
 
     /**
      * Get the authorizationKey property: The authorizationKey.
-     * 
+     *
      * @return the authorizationKey value.
      */
     public String authorizationKey() {
@@ -466,7 +467,7 @@ public final class ExpressRouteCircuitInner extends Resource {
 
     /**
      * Set the authorizationKey property: The authorizationKey.
-     * 
+     *
      * @param authorizationKey the authorizationKey value to set.
      * @return the ExpressRouteCircuitInner object itself.
      */
@@ -480,7 +481,7 @@ public final class ExpressRouteCircuitInner extends Resource {
 
     /**
      * Get the authorizationStatus property: The authorization status of the Circuit.
-     * 
+     *
      * @return the authorizationStatus value.
      */
     public String authorizationStatus() {
@@ -490,7 +491,7 @@ public final class ExpressRouteCircuitInner extends Resource {
     /**
      * Get the enableDirectPortRateLimit property: Flag denoting rate-limiting status of the ExpressRoute direct-port
      * circuit.
-     * 
+     *
      * @return the enableDirectPortRateLimit value.
      */
     public Boolean enableDirectPortRateLimit() {
@@ -500,7 +501,7 @@ public final class ExpressRouteCircuitInner extends Resource {
     /**
      * Set the enableDirectPortRateLimit property: Flag denoting rate-limiting status of the ExpressRoute direct-port
      * circuit.
-     * 
+     *
      * @param enableDirectPortRateLimit the enableDirectPortRateLimit value to set.
      * @return the ExpressRouteCircuitInner object itself.
      */
@@ -514,7 +515,7 @@ public final class ExpressRouteCircuitInner extends Resource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -524,7 +525,14 @@ public final class ExpressRouteCircuitInner extends Resource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+        if (location() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property location in model ExpressRouteCircuitInner"));
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ExpressRouteCircuitInner.class);
 
     /**
      * {@inheritDoc}
@@ -542,7 +550,7 @@ public final class ExpressRouteCircuitInner extends Resource {
 
     /**
      * Reads an instance of ExpressRouteCircuitInner from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of ExpressRouteCircuitInner if the JsonReader was pointing to an instance of it, or null if
      * it was pointing to JSON null.

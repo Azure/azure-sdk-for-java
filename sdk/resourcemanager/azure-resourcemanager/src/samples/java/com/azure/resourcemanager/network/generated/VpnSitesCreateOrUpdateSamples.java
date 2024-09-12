@@ -22,11 +22,11 @@ import java.util.Map;
 public final class VpnSitesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/VpnSitePut.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/VpnSitePut.json
      */
     /**
      * Sample code: VpnSiteCreate.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void vpnSiteCreate(com.azure.resourcemanager.AzureResourceManager azure) {

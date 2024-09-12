@@ -16,11 +16,11 @@ import java.util.Arrays;
 public final class InboundSecurityRuleOperationCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/InboundSecurityRulePut.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/InboundSecurityRulePut.json
      */
     /**
      * Sample code: Create Network Virtual Appliance Inbound Security Rules.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void

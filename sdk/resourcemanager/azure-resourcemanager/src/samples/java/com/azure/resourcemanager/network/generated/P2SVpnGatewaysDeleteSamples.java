@@ -10,11 +10,11 @@ package com.azure.resourcemanager.network.generated;
 public final class P2SVpnGatewaysDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/P2SVpnGatewayDelete.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/P2SVpnGatewayDelete.json
      */
     /**
      * Sample code: P2SVpnGatewayDelete.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void p2SVpnGatewayDelete(com.azure.resourcemanager.AzureResourceManager azure) {

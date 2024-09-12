@@ -9,12 +9,12 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ExpressRouteCircuitPeeringsDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * ExpressRouteCircuitPeeringDelete.json
      */
     /**
      * Sample code: Delete ExpressRouteCircuit Peerings.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void deleteExpressRouteCircuitPeerings(com.azure.resourcemanager.AzureResourceManager azure) {

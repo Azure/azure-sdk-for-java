@@ -46,7 +46,7 @@ public final class LoadBalancerOutboundRulesClientImpl implements LoadBalancerOu
 
     /**
      * Initializes an instance of LoadBalancerOutboundRulesClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     LoadBalancerOutboundRulesClientImpl(NetworkManagementClientImpl client) {
@@ -92,7 +92,7 @@ public final class LoadBalancerOutboundRulesClientImpl implements LoadBalancerOu
 
     /**
      * Gets all the outbound rules in a load balancer.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -120,7 +120,7 @@ public final class LoadBalancerOutboundRulesClientImpl implements LoadBalancerOu
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), resourceGroupName, loadBalancerName,
@@ -132,7 +132,7 @@ public final class LoadBalancerOutboundRulesClientImpl implements LoadBalancerOu
 
     /**
      * Gets all the outbound rules in a load balancer.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param context The context to associate with this operation.
@@ -161,7 +161,7 @@ public final class LoadBalancerOutboundRulesClientImpl implements LoadBalancerOu
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -173,7 +173,7 @@ public final class LoadBalancerOutboundRulesClientImpl implements LoadBalancerOu
 
     /**
      * Gets all the outbound rules in a load balancer.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -189,7 +189,7 @@ public final class LoadBalancerOutboundRulesClientImpl implements LoadBalancerOu
 
     /**
      * Gets all the outbound rules in a load balancer.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param context The context to associate with this operation.
@@ -206,7 +206,7 @@ public final class LoadBalancerOutboundRulesClientImpl implements LoadBalancerOu
 
     /**
      * Gets all the outbound rules in a load balancer.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -221,7 +221,7 @@ public final class LoadBalancerOutboundRulesClientImpl implements LoadBalancerOu
 
     /**
      * Gets all the outbound rules in a load balancer.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param context The context to associate with this operation.
@@ -237,7 +237,7 @@ public final class LoadBalancerOutboundRulesClientImpl implements LoadBalancerOu
 
     /**
      * Gets the specified load balancer outbound rule.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param outboundRuleName The name of the outbound rule.
@@ -270,7 +270,7 @@ public final class LoadBalancerOutboundRulesClientImpl implements LoadBalancerOu
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, loadBalancerName,
@@ -280,7 +280,7 @@ public final class LoadBalancerOutboundRulesClientImpl implements LoadBalancerOu
 
     /**
      * Gets the specified load balancer outbound rule.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param outboundRuleName The name of the outbound rule.
@@ -314,7 +314,7 @@ public final class LoadBalancerOutboundRulesClientImpl implements LoadBalancerOu
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), resourceGroupName, loadBalancerName, outboundRuleName, apiVersion,
@@ -323,7 +323,7 @@ public final class LoadBalancerOutboundRulesClientImpl implements LoadBalancerOu
 
     /**
      * Gets the specified load balancer outbound rule.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param outboundRuleName The name of the outbound rule.
@@ -341,7 +341,7 @@ public final class LoadBalancerOutboundRulesClientImpl implements LoadBalancerOu
 
     /**
      * Gets the specified load balancer outbound rule.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param outboundRuleName The name of the outbound rule.
@@ -359,7 +359,7 @@ public final class LoadBalancerOutboundRulesClientImpl implements LoadBalancerOu
 
     /**
      * Gets the specified load balancer outbound rule.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param outboundRuleName The name of the outbound rule.
@@ -375,7 +375,7 @@ public final class LoadBalancerOutboundRulesClientImpl implements LoadBalancerOu
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -401,7 +401,7 @@ public final class LoadBalancerOutboundRulesClientImpl implements LoadBalancerOu
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

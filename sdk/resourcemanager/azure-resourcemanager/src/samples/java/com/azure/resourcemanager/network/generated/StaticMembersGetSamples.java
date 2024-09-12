@@ -10,12 +10,12 @@ package com.azure.resourcemanager.network.generated;
 public final class StaticMembersGetSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/NetworkManagerStaticMemberGet
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/NetworkManagerStaticMemberGet
      * .json
      */
     /**
      * Sample code: StaticMembersGet.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void staticMembersGet(com.azure.resourcemanager.AzureResourceManager azure) {

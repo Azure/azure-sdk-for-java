@@ -7,6 +7,7 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -33,14 +34,14 @@ public final class ApplicationGatewayAvailableSslOptionsInner extends Resource {
     private String id;
 
     /*
-     * The name of the resource.
-     */
-    private String name;
-
-    /*
      * The type of the resource.
      */
     private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
 
     /**
      * Creates an instance of ApplicationGatewayAvailableSslOptionsInner class.
@@ -50,7 +51,7 @@ public final class ApplicationGatewayAvailableSslOptionsInner extends Resource {
 
     /**
      * Get the innerProperties property: Properties of the application gateway available SSL options.
-     * 
+     *
      * @return the innerProperties value.
      */
     private ApplicationGatewayAvailableSslOptionsPropertiesFormat innerProperties() {
@@ -59,7 +60,7 @@ public final class ApplicationGatewayAvailableSslOptionsInner extends Resource {
 
     /**
      * Get the id property: Resource ID.
-     * 
+     *
      * @return the id value.
      */
     public String id() {
@@ -68,7 +69,7 @@ public final class ApplicationGatewayAvailableSslOptionsInner extends Resource {
 
     /**
      * Set the id property: Resource ID.
-     * 
+     *
      * @param id the id value to set.
      * @return the ApplicationGatewayAvailableSslOptionsInner object itself.
      */
@@ -78,23 +79,23 @@ public final class ApplicationGatewayAvailableSslOptionsInner extends Resource {
     }
 
     /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
-    }
-
-    /**
      * Get the type property: The type of the resource.
-     * 
+     *
      * @return the type value.
      */
     @Override
     public String type() {
         return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     *
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -117,7 +118,7 @@ public final class ApplicationGatewayAvailableSslOptionsInner extends Resource {
 
     /**
      * Get the predefinedPolicies property: List of available Ssl predefined policy.
-     * 
+     *
      * @return the predefinedPolicies value.
      */
     public List<SubResource> predefinedPolicies() {
@@ -126,7 +127,7 @@ public final class ApplicationGatewayAvailableSslOptionsInner extends Resource {
 
     /**
      * Set the predefinedPolicies property: List of available Ssl predefined policy.
-     * 
+     *
      * @param predefinedPolicies the predefinedPolicies value to set.
      * @return the ApplicationGatewayAvailableSslOptionsInner object itself.
      */
@@ -140,7 +141,7 @@ public final class ApplicationGatewayAvailableSslOptionsInner extends Resource {
 
     /**
      * Get the defaultPolicy property: Name of the Ssl predefined policy applied by default to application gateway.
-     * 
+     *
      * @return the defaultPolicy value.
      */
     public ApplicationGatewaySslPolicyName defaultPolicy() {
@@ -149,7 +150,7 @@ public final class ApplicationGatewayAvailableSslOptionsInner extends Resource {
 
     /**
      * Set the defaultPolicy property: Name of the Ssl predefined policy applied by default to application gateway.
-     * 
+     *
      * @param defaultPolicy the defaultPolicy value to set.
      * @return the ApplicationGatewayAvailableSslOptionsInner object itself.
      */
@@ -163,7 +164,7 @@ public final class ApplicationGatewayAvailableSslOptionsInner extends Resource {
 
     /**
      * Get the availableCipherSuites property: List of available Ssl cipher suites.
-     * 
+     *
      * @return the availableCipherSuites value.
      */
     public List<ApplicationGatewaySslCipherSuite> availableCipherSuites() {
@@ -172,7 +173,7 @@ public final class ApplicationGatewayAvailableSslOptionsInner extends Resource {
 
     /**
      * Set the availableCipherSuites property: List of available Ssl cipher suites.
-     * 
+     *
      * @param availableCipherSuites the availableCipherSuites value to set.
      * @return the ApplicationGatewayAvailableSslOptionsInner object itself.
      */
@@ -187,7 +188,7 @@ public final class ApplicationGatewayAvailableSslOptionsInner extends Resource {
 
     /**
      * Get the availableProtocols property: List of available Ssl protocols.
-     * 
+     *
      * @return the availableProtocols value.
      */
     public List<ApplicationGatewaySslProtocol> availableProtocols() {
@@ -196,7 +197,7 @@ public final class ApplicationGatewayAvailableSslOptionsInner extends Resource {
 
     /**
      * Set the availableProtocols property: List of available Ssl protocols.
-     * 
+     *
      * @param availableProtocols the availableProtocols value to set.
      * @return the ApplicationGatewayAvailableSslOptionsInner object itself.
      */
@@ -211,14 +212,21 @@ public final class ApplicationGatewayAvailableSslOptionsInner extends Resource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+        if (location() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property location in model ApplicationGatewayAvailableSslOptionsInner"));
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ApplicationGatewayAvailableSslOptionsInner.class);
 
     /**
      * {@inheritDoc}
@@ -235,7 +243,7 @@ public final class ApplicationGatewayAvailableSslOptionsInner extends Resource {
 
     /**
      * Reads an instance of ApplicationGatewayAvailableSslOptionsInner from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of ApplicationGatewayAvailableSslOptionsInner if the JsonReader was pointing to an instance
      * of it, or null if it was pointing to JSON null.

@@ -13,12 +13,12 @@ import java.util.Map;
  */
 public final class ConnectionMonitorsUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * NetworkWatcherConnectionMonitorUpdateTags.json
      */
     /**
      * Sample code: Update connection monitor tags.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateConnectionMonitorTags(com.azure.resourcemanager.AzureResourceManager azure) {

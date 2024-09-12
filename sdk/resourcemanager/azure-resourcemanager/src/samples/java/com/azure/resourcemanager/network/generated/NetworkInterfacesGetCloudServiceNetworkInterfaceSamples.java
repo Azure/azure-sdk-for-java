@@ -9,12 +9,12 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class NetworkInterfacesGetCloudServiceNetworkInterfaceSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * CloudServiceNetworkInterfaceGet.json
      */
     /**
      * Sample code: Get cloud service network interface.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getCloudServiceNetworkInterface(com.azure.resourcemanager.AzureResourceManager azure) {

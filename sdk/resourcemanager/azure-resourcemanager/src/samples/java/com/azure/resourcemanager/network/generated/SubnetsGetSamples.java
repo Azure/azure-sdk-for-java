@@ -10,12 +10,12 @@ package com.azure.resourcemanager.network.generated;
 public final class SubnetsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/SubnetGetWithSharingScope.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/SubnetGetWithSharingScope.
      * json
      */
     /**
      * Sample code: Get subnet with sharing scope.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getSubnetWithSharingScope(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -28,11 +28,11 @@ public final class SubnetsGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/SubnetGet.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/SubnetGet.json
      */
     /**
      * Sample code: Get subnet.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getSubnet(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -45,11 +45,11 @@ public final class SubnetsGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/SubnetGetWithDelegation.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/SubnetGetWithDelegation.json
      */
     /**
      * Sample code: Get subnet with a delegation.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getSubnetWithADelegation(com.azure.resourcemanager.AzureResourceManager azure) {

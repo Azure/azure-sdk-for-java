@@ -55,7 +55,7 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
 
     /**
      * Initializes an instance of PrivateDnsZoneGroupsClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     PrivateDnsZoneGroupsClientImpl(NetworkManagementClientImpl client) {
@@ -125,7 +125,7 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
 
     /**
      * Deletes the specified private dns zone group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param privateDnsZoneGroupName The name of the private dns zone group.
@@ -157,7 +157,7 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, privateEndpointName,
@@ -167,7 +167,7 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
 
     /**
      * Deletes the specified private dns zone group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param privateDnsZoneGroupName The name of the private dns zone group.
@@ -200,7 +200,7 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, privateEndpointName,
@@ -209,7 +209,7 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
 
     /**
      * Deletes the specified private dns zone group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param privateDnsZoneGroupName The name of the private dns zone group.
@@ -229,7 +229,7 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
 
     /**
      * Deletes the specified private dns zone group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param privateDnsZoneGroupName The name of the private dns zone group.
@@ -251,7 +251,7 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
 
     /**
      * Deletes the specified private dns zone group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param privateDnsZoneGroupName The name of the private dns zone group.
@@ -268,7 +268,7 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
 
     /**
      * Deletes the specified private dns zone group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param privateDnsZoneGroupName The name of the private dns zone group.
@@ -287,7 +287,7 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
 
     /**
      * Deletes the specified private dns zone group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param privateDnsZoneGroupName The name of the private dns zone group.
@@ -305,7 +305,7 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
 
     /**
      * Deletes the specified private dns zone group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param privateDnsZoneGroupName The name of the private dns zone group.
@@ -324,7 +324,7 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
 
     /**
      * Deletes the specified private dns zone group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param privateDnsZoneGroupName The name of the private dns zone group.
@@ -339,7 +339,7 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
 
     /**
      * Deletes the specified private dns zone group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param privateDnsZoneGroupName The name of the private dns zone group.
@@ -356,7 +356,7 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
 
     /**
      * Gets the private dns zone group resource by specified private dns zone group name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param privateDnsZoneGroupName The name of the private dns zone group.
@@ -389,7 +389,7 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, privateEndpointName,
@@ -399,7 +399,7 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
 
     /**
      * Gets the private dns zone group resource by specified private dns zone group name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param privateDnsZoneGroupName The name of the private dns zone group.
@@ -433,7 +433,7 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), resourceGroupName, privateEndpointName, privateDnsZoneGroupName,
@@ -442,7 +442,7 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
 
     /**
      * Gets the private dns zone group resource by specified private dns zone group name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param privateDnsZoneGroupName The name of the private dns zone group.
@@ -461,7 +461,7 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
 
     /**
      * Gets the private dns zone group resource by specified private dns zone group name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param privateDnsZoneGroupName The name of the private dns zone group.
@@ -479,7 +479,7 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
 
     /**
      * Gets the private dns zone group resource by specified private dns zone group name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param privateDnsZoneGroupName The name of the private dns zone group.
@@ -497,7 +497,7 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
 
     /**
      * Creates or updates a private dns zone group in the specified private endpoint.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param privateDnsZoneGroupName The name of the private dns zone group.
@@ -535,7 +535,7 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -546,7 +546,7 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
 
     /**
      * Creates or updates a private dns zone group in the specified private endpoint.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param privateDnsZoneGroupName The name of the private dns zone group.
@@ -586,7 +586,7 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, privateEndpointName,
@@ -595,7 +595,7 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
 
     /**
      * Creates or updates a private dns zone group in the specified private endpoint.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param privateDnsZoneGroupName The name of the private dns zone group.
@@ -618,7 +618,7 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
 
     /**
      * Creates or updates a private dns zone group in the specified private endpoint.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param privateDnsZoneGroupName The name of the private dns zone group.
@@ -642,7 +642,7 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
 
     /**
      * Creates or updates a private dns zone group in the specified private endpoint.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param privateDnsZoneGroupName The name of the private dns zone group.
@@ -663,7 +663,7 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
 
     /**
      * Creates or updates a private dns zone group in the specified private endpoint.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param privateDnsZoneGroupName The name of the private dns zone group.
@@ -686,7 +686,7 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
 
     /**
      * Creates or updates a private dns zone group in the specified private endpoint.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param privateDnsZoneGroupName The name of the private dns zone group.
@@ -706,7 +706,7 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
 
     /**
      * Creates or updates a private dns zone group in the specified private endpoint.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param privateDnsZoneGroupName The name of the private dns zone group.
@@ -726,7 +726,7 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
 
     /**
      * Creates or updates a private dns zone group in the specified private endpoint.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param privateDnsZoneGroupName The name of the private dns zone group.
@@ -744,7 +744,7 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
 
     /**
      * Creates or updates a private dns zone group in the specified private endpoint.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param privateDnsZoneGroupName The name of the private dns zone group.
@@ -764,7 +764,7 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
 
     /**
      * Gets all private dns zone groups in a private endpoint.
-     * 
+     *
      * @param privateEndpointName The name of the private endpoint.
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -792,7 +792,7 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), privateEndpointName, resourceGroupName,
@@ -804,7 +804,7 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
 
     /**
      * Gets all private dns zone groups in a private endpoint.
-     * 
+     *
      * @param privateEndpointName The name of the private endpoint.
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
@@ -833,7 +833,7 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -845,7 +845,7 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
 
     /**
      * Gets all private dns zone groups in a private endpoint.
-     * 
+     *
      * @param privateEndpointName The name of the private endpoint.
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -861,7 +861,7 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
 
     /**
      * Gets all private dns zone groups in a private endpoint.
-     * 
+     *
      * @param privateEndpointName The name of the private endpoint.
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
@@ -879,7 +879,7 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
 
     /**
      * Gets all private dns zone groups in a private endpoint.
-     * 
+     *
      * @param privateEndpointName The name of the private endpoint.
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -894,7 +894,7 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
 
     /**
      * Gets all private dns zone groups in a private endpoint.
-     * 
+     *
      * @param privateEndpointName The name of the private endpoint.
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
@@ -911,7 +911,7 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -937,7 +937,7 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

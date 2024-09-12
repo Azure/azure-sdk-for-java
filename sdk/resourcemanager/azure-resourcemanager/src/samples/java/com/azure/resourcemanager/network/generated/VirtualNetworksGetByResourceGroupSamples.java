@@ -9,12 +9,12 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class VirtualNetworksGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * VirtualNetworkGetWithSubnetDelegation.json
      */
     /**
      * Sample code: Get virtual network with a delegated subnet.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getVirtualNetworkWithADelegatedSubnet(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -26,12 +26,12 @@ public final class VirtualNetworksGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * VirtualNetworkGetWithServiceAssociationLink.json
      */
     /**
      * Sample code: Get virtual network with service association links.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
@@ -45,11 +45,11 @@ public final class VirtualNetworksGetByResourceGroupSamples {
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/VirtualNetworkGet.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/VirtualNetworkGet.json
      */
     /**
      * Sample code: Get virtual network.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getVirtualNetwork(com.azure.resourcemanager.AzureResourceManager azure) {

@@ -6,6 +6,7 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -30,14 +31,14 @@ public final class ApplicationGatewayFirewallRuleSet extends Resource {
     private String id;
 
     /*
-     * The name of the resource.
-     */
-    private String name;
-
-    /*
      * The type of the resource.
      */
     private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
 
     /**
      * Creates an instance of ApplicationGatewayFirewallRuleSet class.
@@ -47,7 +48,7 @@ public final class ApplicationGatewayFirewallRuleSet extends Resource {
 
     /**
      * Get the innerProperties property: Properties of the application gateway firewall rule set.
-     * 
+     *
      * @return the innerProperties value.
      */
     private ApplicationGatewayFirewallRuleSetPropertiesFormat innerProperties() {
@@ -56,7 +57,7 @@ public final class ApplicationGatewayFirewallRuleSet extends Resource {
 
     /**
      * Get the id property: Resource ID.
-     * 
+     *
      * @return the id value.
      */
     public String id() {
@@ -65,7 +66,7 @@ public final class ApplicationGatewayFirewallRuleSet extends Resource {
 
     /**
      * Set the id property: Resource ID.
-     * 
+     *
      * @param id the id value to set.
      * @return the ApplicationGatewayFirewallRuleSet object itself.
      */
@@ -75,23 +76,23 @@ public final class ApplicationGatewayFirewallRuleSet extends Resource {
     }
 
     /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
-    }
-
-    /**
      * Get the type property: The type of the resource.
-     * 
+     *
      * @return the type value.
      */
     @Override
     public String type() {
         return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     *
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -114,7 +115,7 @@ public final class ApplicationGatewayFirewallRuleSet extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the web application firewall rule set.
-     * 
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -123,7 +124,7 @@ public final class ApplicationGatewayFirewallRuleSet extends Resource {
 
     /**
      * Get the ruleSetType property: The type of the web application firewall rule set.
-     * 
+     *
      * @return the ruleSetType value.
      */
     public String ruleSetType() {
@@ -132,7 +133,7 @@ public final class ApplicationGatewayFirewallRuleSet extends Resource {
 
     /**
      * Set the ruleSetType property: The type of the web application firewall rule set.
-     * 
+     *
      * @param ruleSetType the ruleSetType value to set.
      * @return the ApplicationGatewayFirewallRuleSet object itself.
      */
@@ -146,7 +147,7 @@ public final class ApplicationGatewayFirewallRuleSet extends Resource {
 
     /**
      * Get the ruleSetVersion property: The version of the web application firewall rule set type.
-     * 
+     *
      * @return the ruleSetVersion value.
      */
     public String ruleSetVersion() {
@@ -155,7 +156,7 @@ public final class ApplicationGatewayFirewallRuleSet extends Resource {
 
     /**
      * Set the ruleSetVersion property: The version of the web application firewall rule set type.
-     * 
+     *
      * @param ruleSetVersion the ruleSetVersion value to set.
      * @return the ApplicationGatewayFirewallRuleSet object itself.
      */
@@ -169,7 +170,7 @@ public final class ApplicationGatewayFirewallRuleSet extends Resource {
 
     /**
      * Get the ruleGroups property: The rule groups of the web application firewall rule set.
-     * 
+     *
      * @return the ruleGroups value.
      */
     public List<ApplicationGatewayFirewallRuleGroup> ruleGroups() {
@@ -178,7 +179,7 @@ public final class ApplicationGatewayFirewallRuleSet extends Resource {
 
     /**
      * Set the ruleGroups property: The rule groups of the web application firewall rule set.
-     * 
+     *
      * @param ruleGroups the ruleGroups value to set.
      * @return the ApplicationGatewayFirewallRuleSet object itself.
      */
@@ -192,7 +193,7 @@ public final class ApplicationGatewayFirewallRuleSet extends Resource {
 
     /**
      * Get the tiers property: Tier of an application gateway that support the rule set.
-     * 
+     *
      * @return the tiers value.
      */
     public List<ApplicationGatewayTierTypes> tiers() {
@@ -201,7 +202,7 @@ public final class ApplicationGatewayFirewallRuleSet extends Resource {
 
     /**
      * Set the tiers property: Tier of an application gateway that support the rule set.
-     * 
+     *
      * @param tiers the tiers value to set.
      * @return the ApplicationGatewayFirewallRuleSet object itself.
      */
@@ -215,14 +216,21 @@ public final class ApplicationGatewayFirewallRuleSet extends Resource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+        if (location() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property location in model ApplicationGatewayFirewallRuleSet"));
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ApplicationGatewayFirewallRuleSet.class);
 
     /**
      * {@inheritDoc}
@@ -239,7 +247,7 @@ public final class ApplicationGatewayFirewallRuleSet extends Resource {
 
     /**
      * Reads an instance of ApplicationGatewayFirewallRuleSet from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of ApplicationGatewayFirewallRuleSet if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.

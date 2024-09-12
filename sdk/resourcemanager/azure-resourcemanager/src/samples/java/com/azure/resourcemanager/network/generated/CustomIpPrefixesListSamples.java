@@ -10,11 +10,11 @@ package com.azure.resourcemanager.network.generated;
 public final class CustomIpPrefixesListSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/CustomIpPrefixListAll.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/CustomIpPrefixListAll.json
      */
     /**
      * Sample code: List all custom IP prefixes.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listAllCustomIPPrefixes(com.azure.resourcemanager.AzureResourceManager azure) {

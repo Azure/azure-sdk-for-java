@@ -13,12 +13,12 @@ import com.azure.resourcemanager.network.fluent.models.BgpConnectionInner;
 public final class VirtualHubBgpConnectionsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/VirtualHubBgpConnectionPut.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/VirtualHubBgpConnectionPut.
      * json
      */
     /**
      * Sample code: VirtualHubRouteTableV2Put.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void virtualHubRouteTableV2Put(com.azure.resourcemanager.AzureResourceManager azure) {

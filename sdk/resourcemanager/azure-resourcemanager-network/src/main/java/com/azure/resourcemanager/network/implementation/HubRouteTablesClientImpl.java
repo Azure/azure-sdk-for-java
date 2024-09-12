@@ -54,7 +54,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
 
     /**
      * Initializes an instance of HubRouteTablesClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     HubRouteTablesClientImpl(NetworkManagementClientImpl client) {
@@ -123,7 +123,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
 
     /**
      * Creates a RouteTable resource if it doesn't exist else updates the existing RouteTable.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the RouteTable.
@@ -161,7 +161,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
         } else {
             routeTableParameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -171,7 +171,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
 
     /**
      * Creates a RouteTable resource if it doesn't exist else updates the existing RouteTable.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the RouteTable.
@@ -210,7 +210,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
         } else {
             routeTableParameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -219,7 +219,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
 
     /**
      * Creates a RouteTable resource if it doesn't exist else updates the existing RouteTable.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the RouteTable.
@@ -241,7 +241,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
 
     /**
      * Creates a RouteTable resource if it doesn't exist else updates the existing RouteTable.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the RouteTable.
@@ -265,7 +265,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
 
     /**
      * Creates a RouteTable resource if it doesn't exist else updates the existing RouteTable.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the RouteTable.
@@ -284,7 +284,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
 
     /**
      * Creates a RouteTable resource if it doesn't exist else updates the existing RouteTable.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the RouteTable.
@@ -305,7 +305,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
 
     /**
      * Creates a RouteTable resource if it doesn't exist else updates the existing RouteTable.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the RouteTable.
@@ -324,7 +324,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
 
     /**
      * Creates a RouteTable resource if it doesn't exist else updates the existing RouteTable.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the RouteTable.
@@ -344,7 +344,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
 
     /**
      * Creates a RouteTable resource if it doesn't exist else updates the existing RouteTable.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the RouteTable.
@@ -362,7 +362,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
 
     /**
      * Creates a RouteTable resource if it doesn't exist else updates the existing RouteTable.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the RouteTable.
@@ -382,7 +382,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
 
     /**
      * Retrieves the details of a RouteTable.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the RouteTable.
@@ -413,7 +413,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
         if (routeTableName == null) {
             return Mono.error(new IllegalArgumentException("Parameter routeTableName is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -423,7 +423,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
 
     /**
      * Retrieves the details of a RouteTable.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the RouteTable.
@@ -455,7 +455,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
         if (routeTableName == null) {
             return Mono.error(new IllegalArgumentException("Parameter routeTableName is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -464,7 +464,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
 
     /**
      * Retrieves the details of a RouteTable.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the RouteTable.
@@ -481,7 +481,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
 
     /**
      * Retrieves the details of a RouteTable.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the RouteTable.
@@ -499,7 +499,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
 
     /**
      * Retrieves the details of a RouteTable.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the RouteTable.
@@ -515,7 +515,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
 
     /**
      * Deletes a RouteTable.
-     * 
+     *
      * @param resourceGroupName The resource group name of the RouteTable.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the RouteTable.
@@ -545,7 +545,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
         if (routeTableName == null) {
             return Mono.error(new IllegalArgumentException("Parameter routeTableName is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -555,7 +555,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
 
     /**
      * Deletes a RouteTable.
-     * 
+     *
      * @param resourceGroupName The resource group name of the RouteTable.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the RouteTable.
@@ -586,7 +586,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
         if (routeTableName == null) {
             return Mono.error(new IllegalArgumentException("Parameter routeTableName is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -595,7 +595,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
 
     /**
      * Deletes a RouteTable.
-     * 
+     *
      * @param resourceGroupName The resource group name of the RouteTable.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the RouteTable.
@@ -615,7 +615,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
 
     /**
      * Deletes a RouteTable.
-     * 
+     *
      * @param resourceGroupName The resource group name of the RouteTable.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the RouteTable.
@@ -637,7 +637,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
 
     /**
      * Deletes a RouteTable.
-     * 
+     *
      * @param resourceGroupName The resource group name of the RouteTable.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the RouteTable.
@@ -654,7 +654,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
 
     /**
      * Deletes a RouteTable.
-     * 
+     *
      * @param resourceGroupName The resource group name of the RouteTable.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the RouteTable.
@@ -672,7 +672,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
 
     /**
      * Deletes a RouteTable.
-     * 
+     *
      * @param resourceGroupName The resource group name of the RouteTable.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the RouteTable.
@@ -689,7 +689,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
 
     /**
      * Deletes a RouteTable.
-     * 
+     *
      * @param resourceGroupName The resource group name of the RouteTable.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the RouteTable.
@@ -708,7 +708,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
 
     /**
      * Deletes a RouteTable.
-     * 
+     *
      * @param resourceGroupName The resource group name of the RouteTable.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the RouteTable.
@@ -723,7 +723,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
 
     /**
      * Deletes a RouteTable.
-     * 
+     *
      * @param resourceGroupName The resource group name of the RouteTable.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the RouteTable.
@@ -739,7 +739,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
 
     /**
      * Retrieves the details of all RouteTables.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -766,7 +766,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -778,7 +778,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
 
     /**
      * Retrieves the details of all RouteTables.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param context The context to associate with this operation.
@@ -806,7 +806,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -818,7 +818,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
 
     /**
      * Retrieves the details of all RouteTables.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -835,7 +835,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
 
     /**
      * Retrieves the details of all RouteTables.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param context The context to associate with this operation.
@@ -853,7 +853,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
 
     /**
      * Retrieves the details of all RouteTables.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -869,7 +869,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
 
     /**
      * Retrieves the details of all RouteTables.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param context The context to associate with this operation.
@@ -886,7 +886,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -912,7 +912,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

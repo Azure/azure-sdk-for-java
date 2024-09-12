@@ -9,12 +9,12 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class FirewallPolicyRuleCollectionGroupsListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * FirewallPolicyRuleCollectionGroupList.json
      */
     /**
      * Sample code: List all FirewallPolicyRuleCollectionGroups for a given FirewallPolicy.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listAllFirewallPolicyRuleCollectionGroupsForAGivenFirewallPolicy(
@@ -27,12 +27,12 @@ public final class FirewallPolicyRuleCollectionGroupsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * FirewallPolicyRuleCollectionGroupWithIpGroupsList.json
      */
     /**
      * Sample code: List all FirewallPolicyRuleCollectionGroups with IpGroups for a given FirewallPolicy.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listAllFirewallPolicyRuleCollectionGroupsWithIpGroupsForAGivenFirewallPolicy(
@@ -45,12 +45,12 @@ public final class FirewallPolicyRuleCollectionGroupsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * FirewallPolicyRuleCollectionGroupWithWebCategoriesList.json
      */
     /**
      * Sample code: List all FirewallPolicyRuleCollectionGroup With Web Categories.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listAllFirewallPolicyRuleCollectionGroupWithWebCategories(

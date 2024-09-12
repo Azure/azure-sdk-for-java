@@ -41,7 +41,7 @@ public final class ExpressRouteProviderPortsLocationsClientImpl implements Expre
 
     /**
      * Initializes an instance of ExpressRouteProviderPortsLocationsClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     ExpressRouteProviderPortsLocationsClientImpl(NetworkManagementClientImpl client) {
@@ -68,7 +68,7 @@ public final class ExpressRouteProviderPortsLocationsClientImpl implements Expre
 
     /**
      * Retrieves all the ExpressRouteProviderPorts in a subscription.
-     * 
+     *
      * @param filter The filter to apply on the operation. For example, you can use $filter=location eq '{state}'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -86,7 +86,7 @@ public final class ExpressRouteProviderPortsLocationsClientImpl implements Expre
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -96,7 +96,7 @@ public final class ExpressRouteProviderPortsLocationsClientImpl implements Expre
 
     /**
      * Retrieves all the ExpressRouteProviderPorts in a subscription.
-     * 
+     *
      * @param filter The filter to apply on the operation. For example, you can use $filter=location eq '{state}'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -116,7 +116,7 @@ public final class ExpressRouteProviderPortsLocationsClientImpl implements Expre
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), filter, accept,
@@ -125,7 +125,7 @@ public final class ExpressRouteProviderPortsLocationsClientImpl implements Expre
 
     /**
      * Retrieves all the ExpressRouteProviderPorts in a subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ListExpressRouteProviderPort API service call on successful completion of {@link Mono}.
@@ -138,7 +138,7 @@ public final class ExpressRouteProviderPortsLocationsClientImpl implements Expre
 
     /**
      * Retrieves all the ExpressRouteProviderPorts in a subscription.
-     * 
+     *
      * @param filter The filter to apply on the operation. For example, you can use $filter=location eq '{state}'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -153,7 +153,7 @@ public final class ExpressRouteProviderPortsLocationsClientImpl implements Expre
 
     /**
      * Retrieves all the ExpressRouteProviderPorts in a subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ListExpressRouteProviderPort API service call.

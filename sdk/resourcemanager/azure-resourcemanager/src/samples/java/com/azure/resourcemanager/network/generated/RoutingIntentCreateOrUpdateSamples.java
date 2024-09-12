@@ -14,11 +14,11 @@ import java.util.Arrays;
 public final class RoutingIntentCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/RoutingIntentPut.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/RoutingIntentPut.json
      */
     /**
      * Sample code: RouteTablePut.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void routeTablePut(com.azure.resourcemanager.AzureResourceManager azure) {

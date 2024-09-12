@@ -43,7 +43,7 @@ public final class ActiveConnectivityConfiguration extends EffectiveConnectivity
 
     /**
      * Get the commitTime property: Deployment time string.
-     * 
+     *
      * @return the commitTime value.
      */
     public OffsetDateTime commitTime() {
@@ -52,7 +52,7 @@ public final class ActiveConnectivityConfiguration extends EffectiveConnectivity
 
     /**
      * Set the commitTime property: Deployment time string.
-     * 
+     *
      * @param commitTime the commitTime value to set.
      * @return the ActiveConnectivityConfiguration object itself.
      */
@@ -63,7 +63,7 @@ public final class ActiveConnectivityConfiguration extends EffectiveConnectivity
 
     /**
      * Get the region property: Deployment region.
-     * 
+     *
      * @return the region value.
      */
     public String region() {
@@ -72,7 +72,7 @@ public final class ActiveConnectivityConfiguration extends EffectiveConnectivity
 
     /**
      * Set the region property: Deployment region.
-     * 
+     *
      * @param region the region value to set.
      * @return the ActiveConnectivityConfiguration object itself.
      */
@@ -83,7 +83,7 @@ public final class ActiveConnectivityConfiguration extends EffectiveConnectivity
 
     /**
      * Get the innerProperties property: Properties of a network manager connectivity configuration.
-     * 
+     *
      * @return the innerProperties value.
      */
     private ConnectivityConfigurationProperties innerProperties() {
@@ -110,7 +110,7 @@ public final class ActiveConnectivityConfiguration extends EffectiveConnectivity
 
     /**
      * Get the description property: A description of the connectivity configuration.
-     * 
+     *
      * @return the description value.
      */
     public String description() {
@@ -119,7 +119,7 @@ public final class ActiveConnectivityConfiguration extends EffectiveConnectivity
 
     /**
      * Set the description property: A description of the connectivity configuration.
-     * 
+     *
      * @param description the description value to set.
      * @return the ActiveConnectivityConfiguration object itself.
      */
@@ -133,7 +133,7 @@ public final class ActiveConnectivityConfiguration extends EffectiveConnectivity
 
     /**
      * Get the connectivityTopology property: Connectivity topology type.
-     * 
+     *
      * @return the connectivityTopology value.
      */
     public ConnectivityTopology connectivityTopology() {
@@ -142,7 +142,7 @@ public final class ActiveConnectivityConfiguration extends EffectiveConnectivity
 
     /**
      * Set the connectivityTopology property: Connectivity topology type.
-     * 
+     *
      * @param connectivityTopology the connectivityTopology value to set.
      * @return the ActiveConnectivityConfiguration object itself.
      */
@@ -156,7 +156,7 @@ public final class ActiveConnectivityConfiguration extends EffectiveConnectivity
 
     /**
      * Get the hubs property: List of hubItems.
-     * 
+     *
      * @return the hubs value.
      */
     public List<Hub> hubs() {
@@ -165,7 +165,7 @@ public final class ActiveConnectivityConfiguration extends EffectiveConnectivity
 
     /**
      * Set the hubs property: List of hubItems.
-     * 
+     *
      * @param hubs the hubs value to set.
      * @return the ActiveConnectivityConfiguration object itself.
      */
@@ -179,7 +179,7 @@ public final class ActiveConnectivityConfiguration extends EffectiveConnectivity
 
     /**
      * Get the isGlobal property: Flag if global mesh is supported.
-     * 
+     *
      * @return the isGlobal value.
      */
     public IsGlobal isGlobal() {
@@ -188,7 +188,7 @@ public final class ActiveConnectivityConfiguration extends EffectiveConnectivity
 
     /**
      * Set the isGlobal property: Flag if global mesh is supported.
-     * 
+     *
      * @param isGlobal the isGlobal value to set.
      * @return the ActiveConnectivityConfiguration object itself.
      */
@@ -202,7 +202,7 @@ public final class ActiveConnectivityConfiguration extends EffectiveConnectivity
 
     /**
      * Get the appliesToGroups property: Groups for configuration.
-     * 
+     *
      * @return the appliesToGroups value.
      */
     public List<ConnectivityGroupItem> appliesToGroups() {
@@ -211,7 +211,7 @@ public final class ActiveConnectivityConfiguration extends EffectiveConnectivity
 
     /**
      * Set the appliesToGroups property: Groups for configuration.
-     * 
+     *
      * @param appliesToGroups the appliesToGroups value to set.
      * @return the ActiveConnectivityConfiguration object itself.
      */
@@ -225,7 +225,7 @@ public final class ActiveConnectivityConfiguration extends EffectiveConnectivity
 
     /**
      * Get the provisioningState property: The provisioning state of the connectivity configuration resource.
-     * 
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -234,7 +234,7 @@ public final class ActiveConnectivityConfiguration extends EffectiveConnectivity
 
     /**
      * Get the deleteExistingPeering property: Flag if need to remove current existing peerings.
-     * 
+     *
      * @return the deleteExistingPeering value.
      */
     public DeleteExistingPeering deleteExistingPeering() {
@@ -243,7 +243,7 @@ public final class ActiveConnectivityConfiguration extends EffectiveConnectivity
 
     /**
      * Set the deleteExistingPeering property: Flag if need to remove current existing peerings.
-     * 
+     *
      * @param deleteExistingPeering the deleteExistingPeering value to set.
      * @return the ActiveConnectivityConfiguration object itself.
      */
@@ -257,7 +257,7 @@ public final class ActiveConnectivityConfiguration extends EffectiveConnectivity
 
     /**
      * Get the resourceGuid property: Unique identifier for this resource.
-     * 
+     *
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -266,12 +266,17 @@ public final class ActiveConnectivityConfiguration extends EffectiveConnectivity
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
+        if (configurationGroups() != null) {
+            configurationGroups().forEach(e -> e.validate());
+        }
     }
 
     /**
@@ -292,7 +297,7 @@ public final class ActiveConnectivityConfiguration extends EffectiveConnectivity
 
     /**
      * Reads an instance of ActiveConnectivityConfiguration from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of ActiveConnectivityConfiguration if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.

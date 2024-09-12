@@ -9,12 +9,12 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class PublicIpAddressesDdosProtectionStatusSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * PublicIpAddressGetDdosProtectionStatus.json
      */
     /**
      * Sample code: Get Ddos Protection Status of a Public IP Address.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getDdosProtectionStatusOfAPublicIPAddress(com.azure.resourcemanager.AzureResourceManager azure) {

@@ -59,7 +59,7 @@ public final class WebApplicationFirewallPoliciesClientImpl implements
 
     /**
      * Initializes an instance of WebApplicationFirewallPoliciesClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     WebApplicationFirewallPoliciesClientImpl(NetworkManagementClientImpl client) {
@@ -139,7 +139,7 @@ public final class WebApplicationFirewallPoliciesClientImpl implements
 
     /**
      * Lists all of the protection policies within a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -162,7 +162,7 @@ public final class WebApplicationFirewallPoliciesClientImpl implements
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -174,7 +174,7 @@ public final class WebApplicationFirewallPoliciesClientImpl implements
 
     /**
      * Lists all of the protection policies within a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -198,7 +198,7 @@ public final class WebApplicationFirewallPoliciesClientImpl implements
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -210,7 +210,7 @@ public final class WebApplicationFirewallPoliciesClientImpl implements
 
     /**
      * Lists all of the protection policies within a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -226,7 +226,7 @@ public final class WebApplicationFirewallPoliciesClientImpl implements
 
     /**
      * Lists all of the protection policies within a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -244,7 +244,7 @@ public final class WebApplicationFirewallPoliciesClientImpl implements
 
     /**
      * Lists all of the protection policies within a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -259,7 +259,7 @@ public final class WebApplicationFirewallPoliciesClientImpl implements
 
     /**
      * Lists all of the protection policies within a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -276,7 +276,7 @@ public final class WebApplicationFirewallPoliciesClientImpl implements
 
     /**
      * Gets all the WAF policies in a subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the WAF policies in a subscription along with {@link PagedResponse} on successful completion of
@@ -292,7 +292,7 @@ public final class WebApplicationFirewallPoliciesClientImpl implements
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion,
@@ -304,7 +304,7 @@ public final class WebApplicationFirewallPoliciesClientImpl implements
 
     /**
      * Gets all the WAF policies in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -322,7 +322,7 @@ public final class WebApplicationFirewallPoliciesClientImpl implements
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, accept, context)
@@ -332,7 +332,7 @@ public final class WebApplicationFirewallPoliciesClientImpl implements
 
     /**
      * Gets all the WAF policies in a subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the WAF policies in a subscription as paginated response with {@link PagedFlux}.
@@ -344,7 +344,7 @@ public final class WebApplicationFirewallPoliciesClientImpl implements
 
     /**
      * Gets all the WAF policies in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -359,7 +359,7 @@ public final class WebApplicationFirewallPoliciesClientImpl implements
 
     /**
      * Gets all the WAF policies in a subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the WAF policies in a subscription as paginated response with {@link PagedIterable}.
@@ -371,7 +371,7 @@ public final class WebApplicationFirewallPoliciesClientImpl implements
 
     /**
      * Gets all the WAF policies in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -385,7 +385,7 @@ public final class WebApplicationFirewallPoliciesClientImpl implements
 
     /**
      * Retrieve protection policy with specified name within a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param policyName The name of the policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -412,7 +412,7 @@ public final class WebApplicationFirewallPoliciesClientImpl implements
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, policyName,
@@ -422,7 +422,7 @@ public final class WebApplicationFirewallPoliciesClientImpl implements
 
     /**
      * Retrieve protection policy with specified name within a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param policyName The name of the policy.
      * @param context The context to associate with this operation.
@@ -450,7 +450,7 @@ public final class WebApplicationFirewallPoliciesClientImpl implements
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, policyName,
@@ -459,7 +459,7 @@ public final class WebApplicationFirewallPoliciesClientImpl implements
 
     /**
      * Retrieve protection policy with specified name within a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param policyName The name of the policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -476,7 +476,7 @@ public final class WebApplicationFirewallPoliciesClientImpl implements
 
     /**
      * Retrieve protection policy with specified name within a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param policyName The name of the policy.
      * @param context The context to associate with this operation.
@@ -493,7 +493,7 @@ public final class WebApplicationFirewallPoliciesClientImpl implements
 
     /**
      * Retrieve protection policy with specified name within a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param policyName The name of the policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -508,7 +508,7 @@ public final class WebApplicationFirewallPoliciesClientImpl implements
 
     /**
      * Creates or update policy with specified rule set name within a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param policyName The name of the policy.
      * @param parameters Policy to be created.
@@ -541,7 +541,7 @@ public final class WebApplicationFirewallPoliciesClientImpl implements
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, policyName,
@@ -551,7 +551,7 @@ public final class WebApplicationFirewallPoliciesClientImpl implements
 
     /**
      * Creates or update policy with specified rule set name within a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param policyName The name of the policy.
      * @param parameters Policy to be created.
@@ -585,7 +585,7 @@ public final class WebApplicationFirewallPoliciesClientImpl implements
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, policyName,
@@ -594,7 +594,7 @@ public final class WebApplicationFirewallPoliciesClientImpl implements
 
     /**
      * Creates or update policy with specified rule set name within a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param policyName The name of the policy.
      * @param parameters Policy to be created.
@@ -612,7 +612,7 @@ public final class WebApplicationFirewallPoliciesClientImpl implements
 
     /**
      * Creates or update policy with specified rule set name within a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param policyName The name of the policy.
      * @param parameters Policy to be created.
@@ -630,7 +630,7 @@ public final class WebApplicationFirewallPoliciesClientImpl implements
 
     /**
      * Creates or update policy with specified rule set name within a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param policyName The name of the policy.
      * @param parameters Policy to be created.
@@ -647,7 +647,7 @@ public final class WebApplicationFirewallPoliciesClientImpl implements
 
     /**
      * Deletes Policy.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param policyName The name of the policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -672,7 +672,7 @@ public final class WebApplicationFirewallPoliciesClientImpl implements
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, policyName,
@@ -682,7 +682,7 @@ public final class WebApplicationFirewallPoliciesClientImpl implements
 
     /**
      * Deletes Policy.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param policyName The name of the policy.
      * @param context The context to associate with this operation.
@@ -709,7 +709,7 @@ public final class WebApplicationFirewallPoliciesClientImpl implements
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, policyName, this.client.getSubscriptionId(),
@@ -718,7 +718,7 @@ public final class WebApplicationFirewallPoliciesClientImpl implements
 
     /**
      * Deletes Policy.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param policyName The name of the policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -735,7 +735,7 @@ public final class WebApplicationFirewallPoliciesClientImpl implements
 
     /**
      * Deletes Policy.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param policyName The name of the policy.
      * @param context The context to associate with this operation.
@@ -755,7 +755,7 @@ public final class WebApplicationFirewallPoliciesClientImpl implements
 
     /**
      * Deletes Policy.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param policyName The name of the policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -770,7 +770,7 @@ public final class WebApplicationFirewallPoliciesClientImpl implements
 
     /**
      * Deletes Policy.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param policyName The name of the policy.
      * @param context The context to associate with this operation.
@@ -787,7 +787,7 @@ public final class WebApplicationFirewallPoliciesClientImpl implements
 
     /**
      * Deletes Policy.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param policyName The name of the policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -802,7 +802,7 @@ public final class WebApplicationFirewallPoliciesClientImpl implements
 
     /**
      * Deletes Policy.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param policyName The name of the policy.
      * @param context The context to associate with this operation.
@@ -819,7 +819,7 @@ public final class WebApplicationFirewallPoliciesClientImpl implements
 
     /**
      * Deletes Policy.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param policyName The name of the policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -833,7 +833,7 @@ public final class WebApplicationFirewallPoliciesClientImpl implements
 
     /**
      * Deletes Policy.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param policyName The name of the policy.
      * @param context The context to associate with this operation.
@@ -848,7 +848,7 @@ public final class WebApplicationFirewallPoliciesClientImpl implements
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -874,7 +874,7 @@ public final class WebApplicationFirewallPoliciesClientImpl implements
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -902,7 +902,7 @@ public final class WebApplicationFirewallPoliciesClientImpl implements
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -929,7 +929,7 @@ public final class WebApplicationFirewallPoliciesClientImpl implements
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

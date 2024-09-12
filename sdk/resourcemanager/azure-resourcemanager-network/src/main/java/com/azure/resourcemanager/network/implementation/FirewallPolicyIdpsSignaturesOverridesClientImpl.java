@@ -47,7 +47,7 @@ public final class FirewallPolicyIdpsSignaturesOverridesClientImpl
 
     /**
      * Initializes an instance of FirewallPolicyIdpsSignaturesOverridesClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     FirewallPolicyIdpsSignaturesOverridesClientImpl(NetworkManagementClientImpl client) {
@@ -108,7 +108,7 @@ public final class FirewallPolicyIdpsSignaturesOverridesClientImpl
 
     /**
      * Will update the status of policy's signature overrides for IDPS.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @param parameters Will contain all properties of the object to put.
@@ -142,7 +142,7 @@ public final class FirewallPolicyIdpsSignaturesOverridesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.patch(this.client.getEndpoint(), resourceGroupName, firewallPolicyName,
@@ -152,7 +152,7 @@ public final class FirewallPolicyIdpsSignaturesOverridesClientImpl
 
     /**
      * Will update the status of policy's signature overrides for IDPS.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @param parameters Will contain all properties of the object to put.
@@ -187,7 +187,7 @@ public final class FirewallPolicyIdpsSignaturesOverridesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.patch(this.client.getEndpoint(), resourceGroupName, firewallPolicyName,
@@ -196,7 +196,7 @@ public final class FirewallPolicyIdpsSignaturesOverridesClientImpl
 
     /**
      * Will update the status of policy's signature overrides for IDPS.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @param parameters Will contain all properties of the object to put.
@@ -214,7 +214,7 @@ public final class FirewallPolicyIdpsSignaturesOverridesClientImpl
 
     /**
      * Will update the status of policy's signature overrides for IDPS.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @param parameters Will contain all properties of the object to put.
@@ -232,7 +232,7 @@ public final class FirewallPolicyIdpsSignaturesOverridesClientImpl
 
     /**
      * Will update the status of policy's signature overrides for IDPS.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @param parameters Will contain all properties of the object to put.
@@ -249,7 +249,7 @@ public final class FirewallPolicyIdpsSignaturesOverridesClientImpl
 
     /**
      * Will override/create a new signature overrides for the policy's IDPS.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @param parameters Will contain all properties of the object to put.
@@ -283,7 +283,7 @@ public final class FirewallPolicyIdpsSignaturesOverridesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.put(this.client.getEndpoint(), resourceGroupName, firewallPolicyName,
@@ -293,7 +293,7 @@ public final class FirewallPolicyIdpsSignaturesOverridesClientImpl
 
     /**
      * Will override/create a new signature overrides for the policy's IDPS.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @param parameters Will contain all properties of the object to put.
@@ -328,7 +328,7 @@ public final class FirewallPolicyIdpsSignaturesOverridesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.put(this.client.getEndpoint(), resourceGroupName, firewallPolicyName,
@@ -337,7 +337,7 @@ public final class FirewallPolicyIdpsSignaturesOverridesClientImpl
 
     /**
      * Will override/create a new signature overrides for the policy's IDPS.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @param parameters Will contain all properties of the object to put.
@@ -355,7 +355,7 @@ public final class FirewallPolicyIdpsSignaturesOverridesClientImpl
 
     /**
      * Will override/create a new signature overrides for the policy's IDPS.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @param parameters Will contain all properties of the object to put.
@@ -373,7 +373,7 @@ public final class FirewallPolicyIdpsSignaturesOverridesClientImpl
 
     /**
      * Will override/create a new signature overrides for the policy's IDPS.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @param parameters Will contain all properties of the object to put.
@@ -390,7 +390,7 @@ public final class FirewallPolicyIdpsSignaturesOverridesClientImpl
 
     /**
      * Returns all signatures overrides for a specific policy.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -418,7 +418,7 @@ public final class FirewallPolicyIdpsSignaturesOverridesClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, firewallPolicyName,
@@ -428,7 +428,7 @@ public final class FirewallPolicyIdpsSignaturesOverridesClientImpl
 
     /**
      * Returns all signatures overrides for a specific policy.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @param context The context to associate with this operation.
@@ -457,7 +457,7 @@ public final class FirewallPolicyIdpsSignaturesOverridesClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), resourceGroupName, firewallPolicyName,
@@ -466,7 +466,7 @@ public final class FirewallPolicyIdpsSignaturesOverridesClientImpl
 
     /**
      * Returns all signatures overrides for a specific policy.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -482,7 +482,7 @@ public final class FirewallPolicyIdpsSignaturesOverridesClientImpl
 
     /**
      * Returns all signatures overrides for a specific policy.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @param context The context to associate with this operation.
@@ -499,7 +499,7 @@ public final class FirewallPolicyIdpsSignaturesOverridesClientImpl
 
     /**
      * Returns all signatures overrides for a specific policy.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -514,7 +514,7 @@ public final class FirewallPolicyIdpsSignaturesOverridesClientImpl
 
     /**
      * Returns all signatures overrides objects for a specific policy as a list containing a single value.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -542,7 +542,7 @@ public final class FirewallPolicyIdpsSignaturesOverridesClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), resourceGroupName, firewallPolicyName,
@@ -552,7 +552,7 @@ public final class FirewallPolicyIdpsSignaturesOverridesClientImpl
 
     /**
      * Returns all signatures overrides objects for a specific policy as a list containing a single value.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @param context The context to associate with this operation.
@@ -581,7 +581,7 @@ public final class FirewallPolicyIdpsSignaturesOverridesClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), resourceGroupName, firewallPolicyName,
@@ -590,7 +590,7 @@ public final class FirewallPolicyIdpsSignaturesOverridesClientImpl
 
     /**
      * Returns all signatures overrides objects for a specific policy as a list containing a single value.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -606,7 +606,7 @@ public final class FirewallPolicyIdpsSignaturesOverridesClientImpl
 
     /**
      * Returns all signatures overrides objects for a specific policy as a list containing a single value.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @param context The context to associate with this operation.
@@ -623,7 +623,7 @@ public final class FirewallPolicyIdpsSignaturesOverridesClientImpl
 
     /**
      * Returns all signatures overrides objects for a specific policy as a list containing a single value.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

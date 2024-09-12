@@ -9,12 +9,12 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class FirewallPolicyRuleCollectionGroupsGetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * FirewallPolicyNatRuleCollectionGroupGet.json
      */
     /**
      * Sample code: Get FirewallPolicyNatRuleCollectionGroup.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getFirewallPolicyNatRuleCollectionGroup(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -26,12 +26,12 @@ public final class FirewallPolicyRuleCollectionGroupsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * FirewallPolicyRuleCollectionGroupWithWebCategoriesGet.json
      */
     /**
      * Sample code: Get FirewallPolicyRuleCollectionGroup With Web Categories.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
@@ -44,12 +44,12 @@ public final class FirewallPolicyRuleCollectionGroupsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * FirewallPolicyRuleCollectionGroupGet.json
      */
     /**
      * Sample code: Get FirewallPolicyRuleCollectionGroup.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getFirewallPolicyRuleCollectionGroup(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -61,12 +61,12 @@ public final class FirewallPolicyRuleCollectionGroupsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * FirewallPolicyRuleCollectionGroupWithIpGroupsGet.json
      */
     /**
      * Sample code: Get FirewallPolicyRuleCollectionGroup With IpGroups.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void

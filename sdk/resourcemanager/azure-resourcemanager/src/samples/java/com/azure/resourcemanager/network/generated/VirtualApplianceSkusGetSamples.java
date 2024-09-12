@@ -10,12 +10,12 @@ package com.azure.resourcemanager.network.generated;
 public final class VirtualApplianceSkusGetSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/NetworkVirtualApplianceSkuGet
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/NetworkVirtualApplianceSkuGet
      * .json
      */
     /**
      * Sample code: NetworkVirtualApplianceSkuGet.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void networkVirtualApplianceSkuGet(com.azure.resourcemanager.AzureResourceManager azure) {

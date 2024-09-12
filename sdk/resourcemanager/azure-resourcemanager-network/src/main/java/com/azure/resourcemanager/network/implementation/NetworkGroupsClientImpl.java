@@ -55,7 +55,7 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
 
     /**
      * Initializes an instance of NetworkGroupsClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     NetworkGroupsClientImpl(NetworkManagementClientImpl client) {
@@ -126,7 +126,7 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
 
     /**
      * Gets the specified network group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -158,7 +158,7 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter networkGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -168,7 +168,7 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
 
     /**
      * Gets the specified network group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -201,7 +201,7 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter networkGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -210,7 +210,7 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
 
     /**
      * Gets the specified network group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -228,7 +228,7 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
 
     /**
      * Gets the specified network group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -246,7 +246,7 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
 
     /**
      * Gets the specified network group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -262,7 +262,7 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
 
     /**
      * Creates or updates a network group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -302,7 +302,7 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -313,7 +313,7 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
 
     /**
      * Creates or updates a network group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -355,7 +355,7 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -364,7 +364,7 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
 
     /**
      * Creates or updates a network group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -384,7 +384,7 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
 
     /**
      * Creates or updates a network group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -407,7 +407,7 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
 
     /**
      * Creates or updates a network group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -427,7 +427,7 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
 
     /**
      * Deletes a network group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -461,7 +461,7 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter networkGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -471,7 +471,7 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
 
     /**
      * Deletes a network group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -506,7 +506,7 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter networkGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -515,7 +515,7 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
 
     /**
      * Deletes a network group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -537,7 +537,7 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
 
     /**
      * Deletes a network group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -558,7 +558,7 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
 
     /**
      * Deletes a network group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -582,7 +582,7 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
 
     /**
      * Deletes a network group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -600,7 +600,7 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
 
     /**
      * Deletes a network group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -621,7 +621,7 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
 
     /**
      * Deletes a network group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -641,7 +641,7 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
 
     /**
      * Deletes a network group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -659,7 +659,7 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
 
     /**
      * Deletes a network group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -680,7 +680,7 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
 
     /**
      * Deletes a network group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -696,7 +696,7 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
 
     /**
      * Deletes a network group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -715,7 +715,7 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
 
     /**
      * Lists the specified network group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param top An optional query parameter which specifies the maximum number of records to be returned by the
@@ -748,7 +748,7 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter networkManagerName is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -760,7 +760,7 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
 
     /**
      * Lists the specified network group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param top An optional query parameter which specifies the maximum number of records to be returned by the
@@ -794,7 +794,7 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter networkManagerName is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -806,7 +806,7 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
 
     /**
      * Lists the specified network group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param top An optional query parameter which specifies the maximum number of records to be returned by the
@@ -828,7 +828,7 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
 
     /**
      * Lists the specified network group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -846,7 +846,7 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
 
     /**
      * Lists the specified network group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param top An optional query parameter which specifies the maximum number of records to be returned by the
@@ -870,7 +870,7 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
 
     /**
      * Lists the specified network group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -887,7 +887,7 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
 
     /**
      * Lists the specified network group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param top An optional query parameter which specifies the maximum number of records to be returned by the
@@ -909,7 +909,7 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -935,7 +935,7 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

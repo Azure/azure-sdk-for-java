@@ -9,12 +9,12 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class LoadBalancerBackendAddressPoolsGetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * LoadBalancerBackendAddressPoolGet.json
      */
     /**
      * Sample code: LoadBalancerBackendAddressPoolGet.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void loadBalancerBackendAddressPoolGet(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -26,12 +26,12 @@ public final class LoadBalancerBackendAddressPoolsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * LBBackendAddressPoolWithBackendAddressesGet.json
      */
     /**
      * Sample code: LoadBalancer with BackendAddressPool with BackendAddresses.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void

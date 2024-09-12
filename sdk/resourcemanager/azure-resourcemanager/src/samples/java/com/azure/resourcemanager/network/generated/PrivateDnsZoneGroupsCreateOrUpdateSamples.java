@@ -13,12 +13,12 @@ import java.util.Arrays;
  */
 public final class PrivateDnsZoneGroupsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * PrivateEndpointDnsZoneGroupCreate.json
      */
     /**
      * Sample code: Create private dns zone group.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createPrivateDnsZoneGroup(com.azure.resourcemanager.AzureResourceManager azure) {

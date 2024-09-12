@@ -54,7 +54,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
 
     /**
      * Initializes an instance of NetworkInterfaceTapConfigurationsClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     NetworkInterfaceTapConfigurationsClientImpl(NetworkManagementClientImpl client) {
@@ -125,7 +125,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
 
     /**
      * Deletes the specified tap configuration from the NetworkInterface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param tapConfigurationName The name of the tap configuration.
@@ -157,7 +157,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, networkInterfaceName,
@@ -167,7 +167,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
 
     /**
      * Deletes the specified tap configuration from the NetworkInterface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param tapConfigurationName The name of the tap configuration.
@@ -200,7 +200,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, networkInterfaceName, tapConfigurationName,
@@ -209,7 +209,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
 
     /**
      * Deletes the specified tap configuration from the NetworkInterface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param tapConfigurationName The name of the tap configuration.
@@ -229,7 +229,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
 
     /**
      * Deletes the specified tap configuration from the NetworkInterface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param tapConfigurationName The name of the tap configuration.
@@ -251,7 +251,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
 
     /**
      * Deletes the specified tap configuration from the NetworkInterface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param tapConfigurationName The name of the tap configuration.
@@ -268,7 +268,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
 
     /**
      * Deletes the specified tap configuration from the NetworkInterface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param tapConfigurationName The name of the tap configuration.
@@ -287,7 +287,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
 
     /**
      * Deletes the specified tap configuration from the NetworkInterface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param tapConfigurationName The name of the tap configuration.
@@ -304,7 +304,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
 
     /**
      * Deletes the specified tap configuration from the NetworkInterface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param tapConfigurationName The name of the tap configuration.
@@ -323,7 +323,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
 
     /**
      * Deletes the specified tap configuration from the NetworkInterface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param tapConfigurationName The name of the tap configuration.
@@ -338,7 +338,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
 
     /**
      * Deletes the specified tap configuration from the NetworkInterface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param tapConfigurationName The name of the tap configuration.
@@ -355,7 +355,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
 
     /**
      * Get the specified tap configuration on a network interface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param tapConfigurationName The name of the tap configuration.
@@ -388,7 +388,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, networkInterfaceName,
@@ -398,7 +398,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
 
     /**
      * Get the specified tap configuration on a network interface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param tapConfigurationName The name of the tap configuration.
@@ -432,7 +432,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), resourceGroupName, networkInterfaceName, tapConfigurationName,
@@ -441,7 +441,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
 
     /**
      * Get the specified tap configuration on a network interface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param tapConfigurationName The name of the tap configuration.
@@ -459,7 +459,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
 
     /**
      * Get the specified tap configuration on a network interface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param tapConfigurationName The name of the tap configuration.
@@ -477,7 +477,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
 
     /**
      * Get the specified tap configuration on a network interface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param tapConfigurationName The name of the tap configuration.
@@ -494,7 +494,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
 
     /**
      * Creates or updates a Tap configuration in the specified NetworkInterface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param tapConfigurationName The name of the tap configuration.
@@ -535,7 +535,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
         } else {
             tapConfigurationParameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName,
@@ -546,7 +546,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
 
     /**
      * Creates or updates a Tap configuration in the specified NetworkInterface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param tapConfigurationName The name of the tap configuration.
@@ -588,7 +588,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
         } else {
             tapConfigurationParameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, networkInterfaceName,
@@ -598,7 +598,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
 
     /**
      * Creates or updates a Tap configuration in the specified NetworkInterface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param tapConfigurationName The name of the tap configuration.
@@ -621,7 +621,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
 
     /**
      * Creates or updates a Tap configuration in the specified NetworkInterface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param tapConfigurationName The name of the tap configuration.
@@ -646,7 +646,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
 
     /**
      * Creates or updates a Tap configuration in the specified NetworkInterface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param tapConfigurationName The name of the tap configuration.
@@ -668,7 +668,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
 
     /**
      * Creates or updates a Tap configuration in the specified NetworkInterface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param tapConfigurationName The name of the tap configuration.
@@ -691,7 +691,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
 
     /**
      * Creates or updates a Tap configuration in the specified NetworkInterface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param tapConfigurationName The name of the tap configuration.
@@ -711,7 +711,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
 
     /**
      * Creates or updates a Tap configuration in the specified NetworkInterface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param tapConfigurationName The name of the tap configuration.
@@ -732,7 +732,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
 
     /**
      * Creates or updates a Tap configuration in the specified NetworkInterface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param tapConfigurationName The name of the tap configuration.
@@ -751,7 +751,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
 
     /**
      * Creates or updates a Tap configuration in the specified NetworkInterface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param tapConfigurationName The name of the tap configuration.
@@ -772,7 +772,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
 
     /**
      * Get all Tap configurations in a network interface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -800,7 +800,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), resourceGroupName, networkInterfaceName,
@@ -812,7 +812,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
 
     /**
      * Get all Tap configurations in a network interface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param context The context to associate with this operation.
@@ -841,7 +841,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -853,7 +853,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
 
     /**
      * Get all Tap configurations in a network interface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -870,7 +870,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
 
     /**
      * Get all Tap configurations in a network interface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param context The context to associate with this operation.
@@ -888,7 +888,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
 
     /**
      * Get all Tap configurations in a network interface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -904,7 +904,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
 
     /**
      * Get all Tap configurations in a network interface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param context The context to associate with this operation.
@@ -921,7 +921,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -947,7 +947,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

@@ -57,7 +57,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
 
     /**
      * Initializes an instance of PacketCapturesClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     PacketCapturesClientImpl(NetworkManagementClientImpl client) {
@@ -137,7 +137,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
 
     /**
      * Create and start a packet capture on the specified VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param packetCaptureName The name of the packet capture session.
@@ -176,7 +176,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.create(this.client.getEndpoint(), resourceGroupName, networkWatcherName,
@@ -186,7 +186,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
 
     /**
      * Create and start a packet capture on the specified VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param packetCaptureName The name of the packet capture session.
@@ -226,7 +226,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.create(this.client.getEndpoint(), resourceGroupName, networkWatcherName, packetCaptureName,
@@ -235,7 +235,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
 
     /**
      * Create and start a packet capture on the specified VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param packetCaptureName The name of the packet capture session.
@@ -257,7 +257,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
 
     /**
      * Create and start a packet capture on the specified VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param packetCaptureName The name of the packet capture session.
@@ -281,7 +281,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
 
     /**
      * Create and start a packet capture on the specified VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param packetCaptureName The name of the packet capture session.
@@ -300,7 +300,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
 
     /**
      * Create and start a packet capture on the specified VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param packetCaptureName The name of the packet capture session.
@@ -321,7 +321,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
 
     /**
      * Create and start a packet capture on the specified VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param packetCaptureName The name of the packet capture session.
@@ -340,7 +340,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
 
     /**
      * Create and start a packet capture on the specified VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param packetCaptureName The name of the packet capture session.
@@ -360,7 +360,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
 
     /**
      * Create and start a packet capture on the specified VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param packetCaptureName The name of the packet capture session.
@@ -378,7 +378,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
 
     /**
      * Create and start a packet capture on the specified VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param packetCaptureName The name of the packet capture session.
@@ -397,7 +397,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
 
     /**
      * Gets a packet capture session by name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param packetCaptureName The name of the packet capture session.
@@ -429,7 +429,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, networkWatcherName,
@@ -439,7 +439,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
 
     /**
      * Gets a packet capture session by name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param packetCaptureName The name of the packet capture session.
@@ -472,7 +472,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), resourceGroupName, networkWatcherName, packetCaptureName,
@@ -481,7 +481,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
 
     /**
      * Gets a packet capture session by name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param packetCaptureName The name of the packet capture session.
@@ -499,7 +499,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
 
     /**
      * Gets a packet capture session by name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param packetCaptureName The name of the packet capture session.
@@ -517,7 +517,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
 
     /**
      * Gets a packet capture session by name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param packetCaptureName The name of the packet capture session.
@@ -533,7 +533,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
 
     /**
      * Deletes the specified packet capture session.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param packetCaptureName The name of the packet capture session.
@@ -565,7 +565,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, networkWatcherName,
@@ -575,7 +575,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
 
     /**
      * Deletes the specified packet capture session.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param packetCaptureName The name of the packet capture session.
@@ -608,7 +608,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, networkWatcherName, packetCaptureName,
@@ -617,7 +617,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
 
     /**
      * Deletes the specified packet capture session.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param packetCaptureName The name of the packet capture session.
@@ -637,7 +637,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
 
     /**
      * Deletes the specified packet capture session.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param packetCaptureName The name of the packet capture session.
@@ -659,7 +659,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
 
     /**
      * Deletes the specified packet capture session.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param packetCaptureName The name of the packet capture session.
@@ -676,7 +676,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
 
     /**
      * Deletes the specified packet capture session.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param packetCaptureName The name of the packet capture session.
@@ -694,7 +694,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
 
     /**
      * Deletes the specified packet capture session.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param packetCaptureName The name of the packet capture session.
@@ -711,7 +711,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
 
     /**
      * Deletes the specified packet capture session.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param packetCaptureName The name of the packet capture session.
@@ -730,7 +730,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
 
     /**
      * Deletes the specified packet capture session.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param packetCaptureName The name of the packet capture session.
@@ -745,7 +745,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
 
     /**
      * Deletes the specified packet capture session.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param packetCaptureName The name of the packet capture session.
@@ -761,7 +761,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
 
     /**
      * Stops a specified packet capture session.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param packetCaptureName The name of the packet capture session.
@@ -793,7 +793,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.stop(this.client.getEndpoint(), resourceGroupName, networkWatcherName,
@@ -803,7 +803,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
 
     /**
      * Stops a specified packet capture session.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param packetCaptureName The name of the packet capture session.
@@ -836,7 +836,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.stop(this.client.getEndpoint(), resourceGroupName, networkWatcherName, packetCaptureName,
@@ -845,7 +845,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
 
     /**
      * Stops a specified packet capture session.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param packetCaptureName The name of the packet capture session.
@@ -865,7 +865,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
 
     /**
      * Stops a specified packet capture session.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param packetCaptureName The name of the packet capture session.
@@ -887,7 +887,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
 
     /**
      * Stops a specified packet capture session.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param packetCaptureName The name of the packet capture session.
@@ -904,7 +904,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
 
     /**
      * Stops a specified packet capture session.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param packetCaptureName The name of the packet capture session.
@@ -922,7 +922,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
 
     /**
      * Stops a specified packet capture session.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param packetCaptureName The name of the packet capture session.
@@ -939,7 +939,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
 
     /**
      * Stops a specified packet capture session.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param packetCaptureName The name of the packet capture session.
@@ -958,7 +958,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
 
     /**
      * Stops a specified packet capture session.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param packetCaptureName The name of the packet capture session.
@@ -973,7 +973,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
 
     /**
      * Stops a specified packet capture session.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param packetCaptureName The name of the packet capture session.
@@ -989,7 +989,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
 
     /**
      * Query the status of a running packet capture session.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param packetCaptureName The name given to the packet capture session.
@@ -1021,7 +1021,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getStatus(this.client.getEndpoint(), resourceGroupName, networkWatcherName,
@@ -1031,7 +1031,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
 
     /**
      * Query the status of a running packet capture session.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param packetCaptureName The name given to the packet capture session.
@@ -1064,7 +1064,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getStatus(this.client.getEndpoint(), resourceGroupName, networkWatcherName, packetCaptureName,
@@ -1073,7 +1073,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
 
     /**
      * Query the status of a running packet capture session.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param packetCaptureName The name given to the packet capture session.
@@ -1094,7 +1094,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
 
     /**
      * Query the status of a running packet capture session.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param packetCaptureName The name given to the packet capture session.
@@ -1118,7 +1118,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
 
     /**
      * Query the status of a running packet capture session.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param packetCaptureName The name given to the packet capture session.
@@ -1135,7 +1135,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
 
     /**
      * Query the status of a running packet capture session.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param packetCaptureName The name given to the packet capture session.
@@ -1154,7 +1154,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
 
     /**
      * Query the status of a running packet capture session.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param packetCaptureName The name given to the packet capture session.
@@ -1172,7 +1172,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
 
     /**
      * Query the status of a running packet capture session.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param packetCaptureName The name given to the packet capture session.
@@ -1191,7 +1191,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
 
     /**
      * Query the status of a running packet capture session.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param packetCaptureName The name given to the packet capture session.
@@ -1208,7 +1208,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
 
     /**
      * Query the status of a running packet capture session.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param packetCaptureName The name given to the packet capture session.
@@ -1226,7 +1226,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
 
     /**
      * Lists all packet capture sessions within the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1254,7 +1254,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), resourceGroupName, networkWatcherName,
@@ -1266,7 +1266,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
 
     /**
      * Lists all packet capture sessions within the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param context The context to associate with this operation.
@@ -1295,7 +1295,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1307,7 +1307,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
 
     /**
      * Lists all packet capture sessions within the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1322,7 +1322,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
 
     /**
      * Lists all packet capture sessions within the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param context The context to associate with this operation.
@@ -1339,7 +1339,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
 
     /**
      * Lists all packet capture sessions within the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1354,7 +1354,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
 
     /**
      * Lists all packet capture sessions within the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param context The context to associate with this operation.

@@ -12,12 +12,12 @@ import com.azure.resourcemanager.network.models.TroubleshootingParameters;
 public final class NetworkWatchersGetTroubleshootingSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/NetworkWatcherTroubleshootGet
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/NetworkWatcherTroubleshootGet
      * .json
      */
     /**
      * Sample code: Get troubleshooting.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getTroubleshooting(com.azure.resourcemanager.AzureResourceManager azure) {

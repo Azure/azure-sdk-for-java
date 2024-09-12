@@ -6,6 +6,7 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -34,14 +35,14 @@ public final class AzureFirewallFqdnTagInner extends Resource {
     private String id;
 
     /*
-     * The name of the resource.
-     */
-    private String name;
-
-    /*
      * The type of the resource.
      */
     private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
 
     /**
      * Creates an instance of AzureFirewallFqdnTagInner class.
@@ -51,7 +52,7 @@ public final class AzureFirewallFqdnTagInner extends Resource {
 
     /**
      * Get the innerProperties property: Properties of the azure firewall FQDN tag.
-     * 
+     *
      * @return the innerProperties value.
      */
     private AzureFirewallFqdnTagPropertiesFormat innerProperties() {
@@ -60,7 +61,7 @@ public final class AzureFirewallFqdnTagInner extends Resource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     * 
+     *
      * @return the etag value.
      */
     public String etag() {
@@ -69,7 +70,7 @@ public final class AzureFirewallFqdnTagInner extends Resource {
 
     /**
      * Get the id property: Resource ID.
-     * 
+     *
      * @return the id value.
      */
     public String id() {
@@ -78,7 +79,7 @@ public final class AzureFirewallFqdnTagInner extends Resource {
 
     /**
      * Set the id property: Resource ID.
-     * 
+     *
      * @param id the id value to set.
      * @return the AzureFirewallFqdnTagInner object itself.
      */
@@ -88,23 +89,23 @@ public final class AzureFirewallFqdnTagInner extends Resource {
     }
 
     /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
-    }
-
-    /**
      * Get the type property: The type of the resource.
-     * 
+     *
      * @return the type value.
      */
     @Override
     public String type() {
         return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     *
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -127,7 +128,7 @@ public final class AzureFirewallFqdnTagInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the Azure firewall FQDN tag resource.
-     * 
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -136,7 +137,7 @@ public final class AzureFirewallFqdnTagInner extends Resource {
 
     /**
      * Get the fqdnTagName property: The name of this FQDN Tag.
-     * 
+     *
      * @return the fqdnTagName value.
      */
     public String fqdnTagName() {
@@ -145,14 +146,21 @@ public final class AzureFirewallFqdnTagInner extends Resource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+        if (location() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property location in model AzureFirewallFqdnTagInner"));
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureFirewallFqdnTagInner.class);
 
     /**
      * {@inheritDoc}
@@ -169,7 +177,7 @@ public final class AzureFirewallFqdnTagInner extends Resource {
 
     /**
      * Reads an instance of AzureFirewallFqdnTagInner from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of AzureFirewallFqdnTagInner if the JsonReader was pointing to an instance of it, or null if
      * it was pointing to JSON null.

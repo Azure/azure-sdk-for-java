@@ -33,12 +33,11 @@ public final class PrivateLinkServicePropertiesVisibility extends ResourceSet {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**
@@ -53,7 +52,7 @@ public final class PrivateLinkServicePropertiesVisibility extends ResourceSet {
 
     /**
      * Reads an instance of PrivateLinkServicePropertiesVisibility from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of PrivateLinkServicePropertiesVisibility if the JsonReader was pointing to an instance of
      * it, or null if it was pointing to JSON null.

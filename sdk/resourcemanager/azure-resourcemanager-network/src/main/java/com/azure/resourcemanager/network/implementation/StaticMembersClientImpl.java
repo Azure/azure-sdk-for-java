@@ -49,7 +49,7 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
 
     /**
      * Initializes an instance of StaticMembersClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     StaticMembersClientImpl(NetworkManagementClientImpl client) {
@@ -124,7 +124,7 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
 
     /**
      * Gets the specified static member.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -161,7 +161,7 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter staticMemberName is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -171,7 +171,7 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
 
     /**
      * Gets the specified static member.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -209,7 +209,7 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter staticMemberName is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -218,7 +218,7 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
 
     /**
      * Gets the specified static member.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -237,7 +237,7 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
 
     /**
      * Gets the specified static member.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -257,7 +257,7 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
 
     /**
      * Gets the specified static member.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -276,7 +276,7 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
 
     /**
      * Creates or updates a static member.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -319,7 +319,7 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -330,7 +330,7 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
 
     /**
      * Creates or updates a static member.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -375,7 +375,7 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -384,7 +384,7 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
 
     /**
      * Creates or updates a static member.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -404,7 +404,7 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
 
     /**
      * Creates or updates a static member.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -425,7 +425,7 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
 
     /**
      * Creates or updates a static member.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -445,7 +445,7 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
 
     /**
      * Deletes a static member.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -482,7 +482,7 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter staticMemberName is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -492,7 +492,7 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
 
     /**
      * Deletes a static member.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -530,7 +530,7 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter staticMemberName is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -539,7 +539,7 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
 
     /**
      * Deletes a static member.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -558,7 +558,7 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
 
     /**
      * Deletes a static member.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -578,7 +578,7 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
 
     /**
      * Deletes a static member.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -595,7 +595,7 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
 
     /**
      * Lists the specified static member.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -633,7 +633,7 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter networkGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -645,7 +645,7 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
 
     /**
      * Lists the specified static member.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -684,7 +684,7 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter networkGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -696,7 +696,7 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
 
     /**
      * Lists the specified static member.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -720,7 +720,7 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
 
     /**
      * Lists the specified static member.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -741,7 +741,7 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
 
     /**
      * Lists the specified static member.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -766,7 +766,7 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
 
     /**
      * Lists the specified static member.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -785,7 +785,7 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
 
     /**
      * Lists the specified static member.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -809,7 +809,7 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -835,7 +835,7 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

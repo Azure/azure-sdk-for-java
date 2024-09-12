@@ -14,12 +14,12 @@ import java.util.Arrays;
 public final class ServiceEndpointPoliciesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/ServiceEndpointPolicyCreate.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/ServiceEndpointPolicyCreate.
      * json
      */
     /**
      * Sample code: Create service endpoint policy.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createServiceEndpointPolicy(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -32,12 +32,12 @@ public final class ServiceEndpointPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * ServiceEndpointPolicyCreateWithDefinition.json
      */
     /**
      * Sample code: Create service endpoint policy with definition.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createServiceEndpointPolicyWithDefinition(com.azure.resourcemanager.AzureResourceManager azure) {

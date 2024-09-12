@@ -10,11 +10,11 @@ package com.azure.resourcemanager.network.generated;
 public final class VirtualNetworkPeeringsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/VirtualNetworkPeeringGet.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/VirtualNetworkPeeringGet.json
      */
     /**
      * Sample code: Get peering.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getPeering(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -26,12 +26,12 @@ public final class VirtualNetworkPeeringsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * VirtualNetworkPeeringGetWithRemoteVirtualNetworkEncryption.json
      */
     /**
      * Sample code: Get peering with remote virtual network encryption.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
@@ -44,12 +44,12 @@ public final class VirtualNetworkPeeringsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * VirtualNetworkSubnetPeeringGet.json
      */
     /**
      * Sample code: Get subnet peering.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getSubnetPeering(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -61,12 +61,12 @@ public final class VirtualNetworkPeeringsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * VirtualNetworkV6SubnetPeeringGet.json
      */
     /**
      * Sample code: Get V6 subnet peering.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getV6SubnetPeering(com.azure.resourcemanager.AzureResourceManager azure) {

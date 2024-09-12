@@ -10,11 +10,11 @@ package com.azure.resourcemanager.network.generated;
 public final class VirtualRouterPeeringsListSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/VirtualRouterPeeringList.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/VirtualRouterPeeringList.json
      */
     /**
      * Sample code: List all Virtual Router Peerings for a given Virtual Router.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void

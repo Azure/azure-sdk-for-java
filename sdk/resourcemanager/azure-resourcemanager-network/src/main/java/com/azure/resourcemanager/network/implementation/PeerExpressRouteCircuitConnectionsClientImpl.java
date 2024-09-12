@@ -46,7 +46,7 @@ public final class PeerExpressRouteCircuitConnectionsClientImpl implements PeerE
 
     /**
      * Initializes an instance of PeerExpressRouteCircuitConnectionsClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     PeerExpressRouteCircuitConnectionsClientImpl(NetworkManagementClientImpl client) {
@@ -92,7 +92,7 @@ public final class PeerExpressRouteCircuitConnectionsClientImpl implements PeerE
 
     /**
      * Gets the specified Peer Express Route Circuit Connection from the specified express route circuit.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -127,7 +127,7 @@ public final class PeerExpressRouteCircuitConnectionsClientImpl implements PeerE
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, circuitName, peeringName,
@@ -137,7 +137,7 @@ public final class PeerExpressRouteCircuitConnectionsClientImpl implements PeerE
 
     /**
      * Gets the specified Peer Express Route Circuit Connection from the specified express route circuit.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -173,7 +173,7 @@ public final class PeerExpressRouteCircuitConnectionsClientImpl implements PeerE
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), resourceGroupName, circuitName, peeringName, connectionName,
@@ -182,7 +182,7 @@ public final class PeerExpressRouteCircuitConnectionsClientImpl implements PeerE
 
     /**
      * Gets the specified Peer Express Route Circuit Connection from the specified express route circuit.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -202,7 +202,7 @@ public final class PeerExpressRouteCircuitConnectionsClientImpl implements PeerE
 
     /**
      * Gets the specified Peer Express Route Circuit Connection from the specified express route circuit.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -222,7 +222,7 @@ public final class PeerExpressRouteCircuitConnectionsClientImpl implements PeerE
 
     /**
      * Gets the specified Peer Express Route Circuit Connection from the specified express route circuit.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -240,7 +240,7 @@ public final class PeerExpressRouteCircuitConnectionsClientImpl implements PeerE
 
     /**
      * Gets all global reach peer connections associated with a private peering in an express route circuit.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
      * @param peeringName The name of the peering.
@@ -271,7 +271,7 @@ public final class PeerExpressRouteCircuitConnectionsClientImpl implements PeerE
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), resourceGroupName, circuitName, peeringName,
@@ -283,7 +283,7 @@ public final class PeerExpressRouteCircuitConnectionsClientImpl implements PeerE
 
     /**
      * Gets all global reach peer connections associated with a private peering in an express route circuit.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
      * @param peeringName The name of the peering.
@@ -315,7 +315,7 @@ public final class PeerExpressRouteCircuitConnectionsClientImpl implements PeerE
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -327,7 +327,7 @@ public final class PeerExpressRouteCircuitConnectionsClientImpl implements PeerE
 
     /**
      * Gets all global reach peer connections associated with a private peering in an express route circuit.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
      * @param peeringName The name of the peering.
@@ -346,7 +346,7 @@ public final class PeerExpressRouteCircuitConnectionsClientImpl implements PeerE
 
     /**
      * Gets all global reach peer connections associated with a private peering in an express route circuit.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
      * @param peeringName The name of the peering.
@@ -366,7 +366,7 @@ public final class PeerExpressRouteCircuitConnectionsClientImpl implements PeerE
 
     /**
      * Gets all global reach peer connections associated with a private peering in an express route circuit.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
      * @param peeringName The name of the peering.
@@ -384,7 +384,7 @@ public final class PeerExpressRouteCircuitConnectionsClientImpl implements PeerE
 
     /**
      * Gets all global reach peer connections associated with a private peering in an express route circuit.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
      * @param peeringName The name of the peering.
@@ -403,7 +403,7 @@ public final class PeerExpressRouteCircuitConnectionsClientImpl implements PeerE
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -430,7 +430,7 @@ public final class PeerExpressRouteCircuitConnectionsClientImpl implements PeerE
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

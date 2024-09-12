@@ -14,12 +14,12 @@ import java.util.Arrays;
  */
 public final class NetworkWatchersGetAzureReachabilityReportSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * NetworkWatcherAzureReachabilityReportGet.json
      */
     /**
      * Sample code: Get Azure Reachability Report.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAzureReachabilityReport(com.azure.resourcemanager.AzureResourceManager azure) {

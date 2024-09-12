@@ -7,6 +7,7 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -52,14 +53,14 @@ public final class FirewallPolicyInner extends Resource {
     private String id;
 
     /*
-     * The name of the resource.
-     */
-    private String name;
-
-    /*
      * The type of the resource.
      */
     private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
 
     /**
      * Creates an instance of FirewallPolicyInner class.
@@ -69,7 +70,7 @@ public final class FirewallPolicyInner extends Resource {
 
     /**
      * Get the innerProperties property: Properties of the firewall policy.
-     * 
+     *
      * @return the innerProperties value.
      */
     private FirewallPolicyPropertiesFormat innerProperties() {
@@ -78,7 +79,7 @@ public final class FirewallPolicyInner extends Resource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     * 
+     *
      * @return the etag value.
      */
     public String etag() {
@@ -87,7 +88,7 @@ public final class FirewallPolicyInner extends Resource {
 
     /**
      * Get the identity property: The identity of the firewall policy.
-     * 
+     *
      * @return the identity value.
      */
     public ManagedServiceIdentity identity() {
@@ -96,7 +97,7 @@ public final class FirewallPolicyInner extends Resource {
 
     /**
      * Set the identity property: The identity of the firewall policy.
-     * 
+     *
      * @param identity the identity value to set.
      * @return the FirewallPolicyInner object itself.
      */
@@ -107,7 +108,7 @@ public final class FirewallPolicyInner extends Resource {
 
     /**
      * Get the id property: Resource ID.
-     * 
+     *
      * @return the id value.
      */
     public String id() {
@@ -116,7 +117,7 @@ public final class FirewallPolicyInner extends Resource {
 
     /**
      * Set the id property: Resource ID.
-     * 
+     *
      * @param id the id value to set.
      * @return the FirewallPolicyInner object itself.
      */
@@ -126,23 +127,23 @@ public final class FirewallPolicyInner extends Resource {
     }
 
     /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
-    }
-
-    /**
      * Get the type property: The type of the resource.
-     * 
+     *
      * @return the type value.
      */
     @Override
     public String type() {
         return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     *
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -166,7 +167,7 @@ public final class FirewallPolicyInner extends Resource {
     /**
      * Get the size property: A read-only string that represents the size of the FirewallPolicyPropertiesFormat in MB.
      * (ex 0.5MB).
-     * 
+     *
      * @return the size value.
      */
     public String size() {
@@ -175,7 +176,7 @@ public final class FirewallPolicyInner extends Resource {
 
     /**
      * Get the ruleCollectionGroups property: List of references to FirewallPolicyRuleCollectionGroups.
-     * 
+     *
      * @return the ruleCollectionGroups value.
      */
     public List<SubResource> ruleCollectionGroups() {
@@ -184,7 +185,7 @@ public final class FirewallPolicyInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the firewall policy resource.
-     * 
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -193,7 +194,7 @@ public final class FirewallPolicyInner extends Resource {
 
     /**
      * Get the basePolicy property: The parent firewall policy from which rules are inherited.
-     * 
+     *
      * @return the basePolicy value.
      */
     public SubResource basePolicy() {
@@ -202,7 +203,7 @@ public final class FirewallPolicyInner extends Resource {
 
     /**
      * Set the basePolicy property: The parent firewall policy from which rules are inherited.
-     * 
+     *
      * @param basePolicy the basePolicy value to set.
      * @return the FirewallPolicyInner object itself.
      */
@@ -216,7 +217,7 @@ public final class FirewallPolicyInner extends Resource {
 
     /**
      * Get the firewalls property: List of references to Azure Firewalls that this Firewall Policy is associated with.
-     * 
+     *
      * @return the firewalls value.
      */
     public List<SubResource> firewalls() {
@@ -225,7 +226,7 @@ public final class FirewallPolicyInner extends Resource {
 
     /**
      * Get the childPolicies property: List of references to Child Firewall Policies.
-     * 
+     *
      * @return the childPolicies value.
      */
     public List<SubResource> childPolicies() {
@@ -234,7 +235,7 @@ public final class FirewallPolicyInner extends Resource {
 
     /**
      * Get the threatIntelMode property: The operation mode for Threat Intelligence.
-     * 
+     *
      * @return the threatIntelMode value.
      */
     public AzureFirewallThreatIntelMode threatIntelMode() {
@@ -243,7 +244,7 @@ public final class FirewallPolicyInner extends Resource {
 
     /**
      * Set the threatIntelMode property: The operation mode for Threat Intelligence.
-     * 
+     *
      * @param threatIntelMode the threatIntelMode value to set.
      * @return the FirewallPolicyInner object itself.
      */
@@ -257,7 +258,7 @@ public final class FirewallPolicyInner extends Resource {
 
     /**
      * Get the threatIntelWhitelist property: ThreatIntel Whitelist for Firewall Policy.
-     * 
+     *
      * @return the threatIntelWhitelist value.
      */
     public FirewallPolicyThreatIntelWhitelist threatIntelWhitelist() {
@@ -266,7 +267,7 @@ public final class FirewallPolicyInner extends Resource {
 
     /**
      * Set the threatIntelWhitelist property: ThreatIntel Whitelist for Firewall Policy.
-     * 
+     *
      * @param threatIntelWhitelist the threatIntelWhitelist value to set.
      * @return the FirewallPolicyInner object itself.
      */
@@ -280,7 +281,7 @@ public final class FirewallPolicyInner extends Resource {
 
     /**
      * Get the insights property: Insights on Firewall Policy.
-     * 
+     *
      * @return the insights value.
      */
     public FirewallPolicyInsights insights() {
@@ -289,7 +290,7 @@ public final class FirewallPolicyInner extends Resource {
 
     /**
      * Set the insights property: Insights on Firewall Policy.
-     * 
+     *
      * @param insights the insights value to set.
      * @return the FirewallPolicyInner object itself.
      */
@@ -303,7 +304,7 @@ public final class FirewallPolicyInner extends Resource {
 
     /**
      * Get the snat property: The private IP addresses/IP ranges to which traffic will not be SNAT.
-     * 
+     *
      * @return the snat value.
      */
     public FirewallPolicySnat snat() {
@@ -312,7 +313,7 @@ public final class FirewallPolicyInner extends Resource {
 
     /**
      * Set the snat property: The private IP addresses/IP ranges to which traffic will not be SNAT.
-     * 
+     *
      * @param snat the snat value to set.
      * @return the FirewallPolicyInner object itself.
      */
@@ -326,7 +327,7 @@ public final class FirewallPolicyInner extends Resource {
 
     /**
      * Get the sql property: SQL Settings definition.
-     * 
+     *
      * @return the sql value.
      */
     public FirewallPolicySql sql() {
@@ -335,7 +336,7 @@ public final class FirewallPolicyInner extends Resource {
 
     /**
      * Set the sql property: SQL Settings definition.
-     * 
+     *
      * @param sql the sql value to set.
      * @return the FirewallPolicyInner object itself.
      */
@@ -349,7 +350,7 @@ public final class FirewallPolicyInner extends Resource {
 
     /**
      * Get the dnsSettings property: DNS Proxy Settings definition.
-     * 
+     *
      * @return the dnsSettings value.
      */
     public DnsSettings dnsSettings() {
@@ -358,7 +359,7 @@ public final class FirewallPolicyInner extends Resource {
 
     /**
      * Set the dnsSettings property: DNS Proxy Settings definition.
-     * 
+     *
      * @param dnsSettings the dnsSettings value to set.
      * @return the FirewallPolicyInner object itself.
      */
@@ -372,7 +373,7 @@ public final class FirewallPolicyInner extends Resource {
 
     /**
      * Get the explicitProxy property: Explicit Proxy Settings definition.
-     * 
+     *
      * @return the explicitProxy value.
      */
     public ExplicitProxy explicitProxy() {
@@ -381,7 +382,7 @@ public final class FirewallPolicyInner extends Resource {
 
     /**
      * Set the explicitProxy property: Explicit Proxy Settings definition.
-     * 
+     *
      * @param explicitProxy the explicitProxy value to set.
      * @return the FirewallPolicyInner object itself.
      */
@@ -395,7 +396,7 @@ public final class FirewallPolicyInner extends Resource {
 
     /**
      * Get the intrusionDetection property: The configuration for Intrusion detection.
-     * 
+     *
      * @return the intrusionDetection value.
      */
     public FirewallPolicyIntrusionDetection intrusionDetection() {
@@ -404,7 +405,7 @@ public final class FirewallPolicyInner extends Resource {
 
     /**
      * Set the intrusionDetection property: The configuration for Intrusion detection.
-     * 
+     *
      * @param intrusionDetection the intrusionDetection value to set.
      * @return the FirewallPolicyInner object itself.
      */
@@ -418,7 +419,7 @@ public final class FirewallPolicyInner extends Resource {
 
     /**
      * Get the transportSecurity property: TLS Configuration definition.
-     * 
+     *
      * @return the transportSecurity value.
      */
     public FirewallPolicyTransportSecurity transportSecurity() {
@@ -427,7 +428,7 @@ public final class FirewallPolicyInner extends Resource {
 
     /**
      * Set the transportSecurity property: TLS Configuration definition.
-     * 
+     *
      * @param transportSecurity the transportSecurity value to set.
      * @return the FirewallPolicyInner object itself.
      */
@@ -441,7 +442,7 @@ public final class FirewallPolicyInner extends Resource {
 
     /**
      * Get the sku property: The Firewall Policy SKU.
-     * 
+     *
      * @return the sku value.
      */
     public FirewallPolicySku sku() {
@@ -450,7 +451,7 @@ public final class FirewallPolicyInner extends Resource {
 
     /**
      * Set the sku property: The Firewall Policy SKU.
-     * 
+     *
      * @param sku the sku value to set.
      * @return the FirewallPolicyInner object itself.
      */
@@ -464,7 +465,7 @@ public final class FirewallPolicyInner extends Resource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -474,7 +475,13 @@ public final class FirewallPolicyInner extends Resource {
         if (identity() != null) {
             identity().validate();
         }
+        if (location() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property location in model FirewallPolicyInner"));
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(FirewallPolicyInner.class);
 
     /**
      * {@inheritDoc}
@@ -492,7 +499,7 @@ public final class FirewallPolicyInner extends Resource {
 
     /**
      * Reads an instance of FirewallPolicyInner from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of FirewallPolicyInner if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.

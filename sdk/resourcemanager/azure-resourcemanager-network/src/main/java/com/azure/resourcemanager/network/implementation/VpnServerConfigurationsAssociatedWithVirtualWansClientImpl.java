@@ -48,7 +48,7 @@ public final class VpnServerConfigurationsAssociatedWithVirtualWansClientImpl
 
     /**
      * Initializes an instance of VpnServerConfigurationsAssociatedWithVirtualWansClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     VpnServerConfigurationsAssociatedWithVirtualWansClientImpl(NetworkManagementClientImpl client) {
@@ -78,7 +78,7 @@ public final class VpnServerConfigurationsAssociatedWithVirtualWansClientImpl
 
     /**
      * Gives the list of VpnServerConfigurations associated with Virtual Wan in a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -104,7 +104,7 @@ public final class VpnServerConfigurationsAssociatedWithVirtualWansClientImpl
         if (virtualWanName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualWanName is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -114,7 +114,7 @@ public final class VpnServerConfigurationsAssociatedWithVirtualWansClientImpl
 
     /**
      * Gives the list of VpnServerConfigurations associated with Virtual Wan in a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
      * @param context The context to associate with this operation.
@@ -142,7 +142,7 @@ public final class VpnServerConfigurationsAssociatedWithVirtualWansClientImpl
         if (virtualWanName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualWanName is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -151,7 +151,7 @@ public final class VpnServerConfigurationsAssociatedWithVirtualWansClientImpl
 
     /**
      * Gives the list of VpnServerConfigurations associated with Virtual Wan in a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -170,7 +170,7 @@ public final class VpnServerConfigurationsAssociatedWithVirtualWansClientImpl
 
     /**
      * Gives the list of VpnServerConfigurations associated with Virtual Wan in a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
      * @param context The context to associate with this operation.
@@ -191,7 +191,7 @@ public final class VpnServerConfigurationsAssociatedWithVirtualWansClientImpl
 
     /**
      * Gives the list of VpnServerConfigurations associated with Virtual Wan in a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -207,7 +207,7 @@ public final class VpnServerConfigurationsAssociatedWithVirtualWansClientImpl
 
     /**
      * Gives the list of VpnServerConfigurations associated with Virtual Wan in a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
      * @param context The context to associate with this operation.
@@ -224,7 +224,7 @@ public final class VpnServerConfigurationsAssociatedWithVirtualWansClientImpl
 
     /**
      * Gives the list of VpnServerConfigurations associated with Virtual Wan in a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -240,7 +240,7 @@ public final class VpnServerConfigurationsAssociatedWithVirtualWansClientImpl
 
     /**
      * Gives the list of VpnServerConfigurations associated with Virtual Wan in a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
      * @param context The context to associate with this operation.
@@ -259,7 +259,7 @@ public final class VpnServerConfigurationsAssociatedWithVirtualWansClientImpl
 
     /**
      * Gives the list of VpnServerConfigurations associated with Virtual Wan in a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -274,7 +274,7 @@ public final class VpnServerConfigurationsAssociatedWithVirtualWansClientImpl
 
     /**
      * Gives the list of VpnServerConfigurations associated with Virtual Wan in a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
      * @param context The context to associate with this operation.

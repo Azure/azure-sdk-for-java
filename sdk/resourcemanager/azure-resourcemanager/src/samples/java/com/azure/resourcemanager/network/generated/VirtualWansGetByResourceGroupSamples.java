@@ -10,11 +10,11 @@ package com.azure.resourcemanager.network.generated;
 public final class VirtualWansGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/VirtualWANGet.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/VirtualWANGet.json
      */
     /**
      * Sample code: VirtualWANGet.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void virtualWANGet(com.azure.resourcemanager.AzureResourceManager azure) {

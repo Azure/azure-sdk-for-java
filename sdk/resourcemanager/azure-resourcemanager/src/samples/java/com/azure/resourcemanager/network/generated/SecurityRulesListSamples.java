@@ -10,12 +10,12 @@ package com.azure.resourcemanager.network.generated;
 public final class SecurityRulesListSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/NetworkSecurityGroupRuleList.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/NetworkSecurityGroupRuleList.
      * json
      */
     /**
      * Sample code: List network security rules in network security group.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void

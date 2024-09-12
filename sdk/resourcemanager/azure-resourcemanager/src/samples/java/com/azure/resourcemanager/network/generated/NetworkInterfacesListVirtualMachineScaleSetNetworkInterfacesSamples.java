@@ -10,11 +10,11 @@ package com.azure.resourcemanager.network.generated;
 public final class NetworkInterfacesListVirtualMachineScaleSetNetworkInterfacesSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/VmssNetworkInterfaceList.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/VmssNetworkInterfaceList.json
      */
     /**
      * Sample code: List virtual machine scale set network interfaces.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void

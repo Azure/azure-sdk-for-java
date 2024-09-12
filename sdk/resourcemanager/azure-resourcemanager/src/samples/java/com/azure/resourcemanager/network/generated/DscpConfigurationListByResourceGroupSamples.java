@@ -10,11 +10,11 @@ package com.azure.resourcemanager.network.generated;
 public final class DscpConfigurationListByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/DscpConfigurationList.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/DscpConfigurationList.json
      */
     /**
      * Sample code: Get Dscp Configuration.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getDscpConfiguration(com.azure.resourcemanager.AzureResourceManager azure) {

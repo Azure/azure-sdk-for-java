@@ -7,6 +7,7 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -31,9 +32,9 @@ public final class DdosProtectionPlanInner extends Resource {
     private String etag;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * The type of the resource.
      */
-    private String id;
+    private String type;
 
     /*
      * The name of the resource.
@@ -41,9 +42,9 @@ public final class DdosProtectionPlanInner extends Resource {
     private String name;
 
     /*
-     * The type of the resource.
+     * Fully qualified resource Id for the resource.
      */
-    private String type;
+    private String id;
 
     /**
      * Creates an instance of DdosProtectionPlanInner class.
@@ -53,7 +54,7 @@ public final class DdosProtectionPlanInner extends Resource {
 
     /**
      * Get the innerProperties property: Properties of the DDoS protection plan.
-     * 
+     *
      * @return the innerProperties value.
      */
     private DdosProtectionPlanPropertiesFormat innerProperties() {
@@ -62,7 +63,7 @@ public final class DdosProtectionPlanInner extends Resource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     * 
+     *
      * @return the etag value.
      */
     public String etag() {
@@ -70,18 +71,18 @@ public final class DdosProtectionPlanInner extends Resource {
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
-     * 
-     * @return the id value.
+     * Get the type property: The type of the resource.
+     *
+     * @return the type value.
      */
     @Override
-    public String id() {
-        return this.id;
+    public String type() {
+        return this.type;
     }
 
     /**
      * Get the name property: The name of the resource.
-     * 
+     *
      * @return the name value.
      */
     @Override
@@ -90,13 +91,13 @@ public final class DdosProtectionPlanInner extends Resource {
     }
 
     /**
-     * Get the type property: The type of the resource.
-     * 
-     * @return the type value.
+     * Get the id property: Fully qualified resource Id for the resource.
+     *
+     * @return the id value.
      */
     @Override
-    public String type() {
-        return this.type;
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -121,7 +122,7 @@ public final class DdosProtectionPlanInner extends Resource {
      * Get the resourceGuid property: The resource GUID property of the DDoS protection plan resource. It uniquely
      * identifies the resource, even if the user changes its name or migrate the resource across subscriptions or
      * resource groups.
-     * 
+     *
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -130,7 +131,7 @@ public final class DdosProtectionPlanInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the DDoS protection plan resource.
-     * 
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -140,7 +141,7 @@ public final class DdosProtectionPlanInner extends Resource {
     /**
      * Get the publicIpAddresses property: The list of public IPs associated with the DDoS protection plan resource.
      * This list is read-only.
-     * 
+     *
      * @return the publicIpAddresses value.
      */
     public List<SubResource> publicIpAddresses() {
@@ -150,7 +151,7 @@ public final class DdosProtectionPlanInner extends Resource {
     /**
      * Get the virtualNetworks property: The list of virtual networks associated with the DDoS protection plan resource.
      * This list is read-only.
-     * 
+     *
      * @return the virtualNetworks value.
      */
     public List<SubResource> virtualNetworks() {
@@ -159,14 +160,21 @@ public final class DdosProtectionPlanInner extends Resource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+        if (location() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property location in model DdosProtectionPlanInner"));
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DdosProtectionPlanInner.class);
 
     /**
      * {@inheritDoc}
@@ -182,7 +190,7 @@ public final class DdosProtectionPlanInner extends Resource {
 
     /**
      * Reads an instance of DdosProtectionPlanInner from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of DdosProtectionPlanInner if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.

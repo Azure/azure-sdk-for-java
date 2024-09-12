@@ -13,12 +13,12 @@ import java.util.Map;
  */
 public final class NetworkSecurityGroupsUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * NetworkSecurityGroupUpdateTags.json
      */
     /**
      * Sample code: Update network security group tags.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateNetworkSecurityGroupTags(com.azure.resourcemanager.AzureResourceManager azure) {

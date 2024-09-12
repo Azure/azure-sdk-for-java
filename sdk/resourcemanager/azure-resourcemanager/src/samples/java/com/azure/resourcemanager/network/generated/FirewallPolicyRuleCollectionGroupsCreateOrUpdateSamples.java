@@ -25,12 +25,12 @@ import java.util.Arrays;
  */
 public final class FirewallPolicyRuleCollectionGroupsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * FirewallPolicyRuleCollectionGroupPut.json
      */
     /**
      * Sample code: Create Firewall Policy Rule Collection Group.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createFirewallPolicyRuleCollectionGroup(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -54,12 +54,12 @@ public final class FirewallPolicyRuleCollectionGroupsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * FirewallPolicyRuleCollectionGroupWithWebCategoriesPut.json
      */
     /**
      * Sample code: Create Firewall Policy Rule Collection Group With Web Categories.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
@@ -85,12 +85,12 @@ public final class FirewallPolicyRuleCollectionGroupsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * FirewallPolicyNatRuleCollectionGroupPut.json
      */
     /**
      * Sample code: Create Firewall Policy Nat Rule Collection Group.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
@@ -119,12 +119,12 @@ public final class FirewallPolicyRuleCollectionGroupsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * FirewallPolicyRuleCollectionGroupWithIpGroupsPut.json
      */
     /**
      * Sample code: Create Firewall Policy Rule Collection Group With IP Groups.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
@@ -150,12 +150,12 @@ public final class FirewallPolicyRuleCollectionGroupsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * FirewallPolicyRuleCollectionGroupWithHttpHeadersToInsert.json
      */
     /**
      * Sample code: Create Firewall Policy Rule Collection Group With http header to insert.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createFirewallPolicyRuleCollectionGroupWithHttpHeaderToInsert(

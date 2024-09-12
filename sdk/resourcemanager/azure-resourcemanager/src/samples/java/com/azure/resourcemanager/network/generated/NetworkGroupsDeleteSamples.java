@@ -10,12 +10,12 @@ package com.azure.resourcemanager.network.generated;
 public final class NetworkGroupsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/NetworkManagerGroupDelete.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/NetworkManagerGroupDelete.
      * json
      */
     /**
      * Sample code: NetworkGroupsDelete.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void networkGroupsDelete(com.azure.resourcemanager.AzureResourceManager azure) {

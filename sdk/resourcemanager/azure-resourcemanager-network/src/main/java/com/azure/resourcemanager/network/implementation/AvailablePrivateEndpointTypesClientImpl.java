@@ -46,7 +46,7 @@ public final class AvailablePrivateEndpointTypesClientImpl implements AvailableP
 
     /**
      * Initializes an instance of AvailablePrivateEndpointTypesClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     AvailablePrivateEndpointTypesClientImpl(NetworkManagementClientImpl client) {
@@ -98,7 +98,7 @@ public final class AvailablePrivateEndpointTypesClientImpl implements AvailableP
 
     /**
      * Returns all of the resource types that can be linked to a Private Endpoint in this subscription in this region.
-     * 
+     *
      * @param location The location of the domain name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -119,7 +119,7 @@ public final class AvailablePrivateEndpointTypesClientImpl implements AvailableP
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), location, apiVersion,
@@ -131,7 +131,7 @@ public final class AvailablePrivateEndpointTypesClientImpl implements AvailableP
 
     /**
      * Returns all of the resource types that can be linked to a Private Endpoint in this subscription in this region.
-     * 
+     *
      * @param location The location of the domain name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -154,7 +154,7 @@ public final class AvailablePrivateEndpointTypesClientImpl implements AvailableP
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -165,7 +165,7 @@ public final class AvailablePrivateEndpointTypesClientImpl implements AvailableP
 
     /**
      * Returns all of the resource types that can be linked to a Private Endpoint in this subscription in this region.
-     * 
+     *
      * @param location The location of the domain name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -179,7 +179,7 @@ public final class AvailablePrivateEndpointTypesClientImpl implements AvailableP
 
     /**
      * Returns all of the resource types that can be linked to a Private Endpoint in this subscription in this region.
-     * 
+     *
      * @param location The location of the domain name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -195,7 +195,7 @@ public final class AvailablePrivateEndpointTypesClientImpl implements AvailableP
 
     /**
      * Returns all of the resource types that can be linked to a Private Endpoint in this subscription in this region.
-     * 
+     *
      * @param location The location of the domain name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -209,7 +209,7 @@ public final class AvailablePrivateEndpointTypesClientImpl implements AvailableP
 
     /**
      * Returns all of the resource types that can be linked to a Private Endpoint in this subscription in this region.
-     * 
+     *
      * @param location The location of the domain name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -224,7 +224,7 @@ public final class AvailablePrivateEndpointTypesClientImpl implements AvailableP
 
     /**
      * Returns all of the resource types that can be linked to a Private Endpoint in this subscription in this region.
-     * 
+     *
      * @param location The location of the domain name.
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -251,7 +251,7 @@ public final class AvailablePrivateEndpointTypesClientImpl implements AvailableP
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), location, resourceGroupName,
@@ -263,7 +263,7 @@ public final class AvailablePrivateEndpointTypesClientImpl implements AvailableP
 
     /**
      * Returns all of the resource types that can be linked to a Private Endpoint in this subscription in this region.
-     * 
+     *
      * @param location The location of the domain name.
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
@@ -291,7 +291,7 @@ public final class AvailablePrivateEndpointTypesClientImpl implements AvailableP
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -303,7 +303,7 @@ public final class AvailablePrivateEndpointTypesClientImpl implements AvailableP
 
     /**
      * Returns all of the resource types that can be linked to a Private Endpoint in this subscription in this region.
-     * 
+     *
      * @param location The location of the domain name.
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -320,7 +320,7 @@ public final class AvailablePrivateEndpointTypesClientImpl implements AvailableP
 
     /**
      * Returns all of the resource types that can be linked to a Private Endpoint in this subscription in this region.
-     * 
+     *
      * @param location The location of the domain name.
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
@@ -338,7 +338,7 @@ public final class AvailablePrivateEndpointTypesClientImpl implements AvailableP
 
     /**
      * Returns all of the resource types that can be linked to a Private Endpoint in this subscription in this region.
-     * 
+     *
      * @param location The location of the domain name.
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -354,7 +354,7 @@ public final class AvailablePrivateEndpointTypesClientImpl implements AvailableP
 
     /**
      * Returns all of the resource types that can be linked to a Private Endpoint in this subscription in this region.
-     * 
+     *
      * @param location The location of the domain name.
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
@@ -371,7 +371,7 @@ public final class AvailablePrivateEndpointTypesClientImpl implements AvailableP
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -397,7 +397,7 @@ public final class AvailablePrivateEndpointTypesClientImpl implements AvailableP
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -425,7 +425,7 @@ public final class AvailablePrivateEndpointTypesClientImpl implements AvailableP
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -454,7 +454,7 @@ public final class AvailablePrivateEndpointTypesClientImpl implements AvailableP
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

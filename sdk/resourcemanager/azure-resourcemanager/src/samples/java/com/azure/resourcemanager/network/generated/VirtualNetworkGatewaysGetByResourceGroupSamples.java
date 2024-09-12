@@ -10,11 +10,11 @@ package com.azure.resourcemanager.network.generated;
 public final class VirtualNetworkGatewaysGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/VirtualNetworkGatewayGet.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/VirtualNetworkGatewayGet.json
      */
     /**
      * Sample code: GetVirtualNetworkGateway.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getVirtualNetworkGateway(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -26,12 +26,12 @@ public final class VirtualNetworkGatewaysGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * VirtualNetworkScalableGatewayGet.json
      */
     /**
      * Sample code: GetVirtualNetworkScalableGateway.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getVirtualNetworkScalableGateway(com.azure.resourcemanager.AzureResourceManager azure) {

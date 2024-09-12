@@ -49,7 +49,7 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
 
     /**
      * Initializes an instance of VipSwapsClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     VipSwapsClientImpl(NetworkManagementClientImpl client) {
@@ -97,7 +97,7 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
     /**
      * Gets the SwapResource which identifies the slot type for the specified cloud service. The slot type on a cloud
      * service can either be Staging or Production.
-     * 
+     *
      * @param groupName The name of the resource group.
      * @param resourceName The name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -123,7 +123,7 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String singletonResource = "swap";
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), groupName, resourceName, singletonResource,
@@ -134,7 +134,7 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
     /**
      * Gets the SwapResource which identifies the slot type for the specified cloud service. The slot type on a cloud
      * service can either be Staging or Production.
-     * 
+     *
      * @param groupName The name of the resource group.
      * @param resourceName The name of the cloud service.
      * @param context The context to associate with this operation.
@@ -162,7 +162,7 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String singletonResource = "swap";
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), groupName, resourceName, singletonResource, apiVersion,
@@ -172,7 +172,7 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
     /**
      * Gets the SwapResource which identifies the slot type for the specified cloud service. The slot type on a cloud
      * service can either be Staging or Production.
-     * 
+     *
      * @param groupName The name of the resource group.
      * @param resourceName The name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -189,7 +189,7 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
     /**
      * Gets the SwapResource which identifies the slot type for the specified cloud service. The slot type on a cloud
      * service can either be Staging or Production.
-     * 
+     *
      * @param groupName The name of the resource group.
      * @param resourceName The name of the cloud service.
      * @param context The context to associate with this operation.
@@ -207,7 +207,7 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
     /**
      * Gets the SwapResource which identifies the slot type for the specified cloud service. The slot type on a cloud
      * service can either be Staging or Production.
-     * 
+     *
      * @param groupName The name of the resource group.
      * @param resourceName The name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -222,7 +222,7 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
 
     /**
      * Performs vip swap operation on swappable cloud services.
-     * 
+     *
      * @param groupName The name of the resource group.
      * @param resourceName The name of the cloud service.
      * @param parameters SwapResource object where slot type should be the target slot after vip swap for the specified
@@ -255,7 +255,7 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
             parameters.validate();
         }
         final String singletonResource = "swap";
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.create(this.client.getEndpoint(), groupName, resourceName,
@@ -265,7 +265,7 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
 
     /**
      * Performs vip swap operation on swappable cloud services.
-     * 
+     *
      * @param groupName The name of the resource group.
      * @param resourceName The name of the cloud service.
      * @param parameters SwapResource object where slot type should be the target slot after vip swap for the specified
@@ -299,7 +299,7 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
             parameters.validate();
         }
         final String singletonResource = "swap";
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.create(this.client.getEndpoint(), groupName, resourceName, singletonResource, apiVersion,
@@ -308,7 +308,7 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
 
     /**
      * Performs vip swap operation on swappable cloud services.
-     * 
+     *
      * @param groupName The name of the resource group.
      * @param resourceName The name of the cloud service.
      * @param parameters SwapResource object where slot type should be the target slot after vip swap for the specified
@@ -328,7 +328,7 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
 
     /**
      * Performs vip swap operation on swappable cloud services.
-     * 
+     *
      * @param groupName The name of the resource group.
      * @param resourceName The name of the cloud service.
      * @param parameters SwapResource object where slot type should be the target slot after vip swap for the specified
@@ -350,7 +350,7 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
 
     /**
      * Performs vip swap operation on swappable cloud services.
-     * 
+     *
      * @param groupName The name of the resource group.
      * @param resourceName The name of the cloud service.
      * @param parameters SwapResource object where slot type should be the target slot after vip swap for the specified
@@ -368,7 +368,7 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
 
     /**
      * Performs vip swap operation on swappable cloud services.
-     * 
+     *
      * @param groupName The name of the resource group.
      * @param resourceName The name of the cloud service.
      * @param parameters SwapResource object where slot type should be the target slot after vip swap for the specified
@@ -387,7 +387,7 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
 
     /**
      * Performs vip swap operation on swappable cloud services.
-     * 
+     *
      * @param groupName The name of the resource group.
      * @param resourceName The name of the cloud service.
      * @param parameters SwapResource object where slot type should be the target slot after vip swap for the specified
@@ -405,7 +405,7 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
 
     /**
      * Performs vip swap operation on swappable cloud services.
-     * 
+     *
      * @param groupName The name of the resource group.
      * @param resourceName The name of the cloud service.
      * @param parameters SwapResource object where slot type should be the target slot after vip swap for the specified
@@ -425,7 +425,7 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
 
     /**
      * Performs vip swap operation on swappable cloud services.
-     * 
+     *
      * @param groupName The name of the resource group.
      * @param resourceName The name of the cloud service.
      * @param parameters SwapResource object where slot type should be the target slot after vip swap for the specified
@@ -441,7 +441,7 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
 
     /**
      * Performs vip swap operation on swappable cloud services.
-     * 
+     *
      * @param groupName The name of the resource group.
      * @param resourceName The name of the cloud service.
      * @param parameters SwapResource object where slot type should be the target slot after vip swap for the specified
@@ -459,7 +459,7 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
     /**
      * Gets the list of SwapResource which identifies the slot type for the specified cloud service. The slot type on a
      * cloud service can either be Staging or Production.
-     * 
+     *
      * @param groupName The name of the resource group.
      * @param resourceName The name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -484,7 +484,7 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), groupName, resourceName, apiVersion,
@@ -495,7 +495,7 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
     /**
      * Gets the list of SwapResource which identifies the slot type for the specified cloud service. The slot type on a
      * cloud service can either be Staging or Production.
-     * 
+     *
      * @param groupName The name of the resource group.
      * @param resourceName The name of the cloud service.
      * @param context The context to associate with this operation.
@@ -522,7 +522,7 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), groupName, resourceName, apiVersion,
@@ -532,7 +532,7 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
     /**
      * Gets the list of SwapResource which identifies the slot type for the specified cloud service. The slot type on a
      * cloud service can either be Staging or Production.
-     * 
+     *
      * @param groupName The name of the resource group.
      * @param resourceName The name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -549,7 +549,7 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
     /**
      * Gets the list of SwapResource which identifies the slot type for the specified cloud service. The slot type on a
      * cloud service can either be Staging or Production.
-     * 
+     *
      * @param groupName The name of the resource group.
      * @param resourceName The name of the cloud service.
      * @param context The context to associate with this operation.
@@ -568,7 +568,7 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
     /**
      * Gets the list of SwapResource which identifies the slot type for the specified cloud service. The slot type on a
      * cloud service can either be Staging or Production.
-     * 
+     *
      * @param groupName The name of the resource group.
      * @param resourceName The name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

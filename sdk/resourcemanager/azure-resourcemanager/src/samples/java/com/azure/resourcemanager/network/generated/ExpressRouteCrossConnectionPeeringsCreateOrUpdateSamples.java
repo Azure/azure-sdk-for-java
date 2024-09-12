@@ -12,12 +12,12 @@ import com.azure.resourcemanager.network.models.Ipv6ExpressRouteCircuitPeeringCo
  */
 public final class ExpressRouteCrossConnectionPeeringsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * ExpressRouteCrossConnectionBgpPeeringCreate.json
      */
     /**
      * Sample code: ExpressRouteCrossConnectionBgpPeeringCreate.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void

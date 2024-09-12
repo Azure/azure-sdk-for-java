@@ -24,19 +24,9 @@ public final class Error extends ManagementError {
     private String innerError;
 
     /*
-     * The error code parsed from the body of the http error response.
+     * Additional info for the error.
      */
-    private String code;
-
-    /*
-     * The error message parsed from the body of the http error response.
-     */
-    private String message;
-
-    /*
-     * The target of the error.
-     */
-    private String target;
+    private List<AdditionalInfo> additionalInfo;
 
     /*
      * Details for the error.
@@ -44,9 +34,19 @@ public final class Error extends ManagementError {
     private List<ManagementError> details;
 
     /*
-     * Additional info for the error.
+     * The target of the error.
      */
-    private List<AdditionalInfo> additionalInfo;
+    private String target;
+
+    /*
+     * The error message parsed from the body of the http error response.
+     */
+    private String message;
+
+    /*
+     * The error code parsed from the body of the http error response.
+     */
+    private String code;
 
     /**
      * Creates an instance of Error class.
@@ -56,7 +56,7 @@ public final class Error extends ManagementError {
 
     /**
      * Get the innerError property: Inner error message.
-     * 
+     *
      * @return the innerError value.
      */
     public String getInnerError() {
@@ -64,48 +64,8 @@ public final class Error extends ManagementError {
     }
 
     /**
-     * Get the code property: The error code parsed from the body of the http error response.
-     * 
-     * @return the code value.
-     */
-    @Override
-    public String getCode() {
-        return this.code;
-    }
-
-    /**
-     * Get the message property: The error message parsed from the body of the http error response.
-     * 
-     * @return the message value.
-     */
-    @Override
-    public String getMessage() {
-        return this.message;
-    }
-
-    /**
-     * Get the target property: The target of the error.
-     * 
-     * @return the target value.
-     */
-    @Override
-    public String getTarget() {
-        return this.target;
-    }
-
-    /**
-     * Get the details property: Details for the error.
-     * 
-     * @return the details value.
-     */
-    @Override
-    public List<ManagementError> getDetails() {
-        return this.details;
-    }
-
-    /**
      * Get the additionalInfo property: Additional info for the error.
-     * 
+     *
      * @return the additionalInfo value.
      */
     @Override
@@ -114,8 +74,48 @@ public final class Error extends ManagementError {
     }
 
     /**
+     * Get the details property: Details for the error.
+     *
+     * @return the details value.
+     */
+    @Override
+    public List<ManagementError> getDetails() {
+        return this.details;
+    }
+
+    /**
+     * Get the target property: The target of the error.
+     *
+     * @return the target value.
+     */
+    @Override
+    public String getTarget() {
+        return this.target;
+    }
+
+    /**
+     * Get the message property: The error message parsed from the body of the http error response.
+     *
+     * @return the message value.
+     */
+    @Override
+    public String getMessage() {
+        return this.message;
+    }
+
+    /**
+     * Get the code property: The error code parsed from the body of the http error response.
+     *
+     * @return the code value.
+     */
+    @Override
+    public String getCode() {
+        return this.code;
+    }
+
+    /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -132,7 +132,7 @@ public final class Error extends ManagementError {
 
     /**
      * Reads an instance of Error from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of Error if the JsonReader was pointing to an instance of it, or null if it was pointing to
      * JSON null.

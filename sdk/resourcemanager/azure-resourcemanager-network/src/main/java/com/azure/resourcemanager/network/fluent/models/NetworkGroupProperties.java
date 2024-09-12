@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.network.models.GroupMemberType;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 
@@ -21,6 +22,11 @@ public final class NetworkGroupProperties implements JsonSerializable<NetworkGro
      * A description of the network group.
      */
     private String description;
+
+    /*
+     * The type of the group member.
+     */
+    private GroupMemberType memberType;
 
     /*
      * The provisioning state of the scope assignment resource.
@@ -40,7 +46,7 @@ public final class NetworkGroupProperties implements JsonSerializable<NetworkGro
 
     /**
      * Get the description property: A description of the network group.
-     * 
+     *
      * @return the description value.
      */
     public String description() {
@@ -49,7 +55,7 @@ public final class NetworkGroupProperties implements JsonSerializable<NetworkGro
 
     /**
      * Set the description property: A description of the network group.
-     * 
+     *
      * @param description the description value to set.
      * @return the NetworkGroupProperties object itself.
      */
@@ -59,8 +65,28 @@ public final class NetworkGroupProperties implements JsonSerializable<NetworkGro
     }
 
     /**
+     * Get the memberType property: The type of the group member.
+     *
+     * @return the memberType value.
+     */
+    public GroupMemberType memberType() {
+        return this.memberType;
+    }
+
+    /**
+     * Set the memberType property: The type of the group member.
+     *
+     * @param memberType the memberType value to set.
+     * @return the NetworkGroupProperties object itself.
+     */
+    public NetworkGroupProperties withMemberType(GroupMemberType memberType) {
+        this.memberType = memberType;
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: The provisioning state of the scope assignment resource.
-     * 
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -69,7 +95,7 @@ public final class NetworkGroupProperties implements JsonSerializable<NetworkGro
 
     /**
      * Get the resourceGuid property: Unique identifier for this resource.
-     * 
+     *
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -78,7 +104,7 @@ public final class NetworkGroupProperties implements JsonSerializable<NetworkGro
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -91,12 +117,13 @@ public final class NetworkGroupProperties implements JsonSerializable<NetworkGro
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("memberType", this.memberType == null ? null : this.memberType.toString());
         return jsonWriter.writeEndObject();
     }
 
     /**
      * Reads an instance of NetworkGroupProperties from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of NetworkGroupProperties if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
@@ -111,6 +138,8 @@ public final class NetworkGroupProperties implements JsonSerializable<NetworkGro
 
                 if ("description".equals(fieldName)) {
                     deserializedNetworkGroupProperties.description = reader.getString();
+                } else if ("memberType".equals(fieldName)) {
+                    deserializedNetworkGroupProperties.memberType = GroupMemberType.fromString(reader.getString());
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedNetworkGroupProperties.provisioningState
                         = ProvisioningState.fromString(reader.getString());

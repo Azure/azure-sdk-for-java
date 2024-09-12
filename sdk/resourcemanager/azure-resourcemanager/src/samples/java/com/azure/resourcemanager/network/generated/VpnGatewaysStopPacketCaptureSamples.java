@@ -12,12 +12,12 @@ import com.azure.resourcemanager.network.models.VpnGatewayPacketCaptureStopParam
 public final class VpnGatewaysStopPacketCaptureSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/VpnGatewayStopPacketCapture.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/VpnGatewayStopPacketCapture.
      * json
      */
     /**
      * Sample code: Stop packet capture on vpn gateway.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void stopPacketCaptureOnVpnGateway(com.azure.resourcemanager.AzureResourceManager azure) {

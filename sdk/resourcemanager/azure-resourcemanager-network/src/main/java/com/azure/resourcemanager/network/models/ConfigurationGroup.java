@@ -35,7 +35,7 @@ public final class ConfigurationGroup implements JsonSerializable<ConfigurationG
 
     /**
      * Get the id property: Network group ID.
-     * 
+     *
      * @return the id value.
      */
     public String id() {
@@ -44,7 +44,7 @@ public final class ConfigurationGroup implements JsonSerializable<ConfigurationG
 
     /**
      * Set the id property: Network group ID.
-     * 
+     *
      * @param id the id value to set.
      * @return the ConfigurationGroup object itself.
      */
@@ -55,7 +55,7 @@ public final class ConfigurationGroup implements JsonSerializable<ConfigurationG
 
     /**
      * Get the innerProperties property: The network configuration group properties.
-     * 
+     *
      * @return the innerProperties value.
      */
     private NetworkGroupProperties innerProperties() {
@@ -64,7 +64,7 @@ public final class ConfigurationGroup implements JsonSerializable<ConfigurationG
 
     /**
      * Get the description property: A description of the network group.
-     * 
+     *
      * @return the description value.
      */
     public String description() {
@@ -73,7 +73,7 @@ public final class ConfigurationGroup implements JsonSerializable<ConfigurationG
 
     /**
      * Set the description property: A description of the network group.
-     * 
+     *
      * @param description the description value to set.
      * @return the ConfigurationGroup object itself.
      */
@@ -86,8 +86,31 @@ public final class ConfigurationGroup implements JsonSerializable<ConfigurationG
     }
 
     /**
+     * Get the memberType property: The type of the group member.
+     *
+     * @return the memberType value.
+     */
+    public GroupMemberType memberType() {
+        return this.innerProperties() == null ? null : this.innerProperties().memberType();
+    }
+
+    /**
+     * Set the memberType property: The type of the group member.
+     *
+     * @param memberType the memberType value to set.
+     * @return the ConfigurationGroup object itself.
+     */
+    public ConfigurationGroup withMemberType(GroupMemberType memberType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkGroupProperties();
+        }
+        this.innerProperties().withMemberType(memberType);
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: The provisioning state of the scope assignment resource.
-     * 
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -96,7 +119,7 @@ public final class ConfigurationGroup implements JsonSerializable<ConfigurationG
 
     /**
      * Get the resourceGuid property: Unique identifier for this resource.
-     * 
+     *
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -105,7 +128,7 @@ public final class ConfigurationGroup implements JsonSerializable<ConfigurationG
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -127,7 +150,7 @@ public final class ConfigurationGroup implements JsonSerializable<ConfigurationG
 
     /**
      * Reads an instance of ConfigurationGroup from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of ConfigurationGroup if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.

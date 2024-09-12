@@ -37,6 +37,11 @@ public final class ApplicationGatewayFirewallRule implements JsonSerializable<Ap
     private ApplicationGatewayWafRuleActionTypes action;
 
     /*
+     * The string representation of the web application firewall rule sensitivity.
+     */
+    private ApplicationGatewayWafRuleSensitivityTypes sensitivity;
+
+    /*
      * The description of the web application firewall rule.
      */
     private String description;
@@ -49,7 +54,7 @@ public final class ApplicationGatewayFirewallRule implements JsonSerializable<Ap
 
     /**
      * Get the ruleId property: The identifier of the web application firewall rule.
-     * 
+     *
      * @return the ruleId value.
      */
     public int ruleId() {
@@ -58,7 +63,7 @@ public final class ApplicationGatewayFirewallRule implements JsonSerializable<Ap
 
     /**
      * Set the ruleId property: The identifier of the web application firewall rule.
-     * 
+     *
      * @param ruleId the ruleId value to set.
      * @return the ApplicationGatewayFirewallRule object itself.
      */
@@ -69,7 +74,7 @@ public final class ApplicationGatewayFirewallRule implements JsonSerializable<Ap
 
     /**
      * Get the ruleIdString property: The string representation of the web application firewall rule identifier.
-     * 
+     *
      * @return the ruleIdString value.
      */
     public String ruleIdString() {
@@ -78,7 +83,7 @@ public final class ApplicationGatewayFirewallRule implements JsonSerializable<Ap
 
     /**
      * Set the ruleIdString property: The string representation of the web application firewall rule identifier.
-     * 
+     *
      * @param ruleIdString the ruleIdString value to set.
      * @return the ApplicationGatewayFirewallRule object itself.
      */
@@ -89,7 +94,7 @@ public final class ApplicationGatewayFirewallRule implements JsonSerializable<Ap
 
     /**
      * Get the state property: The string representation of the web application firewall rule state.
-     * 
+     *
      * @return the state value.
      */
     public ApplicationGatewayWafRuleStateTypes state() {
@@ -98,7 +103,7 @@ public final class ApplicationGatewayFirewallRule implements JsonSerializable<Ap
 
     /**
      * Set the state property: The string representation of the web application firewall rule state.
-     * 
+     *
      * @param state the state value to set.
      * @return the ApplicationGatewayFirewallRule object itself.
      */
@@ -109,7 +114,7 @@ public final class ApplicationGatewayFirewallRule implements JsonSerializable<Ap
 
     /**
      * Get the action property: The string representation of the web application firewall rule action.
-     * 
+     *
      * @return the action value.
      */
     public ApplicationGatewayWafRuleActionTypes action() {
@@ -118,7 +123,7 @@ public final class ApplicationGatewayFirewallRule implements JsonSerializable<Ap
 
     /**
      * Set the action property: The string representation of the web application firewall rule action.
-     * 
+     *
      * @param action the action value to set.
      * @return the ApplicationGatewayFirewallRule object itself.
      */
@@ -128,8 +133,28 @@ public final class ApplicationGatewayFirewallRule implements JsonSerializable<Ap
     }
 
     /**
+     * Get the sensitivity property: The string representation of the web application firewall rule sensitivity.
+     *
+     * @return the sensitivity value.
+     */
+    public ApplicationGatewayWafRuleSensitivityTypes sensitivity() {
+        return this.sensitivity;
+    }
+
+    /**
+     * Set the sensitivity property: The string representation of the web application firewall rule sensitivity.
+     *
+     * @param sensitivity the sensitivity value to set.
+     * @return the ApplicationGatewayFirewallRule object itself.
+     */
+    public ApplicationGatewayFirewallRule withSensitivity(ApplicationGatewayWafRuleSensitivityTypes sensitivity) {
+        this.sensitivity = sensitivity;
+        return this;
+    }
+
+    /**
      * Get the description property: The description of the web application firewall rule.
-     * 
+     *
      * @return the description value.
      */
     public String description() {
@@ -138,7 +163,7 @@ public final class ApplicationGatewayFirewallRule implements JsonSerializable<Ap
 
     /**
      * Set the description property: The description of the web application firewall rule.
-     * 
+     *
      * @param description the description value to set.
      * @return the ApplicationGatewayFirewallRule object itself.
      */
@@ -149,7 +174,7 @@ public final class ApplicationGatewayFirewallRule implements JsonSerializable<Ap
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -165,13 +190,14 @@ public final class ApplicationGatewayFirewallRule implements JsonSerializable<Ap
         jsonWriter.writeStringField("ruleIdString", this.ruleIdString);
         jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
         jsonWriter.writeStringField("action", this.action == null ? null : this.action.toString());
+        jsonWriter.writeStringField("sensitivity", this.sensitivity == null ? null : this.sensitivity.toString());
         jsonWriter.writeStringField("description", this.description);
         return jsonWriter.writeEndObject();
     }
 
     /**
      * Reads an instance of ApplicationGatewayFirewallRule from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of ApplicationGatewayFirewallRule if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.
@@ -196,6 +222,9 @@ public final class ApplicationGatewayFirewallRule implements JsonSerializable<Ap
                 } else if ("action".equals(fieldName)) {
                     deserializedApplicationGatewayFirewallRule.action
                         = ApplicationGatewayWafRuleActionTypes.fromString(reader.getString());
+                } else if ("sensitivity".equals(fieldName)) {
+                    deserializedApplicationGatewayFirewallRule.sensitivity
+                        = ApplicationGatewayWafRuleSensitivityTypes.fromString(reader.getString());
                 } else if ("description".equals(fieldName)) {
                     deserializedApplicationGatewayFirewallRule.description = reader.getString();
                 } else {

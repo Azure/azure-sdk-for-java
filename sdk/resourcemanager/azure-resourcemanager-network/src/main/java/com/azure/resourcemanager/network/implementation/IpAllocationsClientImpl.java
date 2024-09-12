@@ -60,7 +60,7 @@ public final class IpAllocationsClientImpl implements InnerSupportsGet<IpAllocat
 
     /**
      * Initializes an instance of IpAllocationsClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     IpAllocationsClientImpl(NetworkManagementClientImpl client) {
@@ -150,7 +150,7 @@ public final class IpAllocationsClientImpl implements InnerSupportsGet<IpAllocat
 
     /**
      * Deletes the specified IpAllocation.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param ipAllocationName The name of the IpAllocation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -176,7 +176,7 @@ public final class IpAllocationsClientImpl implements InnerSupportsGet<IpAllocat
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, ipAllocationName,
@@ -186,7 +186,7 @@ public final class IpAllocationsClientImpl implements InnerSupportsGet<IpAllocat
 
     /**
      * Deletes the specified IpAllocation.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param ipAllocationName The name of the IpAllocation.
      * @param context The context to associate with this operation.
@@ -214,7 +214,7 @@ public final class IpAllocationsClientImpl implements InnerSupportsGet<IpAllocat
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, ipAllocationName, apiVersion,
@@ -223,7 +223,7 @@ public final class IpAllocationsClientImpl implements InnerSupportsGet<IpAllocat
 
     /**
      * Deletes the specified IpAllocation.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param ipAllocationName The name of the IpAllocation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -240,7 +240,7 @@ public final class IpAllocationsClientImpl implements InnerSupportsGet<IpAllocat
 
     /**
      * Deletes the specified IpAllocation.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param ipAllocationName The name of the IpAllocation.
      * @param context The context to associate with this operation.
@@ -260,7 +260,7 @@ public final class IpAllocationsClientImpl implements InnerSupportsGet<IpAllocat
 
     /**
      * Deletes the specified IpAllocation.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param ipAllocationName The name of the IpAllocation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -275,7 +275,7 @@ public final class IpAllocationsClientImpl implements InnerSupportsGet<IpAllocat
 
     /**
      * Deletes the specified IpAllocation.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param ipAllocationName The name of the IpAllocation.
      * @param context The context to associate with this operation.
@@ -292,7 +292,7 @@ public final class IpAllocationsClientImpl implements InnerSupportsGet<IpAllocat
 
     /**
      * Deletes the specified IpAllocation.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param ipAllocationName The name of the IpAllocation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -308,7 +308,7 @@ public final class IpAllocationsClientImpl implements InnerSupportsGet<IpAllocat
 
     /**
      * Deletes the specified IpAllocation.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param ipAllocationName The name of the IpAllocation.
      * @param context The context to associate with this operation.
@@ -325,7 +325,7 @@ public final class IpAllocationsClientImpl implements InnerSupportsGet<IpAllocat
 
     /**
      * Deletes the specified IpAllocation.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param ipAllocationName The name of the IpAllocation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -339,7 +339,7 @@ public final class IpAllocationsClientImpl implements InnerSupportsGet<IpAllocat
 
     /**
      * Deletes the specified IpAllocation.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param ipAllocationName The name of the IpAllocation.
      * @param context The context to associate with this operation.
@@ -354,7 +354,7 @@ public final class IpAllocationsClientImpl implements InnerSupportsGet<IpAllocat
 
     /**
      * Gets the specified IpAllocation by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param ipAllocationName The name of the IpAllocation.
      * @param expand Expands referenced resources.
@@ -383,7 +383,7 @@ public final class IpAllocationsClientImpl implements InnerSupportsGet<IpAllocat
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -393,7 +393,7 @@ public final class IpAllocationsClientImpl implements InnerSupportsGet<IpAllocat
 
     /**
      * Gets the specified IpAllocation by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param ipAllocationName The name of the IpAllocation.
      * @param expand Expands referenced resources.
@@ -423,7 +423,7 @@ public final class IpAllocationsClientImpl implements InnerSupportsGet<IpAllocat
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, ipAllocationName, apiVersion,
@@ -432,7 +432,7 @@ public final class IpAllocationsClientImpl implements InnerSupportsGet<IpAllocat
 
     /**
      * Gets the specified IpAllocation by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param ipAllocationName The name of the IpAllocation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -449,7 +449,7 @@ public final class IpAllocationsClientImpl implements InnerSupportsGet<IpAllocat
 
     /**
      * Gets the specified IpAllocation by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param ipAllocationName The name of the IpAllocation.
      * @param expand Expands referenced resources.
@@ -467,7 +467,7 @@ public final class IpAllocationsClientImpl implements InnerSupportsGet<IpAllocat
 
     /**
      * Gets the specified IpAllocation by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param ipAllocationName The name of the IpAllocation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -483,7 +483,7 @@ public final class IpAllocationsClientImpl implements InnerSupportsGet<IpAllocat
 
     /**
      * Creates or updates an IpAllocation in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param ipAllocationName The name of the IpAllocation.
      * @param parameters Parameters supplied to the create or update virtual network operation.
@@ -516,7 +516,7 @@ public final class IpAllocationsClientImpl implements InnerSupportsGet<IpAllocat
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName,
@@ -526,7 +526,7 @@ public final class IpAllocationsClientImpl implements InnerSupportsGet<IpAllocat
 
     /**
      * Creates or updates an IpAllocation in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param ipAllocationName The name of the IpAllocation.
      * @param parameters Parameters supplied to the create or update virtual network operation.
@@ -560,7 +560,7 @@ public final class IpAllocationsClientImpl implements InnerSupportsGet<IpAllocat
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, ipAllocationName, apiVersion,
@@ -569,7 +569,7 @@ public final class IpAllocationsClientImpl implements InnerSupportsGet<IpAllocat
 
     /**
      * Creates or updates an IpAllocation in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param ipAllocationName The name of the IpAllocation.
      * @param parameters Parameters supplied to the create or update virtual network operation.
@@ -589,7 +589,7 @@ public final class IpAllocationsClientImpl implements InnerSupportsGet<IpAllocat
 
     /**
      * Creates or updates an IpAllocation in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param ipAllocationName The name of the IpAllocation.
      * @param parameters Parameters supplied to the create or update virtual network operation.
@@ -611,7 +611,7 @@ public final class IpAllocationsClientImpl implements InnerSupportsGet<IpAllocat
 
     /**
      * Creates or updates an IpAllocation in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param ipAllocationName The name of the IpAllocation.
      * @param parameters Parameters supplied to the create or update virtual network operation.
@@ -628,7 +628,7 @@ public final class IpAllocationsClientImpl implements InnerSupportsGet<IpAllocat
 
     /**
      * Creates or updates an IpAllocation in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param ipAllocationName The name of the IpAllocation.
      * @param parameters Parameters supplied to the create or update virtual network operation.
@@ -646,7 +646,7 @@ public final class IpAllocationsClientImpl implements InnerSupportsGet<IpAllocat
 
     /**
      * Creates or updates an IpAllocation in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param ipAllocationName The name of the IpAllocation.
      * @param parameters Parameters supplied to the create or update virtual network operation.
@@ -664,7 +664,7 @@ public final class IpAllocationsClientImpl implements InnerSupportsGet<IpAllocat
 
     /**
      * Creates or updates an IpAllocation in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param ipAllocationName The name of the IpAllocation.
      * @param parameters Parameters supplied to the create or update virtual network operation.
@@ -683,7 +683,7 @@ public final class IpAllocationsClientImpl implements InnerSupportsGet<IpAllocat
 
     /**
      * Creates or updates an IpAllocation in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param ipAllocationName The name of the IpAllocation.
      * @param parameters Parameters supplied to the create or update virtual network operation.
@@ -700,7 +700,7 @@ public final class IpAllocationsClientImpl implements InnerSupportsGet<IpAllocat
 
     /**
      * Creates or updates an IpAllocation in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param ipAllocationName The name of the IpAllocation.
      * @param parameters Parameters supplied to the create or update virtual network operation.
@@ -718,7 +718,7 @@ public final class IpAllocationsClientImpl implements InnerSupportsGet<IpAllocat
 
     /**
      * Updates a IpAllocation tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param ipAllocationName The name of the IpAllocation.
      * @param parameters Parameters supplied to update IpAllocation tags.
@@ -751,7 +751,7 @@ public final class IpAllocationsClientImpl implements InnerSupportsGet<IpAllocat
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.updateTags(this.client.getEndpoint(), resourceGroupName, ipAllocationName,
@@ -761,7 +761,7 @@ public final class IpAllocationsClientImpl implements InnerSupportsGet<IpAllocat
 
     /**
      * Updates a IpAllocation tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param ipAllocationName The name of the IpAllocation.
      * @param parameters Parameters supplied to update IpAllocation tags.
@@ -795,7 +795,7 @@ public final class IpAllocationsClientImpl implements InnerSupportsGet<IpAllocat
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.updateTags(this.client.getEndpoint(), resourceGroupName, ipAllocationName, apiVersion,
@@ -804,7 +804,7 @@ public final class IpAllocationsClientImpl implements InnerSupportsGet<IpAllocat
 
     /**
      * Updates a IpAllocation tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param ipAllocationName The name of the IpAllocation.
      * @param parameters Parameters supplied to update IpAllocation tags.
@@ -822,7 +822,7 @@ public final class IpAllocationsClientImpl implements InnerSupportsGet<IpAllocat
 
     /**
      * Updates a IpAllocation tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param ipAllocationName The name of the IpAllocation.
      * @param parameters Parameters supplied to update IpAllocation tags.
@@ -840,7 +840,7 @@ public final class IpAllocationsClientImpl implements InnerSupportsGet<IpAllocat
 
     /**
      * Updates a IpAllocation tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param ipAllocationName The name of the IpAllocation.
      * @param parameters Parameters supplied to update IpAllocation tags.
@@ -856,7 +856,7 @@ public final class IpAllocationsClientImpl implements InnerSupportsGet<IpAllocat
 
     /**
      * Gets all IpAllocations in a subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all IpAllocations in a subscription along with {@link PagedResponse} on successful completion of
@@ -872,7 +872,7 @@ public final class IpAllocationsClientImpl implements InnerSupportsGet<IpAllocat
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -884,7 +884,7 @@ public final class IpAllocationsClientImpl implements InnerSupportsGet<IpAllocat
 
     /**
      * Gets all IpAllocations in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -902,7 +902,7 @@ public final class IpAllocationsClientImpl implements InnerSupportsGet<IpAllocat
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
@@ -912,7 +912,7 @@ public final class IpAllocationsClientImpl implements InnerSupportsGet<IpAllocat
 
     /**
      * Gets all IpAllocations in a subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all IpAllocations in a subscription as paginated response with {@link PagedFlux}.
@@ -924,7 +924,7 @@ public final class IpAllocationsClientImpl implements InnerSupportsGet<IpAllocat
 
     /**
      * Gets all IpAllocations in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -939,7 +939,7 @@ public final class IpAllocationsClientImpl implements InnerSupportsGet<IpAllocat
 
     /**
      * Gets all IpAllocations in a subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all IpAllocations in a subscription as paginated response with {@link PagedIterable}.
@@ -951,7 +951,7 @@ public final class IpAllocationsClientImpl implements InnerSupportsGet<IpAllocat
 
     /**
      * Gets all IpAllocations in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -965,7 +965,7 @@ public final class IpAllocationsClientImpl implements InnerSupportsGet<IpAllocat
 
     /**
      * Gets all IpAllocations in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -987,7 +987,7 @@ public final class IpAllocationsClientImpl implements InnerSupportsGet<IpAllocat
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -999,7 +999,7 @@ public final class IpAllocationsClientImpl implements InnerSupportsGet<IpAllocat
 
     /**
      * Gets all IpAllocations in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1023,7 +1023,7 @@ public final class IpAllocationsClientImpl implements InnerSupportsGet<IpAllocat
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1035,7 +1035,7 @@ public final class IpAllocationsClientImpl implements InnerSupportsGet<IpAllocat
 
     /**
      * Gets all IpAllocations in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1050,7 +1050,7 @@ public final class IpAllocationsClientImpl implements InnerSupportsGet<IpAllocat
 
     /**
      * Gets all IpAllocations in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1066,7 +1066,7 @@ public final class IpAllocationsClientImpl implements InnerSupportsGet<IpAllocat
 
     /**
      * Gets all IpAllocations in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1080,7 +1080,7 @@ public final class IpAllocationsClientImpl implements InnerSupportsGet<IpAllocat
 
     /**
      * Gets all IpAllocations in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1095,7 +1095,7 @@ public final class IpAllocationsClientImpl implements InnerSupportsGet<IpAllocat
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1121,7 +1121,7 @@ public final class IpAllocationsClientImpl implements InnerSupportsGet<IpAllocat
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1148,7 +1148,7 @@ public final class IpAllocationsClientImpl implements InnerSupportsGet<IpAllocat
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1176,7 +1176,7 @@ public final class IpAllocationsClientImpl implements InnerSupportsGet<IpAllocat
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

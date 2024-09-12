@@ -59,7 +59,7 @@ public final class LocalNetworkGatewaysClientImpl
 
     /**
      * Initializes an instance of LocalNetworkGatewaysClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     LocalNetworkGatewaysClientImpl(NetworkManagementClientImpl client) {
@@ -136,7 +136,7 @@ public final class LocalNetworkGatewaysClientImpl
 
     /**
      * Creates or updates a local network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
      * @param parameters Parameters supplied to the create or update local network gateway operation.
@@ -170,7 +170,7 @@ public final class LocalNetworkGatewaysClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName,
@@ -180,7 +180,7 @@ public final class LocalNetworkGatewaysClientImpl
 
     /**
      * Creates or updates a local network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
      * @param parameters Parameters supplied to the create or update local network gateway operation.
@@ -215,7 +215,7 @@ public final class LocalNetworkGatewaysClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, localNetworkGatewayName, apiVersion,
@@ -224,7 +224,7 @@ public final class LocalNetworkGatewaysClientImpl
 
     /**
      * Creates or updates a local network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
      * @param parameters Parameters supplied to the create or update local network gateway operation.
@@ -245,7 +245,7 @@ public final class LocalNetworkGatewaysClientImpl
 
     /**
      * Creates or updates a local network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
      * @param parameters Parameters supplied to the create or update local network gateway operation.
@@ -268,7 +268,7 @@ public final class LocalNetworkGatewaysClientImpl
 
     /**
      * Creates or updates a local network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
      * @param parameters Parameters supplied to the create or update local network gateway operation.
@@ -285,7 +285,7 @@ public final class LocalNetworkGatewaysClientImpl
 
     /**
      * Creates or updates a local network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
      * @param parameters Parameters supplied to the create or update local network gateway operation.
@@ -305,7 +305,7 @@ public final class LocalNetworkGatewaysClientImpl
 
     /**
      * Creates or updates a local network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
      * @param parameters Parameters supplied to the create or update local network gateway operation.
@@ -323,7 +323,7 @@ public final class LocalNetworkGatewaysClientImpl
 
     /**
      * Creates or updates a local network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
      * @param parameters Parameters supplied to the create or update local network gateway operation.
@@ -342,7 +342,7 @@ public final class LocalNetworkGatewaysClientImpl
 
     /**
      * Creates or updates a local network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
      * @param parameters Parameters supplied to the create or update local network gateway operation.
@@ -359,7 +359,7 @@ public final class LocalNetworkGatewaysClientImpl
 
     /**
      * Creates or updates a local network gateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
      * @param parameters Parameters supplied to the create or update local network gateway operation.
@@ -377,7 +377,7 @@ public final class LocalNetworkGatewaysClientImpl
 
     /**
      * Gets the specified local network gateway in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -405,7 +405,7 @@ public final class LocalNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -415,7 +415,7 @@ public final class LocalNetworkGatewaysClientImpl
 
     /**
      * Gets the specified local network gateway in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
      * @param context The context to associate with this operation.
@@ -444,7 +444,7 @@ public final class LocalNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, localNetworkGatewayName,
@@ -453,7 +453,7 @@ public final class LocalNetworkGatewaysClientImpl
 
     /**
      * Gets the specified local network gateway in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -470,7 +470,7 @@ public final class LocalNetworkGatewaysClientImpl
 
     /**
      * Gets the specified local network gateway in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
      * @param context The context to associate with this operation.
@@ -487,7 +487,7 @@ public final class LocalNetworkGatewaysClientImpl
 
     /**
      * Gets the specified local network gateway in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -502,7 +502,7 @@ public final class LocalNetworkGatewaysClientImpl
 
     /**
      * Deletes the specified local network gateway.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -529,7 +529,7 @@ public final class LocalNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName,
@@ -539,7 +539,7 @@ public final class LocalNetworkGatewaysClientImpl
 
     /**
      * Deletes the specified local network gateway.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
      * @param context The context to associate with this operation.
@@ -567,7 +567,7 @@ public final class LocalNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, localNetworkGatewayName, apiVersion,
@@ -576,7 +576,7 @@ public final class LocalNetworkGatewaysClientImpl
 
     /**
      * Deletes the specified local network gateway.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -594,7 +594,7 @@ public final class LocalNetworkGatewaysClientImpl
 
     /**
      * Deletes the specified local network gateway.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
      * @param context The context to associate with this operation.
@@ -615,7 +615,7 @@ public final class LocalNetworkGatewaysClientImpl
 
     /**
      * Deletes the specified local network gateway.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -630,7 +630,7 @@ public final class LocalNetworkGatewaysClientImpl
 
     /**
      * Deletes the specified local network gateway.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
      * @param context The context to associate with this operation.
@@ -647,7 +647,7 @@ public final class LocalNetworkGatewaysClientImpl
 
     /**
      * Deletes the specified local network gateway.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -663,7 +663,7 @@ public final class LocalNetworkGatewaysClientImpl
 
     /**
      * Deletes the specified local network gateway.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
      * @param context The context to associate with this operation.
@@ -680,7 +680,7 @@ public final class LocalNetworkGatewaysClientImpl
 
     /**
      * Deletes the specified local network gateway.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -694,7 +694,7 @@ public final class LocalNetworkGatewaysClientImpl
 
     /**
      * Deletes the specified local network gateway.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
      * @param context The context to associate with this operation.
@@ -709,7 +709,7 @@ public final class LocalNetworkGatewaysClientImpl
 
     /**
      * Updates a local network gateway tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
      * @param parameters Parameters supplied to update local network gateway tags.
@@ -743,7 +743,7 @@ public final class LocalNetworkGatewaysClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.updateTags(this.client.getEndpoint(), resourceGroupName,
@@ -753,7 +753,7 @@ public final class LocalNetworkGatewaysClientImpl
 
     /**
      * Updates a local network gateway tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
      * @param parameters Parameters supplied to update local network gateway tags.
@@ -788,7 +788,7 @@ public final class LocalNetworkGatewaysClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.updateTags(this.client.getEndpoint(), resourceGroupName, localNetworkGatewayName, apiVersion,
@@ -797,7 +797,7 @@ public final class LocalNetworkGatewaysClientImpl
 
     /**
      * Updates a local network gateway tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
      * @param parameters Parameters supplied to update local network gateway tags.
@@ -815,7 +815,7 @@ public final class LocalNetworkGatewaysClientImpl
 
     /**
      * Updates a local network gateway tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
      * @param parameters Parameters supplied to update local network gateway tags.
@@ -833,7 +833,7 @@ public final class LocalNetworkGatewaysClientImpl
 
     /**
      * Updates a local network gateway tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
      * @param parameters Parameters supplied to update local network gateway tags.
@@ -850,7 +850,7 @@ public final class LocalNetworkGatewaysClientImpl
 
     /**
      * Gets all the local network gateways in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -872,7 +872,7 @@ public final class LocalNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -884,7 +884,7 @@ public final class LocalNetworkGatewaysClientImpl
 
     /**
      * Gets all the local network gateways in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -908,7 +908,7 @@ public final class LocalNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -920,7 +920,7 @@ public final class LocalNetworkGatewaysClientImpl
 
     /**
      * Gets all the local network gateways in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -935,7 +935,7 @@ public final class LocalNetworkGatewaysClientImpl
 
     /**
      * Gets all the local network gateways in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -951,7 +951,7 @@ public final class LocalNetworkGatewaysClientImpl
 
     /**
      * Gets all the local network gateways in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -965,7 +965,7 @@ public final class LocalNetworkGatewaysClientImpl
 
     /**
      * Gets all the local network gateways in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -980,7 +980,7 @@ public final class LocalNetworkGatewaysClientImpl
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1006,7 +1006,7 @@ public final class LocalNetworkGatewaysClientImpl
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

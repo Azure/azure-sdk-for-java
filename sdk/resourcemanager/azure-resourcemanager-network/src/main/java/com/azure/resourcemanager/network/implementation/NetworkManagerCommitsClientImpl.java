@@ -47,7 +47,7 @@ public final class NetworkManagerCommitsClientImpl implements NetworkManagerComm
 
     /**
      * Initializes an instance of NetworkManagerCommitsClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     NetworkManagerCommitsClientImpl(NetworkManagementClientImpl client) {
@@ -77,7 +77,7 @@ public final class NetworkManagerCommitsClientImpl implements NetworkManagerComm
 
     /**
      * Post a Network Manager Commit.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param parameters Parameters supplied to specify which Managed Network commit is.
@@ -110,7 +110,7 @@ public final class NetworkManagerCommitsClientImpl implements NetworkManagerComm
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.post(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -120,7 +120,7 @@ public final class NetworkManagerCommitsClientImpl implements NetworkManagerComm
 
     /**
      * Post a Network Manager Commit.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param parameters Parameters supplied to specify which Managed Network commit is.
@@ -154,7 +154,7 @@ public final class NetworkManagerCommitsClientImpl implements NetworkManagerComm
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.post(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -163,7 +163,7 @@ public final class NetworkManagerCommitsClientImpl implements NetworkManagerComm
 
     /**
      * Post a Network Manager Commit.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param parameters Parameters supplied to specify which Managed Network commit is.
@@ -184,7 +184,7 @@ public final class NetworkManagerCommitsClientImpl implements NetworkManagerComm
 
     /**
      * Post a Network Manager Commit.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param parameters Parameters supplied to specify which Managed Network commit is.
@@ -206,7 +206,7 @@ public final class NetworkManagerCommitsClientImpl implements NetworkManagerComm
 
     /**
      * Post a Network Manager Commit.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param parameters Parameters supplied to specify which Managed Network commit is.
@@ -223,7 +223,7 @@ public final class NetworkManagerCommitsClientImpl implements NetworkManagerComm
 
     /**
      * Post a Network Manager Commit.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param parameters Parameters supplied to specify which Managed Network commit is.
@@ -241,7 +241,7 @@ public final class NetworkManagerCommitsClientImpl implements NetworkManagerComm
 
     /**
      * Post a Network Manager Commit.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param parameters Parameters supplied to specify which Managed Network commit is.
@@ -259,7 +259,7 @@ public final class NetworkManagerCommitsClientImpl implements NetworkManagerComm
 
     /**
      * Post a Network Manager Commit.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param parameters Parameters supplied to specify which Managed Network commit is.
@@ -278,7 +278,7 @@ public final class NetworkManagerCommitsClientImpl implements NetworkManagerComm
 
     /**
      * Post a Network Manager Commit.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param parameters Parameters supplied to specify which Managed Network commit is.
@@ -295,7 +295,7 @@ public final class NetworkManagerCommitsClientImpl implements NetworkManagerComm
 
     /**
      * Post a Network Manager Commit.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param parameters Parameters supplied to specify which Managed Network commit is.

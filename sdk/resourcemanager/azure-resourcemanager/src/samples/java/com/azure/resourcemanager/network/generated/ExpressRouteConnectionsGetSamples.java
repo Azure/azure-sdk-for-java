@@ -10,12 +10,12 @@ package com.azure.resourcemanager.network.generated;
 public final class ExpressRouteConnectionsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/ExpressRouteConnectionGet.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/ExpressRouteConnectionGet.
      * json
      */
     /**
      * Sample code: ExpressRouteConnectionGet.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void expressRouteConnectionGet(com.azure.resourcemanager.AzureResourceManager azure) {

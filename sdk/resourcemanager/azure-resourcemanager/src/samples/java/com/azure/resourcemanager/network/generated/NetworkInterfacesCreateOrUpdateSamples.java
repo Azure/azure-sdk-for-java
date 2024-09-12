@@ -16,12 +16,12 @@ import java.util.Arrays;
  */
 public final class NetworkInterfacesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * NetworkInterfaceCreateGatewayLoadBalancerConsumer.json
      */
     /**
      * Sample code: Create network interface with Gateway Load Balancer Consumer configured.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createNetworkInterfaceWithGatewayLoadBalancerConsumerConfigured(
@@ -43,11 +43,11 @@ public final class NetworkInterfacesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/NetworkInterfaceCreate.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/NetworkInterfaceCreate.json
      */
     /**
      * Sample code: Create network interface.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createNetworkInterface(com.azure.resourcemanager.AzureResourceManager azure) {

@@ -45,7 +45,7 @@ public final class NetworkManagerDeploymentStatusOperationsClientImpl
 
     /**
      * Initializes an instance of NetworkManagerDeploymentStatusOperationsClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     NetworkManagerDeploymentStatusOperationsClientImpl(NetworkManagementClientImpl client) {
@@ -76,7 +76,7 @@ public final class NetworkManagerDeploymentStatusOperationsClientImpl
 
     /**
      * Post to List of Network Manager Deployment Status.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param parameters Parameters supplied to specify which Managed Network deployment status is.
@@ -112,7 +112,7 @@ public final class NetworkManagerDeploymentStatusOperationsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -122,7 +122,7 @@ public final class NetworkManagerDeploymentStatusOperationsClientImpl
 
     /**
      * Post to List of Network Manager Deployment Status.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param parameters Parameters supplied to specify which Managed Network deployment status is.
@@ -160,7 +160,7 @@ public final class NetworkManagerDeploymentStatusOperationsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -169,7 +169,7 @@ public final class NetworkManagerDeploymentStatusOperationsClientImpl
 
     /**
      * Post to List of Network Manager Deployment Status.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param parameters Parameters supplied to specify which Managed Network deployment status is.
@@ -188,7 +188,7 @@ public final class NetworkManagerDeploymentStatusOperationsClientImpl
 
     /**
      * Post to List of Network Manager Deployment Status.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param parameters Parameters supplied to specify which Managed Network deployment status is.
@@ -208,7 +208,7 @@ public final class NetworkManagerDeploymentStatusOperationsClientImpl
 
     /**
      * Post to List of Network Manager Deployment Status.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param parameters Parameters supplied to specify which Managed Network deployment status is.

@@ -7,6 +7,7 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -43,14 +44,14 @@ public final class NetworkManagerInner extends Resource {
     private String id;
 
     /*
-     * The name of the resource.
-     */
-    private String name;
-
-    /*
      * The type of the resource.
      */
     private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
 
     /**
      * Creates an instance of NetworkManagerInner class.
@@ -60,7 +61,7 @@ public final class NetworkManagerInner extends Resource {
 
     /**
      * Get the innerProperties property: The network manager properties.
-     * 
+     *
      * @return the innerProperties value.
      */
     private NetworkManagerProperties innerProperties() {
@@ -69,7 +70,7 @@ public final class NetworkManagerInner extends Resource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     * 
+     *
      * @return the etag value.
      */
     public String etag() {
@@ -78,7 +79,7 @@ public final class NetworkManagerInner extends Resource {
 
     /**
      * Get the systemData property: The system metadata related to this resource.
-     * 
+     *
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -87,7 +88,7 @@ public final class NetworkManagerInner extends Resource {
 
     /**
      * Get the id property: Resource ID.
-     * 
+     *
      * @return the id value.
      */
     public String id() {
@@ -96,7 +97,7 @@ public final class NetworkManagerInner extends Resource {
 
     /**
      * Set the id property: Resource ID.
-     * 
+     *
      * @param id the id value to set.
      * @return the NetworkManagerInner object itself.
      */
@@ -106,23 +107,23 @@ public final class NetworkManagerInner extends Resource {
     }
 
     /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
-    }
-
-    /**
      * Get the type property: The type of the resource.
-     * 
+     *
      * @return the type value.
      */
     @Override
     public String type() {
         return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     *
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -145,7 +146,7 @@ public final class NetworkManagerInner extends Resource {
 
     /**
      * Get the description property: A description of the network manager.
-     * 
+     *
      * @return the description value.
      */
     public String description() {
@@ -154,7 +155,7 @@ public final class NetworkManagerInner extends Resource {
 
     /**
      * Set the description property: A description of the network manager.
-     * 
+     *
      * @param description the description value to set.
      * @return the NetworkManagerInner object itself.
      */
@@ -168,7 +169,7 @@ public final class NetworkManagerInner extends Resource {
 
     /**
      * Get the networkManagerScopes property: Scope of Network Manager.
-     * 
+     *
      * @return the networkManagerScopes value.
      */
     public NetworkManagerPropertiesNetworkManagerScopes networkManagerScopes() {
@@ -177,7 +178,7 @@ public final class NetworkManagerInner extends Resource {
 
     /**
      * Set the networkManagerScopes property: Scope of Network Manager.
-     * 
+     *
      * @param networkManagerScopes the networkManagerScopes value to set.
      * @return the NetworkManagerInner object itself.
      */
@@ -192,7 +193,7 @@ public final class NetworkManagerInner extends Resource {
 
     /**
      * Get the networkManagerScopeAccesses property: Scope Access.
-     * 
+     *
      * @return the networkManagerScopeAccesses value.
      */
     public List<ConfigurationType> networkManagerScopeAccesses() {
@@ -201,7 +202,7 @@ public final class NetworkManagerInner extends Resource {
 
     /**
      * Set the networkManagerScopeAccesses property: Scope Access.
-     * 
+     *
      * @param networkManagerScopeAccesses the networkManagerScopeAccesses value to set.
      * @return the NetworkManagerInner object itself.
      */
@@ -215,7 +216,7 @@ public final class NetworkManagerInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the network manager resource.
-     * 
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -224,7 +225,7 @@ public final class NetworkManagerInner extends Resource {
 
     /**
      * Get the resourceGuid property: Unique identifier for this resource.
-     * 
+     *
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -233,14 +234,20 @@ public final class NetworkManagerInner extends Resource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+        if (location() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property location in model NetworkManagerInner"));
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(NetworkManagerInner.class);
 
     /**
      * {@inheritDoc}
@@ -257,7 +264,7 @@ public final class NetworkManagerInner extends Resource {
 
     /**
      * Reads an instance of NetworkManagerInner from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of NetworkManagerInner if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.

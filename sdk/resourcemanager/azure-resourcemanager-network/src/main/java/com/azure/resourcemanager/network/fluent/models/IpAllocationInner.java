@@ -7,6 +7,7 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -36,14 +37,14 @@ public final class IpAllocationInner extends Resource {
     private String id;
 
     /*
-     * The name of the resource.
-     */
-    private String name;
-
-    /*
      * The type of the resource.
      */
     private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
 
     /**
      * Creates an instance of IpAllocationInner class.
@@ -53,7 +54,7 @@ public final class IpAllocationInner extends Resource {
 
     /**
      * Get the innerProperties property: Properties of the IpAllocation.
-     * 
+     *
      * @return the innerProperties value.
      */
     private IpAllocationPropertiesFormat innerProperties() {
@@ -62,7 +63,7 @@ public final class IpAllocationInner extends Resource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     * 
+     *
      * @return the etag value.
      */
     public String etag() {
@@ -71,7 +72,7 @@ public final class IpAllocationInner extends Resource {
 
     /**
      * Get the id property: Resource ID.
-     * 
+     *
      * @return the id value.
      */
     public String id() {
@@ -80,7 +81,7 @@ public final class IpAllocationInner extends Resource {
 
     /**
      * Set the id property: Resource ID.
-     * 
+     *
      * @param id the id value to set.
      * @return the IpAllocationInner object itself.
      */
@@ -90,23 +91,23 @@ public final class IpAllocationInner extends Resource {
     }
 
     /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
-    }
-
-    /**
      * Get the type property: The type of the resource.
-     * 
+     *
      * @return the type value.
      */
     @Override
     public String type() {
         return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     *
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -129,7 +130,7 @@ public final class IpAllocationInner extends Resource {
 
     /**
      * Get the subnet property: The Subnet that using the prefix of this IpAllocation resource.
-     * 
+     *
      * @return the subnet value.
      */
     public SubResource subnet() {
@@ -138,7 +139,7 @@ public final class IpAllocationInner extends Resource {
 
     /**
      * Get the virtualNetwork property: The VirtualNetwork that using the prefix of this IpAllocation resource.
-     * 
+     *
      * @return the virtualNetwork value.
      */
     public SubResource virtualNetwork() {
@@ -147,7 +148,7 @@ public final class IpAllocationInner extends Resource {
 
     /**
      * Get the type property: The type for the IpAllocation.
-     * 
+     *
      * @return the type value.
      */
     public IpAllocationType typePropertiesType() {
@@ -156,7 +157,7 @@ public final class IpAllocationInner extends Resource {
 
     /**
      * Set the type property: The type for the IpAllocation.
-     * 
+     *
      * @param type the type value to set.
      * @return the IpAllocationInner object itself.
      */
@@ -170,7 +171,7 @@ public final class IpAllocationInner extends Resource {
 
     /**
      * Get the prefix property: The address prefix for the IpAllocation.
-     * 
+     *
      * @return the prefix value.
      */
     public String prefix() {
@@ -179,7 +180,7 @@ public final class IpAllocationInner extends Resource {
 
     /**
      * Set the prefix property: The address prefix for the IpAllocation.
-     * 
+     *
      * @param prefix the prefix value to set.
      * @return the IpAllocationInner object itself.
      */
@@ -193,7 +194,7 @@ public final class IpAllocationInner extends Resource {
 
     /**
      * Get the prefixLength property: The address prefix length for the IpAllocation.
-     * 
+     *
      * @return the prefixLength value.
      */
     public Integer prefixLength() {
@@ -202,7 +203,7 @@ public final class IpAllocationInner extends Resource {
 
     /**
      * Set the prefixLength property: The address prefix length for the IpAllocation.
-     * 
+     *
      * @param prefixLength the prefixLength value to set.
      * @return the IpAllocationInner object itself.
      */
@@ -216,7 +217,7 @@ public final class IpAllocationInner extends Resource {
 
     /**
      * Get the prefixType property: The address prefix Type for the IpAllocation.
-     * 
+     *
      * @return the prefixType value.
      */
     public IpVersion prefixType() {
@@ -225,7 +226,7 @@ public final class IpAllocationInner extends Resource {
 
     /**
      * Set the prefixType property: The address prefix Type for the IpAllocation.
-     * 
+     *
      * @param prefixType the prefixType value to set.
      * @return the IpAllocationInner object itself.
      */
@@ -239,7 +240,7 @@ public final class IpAllocationInner extends Resource {
 
     /**
      * Get the ipamAllocationId property: The IPAM allocation ID.
-     * 
+     *
      * @return the ipamAllocationId value.
      */
     public String ipamAllocationId() {
@@ -248,7 +249,7 @@ public final class IpAllocationInner extends Resource {
 
     /**
      * Set the ipamAllocationId property: The IPAM allocation ID.
-     * 
+     *
      * @param ipamAllocationId the ipamAllocationId value to set.
      * @return the IpAllocationInner object itself.
      */
@@ -262,7 +263,7 @@ public final class IpAllocationInner extends Resource {
 
     /**
      * Get the allocationTags property: IpAllocation tags.
-     * 
+     *
      * @return the allocationTags value.
      */
     public Map<String, String> allocationTags() {
@@ -271,7 +272,7 @@ public final class IpAllocationInner extends Resource {
 
     /**
      * Set the allocationTags property: IpAllocation tags.
-     * 
+     *
      * @param allocationTags the allocationTags value to set.
      * @return the IpAllocationInner object itself.
      */
@@ -285,14 +286,20 @@ public final class IpAllocationInner extends Resource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+        if (location() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property location in model IpAllocationInner"));
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(IpAllocationInner.class);
 
     /**
      * {@inheritDoc}
@@ -309,7 +316,7 @@ public final class IpAllocationInner extends Resource {
 
     /**
      * Reads an instance of IpAllocationInner from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of IpAllocationInner if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.

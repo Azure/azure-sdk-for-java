@@ -10,12 +10,12 @@ package com.azure.resourcemanager.network.generated;
 public final class ExpressRoutePortsLocationsListSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/ExpressRoutePortsLocationList
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/ExpressRoutePortsLocationList
      * .json
      */
     /**
      * Sample code: ExpressRoutePortsLocationList.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void expressRoutePortsLocationList(com.azure.resourcemanager.AzureResourceManager azure) {
