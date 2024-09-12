@@ -42,6 +42,7 @@ public class SearchCustomization extends Customization {
     private void customizeGeoJsonGeometry(PackageCustomization models) {
         models.getClass("GeoJsonGeometry").customizeAst(ast -> {
             ast.getClassByName("GeoJsonGeometry").ifPresent(clazz -> clazz.getMethodsByName("fromJsonKnownDiscriminator").get(0)
+                .setJavadocComment(new Javadoc(JavadocDescription.parseText("Reads an instance of GeoJsonGeometry from the JsonReader.")))
                 .setModifiers(Modifier.Keyword.PUBLIC, Modifier.Keyword.STATIC));
         });
     }
@@ -49,6 +50,7 @@ public class SearchCustomization extends Customization {
     private void customizeGeoJsonFeature(PackageCustomization models) {
         models.getClass("GeoJsonFeature").customizeAst(ast -> {
             ast.getClassByName("GeoJsonFeature").ifPresent(clazz -> clazz.getMethodsByName("fromJsonKnownDiscriminator").get(0)
+                .setJavadocComment(new Javadoc(JavadocDescription.parseText("Copy string literal text to the clipboard")))
                 .setModifiers(Modifier.Keyword.PUBLIC, Modifier.Keyword.STATIC));
         });
     }

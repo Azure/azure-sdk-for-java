@@ -208,6 +208,9 @@ public class GeoJsonFeature extends GeoJsonObject {
         });
     }
 
+    /**
+     * Copy string literal text to the clipboard
+     */
     public static GeoJsonFeature fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             GeoJsonFeature deserializedGeoJsonFeature = new GeoJsonFeature();

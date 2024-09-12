@@ -115,6 +115,9 @@ public class GeoJsonGeometry extends GeoJsonObject {
         });
     }
 
+    /**
+     * Reads an instance of GeoJsonGeometry from the JsonReader.
+     */
     public static GeoJsonGeometry fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             GeoJsonGeometry deserializedGeoJsonGeometry = new GeoJsonGeometry();
