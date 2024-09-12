@@ -495,6 +495,9 @@ public class VectorSearchTests extends SearchTestBase {
     public void testVectorSearchCompressionTruncationDimensionSync() {
         // create a new index with a vector field
         String indexName = randomIndexName("compressiontruncationdimension");
+        String compressionName = "vector-compression-100";
+
+
         SearchIndex searchIndex = new SearchIndex(indexName)
             .setFields(
                 new SearchField("Id", SearchFieldDataType.STRING)
@@ -508,29 +511,53 @@ public class VectorSearchTests extends SearchTestBase {
                     .setVectorSearchDimensions(1536)
                     .setVectorSearchProfileName("my-vector-profile"))
             .setVectorSearch(new VectorSearch()
-                .setCompressions(new VectorSearchCompression("vector-compression-100").setTruncationDimension(100)));
+                .setCompressions(new VectorSearchCompression(compressionName).setTruncationDimension(100)));
 
         searchIndexClient.createIndex(searchIndex);
         indexesToDelete.add(indexName);
 
-        // Upload data
-        SearchDocument document = new SearchDocument();
-        document.put("Id", "1");
-        document.put("Name", "name");
-        document.put("DescriptionVector", VectorSearchEmbeddings.DEFAULT_VECTORIZE_DESCRIPTION);
+        SearchIndex retrievedIndex = searchIndexClient.getIndex(indexName);
+        assertEquals(1, retrievedIndex.getVectorSearch().getCompressions().size());
+        assertEquals(compressionName, retrievedIndex.getVectorSearch().getCompressions().getFirst().getCompressionName());
 
-        SearchClient searchClient = searchIndexClient.getSearchClient(indexName);
-        searchClient.uploadDocuments(Collections.singletonList(document));
+    }
+
+
+
+    // create a test that asynchronously tests the ability to use VectorSearchCompression.truncationDimension to reduce the dimensionality of the vector
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testVectorSearchCompressionTruncationDimensionAsync() {
+        // create a new index with a vector field
+        String indexName = randomIndexName("compressiontruncationdimensionasync");
+        String compressionName = "vector-compression-100";
+
+        SearchIndex searchIndex = new SearchIndex(indexName)
+            .setFields(
+                new SearchField("Id", SearchFieldDataType.STRING)
+                    .setKey(true),
+                new SearchField("Name", SearchFieldDataType.STRING)
+                    .setSearchable(true)
+                    .setFilterable(true),
+                new SearchField("DescriptionVector", SearchFieldDataType.collection(SearchFieldDataType.SINGLE))
+                    .setSearchable(true)
+                    .setHidden(false)
+                    .setVectorSearchDimensions(1536)
+                    .setVectorSearchProfileName("my-vector-profile"))
+            .setVectorSearch(new VectorSearch()
+                .setCompressions(new VectorSearchCompression(compressionName).setTruncationDimension(100)));
+
+        SearchIndexAsyncClient searchIndexAsyncClient = getSearchIndexClientBuilder(false).buildAsyncClient();
+        searchIndexAsyncClient.createIndex(searchIndex).block();
         waitForIndexing();
+        indexesToDelete.add(indexName);
 
-        // Get the document
-        SearchDocument responseDocument = searchClient.getDocument("1", SearchDocument.class);
-
-        // check that the vector field has been truncated to 100 dimensions
-        assertNotNull(responseDocument.get("DescriptionVector"));
-        List<Number> truncatedVector = (List<Number>) responseDocument.get("DescriptionVector");
-        assertEquals(100, truncatedVector.size());
-
+        StepVerifier.create(searchIndexAsyncClient.getIndex(indexName))
+            .assertNext(retrievedIndex -> {
+                assertEquals(1, retrievedIndex.getVectorSearch().getCompressions().size());
+                assertEquals(compressionName, retrievedIndex.getVectorSearch().getCompressions().getFirst().getCompressionName());
+            })
+            .verifyComplete();
     }
 
     // write a test that asynchronously tests the ability to upload a vector field to an index using BinaryQuantizationCompression
@@ -539,6 +566,8 @@ public class VectorSearchTests extends SearchTestBase {
     public void testVectorSearchCompressionBinaryQuantizationAsync() {
         // create a new index with a vector field
         String indexName = randomIndexName("compressionbinaryquantizationasync");
+        String compressionName = "binary-vector-compression";
+
         SearchIndex searchIndex = new SearchIndex(indexName)
             .setFields(
                 new SearchField("Id", SearchFieldDataType.STRING)
@@ -546,48 +575,34 @@ public class VectorSearchTests extends SearchTestBase {
                 new SearchField("Name", SearchFieldDataType.STRING)
                     .setSearchable(true)
                     .setFilterable(true),
-                new SearchField("DescriptionVector", SearchFieldDataType.collection(SearchFieldDataType.SINGLE))
+                new SearchField("BinaryCompressedVector", SearchFieldDataType.collection(SearchFieldDataType.SINGLE))
                     .setSearchable(true)
                     .setHidden(false)
-                    .setVectorSearchDimensions(1536)
+                    .setVectorSearchDimensions(5)
                     .setVectorSearchProfileName("my-vector-profile"))
             .setVectorSearch(new VectorSearch()
-                .setCompressions(new BinaryQuantizationCompression("binary-vector-compression")));
+                .setCompressions(new BinaryQuantizationCompression(compressionName)));
 
         SearchIndexAsyncClient searchIndexAsyncClient = getSearchIndexClientBuilder(false).buildAsyncClient();
         searchIndexAsyncClient.createIndex(searchIndex).block();
         indexesToDelete.add(indexName);
 
-        // Upload data
-        SearchDocument document = new SearchDocument();
-        document.put("Id", "1");
-        document.put("Name", "name");
-        document.put("DescriptionVector", VectorSearchEmbeddings.DEFAULT_VECTORIZE_DESCRIPTION);
-
-        SearchAsyncClient searchClient = searchIndexAsyncClient.getSearchAsyncClient(indexName);
-        searchClient.uploadDocuments(Collections.singletonList(document)).block();
-        waitForIndexing();
-
-        // Get the document
-        StepVerifier.create(searchClient.getDocument("1", SearchDocument.class))
-            .assertNext(response -> {
-                // check that the vector field has been compressed using binary quantization
-                assertNotNull(response.get("DescriptionVector"));
-                List<Number> compressedVector = (List<Number>) response.get("DescriptionVector");
-                assertEquals(1536, compressedVector.size());
-                for (Number number : compressedVector) {
-                    assert number.floatValue() < 1 && number.floatValue() > -1;
-                }
+        StepVerifier.create(searchIndexAsyncClient.getIndex(indexName))
+            .assertNext(retrievedIndex -> {
+                assertEquals(1, retrievedIndex.getVectorSearch().getCompressions().size());
+                assertEquals(compressionName, retrievedIndex.getVectorSearch().getCompressions().getFirst().getCompressionName());
             })
             .verifyComplete();
     }
 
-    // create a test that asynchronously tests the ability to use VectorSearchCompression.truncationDimension to reduce the dimensionality of the vector
+    // write a test that synchronously tests the ability to upload a vector field to an index using BinaryQuantizationCompression
     @SuppressWarnings("unchecked")
     @Test
-    public void testVectorSearchCompressionTruncationDimensionAsync() {
+    public void testVectorSearchCompressionBinaryQuantizationSync() {
         // create a new index with a vector field
-        String indexName = randomIndexName("compressiontruncationdimensionasync");
+        String indexName = randomIndexName("compressionbinaryquantizationsync");
+        String compressionName = "binary-vector-compression";
+
         SearchIndex searchIndex = new SearchIndex(indexName)
             .setFields(
                 new SearchField("Id", SearchFieldDataType.STRING)
@@ -595,38 +610,21 @@ public class VectorSearchTests extends SearchTestBase {
                 new SearchField("Name", SearchFieldDataType.STRING)
                     .setSearchable(true)
                     .setFilterable(true),
-                new SearchField("DescriptionVector", SearchFieldDataType.collection(SearchFieldDataType.SINGLE))
+                new SearchField("BinaryCompressedVector", SearchFieldDataType.collection(SearchFieldDataType.SINGLE))
                     .setSearchable(true)
                     .setHidden(false)
-                    .setVectorSearchDimensions(1536)
+                    .setVectorSearchDimensions(5)
                     .setVectorSearchProfileName("my-vector-profile"))
             .setVectorSearch(new VectorSearch()
-                .setCompressions(new VectorSearchCompression("vector-compression-100").setTruncationDimension(100)));
+                .setCompressions(new BinaryQuantizationCompression(compressionName)));
 
-        SearchIndexAsyncClient searchIndexAsyncClient = getSearchIndexClientBuilder(false).buildAsyncClient();
-        searchIndexAsyncClient.createIndex(searchIndex).block();
-        waitForIndexing();
+        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
+        searchIndexClient.createIndex(searchIndex);
         indexesToDelete.add(indexName);
 
-        // Upload data
-        SearchDocument document = new SearchDocument();
-        document.put("Id", "1");
-        document.put("Name", "name");
-        document.put("DescriptionVector", VectorSearchEmbeddings.DEFAULT_VECTORIZE_DESCRIPTION);
-
-        SearchAsyncClient searchClient = searchIndexAsyncClient.getSearchAsyncClient(indexName);
-        searchClient.uploadDocuments(Collections.singletonList(document)).block();
-        waitForIndexing();
-
-        // Get the document
-        StepVerifier.create(searchClient.getDocument("1", SearchDocument.class))
-            .assertNext(response -> {
-                // check that the vector field has been truncated to 100 dimensions
-                assertNotNull(response.get("DescriptionVector"));
-                List<Number> truncatedVector = (List<Number>) response.get("DescriptionVector");
-                assertEquals(100, truncatedVector.size());
-            })
-            .verifyComplete();
+        SearchIndex retrievedIndex = searchIndexClient.getIndex(indexName);
+        assertEquals(1, retrievedIndex.getVectorSearch().getCompressions().size());
+        assertEquals(compressionName, retrievedIndex.getVectorSearch().getCompressions().getFirst().getCompressionName());
     }
 
     // a test that creates a hybrid search query with a vector search query and a regular search query, and utilizes the vector query
@@ -664,12 +662,12 @@ public class VectorSearchTests extends SearchTestBase {
         // create a hybrid search query with a vector search query and a regular search query
         SearchOptions searchOptions = new SearchOptions()
             .setSearchFields("Name")
-            .setFilter("Name eq 'name'")
+            .setFilter("Name ne 'name'")
             .setSelect("Id", "Name")
             .setVectorSearchOptions(new VectorSearchOptions()
                 .setQueries(new VectorizedQuery(VectorSearchEmbeddings.DEFAULT_VECTORIZE_DESCRIPTION)
                     .setKNearestNeighborsCount(1)
-                    .setFilterOverride("Id eq '1'")));
+                    .setFilterOverride("name eq 'name'")));
 
         // run the hybrid search query
         List<SearchResult> results = searchClient.search("name", searchOptions, Context.NONE)
