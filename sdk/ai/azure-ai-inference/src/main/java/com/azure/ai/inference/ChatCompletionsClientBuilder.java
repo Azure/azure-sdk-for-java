@@ -303,7 +303,6 @@ public final class ChatCompletionsClientBuilder implements HttpTrait<ChatComplet
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
     }
 
-    @Generated
     private HttpPipeline createHttpPipeline() {
         Configuration buildConfiguration
             = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;

@@ -304,7 +304,6 @@ public final class EmbeddingsClientBuilder implements HttpTrait<EmbeddingsClient
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
     }
 
-    @Generated
     private HttpPipeline createHttpPipeline() {
         Configuration buildConfiguration
             = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
