@@ -1,0 +1,19 @@
+Service: core
+
+Project: sdk/clientcore/http-stress
+
+PrimaryPackage: 'io.clientcore:core'
+
+PackageVersions:
+- 'io.clientcore:core': 1.0.0-beta.1 # {x-version-update;io.clientcore:core;dependency}
+  'io.clientcore:core-json': 1.0.0-beta.1 # {x-version-update;io.clientcore:core-json;dependency}
+  'io.clientcore:http-okhttp3': 1.0.0-beta.1 # {x-version-update;io.clientcore:http-okhttp3;dependency}
+- 'io.clientcore:http-jdk-httpclient': # {x-version-update;io.clientcore:http-jdk-httpclient;dependency}
+
+Tests:
+- Test: httpget
+  Class: httpget
+  Arguments:
+  - --sync --http-client default
+  - --sync --http-client okhttp
+  - --sync --http-client jdk
