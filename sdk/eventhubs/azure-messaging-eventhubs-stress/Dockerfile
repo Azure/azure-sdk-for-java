@@ -1,5 +1,5 @@
 ARG REGISTRY="azsdkengsys.azurecr.io"
-FROM ${REGISTRY}/java/jdk-mariner-mvn:jdk11-latest as builder
+FROM ${REGISTRY}/java/jdk-mariner-mvn:jdk11-latest AS builder
 
 RUN yum update -y
 
@@ -18,16 +18,8 @@ ARG SKIP_CHECKS="-Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip
 RUN --mount=type=cache,target=/root/.m2 \
  mvn -f /stress-eh/eng/code-quality-reports/pom.xml clean install ${SKIP_CHECKS} && \
  mvn -f /stress-eh/sdk/tools/pom.xml clean install ${SKIP_CHECKS} && \
- mvn -f /stress-eh/sdk/core/azure-core/pom.xml clean install ${SKIP_CHECKS} && \
  mvn -f /stress-eh/sdk/core/azure-core-http-netty/pom.xml clean install ${SKIP_CHECKS} && \
- mvn -f /stress-eh/sdk/core/azure-core-http-okhttp/pom.xml clean install ${SKIP_CHECKS} && \
- mvn -f /stress-eh/sdk/core/azure-core-http-vertx/pom.xml clean install ${SKIP_CHECKS} && \
- mvn -f /stress-eh/sdk/core/azure-core-http-jdk-httpclient/pom.xml clean install ${SKIP_CHECKS} && \
- mvn -f /stress-eh/sdk/core/azure-core-test/pom.xml clean install ${SKIP_CHECKS} && \
- mvn -f /stress-eh/sdk/core/azure-core-amqp/pom.xml clean install ${SKIP_CHECKS} && \
- mvn -f /stress-eh/sdk/core/azure-core-http-netty/pom.xml clean install ${SKIP_CHECKS} && \
- mvn -f /stress-eh/sdk/eventhubs/azure-messaging-eventhubs/pom.xml clean install ${SKIP_CHECKS} && \
- mvn -f /stress-eh/sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob/pom.xml clean install ${SKIP_CHECKS} && \
+ mvn -f /stress-eh/sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob/pom.xml clean install --am ${SKIP_CHECKS} && \
  mvn -f /stress-eh/sdk/eventhubs/azure-messaging-eventhubs-stress/pom.xml clean install ${SKIP_CHECKS}
 
 FROM mcr.microsoft.com/openjdk/jdk:21-mariner
