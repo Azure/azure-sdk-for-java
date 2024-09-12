@@ -278,7 +278,7 @@ com.azure.resourcemanager:azure-resourcemanager-eventhubs;2.41.0;2.42.0
 com.azure.resourcemanager:azure-resourcemanager-keyvault;2.41.0;2.42.0
 com.azure.resourcemanager:azure-resourcemanager-monitor;2.41.0;2.42.0
 com.azure.resourcemanager:azure-resourcemanager-msi;2.41.0;2.42.0
-com.azure.resourcemanager:azure-resourcemanager-network;2.41.0;2.42.0
+com.azure.resourcemanager:azure-resourcemanager-network;2.41.0;2.43.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-privatedns;2.41.0;2.42.0
 com.azure.resourcemanager:azure-resourcemanager-resources;2.41.0;2.42.0
