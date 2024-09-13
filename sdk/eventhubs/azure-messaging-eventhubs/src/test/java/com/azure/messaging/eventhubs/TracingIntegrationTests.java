@@ -154,7 +154,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         CountDownLatch latch = new CountDownLatch(2);
         spanProcessor.notifyIfCondition(latch, span -> span == receivedSpan.get() || hasOperationName(span, SEND));
         toClose(consumer
-            .receive(false, getReceiveOptions())
+            .receive(true, getReceiveOptions())
             .take(DEFAULT_TIMEOUT)
             .subscribe(pe -> {
                 if (receivedMessage.compareAndSet(null, pe)) {
@@ -198,7 +198,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         CountDownLatch latch = new CountDownLatch(2);
         customSpanProcessor.notifyIfCondition(latch, span -> span == receivedSpan.get() || hasOperationName(span, SEND));
 
-        toClose(consumer.receive(false, getReceiveOptions())
+        toClose(consumer.receive(true, getReceiveOptions())
             .take(1)
             .subscribe(pe -> {
                 if (receivedMessage.compareAndSet(null, pe)) {
@@ -239,7 +239,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .verify(DEFAULT_TIMEOUT);
 
         StepVerifier.create(consumer
-                .receive(false, getReceiveOptions())
+                .receive(true, getReceiveOptions())
                 .take(messageCount)
                 .doOnNext(pe -> {
                     String traceparent = (String) pe.getData().getProperties().get("traceparent");
