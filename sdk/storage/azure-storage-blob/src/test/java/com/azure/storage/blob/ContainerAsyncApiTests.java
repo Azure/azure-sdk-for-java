@@ -815,16 +815,13 @@ public class ContainerAsyncApiTests extends BlobTestBase {
 
     @Test
     public void listPageBlobsFlat() {
+        String containerName = generateContainerName();
         ccAsync = premiumBlobServiceAsyncClient.getBlobContainerAsyncClient(containerName);
         String name = generateBlobName();
         PageBlobAsyncClient bu = ccAsync.getBlobAsyncClient(name).getPageBlobAsyncClient();
 
         Flux<BlobItem> response = ccAsync.createIfNotExists().then(bu.create(512))
-            .thenMany(ccAsync.listBlobs(new ListBlobsOptions().setPrefix(prefix), null))
-            .doFinally(signalType -> {
-                // cleanup:
-                ccAsync.delete().block();
-            });
+            .thenMany(ccAsync.listBlobs(new ListBlobsOptions().setPrefix(prefix), null));
 
         StepVerifier.create(response)
             .assertNext(r -> {
@@ -856,6 +853,9 @@ public class ContainerAsyncApiTests extends BlobTestBase {
                 assertNotNull(r.getProperties().getCreationTime());
             })
             .verifyComplete();
+
+        //cleanup
+        premiumBlobServiceAsyncClient.deleteBlobContainer(containerName).block();
     }
 
     @Test
@@ -1076,6 +1076,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-10-02")
     @Test
     public void listBlobsFlatOptionsDeletedWithVersions() {
+        String containerName = generateContainerName();
         BlobContainerAsyncClient versionedCC = versionedBlobServiceAsyncClient.getBlobContainerAsyncClient(containerName);
         String blobName = generateBlobName();
         AppendBlobAsyncClient blob = versionedCC.getBlobAsyncClient(blobName).getAppendBlobAsyncClient();
@@ -1088,11 +1089,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
             .then(blob.create())
             .then(blob.setMetadata(metadata))
             .then(blob.delete())
-            .thenMany(versionedCC.listBlobs(options))
-            .doFinally(signalType -> {
-                // cleanup:
-                versionedCC.delete().block();
-            });
+            .thenMany(versionedCC.listBlobs(options));
 
         StepVerifier.create(response)
             .assertNext(r -> {
@@ -1100,6 +1097,9 @@ public class ContainerAsyncApiTests extends BlobTestBase {
                 assertTrue(r.hasVersionsOnly());
             })
             .verifyComplete();
+
+        //cleanup
+        versionedBlobServiceAsyncClient.deleteBlobContainer(containerName).block();
     }
 
     @Test
@@ -1475,6 +1475,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-10-02")
     @Test
     public void listBlobsHierOptionsDeletedWithVersions() {
+        String containerName = generateContainerName();
         BlobContainerAsyncClient versionedCC = versionedBlobServiceAsyncClient.getBlobContainerAsyncClient(containerName);
         String blobName = generateBlobName();
         AppendBlobAsyncClient blob = versionedCC.getBlobAsyncClient(blobName).getAppendBlobAsyncClient();
@@ -1487,11 +1488,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
             .then(blob.create())
             .then(blob.setMetadata(metadata))
             .then(blob.delete())
-            .thenMany(versionedCC.listBlobsByHierarchy("", options))
-            .doFinally(signalType -> {
-                // cleanup:
-                versionedCC.delete().block();
-            });
+            .thenMany(versionedCC.listBlobsByHierarchy("", options));
 
         StepVerifier.create(response)
             .assertNext(r -> {
@@ -1499,6 +1496,9 @@ public class ContainerAsyncApiTests extends BlobTestBase {
                 assertTrue(r.hasVersionsOnly());
             })
             .verifyComplete();
+
+        //cleanup
+        versionedBlobServiceAsyncClient.deleteBlobContainer(containerName).block();
     }
 
     @Test
@@ -1738,6 +1738,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-12-02")
     @Test
     public void listBlobsHierSegmentWithVersionPrefixAndDelimiter() {
+        String containerName = generateContainerName();
         BlobContainerAsyncClient versionedCC = versionedBlobServiceAsyncClient.getBlobContainerAsyncClient(containerName);
         ListBlobsOptions options = new ListBlobsOptions()
             .setDetails(new BlobListDetails().setRetrieveVersions(true))
@@ -1745,11 +1746,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
 
         Mono<List<BlobItem>> response = versionedCC.createIfNotExists()
             .thenMany(setupContainerForListing(versionedCC))
-            .then(versionedCC.listBlobsByHierarchy("/", options).collect(Collectors.toList()))
-            .doFinally(signalType -> {
-                // cleanup:
-                versionedCC.delete().block();
-            });
+            .then(versionedCC.listBlobsByHierarchy("/", options).collect(Collectors.toList()));
 
         StepVerifier.create(response)
             .assertNext(r -> {
@@ -1770,6 +1767,9 @@ public class ContainerAsyncApiTests extends BlobTestBase {
                 assertEquals("baz/", foundPrefixes.iterator().next().getName());
             })
             .verifyComplete();
+
+        //cleanup
+        versionedBlobServiceAsyncClient.deleteBlobContainer(containerName).block();
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-04-10")

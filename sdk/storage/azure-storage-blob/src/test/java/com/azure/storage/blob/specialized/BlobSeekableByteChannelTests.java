@@ -264,6 +264,8 @@ public class BlobSeekableByteChannelTests extends BlobTestBase {
         // and: "channel has appropriate values"
         assertEquals(blockSize == null ? 4 * Constants.MB : blockSize, channel.getChunkSize());
         assertEquals(position == null ? 0 : position, channel.position());
+
+        versionedCC.delete();
     }
 
     static Stream<Arguments> channelReadModeDataSupplier() {

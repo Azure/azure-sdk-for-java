@@ -873,9 +873,6 @@ public class BlobAsyncApiTests extends BlobTestBase {
             .verifyComplete();
 
         assertTrue(compareFiles(file, outFile, 0, fileSize));
-
-        // cleanup:
-        blobServiceAsyncClient.deleteBlobContainer(containerName);
     }
 
     @LiveOnly
@@ -2606,11 +2603,7 @@ public class BlobAsyncApiTests extends BlobTestBase {
                                     assertEquals(tier, props.getAccessTier());
                                     return cc.listBlobs();
                                 });
-                        })
-                    .doFinally(signalType -> {
-                        // cleanup:
-                        cc.delete().block();
-                    });
+                        });
             });
 
         StepVerifier.create(response)
@@ -2621,7 +2614,8 @@ public class BlobAsyncApiTests extends BlobTestBase {
     @ParameterizedTest
     @MethodSource("setTierPageBlobSupplier")
     public void setTierPageBlob(AccessTier tier) {
-        Flux<BlobItem> response = premiumBlobServiceAsyncClient.createBlobContainer(generateContainerName())
+        String containerName = generateContainerName();
+        Flux<BlobItem> response = premiumBlobServiceAsyncClient.createBlobContainer(containerName)
             .flatMapMany(cc -> {
                 PageBlobAsyncClient bc = cc.getBlobAsyncClient(generateBlobName()).getPageBlobAsyncClient();
                 return bc.create(512)
@@ -2630,16 +2624,15 @@ public class BlobAsyncApiTests extends BlobTestBase {
                     .flatMapMany(r -> {
                         assertEquals(tier, r.getAccessTier());
                         return cc.listBlobs();
-                    })
-                    .doFinally(signalType -> {
-                        // cleanup:
-                        cc.delete().block();
                     });
             });
 
         StepVerifier.create(response)
             .assertNext(r -> assertEquals(tier, r.getProperties().getAccessTier()))
             .verifyComplete();
+
+        //cleanup
+        premiumBlobServiceAsyncClient.deleteBlobContainer(containerName).block();
     }
 
     private static Stream<Arguments> setTierPageBlobSupplier() {
@@ -2654,11 +2647,7 @@ public class BlobAsyncApiTests extends BlobTestBase {
             .flatMap(cc -> {
                 BlockBlobAsyncClient bu = cc.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
                 return bu.upload(DATA.getDefaultFlux(), DATA.getDefaultData().remaining())
-                    .then(bc.setAccessTierWithResponse(AccessTier.HOT, null, null))
-                    .doFinally(signalType -> {
-                        // cleanup:
-                        cc.delete().block();
-                    });
+                    .then(bc.setAccessTierWithResponse(AccessTier.HOT, null, null));
             });
 
         StepVerifier.create(response)
@@ -2684,11 +2673,7 @@ public class BlobAsyncApiTests extends BlobTestBase {
                     assertNull(r.isAccessTierInferred());
                     return Mono.empty();
                 })
-                .thenMany(cc.listBlobs())
-                .doFinally(signalType -> {
-                    // cleanup:
-                    cc.delete().block();
-                });
+                .thenMany(cc.listBlobs());
         });
 
         StepVerifier.create(response)
@@ -2708,11 +2693,7 @@ public class BlobAsyncApiTests extends BlobTestBase {
                 .then(bc.getProperties()).flatMap(r -> {
                     assertEquals(status, r.getArchiveStatus());
                     return Mono.empty();
-                }).thenMany(cc.listBlobs())
-                .doFinally(signalType -> {
-                    // cleanup:
-                    cc.delete().block();
-                });
+                }).thenMany(cc.listBlobs());
         });
 
         StepVerifier.create(response)
@@ -2743,11 +2724,7 @@ public class BlobAsyncApiTests extends BlobTestBase {
                 }).then(bc.getProperties()).flatMap(r -> {
                     assertEquals(AccessTier.COLD, r.getAccessTier());
                     return Mono.empty();
-                }).thenMany(cc.listBlobs())
-                .doFinally(signalType -> {
-                    // cleanup:
-                    cc.delete().block();
-                });
+                }).thenMany(cc.listBlobs());
         });
 
         StepVerifier.create(response)
@@ -2766,11 +2743,7 @@ public class BlobAsyncApiTests extends BlobTestBase {
                 .then(bc.getProperties()).flatMap(r -> {
                     assertEquals(ArchiveStatus.REHYDRATE_PENDING_TO_COLD, r.getArchiveStatus());
                     return Mono.empty();
-                }).thenMany(cc.listBlobs())
-                .doFinally(signalType -> {
-                    // cleanup:
-                    cc.delete().block();
-                });
+                }).thenMany(cc.listBlobs());
         });
 
         StepVerifier.create(response)
@@ -2832,11 +2805,7 @@ public class BlobAsyncApiTests extends BlobTestBase {
         Mono<Void> response = primaryBlobServiceAsyncClient.createBlobContainer(generateContainerName()).flatMap(cc -> {
             BlockBlobAsyncClient bc = cc.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
             return bc.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize())
-                .then(bc.setAccessTier(AccessTier.fromString("garbage")))
-                .doFinally(signalType -> {
-                    // cleanup:
-                    cc.delete().block();
-                });
+                .then(bc.setAccessTier(AccessTier.fromString("garbage")));
         });
 
         StepVerifier.create(response)
@@ -2862,9 +2831,6 @@ public class BlobAsyncApiTests extends BlobTestBase {
                         r = null;
                     }
                     return bc.setAccessTierWithResponse(AccessTier.HOT, null, r);
-                }).doFinally(signalType -> {
-                    // cleanup:
-                    cc.delete().block();
                 });
         });
 
@@ -2878,11 +2844,7 @@ public class BlobAsyncApiTests extends BlobTestBase {
         Mono<Response<Void>> response = primaryBlobServiceAsyncClient.createBlobContainer(generateContainerName()).flatMap(cc -> {
             BlockBlobAsyncClient bc = cc.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
             return bc.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize())
-                .then(bc.setAccessTierWithResponse(AccessTier.HOT, null, "garbage"))
-                .doFinally(signalType -> {
-                    // cleanup:
-                    cc.delete().block();
-                });
+                .then(bc.setAccessTierWithResponse(AccessTier.HOT, null, "garbage"));
         });
 
         StepVerifier.create(response)
@@ -2901,11 +2863,7 @@ public class BlobAsyncApiTests extends BlobTestBase {
                 return bc.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize())
                     .then(bc.setTags(t))
                     .then(bc.setAccessTierWithResponse(new BlobSetAccessTierOptions(AccessTier.HOT)
-                        .setTagsConditions("\"foo\" = 'bar'")))
-                    .doFinally(signalType -> {
-                        // cleanup:
-                        cc.delete().block();
-                    });
+                        .setTagsConditions("\"foo\" = 'bar'")));
             });
 
         StepVerifier.create(response)
@@ -2920,11 +2878,7 @@ public class BlobAsyncApiTests extends BlobTestBase {
                 BlockBlobAsyncClient bc = cc.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
                 return bc.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize())
                     .then(bc.setAccessTierWithResponse(new BlobSetAccessTierOptions(AccessTier.HOT)
-                        .setTagsConditions("\"foo\" = 'bar'")))
-                    .doFinally(signalType -> {
-                        // cleanup:
-                        cc.delete().block();
-                    });
+                        .setTagsConditions("\"foo\" = 'bar'")));
             });
 
         StepVerifier.create(response)
