@@ -212,7 +212,6 @@ public final class EmbeddingsClientBuilder implements HttpTrait<EmbeddingsClient
         return this;
     }
 
-
     /*
      * The KeyCredential used for authentication.
      */

@@ -166,9 +166,10 @@ public final class EmbeddingsAsyncClient {
      * recommendations, and other similar scenarios on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<EmbeddingsResult>> embedWithResponse(List<String> input, Integer dimensions, EmbeddingEncodingFormat encodingFormat,
-                                        EmbeddingInputType inputType, String model, ExtraParameters extraParams) {
-        RequestOptions requestOptions = new RequestOptions();
+    public Mono<Response<EmbeddingsResult>> embedWithResponse(List<String> input, Integer dimensions,
+                EmbeddingEncodingFormat encodingFormat, EmbeddingInputType inputType, String model,
+                ExtraParameters extraParams) {
+            RequestOptions requestOptions = new RequestOptions();
         EmbedRequest embedRequestObj = new EmbedRequest(input).setDimensions(dimensions)
             .setEncodingFormat(encodingFormat)
             .setInputType(inputType)
@@ -177,8 +178,9 @@ public final class EmbeddingsAsyncClient {
         if (extraParams != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("extra-parameters"), extraParams.toString());
         }
-        return embedWithResponse(embedRequest, requestOptions).map(
-            protocolMethodData -> new SimpleResponse<>(protocolMethodData, protocolMethodData.getValue().toObject(EmbeddingsResult.class)));
+        return embedWithResponse(embedRequest, requestOptions)
+                    .map(protocolMethodData -> new SimpleResponse<>(protocolMethodData,
+                        protocolMethodData.getValue().toObject(EmbeddingsResult.class)));
     }
 
     /**

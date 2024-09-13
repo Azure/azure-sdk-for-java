@@ -161,8 +161,9 @@ public final class EmbeddingsClient {
      * Embeddings measure the relatedness of text strings and are commonly used for search, clustering,
      * recommendations, and other similar scenarios.
      */
-    public Response<EmbeddingsResult> embedWithResponse(List<String> input, Integer dimensions, EmbeddingEncodingFormat encodingFormat,
-                                  EmbeddingInputType inputType, String model, ExtraParameters extraParams) {
+    public Response<EmbeddingsResult> embedWithResponse(List<String> input, Integer dimensions,
+                EmbeddingEncodingFormat encodingFormat, EmbeddingInputType inputType, String model,
+                ExtraParameters extraParams) {
         // Generated convenience method for embedWithResponse
         RequestOptions requestOptions = new RequestOptions();
         EmbedRequest embedRequestObj = new EmbedRequest(input).setDimensions(dimensions)

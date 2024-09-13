@@ -21,15 +21,14 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
+import java.util.Objects;
 import com.azure.ai.inference.implementation.InferenceServerSentEvents;
 import com.azure.ai.inference.models.ChatCompletionsOptions;
 import com.azure.ai.inference.implementation.ChatCompletionsUtils;
 import com.azure.ai.inference.models.StreamingChatCompletionsUpdate;
 import com.azure.core.util.IterableStream;
 import reactor.core.publisher.Flux;
-
 import java.nio.ByteBuffer;
-import java.util.Objects;
 
 /**
  * Initializes a new instance of the synchronous ChatCompletionsClient type.
@@ -364,7 +363,7 @@ public final class ChatCompletionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> completeStreamWithResponse(BinaryData chatCompletionsOptions,
-                                                           RequestOptions requestOptions) {
+                RequestOptions requestOptions) {
         return serviceClient.completeWithResponse(chatCompletionsOptions, requestOptions);
     }
 
