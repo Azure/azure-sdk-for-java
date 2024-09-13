@@ -151,8 +151,8 @@ public final class ChatCompletionsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BinaryData>> completeWithBinaryResponse(BinaryData completeRequest,
-                RequestOptions requestOptions) {
-            return this.serviceClient.completeWithResponseAsync(completeRequest, requestOptions);
+        RequestOptions requestOptions) {
+        return this.serviceClient.completeWithResponseAsync(completeRequest, requestOptions);
     }
 
     /**
@@ -193,10 +193,9 @@ public final class ChatCompletionsAsyncClient {
         if (extraParams != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("extra-parameters"), extraParams.toString());
         }
-
         return completeWithBinaryResponse(completeRequest, requestOptions)
-                    .map(methodDataResponse -> new SimpleResponse<>(methodDataResponse,
-                        methodDataResponse.getValue().toObject(ChatCompletions.class)));
+            .map(methodDataResponse -> new SimpleResponse<>(methodDataResponse,
+                methodDataResponse.getValue().toObject(ChatCompletions.class)));
     }
 
     /**
