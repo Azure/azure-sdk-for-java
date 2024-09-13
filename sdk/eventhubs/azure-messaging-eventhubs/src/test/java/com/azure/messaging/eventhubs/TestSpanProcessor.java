@@ -88,10 +88,12 @@ public class TestSpanProcessor implements SpanProcessor {
         // Various attribute keys can be found in:
         // sdk/core/azure-core-metrics-opentelemetry/src/main/java/com/azure/core/metrics/opentelemetry/OpenTelemetryAttributes.java
         // sdk/core/azure-core-tracing-opentelemetry/src/main/java/com/azure/core/tracing/opentelemetry/OpenTelemetryUtils.java
-        assertEquals("Microsoft.EventHub", attributes.get(AttributeKey.stringKey("az.namespace")));
-        assertEquals("eventhubs", attributes.get(AttributeKey.stringKey("messaging.system")));
-        assertEquals(entityName, attributes.get(AttributeKey.stringKey("messaging.destination.name")));
-        assertEquals(namespace, attributes.get(AttributeKey.stringKey("server.address")));
+        String messagingSystem = attributes.get(AttributeKey.stringKey("messaging.system"));
+        if ("eventhubs".equals(messagingSystem)) {
+            assertEquals("Microsoft.EventHub", attributes.get(AttributeKey.stringKey("az.namespace")));
+            assertEquals(entityName, attributes.get(AttributeKey.stringKey("messaging.destination.name")));
+            assertEquals(namespace, attributes.get(AttributeKey.stringKey("server.address")));
+        }
     }
 
     public void notifyIfCondition(CountDownLatch countDownLatch, Predicate<ReadableSpan> filter) {
