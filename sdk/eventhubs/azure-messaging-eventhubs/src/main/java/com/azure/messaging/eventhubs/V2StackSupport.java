@@ -100,8 +100,8 @@ final class V2StackSupport {
                 isOptedOut = false;
             }
         }
-        if (choiceFlag.compareAndSet(null, !isOptedOut)) {
-            logger.verbose("Selected configuration {}={}", propName, !isOptedOut);
+        if (choiceFlag.compareAndSet(null, isOptedOut)) {
+            logger.verbose("Selected configuration {}={}", propName, isOptedOut);
             if (isOptedOut) {
                 final String logMessage = "If your application fails to work without explicitly setting {} configuration to 'false', please file an urgent issue at https://github.com/Azure/azure-sdk-for-java/issues/new/choose";
                 logger.info(logMessage, propName);
