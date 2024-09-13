@@ -3,6 +3,9 @@
 
 package com.azure.core.credential;
 
+import com.azure.core.http.HttpMethod;
+
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -48,6 +51,7 @@ public class TokenRequestContext {
     private String claims;
     private String tenantId;
     private boolean enableCae;
+    ProofOfPossessionOptions proofOfPossessionOptions;
 
     /**
      * Creates a token request instance.
@@ -157,5 +161,26 @@ public class TokenRequestContext {
      */
     public boolean isCaeEnabled() {
         return this.enableCae;
+    }
+
+
+    /**
+     * Gets the proof of possession options.
+     *
+     * @return The current instance of ProofOfPossessionOptions.
+     */
+    public ProofOfPossessionOptions getProofOfPossessionOptions() {
+        return proofOfPossessionOptions;
+    }
+
+    /**
+     * Sets the proof of possession options.
+     *
+     * @param proofOfPossessionOptions An instance of ProofOfPossessionOptions to be set.
+     * @return The updated instance of TokenRequestContext.
+     */
+    public TokenRequestContext setProofOfPossessionOptions(ProofOfPossessionOptions proofOfPossessionOptions) {
+        this.proofOfPossessionOptions = proofOfPossessionOptions;
+        return this;
     }
 }
