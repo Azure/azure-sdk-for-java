@@ -1,1 +1,1 @@
-{"accountEmail":"dummyuser@email.com","tenantId":"DummyTenant","clientId":"DummyClient","credFilePath":"pathFromFile","certificate":null,"authMethod":"IDENTITY","azureEnv":"AzureCloud","authType":"DEVICE_CODE"}
+{"accountEmail":"dummyuser@email.com","tenantId":"DummyTenant","clientId":"DummyClient","credFilePath":null,"certificate":null,"authMethod":"IDENTITY","azureEnv":"AzureCloud","authType":"DEVICE_CODE"}

@@ -10,8 +10,6 @@
     "java.semanticHighlighting.enabled": true,
     "java.home": "/Contents/Home",
     "python.languageServer": "Microsoft",
-  // this is a dummy comment to ensure parsing jsonc works
+  // this is a dummy comment.
     "[azure-pipelines].customSchemaFile": "",
-    "azure.cloud": "AzureCloudFromFile",
-    "azure.tenant": "AzureTenantFromFile"
 }

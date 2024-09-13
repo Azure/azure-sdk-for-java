@@ -185,8 +185,8 @@ public class IdentitySyncClient extends IdentityClientBase {
             .tenant(IdentityUtil.resolveTenantId(tenantId, request, options));
 
         if (request.isCaeEnabled() && request.getClaims() != null) {
-            ClaimsRequest claimsRequest = ClaimsRequest.formatAsClaimsRequest(request.getClaims());
-            parametersBuilder.claims(claimsRequest);
+            ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());
+            parametersBuilder.claims(customClaimRequest);
             parametersBuilder.forceRefresh(true);
         }
 
@@ -241,9 +241,9 @@ public class IdentitySyncClient extends IdentityClientBase {
         }
 
         if (request.isCaeEnabled() && request.getClaims() != null) {
-            ClaimsRequest claimsRequest = ClaimsRequest
+            ClaimsRequest customClaimRequest = CustomClaimRequest
                 .formatAsClaimsRequest(request.getClaims());
-            parametersBuilder.claims(claimsRequest);
+            parametersBuilder.claims(customClaimRequest);
             parametersBuilder.forceRefresh(true);
         }
 

@@ -6,17 +6,15 @@ package com.azure.identity.implementation;
 import com.azure.core.util.CoreUtils;
 import com.azure.identity.AzureAuthorityHosts;
 import com.azure.identity.CredentialUnavailableException;
-import com.azure.json.JsonOptions;
-import com.azure.json.JsonProviders;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonToken;
+import com.fasterxml.jackson.core.json.JsonReadFeature;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.aad.msal4jextensions.persistence.mac.KeyChainAccessor;
 import com.sun.jna.Platform;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.InvalidPathException;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,23 +28,35 @@ public class VisualStudioCacheAccessor {
         + " credential authentication.";
     private static final Pattern REFRESH_TOKEN_PATTERN = Pattern.compile("^[-_.a-zA-Z0-9]+$");
 
+    private static final ObjectMapper MAPPER = new ObjectMapper()
+        .configure(JsonReadFeature.ALLOW_UNESCAPED_CONTROL_CHARS.mappedFeature(), true)
+        .configure(JsonReadFeature.ALLOW_JAVA_COMMENTS.mappedFeature(), true)
+        .configure(JsonReadFeature.ALLOW_TRAILING_COMMA.mappedFeature(), true);
 
-    public static String getSettingsPath() {
+    private JsonNode getUserSettings() {
+        JsonNode output;
         String homeDir = System.getProperty("user.home");
+        String settingsPath;
         try {
             if (Platform.isWindows()) {
-                return Paths.get(System.getenv("APPDATA"), "Code", "User", "settings.json").toString();
+                settingsPath = Paths.get(System.getenv("APPDATA"), "Code", "User", "settings.json").toString();
             } else if (Platform.isMac()) {
-                return Paths.get(homeDir, "Library", "Application Support", "Code", "User", "settings.json")
+                settingsPath = Paths.get(homeDir, "Library", "Application Support", "Code", "User", "settings.json")
                     .toString();
             } else if (Platform.isLinux()) {
-                return Paths.get(homeDir, ".config", "Code", "User", "settings.json").toString();
+                settingsPath = Paths.get(homeDir, ".config", "Code", "User", "settings.json").toString();
             } else {
                 throw new CredentialUnavailableException(PLATFORM_NOT_SUPPORTED_ERROR);
             }
-        } catch (InvalidPathException e) {
+            output = readJsonFile(settingsPath);
+        } catch (Exception e) {
             return null;
         }
+        return output;
+    }
+
+    static JsonNode readJsonFile(String path) throws IOException {
+        return MAPPER.readTree(new File(path));
     }
 
     /**
@@ -55,28 +65,28 @@ public class VisualStudioCacheAccessor {
      * @return a Map containing VS Code user settings
      */
     public Map<String, String> getUserSettingsDetails() {
-        try (JsonReader jsonReader = JsonProviders.createReader(Files.readAllBytes(Paths.get(getSettingsPath())), new JsonOptions().setJsoncSupported(true))) {
-            return jsonReader.readObject(reader -> {
-                Map<String, String> result = new HashMap<>();
-                while (reader.nextToken() != JsonToken.END_OBJECT) {
-                    String fieldName = reader.getFieldName();
-                    reader.nextToken();
-                    if ("azure.cloud".equals(fieldName)) {
-                        result.put("cloud", reader.getString());
-                    } else if ("azure.tenant".equals(fieldName)) {
-                        result.put("tenant", reader.getString());
-                    } else {
-                        reader.skipChildren();
-                    }
-                }
-                if (!result.containsKey("cloud")) {
-                    result.put("cloud", "AzureCloud");
-                }
-                return result;
-            });
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        JsonNode userSettings = getUserSettings();
+        Map<String, String> details = new HashMap<>();
+
+        String tenant = null;
+        String cloud = "AzureCloud";
+
+        if (userSettings != null && !userSettings.isNull()) {
+            if (userSettings.has("azure.tenant")) {
+                tenant = userSettings.get("azure.tenant").asText();
+            }
+
+            if (userSettings.has("azure.cloud")) {
+                cloud = userSettings.get("azure.cloud").asText();
+            }
         }
+
+        if (!CoreUtils.isNullOrEmpty(tenant)) {
+            details.put("tenant", tenant);
+        }
+
+        details.put("cloud", cloud);
+        return details;
     }
 
 

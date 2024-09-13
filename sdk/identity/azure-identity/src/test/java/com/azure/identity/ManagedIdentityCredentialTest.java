@@ -49,7 +49,7 @@ public class ManagedIdentityCredentialTest {
 
         // mock
         try (MockedConstruction<IdentityClient> identityClientMock = mockConstruction(IdentityClient.class, (identityClient, context) -> {
-            when(identityClient.authenticateWithManagedIdentityMsalClient(request1)).thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
+            when(identityClient.authenticateWithManagedIdentityConfidentialClient(request1)).thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
         })) {
             // test
             ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder().configuration(configuration).clientId(CLIENT_ID).build();
@@ -70,7 +70,7 @@ public class ManagedIdentityCredentialTest {
 
         // mock
         try (MockedConstruction<IdentityClient> identityClientMock = mockConstruction(IdentityClient.class, (identityClient, context) -> {
-            when(identityClient.authenticateWithManagedIdentityMsalClient(request)).thenReturn(TestUtils.getMockAccessToken(token1, expiresOn));
+            when(identityClient.authenticateWithManagedIdentityConfidentialClient(request)).thenReturn(TestUtils.getMockAccessToken(token1, expiresOn));
 
         })) {
             // test
@@ -116,8 +116,7 @@ public class ManagedIdentityCredentialTest {
     public void testArcIdentityCredentialCreated() {
         Configuration configuration = TestUtils.createTestConfiguration(new TestConfigurationSource()
             .put("IDENTITY_ENDPOINT", "http://localhost")
-            .put("IMDS_ENDPOINT", "http://localhost"))
-            .put("USE_AZURE_IDENTITY_CLIENT_LIBRARY_LEGACY_MI", "true");
+            .put("IMDS_ENDPOINT", "http://localhost"));
 
         ManagedIdentityCredential cred = new ManagedIdentityCredentialBuilder().configuration(configuration).build();
         assertThat("Received class " + cred.managedIdentityServiceCredential.getClass().toString(),
@@ -129,8 +128,7 @@ public class ManagedIdentityCredentialTest {
         Configuration configuration = TestUtils.createTestConfiguration(new TestConfigurationSource()
             .put("IDENTITY_ENDPOINT", "http://localhost")
             .put("IDENTITY_SERVER_THUMBPRINT", "thumbprint")
-            .put("IDENTITY_HEADER", "header"))
-            .put("USE_AZURE_IDENTITY_CLIENT_LIBRARY_LEGACY_MI", "true");
+            .put("IDENTITY_HEADER", "header"));
 
         ManagedIdentityCredential cred = new ManagedIdentityCredentialBuilder().configuration(configuration).build();
         assertThat("Received class " + cred.managedIdentityServiceCredential.getClass().toString(),
@@ -141,8 +139,7 @@ public class ManagedIdentityCredentialTest {
     public void testAppServiceMsi2019CredentialCreated() {
         Configuration configuration = TestUtils.createTestConfiguration(new TestConfigurationSource()
             .put("IDENTITY_ENDPOINT", "http://localhost")
-            .put("IDENTITY_HEADER", "header"))
-            .put("USE_AZURE_IDENTITY_CLIENT_LIBRARY_LEGACY_MI", "true");
+            .put("IDENTITY_HEADER", "header"));
 
         ManagedIdentityCredential cred = new ManagedIdentityCredentialBuilder().configuration(configuration).build();
         assertThat("Received class " + cred.managedIdentityServiceCredential.getClass().toString(),
@@ -153,8 +150,7 @@ public class ManagedIdentityCredentialTest {
     public void testAppServiceMsi2017CredentialCreated() {
         Configuration configuration = TestUtils.createTestConfiguration(new TestConfigurationSource()
             .put("MSI_ENDPOINT", "http://localhost")
-            .put("MSI_SECRET", "secret"))
-            .put("USE_AZURE_IDENTITY_CLIENT_LIBRARY_LEGACY_MI", "true");
+            .put("MSI_SECRET", "secret"));
 
         ManagedIdentityCredential cred = new ManagedIdentityCredentialBuilder().configuration(configuration).build();
         assertThat("Received class " + cred.managedIdentityServiceCredential.getClass().toString(),
@@ -164,8 +160,7 @@ public class ManagedIdentityCredentialTest {
     @Test
     public void testCloudShellCredentialCreated() {
         Configuration configuration = TestUtils.createTestConfiguration(new TestConfigurationSource()
-            .put("MSI_ENDPOINT", "http://localhost"))
-            .put("USE_AZURE_IDENTITY_CLIENT_LIBRARY_LEGACY_MI", "true");
+            .put("MSI_ENDPOINT", "http://localhost"));
 
         ManagedIdentityCredential cred = new ManagedIdentityCredentialBuilder().configuration(configuration).build();
         assertThat("Received class " + cred.managedIdentityServiceCredential.getClass().toString(),
@@ -187,7 +182,6 @@ public class ManagedIdentityCredentialTest {
     @Test
     public void testIMDSPodIdentityV1Credential() {
         Configuration configuration = TestUtils.createTestConfiguration(new TestConfigurationSource());
-        configuration.put("USE_AZURE_IDENTITY_CLIENT_LIBRARY_LEGACY_MI", "true");
 
         ManagedIdentityCredential cred = new ManagedIdentityCredentialBuilder().configuration(configuration).build();
         assertThat("Received class " + cred.managedIdentityServiceCredential.getClass().toString(),

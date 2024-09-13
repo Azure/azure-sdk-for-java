@@ -3,28 +3,20 @@
 
 package com.azure.identity.implementation;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockedStatic;
-
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.mockStatic;
 
 public class VisualStudioCacheAccessorTests {
 
     @Test
     public void testReadJsonFile() throws Exception {
         // setup
-
-        try (MockedStatic<VisualStudioCacheAccessor> cacheAccessorMockedStatic = mockStatic(VisualStudioCacheAccessor.class)) {
-            String path = getPath("settings.json");
-            cacheAccessorMockedStatic.when(VisualStudioCacheAccessor::getSettingsPath).thenReturn(path);
-            VisualStudioCacheAccessor cacheAccessor = new VisualStudioCacheAccessor();
-            Map<String, String> result = cacheAccessor.getUserSettingsDetails();
-            assertEquals("AzureCloudFromFile", result.get("cloud"));
-            assertEquals("AzureTenantFromFile", result.get("tenant"));
-        }
+        JsonNode jsonRead = VisualStudioCacheAccessor.readJsonFile(getPath("settings.json"));
+        assertEquals("first", jsonRead.get("editor.suggestSelection").asText());
+        assertEquals("/Contents/Home", jsonRead.get("java.home").asText());
+        assertEquals(12, jsonRead.size());
     }
 
     private String getPath(String filename) {

@@ -13,13 +13,6 @@ public class IntelliJAuthMethodDetails {
     private String authMethod;
     private String azureEnv;
 
-    public IntelliJAuthMethodDetails(String accountEmail, String credFilePath, String authMethod, String azureEnv) {
-        this.accountEmail = accountEmail;
-        this.credFilePath = credFilePath;
-        this.authMethod = authMethod;
-        this.azureEnv = azureEnv;
-    }
-
     /**
      * Get the account email.
      *
