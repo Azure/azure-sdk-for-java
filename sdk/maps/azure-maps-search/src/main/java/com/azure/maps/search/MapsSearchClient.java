@@ -9,8 +9,10 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
+import com.azure.core.models.GeoBoundingBox;
 import com.azure.core.models.GeoPosition;
 import com.azure.core.util.Context;
+import com.azure.maps.search.implementation.SearchesImpl;
 import com.azure.maps.search.models.Boundary;
 import com.azure.maps.search.implementation.models.ErrorResponseException;
 import com.azure.maps.search.implementation.models.ReverseGeocodingResultTypeEnum;
@@ -24,6 +26,7 @@ import com.azure.maps.search.models.ResolutionEnum;
 import com.azure.maps.search.models.ReverseGeocodingBatchRequestBody;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -46,15 +49,16 @@ import java.util.List;
  */
 @ServiceClient(builder = MapsSearchClientBuilder.class)
 public final class MapsSearchClient {
-    private final MapsSearchAsyncClient asyncClient;
+    // instance fields
+    private final SearchesImpl serviceClient;
 
     /**
      * Initializes an instance of Searches client.
      *
-     * @param asyncClient the service client implementation.
+     * @param serviceClientt the service client implementation.
      */
-    MapsSearchClient(MapsSearchAsyncClient asyncClient) {
-        this.asyncClient = asyncClient;
+    MapsSearchClient(SearchesImpl serviceClientt) {
+        this.serviceClient = serviceClientt;
     }
 
     /**
@@ -86,7 +90,13 @@ public final class MapsSearchClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Boundary getPolygons(GeoPosition coordinates, String view,
                                 BoundaryResultTypeEnum resultType, ResolutionEnum resolution) {
-        return this.asyncClient.getPolygons(coordinates, view, resultType, resolution).block();
+        List<Double> coordinatesList = null;
+        if (coordinates != null) {
+            coordinatesList = new ArrayList<>();
+            coordinatesList.add(coordinates.getLongitude());
+            coordinatesList.add(coordinates.getLatitude());
+        }
+        return this.serviceClient.getPolygon(coordinatesList, view, resultType, resolution);
     }
 
     /**
@@ -120,7 +130,13 @@ public final class MapsSearchClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boundary> getPolygonsWithResponse(GeoPosition coordinates, String view,
                                                                BoundaryResultTypeEnum resultType, ResolutionEnum resolution, Context context) {
-        return this.asyncClient.getPolygonsWithResponse(coordinates, view, resultType, resolution, context).block();
+        List<Double> coordinatesList = null;
+        if (coordinates != null) {
+            coordinatesList = new ArrayList<>();
+            coordinatesList.add(coordinates.getLongitude());
+            coordinatesList.add(coordinates.getLatitude());
+        }
+        return this.serviceClient.getPolygonWithResponse(coordinatesList, view, resultType, resolution, context);
     }
 
     /**
@@ -150,7 +166,7 @@ public final class MapsSearchClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GeocodingResponse getGeocoding(BaseSearchOptions options) {
-        return this.asyncClient.getGeocoding(options).block();
+        return this.getGeocodingInternal(options);
     }
 
 
@@ -183,7 +199,7 @@ public final class MapsSearchClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<SearchesGetGeocodingHeaders, GeocodingResponse> getGeocodingWithResponse(BaseSearchOptions options, Context context) {
-        return this.asyncClient.getGeocodingWithResponse(options, context).block();
+        return this.getGeocodingWithResponseInternal(options, context);
     }
 
     /**
@@ -216,7 +232,101 @@ public final class MapsSearchClient {
 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GeocodingResponse> getGeocodingNoCustomHeaderWithResponse(BaseSearchOptions options, Context context) {
-        return this.asyncClient.getGeocodingNoCustomHeaderWithResponse(options, context).block();
+        return this.getGeocodingNoCustomHeaderWithResponseInternal(options, context);
+    }
+
+    /**
+     * Use to get longitude and latitude coordinates of a street address or name of a place.
+     *
+     *
+     *
+     * The `Get Geocoding` API is an HTTP `GET` request that returns the longitude and latitude coordinates of the
+     * location being searched.
+     *
+     * In many cases, the complete search service might be too much, for instance if you are only interested in
+     * traditional geocoding. Search can also be accessed for address look up exclusively. The geocoding is performed by
+     * hitting the geocoding endpoint with just the address or partial address in question. The geocoding search index
+     * will be queried for everything above the street level data. No Point of Interest (POIs) will be returned. Note
+     * that the geocoder is very tolerant of typos and incomplete addresses. It will also handle everything from exact
+     * street addresses or street or intersections as well as higher level geographies such as city centers, counties
+     * and states. The response also returns detailed address properties such as street, postal code, municipality, and
+     * country/region information.
+     *
+     * @param options base search options.
+     *
+     * **If query is given, should not use this parameter.**.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return this object is returned from a successful Geocoding call.
+     */
+    GeocodingResponse getGeocodingInternal(BaseSearchOptions options) {
+        List<Double> boundingBox = null;
+        if (options.getBoundingBox().isPresent()) {
+            boundingBox = new ArrayList<>();
+            GeoBoundingBox boundingBoxObj = options.getBoundingBox().get();
+            boundingBox.add(boundingBoxObj.getNorth());
+            boundingBox.add(boundingBoxObj.getWest());
+            boundingBox.add(boundingBoxObj.getSouth());
+            boundingBox.add(boundingBoxObj.getEast());
+        }
+        List<Double> coordinates = null;
+        if (options.getCoordinates() != null) {
+            coordinates = new ArrayList<>();
+            coordinates.add(options.getCoordinates().getLongitude());
+            coordinates.add(options.getCoordinates().getLatitude());
+        }
+
+        return serviceClient.getGeocoding(options.getTop(), options.getQuery(),
+                options.getAddressLine(), options.getCountryRegion(), boundingBox, options.getView(), coordinates,
+                options.getAdminDistrict(), options.getAdminDistrict2(), options.getAdminDistrict3(),
+                options.getLocality(), options.getPostalCode());
+    }
+
+    ResponseBase<SearchesGetGeocodingHeaders, GeocodingResponse> getGeocodingWithResponseInternal(BaseSearchOptions options, Context context) {
+        List<Double> boundingBox = null;
+        if (options.getBoundingBox().isPresent()) {
+            boundingBox = new ArrayList<>();
+            GeoBoundingBox boundingBoxObj = options.getBoundingBox().get();
+            boundingBox.add(boundingBoxObj.getNorth());
+            boundingBox.add(boundingBoxObj.getWest());
+            boundingBox.add(boundingBoxObj.getSouth());
+            boundingBox.add(boundingBoxObj.getEast());
+        }
+        List<Double> coordinates = null;
+        if (options.getCoordinates() != null) {
+            coordinates = new ArrayList<>();
+            coordinates.add(options.getCoordinates().getLongitude());
+            coordinates.add(options.getCoordinates().getLatitude());
+        }
+
+        return serviceClient.getGeocodingWithResponse(options.getTop(), options.getQuery(),
+                options.getAddressLine(), options.getCountryRegion(), boundingBox, options.getView(), coordinates,
+                options.getAdminDistrict(), options.getAdminDistrict2(), options.getAdminDistrict3(),
+                options.getLocality(), options.getPostalCode(), context);
+    }
+
+    Response<GeocodingResponse> getGeocodingNoCustomHeaderWithResponseInternal(BaseSearchOptions options, Context context) {
+        List<Double> boundingBox = null;
+        if (options.getBoundingBox().isPresent()) {
+            boundingBox = new ArrayList<>();
+            GeoBoundingBox boundingBoxObj = options.getBoundingBox().get();
+            boundingBox.add(boundingBoxObj.getNorth());
+            boundingBox.add(boundingBoxObj.getWest());
+            boundingBox.add(boundingBoxObj.getSouth());
+            boundingBox.add(boundingBoxObj.getEast());
+        }
+        List<Double> coordinates = null;
+        if (options.getCoordinates() != null) {
+            coordinates = new ArrayList<>();
+            coordinates.add(options.getCoordinates().getLongitude());
+            coordinates.add(options.getCoordinates().getLatitude());
+        }
+
+        return serviceClient.getGeocodingNoCustomHeadersWithResponse(options.getTop(), options.getQuery(),
+                options.getAddressLine(), options.getCountryRegion(), boundingBox, options.getView(), coordinates,
+                options.getAdminDistrict(), options.getAdminDistrict2(), options.getAdminDistrict3(),
+                options.getLocality(), options.getPostalCode(), context);
     }
 
     /**
@@ -287,7 +397,7 @@ public final class MapsSearchClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GeocodingBatchResponse getGeocodingBatch(GeocodingBatchRequestBody body) {
-        return this.asyncClient.getGeocodingBatch(body).block();
+        return this.serviceClient.getGeocodingBatch(body);
     }
 
     /**
@@ -360,7 +470,7 @@ public final class MapsSearchClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GeocodingBatchResponse> getGeocodingBatchWithResponse(GeocodingBatchRequestBody body,
         Context context) {
-        return this.asyncClient.getGeocodingBatchWithResponse(body, context).block();
+        return this.serviceClient.getGeocodingBatchWithResponse(body, context);
     }
 
     /**
@@ -407,7 +517,13 @@ public final class MapsSearchClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GeocodingResponse getReverseGeocoding(GeoPosition coordinates, List<ReverseGeocodingResultTypeEnum> resultTypes, String view) {
-        return this.asyncClient.getReverseGeocoding(coordinates, resultTypes, view).block();
+        List<Double> coordinatesList = null;
+        if (coordinates != null) {
+            coordinatesList = new ArrayList<>();
+            coordinatesList.add(coordinates.getLongitude());
+            coordinatesList.add(coordinates.getLatitude());
+        }
+        return this.serviceClient.getReverseGeocoding(coordinatesList, resultTypes, view);
     }
 
 
@@ -458,7 +574,13 @@ public final class MapsSearchClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GeocodingResponse> getReverseGeocodingWithResponse(
         GeoPosition coordinates, List<ReverseGeocodingResultTypeEnum> resultTypes, String view, Context context) {
-        return this.asyncClient.getReverseGeocodingWithResponse(coordinates, resultTypes, view, context).block();
+        List<Double> coordinatesList = null;
+        if (coordinates != null) {
+            coordinatesList = new ArrayList<>();
+            coordinatesList.add(coordinates.getLongitude());
+            coordinatesList.add(coordinates.getLatitude());
+        }
+        return this.serviceClient.getReverseGeocodingWithResponse(coordinatesList, resultTypes, view, context);
     }
 
     /**
@@ -527,7 +649,7 @@ public final class MapsSearchClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GeocodingBatchResponse getReverseGeocodingBatch(ReverseGeocodingBatchRequestBody reverseGeocodingBatchRequestBody) {
-        return this.asyncClient.getReverseGeocodingBatch(reverseGeocodingBatchRequestBody).block();
+        return this.serviceClient.getReverseGeocodingBatch(reverseGeocodingBatchRequestBody);
     }
 
     /**
@@ -597,6 +719,6 @@ public final class MapsSearchClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GeocodingBatchResponse> getReverseGeocodingBatchWithResponse(
         ReverseGeocodingBatchRequestBody reverseGeocodingBatchRequestBody, Context context) {
-        return this.asyncClient.getReverseGeocodingBatchWithResponse(reverseGeocodingBatchRequestBody, context).block();
+        return this.serviceClient.getReverseGeocodingBatchWithResponse(reverseGeocodingBatchRequestBody, context);
     }
 }
