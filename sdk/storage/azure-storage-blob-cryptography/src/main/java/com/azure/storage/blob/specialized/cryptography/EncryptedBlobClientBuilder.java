@@ -152,6 +152,7 @@ public final class EncryptedBlobClientBuilder implements
     private BlobServiceVersion version;
     private CpkInfo customerProvidedKey;
     private EncryptionScope encryptionScope;
+    private BlobClientSideEncryptionOptions clientSideEncryptionOptions;
 
     /**
      * Creates a new instance of the EncryptedBlobClientBuilder
@@ -248,9 +249,11 @@ public final class EncryptedBlobClientBuilder implements
         }
         BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
 
+        this.clientSideEncryptionOptions = this.clientSideEncryptionOptions == null ? new BlobClientSideEncryptionOptions() : this.clientSideEncryptionOptions;
+
         return new EncryptedBlobAsyncClient(addBlobUserAgentModificationPolicy(getHttpPipeline()), endpoint,
             serviceVersion, accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope,
-            keyWrapper, keyWrapAlgorithm, versionId, encryptionVersion, requiresEncryption);
+            keyWrapper, keyWrapAlgorithm, versionId, encryptionVersion, requiresEncryption, clientSideEncryptionOptions);
     }
 
 
@@ -913,6 +916,18 @@ public final class EncryptedBlobClientBuilder implements
      */
     public EncryptedBlobClientBuilder requiresEncryption(boolean requiresEncryption) {
         this.requiresEncryption = requiresEncryption;
+        return this;
+    }
+
+    /**
+     * Sets the encryption options for the blob.
+     *
+     * @param clientSideEncryptionOptions The {@link BlobClientSideEncryptionOptions} for the blob.
+     * @return the updated EncryptedBlobClientBuilder object
+     */
+    public EncryptedBlobClientBuilder clientSideEncryptionOptions(
+        BlobClientSideEncryptionOptions clientSideEncryptionOptions) {
+        this.clientSideEncryptionOptions = clientSideEncryptionOptions;
         return this;
     }
 }
