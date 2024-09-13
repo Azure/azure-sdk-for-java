@@ -6,6 +6,7 @@ package com.azure.storage.blob;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.PollerFlux;
@@ -19,6 +20,7 @@ import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.PageBlobItem;
+import com.azure.storage.blob.sas.BlobContainerSasPermission;
 import com.azure.storage.blob.sas.BlobSasPermission;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.blob.specialized.BlobAsyncClientBase;
@@ -382,16 +384,15 @@ public class VersioningAsyncTests extends BlobTestBase {
     @Test
     public void copyFromUrlBlobsWithVersion() {
         BlobAsyncClient sourceBlob = blobContainerClient.getBlobAsyncClient(generateBlobName());
+        String sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobSasPermission().setTagsPermission(true).setReadPermission(true)));
 
-        Mono<Tuple2<Response<String>, BlockBlobItem>> response = sourceBlob.getBlockBlobAsyncClient().upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize())
-            .then(blobClient.getBlockBlobAsyncClient().upload(DATA.getDefaultFlux(),
-                DATA.getDefaultDataSize()))
-            .flatMap(r -> {
-                String sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
-                    new BlobSasPermission().setTagsPermission(true).setReadPermission(true)));
-                return Mono.zip(blobClient.copyFromUrlWithResponse(sourceBlob.getBlobUrl() + "?" + sas,
-                    null, null, null, null), Mono.just(r));
-            });
+        Mono<Tuple2<Response<String>, BlockBlobItem>> response =
+            blobClient.getBlockBlobAsyncClient().upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize())
+                .flatMap(blobItemV1 ->
+                    sourceBlob.getBlockBlobAsyncClient().upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize())
+                        .then(Mono.zip(blobClient.copyFromUrlWithResponse(sourceBlob.getBlobUrl() + "?" + sas,
+                            null, null, null, null), Mono.just(blobItemV1))));
 
         StepVerifier.create(response)
             .assertNext(r -> {

@@ -71,6 +71,7 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 import reactor.util.function.Tuple2;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -2630,14 +2631,16 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
     public void uploadFromUrlSourceRequestConditions(BlobRequestConditions requestConditions, BlobErrorCode errorCode) {
         BlobAsyncClient sourceBlob = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(containerName)
             .getBlobAsyncClient(generateBlobName());
-        String sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
-            new BlobContainerSasPermission().setReadPermission(true)));
-        BlobUploadFromUrlOptions options = new BlobUploadFromUrlOptions(sourceBlob.getBlobUrl() + "?" + sas)
-            .setSourceRequestConditions(requestConditions);
 
         Mono<Response<BlockBlobItem>> response = sourceBlob.upload(DATA.getDefaultFlux(), null)
-            .then(blockBlobAsyncClient.upload(Flux.just(ByteBuffer.wrap(new byte[0])), 0, true))
-            .then(blockBlobAsyncClient.uploadFromUrlWithResponse(options));
+            .flatMap(r -> {
+                String sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+                    new BlobContainerSasPermission().setReadPermission(true)));
+                BlobUploadFromUrlOptions options = new BlobUploadFromUrlOptions(sourceBlob.getBlobUrl() + "?" + sas)
+                    .setSourceRequestConditions(requestConditions);
+                return blockBlobAsyncClient.upload(Flux.just(ByteBuffer.wrap(new byte[0])), 0, true)
+                    .then(blockBlobAsyncClient.uploadFromUrlWithResponse(options));
+            });
 
         StepVerifier.create(response)
             .verifyErrorSatisfies(r -> {

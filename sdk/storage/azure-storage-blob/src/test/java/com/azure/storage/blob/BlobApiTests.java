@@ -1094,26 +1094,24 @@ public class BlobApiTests extends BlobTestBase {
 
         AtomicInteger counter = new AtomicInteger();
 
-        BlockBlobClient bacUploading = instrument(new BlobClientBuilder()
+        BlockBlobClient bcUploading = instrument(new BlobClientBuilder()
             .endpoint(bc.getBlobUrl())
             .credential(ENVIRONMENT.getPrimaryAccount().getCredential()))
             .buildClient()
             .getBlockBlobClient();
         TestDataFactory dataLocal = DATA;
-        HttpPipelinePolicy policy = (context, next) -> next.process().flatMap(r -> {
+        HttpPipelinePolicy policy = (context, next) -> next.process().doOnNext(r -> {
             if (counter.incrementAndGet() == 1) {
                 /*
                  * When the download begins trigger an upload to overwrite the downloading blob
                  * so that the download is able to get an ETag before it is changed.
                  */
-                return Mono.fromCallable(() -> {
-                    bacUploading.upload(dataLocal.getDefaultInputStream(), dataLocal.getDefaultDataSize(), true);
-                    return r;
-                }).subscribeOn(Schedulers.boundedElastic());
+                Mono.fromCallable(() -> bcUploading.upload(dataLocal.getDefaultInputStream(), dataLocal.getDefaultDataSize(),
+                    true))
+                    .subscribeOn(Schedulers.boundedElastic()).subscribe();
             }
-            return Mono.just(r);
         });
-        BlockBlobClient bacDownloading = instrument(new BlobClientBuilder()
+        BlockBlobClient bcDownloading = instrument(new BlobClientBuilder()
             .addPolicy(policy)
             .endpoint(bc.getBlobUrl())
             .credential(ENVIRONMENT.getPrimaryAccount().getCredential()))
@@ -1135,7 +1133,7 @@ public class BlobApiTests extends BlobTestBase {
          */
         Hooks.onErrorDropped(ignored -> /* do nothing with it */ { });
 
-        assertThrows(BlobStorageException.class, () -> bacDownloading.downloadToFileWithResponse(outFile.toPath().toString(),
+        assertThrows(BlobStorageException.class, () -> bcDownloading.downloadToFileWithResponse(outFile.toPath().toString(),
             null, options, null, null, false, null, null));
 
         // Give the file a chance to be deleted by the download operation before verifying its deletion
