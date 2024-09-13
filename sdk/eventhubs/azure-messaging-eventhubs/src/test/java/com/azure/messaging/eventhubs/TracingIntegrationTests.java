@@ -120,6 +120,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     }
 
     private void createClients(String v2Stack) {
+        dispose();
         Configuration config = createConfiguration(v2Stack);
 
         producer = toClose(createBuilder()
@@ -309,6 +310,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         spanProcessor.notifyIfCondition(latch, span -> hasOperationName(span, PROCESS) || hasOperationName(span, SEND));
 
         EventHubBufferedProducerAsyncClient bufferedProducer = toClose(new EventHubBufferedProducerClientBuilder()
+            .clientOptions(clientOptions)
             .credential(TestUtils.getPipelineCredential(cachedCredential))
             .eventHubName(getEventHubName())
             .fullyQualifiedNamespace(getFullyQualifiedDomainName())
