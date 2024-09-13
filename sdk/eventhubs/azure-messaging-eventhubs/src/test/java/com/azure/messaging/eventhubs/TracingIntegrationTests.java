@@ -50,6 +50,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.messaging.eventhubs.TestUtils.getEventHubName;
@@ -74,6 +75,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     private static final byte[] CONTENTS_BYTES = "Some-contents".getBytes(StandardCharsets.UTF_8);
     private static final String PARTITION_ID = "0";
     private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(30);
+    private static final AtomicLong ownerLevel = new AtomicLong();
 
     private final AtomicReference<TokenCredential> cachedCredential = new AtomicReference<>();
     private static final AttributeKey<String> OPERATION_NAME_ATTRIBUTE = AttributeKey.stringKey("messaging.operation.name");
@@ -114,7 +116,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         CountDownLatch latch = new CountDownLatch(2);
         spanProcessor.notifyIfCondition(latch, span -> span == receivedSpan.get() || hasOperationName(span, SEND));
         toClose(consumer
-            .receiveFromPartition(PARTITION_ID, EventPosition.fromEnqueuedTime(testStartTime))
+            .receiveFromPartition(PARTITION_ID, EventPosition.fromEnqueuedTime(testStartTime), getReceiveOptions())
             .take(1)
             .subscribe(pe -> {
                 if (receivedMessage.compareAndSet(null, pe)) {
@@ -232,7 +234,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
 
         spanProcessor.notifyIfCondition(latch, span -> hasOperationName(span, PROCESS));
 
-        StepVerifier.create(producer.send(data, new SendOptions()))
+        StepVerifier.create(producer.send(data))
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
 
@@ -281,14 +283,13 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             })
             .buildAsyncClient());
 
-        Instant start = Instant.now();
         EventData event1 = new EventData("1");
         EventData event2 = new EventData("2");
 
         // Using a specific partition in the case that an epoch receiver was created
         // (i.e. EventHubConsumerAsyncClientIntegrationTest), which this scenario will fail when trying to create a
         // receiver.
-        SendOptions sendOptions = new SendOptions().setPartitionId("0");
+        SendOptions sendOptions = new SendOptions().setPartitionId(PARTITION_ID);
         Boolean partitionIdExists = bufferedProducer.getPartitionIds()
             .any(id -> id.equals(sendOptions.getPartitionId()))
             .block(Duration.ofSeconds(30));
@@ -302,7 +303,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .verify(DEFAULT_TIMEOUT);
 
         StepVerifier.create(consumer
-                .receiveFromPartition(sendOptions.getPartitionId(), EventPosition.fromEnqueuedTime(start))
+                .receiveFromPartition(sendOptions.getPartitionId(), EventPosition.fromEnqueuedTime(testStartTime), getReceiveOptions())
                 .map(e -> {
                     logger.atInfo()
                         .addKeyValue("event", e.getData().getBodyAsString())
@@ -346,7 +347,11 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
 
-        List<PartitionEvent> receivedMessages = consumerSync.receiveFromPartition(PARTITION_ID, 2, EventPosition.fromEnqueuedTime(testStartTime), Duration.ofSeconds(10))
+        List<PartitionEvent> receivedMessages = consumerSync.receiveFromPartition(PARTITION_ID,
+                2,
+                EventPosition.fromEnqueuedTime(testStartTime),
+                Duration.ofSeconds(10),
+                getReceiveOptions())
             .stream().collect(toList());
 
         assertEquals(2, receivedMessages.size());
@@ -373,7 +378,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .verify(DEFAULT_TIMEOUT);
 
         List<PartitionEvent> receivedMessages = consumerSync.receiveFromPartition(PARTITION_ID, 2,
-                EventPosition.fromEnqueuedTime(testStartTime), Duration.ofSeconds(10), new ReceiveOptions())
+                EventPosition.fromEnqueuedTime(testStartTime), Duration.ofSeconds(10), getReceiveOptions())
             .stream().collect(toList());
 
         assertEquals(2, receivedMessages.size());
@@ -386,10 +391,9 @@ public class TracingIntegrationTests extends IntegrationTestBase {
 
     @Test
     public void syncReceiveTimeout() {
-        EventHubProducerAsyncClient producer = createProducer(null);
         EventHubConsumerClient consumerSync = createSyncConsumer(null);
         List<PartitionEvent> receivedMessages = consumerSync.receiveFromPartition(PARTITION_ID, 2,
-                EventPosition.fromEnqueuedTime(testStartTime), Duration.ofSeconds(1))
+                EventPosition.fromEnqueuedTime(testStartTime), Duration.ofSeconds(1), getReceiveOptions())
             .stream().collect(toList());
 
         List<ReadableSpan> spans = spanProcessor.getEndedSpans();
@@ -431,10 +435,10 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .processError(e -> fail("unexpected error", e.getThrowable()))
             .buildEventProcessorClient();
 
-        toClose((Closeable) () -> processor.stop());
+        toClose((Closeable) () -> processor.stop(10, TimeUnit.SECONDS));
         processor.start();
         assertTrue(latch.await(30, TimeUnit.SECONDS));
-        processor.stop();
+        assertTrue(processor.stop(10, TimeUnit.SECONDS));
 
         assertTrue(currentInProcess.get().getSpanContext().isValid());
         List<ReadableSpan> spans = spanProcessor.getEndedSpans();
@@ -500,11 +504,11 @@ public class TracingIntegrationTests extends IntegrationTestBase {
                 .processError(e -> fail("unexpected error", e.getThrowable()))
                 .buildEventProcessorClient();
 
-            toClose((Closeable) () -> processor.stop());
+            toClose((Closeable) () -> processor.stop(10, TimeUnit.SECONDS));
             processor.start();
 
             assertTrue(latch.await(30, TimeUnit.SECONDS));
-            processor.stop();
+            processor.stop(10, TimeUnit.SECONDS);
         }
 
         List<ReadableSpan> spans = spanProcessor.getEndedSpans();
@@ -567,10 +571,10 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             }, 2)
             .processError(e -> fail("unexpected error", e.getThrowable()))
             .buildEventProcessorClient();
-        toClose((Closeable) () -> processor.stop());
+        toClose((Closeable) () -> processor.stop(10, TimeUnit.SECONDS));
         processor.start();
         assertTrue(latch.await(30, TimeUnit.SECONDS));
-        processor.stop();
+        processor.stop(10, TimeUnit.SECONDS);
 
         List<ReadableSpan> spans = spanProcessor.getEndedSpans();
 
@@ -626,10 +630,10 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .processError(e -> fail("unexpected error", e.getThrowable()))
             .buildEventProcessorClient();
 
-        toClose((Closeable) () -> processor.stop());
+        toClose((Closeable) () -> processor.stop(10, TimeUnit.SECONDS));
         processor.start();
         assertTrue(latch.await(30, TimeUnit.SECONDS));
-        processor.stop();
+        processor.stop(10, TimeUnit.SECONDS);
 
         List<ReadableSpan> spans = spanProcessor.getEndedSpans();
         List<ReadableSpan> processed = findSpans(spans, PROCESS)
@@ -809,5 +813,10 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .configuration(getConfiguration(v2))
             .consumerGroup("$Default")
             .buildConsumerClient());
+    }
+
+    private ReceiveOptions getReceiveOptions() {
+        return new ReceiveOptions()
+            .setOwnerLevel(ownerLevel.getAndIncrement());
     }
 }

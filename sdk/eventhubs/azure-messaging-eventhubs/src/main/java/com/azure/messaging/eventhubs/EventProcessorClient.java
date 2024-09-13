@@ -339,6 +339,15 @@ public class EventProcessorClient {
             .block(timeout);
     }
 
+    synchronized boolean stop(long timeout, TimeUnit timeUnit) {
+        stop();
+        try {
+            return scheduler.get().awaitTermination(timeout, timeUnit);
+        } catch (InterruptedException e) {
+            return false;
+        }
+    }
+
     /**
      * Returns {@code true} if the event processor is running. If the event processor is already running, calling {@link
      * #start()} has no effect.
