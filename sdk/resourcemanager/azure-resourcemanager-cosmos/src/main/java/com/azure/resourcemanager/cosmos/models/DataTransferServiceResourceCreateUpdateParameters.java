@@ -11,19 +11,19 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Properties for Create or Update request for GraphAPIComputeServiceResource.
+ * Properties for Create or Update request for DataTransferServiceResource.
  */
 @Fluent
-public final class GraphApiComputeServiceResourceCreateUpdateProperties extends ServiceResourceCreateUpdateProperties {
+public final class DataTransferServiceResourceCreateUpdateParameters extends ServiceResourceCreateUpdateProperties {
     /*
      * ServiceType for the service.
      */
-    private ServiceType serviceType = ServiceType.GRAPH_APICOMPUTE;
+    private ServiceType serviceType = ServiceType.DATA_TRANSFER;
 
     /**
-     * Creates an instance of GraphApiComputeServiceResourceCreateUpdateProperties class.
+     * Creates an instance of DataTransferServiceResourceCreateUpdateParameters class.
      */
-    public GraphApiComputeServiceResourceCreateUpdateProperties() {
+    public DataTransferServiceResourceCreateUpdateParameters() {
     }
 
     /**
@@ -40,7 +40,7 @@ public final class GraphApiComputeServiceResourceCreateUpdateProperties extends 
      * {@inheritDoc}
      */
     @Override
-    public GraphApiComputeServiceResourceCreateUpdateProperties withInstanceSize(ServiceSize instanceSize) {
+    public DataTransferServiceResourceCreateUpdateParameters withInstanceSize(ServiceSize instanceSize) {
         super.withInstanceSize(instanceSize);
         return this;
     }
@@ -49,7 +49,7 @@ public final class GraphApiComputeServiceResourceCreateUpdateProperties extends 
      * {@inheritDoc}
      */
     @Override
-    public GraphApiComputeServiceResourceCreateUpdateProperties withInstanceCount(Integer instanceCount) {
+    public DataTransferServiceResourceCreateUpdateParameters withInstanceCount(Integer instanceCount) {
         super.withInstanceCount(instanceCount);
         return this;
     }
@@ -76,37 +76,36 @@ public final class GraphApiComputeServiceResourceCreateUpdateProperties extends 
     }
 
     /**
-     * Reads an instance of GraphApiComputeServiceResourceCreateUpdateProperties from the JsonReader.
+     * Reads an instance of DataTransferServiceResourceCreateUpdateParameters from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of GraphApiComputeServiceResourceCreateUpdateProperties if the JsonReader was pointing to an
+     * @return An instance of DataTransferServiceResourceCreateUpdateParameters if the JsonReader was pointing to an
      * instance of it, or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the GraphApiComputeServiceResourceCreateUpdateProperties.
+     * @throws IOException If an error occurs while reading the DataTransferServiceResourceCreateUpdateParameters.
      */
-    public static GraphApiComputeServiceResourceCreateUpdateProperties fromJson(JsonReader jsonReader)
-        throws IOException {
+    public static DataTransferServiceResourceCreateUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            GraphApiComputeServiceResourceCreateUpdateProperties deserializedGraphApiComputeServiceResourceCreateUpdateProperties
-                = new GraphApiComputeServiceResourceCreateUpdateProperties();
+            DataTransferServiceResourceCreateUpdateParameters deserializedDataTransferServiceResourceCreateUpdateParameters
+                = new DataTransferServiceResourceCreateUpdateParameters();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("instanceSize".equals(fieldName)) {
-                    deserializedGraphApiComputeServiceResourceCreateUpdateProperties
+                    deserializedDataTransferServiceResourceCreateUpdateParameters
                         .withInstanceSize(ServiceSize.fromString(reader.getString()));
                 } else if ("instanceCount".equals(fieldName)) {
-                    deserializedGraphApiComputeServiceResourceCreateUpdateProperties
+                    deserializedDataTransferServiceResourceCreateUpdateParameters
                         .withInstanceCount(reader.getNullable(JsonReader::getInt));
                 } else if ("serviceType".equals(fieldName)) {
-                    deserializedGraphApiComputeServiceResourceCreateUpdateProperties.serviceType
+                    deserializedDataTransferServiceResourceCreateUpdateParameters.serviceType
                         = ServiceType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedGraphApiComputeServiceResourceCreateUpdateProperties;
+            return deserializedDataTransferServiceResourceCreateUpdateParameters;
         });
     }
 }

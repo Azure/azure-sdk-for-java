@@ -11,20 +11,19 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Properties for Create or Update request for MaterializedViewsBuilderServiceResource.
+ * Properties for Create or Update request for GraphAPIComputeServiceResource.
  */
 @Fluent
-public final class MaterializedViewsBuilderServiceResourceCreateUpdateProperties
-    extends ServiceResourceCreateUpdateProperties {
+public final class GraphApiComputeServiceResourceCreateUpdateParameters extends ServiceResourceCreateUpdateProperties {
     /*
      * ServiceType for the service.
      */
-    private ServiceType serviceType = ServiceType.MATERIALIZED_VIEWS_BUILDER;
+    private ServiceType serviceType = ServiceType.GRAPH_APICOMPUTE;
 
     /**
-     * Creates an instance of MaterializedViewsBuilderServiceResourceCreateUpdateProperties class.
+     * Creates an instance of GraphApiComputeServiceResourceCreateUpdateParameters class.
      */
-    public MaterializedViewsBuilderServiceResourceCreateUpdateProperties() {
+    public GraphApiComputeServiceResourceCreateUpdateParameters() {
     }
 
     /**
@@ -41,7 +40,7 @@ public final class MaterializedViewsBuilderServiceResourceCreateUpdateProperties
      * {@inheritDoc}
      */
     @Override
-    public MaterializedViewsBuilderServiceResourceCreateUpdateProperties withInstanceSize(ServiceSize instanceSize) {
+    public GraphApiComputeServiceResourceCreateUpdateParameters withInstanceSize(ServiceSize instanceSize) {
         super.withInstanceSize(instanceSize);
         return this;
     }
@@ -50,7 +49,7 @@ public final class MaterializedViewsBuilderServiceResourceCreateUpdateProperties
      * {@inheritDoc}
      */
     @Override
-    public MaterializedViewsBuilderServiceResourceCreateUpdateProperties withInstanceCount(Integer instanceCount) {
+    public GraphApiComputeServiceResourceCreateUpdateParameters withInstanceCount(Integer instanceCount) {
         super.withInstanceCount(instanceCount);
         return this;
     }
@@ -77,38 +76,37 @@ public final class MaterializedViewsBuilderServiceResourceCreateUpdateProperties
     }
 
     /**
-     * Reads an instance of MaterializedViewsBuilderServiceResourceCreateUpdateProperties from the JsonReader.
+     * Reads an instance of GraphApiComputeServiceResourceCreateUpdateParameters from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of MaterializedViewsBuilderServiceResourceCreateUpdateProperties if the JsonReader was
-     * pointing to an instance of it, or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the
-     * MaterializedViewsBuilderServiceResourceCreateUpdateProperties.
+     * @return An instance of GraphApiComputeServiceResourceCreateUpdateParameters if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GraphApiComputeServiceResourceCreateUpdateParameters.
      */
-    public static MaterializedViewsBuilderServiceResourceCreateUpdateProperties fromJson(JsonReader jsonReader)
+    public static GraphApiComputeServiceResourceCreateUpdateParameters fromJson(JsonReader jsonReader)
         throws IOException {
         return jsonReader.readObject(reader -> {
-            MaterializedViewsBuilderServiceResourceCreateUpdateProperties deserializedMaterializedViewsBuilderServiceResourceCreateUpdateProperties
-                = new MaterializedViewsBuilderServiceResourceCreateUpdateProperties();
+            GraphApiComputeServiceResourceCreateUpdateParameters deserializedGraphApiComputeServiceResourceCreateUpdateParameters
+                = new GraphApiComputeServiceResourceCreateUpdateParameters();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("instanceSize".equals(fieldName)) {
-                    deserializedMaterializedViewsBuilderServiceResourceCreateUpdateProperties
+                    deserializedGraphApiComputeServiceResourceCreateUpdateParameters
                         .withInstanceSize(ServiceSize.fromString(reader.getString()));
                 } else if ("instanceCount".equals(fieldName)) {
-                    deserializedMaterializedViewsBuilderServiceResourceCreateUpdateProperties
+                    deserializedGraphApiComputeServiceResourceCreateUpdateParameters
                         .withInstanceCount(reader.getNullable(JsonReader::getInt));
                 } else if ("serviceType".equals(fieldName)) {
-                    deserializedMaterializedViewsBuilderServiceResourceCreateUpdateProperties.serviceType
+                    deserializedGraphApiComputeServiceResourceCreateUpdateParameters.serviceType
                         = ServiceType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedMaterializedViewsBuilderServiceResourceCreateUpdateProperties;
+            return deserializedGraphApiComputeServiceResourceCreateUpdateParameters;
         });
     }
 }

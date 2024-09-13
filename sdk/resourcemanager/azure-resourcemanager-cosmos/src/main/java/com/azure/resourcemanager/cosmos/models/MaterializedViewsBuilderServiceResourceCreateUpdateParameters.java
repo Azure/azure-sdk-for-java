@@ -11,19 +11,20 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Properties for Create or Update request for DataTransferServiceResource.
+ * Properties for Create or Update request for MaterializedViewsBuilderServiceResource.
  */
 @Fluent
-public final class DataTransferServiceResourceCreateUpdateProperties extends ServiceResourceCreateUpdateProperties {
+public final class MaterializedViewsBuilderServiceResourceCreateUpdateParameters
+    extends ServiceResourceCreateUpdateProperties {
     /*
      * ServiceType for the service.
      */
-    private ServiceType serviceType = ServiceType.DATA_TRANSFER;
+    private ServiceType serviceType = ServiceType.MATERIALIZED_VIEWS_BUILDER;
 
     /**
-     * Creates an instance of DataTransferServiceResourceCreateUpdateProperties class.
+     * Creates an instance of MaterializedViewsBuilderServiceResourceCreateUpdateParameters class.
      */
-    public DataTransferServiceResourceCreateUpdateProperties() {
+    public MaterializedViewsBuilderServiceResourceCreateUpdateParameters() {
     }
 
     /**
@@ -40,7 +41,7 @@ public final class DataTransferServiceResourceCreateUpdateProperties extends Ser
      * {@inheritDoc}
      */
     @Override
-    public DataTransferServiceResourceCreateUpdateProperties withInstanceSize(ServiceSize instanceSize) {
+    public MaterializedViewsBuilderServiceResourceCreateUpdateParameters withInstanceSize(ServiceSize instanceSize) {
         super.withInstanceSize(instanceSize);
         return this;
     }
@@ -49,7 +50,7 @@ public final class DataTransferServiceResourceCreateUpdateProperties extends Ser
      * {@inheritDoc}
      */
     @Override
-    public DataTransferServiceResourceCreateUpdateProperties withInstanceCount(Integer instanceCount) {
+    public MaterializedViewsBuilderServiceResourceCreateUpdateParameters withInstanceCount(Integer instanceCount) {
         super.withInstanceCount(instanceCount);
         return this;
     }
@@ -76,36 +77,38 @@ public final class DataTransferServiceResourceCreateUpdateProperties extends Ser
     }
 
     /**
-     * Reads an instance of DataTransferServiceResourceCreateUpdateProperties from the JsonReader.
+     * Reads an instance of MaterializedViewsBuilderServiceResourceCreateUpdateParameters from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of DataTransferServiceResourceCreateUpdateProperties if the JsonReader was pointing to an
-     * instance of it, or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the DataTransferServiceResourceCreateUpdateProperties.
+     * @return An instance of MaterializedViewsBuilderServiceResourceCreateUpdateParameters if the JsonReader was
+     * pointing to an instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the
+     * MaterializedViewsBuilderServiceResourceCreateUpdateParameters.
      */
-    public static DataTransferServiceResourceCreateUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+    public static MaterializedViewsBuilderServiceResourceCreateUpdateParameters fromJson(JsonReader jsonReader)
+        throws IOException {
         return jsonReader.readObject(reader -> {
-            DataTransferServiceResourceCreateUpdateProperties deserializedDataTransferServiceResourceCreateUpdateProperties
-                = new DataTransferServiceResourceCreateUpdateProperties();
+            MaterializedViewsBuilderServiceResourceCreateUpdateParameters deserializedMaterializedViewsBuilderServiceResourceCreateUpdateParameters
+                = new MaterializedViewsBuilderServiceResourceCreateUpdateParameters();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("instanceSize".equals(fieldName)) {
-                    deserializedDataTransferServiceResourceCreateUpdateProperties
+                    deserializedMaterializedViewsBuilderServiceResourceCreateUpdateParameters
                         .withInstanceSize(ServiceSize.fromString(reader.getString()));
                 } else if ("instanceCount".equals(fieldName)) {
-                    deserializedDataTransferServiceResourceCreateUpdateProperties
+                    deserializedMaterializedViewsBuilderServiceResourceCreateUpdateParameters
                         .withInstanceCount(reader.getNullable(JsonReader::getInt));
                 } else if ("serviceType".equals(fieldName)) {
-                    deserializedDataTransferServiceResourceCreateUpdateProperties.serviceType
+                    deserializedMaterializedViewsBuilderServiceResourceCreateUpdateParameters.serviceType
                         = ServiceType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedDataTransferServiceResourceCreateUpdateProperties;
+            return deserializedMaterializedViewsBuilderServiceResourceCreateUpdateParameters;
         });
     }
 }

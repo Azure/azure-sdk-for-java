@@ -14,7 +14,7 @@ import java.io.IOException;
  * Properties for Create or Update request for SqlDedicatedGatewayServiceResource.
  */
 @Fluent
-public final class SqlDedicatedGatewayServiceResourceCreateUpdateProperties
+public final class SqlDedicatedGatewayServiceResourceCreateUpdateParameters
     extends ServiceResourceCreateUpdateProperties {
     /*
      * ServiceType for the service.
@@ -27,9 +27,9 @@ public final class SqlDedicatedGatewayServiceResourceCreateUpdateProperties
     private DedicatedGatewayType dedicatedGatewayType;
 
     /**
-     * Creates an instance of SqlDedicatedGatewayServiceResourceCreateUpdateProperties class.
+     * Creates an instance of SqlDedicatedGatewayServiceResourceCreateUpdateParameters class.
      */
-    public SqlDedicatedGatewayServiceResourceCreateUpdateProperties() {
+    public SqlDedicatedGatewayServiceResourceCreateUpdateParameters() {
     }
 
     /**
@@ -55,9 +55,9 @@ public final class SqlDedicatedGatewayServiceResourceCreateUpdateProperties
      * Set the dedicatedGatewayType property: DedicatedGatewayType for the service.
      * 
      * @param dedicatedGatewayType the dedicatedGatewayType value to set.
-     * @return the SqlDedicatedGatewayServiceResourceCreateUpdateProperties object itself.
+     * @return the SqlDedicatedGatewayServiceResourceCreateUpdateParameters object itself.
      */
-    public SqlDedicatedGatewayServiceResourceCreateUpdateProperties
+    public SqlDedicatedGatewayServiceResourceCreateUpdateParameters
         withDedicatedGatewayType(DedicatedGatewayType dedicatedGatewayType) {
         this.dedicatedGatewayType = dedicatedGatewayType;
         return this;
@@ -67,7 +67,7 @@ public final class SqlDedicatedGatewayServiceResourceCreateUpdateProperties
      * {@inheritDoc}
      */
     @Override
-    public SqlDedicatedGatewayServiceResourceCreateUpdateProperties withInstanceSize(ServiceSize instanceSize) {
+    public SqlDedicatedGatewayServiceResourceCreateUpdateParameters withInstanceSize(ServiceSize instanceSize) {
         super.withInstanceSize(instanceSize);
         return this;
     }
@@ -76,7 +76,7 @@ public final class SqlDedicatedGatewayServiceResourceCreateUpdateProperties
      * {@inheritDoc}
      */
     @Override
-    public SqlDedicatedGatewayServiceResourceCreateUpdateProperties withInstanceCount(Integer instanceCount) {
+    public SqlDedicatedGatewayServiceResourceCreateUpdateParameters withInstanceCount(Integer instanceCount) {
         super.withInstanceCount(instanceCount);
         return this;
     }
@@ -105,41 +105,41 @@ public final class SqlDedicatedGatewayServiceResourceCreateUpdateProperties
     }
 
     /**
-     * Reads an instance of SqlDedicatedGatewayServiceResourceCreateUpdateProperties from the JsonReader.
+     * Reads an instance of SqlDedicatedGatewayServiceResourceCreateUpdateParameters from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of SqlDedicatedGatewayServiceResourceCreateUpdateProperties if the JsonReader was pointing to
+     * @return An instance of SqlDedicatedGatewayServiceResourceCreateUpdateParameters if the JsonReader was pointing to
      * an instance of it, or null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the
-     * SqlDedicatedGatewayServiceResourceCreateUpdateProperties.
+     * SqlDedicatedGatewayServiceResourceCreateUpdateParameters.
      */
-    public static SqlDedicatedGatewayServiceResourceCreateUpdateProperties fromJson(JsonReader jsonReader)
+    public static SqlDedicatedGatewayServiceResourceCreateUpdateParameters fromJson(JsonReader jsonReader)
         throws IOException {
         return jsonReader.readObject(reader -> {
-            SqlDedicatedGatewayServiceResourceCreateUpdateProperties deserializedSqlDedicatedGatewayServiceResourceCreateUpdateProperties
-                = new SqlDedicatedGatewayServiceResourceCreateUpdateProperties();
+            SqlDedicatedGatewayServiceResourceCreateUpdateParameters deserializedSqlDedicatedGatewayServiceResourceCreateUpdateParameters
+                = new SqlDedicatedGatewayServiceResourceCreateUpdateParameters();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("instanceSize".equals(fieldName)) {
-                    deserializedSqlDedicatedGatewayServiceResourceCreateUpdateProperties
+                    deserializedSqlDedicatedGatewayServiceResourceCreateUpdateParameters
                         .withInstanceSize(ServiceSize.fromString(reader.getString()));
                 } else if ("instanceCount".equals(fieldName)) {
-                    deserializedSqlDedicatedGatewayServiceResourceCreateUpdateProperties
+                    deserializedSqlDedicatedGatewayServiceResourceCreateUpdateParameters
                         .withInstanceCount(reader.getNullable(JsonReader::getInt));
                 } else if ("serviceType".equals(fieldName)) {
-                    deserializedSqlDedicatedGatewayServiceResourceCreateUpdateProperties.serviceType
+                    deserializedSqlDedicatedGatewayServiceResourceCreateUpdateParameters.serviceType
                         = ServiceType.fromString(reader.getString());
                 } else if ("dedicatedGatewayType".equals(fieldName)) {
-                    deserializedSqlDedicatedGatewayServiceResourceCreateUpdateProperties.dedicatedGatewayType
+                    deserializedSqlDedicatedGatewayServiceResourceCreateUpdateParameters.dedicatedGatewayType
                         = DedicatedGatewayType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedSqlDedicatedGatewayServiceResourceCreateUpdateProperties;
+            return deserializedSqlDedicatedGatewayServiceResourceCreateUpdateParameters;
         });
     }
 }
