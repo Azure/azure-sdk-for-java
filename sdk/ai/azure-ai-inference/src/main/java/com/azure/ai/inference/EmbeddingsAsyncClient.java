@@ -167,9 +167,9 @@ public final class EmbeddingsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<EmbeddingsResult>> embedWithResponse(List<String> input, Integer dimensions,
-                EmbeddingEncodingFormat encodingFormat, EmbeddingInputType inputType, String model,
-                ExtraParameters extraParams) {
-            RequestOptions requestOptions = new RequestOptions();
+        EmbeddingEncodingFormat encodingFormat, EmbeddingInputType inputType, String model,
+        ExtraParameters extraParams) {
+        RequestOptions requestOptions = new RequestOptions();
         EmbedRequest embedRequestObj = new EmbedRequest(input).setDimensions(dimensions)
             .setEncodingFormat(encodingFormat)
             .setInputType(inputType)
@@ -179,8 +179,8 @@ public final class EmbeddingsAsyncClient {
             requestOptions.setHeader(HttpHeaderName.fromString("extra-parameters"), extraParams.toString());
         }
         return embedWithResponse(embedRequest, requestOptions)
-                    .map(protocolMethodData -> new SimpleResponse<>(protocolMethodData,
-                        protocolMethodData.getValue().toObject(EmbeddingsResult.class)));
+            .map(protocolMethodData -> new SimpleResponse<>(protocolMethodData,
+                protocolMethodData.getValue().toObject(EmbeddingsResult.class)));
     }
 
     /**
@@ -250,7 +250,8 @@ public final class EmbeddingsAsyncClient {
         EmbedRequest embedRequestObj = new EmbedRequest(input);
         BinaryData embedRequest = BinaryData.fromObject(embedRequestObj);
         return embedWithResponse(embedRequest, requestOptions).map(
-            protocolMethodData -> new SimpleResponse<>(protocolMethodData, protocolMethodData.getValue().toObject(EmbeddingsResult.class)));
+            protocolMethodData -> new SimpleResponse<>(protocolMethodData,
+                protocolMethodData.getValue().toObject(EmbeddingsResult.class)));
     }
 
     /**

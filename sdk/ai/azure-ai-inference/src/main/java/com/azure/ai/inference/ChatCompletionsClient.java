@@ -363,7 +363,7 @@ public final class ChatCompletionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> completeStreamWithResponse(BinaryData chatCompletionsOptions,
-                RequestOptions requestOptions) {
+        RequestOptions requestOptions) {
         return serviceClient.completeWithResponse(chatCompletionsOptions, requestOptions);
     }
 

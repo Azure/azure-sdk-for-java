@@ -162,8 +162,8 @@ public final class EmbeddingsClient {
      * recommendations, and other similar scenarios.
      */
     public Response<EmbeddingsResult> embedWithResponse(List<String> input, Integer dimensions,
-                EmbeddingEncodingFormat encodingFormat, EmbeddingInputType inputType, String model,
-                ExtraParameters extraParams) {
+        EmbeddingEncodingFormat encodingFormat, EmbeddingInputType inputType, String model,
+        ExtraParameters extraParams) {
         // Generated convenience method for embedWithResponse
         RequestOptions requestOptions = new RequestOptions();
         EmbedRequest embedRequestObj = new EmbedRequest(input).setDimensions(dimensions)
