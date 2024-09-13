@@ -132,7 +132,7 @@ com.azure:azure-health-insights-cancerprofiling;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-health-insights-radiologyinsights;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-identity;1.13.2;1.13.3
 com.azure:azure-identity-extensions;1.1.19;1.2.0-beta.2
-com.azure:azure-identity-broker;1.1.4;1.2.0-beta.1
+com.azure:azure-identity-broker;1.1.4;1.1.5
 com.azure:azure-identity-broker-samples;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-identity-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-iot-deviceupdate;1.0.21;1.1.0-beta.1
