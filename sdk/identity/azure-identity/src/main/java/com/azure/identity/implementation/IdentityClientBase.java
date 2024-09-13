@@ -7,7 +7,12 @@ import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.experimental.credential.PopTokenRequestContext;
-import com.azure.core.http.*;
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
@@ -875,16 +880,16 @@ public abstract class IdentityClientBase {
             } catch (Exception e) {
                 throw LoggingUtil.logCredentialUnavailableException(LOGGER, options,
                     new CredentialUnavailableException(
-                        "Workload Identity authentication unavailable. "
+                        "WorkloadIdentityCredential authentication unavailable. "
                             + "Connection to the authority host cannot be established, "
                             + e.getMessage() + ".", e));
             }
             if (responseCode == 400) {
                 throw LoggingUtil.logCredentialUnavailableException(LOGGER, options,
                     new CredentialUnavailableException(
-                        "ManagedIdentityCredential authentication unavailable. "
-                            + "Connection to IMDS endpoint cannot be established, "
-                            + exception.getMessage() + ".", exception));
+                        "WorkloadIdentityCredential authentication unavailable. "
+                            + "The request to the authority host was invalid. "
+                            + "Additional details: " + exception.getMessage() + ".", exception));
             }
 
             throw LOGGER.logExceptionAsError(new RuntimeException(
