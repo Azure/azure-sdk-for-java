@@ -4,7 +4,6 @@
 # The release driver should also ensure that the patches are generated successfully and the PR is created successfully.
 #
 # What this script does:
-#   - Checks out the repository
 #   - Checks out a new release branch, 'release/patch/$currentDate'
 #   - Runs the script to generate patches for automatic releases
 #   - Create a PR with the patches prepared
@@ -15,24 +14,15 @@ stages:
   - stage: PreparePatchRelease
     displayName: Prepare Patch Release
     timeoutInMinutes: 30
-
     jobs:
       - job: PreparePatchRelease
         displayName: 'Prepare Patch Release'
         timeoutInMinutes: 30
         pool:
-          vmImage: 'windows-2022'
-
+          name: azsdk-pool-mms-ubuntu-2004-general
+          image: azsdk-pool-mms-ubuntu-2004-1espt
+          os: linux
         steps:
-          # Checkout the repository
-          - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-            parameters:
-              Paths:
-                - '/*'
-              Repositories:
-                - Name: $(Build.Repository.Name)
-                  Commitish: $(Build.SourceVersion)
-                  WorkingDirectory: $(System.DefaultWorkingDirectory)
           # Checkout a new release branch
           - script: |
               $currentDate = Get-Date -Format "yyyyMMdd"
@@ -42,13 +32,18 @@ stages:
               git checkout -b $branchName
             displayName: 'Create release branch'
           # Run the script to generate patches for automatic releases
-          - pwsh: |
-              Start-Process powershell -ArgumentList '-NoProfile -ExecutionPolicy Bypass -Command "& { .\eng\scripts\Generate-Patches-For-Automatic-Releases.ps1 -SourcesDirectory .\ -PackagesYmlPath .\eng\pipelines\patch-release.yml }"' -Verb RunAs -Wait
-            displayName: 'Run Generate-Patches-For-Automatic-Releases script as Admin'
+          - task: PowerShell@2
+            displayName: 'Run Generate-Patches-For-Automatic-Releases script'
+            inputs:
+              pwsh: true
+              filePath: eng/scripts/Generate-Patches-For-Automatic-Releases.ps1
+              arguments: >
+                -SourcesDirectory .
+                -PackagesYmlPath eng/pipelines/patch-release.yml
           # Create a PR with the patches prepared
           - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
             parameters:
               PRBranchName: prepare-patch-release-$(Build.BuildId)
-              CommitMsg: "Patch releases preparation"
+              CommitMsg: "Patch release preparation"
               PRTitle: "Prepare patch release"
               CloseAfterOpenForTesting: '${{ parameters.TestPipeline }}'
