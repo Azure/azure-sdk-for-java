@@ -43,6 +43,8 @@
   </developers>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <jacoco.min.linecoverage>0.30</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.20</jacoco.min.branchcoverage>
   </properties>
   <dependencies>
     <dependency>
