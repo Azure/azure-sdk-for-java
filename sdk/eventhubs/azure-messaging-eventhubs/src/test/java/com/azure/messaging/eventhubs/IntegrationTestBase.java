@@ -54,7 +54,8 @@ public abstract class IntegrationTestBase extends TestBase {
     // This is a good idea to do in any production application as well - no point in waiting too long
     protected static final AmqpRetryOptions RETRY_OPTIONS = new AmqpRetryOptions()
         .setTryTimeout(Duration.ofSeconds(3))
-        .setMaxDelay(Duration.ofSeconds(1))
+        .setDelay(Duration.ofSeconds(1))
+        .setMaxDelay(Duration.ofSeconds(5))
         .setMaxRetries(10);
 
     protected final ClientLogger logger;
@@ -247,4 +248,5 @@ public abstract class IntegrationTestBase extends TestBase {
     private void skipIfNotRecordMode() {
         Assumptions.assumeTrue(getTestMode() != TestMode.PLAYBACK, "Is not in RECORD/LIVE mode.");
     }
+
 }
