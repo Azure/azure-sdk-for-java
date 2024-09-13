@@ -13,7 +13,6 @@ pr: none
 stages:
   - stage: PreparePatchRelease
     displayName: Prepare Patch Release
-    timeoutInMinutes: 30
     jobs:
       - job: PreparePatchRelease
         displayName: 'Prepare Patch Release'
