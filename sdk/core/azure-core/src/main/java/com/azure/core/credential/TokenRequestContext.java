@@ -43,6 +43,7 @@ import java.util.Objects;
  * @see com.azure.core.credential
  * @see com.azure.core.credential.TokenCredential
  */
+
 public class TokenRequestContext {
     private final List<String> scopes;
     private String claims;

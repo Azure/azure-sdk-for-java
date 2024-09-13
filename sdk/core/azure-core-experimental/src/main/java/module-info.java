@@ -5,7 +5,6 @@ module com.azure.core.experimental {
     requires transitive com.azure.core;
 
     exports com.azure.core.experimental.serializer;
-    exports com.azure.core.experimental.credential;
     exports com.azure.core.experimental.http;
     exports com.azure.core.experimental.models;
     exports com.azure.core.experimental.util.polling;
