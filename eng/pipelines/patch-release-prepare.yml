@@ -10,6 +10,12 @@
 
 trigger: none
 pr: none
+
+parameters:
+  - name: TestPipeline
+    type: boolean
+    default: false
+
 stages:
   - stage: PreparePatchRelease
     displayName: Prepare Patch Release
