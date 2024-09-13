@@ -97,7 +97,7 @@ GeocodingResponse result = client.getGeocoding(
     new BaseSearchOptions().setCoordinates(new GeoPosition(-74.011454, 40.706270)).setTop(5));
 
 // with response
-ResponseBase<SearchesGetGeocodingHeaders, GeocodingResponse> response = client.getGeocodingWithResponse(
+ResponseBase<SearchesGetGeocodingHeaders, GeocodingResponse> response = client.getGeocodingWithBaseResponse(
     new BaseSearchOptions().setCoordinates(new GeoPosition(-74.011454, 40.706270)).setTop(5), null);
 
 // with response no custom header
