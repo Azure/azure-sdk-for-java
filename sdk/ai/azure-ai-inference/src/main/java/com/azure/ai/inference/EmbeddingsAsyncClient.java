@@ -249,8 +249,8 @@ public final class EmbeddingsAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         EmbedRequest embedRequestObj = new EmbedRequest(input);
         BinaryData embedRequest = BinaryData.fromObject(embedRequestObj);
-        return embedWithResponse(embedRequest, requestOptions).map(
-            protocolMethodData -> new SimpleResponse<>(protocolMethodData,
+        return embedWithResponse(embedRequest, requestOptions)
+            .map(protocolMethodData -> new SimpleResponse<>(protocolMethodData,
                 protocolMethodData.getValue().toObject(EmbeddingsResult.class)));
     }
 
