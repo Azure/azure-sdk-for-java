@@ -29,12 +29,14 @@ stages:
           os: linux
         steps:
           # Checkout a new release branch
-          - script: |
+          - pwsh: |
               $currentDate = Get-Date -Format "yyyyMMdd"
               $branchName = "release/patch/$currentDate"
+              Write-Host "git checkout main"
               git checkout main
-              git pull origin main
+              Write-Host "git checkout -b $branchName"
               git checkout -b $branchName
+            workingDirectory: $(Build.SourcesDirectory)
             displayName: 'Create release branch'
           # Run the script to generate patches for automatic releases
           - task: PowerShell@2
