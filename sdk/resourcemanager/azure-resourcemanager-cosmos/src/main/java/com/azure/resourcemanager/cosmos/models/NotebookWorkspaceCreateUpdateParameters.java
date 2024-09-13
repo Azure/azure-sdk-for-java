@@ -16,9 +16,9 @@ import java.io.IOException;
 @Immutable
 public final class NotebookWorkspaceCreateUpdateParameters extends ArmProxyResource {
     /*
-     * Fully qualified resource Id for the resource.
+     * The type of the resource.
      */
-    private String id;
+    private String type;
 
     /*
      * The name of the resource.
@@ -26,34 +26,14 @@ public final class NotebookWorkspaceCreateUpdateParameters extends ArmProxyResou
     private String name;
 
     /*
-     * The type of the resource.
+     * Fully qualified resource Id for the resource.
      */
-    private String type;
+    private String id;
 
     /**
      * Creates an instance of NotebookWorkspaceCreateUpdateParameters class.
      */
     public NotebookWorkspaceCreateUpdateParameters() {
-    }
-
-    /**
-     * Get the id property: Fully qualified resource Id for the resource.
-     * 
-     * @return the id value.
-     */
-    @Override
-    public String id() {
-        return this.id;
-    }
-
-    /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
     }
 
     /**
@@ -67,13 +47,32 @@ public final class NotebookWorkspaceCreateUpdateParameters extends ArmProxyResou
     }
 
     /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**
