@@ -32,7 +32,7 @@ Refer to the instructions in this reference document on how to [configure loggin
 Reviewing the HTTP request sent or response received over the wire to/from the Azure Model service can be
 useful in troubleshooting issues. To enable logging the HTTP request and response payload, the [ChatCompletionsClient][chat_completions_client]
 can be configured as shown below. If there is no SLF4J's `Logger` on the class path, set an environment variable
-[AZURE_LOG_LEVEL][azure_log_level] in your machine to enable logging.
+[AZURE_LOG_LEVEL][azure_log_level] in your machine to enable logging. 
 
 ```java readme-sample-enablehttplogging
         ChatCompletionsClient chatCompletionsClient = new ChatCompletionsClientBuilder()
