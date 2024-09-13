@@ -207,7 +207,7 @@
     "dir": "azure-resourcemanager-privatedns",
     "source": "specification/privatedns/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.privatedns",
-    "args": "--tag=package-2020-06"
+    "args": "--tag=package-2024-06"
   },
   "redis": {
     "dir": "azure-resourcemanager-redis",
