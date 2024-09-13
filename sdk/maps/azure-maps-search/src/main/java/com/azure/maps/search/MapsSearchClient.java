@@ -198,7 +198,7 @@ public final class MapsSearchClient {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<SearchesGetGeocodingHeaders, GeocodingResponse> getGeocodingWithResponse(BaseSearchOptions options, Context context) {
+    public ResponseBase<SearchesGetGeocodingHeaders, GeocodingResponse> getGeocodingWithBaseResponse(BaseSearchOptions options, Context context) {
         return this.getGeocodingWithResponseInternal(options, context);
     }
 

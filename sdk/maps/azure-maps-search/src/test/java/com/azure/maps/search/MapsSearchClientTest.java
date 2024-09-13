@@ -82,7 +82,7 @@ public class MapsSearchClientTest extends MapsSearchClientTestBase {
         client = getMapsSearchClient(httpClient, serviceVersion);
         BaseSearchOptions options = new BaseSearchOptions();
         options.setQuery("1 Microsoft Way, Redmond, WA 98052");
-        Response<GeocodingResponse> response = client.getGeocodingWithResponse(options, Context.NONE);
+        Response<GeocodingResponse> response = client.getGeocodingWithBaseResponse(options, Context.NONE);
         assertEquals(200, response.getStatusCode());
     }
 
@@ -94,7 +94,7 @@ public class MapsSearchClientTest extends MapsSearchClientTestBase {
     public void testInvalidGetGeocodeWithResponse(HttpClient httpClient, MapsSearchServiceVersion serviceVersion) {
         client = getMapsSearchClient(httpClient, serviceVersion);
         final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
-            () -> client.getGeocodingWithResponse(new BaseSearchOptions(), Context.NONE));
+            () -> client.getGeocodingWithBaseResponse(new BaseSearchOptions(), Context.NONE));
         assertEquals(400, httpResponseException.getResponse().getStatusCode());
     }
 

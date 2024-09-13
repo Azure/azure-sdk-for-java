@@ -245,8 +245,8 @@ public final class MapsSearchAsyncClient {
      */
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<SearchesGetGeocodingHeaders, GeocodingResponse>> getGeocodingWithResponse(BaseSearchOptions options) {
-        return withContext(context -> getGeocodingWithResponse(options, context));
+    public Mono<ResponseBase<SearchesGetGeocodingHeaders, GeocodingResponse>> getGeocodingWithBaseResponse(BaseSearchOptions options) {
+        return withContext(context -> getGeocodingWithBaseResponse(options, context));
     }
 
     /**
@@ -328,7 +328,7 @@ public final class MapsSearchAsyncClient {
      * completion of {@link Mono}.
      */
 
-    Mono<ResponseBase<SearchesGetGeocodingHeaders, GeocodingResponse>> getGeocodingWithResponse(BaseSearchOptions options, Context context) {
+    Mono<ResponseBase<SearchesGetGeocodingHeaders, GeocodingResponse>> getGeocodingWithBaseResponse(BaseSearchOptions options, Context context) {
         List<Double> boundingBox = null;
         if (options.getBoundingBox().isPresent()) {
             boundingBox = new ArrayList<>();
