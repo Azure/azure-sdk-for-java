@@ -7,12 +7,7 @@ import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.experimental.credential.PopTokenRequestContext;
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeader;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.ProxyOptions;
+import com.azure.core.http.*;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
@@ -869,12 +864,39 @@ public abstract class IdentityClientBase {
             connection.connect();
 
             return MSIToken.fromJson(JsonProviders.createReader(connection.getInputStream()));
+        } catch (IOException exception) {
+            if (connection == null) {
+                throw LOGGER.logExceptionAsError(new RuntimeException(
+                    "Could not connect to the authority host: " + url + ".", exception));
+            }
+            int responseCode;
+            try {
+                responseCode = connection.getResponseCode();
+            } catch (Exception e) {
+                throw LoggingUtil.logCredentialUnavailableException(LOGGER, options,
+                    new CredentialUnavailableException(
+                        "Workload Identity authentication unavailable. "
+                            + "Connection to the authority host cannot be established, "
+                            + e.getMessage() + ".", e));
+            }
+            if (responseCode == 400) {
+                throw LoggingUtil.logCredentialUnavailableException(LOGGER, options,
+                    new CredentialUnavailableException(
+                        "ManagedIdentityCredential authentication unavailable. "
+                            + "Connection to IMDS endpoint cannot be established, "
+                            + exception.getMessage() + ".", exception));
+            }
+
+            throw LOGGER.logExceptionAsError(new RuntimeException(
+                "Couldn't acquire access token from Workload Identity.", exception));
         } finally {
             if (connection != null) {
                 connection.disconnect();
             }
         }
     }
+
+
 
     String getSafeWorkingDirectory() {
         if (isWindowsPlatform()) {
