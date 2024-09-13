@@ -111,4 +111,30 @@ public class EncryptedBlobRangeTests extends BlobCryptographyTestBase {
         // check if the region length is being used correctly with the expected adjusted download count
         assertEquals(expectedAdjustedDownloadCount, encryptedBlobRange.getAdjustedDownloadCount());
     }
+
+    @ParameterizedTest
+    @MethodSource("provideRanges")
+    public void testAdjustedBlobRange(int originalOffset, long originalCount, int expectedNewOffset, long expectedNewCount) {
+        int regionLength = 16;
+        EncryptionData encryptionData = new EncryptionData()
+            .setEncryptionAgent(new EncryptionAgent(ENCRYPTION_PROTOCOL_V2, EncryptionAlgorithm.AES_GCM_256))
+            .setEncryptedRegionInfo(new EncryptedRegionInfo(regionLength, NONCE_LENGTH));
+
+        BlobRange originalRange = new BlobRange(originalOffset, originalCount);
+        EncryptedBlobRange encryptedBlobRange = new EncryptedBlobRange(originalRange, encryptionData);
+
+        BlobRange resultRange = encryptedBlobRange.toBlobRange();
+
+        assertEquals(expectedNewOffset, resultRange.getOffset(), "Adjusted offset does not match expected value.");
+        assertEquals(expectedNewCount, resultRange.getCount(), "Adjusted count does not match expected value.");
+    }
+
+    private static Stream<Arguments> provideRanges() {
+        return Stream.of(
+            Arguments.of(5, 10, 0, 44), // Entirely within a single region, adjustment includes nonce and tag
+            Arguments.of(16, 16, 44, 44), // Exactly one region
+            Arguments.of(15, 35, 0, 176), // Straddles across four regions
+            Arguments.of(32, 15, 88, 44)  // Starts exactly at the second region
+        );
+    }
 }
