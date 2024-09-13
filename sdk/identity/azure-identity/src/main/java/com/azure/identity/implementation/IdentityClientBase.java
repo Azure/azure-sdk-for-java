@@ -811,12 +811,39 @@ public abstract class IdentityClientBase {
 
             return SERIALIZER_ADAPTER.deserialize(connection.getInputStream(), MSIToken.class,
                 SerializerEncoding.JSON);
+        } catch (IOException exception) {
+            if (connection == null) {
+                throw LOGGER.logExceptionAsError(new RuntimeException(
+                    "Could not connect to the authority host: " + url + ".", exception));
+            }
+            int responseCode;
+            try {
+                responseCode = connection.getResponseCode();
+            } catch (Exception e) {
+                throw LoggingUtil.logCredentialUnavailableException(LOGGER, options,
+                    new CredentialUnavailableException(
+                        "WorkloadIdentityCredential authentication unavailable. "
+                            + "Connection to the authority host cannot be established, "
+                            + e.getMessage() + ".", e));
+            }
+            if (responseCode == 400) {
+                throw LoggingUtil.logCredentialUnavailableException(LOGGER, options,
+                    new CredentialUnavailableException(
+                        "WorkloadIdentityCredential authentication unavailable. "
+                            + "The request to the authority host was invalid. "
+                            + "Additional details: " + exception.getMessage() + ".", exception));
+            }
+
+            throw LOGGER.logExceptionAsError(new RuntimeException(
+                "Couldn't acquire access token from Workload Identity.", exception));
         } finally {
             if (connection != null) {
                 connection.disconnect();
             }
         }
     }
+
+
 
     String getSafeWorkingDirectory() {
         if (isWindowsPlatform()) {

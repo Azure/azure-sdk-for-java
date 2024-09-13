@@ -608,7 +608,7 @@ public class IdentityClient extends IdentityClientBase {
                                 .resolveTenantId(tenantId, request, options));
                     return confidentialClient.acquireToken(builder.build());
                 }
-            )).onErrorMap(t -> new CredentialUnavailableException("Managed Identity authentication is not available.", t))
+            )).onErrorMap(t -> new CredentialUnavailableException("Workload Identity authentication is not available.", t))
             .map(MsalToken::new);
     }
 
