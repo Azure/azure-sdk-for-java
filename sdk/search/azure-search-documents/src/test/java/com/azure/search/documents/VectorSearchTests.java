@@ -518,7 +518,7 @@ public class VectorSearchTests extends SearchTestBase {
 
         SearchIndex retrievedIndex = searchIndexClient.getIndex(indexName);
         assertEquals(1, retrievedIndex.getVectorSearch().getCompressions().size());
-        assertEquals(compressionName, retrievedIndex.getVectorSearch().getCompressions().getFirst().getCompressionName());
+        assertEquals(compressionName, retrievedIndex.getVectorSearch().getCompressions().get(0).getCompressionName());
 
     }
 
@@ -555,7 +555,7 @@ public class VectorSearchTests extends SearchTestBase {
         StepVerifier.create(searchIndexAsyncClient.getIndex(indexName))
             .assertNext(retrievedIndex -> {
                 assertEquals(1, retrievedIndex.getVectorSearch().getCompressions().size());
-                assertEquals(compressionName, retrievedIndex.getVectorSearch().getCompressions().getFirst().getCompressionName());
+                assertEquals(compressionName, retrievedIndex.getVectorSearch().getCompressions().get(0).getCompressionName());
             })
             .verifyComplete();
     }
@@ -590,7 +590,7 @@ public class VectorSearchTests extends SearchTestBase {
         StepVerifier.create(searchIndexAsyncClient.getIndex(indexName))
             .assertNext(retrievedIndex -> {
                 assertEquals(1, retrievedIndex.getVectorSearch().getCompressions().size());
-                assertEquals(compressionName, retrievedIndex.getVectorSearch().getCompressions().getFirst().getCompressionName());
+                assertEquals(compressionName, retrievedIndex.getVectorSearch().getCompressions().get(0).getCompressionName());
             })
             .verifyComplete();
     }
@@ -624,7 +624,7 @@ public class VectorSearchTests extends SearchTestBase {
 
         SearchIndex retrievedIndex = searchIndexClient.getIndex(indexName);
         assertEquals(1, retrievedIndex.getVectorSearch().getCompressions().size());
-        assertEquals(compressionName, retrievedIndex.getVectorSearch().getCompressions().getFirst().getCompressionName());
+        assertEquals(compressionName, retrievedIndex.getVectorSearch().getCompressions().get(0).getCompressionName());
     }
 
     // a test that creates a hybrid search query with a vector search query and a regular search query, and utilizes the vector query
