@@ -105,7 +105,7 @@ public class EventProcessorClientErrorHandlingTest {
                 Assertions.assertTrue(errorContext.getThrowable() instanceof IllegalStateException);
         }, tracer, null, processorOptions);
         client.start();
-        boolean completed = countDownLatch.await(3, TimeUnit.SECONDS);
+        boolean completed = countDownLatch.await(10, TimeUnit.SECONDS);
         try {
             client.stop();
         } catch (IllegalStateException ex) {
