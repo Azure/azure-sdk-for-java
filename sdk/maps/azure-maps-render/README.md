@@ -110,8 +110,7 @@ GeoBoundingBox bbox = new GeoBoundingBox(1.355233, 42.982261, 24.980233, 56.5260
 new StaticMapLayer();
 new RasterTileFormat();
 MapStaticImageOptions mapStaticImageOptions = new MapStaticImageOptions().setStaticMapLayer(StaticMapLayer.BASIC)
-    .setMapImageStyle(MapImageStyle.MAIN).setZoom(2)
-    .setBoundingBox(bbox).setRasterTileFormat(RasterTileFormat.PNG);
+    .setBoundingBox(bbox);
 client.getMapStaticImage(mapStaticImageOptions).toStream();
 ```
 

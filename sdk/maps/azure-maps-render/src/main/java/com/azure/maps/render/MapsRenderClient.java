@@ -339,8 +339,7 @@ public final class MapsRenderClient {
      * new StaticMapLayer&#40;&#41;;
      * new RasterTileFormat&#40;&#41;;
      * MapStaticImageOptions mapStaticImageOptions = new MapStaticImageOptions&#40;&#41;.setStaticMapLayer&#40;StaticMapLayer.BASIC&#41;
-     *     .setMapImageStyle&#40;MapImageStyle.MAIN&#41;.setZoom&#40;2&#41;
-     *     .setBoundingBox&#40;bbox&#41;.setRasterTileFormat&#40;RasterTileFormat.PNG&#41;;
+     *     .setBoundingBox&#40;bbox&#41;;
      * client.getMapStaticImage&#40;mapStaticImageOptions&#41;.toStream&#40;&#41;;
      * </pre>
      * <!-- end com.azure.maps.render.sync.get_map_static_image -->
@@ -374,8 +373,7 @@ public final class MapsRenderClient {
      * new StaticMapLayer&#40;&#41;;
      * new RasterTileFormat&#40;&#41;;
      * MapStaticImageOptions mapStaticImageOptions = new MapStaticImageOptions&#40;&#41;.setStaticMapLayer&#40;StaticMapLayer.BASIC&#41;
-     *     .setMapImageStyle&#40;MapImageStyle.MAIN&#41;.setZoom&#40;2&#41;
-     *     .setBoundingBox&#40;bbox&#41;.setRasterTileFormat&#40;RasterTileFormat.PNG&#41;;
+     *     .setBoundingBox&#40;bbox&#41;;
      * client.getMapStaticImage&#40;mapStaticImageOptions&#41;.toStream&#40;&#41;;
      * </pre>
      * <!-- end com.azure.maps.render.sync.get_map_static_image -->

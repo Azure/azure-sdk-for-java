@@ -176,9 +176,10 @@ public final class MapsRenderAsyncClient {
                 options.getTileIndex(), options.getTimestamp(), options.getMapTileSize(), options.getLanguage(),
                 options.getLocalizedMapView(), context)
             .onErrorMap(throwable -> {
-                if (!(throwable instanceof ErrorResponseException exception)) {
+                if (!(throwable instanceof ErrorResponseException)) {
                     return throwable;
                 }
+                ErrorResponseException exception = (ErrorResponseException) throwable;
                 return new HttpResponseException(exception.getMessage(), exception.getResponse());
             });
     }
@@ -399,9 +400,10 @@ public final class MapsRenderAsyncClient {
         Context context) {
         return this.serviceClient.getMapStateTileNoCustomHeadersWithResponseAsync(statesetId, tileIndex, context)
             .onErrorMap(throwable -> {
-                if (!(throwable instanceof ErrorResponseException exception)) {
+                if (!(throwable instanceof ErrorResponseException)) {
                     return throwable;
                 }
+                ErrorResponseException exception = (ErrorResponseException) throwable;
                 return new HttpResponseException(exception.getMessage(), exception.getResponse());
             });
     }
@@ -483,9 +485,10 @@ public final class MapsRenderAsyncClient {
     Mono<Response<CopyrightCaption>> getCopyrightCaptionWithResponse(Context context) {
         return this.serviceClient.getCopyrightCaptionWithResponseAsync(ResponseFormat.JSON, context)
             .onErrorMap(throwable -> {
-                if (!(throwable instanceof ErrorResponseException exception)) {
+                if (!(throwable instanceof ErrorResponseException)) {
                     return throwable;
                 }
+                ErrorResponseException exception = (ErrorResponseException) throwable;
                 return new HttpResponseException(exception.getMessage(), exception.getResponse());
             });
     }
@@ -508,8 +511,8 @@ public final class MapsRenderAsyncClient {
      * new StaticMapLayer&#40;&#41;;
      * new RasterTileFormat&#40;&#41;;
      * MapStaticImageOptions mapStaticImageOptions2 = new MapStaticImageOptions&#40;&#41;.setStaticMapLayer&#40;StaticMapLayer.BASIC&#41;
-     *     .setMapImageStyle&#40;MapImageStyle.MAIN&#41;.setZoom&#40;2&#41;
-     *     .setBoundingBox&#40;bbox2&#41;.setRasterTileFormat&#40;RasterTileFormat.PNG&#41;;
+     *     .setZoom&#40;2&#41;
+     *     .setBoundingBox&#40;bbox2&#41;;
      * asyncClient.getMapStaticImage&#40;mapStaticImageOptions2&#41;.block&#40;&#41;.toStream&#40;&#41;;
      * </pre>
      * <!-- end com.azure.maps.render.async.get_map_static_image -->
@@ -543,8 +546,8 @@ public final class MapsRenderAsyncClient {
      * new StaticMapLayer&#40;&#41;;
      * new RasterTileFormat&#40;&#41;;
      * MapStaticImageOptions mapStaticImageOptions2 = new MapStaticImageOptions&#40;&#41;.setStaticMapLayer&#40;StaticMapLayer.BASIC&#41;
-     *     .setMapImageStyle&#40;MapImageStyle.MAIN&#41;.setZoom&#40;2&#41;
-     *     .setBoundingBox&#40;bbox2&#41;.setRasterTileFormat&#40;RasterTileFormat.PNG&#41;;
+     *     .setZoom&#40;2&#41;
+     *     .setBoundingBox&#40;bbox2&#41;;
      * asyncClient.getMapStaticImage&#40;mapStaticImageOptions2&#41;.block&#40;&#41;.toStream&#40;&#41;;
      * </pre>
      * <!-- end com.azure.maps.render.async.get_map_static_image -->
@@ -578,8 +581,8 @@ public final class MapsRenderAsyncClient {
      * new StaticMapLayer&#40;&#41;;
      * new RasterTileFormat&#40;&#41;;
      * MapStaticImageOptions mapStaticImageOptions2 = new MapStaticImageOptions&#40;&#41;.setStaticMapLayer&#40;StaticMapLayer.BASIC&#41;
-     *     .setMapImageStyle&#40;MapImageStyle.MAIN&#41;.setZoom&#40;2&#41;
-     *     .setBoundingBox&#40;bbox2&#41;.setRasterTileFormat&#40;RasterTileFormat.PNG&#41;;
+     *     .setZoom&#40;2&#41;
+     *     .setBoundingBox&#40;bbox2&#41;;
      * asyncClient.getMapStaticImage&#40;mapStaticImageOptions2&#41;.block&#40;&#41;.toStream&#40;&#41;;
      * </pre>
      * <!-- end com.azure.maps.render.async.get_map_static_image -->
@@ -602,9 +605,10 @@ public final class MapsRenderAsyncClient {
             options.getHeight(), options.getWidth(), options.getLanguage(), options.getLocalizedMapView(),
             options.getPins(), options.getPath(), context)
             .onErrorMap(throwable -> {
-                if (!(throwable instanceof ErrorResponseException exception)) {
+                if (!(throwable instanceof ErrorResponseException)) {
                     return throwable;
                 }
+                ErrorResponseException exception = (ErrorResponseException) throwable;
                 return new HttpResponseException(exception.getMessage(), exception.getResponse());
             });
     }
@@ -693,9 +697,10 @@ public final class MapsRenderAsyncClient {
         return this.serviceClient.getCopyrightFromBoundingBoxWithResponseAsync(ResponseFormat.JSON, bbox,
             includeTextValue, context)
             .onErrorMap(throwable -> {
-                if (!(throwable instanceof ErrorResponseException exception)) {
+                if (!(throwable instanceof ErrorResponseException)) {
                     return throwable;
                 }
+                ErrorResponseException exception = (ErrorResponseException) throwable;
                 return new HttpResponseException(exception.getMessage(), exception.getResponse());
             });
     }
@@ -784,9 +789,10 @@ public final class MapsRenderAsyncClient {
         return this.serviceClient.getCopyrightForTileWithResponseAsync(ResponseFormat.JSON, tileIndex, includeTextValue,
             context)
             .onErrorMap(throwable -> {
-                if (!(throwable instanceof ErrorResponseException exception)) {
+                if (!(throwable instanceof ErrorResponseException)) {
                     return throwable;
                 }
+                ErrorResponseException exception = (ErrorResponseException) throwable;
                 return new HttpResponseException(exception.getMessage(), exception.getResponse());
             });
     }
@@ -870,9 +876,10 @@ public final class MapsRenderAsyncClient {
         IncludeText includeTextValue = includeText ? IncludeText.YES : IncludeText.NO;
         return this.serviceClient.getCopyrightForWorldWithResponseAsync(ResponseFormat.JSON, includeTextValue, context)
             .onErrorMap(throwable -> {
-                if (!(throwable instanceof ErrorResponseException exception)) {
+                if (!(throwable instanceof ErrorResponseException)) {
                     return throwable;
                 }
+                ErrorResponseException exception = (ErrorResponseException) throwable;
                 return new HttpResponseException(exception.getMessage(), exception.getResponse());
             });
     }
