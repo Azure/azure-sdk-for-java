@@ -29,17 +29,15 @@ import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdkBuilder;
 import io.opentelemetry.sdk.trace.data.LinkData;
 import io.opentelemetry.sdk.trace.samplers.Sampler;
 import io.opentelemetry.sdk.trace.samplers.SamplingResult;
-import java.io.UncheckedIOException;
-import java.lang.reflect.Method;
-import java.time.Instant;
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeoutException;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
+
+import java.io.UncheckedIOException;
+import java.time.Instant;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeoutException;
 
 import static com.azure.perf.test.core.PerfStressOptions.HttpClientType.JDK;
 import static com.azure.perf.test.core.PerfStressOptions.HttpClientType.OKHTTP;
@@ -192,6 +190,7 @@ public class TelemetryHelper {
     /**
      * Instruments a Runnable: records runnable duration along with the status (success, error, cancellation),
      * @param task the runnable to instrument
+     * @return
      */
     @SuppressWarnings("try")
     public Runnable instrumentRunAsyncWithRunnable(Runnable task) {
@@ -273,6 +272,10 @@ public class TelemetryHelper {
         before.setAttribute(AttributeKey.stringKey("jreVersion"), System.getProperty("java.version"));
         before.setAttribute(AttributeKey.stringKey("jreVendor"), System.getProperty("java.vendor"));
         before.setAttribute(AttributeKey.stringKey("gitCommit"), System.getenv("GIT_COMMIT"));
+        before.setAttribute(AttributeKey.booleanKey("completeableFuture"), options.isCompletableFuture());
+        before.setAttribute(AttributeKey.booleanKey("executorservice"), options.isExecutorService());
+        before.setAttribute(AttributeKey.booleanKey("virtualthread"), options.isVirtualThread());
+
         before.end();
     }
 

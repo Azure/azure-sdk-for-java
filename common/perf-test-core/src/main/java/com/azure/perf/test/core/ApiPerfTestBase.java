@@ -17,13 +17,20 @@ import com.azure.core.util.logging.ClientLogger;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
+import okhttp3.OkHttpClient;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLException;
+import javax.net.ssl.X509TrustManager;
 import java.lang.reflect.Method;
 import java.net.URI;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -31,12 +38,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLException;
-import javax.net.ssl.X509TrustManager;
-import okhttp3.OkHttpClient;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import static com.azure.perf.test.core.PerfStressOptions.HttpClientType.JDK;
 import static com.azure.perf.test.core.PerfStressOptions.HttpClientType.NETTY;
@@ -240,8 +241,7 @@ public abstract class ApiPerfTestBase<TOptions extends PerfStressOptions> extend
         long startNanoTime = System.nanoTime();
         Semaphore semaphore = new Semaphore(options.getConcurrentTaskLimit()); // Use configurable limit
 
-        List<CompletableFuture<Void>> futures = new ArrayList<>();
-
+        List<CompletableFuture<Void>> futures = new LinkedList<>();
         while (System.nanoTime() < endNanoTime) {
             try {
                 semaphore.acquire();
@@ -259,6 +259,8 @@ public abstract class ApiPerfTestBase<TOptions extends PerfStressOptions> extend
             }
         }
 
+        // Remove all completed CompletableFutures from the list
+        futures.removeIf(CompletableFuture::isDone);
         // Combine all futures so we can wait for all to complete
         return CompletableFuture.allOf(futures.toArray(new CompletableFuture<?>[0]));
     }
