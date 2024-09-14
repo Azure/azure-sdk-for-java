@@ -99,7 +99,7 @@ public class SampleCriticalResultInferenceAsync {
         // END: com.azure.health.insights.radiologyinsights.buildasyncclient
 
         // BEGIN: com.azure.health.insights.radiologyinsights.inferradiologyinsights
-        PollerFlux<RadiologyInsightsData, RadiologyInsightsInferenceResult> asyncPoller = radiologyInsightsAsyncClient
+        PollerFlux<RadiologyInsightsJob, RadiologyInsightsInferenceResult> asyncPoller = radiologyInsightsAsyncClient
                 .beginInferRadiologyInsights(UUID.randomUUID().toString(), createRadiologyInsightsJob());
         // END: com.azure.health.insights.radiologyinsights.inferradiologyinsights
         
@@ -291,7 +291,7 @@ public class SampleCriticalResultInferenceAsync {
     }
     // END: com.azure.health.insights.radiologyinsights.createrequest
     
-    private static Predicate<AsyncPollResponse<RadiologyInsightsData, RadiologyInsightsInferenceResult>> isComplete = response -> {
+    private static Predicate<AsyncPollResponse<RadiologyInsightsJob, RadiologyInsightsInferenceResult>> isComplete = response -> {
         return response.getStatus() != LongRunningOperationStatus.IN_PROGRESS
             && response.getStatus() != LongRunningOperationStatus.NOT_STARTED;
     };

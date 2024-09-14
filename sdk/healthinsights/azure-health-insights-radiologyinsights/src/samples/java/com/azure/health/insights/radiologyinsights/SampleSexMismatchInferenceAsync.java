@@ -96,7 +96,7 @@ public class SampleSexMismatchInferenceAsync {
                 .credential(credential);
         RadiologyInsightsAsyncClient radiologyInsightsAsyncClient = clientBuilder.buildAsyncClient();
 
-        PollerFlux<RadiologyInsightsData, RadiologyInsightsInferenceResult> asyncPoller = radiologyInsightsAsyncClient
+        PollerFlux<RadiologyInsightsJob, RadiologyInsightsInferenceResult> asyncPoller = radiologyInsightsAsyncClient
                 .beginInferRadiologyInsights("job" + new Date().getTime(), createRadiologyInsightsJob());
         
         CountDownLatch latch = new CountDownLatch(1);
@@ -293,7 +293,7 @@ public class SampleSexMismatchInferenceAsync {
         return inferenceOptions;
     }
 
-    private static Predicate<? super AsyncPollResponse<RadiologyInsightsData, RadiologyInsightsInferenceResult>> isComplete = response -> {
+    private static Predicate<? super AsyncPollResponse<RadiologyInsightsJob, RadiologyInsightsInferenceResult>> isComplete = response -> {
         return response.getStatus() != LongRunningOperationStatus.IN_PROGRESS
             && response.getStatus() != LongRunningOperationStatus.NOT_STARTED;
     };

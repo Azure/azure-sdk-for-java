@@ -98,7 +98,7 @@ Infer radiology insights from a patient's radiology report using an **asynchrono
 - [SampleCriticalResultInferenceAsync.java][ri_async_sample]
 
 ```java com.azure.health.insights.radiologyinsights.inferradiologyinsights
-PollerFlux<RadiologyInsightsData, RadiologyInsightsInferenceResult> asyncPoller = radiologyInsightsAsyncClient
+PollerFlux<RadiologyInsightsJob, RadiologyInsightsInferenceResult> asyncPoller = radiologyInsightsAsyncClient
         .beginInferRadiologyInsights(UUID.randomUUID().toString(), createRadiologyInsightsJob());
 ```
 
