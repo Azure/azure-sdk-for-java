@@ -9,17 +9,25 @@ import com.azure.core.http.policy.ExponentialBackoff;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxyRequestMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.Configuration;
+import com.azure.maps.search.implementation.models.GeoJsonGeometryCollection;
+import com.azure.maps.search.models.Boundary;
+import com.azure.maps.search.models.GeocodingBatchResponse;
+import com.azure.maps.search.models.GeocodingResponse;
 
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 public class MapsSearchClientTestBase extends TestProxyTestBase {
@@ -79,5 +87,29 @@ public class MapsSearchClientTestBase extends TestProxyTestBase {
 
         return builder.httpClient(
             interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient);
+    }
+
+    static void validateGetPolygons(Boundary response) {
+        assertNotNull(response);
+        assertEquals(response.getType().toString(), "Feature");
+        assertEquals(((GeoJsonGeometryCollection) response.getGeometry()).getGeometries().size(), 1);
+    }
+
+    static void validateGetGeocode(Response<GeocodingResponse> response) {
+        assertEquals(200, response.getStatusCode());
+    }
+
+    static void validateGetGeocodeBatch(GeocodingBatchResponse response) {
+        assertEquals(2, response.getSummary().getSuccessfulRequests());
+        assertEquals(2, response.getSummary().getTotalRequests());
+    }
+
+    static void validateGetReverseGeocoding(Response<GeocodingResponse> response) {
+        assertEquals(200, response.getStatusCode());
+    }
+
+    static void validateGetReverseGeocodingBatch(GeocodingBatchResponse response) {
+        assertEquals(2, response.getSummary().getTotalRequests());
+        assertEquals(2, response.getSummary().getSuccessfulRequests());
     }
 }
