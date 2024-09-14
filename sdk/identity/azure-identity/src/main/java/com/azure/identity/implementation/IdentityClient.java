@@ -569,7 +569,7 @@ public class IdentityClient extends IdentityClientBase {
                                 .resolveTenantId(tenantId, request, options));
                     return confidentialClient.acquireToken(builder.build());
                 }
-            )).onErrorMap(t -> new CredentialUnavailableException("Managed Identity authentication is not available.", t))
+            )).onErrorMap(t -> new CredentialUnavailableException("Workload Identity authentication is not available.", t))
             .map(MsalToken::new);
     }
 
@@ -1210,7 +1210,7 @@ public class IdentityClient extends IdentityClientBase {
                         throw LoggingUtil.logCredentialUnavailableException(LOGGER, options,
                             new CredentialUnavailableException(
                                 "ManagedIdentityCredential authentication unavailable. "
-                                    + "Connection to IMDS endpoint cannot be established.", null));
+                                    + "Connection to IMDS endpoint cannot be established.", exception));
                     }
 
                     if (responseCode == 403) {

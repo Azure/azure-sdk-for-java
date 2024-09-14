@@ -17,7 +17,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-cloud-azure-actuator</artifactId>
-  <version>5.16.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-actuator;current} -->
+  <version>5.17.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-actuator;current} -->
 
   <name>Spring Cloud Azure Actuator</name>
   <url>https://microsoft.github.io/spring-cloud-azure</url>
@@ -54,13 +54,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.51.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.52.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.63.2</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
+      <version>4.63.3</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -108,7 +108,7 @@
     <dependency>
        <groupId>com.azure.spring</groupId>
        <artifactId>spring-cloud-azure-appconfiguration-config-web</artifactId>
-       <version>5.16.0-beta.1</version><!-- {x-version-update;com.azure.spring:spring-cloud-azure-appconfiguration-config-web;current} -->
+       <version>5.17.0-beta.1</version><!-- {x-version-update;com.azure.spring:spring-cloud-azure-appconfiguration-config-web;current} -->
       <optional>true</optional>
     </dependency>
     <!-- For Testing -->

@@ -21,7 +21,7 @@ There are two libraries that can be used spring-cloud-azure-appconfiguration-con
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>spring-cloud-azure-appconfiguration-config</artifactId>
-    <version>5.15.0</version>
+    <version>5.16.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -33,7 +33,7 @@ or
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>spring-cloud-azure-appconfiguration-config-web</artifactId>
-    <version>5.15.0</version>
+    <version>5.16.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

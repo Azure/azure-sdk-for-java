@@ -1,6 +1,6 @@
 # Release History
 
-## 1.52.0-beta.1 (Unreleased)
+## 1.53.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,21 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.52.0 (2024-09-12)
+
+### Features Added
+
+- Added new interface `ExpandableEnum` which allows for enums based on any type with expansion. Effectively, a generic
+  typed `ExpandableStringEnum`.
+
+### Bugs Fixed
+
+- Fixed a bug with serialization of arrays of `JsonSerializable`. ([#41645](https://github.com/Azure/azure-sdk-for-java/pull/41645))
+
+### Other Changes
+
+- Changed logging in `AccessTokenCache` to `VERBOSE`. ([#41648](https://github.com/Azure/azure-sdk-for-java/pull/41648))
 
 ## 1.51.0 (2024-07-31)
 

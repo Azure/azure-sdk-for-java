@@ -674,7 +674,7 @@ public final class CosmosDBManagementClientImpl extends AzureServiceClient imple
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2024-05-15";
+        this.apiVersion = "2024-08-15";
         this.databaseAccounts = new DatabaseAccountsClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.databases = new DatabasesClientImpl(this);

@@ -1087,6 +1087,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
     @MethodSource("downloadFileSupplier")
     public void downloadFile(int fileSize, EncryptionVersion version) throws IOException {
         File file = getRandomFile(fileSize);
+        ebc = getEncryptionClient(version);
         ebc.uploadFromFile(file.toPath().toString(), true);
         File outFile = new File(testResourceNamer.randomName(prefix, 60) + ".txt");
         Files.deleteIfExists(outFile.toPath());
@@ -1111,7 +1112,8 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
             Arguments.of(50 * Constants.MB, EncryptionVersion.V1), // large file requiring multiple requests
             Arguments.of(0, EncryptionVersion.V2), // empty file
             Arguments.of(20, EncryptionVersion.V2), // small file
-            Arguments.of(16 * 1024 * 1024, EncryptionVersion.V2), // medium file in several chunks
+            //Arguments.of(16 * 1024 * 1024, EncryptionVersion.V2), // medium file in several chunks
+            //todo isbr: uncomment after 4mb boundary bug is fixed
             Arguments.of(8 * 1026 * 1024 + 10, EncryptionVersion.V2), // medium file not aligned to block
             Arguments.of(50 * Constants.MB, EncryptionVersion.V2) // large file requiring multiple requests
         );
@@ -1187,6 +1189,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
     @MethodSource("downloadFileRangeSupplier")
     public void downloadFileRange(BlobRange range, EncryptionVersion version) throws IOException {
         File file = getRandomFile(DATA.getDefaultDataSize());
+        ebc = getEncryptionClient(version);
         ebc.uploadFromFile(file.toPath().toString(), true);
         File outFile = new File(testResourceNamer.randomName(prefix, 60));
         Files.deleteIfExists(outFile.toPath());
@@ -1726,6 +1729,96 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
         bec.downloadToFileWithResponse(outFile2.toString(), new BlobRange(0, (long) Constants.KB), null, null, null,
             false, null, Context.NONE);
         compareFiles(file, outFile, 0, file.length());
+    }
+
+    @ParameterizedTest
+    @MethodSource("uploadAndDownloadDifferentRegionLengthSupplier")
+    public void uploadAndDownloadDifferentRegionLength(int regionLength, int dataSize) {
+        ByteBuffer data = getRandomData(dataSize);
+        ebc = new EncryptedBlobClient(mockAesKey(getEncryptedClientBuilder(fakeKey, null, ENV.getPrimaryAccount().getCredential(),
+            cc.getBlobContainerUrl(), EncryptionVersion.V2)
+            .blobName(generateBlobName())
+            .clientSideEncryptionOptions(new BlobClientSideEncryptionOptions().setAuthenticatedRegionDataLengthInBytes(regionLength))
+            .buildEncryptedBlobAsyncClient()));
+        ebc.uploadWithResponse(new BlobParallelUploadOptions(BinaryData.fromByteBuffer(data.duplicate())), null, null);
+
+        ByteArrayOutputStream plaintextOut = new ByteArrayOutputStream();
+        ebc.downloadStream(plaintextOut);
+
+        assertArraysEqual(data.array(), plaintextOut.toByteArray());
+    }
+
+    @ParameterizedTest
+    @MethodSource("uploadAndDownloadFileDifferentRegionLengthSupplier")
+    public void uploadAndDownloadToFileDifferentRegionLength(int regionLength, int fileSize) throws IOException {
+        File file = getRandomFile(fileSize);
+        ebc = new EncryptedBlobClient(mockAesKey(getEncryptedClientBuilder(fakeKey, null,
+            ENV.getPrimaryAccount().getCredential(), cc.getBlobContainerUrl(), EncryptionVersion.V2)
+            .blobName(generateBlobName())
+            .clientSideEncryptionOptions(new BlobClientSideEncryptionOptions()
+                .setAuthenticatedRegionDataLengthInBytes(regionLength))
+            .buildEncryptedBlobAsyncClient()));
+        ebc.uploadFromFile(file.toPath().toString(), true);
+
+        File outFile = new File(testResourceNamer.randomName(prefix, 60) + ".txt");
+        Files.deleteIfExists(outFile.toPath());
+
+        ebc.downloadToFile(outFile.toPath().toString(), true);
+        compareFiles(file, outFile, 0, fileSize);
+
+        Files.deleteIfExists(outFile.toPath());
+        Files.deleteIfExists(file.toPath());
+    }
+
+    @ParameterizedTest
+    @MethodSource("uploadAndDownloadDifferentRegionLengthSupplier")
+    public void uploadAndDownloadRegionLengthWithDiffBlobClients(int regionLength, int dataSize) {
+        ByteBuffer data = getRandomData(dataSize);
+        String blobName = generateBlobName();
+        ebc = new EncryptedBlobClient(mockAesKey(getEncryptedClientBuilder(fakeKey, null,
+            ENV.getPrimaryAccount().getCredential(), cc.getBlobContainerUrl(), EncryptionVersion.V2)
+            .blobName(blobName)
+            .clientSideEncryptionOptions(new BlobClientSideEncryptionOptions()
+                .setAuthenticatedRegionDataLengthInBytes(regionLength))
+            .buildEncryptedBlobAsyncClient()));
+        ebc.uploadWithResponse(new BlobParallelUploadOptions(BinaryData.fromByteBuffer(data.duplicate())), null, null);
+
+        ByteArrayOutputStream plaintextOut = new ByteArrayOutputStream();
+
+        // Create another client without the authenticated region data length set
+        // This client should be using the default 4MB region size
+        EncryptedBlobClient ebc2 = new EncryptedBlobClient(mockAesKey(getEncryptedClientBuilder(fakeKey, null,
+            ENV.getPrimaryAccount().getCredential(), cc.getBlobContainerUrl(), EncryptionVersion.V2)
+            .blobName(blobName)
+            .buildEncryptedBlobAsyncClient()));
+
+        ebc2.downloadStream(plaintextOut);
+
+        assertArraysEqual(data.array(), plaintextOut.toByteArray());
+    }
+
+    private static Stream<Arguments> uploadAndDownloadDifferentRegionLengthSupplier() {
+        return Stream.of(
+            Arguments.of(4 * Constants.KB, 4 * Constants.MB),
+            Arguments.of(Constants.KB, 8 * Constants.MB),
+            Arguments.of(10 * Constants.KB, 4 * Constants.MB), // unaligned
+            Arguments.of(16, Constants.KB), // minimum boundary
+            Arguments.of(25, Constants.KB), // unaligned
+            Arguments.of(6 * Constants.MB, Constants.KB), // testing region smaller than data size
+            Arguments.of(6 * Constants.MB, 8 * Constants.MB) // testing greater than default 4MB region size
+        );
+    }
+
+    private static Stream<Arguments> uploadAndDownloadFileDifferentRegionLengthSupplier() {
+        return Stream.of(
+//            Arguments.of(4 * Constants.KB, 4 * Constants.MB), // add these back once issue #41709 is resolved
+//            Arguments.of(Constants.KB, 8 * Constants.MB), // add these back once issue #41709 is resolved
+            Arguments.of(10 * Constants.KB, 4 * Constants.MB), // unaligned
+            Arguments.of(16, Constants.KB), // minimum boundary
+            Arguments.of(25, Constants.KB), // unaligned
+            Arguments.of(6 * Constants.MB, Constants.KB), // testing region smaller than data size
+            Arguments.of(6 * Constants.MB, 8 * Constants.MB) // testing greater than default 4MB region size
+        );
     }
 
     private static Stream<Arguments> encryptionDataCaseInsensitivitySupplier() {

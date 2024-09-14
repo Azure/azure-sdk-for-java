@@ -48,7 +48,7 @@ com.microsoft.sqlserver:mssql-jdbc;10.2.3.jre8
 com.microsoft.azure:spring-data-cosmosdb;2.3.0
 com.microsoft.azure:azure-functions-maven-plugin;1.30.0
 com.microsoft.azure.functions:azure-functions-java-library;2.2.0
-com.mysql:mysql-connector-j;8.0.33
+com.mysql:mysql-connector-j;9.0.0
 com.squareup.okhttp3:mockwebserver;4.12.0
 com.squareup.okhttp3:okhttp;4.12.0
 commons-codec:commons-codec;1.15
@@ -84,6 +84,7 @@ javax.json:javax.json-api;1.1.4
 javax.servlet:javax.servlet-api;4.0.1
 javax.websocket:javax.websocket-api;1.1
 org.apache.commons:commons-compress;1.26.0
+org.apache.ant:ant;1.10.14
 org.apache.avro:avro;1.11.3
 org.apache.avro:avro-maven-plugin;1.11.3
 org.apache.commons:commons-lang3;3.12.0

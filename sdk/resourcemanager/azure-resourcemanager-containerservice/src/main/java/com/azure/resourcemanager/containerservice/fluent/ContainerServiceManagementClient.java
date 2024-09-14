@@ -123,4 +123,11 @@ public interface ContainerServiceManagementClient {
      * @return the TrustedAccessRolesClient object.
      */
     TrustedAccessRolesClient getTrustedAccessRoles();
+
+    /**
+     * Gets the MachinesClient object to access its operations.
+     * 
+     * @return the MachinesClient object.
+     */
+    MachinesClient getMachines();
 }

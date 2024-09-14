@@ -22,6 +22,12 @@ public class ManagedDisk {
     private StorageAccountType storageAccountType;
 
     /**
+     * Specifies the security profile settings for the managed disk.
+     */
+    @JsonProperty(value = "securityProfile")
+    private VMDiskSecurityProfile securityProfile;
+
+    /**
      * Get possible values include: 'StandardLRS', 'PremiumLRS', 'StandardSSDLRS'.
      *
      * @return the storageAccountType value
@@ -38,6 +44,26 @@ public class ManagedDisk {
      */
     public ManagedDisk withStorageAccountType(StorageAccountType storageAccountType) {
         this.storageAccountType = storageAccountType;
+        return this;
+    }
+
+    /**
+     * Get the securityProfile value.
+     *
+     * @return the securityProfile value
+     */
+    public VMDiskSecurityProfile securityProfile() {
+        return this.securityProfile;
+    }
+
+    /**
+     * Set the securityProfile value.
+     *
+     * @param securityProfile the securityProfile value to set
+     * @return the ManagedDisk object itself.
+     */
+    public ManagedDisk withSecurityProfile(VMDiskSecurityProfile securityProfile) {
+        this.securityProfile = securityProfile;
         return this;
     }
 
