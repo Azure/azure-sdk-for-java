@@ -554,7 +554,7 @@ public final class RadiologyInsightsAsyncClient {
      * @return the {@link PollerFlux} for polling of response for the Radiology Insights request.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<RadiologyInsightsData, RadiologyInsightsInferenceResult> beginInferRadiologyInsights(String id,
+    public PollerFlux<RadiologyInsightsJob, RadiologyInsightsInferenceResult> beginInferRadiologyInsights(String id,
         RadiologyInsightsData resource, List<String> expand) {
         RadiologyInsightsJob job = new RadiologyInsightsJob();
         job.setJobData(resource);
@@ -585,7 +585,7 @@ public final class RadiologyInsightsAsyncClient {
      * @return the {@link PollerFlux} for polling of response for the Radiology Insights request.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<RadiologyInsightsData, RadiologyInsightsInferenceResult> beginInferRadiologyInsights(String id,
+    public PollerFlux<RadiologyInsightsJob, RadiologyInsightsInferenceResult> beginInferRadiologyInsights(String id,
         RadiologyInsightsData resource) {
         RadiologyInsightsJob job = new RadiologyInsightsJob();
         job.setJobData(resource);

@@ -554,7 +554,7 @@ public final class RadiologyInsightsClient {
      * @return the {@link SyncPoller} for polling of response for the Radiology Insights request.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<RadiologyInsightsData, RadiologyInsightsInferenceResult> beginInferRadiologyInsights(String id,
+    public SyncPoller<RadiologyInsightsJob, RadiologyInsightsInferenceResult> beginInferRadiologyInsights(String id,
         RadiologyInsightsData resource, List<String> expand) {
         RequestOptions requestOptions = new RequestOptions();
         RadiologyInsightsJob job = new RadiologyInsightsJob();
@@ -585,7 +585,7 @@ public final class RadiologyInsightsClient {
      * @return the {@link SyncPoller} for polling of response for the Radiology Insights request.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<RadiologyInsightsData, RadiologyInsightsInferenceResult> beginInferRadiologyInsights(String id,
+    public SyncPoller<RadiologyInsightsJob, RadiologyInsightsInferenceResult> beginInferRadiologyInsights(String id,
         RadiologyInsightsData resource) {
         RadiologyInsightsJob job = new RadiologyInsightsJob();
         job.setJobData(resource);
