@@ -37,8 +37,8 @@ import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.health.insights.radiologyinsights.RadiologyInsightsServiceVersion;
-import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsData;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceResult;
+import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsJob;
 import java.time.Duration;
 import reactor.core.publisher.Mono;
 
@@ -60,7 +60,7 @@ public final class RadiologyInsightsClientImpl {
     /**
      * Gets Supported Cognitive Services endpoints (protocol and hostname, for example:
      * https://westus2.api.cognitive.microsoft.com).
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
@@ -74,7 +74,7 @@ public final class RadiologyInsightsClientImpl {
 
     /**
      * Gets Service version.
-     *
+     * 
      * @return the serviceVersion value.
      */
     public RadiologyInsightsServiceVersion getServiceVersion() {
@@ -88,7 +88,7 @@ public final class RadiologyInsightsClientImpl {
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
@@ -102,7 +102,7 @@ public final class RadiologyInsightsClientImpl {
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     public SerializerAdapter getSerializerAdapter() {
@@ -111,7 +111,7 @@ public final class RadiologyInsightsClientImpl {
 
     /**
      * Initializes an instance of RadiologyInsightsClient client.
-     *
+     * 
      * @param endpoint Supported Cognitive Services endpoints (protocol and hostname, for example:
      * https://westus2.api.cognitive.microsoft.com).
      * @param serviceVersion Service version.
@@ -123,7 +123,7 @@ public final class RadiologyInsightsClientImpl {
 
     /**
      * Initializes an instance of RadiologyInsightsClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint Supported Cognitive Services endpoints (protocol and hostname, for example:
      * https://westus2.api.cognitive.microsoft.com).
@@ -136,7 +136,7 @@ public final class RadiologyInsightsClientImpl {
 
     /**
      * Initializes an instance of RadiologyInsightsClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param endpoint Supported Cognitive Services endpoints (protocol and hostname, for example:
@@ -185,7 +185,7 @@ public final class RadiologyInsightsClientImpl {
 
     /**
      * Create Radiology Insights job
-     *
+     * 
      * Creates a Radiology Insights job with the given request body.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -196,7 +196,7 @@ public final class RadiologyInsightsClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     jobData (Optional): {
@@ -429,9 +429,9 @@ public final class RadiologyInsightsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     jobData (Optional): {
@@ -664,7 +664,7 @@ public final class RadiologyInsightsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param id The unique ID of the job.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -686,7 +686,7 @@ public final class RadiologyInsightsClientImpl {
 
     /**
      * Create Radiology Insights job
-     *
+     * 
      * Creates a Radiology Insights job with the given request body.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -697,7 +697,7 @@ public final class RadiologyInsightsClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     jobData (Optional): {
@@ -930,9 +930,9 @@ public final class RadiologyInsightsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     jobData (Optional): {
@@ -1165,7 +1165,7 @@ public final class RadiologyInsightsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param id The unique ID of the job.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1186,7 +1186,7 @@ public final class RadiologyInsightsClientImpl {
 
     /**
      * Create Radiology Insights job
-     *
+     * 
      * Creates a Radiology Insights job with the given request body.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -1197,7 +1197,7 @@ public final class RadiologyInsightsClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     jobData (Optional): {
@@ -1430,9 +1430,9 @@ public final class RadiologyInsightsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     jobData (Optional): {
@@ -1665,7 +1665,7 @@ public final class RadiologyInsightsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param id The unique ID of the job.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1693,7 +1693,7 @@ public final class RadiologyInsightsClientImpl {
 
     /**
      * Create Radiology Insights job
-     *
+     * 
      * Creates a Radiology Insights job with the given request body.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -1704,7 +1704,7 @@ public final class RadiologyInsightsClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     jobData (Optional): {
@@ -1937,9 +1937,9 @@ public final class RadiologyInsightsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     jobData (Optional): {
@@ -2172,7 +2172,7 @@ public final class RadiologyInsightsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param id The unique ID of the job.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2200,7 +2200,7 @@ public final class RadiologyInsightsClientImpl {
 
     /**
      * Create Radiology Insights job
-     *
+     * 
      * Creates a Radiology Insights job with the given request body.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -2211,7 +2211,7 @@ public final class RadiologyInsightsClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     jobData (Optional): {
@@ -2444,9 +2444,9 @@ public final class RadiologyInsightsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     jobData (Optional): {
@@ -2679,7 +2679,7 @@ public final class RadiologyInsightsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param id The unique ID of the job.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2690,7 +2690,7 @@ public final class RadiologyInsightsClientImpl {
      * @return the {@link PollerFlux} for polling of response for the Radiology Insights request.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<RadiologyInsightsData, RadiologyInsightsInferenceResult>
+    public PollerFlux<RadiologyInsightsJob, RadiologyInsightsInferenceResult>
         beginInferRadiologyInsightsWithModelAsync(String id, BinaryData resource, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
             () -> this.inferRadiologyInsightsWithResponseAsync(id, resource, requestOptions),
@@ -2702,13 +2702,13 @@ public final class RadiologyInsightsClientImpl {
                         : Context.NONE)
                     .setServiceVersion(this.getServiceVersion().getVersion()),
                 "result"),
-            TypeReference.createInstance(RadiologyInsightsData.class),
+            TypeReference.createInstance(RadiologyInsightsJob.class),
             TypeReference.createInstance(RadiologyInsightsInferenceResult.class));
     }
 
     /**
      * Create Radiology Insights job
-     *
+     * 
      * Creates a Radiology Insights job with the given request body.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -2719,7 +2719,7 @@ public final class RadiologyInsightsClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     jobData (Optional): {
@@ -2952,9 +2952,9 @@ public final class RadiologyInsightsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     jobData (Optional): {
@@ -3187,7 +3187,7 @@ public final class RadiologyInsightsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param id The unique ID of the job.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3198,7 +3198,7 @@ public final class RadiologyInsightsClientImpl {
      * @return the {@link SyncPoller} for polling of response for the Radiology Insights request.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<RadiologyInsightsData, RadiologyInsightsInferenceResult>
+    public SyncPoller<RadiologyInsightsJob, RadiologyInsightsInferenceResult>
         beginInferRadiologyInsightsWithModel(String id, BinaryData resource, RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
             () -> this.inferRadiologyInsightsWithResponse(id, resource, requestOptions),
@@ -3210,7 +3210,7 @@ public final class RadiologyInsightsClientImpl {
                         : Context.NONE)
                     .setServiceVersion(this.getServiceVersion().getVersion()),
                 "result"),
-            TypeReference.createInstance(RadiologyInsightsData.class),
+            TypeReference.createInstance(RadiologyInsightsJob.class),
             TypeReference.createInstance(RadiologyInsightsInferenceResult.class));
     }
 }
