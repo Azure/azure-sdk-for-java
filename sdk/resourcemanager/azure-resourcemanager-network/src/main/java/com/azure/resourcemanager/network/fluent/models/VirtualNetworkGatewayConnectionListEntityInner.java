@@ -611,11 +611,6 @@ public final class VirtualNetworkGatewayConnectionListEntityInner extends Resour
         } else {
             innerProperties().validate();
         }
-        if (location() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property location in model VirtualNetworkGatewayConnectionListEntityInner"));
-        }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VirtualNetworkGatewayConnectionListEntityInner.class);

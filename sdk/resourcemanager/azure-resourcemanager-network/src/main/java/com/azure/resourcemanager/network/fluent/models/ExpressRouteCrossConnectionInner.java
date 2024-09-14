@@ -6,7 +6,6 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -287,14 +286,7 @@ public final class ExpressRouteCrossConnectionInner extends Resource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
-        if (location() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property location in model ExpressRouteCrossConnectionInner"));
-        }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(ExpressRouteCrossConnectionInner.class);
 
     /**
      * {@inheritDoc}

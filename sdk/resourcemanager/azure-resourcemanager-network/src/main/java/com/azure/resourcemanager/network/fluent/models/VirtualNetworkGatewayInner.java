@@ -794,11 +794,6 @@ public final class VirtualNetworkGatewayInner extends Resource {
         if (identity() != null) {
             identity().validate();
         }
-        if (location() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property location in model VirtualNetworkGatewayInner"));
-        }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VirtualNetworkGatewayInner.class);

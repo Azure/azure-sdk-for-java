@@ -6,7 +6,6 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -348,13 +347,7 @@ public final class FlowLogInner extends Resource {
         if (identity() != null) {
             identity().validate();
         }
-        if (location() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property location in model FlowLogInner"));
-        }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(FlowLogInner.class);
 
     /**
      * {@inheritDoc}
