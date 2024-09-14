@@ -26,10 +26,21 @@ public final class MapStaticImageOptions {
     private List<String> pins;
     private List<String> path;
 
+    /**
+     * Gets tilesetId
+     *
+     * @return
+     */
     public TilesetId getTilesetId() {
         return tilesetId;
     }
 
+    /**
+     * Set tileset id
+     *
+     * @param tilesetId
+     * @return a reference to this {@code MapStaticImageOptions}
+     */
     public MapStaticImageOptions setTilesetId(TilesetId tilesetId) {
         this.tilesetId = tilesetId;
         return this;

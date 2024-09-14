@@ -8,10 +8,8 @@ import com.azure.core.test.TestBase;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.json.ReadValueCallback;
-import com.azure.maps.render.models.Copyright;
 import com.azure.maps.render.models.CopyrightCaption;
 import com.azure.maps.render.models.MapAttribution;
-import com.azure.maps.render.models.MapTileset;
 import org.junit.jupiter.params.provider.Arguments;
 
 import java.io.IOException;

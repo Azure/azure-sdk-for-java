@@ -15,11 +15,8 @@ import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxyRequestMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
-import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
-import com.azure.identity.AzurePowerShellCredentialBuilder;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.maps.render.models.Copyright;
 import com.azure.maps.render.models.CopyrightCaption;
 import com.azure.maps.render.models.MapAttribution;
@@ -72,7 +69,7 @@ public class MapsRenderClientTestBase extends TestProxyTestBase {
             builder.addPolicy(interceptorManager.getRecordPolicy())
                 .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("SUBSCRIPTION_KEY")));
         } else if (interceptorManager.isPlaybackMode()) {
-            builder.credential(new AzureKeyCredential("REDACTED"));;
+            builder.credential(new AzureKeyCredential("REDACTED"));
         } else {
             builder.credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("SUBSCRIPTION_KEY")));
         }
