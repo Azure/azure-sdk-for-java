@@ -4,9 +4,12 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
+import com.azure.resourcemanager.cosmos.models.CreateMode;
 import com.azure.resourcemanager.cosmos.models.CreateUpdateOptions;
+import com.azure.resourcemanager.cosmos.models.ResourceRestoreParameters;
 import com.azure.resourcemanager.cosmos.models.SqlDatabaseCreateUpdateParameters;
 import com.azure.resourcemanager.cosmos.models.SqlDatabaseResource;
+import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,7 +18,8 @@ import java.util.Map;
  */
 public final class SqlResourcesCreateUpdateSqlDatabaseSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/
+     * x-ms-original-file:
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-09-01-preview/examples/
      * CosmosDBSqlDatabaseCreateUpdate.json
      */
     /**
@@ -34,6 +38,33 @@ public final class SqlResourcesCreateUpdateSqlDatabaseSamples {
                     .withResource(new SqlDatabaseResource().withId("databaseName"))
                     .withOptions(new CreateUpdateOptions()),
                 com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-09-01-preview/examples/
+     * CosmosDBSqlDatabaseRestore.json
+     */
+    /**
+     * Sample code: CosmosDBSqlDatabaseRestore.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void cosmosDBSqlDatabaseRestore(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
+            .getSqlResources()
+            .createUpdateSqlDatabase("rg1", "ddb1", "databaseName", new SqlDatabaseCreateUpdateParameters()
+                .withLocation("West US")
+                .withTags(mapOf())
+                .withResource(new SqlDatabaseResource().withId("databaseName")
+                    .withRestoreParameters(new ResourceRestoreParameters().withRestoreSource(
+                        "/subscriptions/subid/providers/Microsoft.DocumentDB/locations/WestUS/restorableDatabaseAccounts/restorableDatabaseAccountId")
+                        .withRestoreTimestampInUtc(OffsetDateTime.parse("2022-07-20T18:28:00Z"))
+                        .withRestoreWithTtlDisabled(true))
+                    .withCreateMode(CreateMode.RESTORE))
+                .withOptions(new CreateUpdateOptions()), com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

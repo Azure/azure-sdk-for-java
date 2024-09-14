@@ -11,7 +11,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Parameters for Create or Update request for SqlDedicatedGatewayServiceResource.
+ * Properties for Create or Update request for SqlDedicatedGatewayServiceResource.
  */
 @Fluent
 public final class SqlDedicatedGatewayServiceResourceCreateUpdateParameters
@@ -88,7 +88,6 @@ public final class SqlDedicatedGatewayServiceResourceCreateUpdateParameters
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

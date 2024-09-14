@@ -10,6 +10,7 @@ import com.azure.resourcemanager.cosmos.models.ComputedProperty;
 import com.azure.resourcemanager.cosmos.models.ConflictResolutionMode;
 import com.azure.resourcemanager.cosmos.models.ConflictResolutionPolicy;
 import com.azure.resourcemanager.cosmos.models.ContainerPartitionKey;
+import com.azure.resourcemanager.cosmos.models.CreateMode;
 import com.azure.resourcemanager.cosmos.models.CreateUpdateOptions;
 import com.azure.resourcemanager.cosmos.models.DataType;
 import com.azure.resourcemanager.cosmos.models.IncludedPath;
@@ -17,11 +18,14 @@ import com.azure.resourcemanager.cosmos.models.Indexes;
 import com.azure.resourcemanager.cosmos.models.IndexingMode;
 import com.azure.resourcemanager.cosmos.models.IndexingPolicy;
 import com.azure.resourcemanager.cosmos.models.IndexKind;
+import com.azure.resourcemanager.cosmos.models.MaterializedViewDefinition;
 import com.azure.resourcemanager.cosmos.models.PartitionKind;
+import com.azure.resourcemanager.cosmos.models.ResourceRestoreParameters;
 import com.azure.resourcemanager.cosmos.models.SqlContainerCreateUpdateParameters;
 import com.azure.resourcemanager.cosmos.models.SqlContainerResource;
 import com.azure.resourcemanager.cosmos.models.UniqueKey;
 import com.azure.resourcemanager.cosmos.models.UniqueKeyPolicy;
+import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,7 +35,47 @@ import java.util.Map;
  */
 public final class SqlResourcesCreateUpdateSqlContainerSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/
+     * x-ms-original-file:
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-09-01-preview/examples/
+     * CosmosDBSqlMaterializedViewCreateUpdate.json
+     */
+    /**
+     * Sample code: CosmosDBSqlMaterializedViewCreateUpdate.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void cosmosDBSqlMaterializedViewCreateUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
+            .getSqlResources()
+            .createUpdateSqlContainer("rg1", "ddb1", "databaseName", "mvContainerName",
+                new SqlContainerCreateUpdateParameters().withLocation("West US")
+                    .withTags(mapOf())
+                    .withResource(new SqlContainerResource().withId("mvContainerName")
+                        .withIndexingPolicy(new IndexingPolicy().withAutomatic(true)
+                            .withIndexingMode(IndexingMode.CONSISTENT)
+                            .withIncludedPaths(Arrays.asList(new IncludedPath().withPath("/*")
+                                .withIndexes(Arrays.asList(
+                                    new Indexes().withDataType(DataType.STRING)
+                                        .withPrecision(-1)
+                                        .withKind(IndexKind.RANGE),
+                                    new Indexes().withDataType(DataType.NUMBER)
+                                        .withPrecision(-1)
+                                        .withKind(IndexKind.RANGE)))))
+                            .withExcludedPaths(Arrays.asList()))
+                        .withPartitionKey(
+                            new ContainerPartitionKey().withPaths(Arrays.asList("/mvpk")).withKind(PartitionKind.HASH))
+                        .withMaterializedViewDefinition(
+                            new MaterializedViewDefinition().withSourceCollectionId("sourceContainerName")
+                                .withDefinition("select * from ROOT")))
+                    .withOptions(new CreateUpdateOptions()),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-09-01-preview/examples/
      * CosmosDBSqlContainerCreateUpdate.json
      */
     /**
@@ -76,6 +120,34 @@ public final class SqlResourcesCreateUpdateSqlContainerSamples {
                                 .withPolicyFormatVersion(2))
                             .withComputedProperties(Arrays.asList(new ComputedProperty().withName("cp_lowerName")
                                 .withQuery("SELECT VALUE LOWER(c.name) FROM c"))))
+                    .withOptions(new CreateUpdateOptions()),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-09-01-preview/examples/
+     * CosmosDBSqlContainerRestore.json
+     */
+    /**
+     * Sample code: CosmosDBSqlContainerRestore.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void cosmosDBSqlContainerRestore(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
+            .getSqlResources()
+            .createUpdateSqlContainer("rg1", "ddb1", "databaseName", "containerName",
+                new SqlContainerCreateUpdateParameters().withLocation("West US")
+                    .withTags(mapOf())
+                    .withResource(new SqlContainerResource().withId("containerName")
+                        .withRestoreParameters(new ResourceRestoreParameters().withRestoreSource(
+                            "/subscriptions/subid/providers/Microsoft.DocumentDB/locations/WestUS/restorableDatabaseAccounts/restorableDatabaseAccountId")
+                            .withRestoreTimestampInUtc(OffsetDateTime.parse("2022-07-20T18:28:00Z"))
+                            .withRestoreWithTtlDisabled(true))
+                        .withCreateMode(CreateMode.RESTORE))
                     .withOptions(new CreateUpdateOptions()),
                 com.azure.core.util.Context.NONE);
     }

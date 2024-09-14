@@ -10,8 +10,8 @@ package com.azure.resourcemanager.cosmos.generated;
 public final class SqlResourcesListSqlTriggersSamples {
     /*
      * x-ms-original-file:
-     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBSqlTriggerList.
-     * json
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-09-01-preview/examples/
+     * CosmosDBSqlTriggerList.json
      */
     /**
      * Sample code: CosmosDBSqlTriggerList.

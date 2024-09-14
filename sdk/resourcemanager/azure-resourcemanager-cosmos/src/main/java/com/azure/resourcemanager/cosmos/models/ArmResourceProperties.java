@@ -6,6 +6,7 @@ package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -18,9 +19,14 @@ import java.util.Map;
 @Fluent
 public class ArmResourceProperties extends Resource {
     /*
-     * Fully qualified resource Id for the resource.
+     * Identity for the resource.
      */
-    private String id;
+    private ManagedServiceIdentity identity;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
 
     /*
      * The name of the resource.
@@ -28,9 +34,9 @@ public class ArmResourceProperties extends Resource {
     private String name;
 
     /*
-     * The type of the resource.
+     * Fully qualified resource Id for the resource.
      */
-    private String type;
+    private String id;
 
     /**
      * Creates an instance of ArmResourceProperties class.
@@ -39,13 +45,33 @@ public class ArmResourceProperties extends Resource {
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
+     * Get the identity property: Identity for the resource.
      * 
-     * @return the id value.
+     * @return the identity value.
+     */
+    public ManagedServiceIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Identity for the resource.
+     * 
+     * @param identity the identity value to set.
+     * @return the ArmResourceProperties object itself.
+     */
+    public ArmResourceProperties withIdentity(ManagedServiceIdentity identity) {
+        this.identity = identity;
+        return this;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
      */
     @Override
-    public String id() {
-        return this.id;
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -59,13 +85,13 @@ public class ArmResourceProperties extends Resource {
     }
 
     /**
-     * Get the type property: The type of the resource.
+     * Get the id property: Fully qualified resource Id for the resource.
      * 
-     * @return the type value.
+     * @return the id value.
      */
     @Override
-    public String type() {
-        return this.type;
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -92,7 +118,16 @@ public class ArmResourceProperties extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (identity() != null) {
+            identity().validate();
+        }
+        if (location() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property location in model ArmResourceProperties"));
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ArmResourceProperties.class);
 
     /**
      * {@inheritDoc}
@@ -102,6 +137,7 @@ public class ArmResourceProperties extends Resource {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("location", location());
         jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identity", this.identity);
         return jsonWriter.writeEndObject();
     }
 
@@ -132,6 +168,8 @@ public class ArmResourceProperties extends Resource {
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedArmResourceProperties.withTags(tags);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedArmResourceProperties.identity = ManagedServiceIdentity.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
