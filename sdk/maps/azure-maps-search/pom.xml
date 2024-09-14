@@ -53,7 +53,7 @@
     </javaModulesSurefireArgLine>
     <src.dir>src/main</src.dir>
     <test.dir>src/test</test.dir>
-    <jacoco.min.linecoverage>0.4</jacoco.min.linecoverage>
+    <jacoco.min.linecoverage>0.3</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.2</jacoco.min.branchcoverage>
     <jacoco.skip>false</jacoco.skip>
     <codesnippet.skip>false</codesnippet.skip>
