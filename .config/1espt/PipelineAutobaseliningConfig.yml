@@ -1338,3 +1338,10 @@ pipelines:
           lastModifiedDate: 2024-09-14
         armory:
           lastModifiedDate: 2024-09-14
+  7078:
+    retail:
+      source:
+        credscan:
+          lastModifiedDate: 2024-09-14
+        armory:
+          lastModifiedDate: 2024-09-14
