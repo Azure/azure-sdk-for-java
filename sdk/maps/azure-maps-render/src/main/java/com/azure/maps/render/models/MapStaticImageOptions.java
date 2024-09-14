@@ -29,7 +29,7 @@ public final class MapStaticImageOptions {
     /**
      * Gets tilesetId
      *
-     * @return
+     * @return tilesetId
      */
     public TilesetId getTilesetId() {
         return tilesetId;
@@ -38,7 +38,7 @@ public final class MapStaticImageOptions {
     /**
      * Set tileset id
      *
-     * @param tilesetId
+     * @param tilesetId tileset id
      * @return a reference to this {@code MapStaticImageOptions}
      */
     public MapStaticImageOptions setTilesetId(TilesetId tilesetId) {
