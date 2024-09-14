@@ -29,7 +29,20 @@ public class SearchCustomization extends Customization {
         customizeReverseGeocodingBatchRequestItem(implementationModels);
         customizeGeoJsonObject(models);
         customizeBoundary(models);
+        customizeBoundaryBbox(models);
 
+    }
+
+    private void customizeBoundaryBbox(PackageCustomization models) {
+        models.getClass("Boundary").customizeAst(ast -> {
+            ast.addImport("com.azure.core.models.GeoBoundingBox");
+
+            ast.getClassByName("Boundary").ifPresent(clazz -> clazz.getMethodsByName("setBbox").get(0)
+                .setParameters(new NodeList<>(new Parameter().setName("bbox").setType("GeoBoundingBox")))
+                .setBody(StaticJavaParser.parseBlock(
+                    "{ List<Double> bboxList = new ArrayList<>(); bboxList.add(bbox.getNorth()); bboxList.add(bbox.getWest()); bboxList.add(bbox.getSouth()); bboxList.add(bbox.getEast()); super.setBbox(bboxList); return this; }"))
+                .getAnnotationByName("Override").ifPresent(Node::remove));
+        });
     }
 
     private void customizeGeoJsonObject(PackageCustomization models) {

@@ -9,7 +9,9 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.maps.search.implementation.models.GeometryCopyright;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import com.azure.core.models.GeoBoundingBox;
 
 /**
  * `GeoJSON GeocodingFeature` object that describe the boundaries of a geographical area. Geometry of the feature is
@@ -186,9 +188,13 @@ public final class Boundary extends GeoJsonFeature {
     /**
      * {@inheritDoc}
      */
-    @Override
-    public Boundary setBbox(List<Double> bbox) {
-        super.setBbox(bbox);
+    public Boundary setBbox(GeoBoundingBox bbox) {
+        List<Double> bboxList = new ArrayList<>();
+        bboxList.add(bbox.getNorth());
+        bboxList.add(bbox.getWest());
+        bboxList.add(bbox.getSouth());
+        bboxList.add(bbox.getEast());
+        super.setBbox(bboxList);
         return this;
     }
 
