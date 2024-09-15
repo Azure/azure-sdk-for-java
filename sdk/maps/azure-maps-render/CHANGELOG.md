@@ -4,11 +4,7 @@
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Support Rendering API `2024-04-01`
 
 ## 1.0.0-beta.2 (2023-07-13)
 

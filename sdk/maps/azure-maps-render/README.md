@@ -73,7 +73,7 @@ See [Authentication][authenticate] for more options.
 See [API design][design] for general introduction on design and key concepts on Azure Management Libraries.
 
 ## Examples
-###Get Map Tile
+### Get Map Tile
 ```java com.azure.maps.render.sync.get_map_tile
 System.out.println("Get Map Tile");
 MapTileOptions mapTileOptions = new MapTileOptions();
