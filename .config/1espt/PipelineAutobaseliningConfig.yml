@@ -3094,3 +3094,10 @@ pipelines:
           lastModifiedDate: 2024-09-16
         armory:
           lastModifiedDate: 2024-09-16
+  1734:
+    retail:
+      source:
+        credscan:
+          lastModifiedDate: 2024-09-16
+        armory:
+          lastModifiedDate: 2024-09-16
