@@ -144,14 +144,11 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
     public static ChatRequestUserMessage fromContentItems(ChatMessageContentItem[] contentItems) {
         String jsonPrompt = "{\"content\":[";
         for (ChatMessageContentItem item : contentItems) {
-            if (item instanceof ChatMessageTextContentItem)
-            {
+            if (item instanceof ChatMessageTextContentItem) {
                 ChatMessageTextContentItem textItem = (ChatMessageTextContentItem) item;
                 String textPrompt = "{" + "\"text\":\"%s\"" + "}";
                 jsonPrompt += String.format(textPrompt, textItem.getText());
-            }
-            else if (item instanceof ChatMessageImageContentItem)
-            {
+            } else if (item instanceof ChatMessageImageContentItem) {
                 ChatMessageImageContentItem imageItem = (ChatMessageImageContentItem) item;
                 String imageUrlPrompt = "{" + "\"image_url\":%s" + "}";
                 jsonPrompt += String.format(imageUrlPrompt, imageItem.getImageUrl().getUrl());
@@ -165,5 +162,4 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
             throw new RuntimeException(e);
         }
     }
-
 }
