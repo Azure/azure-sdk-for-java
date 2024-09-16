@@ -4,7 +4,7 @@
 package com.azure.cosmos.implementation.changefeed.common;
 
 import com.azure.cosmos.ChangeFeedProcessorContext;
-import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedObserverContext;
 
 public final class ChangeFeedProcessorContextImpl<T> implements ChangeFeedProcessorContext {
@@ -26,7 +26,7 @@ public final class ChangeFeedProcessorContextImpl<T> implements ChangeFeedProces
     }
 
     @Override
-    public CosmosDiagnostics getDiagnostics() {
+    public CosmosDiagnosticsContext getDiagnostics() {
         if (changeFeedObserverContext == null) {
             throw new IllegalStateException("changeFeedObserverContext cannot be null!");
         }
@@ -35,6 +35,6 @@ public final class ChangeFeedProcessorContextImpl<T> implements ChangeFeedProces
             throw new IllegalStateException("feed response cannot be null!");
         }
 
-        return changeFeedObserverContext.getFeedResponse().getCosmosDiagnostics();
+        return changeFeedObserverContext.getFeedResponse().getCosmosDiagnostics().getDiagnosticsContext();
     }
 }

@@ -3,7 +3,7 @@
 ### 4.64.0-beta.1 (Unreleased)
 
 #### Features Added
-* Added an API to retrieve diagnostics from the change feed processor context for the all versions and deletes change feed mode. - See [PR 41738](https://github.com/Azure/azure-sdk-for-java/pull/41738)
+* Added an API to retrieve diagnostics from the change feed processor context. - See [PR 41738](https://github.com/Azure/azure-sdk-for-java/pull/41738)
 
 #### Breaking Changes
 
