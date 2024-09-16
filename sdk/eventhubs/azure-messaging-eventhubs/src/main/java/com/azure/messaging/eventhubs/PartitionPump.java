@@ -3,16 +3,20 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.util.AsyncCloseable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties;
+import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
+
+import java.time.Duration;
 
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTITION_ID_KEY;
 
 /**
  * Contains the event hub consumer and scheduler that continuously receive events.
  */
-class PartitionPump implements AutoCloseable {
+class PartitionPump implements AutoCloseable, AsyncCloseable {
     private static final ClientLogger LOGGER = new ClientLogger(PartitionPump.class);
 
     private final String partitionId;
@@ -61,14 +65,20 @@ class PartitionPump implements AutoCloseable {
      */
     @Override
     public void close() {
+        // provide some timeout to avoid infinite/long wait.
+        closeAsync().block(Duration.ofSeconds(10));
+    }
+
+    @Override
+    public Mono<Void> closeAsync() {
         try {
             client.close();
         } catch (Exception error) {
             LOGGER.atInfo()
                 .addKeyValue(PARTITION_ID_KEY, partitionId)
                 .log("Exception occurred disposing of consumer client.", error);
-        } finally {
-            scheduler.dispose();
         }
+
+        return scheduler.disposeGracefully();
     }
 }

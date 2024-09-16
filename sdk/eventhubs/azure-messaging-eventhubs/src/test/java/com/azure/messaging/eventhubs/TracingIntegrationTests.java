@@ -68,7 +68,6 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 @Isolated("Sets global TracingProvider.")
 @Execution(ExecutionMode.SAME_THREAD)
-@Disabled("Tracing tests need to be disabled until the discrepancy with the core is resolved.")
 public class TracingIntegrationTests extends IntegrationTestBase {
     private static final byte[] CONTENTS_BYTES = "Some-contents".getBytes(StandardCharsets.UTF_8);
     private static final String PARTITION_ID = "0";

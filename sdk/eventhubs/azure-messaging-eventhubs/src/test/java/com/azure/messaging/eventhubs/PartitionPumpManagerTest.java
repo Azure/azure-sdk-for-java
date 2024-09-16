@@ -215,7 +215,7 @@ public class PartitionPumpManagerTest {
             }));
         } finally {
             // Want to make sure we dispose of resources we create. (ie. schedulers)
-            manager.stopAllPartitionPumps();
+            manager.stopAllPartitionPumps().block();
         }
     }
 
@@ -353,7 +353,7 @@ public class PartitionPumpManagerTest {
         manager.getPartitionPumps().put(partition2, pump2);
 
         // Act
-        manager.stopAllPartitionPumps();
+        manager.stopAllPartitionPumps().block();
 
         // Assert
         verify(scheduler1).dispose();
@@ -439,7 +439,7 @@ public class PartitionPumpManagerTest {
 
             assertEquals(3, eventCounter.get());
         } finally {
-            manager.stopAllPartitionPumps();
+            manager.stopAllPartitionPumps().block();
         }
     }
 
@@ -501,7 +501,7 @@ public class PartitionPumpManagerTest {
             assertTrue(maxPrefetched.get() <= maxExpectedPrefetched,
                 String.format("Expected at most %s events to be prefetched, got %s", maxExpectedPrefetched, maxPrefetched.get()));
         } finally {
-            manager.stopAllPartitionPumps();
+            manager.stopAllPartitionPumps().block();
         }
     }
 
@@ -540,7 +540,7 @@ public class PartitionPumpManagerTest {
             assertTrue(receiveCounter.await(20, TimeUnit.SECONDS));
             verify(partitionProcessor, never()).processError(any(ErrorContext.class));
         } finally {
-            manager.stopAllPartitionPumps();
+            manager.stopAllPartitionPumps().block();
         }
     }
 
@@ -580,7 +580,7 @@ public class PartitionPumpManagerTest {
             assertFalse(receiveCounter.await(10, TimeUnit.SECONDS));
             verify(partitionProcessor, never()).processError(any(ErrorContext.class));
         } finally {
-            manager.stopAllPartitionPumps();
+            manager.stopAllPartitionPumps().block();
         }
     }
 
@@ -859,7 +859,7 @@ public class PartitionPumpManagerTest {
             verify(consumerAsyncClient).close();
 
         } finally {
-            manager.stopAllPartitionPumps();
+            manager.stopAllPartitionPumps().block();
         }
     }
 
@@ -949,7 +949,7 @@ public class PartitionPumpManagerTest {
             verify(consumerAsyncClient).close();
 
         } finally {
-            manager.stopAllPartitionPumps();
+            manager.stopAllPartitionPumps().block();
         }
     }
 
@@ -1037,7 +1037,7 @@ public class PartitionPumpManagerTest {
             verify(consumerAsyncClient).close();
 
         } finally {
-            manager.stopAllPartitionPumps();
+            manager.stopAllPartitionPumps().block();
         }
     }
 

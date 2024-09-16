@@ -91,3 +91,17 @@ extends:
         # required by the above perf libraries
       - name: perf-test-core
         groupId: com.azure
+    LiveTestStages:
+      - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
+        parameters:
+          ServiceDirectory: eventhubs
+          Artifacts:
+            - name: azure-messaging-eventhubs
+              groupId: com.azure
+              safeName: azuremessagingeventhubs
+            - name: azure-messaging-eventhubs-checkpointstore-blob
+              groupId: com.azure
+              safeName: azuremessagingeventhubscheckpointstoreblob
+            - name: azure-messaging-eventhubs-checkpointstore-jedis
+              groupId: com.azure
+              safeName: azuremessagingeventhubscheckpointstorejedis
