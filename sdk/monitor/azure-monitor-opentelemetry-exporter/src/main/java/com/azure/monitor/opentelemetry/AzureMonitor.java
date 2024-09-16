@@ -3,8 +3,14 @@
 
 package com.azure.monitor.opentelemetry;
 
+import com.azure.core.annotation.Fluent;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.util.ClientOptions;
 import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporterBuilder;
-import com.azure.monitor.opentelemetry.exporter.ExportOptions;
 import com.azure.monitor.opentelemetry.exporter.implementation.AzureMonitorExporterProviderKeys;
 import com.azure.monitor.opentelemetry.exporter.implementation.AzureMonitorLogRecordExporterProvider;
 import com.azure.monitor.opentelemetry.exporter.implementation.AzureMonitorMetricExporterProvider;
@@ -27,19 +33,29 @@ public final class AzureMonitor {
      * @param autoConfiguredOpenTelemetrySdkBuilder The OpenTelemetry autoconfiguration to set up.
      */
     public static void configure(AutoConfiguredOpenTelemetrySdkBuilder autoConfiguredOpenTelemetrySdkBuilder) {
-        configure(autoConfiguredOpenTelemetrySdkBuilder, new ExportOptions());
+        AzureMonitorExporterBuilder azureMonitorExporterBuilder = new AzureMonitorExporterBuilder();
+        configure(autoConfiguredOpenTelemetrySdkBuilder, azureMonitorExporterBuilder);
+    }
+
+    /**
+     * Configures an {@link AutoConfiguredOpenTelemetrySdkBuilder} for Azure Monitor based on the options set.
+     * @param autoConfiguredOpenTelemetrySdkBuilder The OpenTelemetry autoconfiguration to set up.
+     * @param connectionString The connection string to connect to an Applicacation Insights resource.
+     */
+    public static void configure(AutoConfiguredOpenTelemetrySdkBuilder autoConfiguredOpenTelemetrySdkBuilder,
+        String connectionString) {
+        AzureMonitorExporterBuilder azureMonitorExporterBuilder
+            = new AzureMonitorExporterBuilder().connectionString(connectionString);
+        configure(autoConfiguredOpenTelemetrySdkBuilder, azureMonitorExporterBuilder);
     }
 
     /**
      * Configures an {@link AutoConfiguredOpenTelemetrySdkBuilder} for Azure Monitor based on the options set.
      * @param autoConfiguredOpenTelemetrySdkBuilder the {@link AutoConfiguredOpenTelemetrySdkBuilder} object.
-     * @param exportOptions Export options to Azure Monitor.
+     * @param azureMonitorExporterBuilder Advanced configuration to send the data to Azure Monitor.
      */
     public static void configure(AutoConfiguredOpenTelemetrySdkBuilder autoConfiguredOpenTelemetrySdkBuilder,
-        ExportOptions exportOptions) {
-
-        AzureMonitorExporterBuilder azureMonitorExporterBuilder = new AzureMonitorExporterBuilder(exportOptions);
-
+        AzureMonitorExporterBuilder azureMonitorExporterBuilder) {
         autoConfiguredOpenTelemetrySdkBuilder.addPropertiesSupplier(() -> {
             Map<String, String> props = new HashMap<>();
             props.put("otel.traces.exporter", AzureMonitorExporterProviderKeys.EXPORTER_NAME);

@@ -13,29 +13,13 @@ import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Context;
 import io.opentelemetry.context.Scope;
-import io.opentelemetry.sdk.OpenTelemetrySdk;
+
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk;
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdkBuilder;
-import io.opentelemetry.sdk.logs.SdkLoggerProvider;
-import io.opentelemetry.sdk.logs.SdkLoggerProviderBuilder;
-import io.opentelemetry.sdk.logs.data.LogRecordData;
-import io.opentelemetry.sdk.logs.export.BatchLogRecordProcessor;
-import io.opentelemetry.sdk.logs.export.LogRecordExporter;
-import io.opentelemetry.sdk.metrics.SdkMeterProvider;
-import io.opentelemetry.sdk.metrics.SdkMeterProviderBuilder;
-import io.opentelemetry.sdk.metrics.data.MetricData;
-import io.opentelemetry.sdk.metrics.export.MetricExporter;
-import io.opentelemetry.sdk.metrics.export.PeriodicMetricReader;
-import io.opentelemetry.sdk.metrics.export.PeriodicMetricReaderBuilder;
-import io.opentelemetry.sdk.trace.*;
-import io.opentelemetry.sdk.trace.data.SpanData;
-import io.opentelemetry.sdk.trace.export.BatchSpanProcessor;
-import io.opentelemetry.sdk.trace.export.SpanExporter;
-import org.apache.commons.lang3.RandomStringUtils;
 
-import java.time.Duration;
-import java.util.Collection;
-import java.util.Collections;
+import io.opentelemetry.sdk.trace.*;
+
+import org.apache.commons.lang3.RandomStringUtils;
 
 /**
  * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS
@@ -55,8 +39,7 @@ public class ReadmeSamples {
         // This should be done just once when application starts up
         AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
 
-        ExportOptions exportOptions = new ExportOptions().connectionString("{connection-string}");
-        AzureMonitor.configure(sdkBuilder, exportOptions);
+        AzureMonitor.configure(sdkBuilder, "{connection-string}");
 
         OpenTelemetry openTelemetry = sdkBuilder.build().getOpenTelemetrySdk();
 
@@ -88,8 +71,7 @@ public class ReadmeSamples {
         // BEGIN: readme-sample-autoconfigure
         AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
 
-        ExportOptions exportOptions = new ExportOptions().connectionString("{connection-string}");
-        AzureMonitor.configure(sdkBuilder, exportOptions);
+        AzureMonitor.configure(sdkBuilder, "{connection-string}");
 
         OpenTelemetry openTelemetry = sdkBuilder.build().getOpenTelemetrySdk();
         // END: readme-sample-autoconfigure
@@ -103,8 +85,7 @@ public class ReadmeSamples {
         // BEGIN: readme-sample-create-span
         AutoConfiguredOpenTelemetrySdkBuilder otelSdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
 
-        ExportOptions exportOptions = new ExportOptions().connectionString("{connection-string}");
-        AzureMonitor.configure(otelSdkBuilder, exportOptions);
+        AzureMonitor.configure(otelSdkBuilder, "{connection-string}");
 
         OpenTelemetry openTelemetry = otelSdkBuilder.build().getOpenTelemetrySdk();
         Tracer tracer = openTelemetry.getTracer("Sample");
