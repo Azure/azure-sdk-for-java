@@ -199,6 +199,18 @@ public class ShareApiTests extends FileShareTestBase {
             Arguments.of(testMetadata, 6000, null));
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2019-12-12")
+    @Test
+    public void createShareAccessTierPremium() {
+        ShareClient client = premiumFileServiceClient.getShareClient(generateShareName());
+        ShareCreateOptions options = new ShareCreateOptions().setAccessTier(ShareAccessTier.PREMIUM);
+
+        client.createWithResponse(options, null, null);
+
+        ShareProperties response = client.getProperties();
+        assertEquals(ShareAccessTier.PREMIUM.toString(), response.getAccessTier());
+    }
+
     @ParameterizedTest
     @MethodSource("createShareWithInvalidArgsSupplier")
     public void createShareWithInvalidArgs(Map<String, String> metadata, Integer quota, ShareErrorCode errMessage) {
