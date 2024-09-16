@@ -280,19 +280,11 @@ public final class EncryptedBlobClientBuilder implements
         String userAgent = UserAgentUtil.toUserAgentString(applicationId, BLOB_CLIENT_NAME, BLOB_CLIENT_VERSION,
             userAgentConfiguration);
         Matcher matcher = pattern.matcher(userAgent);
-        String version;
-        switch (encryptionVersion) {
-            case V2:
-                version = "2.0";
-                break;
-            case V2_1:
-                version = "2.1";
-                break;
-            case V1:
-            default:
-                version = "1.0";
-                break;
-        }
+        String version = switch (encryptionVersion) {
+            case V2 -> "2.0";
+            case V2_1 -> "2.1";
+            default -> "1.0";
+        };
         String stringToAppend = "azstorage-clientsideencryption/" + version;
         if (matcher.matches() && !userAgent.contains(stringToAppend)) {
             String segment1 = matcher.group(1) == null ? "" : matcher.group(1);
@@ -936,6 +928,7 @@ public final class EncryptedBlobClientBuilder implements
      *
      * @param clientSideEncryptionOptions The {@link BlobClientSideEncryptionOptions} for the blob.
      * @return the updated EncryptedBlobClientBuilder object
+     * @throws IllegalArgumentException If {@link EncryptionVersion} is not V2_1.
      */
     public EncryptedBlobClientBuilder clientSideEncryptionOptions(
         BlobClientSideEncryptionOptions clientSideEncryptionOptions) {

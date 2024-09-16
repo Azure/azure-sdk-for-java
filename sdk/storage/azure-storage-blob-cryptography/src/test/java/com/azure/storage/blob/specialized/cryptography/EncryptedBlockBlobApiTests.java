@@ -1815,8 +1815,9 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
 
         ByteArrayOutputStream plaintextOut = new ByteArrayOutputStream();
 
-        // Create another client without the authenticated region data length set
-        // This client should be using the default 4MB region size
+        // Setting the encryption version to something other than V2_1 should not impact the
+        // ability to download and decrypt the blob as the downloaded uses the blob metadata
+        // to dictate what encryption protocol version to use.
         EncryptedBlobClient ebc2 = new EncryptedBlobClient(mockAesKey(getEncryptedClientBuilder(fakeKey, null,
             ENV.getPrimaryAccount().getCredential(), cc.getBlobContainerUrl(), version)
             .blobName(blobName)

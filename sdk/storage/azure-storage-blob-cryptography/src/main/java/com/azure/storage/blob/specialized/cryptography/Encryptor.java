@@ -42,9 +42,9 @@ abstract class Encryptor {
             case V1:
                 return new EncryptorV1(aesKey);
             case V2:
+                return new EncryptorV2(aesKey, encryptionOptions, ENCRYPTION_PROTOCOL_V2);
             case V2_1:
-                String encryptionProtocol = version == EncryptionVersion.V2_1 ? ENCRYPTION_PROTOCOL_V2_1 : ENCRYPTION_PROTOCOL_V2;
-                return new EncryptorV2(aesKey, encryptionOptions, encryptionProtocol);
+                return new EncryptorV2(aesKey, encryptionOptions, ENCRYPTION_PROTOCOL_V2_1);
             default:
                 throw LOGGER.logExceptionAsError(new IllegalArgumentException("Invalid encryption version: "
                     + version));

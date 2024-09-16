@@ -23,7 +23,7 @@ public enum EncryptionVersion {
     V2,
 
     /**
-     * Version 2.1 of the client side encryption protocol. Use this version when configuring
+     * Version 2.1 of the client side encryption protocol. Use this version when configuring {@link BlobClientSideEncryptionOptions}
      * authenticatedRegionDataLength for encryption.
      * Uses AES/GCM/NoPadding
      */
