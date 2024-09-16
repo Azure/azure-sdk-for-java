@@ -130,9 +130,9 @@ com.azure:azure-health-deidentification;1.0.0;1.0.0-beta.2
 com.azure:azure-health-insights-clinicalmatching;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-health-insights-cancerprofiling;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-health-insights-radiologyinsights;1.0.0-beta.1;1.0.0-beta.2
-com.azure:azure-identity;1.13.2;1.14.0-beta.2
+com.azure:azure-identity;1.13.3;1.14.0-beta.2
 com.azure:azure-identity-extensions;1.1.19;1.2.0-beta.2
-com.azure:azure-identity-broker;1.1.4;1.2.0-beta.1
+com.azure:azure-identity-broker;1.1.5;1.2.0-beta.1
 com.azure:azure-identity-broker-samples;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-identity-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-iot-deviceupdate;1.0.21;1.1.0-beta.1
@@ -486,10 +486,7 @@ io.clientcore:http-stress;1.0.0-beta.1;1.0.0-beta.1
 # note: The unreleased dependencies will not be manipulated with the automatic PR creation code.
 # In the pom, the version update tag after the version should name the unreleased package and the dependency version:
 # <!-- {x-version-update;unreleased_com.azure:azure-core;dependency} -->
-unreleased_com.azure:azure-identity;1.14.0-beta.2
-unreleased_com.azure:azure-core-experimental;1.0.0-beta.53
-
-unreleased_com.azure:azure-core-amqp;2.9.9
+unreleased_com.azure:azure-core-experimental;1.0.0-beta.54
 
 # Released Beta dependencies: Copy the entry from above, prepend "beta_", remove the current
 # version and set the version to the released beta. Released beta dependencies are only valid
