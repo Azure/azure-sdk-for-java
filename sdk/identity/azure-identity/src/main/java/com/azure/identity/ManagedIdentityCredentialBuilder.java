@@ -69,9 +69,9 @@ public class ManagedIdentityCredentialBuilder extends CredentialBuilderBase<Mana
     }
 
     /**
-     * Specifies the client ID of user assigned or system assigned identity.
+     * Specifies the object ID of a user-assigned or system-assigned managed identity.
      *
-     * Only one of clientId and resourceId can be specified.
+     * Only one of clientId, resourceId, or objectId can be specified.
      *
      * @param clientId the client ID
      * @return the ManagedIdentityCredentialBuilder itself

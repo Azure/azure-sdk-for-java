@@ -1116,7 +1116,7 @@ public class IdentityClient extends IdentityClientBase {
             }
 
             if (objectId != null) {
-                LOGGER.warning("User assigned managed identities are not supported in the Service Fabric environment.");
+                LOGGER.warning("User-assigned managed identities are not supported in the Service Fabric environment.");
                 payload.append("&mi_res_id=");
                 payload.append(urlEncode(objectId));
             }
@@ -1212,7 +1212,7 @@ public class IdentityClient extends IdentityClientBase {
             if (objectId != null) {
                 if (endpointVersion.equals(MSI_ENDPOINT_VERSION) && headerValue == null) {
                     // This is the Cloud Shell case. If a clientId is specified, warn the user.
-                    LOGGER.warning("User assigned managed identities are not supported in the Cloud Shell environment.");
+                    LOGGER.warning("User-assigned managed identities are not supported in the Cloud Shell environment.");
                 }
                 payload.append("&objectid=");
                 payload.append(urlEncode(objectId));
