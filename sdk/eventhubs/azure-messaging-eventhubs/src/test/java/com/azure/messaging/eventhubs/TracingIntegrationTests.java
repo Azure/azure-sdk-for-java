@@ -75,7 +75,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     private static final byte[] CONTENTS_BYTES = "Some-contents".getBytes(StandardCharsets.UTF_8);
     private static final String PARTITION_ID = "0";
     private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(30);
-    private static final AtomicLong ownerLevel = new AtomicLong();
+    private static final AtomicLong OWNER_LEVEL = new AtomicLong();
 
     private final AtomicReference<TokenCredential> cachedCredential = new AtomicReference<>();
     private static final AttributeKey<String> OPERATION_NAME_ATTRIBUTE = AttributeKey.stringKey("messaging.operation.name");
@@ -817,6 +817,6 @@ public class TracingIntegrationTests extends IntegrationTestBase {
 
     private ReceiveOptions getReceiveOptions() {
         return new ReceiveOptions()
-            .setOwnerLevel(ownerLevel.getAndIncrement());
+            .setOwnerLevel(OWNER_LEVEL.getAndIncrement());
     }
 }

@@ -3,7 +3,6 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.implementation.MessageFlux;
 import com.azure.messaging.eventhubs.implementation.AmqpReceiveLinkProcessor;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.Flux;
