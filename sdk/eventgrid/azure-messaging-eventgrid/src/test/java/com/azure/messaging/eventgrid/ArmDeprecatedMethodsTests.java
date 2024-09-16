@@ -14,8 +14,6 @@ import com.azure.messaging.eventgrid.systemevents.ResourceHttpRequest;
 import com.azure.messaging.eventgrid.systemevents.ResourceWriteCancelEventData;
 import com.azure.messaging.eventgrid.systemevents.ResourceWriteFailureEventData;
 import com.azure.messaging.eventgrid.systemevents.ResourceWriteSuccessEventData;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -98,6 +96,7 @@ public class ArmDeprecatedMethodsTests {
 
     @ParameterizedTest
     @MethodSource("provideArmEventData")
+    @SuppressWarnings("unchecked")
     public void deprecatedClaims(Object eventData)
         throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         // Deprecated getter/setter methods
@@ -109,12 +108,8 @@ public class ArmDeprecatedMethodsTests {
         eventData.getClass().getMethod("setResourceClaims", Map.class).invoke(eventData, CLAIM_MAP);
         Method getResourceClaimsMethod = eventData.getClass().getMethod("getResourceClaims");
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        Map<String, String> resourceClaims = objectMapper.convertValue(
-            getResourceClaimsMethod.invoke(eventData),
-            new TypeReference<Map<String, String>>() {
-                // No implementation
-            });
+        Map<String, String> resourceClaims = (Map<String, String>) getResourceClaimsMethod.invoke(eventData);
+
         assertEquals(CLAIM_VALUE_1, resourceClaims.get(CLAIM_KEY_1));
         assertEquals(CLAIM_VALUE_2, resourceClaims.get(CLAIM_KEY_2));
     }

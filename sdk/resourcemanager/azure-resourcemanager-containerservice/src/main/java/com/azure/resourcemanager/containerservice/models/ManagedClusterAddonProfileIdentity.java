@@ -55,7 +55,6 @@ public final class ManagedClusterAddonProfileIdentity extends UserAssignedIdenti
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

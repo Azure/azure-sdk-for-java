@@ -3,6 +3,7 @@
 
 package com.azure.core.amqp.implementation.handler;
 
+import com.azure.core.amqp.implementation.StringUtil;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.engine.BaseHandler;
 import org.apache.qpid.proton.engine.EndpointState;
@@ -25,6 +26,7 @@ public abstract class Handler extends BaseHandler implements Closeable {
         = Sinks.many().replay().latestOrDefault(EndpointState.UNINITIALIZED);
     // The flag indicating if the endpointStates Flux reached terminal state (error-ed or completed).
     private final AtomicBoolean isTerminal = new AtomicBoolean();
+    private final String id;
     private final String connectionId;
     private final String hostname;
 
@@ -41,9 +43,19 @@ public abstract class Handler extends BaseHandler implements Closeable {
      * @throws NullPointerException if {@code connectionId} or {@code hostname} is null.
      */
     Handler(final String connectionId, final String hostname) {
+        this.id = StringUtil.getRandomString("H");
         this.connectionId = Objects.requireNonNull(connectionId, "'connectionId' cannot be null.");
         this.hostname = Objects.requireNonNull(hostname, "'hostname' cannot be null.");
         this.logger = new ClientLogger(getClass(), createContextWithConnectionId(connectionId));
+    }
+
+    /**
+     * Gets the id of the handler.
+     *
+     * @return The handler id.
+     */
+    public String getId() {
+        return id;
     }
 
     /**

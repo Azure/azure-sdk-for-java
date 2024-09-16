@@ -26,14 +26,14 @@ public final class DatabaseAccountListKeysResultInner extends DatabaseAccountLis
     private String secondaryMasterKey;
 
     /*
-     * Base 64 encoded value of the primary read-only key.
-     */
-    private String primaryReadonlyMasterKey;
-
-    /*
      * Base 64 encoded value of the secondary read-only key.
      */
     private String secondaryReadonlyMasterKey;
+
+    /*
+     * Base 64 encoded value of the primary read-only key.
+     */
+    private String primaryReadonlyMasterKey;
 
     /**
      * Creates an instance of DatabaseAccountListKeysResultInner class.
@@ -60,16 +60,6 @@ public final class DatabaseAccountListKeysResultInner extends DatabaseAccountLis
     }
 
     /**
-     * Get the primaryReadonlyMasterKey property: Base 64 encoded value of the primary read-only key.
-     * 
-     * @return the primaryReadonlyMasterKey value.
-     */
-    @Override
-    public String primaryReadonlyMasterKey() {
-        return this.primaryReadonlyMasterKey;
-    }
-
-    /**
      * Get the secondaryReadonlyMasterKey property: Base 64 encoded value of the secondary read-only key.
      * 
      * @return the secondaryReadonlyMasterKey value.
@@ -80,13 +70,22 @@ public final class DatabaseAccountListKeysResultInner extends DatabaseAccountLis
     }
 
     /**
+     * Get the primaryReadonlyMasterKey property: Base 64 encoded value of the primary read-only key.
+     * 
+     * @return the primaryReadonlyMasterKey value.
+     */
+    @Override
+    public String primaryReadonlyMasterKey() {
+        return this.primaryReadonlyMasterKey;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

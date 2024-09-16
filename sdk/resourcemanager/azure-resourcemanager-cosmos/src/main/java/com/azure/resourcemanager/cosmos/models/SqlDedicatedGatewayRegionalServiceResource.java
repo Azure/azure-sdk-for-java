@@ -21,9 +21,9 @@ public final class SqlDedicatedGatewayRegionalServiceResource extends RegionalSe
     private String sqlDedicatedGatewayEndpoint;
 
     /*
-     * The regional service name.
+     * Describes the status of a service.
      */
-    private String name;
+    private ServiceStatus status;
 
     /*
      * The location name.
@@ -31,9 +31,9 @@ public final class SqlDedicatedGatewayRegionalServiceResource extends RegionalSe
     private String location;
 
     /*
-     * Describes the status of a service.
+     * The regional service name.
      */
-    private ServiceStatus status;
+    private String name;
 
     /**
      * Creates an instance of SqlDedicatedGatewayRegionalServiceResource class.
@@ -51,13 +51,13 @@ public final class SqlDedicatedGatewayRegionalServiceResource extends RegionalSe
     }
 
     /**
-     * Get the name property: The regional service name.
+     * Get the status property: Describes the status of a service.
      * 
-     * @return the name value.
+     * @return the status value.
      */
     @Override
-    public String name() {
-        return this.name;
+    public ServiceStatus status() {
+        return this.status;
     }
 
     /**
@@ -71,13 +71,13 @@ public final class SqlDedicatedGatewayRegionalServiceResource extends RegionalSe
     }
 
     /**
-     * Get the status property: Describes the status of a service.
+     * Get the name property: The regional service name.
      * 
-     * @return the status value.
+     * @return the name value.
      */
     @Override
-    public ServiceStatus status() {
-        return this.status;
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -87,7 +87,6 @@ public final class SqlDedicatedGatewayRegionalServiceResource extends RegionalSe
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

@@ -28,7 +28,8 @@ import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import org.apache.commons.lang3.tuple.Triple;
+import reactor.util.function.Tuple3;
+import reactor.util.function.Tuples;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -49,14 +50,14 @@ public class FaceClientTestBase extends TestProxyTestBase {
         }};
 
 
-    protected <TSyncClient, TAsyncClient, TCommand> Stream<Triple<String, FaceServiceVersion, Supplier<TCommand>>> createClientArgumentStream(
+    protected <TSyncClient, TAsyncClient, TCommand> Stream<Tuple3<String, FaceServiceVersion, Supplier<TCommand>>> createClientArgumentStream(
             Class<TSyncClient> clientClass,
             Class<TAsyncClient> asyncClientClass,
             CommandProvider<TSyncClient, TAsyncClient, TCommand>[] commandBuilders) {
         return getHttpClients()
                 .flatMap(httpClient -> Arrays.stream(TestUtils.getServiceVersions())
                         .flatMap(serviceVersion -> Arrays.stream(commandBuilders)
-                                .map(builderFunction -> Triple.of(
+                                .map(builderFunction -> Tuples.of(
                                         httpClient.getClass().getSimpleName(), serviceVersion, new CommandProviderAdapter<>(
                                                 httpClient, serviceVersion, clientClass, asyncClientClass, builderFunction)
                                 ))));

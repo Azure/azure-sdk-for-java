@@ -235,7 +235,7 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
             this.collectionSelfLink,
             feedRangeEpk,
             feedRangeEpk.getRange());
-        feedRangeContinuation.replaceContinuation(etag);
+        feedRangeContinuation.replaceContinuation(etag, true);
 
         ChangeFeedState changeFeedState =  new ChangeFeedStateV1(
             this.collectionSelfLink,

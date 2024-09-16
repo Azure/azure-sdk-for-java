@@ -6,9 +6,16 @@ package com.azure.ai.formrecognizer.implementation;
 import com.azure.ai.formrecognizer.implementation.models.ContentType;
 import com.azure.ai.formrecognizer.implementation.models.ErrorInformation;
 import com.azure.ai.formrecognizer.implementation.models.ErrorResponseException;
+import com.azure.ai.formrecognizer.models.CreateComposedModelOptions;
 import com.azure.ai.formrecognizer.models.FormRecognizerAudience;
 import com.azure.ai.formrecognizer.models.FormRecognizerErrorInformation;
 import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
+import com.azure.ai.formrecognizer.models.RecognizeBusinessCardsOptions;
+import com.azure.ai.formrecognizer.models.RecognizeContentOptions;
+import com.azure.ai.formrecognizer.models.RecognizeCustomFormsOptions;
+import com.azure.ai.formrecognizer.models.RecognizeIdentityDocumentOptions;
+import com.azure.ai.formrecognizer.models.RecognizeInvoicesOptions;
+import com.azure.ai.formrecognizer.models.RecognizeReceiptsOptions;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
@@ -201,6 +208,33 @@ public final class Utility {
             new RuntimeException("Failed to parse operation header for result Id from: " + operationLocation));
     }
 
+    public static RecognizeCustomFormsOptions getRecognizeCustomFormOptions(
+        RecognizeCustomFormsOptions userProvidedOptions) {
+        return userProvidedOptions == null ? new RecognizeCustomFormsOptions() : userProvidedOptions;
+    }
+
+    public static RecognizeContentOptions getRecognizeContentOptions(RecognizeContentOptions userProvidedOptions) {
+        return userProvidedOptions == null ? new RecognizeContentOptions() : userProvidedOptions;
+    }
+
+    public static RecognizeReceiptsOptions getRecognizeReceiptOptions(RecognizeReceiptsOptions userProvidedOptions) {
+        return userProvidedOptions == null ? new RecognizeReceiptsOptions() : userProvidedOptions;
+    }
+
+    public static RecognizeBusinessCardsOptions getRecognizeBusinessCardsOptions(
+        RecognizeBusinessCardsOptions userProvidedOptions) {
+        return userProvidedOptions == null ? new RecognizeBusinessCardsOptions() : userProvidedOptions;
+    }
+
+    public static RecognizeInvoicesOptions getRecognizeInvoicesOptions(RecognizeInvoicesOptions userProvidedOptions) {
+        return userProvidedOptions == null ? new RecognizeInvoicesOptions() : userProvidedOptions;
+    }
+
+    public static RecognizeIdentityDocumentOptions getRecognizeIdentityDocumentOptions(
+        RecognizeIdentityDocumentOptions userProvidedOptions) {
+        return userProvidedOptions == null ? new RecognizeIdentityDocumentOptions() : userProvidedOptions;
+    }
+
     /**
      * Given an iterable will apply the indexing function to it and return the index and each item of the iterable.
      *
@@ -222,20 +256,24 @@ public final class Utility {
      */
     public static Throwable mapToHttpResponseExceptionIfExists(Throwable throwable) {
         if (throwable instanceof ErrorResponseException) {
-            ErrorResponseException errorResponseException = (ErrorResponseException) throwable;
-            FormRecognizerErrorInformation formRecognizerErrorInformation = null;
-            if (errorResponseException.getValue() != null && errorResponseException.getValue().getError() != null) {
-                ErrorInformation errorInformation = errorResponseException.getValue().getError();
-                formRecognizerErrorInformation =
-                    new FormRecognizerErrorInformation(errorInformation.getCode(), errorInformation.getMessage());
-            }
-            return new HttpResponseException(
-                errorResponseException.getMessage(),
-                errorResponseException.getResponse(),
-                formRecognizerErrorInformation
-            );
+            return getHttpResponseException((ErrorResponseException) throwable);
         }
         return throwable;
+    }
+
+    public static HttpResponseException getHttpResponseException(ErrorResponseException throwable) {
+        ErrorResponseException errorResponseException = throwable;
+        FormRecognizerErrorInformation formRecognizerErrorInformation = null;
+        if (errorResponseException.getValue() != null && errorResponseException.getValue().getError() != null) {
+            ErrorInformation errorInformation = errorResponseException.getValue().getError();
+            formRecognizerErrorInformation =
+                new FormRecognizerErrorInformation(errorInformation.getCode(), errorInformation.getMessage());
+        }
+        return new HttpResponseException(
+            errorResponseException.getMessage(),
+            errorResponseException.getResponse(),
+            formRecognizerErrorInformation
+        );
     }
 
     /*
@@ -313,5 +351,10 @@ public final class Utility {
             .httpClient(httpClient)
             .policies(httpPipelinePolicies.toArray(new HttpPipelinePolicy[0]))
             .build();
+    }
+
+    public static CreateComposedModelOptions
+        getCreateComposeModelOptions(CreateComposedModelOptions userProvidedOptions) {
+        return userProvidedOptions == null ? new CreateComposedModelOptions() : userProvidedOptions;
     }
 }

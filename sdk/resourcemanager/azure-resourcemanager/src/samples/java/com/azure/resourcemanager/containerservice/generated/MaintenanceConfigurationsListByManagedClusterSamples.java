@@ -10,7 +10,7 @@ package com.azure.resourcemanager.containerservice.generated;
 public final class MaintenanceConfigurationsListByManagedClusterSamples {
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-07-01/examples/
      * MaintenanceConfigurationsList_MaintenanceWindow.json
      */
     /**
@@ -29,7 +29,7 @@ public final class MaintenanceConfigurationsListByManagedClusterSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-07-01/examples/
      * MaintenanceConfigurationsList.json
      */
     /**

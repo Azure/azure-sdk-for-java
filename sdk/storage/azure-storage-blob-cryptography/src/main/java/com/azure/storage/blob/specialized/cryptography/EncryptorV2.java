@@ -25,15 +25,16 @@ import static com.azure.storage.blob.specialized.cryptography.CryptographyConsta
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.AES_KEY_SIZE_BITS;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.EMPTY_BUFFER;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_PROTOCOL_V2;
-import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.GCM_ENCRYPTION_REGION_LENGTH;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.NONCE_LENGTH;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.TAG_LENGTH;
 
 class EncryptorV2 extends Encryptor {
     private static final ClientLogger LOGGER = new ClientLogger(EncryptorV2.class);
+    private final BlobClientSideEncryptionOptions encryptionOptions;
 
-    protected EncryptorV2(SecretKey aesKey) {
+    protected EncryptorV2(SecretKey aesKey, BlobClientSideEncryptionOptions encryptionOptions) {
         super(aesKey);
+        this.encryptionOptions = encryptionOptions;
     }
 
     @Override
@@ -62,8 +63,7 @@ class EncryptorV2 extends Encryptor {
         return super.buildEncryptionData(keyWrappingMetadata, wrappedKey)
             .setEncryptionAgent(new EncryptionAgent(ENCRYPTION_PROTOCOL_V2,
                 EncryptionAlgorithm.AES_GCM_256))
-            .setEncryptedRegionInfo(new EncryptedRegionInfo(
-                GCM_ENCRYPTION_REGION_LENGTH, NONCE_LENGTH));
+            .setEncryptedRegionInfo(new EncryptedRegionInfo(encryptionOptions.getAuthenticatedRegionDataLengthInBytes(), NONCE_LENGTH));
     }
 
     private Cipher getCipher(int index) throws GeneralSecurityException {
@@ -77,13 +77,14 @@ class EncryptorV2 extends Encryptor {
     @Override
     protected Flux<ByteBuffer> encrypt(Flux<ByteBuffer> plainTextFlux) {
         Flux<ByteBuffer> encryptedTextFlux;
+        long authenticatedRegionDataLength = encryptionOptions.getAuthenticatedRegionDataLengthInBytes();
         BufferStagingArea stagingArea =
-            new BufferStagingArea(GCM_ENCRYPTION_REGION_LENGTH, GCM_ENCRYPTION_REGION_LENGTH);
+            new BufferStagingArea(authenticatedRegionDataLength, authenticatedRegionDataLength);
 
         encryptedTextFlux =
             UploadUtils.chunkSource(plainTextFlux,
                     new com.azure.storage.common.ParallelTransferOptions()
-                        .setBlockSizeLong((long) GCM_ENCRYPTION_REGION_LENGTH))
+                        .setBlockSizeLong(authenticatedRegionDataLength))
                 .flatMapSequential(stagingArea::write, 1, 1)
                 .concatWith(Flux.defer(stagingArea::flush))
                 .index()
@@ -100,7 +101,7 @@ class EncryptorV2 extends Encryptor {
                     // Expected size of each encryption region after calling doFinal. Last one may
                     // be less, will never be more.
                     ByteBuffer encryptedRegion = ByteBuffer.allocate(
-                        GCM_ENCRYPTION_REGION_LENGTH + TAG_LENGTH);
+                        (int) authenticatedRegionDataLength + TAG_LENGTH);
 
                     // Each flux is at most 1 BufferAggregator of 4mb
                     Flux<ByteBuffer> cipherTextWithTag = tuple.getT2()

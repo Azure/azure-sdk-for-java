@@ -5,59 +5,28 @@
 package com.azure.resourcemanager.billing.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.billing.fluent.models.EnrollmentAccountProperties;
-import com.azure.resourcemanager.billing.models.Department;
-import java.time.OffsetDateTime;
-import java.util.Arrays;
+import com.azure.resourcemanager.billing.models.EnrollmentAccountProperties;
 import org.junit.jupiter.api.Assertions;
 
 public final class EnrollmentAccountPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EnrollmentAccountProperties model =
-            BinaryData
-                .fromString(
-                    "{\"accountName\":\"dkcglhsl\",\"costCenter\":\"jdyggdtji\",\"accountOwner\":\"b\",\"accountOwnerEmail\":\"ofqweykhmenevfye\",\"status\":\"whybcib\",\"startDate\":\"2021-05-14T16:24:46Z\",\"endDate\":\"2021-01-31T06:13:45Z\",\"department\":{\"properties\":{\"departmentName\":\"ynnaam\",\"costCenter\":\"ctehfiqscjey\",\"status\":\"hezrkgq\",\"enrollmentAccounts\":[]},\"id\":\"refovgmkqsleyyvx\",\"name\":\"qjpkcattpngjcrc\",\"type\":\"zsqpjhvmdajvny\"}}")
-                .toObject(EnrollmentAccountProperties.class);
-        Assertions.assertEquals("dkcglhsl", model.accountName());
-        Assertions.assertEquals("jdyggdtji", model.costCenter());
-        Assertions.assertEquals("b", model.accountOwner());
-        Assertions.assertEquals("ofqweykhmenevfye", model.accountOwnerEmail());
-        Assertions.assertEquals("whybcib", model.status());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-14T16:24:46Z"), model.startDate());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-31T06:13:45Z"), model.endDate());
-        Assertions.assertEquals("ynnaam", model.department().departmentName());
-        Assertions.assertEquals("ctehfiqscjey", model.department().costCenter());
-        Assertions.assertEquals("hezrkgq", model.department().status());
+        EnrollmentAccountProperties model = BinaryData.fromString(
+            "{\"costCenter\":\"kfq\",\"displayName\":\"kemyil\",\"departmentDisplayName\":\"dxjascowvfdj\",\"departmentId\":\"dxphlk\",\"isDevTestEnabled\":true,\"accountOwner\":\"gzv\",\"authType\":\"ij\",\"status\":\"zuqnwsithuqo\",\"startDate\":\"2021-06-28T21:30:54Z\",\"endDate\":\"2021-02-27T02:08:05Z\"}")
+            .toObject(EnrollmentAccountProperties.class);
+        Assertions.assertEquals("kfq", model.costCenter());
+        Assertions.assertEquals("kemyil", model.displayName());
+        Assertions.assertEquals(true, model.isDevTestEnabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EnrollmentAccountProperties model =
-            new EnrollmentAccountProperties()
-                .withAccountName("dkcglhsl")
-                .withCostCenter("jdyggdtji")
-                .withAccountOwner("b")
-                .withAccountOwnerEmail("ofqweykhmenevfye")
-                .withStatus("whybcib")
-                .withStartDate(OffsetDateTime.parse("2021-05-14T16:24:46Z"))
-                .withEndDate(OffsetDateTime.parse("2021-01-31T06:13:45Z"))
-                .withDepartment(
-                    new Department()
-                        .withDepartmentName("ynnaam")
-                        .withCostCenter("ctehfiqscjey")
-                        .withStatus("hezrkgq")
-                        .withEnrollmentAccounts(Arrays.asList()));
+        EnrollmentAccountProperties model = new EnrollmentAccountProperties().withCostCenter("kfq")
+            .withDisplayName("kemyil")
+            .withIsDevTestEnabled(true);
         model = BinaryData.fromObject(model).toObject(EnrollmentAccountProperties.class);
-        Assertions.assertEquals("dkcglhsl", model.accountName());
-        Assertions.assertEquals("jdyggdtji", model.costCenter());
-        Assertions.assertEquals("b", model.accountOwner());
-        Assertions.assertEquals("ofqweykhmenevfye", model.accountOwnerEmail());
-        Assertions.assertEquals("whybcib", model.status());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-14T16:24:46Z"), model.startDate());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-31T06:13:45Z"), model.endDate());
-        Assertions.assertEquals("ynnaam", model.department().departmentName());
-        Assertions.assertEquals("ctehfiqscjey", model.department().costCenter());
-        Assertions.assertEquals("hezrkgq", model.department().status());
+        Assertions.assertEquals("kfq", model.costCenter());
+        Assertions.assertEquals("kemyil", model.displayName());
+        Assertions.assertEquals(true, model.isDevTestEnabled());
     }
 }

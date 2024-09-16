@@ -20,7 +20,7 @@ import java.util.Map;
 
 /**
  * Sample for analyzing commonly found License document fields from a local file input stream.
- * See fields found on an identity document <a href=https://aka.ms/documentintelligence/iddocumentfields>here</a>
+ * See fields found on an identity document <a href=https://aka.ms/formrecognizer/iddocumentfields>here</a>
  */
 public class AnalyzeIdentityDocuments {
 

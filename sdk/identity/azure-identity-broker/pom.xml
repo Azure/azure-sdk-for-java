@@ -34,6 +34,13 @@
       <artifactId>azure-identity</artifactId>
       <version>1.14.0-beta.2</version> <!-- {x-version-update;com.azure:azure-identity;current} -->
     </dependency>
+
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-experimental</artifactId>
+      <version>1.0.0-beta.53</version> <!-- {x-version-update;com.azure:azure-core-experimental;dependency} -->
+    </dependency>
+
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>msal4j</artifactId>

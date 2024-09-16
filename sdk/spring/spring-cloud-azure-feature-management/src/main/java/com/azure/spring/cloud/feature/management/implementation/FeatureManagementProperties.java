@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.feature.management.implementation;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -63,7 +64,7 @@ public class FeatureManagementProperties extends HashMap<String, Object> {
         }
     }
 
-    @SuppressWarnings({"unchecked", "deprecation"})
+    @SuppressWarnings({ "unchecked", "deprecation" })
     private void tryServerSideSchema(Map<? extends String, ? extends Object> features) {
         if (features.keySet().isEmpty()) {
             return;
@@ -156,6 +157,12 @@ public class FeatureManagementProperties extends HashMap<String, Object> {
                 && ff.get("conditions").getClass().isAssignableFrom(LinkedHashMap.class)) {
                 conditions = (LinkedHashMap<String, Object>) ff.get("conditions");
             }
+
+            Object objectMap = conditions.get("client_filters");
+            if (objectMap == null || "".equals(objectMap)) {
+                conditions.put("client_filters", new ArrayList<>());
+            }
+
             FeatureFilterUtils.updateValueFromMapToList(conditions, "client_filters");
 
             serverSideFeature = MAPPER.convertValue(featureValue, ServerSideFeature.class);

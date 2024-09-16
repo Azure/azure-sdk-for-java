@@ -16,7 +16,10 @@ import com.fasterxml.jackson.annotation.JsonValue;
  */
 public enum SecurityTypes {
     /** Trusted launch protects against advanced and persistent attack techniques. */
-    TRUSTED_LAUNCH("trustedLaunch");
+    TRUSTED_LAUNCH("trustedLaunch"),
+
+    /** Azure confidential computing offers confidential VMs are for tenants with high security and confidentiality requirements. These VMs provide a strong, hardware-enforced boundary to help meet your security needs. You can use confidential VMs for migrations without making changes to your code, with the platform protecting your VM's state from being read or modified. */
+    CONFIDENTIAL_VM("confidentialVM");
 
     /** The actual serialized value for a SecurityTypes instance. */
     private String value;

@@ -70,7 +70,8 @@ public class ChangeFeedStateV1 extends ChangeFeedState {
     @Override
     public String applyServerResponseContinuation(
         String serverContinuationToken,
-        RxDocumentServiceRequest request) {
+        RxDocumentServiceRequest request,
+        boolean shouldMoveToNextTokenOnETagReplace) {
 
         checkNotNull(
             serverContinuationToken,
@@ -86,7 +87,7 @@ public class ChangeFeedStateV1 extends ChangeFeedState {
                 request.getEffectiveRange());
         }
 
-        this.continuation.replaceContinuation(serverContinuationToken);
+        this.continuation.replaceContinuation(serverContinuationToken, shouldMoveToNextTokenOnETagReplace);
         return this.toString();
     }
 

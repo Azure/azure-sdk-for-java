@@ -73,7 +73,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [exploration]: https://docs.microsoft.com/azure/cognitive-services/personalizer/concepts-exploration
 [multi_slot]: https://docs.microsoft.com/azure/cognitive-services/personalizer/concept-multi-slot-personalization
 [examples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/personalizer/azure-ai-personalizer/src/samples#examples
-[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
+[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-in-Azure-SDK
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
