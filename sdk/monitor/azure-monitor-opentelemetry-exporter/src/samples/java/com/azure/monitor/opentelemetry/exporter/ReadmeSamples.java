@@ -64,15 +64,25 @@ public class ReadmeSamples {
         // END: readme-sample-createSpans
     }
 
+
+    /**
+     * Sample to use the Azure Monitor OpenTelemetry Exporter with the OpenTelemetry SDK auto-configuration when the connection string is set with the APPLICATIONINSIGHTS_CONNECTION_STRING
+     */
+    public void exporterAndOpenTelemetryAutoconfigurationEnvVariable() {
+        // BEGIN: readme-sample-autoconfigure-env-variable
+        AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
+        AzureMonitor.configure(sdkBuilder);
+        OpenTelemetry openTelemetry = sdkBuilder.build().getOpenTelemetrySdk();
+        // END: readme-sample-autoconfigure-env-variable
+    }
+
     /**
      * Sample to use the Azure Monitor OpenTelemetry Exporter with the OpenTelemetry SDK auto-configuration
      */
     public void exporterAndOpenTelemetryAutoconfiguration() {
         // BEGIN: readme-sample-autoconfigure
         AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
-
         AzureMonitor.configure(sdkBuilder, "{connection-string}");
-
         OpenTelemetry openTelemetry = sdkBuilder.build().getOpenTelemetrySdk();
         // END: readme-sample-autoconfigure
     }
