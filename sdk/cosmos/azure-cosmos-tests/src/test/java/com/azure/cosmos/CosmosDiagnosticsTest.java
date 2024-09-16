@@ -237,13 +237,62 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         };
     }
 
-    @Test(groups = {"fast", "emulator"}, timeOut = TIMEOUT)
-    public void queryChangeFeed() throws Exception {
+    // Validate the diagnostics string from ChangeFeedProcessor all versions and deletes mode (pull model).
+    // Currently all versions and deletes only works with gateway mode.
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    public void queryChangeFeedAllVersionsAndDeletes() throws Exception {
         CosmosAsyncContainer cosmosContainer = cosmosAsyncContainer;
 
         CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
             .createForProcessingFromNow(FeedRange.forFullRange());
         options.allVersionsAndDeletes();
+
+        Iterator<FeedResponse<JsonNode>> results = cosmosContainer
+            .queryChangeFeed(options, JsonNode.class)
+            .byPage()
+            .toIterable()
+            .iterator();
+
+        if (results.hasNext()) {
+            FeedResponse<JsonNode> response = results.next();
+            String diagnostics = response.getCosmosDiagnostics().toString();
+            assertThat(diagnostics).contains("\"connectionMode\":\"GATEWAY\"");
+            assertThat(diagnostics).contains("\"userAgent\":\"" + this.gatewayClientUserAgent + "\"");
+            assertThat(diagnostics).contains("gatewayStatisticsList");
+            assertThat(diagnostics).contains("\"operationType\":\"ReadFeed\"");
+            assertThat(diagnostics).contains("\"userAgent\":\"" + this.gatewayClientUserAgent + "\"");
+        }
+    }
+
+    // Validate the diagnostics string from ChangeFeedProcessor incremental mode (pull model).
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    public void queryChangeFeedIncrementalDirectMode() throws Exception {
+        CosmosContainer cosmosContainer = containerDirect;
+
+        CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
+            .createForProcessingFromNow(FeedRange.forFullRange());
+
+        Iterator<FeedResponse<JsonNode>> results = cosmosContainer
+            .queryChangeFeed(options, JsonNode.class)
+            .iterableByPage()
+            .iterator();
+
+        if (results.hasNext()) {
+            FeedResponse<JsonNode> response = results.next();
+            String diagnostics = response.getCosmosDiagnostics().toString();
+            assertThat(diagnostics).contains("\"connectionMode\":\"DIRECT\"");
+            assertThat(diagnostics).contains("\"userAgent\":\"" + this.directClientUserAgent + "\"");
+            assertThat(diagnostics).contains("\"requestOperationType\":\"ReadFeed\"");
+        }
+    }
+
+    // Validate the diagnostics string from ChangeFeedProcessor incremental mode (pull model).
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    public void queryChangeFeedIncrementalGatewayMode() throws Exception {
+        CosmosAsyncContainer cosmosContainer = cosmosAsyncContainer;
+
+        CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
+            .createForProcessingFromNow(FeedRange.forFullRange());
 
         Iterator<FeedResponse<JsonNode>> results = cosmosContainer
             .queryChangeFeed(options, JsonNode.class)
