@@ -3,13 +3,6 @@
 
 package com.azure.monitor.opentelemetry;
 
-import com.azure.core.annotation.Fluent;
-import com.azure.core.credential.TokenCredential;
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.util.ClientOptions;
 import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporterBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.AzureMonitorExporterProviderKeys;
 import com.azure.monitor.opentelemetry.exporter.implementation.AzureMonitorLogRecordExporterProvider;
@@ -66,7 +59,7 @@ public final class AzureMonitor {
         });
         autoConfiguredOpenTelemetrySdkBuilder.addSpanExporterCustomizer((spanExporter, configProperties) -> {
             if (spanExporter instanceof AzureMonitorSpanExporterProvider.MarkerSpanExporter) {
-                spanExporter = azureMonitorExporterBuilder.buildTraceExporter(configProperties);
+                spanExporter = azureMonitorExporterBuilder.buildSpanExporter(configProperties);
             }
             return spanExporter;
         });

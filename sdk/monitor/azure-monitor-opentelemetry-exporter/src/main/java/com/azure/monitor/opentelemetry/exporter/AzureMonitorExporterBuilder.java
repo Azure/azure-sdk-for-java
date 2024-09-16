@@ -271,13 +271,13 @@ public final class AzureMonitorExporterBuilder implements ConnectionStringTrait<
      * @throws NullPointerException if the connection string is not set on this builder or if the
      * environment variable "APPLICATIONINSIGHTS_CONNECTION_STRING" is not set.
      */
-    public SpanExporter buildTraceExporter() {
+    public SpanExporter buildSpanExporter() {
         ConfigProperties defaultConfig = DefaultConfigProperties.create(Collections.emptyMap());
-        return buildTraceExporter(defaultConfig);
+        return buildSpanExporter(defaultConfig);
     }
 
     /**
-     * Creates an Azure Monitor trace exporter based on the options set in the builder. This
+     * Creates an Azure Monitor span exporter based on the options set in the builder. This
      * exporter is an implementation of OpenTelemetry {@link SpanExporter}.
      *
      * @param configProperties The OpenTelemetry configuration properties.
@@ -285,7 +285,7 @@ public final class AzureMonitorExporterBuilder implements ConnectionStringTrait<
      * @throws NullPointerException if the connection string is not set on this builder or if the
      * environment variable "APPLICATIONINSIGHTS_CONNECTION_STRING" is not set.
      */
-    public SpanExporter buildTraceExporter(ConfigProperties configProperties) {
+    public SpanExporter buildSpanExporter(ConfigProperties configProperties) {
         internalBuildAndFreeze(configProperties);
         return new AzureMonitorTraceExporter(createSpanDataMapper(configProperties), builtTelemetryItemExporter,
             statsbeatModule);
