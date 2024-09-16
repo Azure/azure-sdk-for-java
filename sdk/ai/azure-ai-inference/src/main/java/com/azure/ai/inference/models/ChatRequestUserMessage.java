@@ -12,6 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import com.azure.json.JsonProviders;
 import java.io.StringReader;
+import java.util.List;
 
 /**
  * A request chat message representing user input to the assistant.
@@ -141,20 +142,21 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
      * was pointing to JSON null.
      * @throws RuntimeException If the deserialized JSON object was missing any required properties.
      */
-    public static ChatRequestUserMessage fromContentItems(ChatMessageContentItem[] contentItems) {
+    public static ChatRequestUserMessage fromContentItems(List<ChatMessageContentItem> contentItems) {
         String jsonPrompt = "{\"content\":[";
         for (ChatMessageContentItem item : contentItems) {
             if (item instanceof ChatMessageTextContentItem) {
                 ChatMessageTextContentItem textItem = (ChatMessageTextContentItem) item;
-                String textPrompt = "{" + "\"text\":\"%s\"" + "}";
+                String textPrompt = "{\"type\": \"text\", \"text\":\"%s\"" + "}";
                 jsonPrompt += String.format(textPrompt, textItem.getText());
             } else if (item instanceof ChatMessageImageContentItem) {
                 ChatMessageImageContentItem imageItem = (ChatMessageImageContentItem) item;
-                String imageUrlPrompt = "{" + "\"image_url\":%s" + "}";
+                String imageUrlPrompt = "{\"type\": \"image_url\", \"image_url\":{ \"url\": \"%s\"}" + "}";
                 jsonPrompt += String.format(imageUrlPrompt, imageItem.getImageUrl().getUrl());
             }
             jsonPrompt += ",";
         }
+        jsonPrompt = jsonPrompt.substring(0, jsonPrompt.length() - 1);
         jsonPrompt += "]}";
         try {
             return ChatRequestUserMessage.fromJson(JsonProviders.createReader(new StringReader(jsonPrompt)));

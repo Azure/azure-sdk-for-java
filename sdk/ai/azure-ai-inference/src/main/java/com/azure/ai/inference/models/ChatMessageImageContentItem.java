@@ -13,6 +13,7 @@ import java.util.Base64;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.nio.file.Path;
 
 /**
  * A structured chat content item containing an image reference.
@@ -45,11 +46,12 @@ public final class ChatMessageImageContentItem extends ChatMessageContentItem {
     /**
      * Creates an instance of ChatMessageImageContentItem class.
      *
-     * @param imageFile the imageFile to read.
+     * @param filePath path to the imageFile.
      * @param imageFormat format of the image
      */
-    public ChatMessageImageContentItem(File imageFile, String imageFormat) {
+    public ChatMessageImageContentItem(Path filePath, String imageFormat) {
         try {
+            File imageFile = filePath.toFile();
             FileInputStream fileInputStreamReader = new FileInputStream(imageFile);
             byte[] bytes = new byte[(int) imageFile.length()];
             fileInputStreamReader.read(bytes);
