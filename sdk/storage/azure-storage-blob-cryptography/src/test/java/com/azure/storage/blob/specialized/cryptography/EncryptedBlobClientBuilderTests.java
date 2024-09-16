@@ -304,7 +304,7 @@ public class EncryptedBlobClientBuilderTests {
 
     @Test
     public void encryptedRegionLengthDefault() {
-        EncryptedBlobClient encryptedBlobClient = new EncryptedBlobClientBuilder()
+        EncryptedBlobClient encryptedBlobClient = new EncryptedBlobClientBuilder(EncryptionVersion.V2)
             .blobName("foo")
             .containerName("container")
             .key(new FakeKey("keyId", randomData), "keyWrapAlgorithm")
