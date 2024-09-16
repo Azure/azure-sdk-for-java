@@ -21,6 +21,9 @@ import java.util.Map;
  */
 public final class AzureMonitor {
 
+
+    private AzureMonitor() { }
+
     /**
      * Configures an {@link AutoConfiguredOpenTelemetrySdkBuilder} for Azure Monitor based on the options set.
      * @param autoConfiguredOpenTelemetrySdkBuilder The OpenTelemetry autoconfiguration to set up.
