@@ -5,7 +5,6 @@ package com.azure.core.experimental.implementation;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.experimental.credential.PopTokenRequestContext;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import com.azure.core.util.logging.LoggingEventBuilder;

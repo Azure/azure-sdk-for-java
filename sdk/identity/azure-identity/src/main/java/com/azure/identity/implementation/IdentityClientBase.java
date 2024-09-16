@@ -4,9 +4,9 @@
 package com.azure.identity.implementation;
 
 import com.azure.core.credential.AccessToken;
+import com.azure.core.credential.ProofOfPossessionOptions;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
-import com.azure.core.experimental.credential.PopTokenRequestContext;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
@@ -596,12 +596,11 @@ public abstract class IdentityClientBase {
                 builder.extraQueryParameters(extraQueryParameters);
             }
 
-            if (request instanceof PopTokenRequestContext
-                && ((PopTokenRequestContext) request).isProofOfPossessionEnabled()) {
-                PopTokenRequestContext requestContext = (PopTokenRequestContext) request;
+            if (request.getProofOfPossessionOptions() != null) {
+                ProofOfPossessionOptions proofOfPossessionOptions = request.getProofOfPossessionOptions();
                 try {
-                    builder.proofOfPossession(mapToMsalHttpMethod(requestContext.getResourceRequestMethod()),
-                        requestContext.getResourceRequestUrl().toURI(), requestContext.getProofOfPossessionNonce());
+                    builder.proofOfPossession(mapToMsalHttpMethod(proofOfPossessionOptions.getRequestMethod().toString()),
+                        proofOfPossessionOptions.getRequestUrl().toURI(), proofOfPossessionOptions.getProofOfPossessionNonce());
                 } catch (URISyntaxException e) {
                     throw new IllegalArgumentException(e);
                 }

@@ -4,13 +4,15 @@ import com.azure.core.http.HttpMethod;
 
 import java.net.URL;
 
+/**
+ * Specifies Options for Pop Token authentication.
+ */
 public class ProofOfPossessionOptions {
 
     private String proofOfPossessionNonce;
     private boolean isProofOfPossessionEnabled;
     private URL requestUrl;
     private HttpMethod requestMethod;
-
 
     /**
      * Gets the proof of possession nonce.
@@ -92,4 +94,3 @@ public class ProofOfPossessionOptions {
         return this;
     }
 }
-

@@ -5,6 +5,7 @@ package com.azure.core.experimental.credential;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.experimental.implementation.AccessTokenCache;
 import com.azure.core.experimental.implementation.AuthorizationChallengeParser;
 import com.azure.core.http.HttpHeaderName;
@@ -190,7 +191,8 @@ public class PopTokenAuthenticationPolicy implements HttpPipelinePolicy {
             throw LOGGER.logExceptionAsError(new RuntimeException(
                 "Proof of possession token authentication is not permitted for non TLS-protected (HTTPS) endpoints."));
         }
-        PopTokenRequestContext popTokenRequestContext = new PopTokenRequestContext().addScopes(this.scopes.get(0))
+        TokenRequestContext popTokenRequestContext = new TokenRequestContext().setScopes(this.scopes)
+            .set
             .setProofOfPossessionNonce(popNonce)
             .setResourceRequestUrl(context.getHttpRequest().getUrl())
             .setResourceRequestMethod(context.getHttpRequest().getHttpMethod());

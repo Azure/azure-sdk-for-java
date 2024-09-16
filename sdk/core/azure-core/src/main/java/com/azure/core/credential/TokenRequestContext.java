@@ -163,7 +163,6 @@ public class TokenRequestContext {
         return this.enableCae;
     }
 
-
     /**
      * Gets the proof of possession options.
      *
