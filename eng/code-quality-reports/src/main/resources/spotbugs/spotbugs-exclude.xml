@@ -1207,6 +1207,10 @@
     <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>
   </Match>
 
+  <Match>
+    <Class name="com.azure.search.documents.indexes.models.AzureOpenAITokenizerParameters" />
+  </Match>
+
   <!--  ChannelHandlerContext::flush is fluent method and return ref can be ignored -->
   <Match>
     <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestManager"/>
