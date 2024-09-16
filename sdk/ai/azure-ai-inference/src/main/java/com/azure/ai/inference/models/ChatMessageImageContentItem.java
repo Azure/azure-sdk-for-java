@@ -8,7 +8,12 @@ import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Base64;
 
 /**
  * A structured chat content item containing an image reference.
@@ -36,6 +41,27 @@ public final class ChatMessageImageContentItem extends ChatMessageContentItem {
     @Generated
     public ChatMessageImageContentItem(ChatMessageImageUrl imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    /**
+     * Creates an instance of ChatMessageImageContentItem class.
+     *
+     * @param imageFile the imageFile to read.
+     * @param imageFormat format of the image
+     */
+    public ChatMessageImageContentItem(File imageFile, String imageFormat) {
+        try {
+            FileInputStream fileInputStreamReader = new FileInputStream(imageFile);
+            byte[] bytes = new byte[(int)imageFile.length()];
+            fileInputStreamReader.read(bytes);
+            String encodedFile = new String(Base64.getEncoder().encode(bytes), "UTF-8");
+            String urlTemplate = "data:image/%s;base64,%s";
+            this.imageUrl = new ChatMessageImageUrl(String.format(urlTemplate, imageFormat, encodedFile));
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException("Local file not found.", e);
+        } catch (IOException e) {
+            throw new RuntimeException("IO Error.", e);
+        }
     }
 
     /**

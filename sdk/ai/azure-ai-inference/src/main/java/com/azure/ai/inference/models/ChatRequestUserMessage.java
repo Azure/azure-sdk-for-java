@@ -132,4 +132,38 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
             throw new RuntimeException(e);
         }
     }
+
+    /**
+     * Creates an instance of ChatRequestUserMessage class.
+     *
+     * @param contentItems An array of content items to include in the message.
+     * @return An instance of ChatRequestUserMessage if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws RuntimeException If the deserialized JSON object was missing any required properties.
+     */
+    public static ChatRequestUserMessage fromContentItems(ChatMessageContentItem[] contentItems) {
+        String jsonPrompt = "{\"content\":[";
+        for (ChatMessageContentItem item : contentItems) {
+            if (item instanceof ChatMessageTextContentItem)
+            {
+                ChatMessageTextContentItem textItem = (ChatMessageTextContentItem) item;
+                String textPrompt = "{" + "\"text\":\"%s\"" + "}";
+                jsonPrompt += String.format(textPrompt, textItem.getText());
+            }
+            else if (item instanceof ChatMessageImageContentItem)
+            {
+                ChatMessageImageContentItem imageItem = (ChatMessageImageContentItem) item;
+                String imageUrlPrompt = "{" + "\"image_url\":%s" + "}";
+                jsonPrompt += String.format(imageUrlPrompt, imageItem.getImageUrl().getUrl());
+            }
+            jsonPrompt += ",";
+        }
+        jsonPrompt += "]}";
+        try {
+            return ChatRequestUserMessage.fromJson(JsonProviders.createReader(new StringReader(jsonPrompt)));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }
