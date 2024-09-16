@@ -32,8 +32,7 @@ public interface ChangeFeedProcessorContext {
      * @return The diagnostics object.
      */
     @Beta(value = Beta.SinceVersion.V4_64_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    default CosmosDiagnostics getDiagnostics()
-    {
+    default CosmosDiagnostics getDiagnostics() {
         return null;
     }
 }
