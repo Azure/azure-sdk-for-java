@@ -31,6 +31,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Mono;
@@ -291,7 +292,7 @@ public class EncryptedBlobClientBuilderTests {
     @ParameterizedTest
     @ValueSource(longs = { 16, 4 * Constants.KB, 4 * Constants.MB, Constants.GB })
     public void encryptedRegionLength(long regionLength) {
-        EncryptedBlobClient encryptedBlobClient = new EncryptedBlobClientBuilder(EncryptionVersion.V2)
+        EncryptedBlobClient encryptedBlobClient = new EncryptedBlobClientBuilder(EncryptionVersion.V2_1)
             .blobName("foo")
             .containerName("container")
             .key(new FakeKey("keyId", randomData), "keyWrapAlgorithm")
@@ -303,6 +304,17 @@ public class EncryptedBlobClientBuilderTests {
 
     @Test
     public void encryptedRegionLengthDefault() {
+        EncryptedBlobClient encryptedBlobClient = new EncryptedBlobClientBuilder(EncryptionVersion.V2)
+            .blobName("foo")
+            .containerName("container")
+            .key(new FakeKey("keyId", randomData), "keyWrapAlgorithm")
+            .buildEncryptedBlobClient();
+        assertEquals(4 * Constants.MB, encryptedBlobClient.getClientSideEncryptionOptions().getAuthenticatedRegionDataLengthInBytes());
+    }
+
+    @ParameterizedTest
+    @EnumSource(EncryptionVersion.class)
+    public void encryptedRegionLengthWithIllegalVersion(EncryptionVersion version) {
         EncryptedBlobClient encryptedBlobClient = new EncryptedBlobClientBuilder(EncryptionVersion.V2)
             .blobName("foo")
             .containerName("container")

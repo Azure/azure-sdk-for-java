@@ -1736,7 +1736,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
     public void uploadAndDownloadDifferentRegionLength(int regionLength, int dataSize) {
         ByteBuffer data = getRandomData(dataSize);
         ebc = new EncryptedBlobClient(mockAesKey(getEncryptedClientBuilder(fakeKey, null, ENV.getPrimaryAccount().getCredential(),
-            cc.getBlobContainerUrl(), EncryptionVersion.V2)
+            cc.getBlobContainerUrl(), EncryptionVersion.V2_1)
             .blobName(generateBlobName())
             .clientSideEncryptionOptions(new BlobClientSideEncryptionOptions().setAuthenticatedRegionDataLengthInBytes(regionLength))
             .buildEncryptedBlobAsyncClient()));
@@ -1753,7 +1753,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
     public void uploadAndDownloadToFileDifferentRegionLength(int regionLength, int fileSize) throws IOException {
         File file = getRandomFile(fileSize);
         ebc = new EncryptedBlobClient(mockAesKey(getEncryptedClientBuilder(fakeKey, null,
-            ENV.getPrimaryAccount().getCredential(), cc.getBlobContainerUrl(), EncryptionVersion.V2)
+            ENV.getPrimaryAccount().getCredential(), cc.getBlobContainerUrl(), EncryptionVersion.V2_1)
             .blobName(generateBlobName())
             .clientSideEncryptionOptions(new BlobClientSideEncryptionOptions()
                 .setAuthenticatedRegionDataLengthInBytes(regionLength))
@@ -1776,7 +1776,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
         ByteBuffer data = getRandomData(dataSize);
         String blobName = generateBlobName();
         ebc = new EncryptedBlobClient(mockAesKey(getEncryptedClientBuilder(fakeKey, null,
-            ENV.getPrimaryAccount().getCredential(), cc.getBlobContainerUrl(), EncryptionVersion.V2)
+            ENV.getPrimaryAccount().getCredential(), cc.getBlobContainerUrl(), EncryptionVersion.V2_1)
             .blobName(blobName)
             .clientSideEncryptionOptions(new BlobClientSideEncryptionOptions()
                 .setAuthenticatedRegionDataLengthInBytes(regionLength))
@@ -1788,7 +1788,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
         // Create another client without the authenticated region data length set
         // This client should be using the default 4MB region size
         EncryptedBlobClient ebc2 = new EncryptedBlobClient(mockAesKey(getEncryptedClientBuilder(fakeKey, null,
-            ENV.getPrimaryAccount().getCredential(), cc.getBlobContainerUrl(), EncryptionVersion.V2)
+            ENV.getPrimaryAccount().getCredential(), cc.getBlobContainerUrl(), EncryptionVersion.V2_1)
             .blobName(blobName)
             .buildEncryptedBlobAsyncClient()));
 
