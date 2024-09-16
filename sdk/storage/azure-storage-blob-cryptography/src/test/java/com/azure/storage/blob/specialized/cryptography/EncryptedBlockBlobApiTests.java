@@ -12,6 +12,7 @@ import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
@@ -80,6 +81,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.OpenOption;
@@ -122,6 +124,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
     private EncryptedBlobClient ebc; // encrypted client for download
     private FakeKey fakeKey;
     private FakeKeyResolver fakeKeyResolver;
+    private static final HttpHeaderName X_MS_META_ENCRYPTIONDATA = HttpHeaderName.fromString("x-ms-meta-encryptiondata");
 
     @Override
     protected void beforeTest() {
@@ -1822,6 +1825,56 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
         ebc2.downloadStream(plaintextOut);
 
         assertArraysEqual(data.array(), plaintextOut.toByteArray());
+    }
+
+    private static Stream<Arguments> validateContentEncryptionKeyProtocolSupplier() {
+        return Stream.of(
+            Arguments.of(EncryptionVersion.V2, "2.0"),
+            Arguments.of(EncryptionVersion.V2_1, "2.1"));
+    }
+
+    @ParameterizedTest
+    @MethodSource("validateContentEncryptionKeyProtocolSupplier")
+    public void validateContentEncryptionKeyProtocol(EncryptionVersion version, String expectedVersion) throws IOException {
+        bec = getEncryptionClient(version, generateBlobName());
+        bec.uploadWithResponse(new BlobParallelUploadOptions(DATA.getDefaultInputStream()), null, null);
+        Response<BlobProperties> response = bec.getPropertiesWithResponse(null, null, null);
+        String encryptionMetadata = response.getHeaders().get(X_MS_META_ENCRYPTIONDATA).getValue();
+        EncryptionData encryptionData;
+        try (JsonReader jsonReader = JsonProviders.createReader(encryptionMetadata)) {
+            encryptionData = EncryptionData.fromJson(jsonReader);
+        }
+        byte[] cek = fakeKey.unwrapKey(encryptionData.getWrappedContentKey().getAlgorithm(),
+            encryptionData.getWrappedContentKey().getEncryptedKey()).block();
+
+        ByteArrayInputStream keyStream = new ByteArrayInputStream(cek);
+        byte[] protocolBytes = new byte[3];
+        keyStream.read(protocolBytes);
+
+        assertEquals(ByteBuffer.wrap(expectedVersion.getBytes(StandardCharsets.UTF_8)), ByteBuffer.wrap(protocolBytes));
+    }
+
+    private static Stream<Arguments> validateEncryptionProtocolUploadSupplier() {
+        return Stream.of(
+            Arguments.of(EncryptionVersion.V1, "1.0"),
+            Arguments.of(EncryptionVersion.V2, "2.0"),
+            Arguments.of(EncryptionVersion.V2_1, "2.1"));
+    }
+
+    @ParameterizedTest
+    @MethodSource("validateEncryptionProtocolUploadSupplier")
+    public void validateEncryptionProtocolUpload(EncryptionVersion version, String expectedVersion) throws IOException {
+        bec = getEncryptionClient(version, generateBlobName());
+        bec.uploadWithResponse(new BlobParallelUploadOptions(DATA.getDefaultInputStream()), null, null);
+        Response<BlobProperties> response = bec.getPropertiesWithResponse(null, null, null);
+        String encryptionMetadata = response.getHeaders().get(X_MS_META_ENCRYPTIONDATA).getValue();
+
+        EncryptionData encryptionData;
+        try (JsonReader jsonReader = JsonProviders.createReader(encryptionMetadata)) {
+            encryptionData = EncryptionData.fromJson(jsonReader);
+        }
+
+        assertEquals(expectedVersion, encryptionData.getEncryptionAgent().getProtocol());
     }
 
     private static Stream<Arguments> uploadAndDownloadDifferentRegionLengthSupplier() {
