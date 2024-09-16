@@ -20,5 +20,12 @@ public enum EncryptionVersion {
      * Version 2 of the client side encryption protocol.
      * Uses AES/GCM/NoPadding
      */
-    V2
+    V2,
+
+    /**
+     * Version 2.1 of the client side encryption protocol. Use this version when configuring
+     * authenticatedRegionDataLength for encryption.
+     * Uses AES/GCM/NoPadding
+     */
+    V2_1
 }

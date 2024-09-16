@@ -11,6 +11,7 @@ import com.azure.storage.blob.models.BlobRange;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_BLOCK_SIZE;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_PROTOCOL_V1;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_PROTOCOL_V2;
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_PROTOCOL_V2_1;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.NONCE_LENGTH;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.TAG_LENGTH;
 
@@ -125,6 +126,7 @@ final class EncryptedBlobRange {
                 this.amountPlaintextToSkip = offsetAdjustment;
                 break;
             case ENCRYPTION_PROTOCOL_V2:
+            case ENCRYPTION_PROTOCOL_V2_1:
                 // Calculate offsetAdjustment.
                 // Get the start of the encryption region for the original offset
                 long authenticatedRegionDataLength = encryptionData.getEncryptedRegionInfo().getDataLength();

@@ -15,6 +15,8 @@ final class CryptographyConstants {
 
     static final String ENCRYPTION_PROTOCOL_V2 = "2.0";
 
+    static final String ENCRYPTION_PROTOCOL_V2_1 = "2.1";
+
     static final String AGENT_METADATA_KEY = "EncryptionLibrary";
 
     static final String AES_CBC_PKCS5PADDING = "AES/CBC/PKCS5Padding";
