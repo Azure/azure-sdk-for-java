@@ -84,7 +84,7 @@ AzureMonitor.configure(sdkBuilder);
 SpanProcessor spanProcessor = new SpanProcessor() {
     @Override
     public void onStart(Context context, ReadWriteSpan span) {
-        span.setAttribute(AttributeKey.stringKey("random"), RandomStringUtils.random(10));
+        span.setAttribute(AttributeKey.stringKey("attributeKey"), "attributeValue");
     }
 
     @Override

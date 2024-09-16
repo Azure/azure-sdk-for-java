@@ -20,7 +20,6 @@ import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdkBuilder;
 import io.opentelemetry.sdk.trace.ReadWriteSpan;
 import io.opentelemetry.sdk.trace.ReadableSpan;
 import io.opentelemetry.sdk.trace.SpanProcessor;
-import org.apache.commons.lang3.RandomStringUtils;
 
 /**
  * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS
@@ -127,7 +126,7 @@ public class ReadmeSamples {
         SpanProcessor spanProcessor = new SpanProcessor() {
             @Override
             public void onStart(Context context, ReadWriteSpan span) {
-                span.setAttribute(AttributeKey.stringKey("random"), RandomStringUtils.random(10));
+                span.setAttribute(AttributeKey.stringKey("attributeKey"), "attributeValue");
             }
 
             @Override
