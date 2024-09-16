@@ -54,6 +54,7 @@ import com.microsoft.aad.msal4j.SystemBrowserOptions;
 import com.microsoft.aad.msal4j.TokenProviderResult;
 import com.microsoft.aad.msal4j.UserNamePasswordParameters;
 import com.microsoft.aad.msal4j.HttpMethod;
+import com.microsoft.aad.msal4j.ManagedIdentitySourceType;
 import reactor.core.publisher.Mono;
 
 import java.io.BufferedInputStream;
