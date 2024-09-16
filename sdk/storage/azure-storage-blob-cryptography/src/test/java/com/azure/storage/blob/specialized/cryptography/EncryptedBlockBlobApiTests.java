@@ -1797,6 +1797,33 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
         assertArraysEqual(data.array(), plaintextOut.toByteArray());
     }
 
+    @ParameterizedTest
+    @MethodSource("uploadAndDownloadV21WithOlderVersionsSupplier")
+    public void uploadAndDownloadV21WithOlderVersions(int regionLength, int dataSize, EncryptionVersion version) {
+        ByteBuffer data = getRandomData(dataSize);
+        String blobName = generateBlobName();
+        ebc = new EncryptedBlobClient(mockAesKey(getEncryptedClientBuilder(fakeKey, null,
+            ENV.getPrimaryAccount().getCredential(), cc.getBlobContainerUrl(), EncryptionVersion.V2_1)
+            .blobName(blobName)
+            .clientSideEncryptionOptions(new BlobClientSideEncryptionOptions()
+                .setAuthenticatedRegionDataLengthInBytes(regionLength))
+            .buildEncryptedBlobAsyncClient()));
+        ebc.uploadWithResponse(new BlobParallelUploadOptions(BinaryData.fromByteBuffer(data.duplicate())), null, null);
+
+        ByteArrayOutputStream plaintextOut = new ByteArrayOutputStream();
+
+        // Create another client without the authenticated region data length set
+        // This client should be using the default 4MB region size
+        EncryptedBlobClient ebc2 = new EncryptedBlobClient(mockAesKey(getEncryptedClientBuilder(fakeKey, null,
+            ENV.getPrimaryAccount().getCredential(), cc.getBlobContainerUrl(), version)
+            .blobName(blobName)
+            .buildEncryptedBlobAsyncClient()));
+
+        ebc2.downloadStream(plaintextOut);
+
+        assertArraysEqual(data.array(), plaintextOut.toByteArray());
+    }
+
     private static Stream<Arguments> uploadAndDownloadDifferentRegionLengthSupplier() {
         return Stream.of(
             Arguments.of(4 * Constants.KB, 4 * Constants.MB),
@@ -1818,6 +1845,19 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
             Arguments.of(25, Constants.KB), // unaligned
             Arguments.of(6 * Constants.MB, Constants.KB), // testing region smaller than data size
             Arguments.of(6 * Constants.MB, 8 * Constants.MB) // testing greater than default 4MB region size
+        );
+    }
+
+    private static Stream<Arguments> uploadAndDownloadV21WithOlderVersionsSupplier() {
+        return Stream.of(
+            Arguments.of(4 * Constants.KB, 4 * Constants.MB, EncryptionVersion.V1),
+            Arguments.of(4 * Constants.KB, 4 * Constants.MB, EncryptionVersion.V2),
+            Arguments.of(10 * Constants.KB, 4 * Constants.MB, EncryptionVersion.V1), // unaligned
+            Arguments.of(10 * Constants.KB, 4 * Constants.MB, EncryptionVersion.V2), // unaligned
+            Arguments.of(16, Constants.KB, EncryptionVersion.V1), // minimum boundary
+            Arguments.of(16, Constants.KB, EncryptionVersion.V2), // minimum boundary
+            Arguments.of(6 * Constants.MB, 8 * Constants.MB, EncryptionVersion.V1), // testing greater than default 4MB region size
+            Arguments.of(6 * Constants.MB, 8 * Constants.MB, EncryptionVersion.V2) // testing greater than default 4MB region size
         );
     }
 
