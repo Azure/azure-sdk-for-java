@@ -84,6 +84,7 @@ import com.azure.storage.file.share.options.ShareFileSeekableByteChannelWriteOpt
 import com.azure.storage.file.share.options.ShareFileSetPropertiesOptions;
 import com.azure.storage.file.share.options.ShareFileUploadRangeFromUrlOptions;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
+import reactor.core.Exceptions;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -1299,18 +1300,23 @@ public class ShareFileClient {
                     }
                     return new ShareFileDownloadResponse(new ShareFileDownloadAsyncResponse(response.getRequest(),
                         response.getStatusCode(), response.getHeaders(), null, headers));
-                } catch (IOException e) {
+                } catch (Exception e) {
+                    Throwable t = Exceptions.unwrap(e);
+                    System.out.println(t instanceof IOException);
+                    System.out.println(t);
+                    //} catch (IOException e) {
 
                     retryCount++;
                     if (retryCount > retryOptions.getMaxRetryRequests()) {
                         throw LOGGER.logExceptionAsError(new RuntimeException("Failed to download file after retries: " + e.getMessage(), e));
                     }
                     LOGGER.info("Retrying download due to IOException. Attempt: " + retryCount);
-                } catch (ConcurrentModificationException e) {
-                    throw LOGGER.logExceptionAsError(new ConcurrentModificationException("File has been modified concurrently. Expected eTag: " + initialETag + ", Received eTag: " + currentETag,  e));
-                } catch (Exception e) { // General exception catch
-                    throw LOGGER.logExceptionAsError(new RuntimeException("An unexpected error occurred during file download", e));
                 }
+//                } catch (ConcurrentModificationException e) {
+//                    throw LOGGER.logExceptionAsError(new ConcurrentModificationException("File has been modified concurrently. Expected eTag: " + initialETag + ", Received eTag: " + currentETag,  e));
+//                } catch (Exception e) { // General exception catch
+//                    throw LOGGER.logExceptionAsError(new RuntimeException("An unexpected error occurred during file download", e));
+//                }
             }
             throw LOGGER.logExceptionAsError(new RuntimeException("Failed to download file. Max retry attempts reached."));
         };
