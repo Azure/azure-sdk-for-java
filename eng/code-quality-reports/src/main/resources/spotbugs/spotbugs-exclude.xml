@@ -1209,6 +1209,7 @@
 
   <Match>
     <Class name="com.azure.search.documents.indexes.models.AzureOpenAITokenizerParameters" />
+    <Bug pattern="EI_EXPOSE_REP" />
   </Match>
 
   <!--  ChannelHandlerContext::flush is fluent method and return ref can be ignored -->
