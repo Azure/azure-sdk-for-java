@@ -486,7 +486,7 @@ public abstract class IdentityClientBase {
             .builder(managedIdentityId)
             .logPii(options.isUnsafeSupportLoggingEnabled());
 
-        ManagedIdentitySourceType managedIdentitySourceType = ManagedIdentityApplication.getManagedIdentitySource();
+        ManagedIdentitySourceType managedIdentitySourceType = getManagedIdentitySourceType();
 
         if (managedIdentitySourceType.compareTo(ManagedIdentitySourceType.DEFAULT_TO_IMDS) == 0) {
             options.setUseImdsRetryStrategy();
@@ -508,7 +508,7 @@ public abstract class IdentityClientBase {
 
 
     // temporary workaround until msal4j fixes a bug.
-    ManagedIdentitySourceType getManagedIdentitySourceType() {
+    public static ManagedIdentitySourceType getManagedIdentitySourceType() {
         return ManagedIdentityApplication.builder(ManagedIdentityId.systemAssigned())
             .build().getManagedIdentitySource();
     }

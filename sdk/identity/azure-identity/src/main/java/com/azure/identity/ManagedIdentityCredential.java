@@ -10,15 +10,16 @@ import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.identity.implementation.*;
+import com.azure.identity.implementation.IdentityClientBase;
+import com.azure.identity.implementation.IdentityClientBuilder;
+import com.azure.identity.implementation.IdentityClientOptions;
+import com.azure.identity.implementation.ManagedIdentityType;
+import com.azure.identity.implementation.ManagedIdentityParameters;
 import com.azure.identity.implementation.util.LoggingUtil;
-import com.microsoft.aad.msal4j.ManagedIdentityApplication;
 import com.microsoft.aad.msal4j.ManagedIdentitySourceType;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
-import java.util.AbstractMap;
-import java.util.Map;
 
 /**
  * <p><a href="https://learn.microsoft.com/entra/identity/managed-identities-azure-resources/">Azure
@@ -233,7 +234,7 @@ public final class ManagedIdentityCredential implements TokenCredential {
         }
 
         if (!CoreUtils.isNullOrEmpty(managedIdentityId)) {
-            ManagedIdentitySourceType managedIdentitySourceType = ManagedIdentityApplication.getManagedIdentitySource();
+            ManagedIdentitySourceType managedIdentitySourceType = IdentityClientBase.getManagedIdentitySourceType();
             if (managedIdentitySourceType.equals(ManagedIdentitySourceType.CLOUD_SHELL)
                 || managedIdentitySourceType.equals(ManagedIdentitySourceType.AZURE_ARC)) {
                 return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER, identityClientOptions,
@@ -274,7 +275,7 @@ public final class ManagedIdentityCredential implements TokenCredential {
         }
     }
 
-    public static String fetchManagedIdentityId(String clientId, String resourceId,
+    String fetchManagedIdentityId(String clientId, String resourceId,
                                                                                 String objectId) {
         if (clientId != null) {
            return clientId;
