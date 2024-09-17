@@ -139,7 +139,6 @@ public final class EventGridSenderAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> send(CloudEvent event) {
-        // Generated convenience method for sendWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return sendWithResponse(topicName, BinaryData.fromObject(event), requestOptions).then();
     }
@@ -159,7 +158,6 @@ public final class EventGridSenderAsyncClient {
     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> sendWithResponse(CloudEvent event, RequestOptions requestOptions) {
-        // Generated convenience method for sendWithResponse
         return sendWithResponse(topicName, BinaryData.fromObject(event), requestOptions).map(response -> {
             return new SimpleResponse<>(response, null);
         });
@@ -179,7 +177,6 @@ public final class EventGridSenderAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> send(List<CloudEvent> events) {
-        // Generated convenience method for sendEventsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return sendEventsWithResponse(topicName, BinaryData.fromObject(events), requestOptions).then();
     }
@@ -199,7 +196,6 @@ public final class EventGridSenderAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> sendWithResponse(List<CloudEvent> events, RequestOptions requestOptions) {
-        // Generated convenience method for sendEventsWithResponse
         return sendEventsWithResponse(topicName, BinaryData.fromObject(events), requestOptions).map(response -> {
             return new SimpleResponse<>(response, null);
         });

@@ -416,7 +416,6 @@ public final class EventGridReceiverAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ReceiveResult>> receiveWithResponse(Integer maxEvents, Duration maxWaitTime,
         RequestOptions requestOptions) {
-        // Generated convenience method for receiveWithResponse
         if (maxEvents != null) {
             requestOptions.addQueryParam("maxEvents", String.valueOf(maxEvents), false);
         }
@@ -442,7 +441,6 @@ public final class EventGridReceiverAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ReceiveResult> receive() {
-        // Generated convenience method for receiveWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return receiveWithResponse(topicName, subscriptionName, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(ReceiveResult.class));
@@ -464,7 +462,6 @@ public final class EventGridReceiverAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AcknowledgeResult> acknowledge(List<String> lockTokens) {
-        // Generated convenience method for acknowledgeWithResponse
         RequestOptions requestOptions = new RequestOptions();
         AcknowledgeRequest requestObj = new AcknowledgeRequest(lockTokens);
         BinaryData request = BinaryData.fromObject(requestObj);
@@ -490,7 +487,6 @@ public final class EventGridReceiverAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AcknowledgeResult>> acknowledgeWithResponse(List<String> lockTokens,
         RequestOptions requestOptions) {
-        // Generated convenience method for acknowledgeWithResponse
         AcknowledgeRequest requestObj = new AcknowledgeRequest(lockTokens);
         BinaryData request = BinaryData.fromObject(requestObj);
         return acknowledgeWithResponse(topicName, subscriptionName, request, requestOptions)
@@ -514,7 +510,6 @@ public final class EventGridReceiverAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ReleaseResult> release(List<String> lockTokens, ReleaseDelay releaseDelay) {
-        // Generated convenience method for releaseWithResponse
         RequestOptions requestOptions = new RequestOptions();
         ReleaseRequest requestObj = new ReleaseRequest(lockTokens);
         BinaryData request = BinaryData.fromObject(requestObj);
@@ -544,7 +539,6 @@ public final class EventGridReceiverAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ReleaseResult>> releaseWithResponse(List<String> lockTokens, ReleaseDelay releaseDelay,
         RequestOptions requestOptions) {
-        // Generated convenience method for releaseWithResponse
         ReleaseRequest requestObj = new ReleaseRequest(lockTokens);
         BinaryData request = BinaryData.fromObject(requestObj);
         if (releaseDelay != null) {
@@ -570,7 +564,6 @@ public final class EventGridReceiverAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ReleaseResult> release(List<String> lockTokens) {
-        // Generated convenience method for releaseWithResponse
         RequestOptions requestOptions = new RequestOptions();
         ReleaseRequest requestObj = new ReleaseRequest(lockTokens);
         BinaryData request = BinaryData.fromObject(requestObj);
@@ -594,7 +587,6 @@ public final class EventGridReceiverAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RejectResult> reject(List<String> lockTokens) {
-        // Generated convenience method for rejectWithResponse
         RequestOptions requestOptions = new RequestOptions();
         RejectRequest requestObj = new RejectRequest(lockTokens);
         BinaryData request = BinaryData.fromObject(requestObj);
@@ -619,7 +611,6 @@ public final class EventGridReceiverAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RejectResult>> rejectWithResponse(List<String> lockTokens, RequestOptions requestOptions) {
-        // Generated convenience method for rejectWithResponse
         RejectRequest requestObj = new RejectRequest(lockTokens);
         BinaryData request = BinaryData.fromObject(requestObj);
         return rejectWithResponse(topicName, subscriptionName, request, requestOptions)
@@ -642,7 +633,6 @@ public final class EventGridReceiverAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RenewLocksResult> renewLocks(List<String> lockTokens) {
-        // Generated convenience method for renewLocksWithResponse
         RequestOptions requestOptions = new RequestOptions();
         RenewLocksRequest requestObj = new RenewLocksRequest(lockTokens);
         BinaryData request = BinaryData.fromObject(requestObj);
@@ -668,7 +658,6 @@ public final class EventGridReceiverAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RenewLocksResult>> renewLocksWithResponse(List<String> lockTokens,
         RequestOptions requestOptions) {
-        // Generated convenience method for renewLocksWithResponse
         RenewLocksRequest requestObj = new RenewLocksRequest(lockTokens);
         BinaryData request = BinaryData.fromObject(requestObj);
         return renewLocksWithResponse(topicName, subscriptionName, request, requestOptions)

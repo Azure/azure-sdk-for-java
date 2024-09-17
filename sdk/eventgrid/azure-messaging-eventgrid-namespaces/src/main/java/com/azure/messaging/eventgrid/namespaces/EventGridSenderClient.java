@@ -136,7 +136,6 @@ public final class EventGridSenderClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void send(CloudEvent event) {
-        // Generated convenience method for sendWithResponse
         RequestOptions requestOptions = new RequestOptions();
         sendWithResponse(topicName, BinaryData.fromObject(event), requestOptions);
     }
@@ -173,7 +172,6 @@ public final class EventGridSenderClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void send(List<CloudEvent> events) {
-        // Generated convenience method for sendEventsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         sendEventsWithResponse(topicName, BinaryData.fromObject(events), requestOptions);
     }
