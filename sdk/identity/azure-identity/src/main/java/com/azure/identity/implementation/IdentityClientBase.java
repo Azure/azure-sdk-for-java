@@ -6,6 +6,7 @@ package com.azure.identity.implementation;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
+import com.azure.core.experimental.credential.PopTokenRequestContext;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
@@ -26,9 +27,6 @@ import com.azure.core.util.UserAgentUtil;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.identity.BrowserCustomizationOptions;
 import com.azure.identity.CredentialUnavailableException;
 import com.azure.identity.DeviceCodeInfo;
@@ -44,11 +42,13 @@ import com.microsoft.aad.msal4j.ClaimsRequest;
 import com.microsoft.aad.msal4j.ClientCredentialFactory;
 import com.microsoft.aad.msal4j.ConfidentialClientApplication;
 import com.microsoft.aad.msal4j.DeviceCodeFlowParameters;
+import com.microsoft.aad.msal4j.HttpMethod;
 import com.microsoft.aad.msal4j.IBroker;
 import com.microsoft.aad.msal4j.IClientCredential;
 import com.microsoft.aad.msal4j.InteractiveRequestParameters;
-import com.microsoft.aad.msal4j.ManagedIdentityId;
 import com.microsoft.aad.msal4j.ManagedIdentityApplication;
+import com.microsoft.aad.msal4j.ManagedIdentityId;
+import com.microsoft.aad.msal4j.ManagedIdentitySourceType;
 import com.microsoft.aad.msal4j.OnBehalfOfParameters;
 import com.microsoft.aad.msal4j.Prompt;
 import com.microsoft.aad.msal4j.PublicClientApplication;
@@ -58,8 +58,8 @@ import com.microsoft.aad.msal4j.UserNamePasswordParameters;
 import reactor.core.publisher.Mono;
 
 import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -72,6 +72,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.Proxy;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -103,16 +104,12 @@ import java.util.regex.Pattern;
 import static com.azure.identity.implementation.util.IdentityUtil.isWindowsPlatform;
 
 public abstract class IdentityClientBase {
-    static final SerializerAdapter SERIALIZER_ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
     static final String WINDOWS_STARTER = "cmd.exe";
     static final String LINUX_MAC_STARTER = "/bin/sh";
     static final String WINDOWS_SWITCHER = "/c";
     static final String LINUX_MAC_SWITCHER = "-c";
     static final Pattern WINDOWS_PROCESS_ERROR_MESSAGE = Pattern.compile("'azd?' is not recognized");
     static final Pattern SH_PROCESS_ERROR_MESSAGE = Pattern.compile("azd?:.*not found");
-    static final String DEFAULT_WINDOWS_PS_EXECUTABLE = "pwsh.exe";
-    static final String LEGACY_WINDOWS_PS_EXECUTABLE = "powershell.exe";
-    static final String DEFAULT_LINUX_PS_EXECUTABLE = "pwsh";
     static final String DEFAULT_MAC_LINUX_PATH = "/bin/";
     static final Duration REFRESH_OFFSET = Duration.ofMinutes(5);
     static final String IDENTITY_ENDPOINT_VERSION = "2019-08-01";
@@ -128,6 +125,7 @@ public abstract class IdentityClientBase {
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
     private static final ClientOptions DEFAULT_CLIENT_OPTIONS = new ClientOptions();
+    private static final Map<String, HttpMethod> HTTP_METHOD_HASH_MAP = new HashMap<>(8);
 
 
     private final Map<String, String> properties = CoreUtils.getProperties(AZURE_IDENTITY_PROPERTIES);
@@ -473,7 +471,7 @@ public abstract class IdentityClientBase {
             .builder(managedIdentityId)
             .logPii(options.isUnsafeSupportLoggingEnabled());
 
-        if ("DEFAULT_TO_IMDS".equals(String.valueOf(ManagedIdentityApplication.getManagedIdentitySource()))) {
+        if ("DEFAULT_TO_IMDS".equals(String.valueOf(getManagedIdentitySourceType()))) {
             options.setUseImdsRetryStrategy();
         }
 
@@ -489,6 +487,13 @@ public abstract class IdentityClientBase {
         }
 
         return miBuilder.build();
+    }
+
+
+    // temporary workaround until msal4j fixes a bug.
+    ManagedIdentitySourceType getManagedIdentitySourceType() {
+        return ManagedIdentityApplication.builder(ManagedIdentityId.systemAssigned())
+            .build().getManagedIdentitySource();
     }
 
     ConfidentialClientApplication getWorkloadIdentityConfidentialClient() {
@@ -546,8 +551,8 @@ public abstract class IdentityClientBase {
                     .resolveTenantId(tenantId, request, options));
 
         if (request.getClaims() != null) {
-            ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());
-            parametersBuilder.claims(customClaimRequest);
+            ClaimsRequest claimsRequest = ClaimsRequest.formatAsClaimsRequest(request.getClaims());
+            parametersBuilder.claims(claimsRequest);
         }
         return parametersBuilder;
     }
@@ -558,8 +563,8 @@ public abstract class IdentityClientBase {
             .tenant(IdentityUtil.resolveTenantId(tenantId, request, options));
 
         if (request.isCaeEnabled() && request.getClaims() != null) {
-            ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());
-            builder.claims(customClaimRequest);
+            ClaimsRequest claimsRequest = ClaimsRequest.formatAsClaimsRequest(request.getClaims());
+            builder.claims(claimsRequest);
         }
         return builder.build();
     }
@@ -573,8 +578,8 @@ public abstract class IdentityClientBase {
                     .resolveTenantId(tenantId, request, options));
 
         if (request.isCaeEnabled() && request.getClaims() != null) {
-            ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());
-            builder.claims(customClaimRequest);
+            ClaimsRequest claimsRequest = ClaimsRequest.formatAsClaimsRequest(request.getClaims());
+            builder.claims(claimsRequest);
         }
 
         BrowserCustomizationOptions browserCustomizationOptions = options.getBrowserCustomizationOptions();
@@ -598,6 +603,17 @@ public abstract class IdentityClientBase {
                 extraQueryParameters.put("msal_request_type", "consumer_passthrough");
                 builder.extraQueryParameters(extraQueryParameters);
             }
+
+            if (request instanceof PopTokenRequestContext
+                && ((PopTokenRequestContext) request).isProofOfPossessionEnabled()) {
+                PopTokenRequestContext requestContext = (PopTokenRequestContext) request;
+                try {
+                    builder.proofOfPossession(mapToMsalHttpMethod(requestContext.getResourceRequestMethod()),
+                        requestContext.getResourceRequestUrl().toURI(), requestContext.getProofOfPossessionNonce());
+                } catch (URISyntaxException e) {
+                    throw new IllegalArgumentException(e);
+                }
+            }
         }
 
         if (loginHint != null) {
@@ -606,15 +622,34 @@ public abstract class IdentityClientBase {
         return builder;
     }
 
+    static HttpMethod mapToMsalHttpMethod(String methodName) {
+        if (HTTP_METHOD_HASH_MAP.containsKey(methodName)) {
+            return HTTP_METHOD_HASH_MAP.get(methodName);
+        }
+
+        // Invalidate the cache if it grows too large. This is a simple cache and does not need to be large.
+        if (HTTP_METHOD_HASH_MAP.size() > 10) {
+            HTTP_METHOD_HASH_MAP.clear();
+        }
+
+        for (HttpMethod method : HttpMethod.values()) {
+            if (method.methodName.equalsIgnoreCase(methodName)) {
+                HTTP_METHOD_HASH_MAP.put(methodName, method);
+                return method;
+            }
+        }
+        throw new IllegalArgumentException("No enum constant with method name: " + methodName);
+    }
+
     UserNamePasswordParameters.UserNamePasswordParametersBuilder buildUsernamePasswordFlowParameters(TokenRequestContext request, String username, String password) {
         UserNamePasswordParameters.UserNamePasswordParametersBuilder userNamePasswordParametersBuilder =
             UserNamePasswordParameters.builder(new HashSet<>(request.getScopes()),
                 username, password.toCharArray());
 
         if (request.isCaeEnabled() && request.getClaims() != null) {
-            ClaimsRequest customClaimRequest = CustomClaimRequest
+            ClaimsRequest claimsRequest = ClaimsRequest
                 .formatAsClaimsRequest(request.getClaims());
-            userNamePasswordParametersBuilder.claims(customClaimRequest);
+            userNamePasswordParametersBuilder.claims(claimsRequest);
         }
         userNamePasswordParametersBuilder.tenant(
             IdentityUtil.resolveTenantId(tenantId, request, options));
@@ -790,21 +825,21 @@ public abstract class IdentityClientBase {
                     "Azure Developer CLI Authentication => A token response was received from Azure Developer CLI, deserializing the"
                             +
                             " response into an Access Token.");
-            Map<String, String> objectMap = SERIALIZER_ADAPTER.deserialize(
-                    processOutput,
-                    Map.class,
-                    SerializerEncoding.JSON);
-            String accessToken = objectMap.get("token");
-            String time = objectMap.get("expiresOn");
-            // az expiresOn format = "2022-11-30 02:38:42.000000" vs
-            // azd expiresOn format = "2022-11-30T02:05:08Z"
-            String standardTime = time.substring(0, time.indexOf("Z"));
-            OffsetDateTime expiresOn = LocalDateTime
-                    .parse(standardTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
-                    .atZone(ZoneId.of("Z"))
-                    .toOffsetDateTime()
-                    .withOffsetSameInstant(ZoneOffset.UTC);
-            token = new AccessToken(accessToken, expiresOn);
+            try (JsonReader reader = JsonProviders.createReader(processOutput)) {
+                reader.nextToken();
+                Map<String, String> objectMap = reader.readMap(JsonReader::getString);
+                String accessToken = objectMap.get("token");
+                String time = objectMap.get("expiresOn");
+                // az expiresOn format = "2022-11-30 02:38:42.000000" vs
+                // azd expiresOn format = "2022-11-30T02:05:08Z"
+                String standardTime = time.substring(0, time.indexOf("Z"));
+                OffsetDateTime expiresOn = LocalDateTime
+                        .parse(standardTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+                        .atZone(ZoneId.of("Z"))
+                        .toOffsetDateTime()
+                        .withOffsetSameInstant(ZoneOffset.UTC);
+                token = new AccessToken(accessToken, expiresOn);
+            }
         } catch (IOException | InterruptedException e) {
             IllegalStateException ex = new IllegalStateException(redactInfo(e.getMessage()));
             ex.setStackTrace(e.getStackTrace());
@@ -841,14 +876,40 @@ public abstract class IdentityClientBase {
             }
             connection.connect();
 
-            return SERIALIZER_ADAPTER.deserialize(connection.getInputStream(), MSIToken.class,
-                SerializerEncoding.JSON);
+            return MSIToken.fromJson(JsonProviders.createReader(connection.getInputStream()));
+        } catch (IOException exception) {
+            if (connection == null) {
+                throw LOGGER.logExceptionAsError(new RuntimeException(
+                    "Could not connect to the authority host: " + url + ".", exception));
+            }
+            int responseCode;
+            try {
+                responseCode = connection.getResponseCode();
+            } catch (Exception e) {
+                throw LoggingUtil.logCredentialUnavailableException(LOGGER, options,
+                    new CredentialUnavailableException(
+                        "WorkloadIdentityCredential authentication unavailable. "
+                            + "Connection to the authority host cannot be established, "
+                            + e.getMessage() + ".", e));
+            }
+            if (responseCode == 400) {
+                throw LoggingUtil.logCredentialUnavailableException(LOGGER, options,
+                    new CredentialUnavailableException(
+                        "WorkloadIdentityCredential authentication unavailable. "
+                            + "The request to the authority host was invalid. "
+                            + "Additional details: " + exception.getMessage() + ".", exception));
+            }
+
+            throw LOGGER.logExceptionAsError(new RuntimeException(
+                "Couldn't acquire access token from Workload Identity.", exception));
         } finally {
             if (connection != null) {
                 connection.disconnect();
             }
         }
     }
+
+
 
     String getSafeWorkingDirectory() {
         if (isWindowsPlatform()) {

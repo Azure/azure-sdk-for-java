@@ -5,48 +5,41 @@
 package com.azure.resourcemanager.billing.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.Map;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The rebill details of an invoice. */
+/**
+ * The rebill details of an invoice.
+ */
 @Immutable
-public final class RebillDetails {
-    /*
-     * The ID of credit note.
-     */
-    @JsonProperty(value = "creditNoteDocumentId", access = JsonProperty.Access.WRITE_ONLY)
-    private String creditNoteDocumentId;
-
+public class RebillDetails implements JsonSerializable<RebillDetails> {
     /*
      * The ID of invoice.
      */
-    @JsonProperty(value = "invoiceDocumentId", access = JsonProperty.Access.WRITE_ONLY)
     private String invoiceDocumentId;
 
     /*
-     * Rebill details for an invoice.
+     * The ID of credit note.
      */
-    @JsonProperty(value = "rebillDetails", access = JsonProperty.Access.WRITE_ONLY)
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
-    private Map<String, RebillDetails> rebillDetails;
+    private String creditNoteDocumentId;
 
-    /** Creates an instance of RebillDetails class. */
+    /*
+     * The rebill details of an invoice.
+     */
+    private RebillDetails rebillDetails;
+
+    /**
+     * Creates an instance of RebillDetails class.
+     */
     public RebillDetails() {
     }
 
     /**
-     * Get the creditNoteDocumentId property: The ID of credit note.
-     *
-     * @return the creditNoteDocumentId value.
-     */
-    public String creditNoteDocumentId() {
-        return this.creditNoteDocumentId;
-    }
-
-    /**
      * Get the invoiceDocumentId property: The ID of invoice.
-     *
+     * 
      * @return the invoiceDocumentId value.
      */
     public String invoiceDocumentId() {
@@ -54,29 +47,103 @@ public final class RebillDetails {
     }
 
     /**
-     * Get the rebillDetails property: Rebill details for an invoice.
-     *
+     * Set the invoiceDocumentId property: The ID of invoice.
+     * 
+     * @param invoiceDocumentId the invoiceDocumentId value to set.
+     * @return the RebillDetails object itself.
+     */
+    RebillDetails withInvoiceDocumentId(String invoiceDocumentId) {
+        this.invoiceDocumentId = invoiceDocumentId;
+        return this;
+    }
+
+    /**
+     * Get the creditNoteDocumentId property: The ID of credit note.
+     * 
+     * @return the creditNoteDocumentId value.
+     */
+    public String creditNoteDocumentId() {
+        return this.creditNoteDocumentId;
+    }
+
+    /**
+     * Set the creditNoteDocumentId property: The ID of credit note.
+     * 
+     * @param creditNoteDocumentId the creditNoteDocumentId value to set.
+     * @return the RebillDetails object itself.
+     */
+    RebillDetails withCreditNoteDocumentId(String creditNoteDocumentId) {
+        this.creditNoteDocumentId = creditNoteDocumentId;
+        return this;
+    }
+
+    /**
+     * Get the rebillDetails property: The rebill details of an invoice.
+     * 
      * @return the rebillDetails value.
      */
-    public Map<String, RebillDetails> rebillDetails() {
+    public RebillDetails rebillDetails() {
         return this.rebillDetails;
     }
 
     /**
+     * Set the rebillDetails property: The rebill details of an invoice.
+     * 
+     * @param rebillDetails the rebillDetails value to set.
+     * @return the RebillDetails object itself.
+     */
+    RebillDetails withRebillDetails(RebillDetails rebillDetails) {
+        this.rebillDetails = rebillDetails;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (rebillDetails() != null) {
-            rebillDetails()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            rebillDetails().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RebillDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RebillDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RebillDetails.
+     */
+    public static RebillDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RebillDetails deserializedRebillDetails = new RebillDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("invoiceDocumentId".equals(fieldName)) {
+                    deserializedRebillDetails.invoiceDocumentId = reader.getString();
+                } else if ("creditNoteDocumentId".equals(fieldName)) {
+                    deserializedRebillDetails.creditNoteDocumentId = reader.getString();
+                } else if ("rebillDetails".equals(fieldName)) {
+                    deserializedRebillDetails.rebillDetails = RebillDetails.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRebillDetails;
+        });
     }
 }

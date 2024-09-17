@@ -134,7 +134,7 @@
         <configuration>
           <excludes>
             <exclude>META-INF/**</exclude>
-            <exclude>**/com/azure/json/implementation/jackson/core/**</exclude>
+            <exclude>**/io/clientcore/json/implementation/jackson/core/**</exclude>
           </excludes>
         </configuration>
       </plugin>

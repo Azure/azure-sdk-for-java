@@ -7,27 +7,27 @@ package com.azure.resourcemanager.billing.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Operations. */
+/**
+ * Resource collection API of Operations.
+ */
 public interface Operations {
     /**
-     * Lists the available billing REST API operations.
-     *
+     * List of operations supported by provider.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing operations and a URL link to get the next set of results as paginated response with
-     *     {@link PagedIterable}.
+     * @return a container for a list of resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Operation> list();
 
     /**
-     * Lists the available billing REST API operations.
-     *
+     * List of operations supported by provider.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing operations and a URL link to get the next set of results as paginated response with
-     *     {@link PagedIterable}.
+     * @return a container for a list of resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Operation> list(Context context);
 }

@@ -558,6 +558,7 @@ public final class DocumentAnalysisClient {
             throw LOGGER.logExceptionAsError(getHttpResponseException(ex));
         }
     }
+
     private BiFunction<PollingContext<OperationResult>, PollResponse<OperationResult>, OperationResult>
         getCancellationIsNotSupported() {
         return (pollingContext, activationResponse) -> {

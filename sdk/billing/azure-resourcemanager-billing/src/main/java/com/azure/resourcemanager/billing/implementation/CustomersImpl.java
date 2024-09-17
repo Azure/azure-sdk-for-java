@@ -26,53 +26,73 @@ public final class CustomersImpl implements Customers {
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<Customer> listByBillingProfile(String billingAccountName, String billingProfileName) {
-        PagedIterable<CustomerInner> inner =
-            this.serviceClient().listByBillingProfile(billingAccountName, billingProfileName);
-        return Utils.mapPage(inner, inner1 -> new CustomerImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<Customer> listByBillingProfile(
-        String billingAccountName, String billingProfileName, String search, String filter, Context context) {
-        PagedIterable<CustomerInner> inner =
-            this.serviceClient().listByBillingProfile(billingAccountName, billingProfileName, search, filter, context);
-        return Utils.mapPage(inner, inner1 -> new CustomerImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<Customer> listByBillingAccount(String billingAccountName) {
-        PagedIterable<CustomerInner> inner = this.serviceClient().listByBillingAccount(billingAccountName);
-        return Utils.mapPage(inner, inner1 -> new CustomerImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<Customer> listByBillingAccount(
-        String billingAccountName, String search, String filter, Context context) {
-        PagedIterable<CustomerInner> inner =
-            this.serviceClient().listByBillingAccount(billingAccountName, search, filter, context);
-        return Utils.mapPage(inner, inner1 -> new CustomerImpl(inner1, this.manager()));
-    }
-
-    public Response<Customer> getWithResponse(
-        String billingAccountName, String customerName, String expand, Context context) {
-        Response<CustomerInner> inner =
-            this.serviceClient().getWithResponse(billingAccountName, customerName, expand, context);
+    public Response<Customer> getWithResponse(String billingAccountName, String billingProfileName, String customerName,
+        Context context) {
+        Response<CustomerInner> inner
+            = this.serviceClient().getWithResponse(billingAccountName, billingProfileName, customerName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new CustomerImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public Customer get(String billingAccountName, String customerName) {
-        CustomerInner inner = this.serviceClient().get(billingAccountName, customerName);
+    public Customer get(String billingAccountName, String billingProfileName, String customerName) {
+        CustomerInner inner = this.serviceClient().get(billingAccountName, billingProfileName, customerName);
         if (inner != null) {
             return new CustomerImpl(inner, this.manager());
         } else {
             return null;
         }
+    }
+
+    public PagedIterable<Customer> listByBillingProfile(String billingAccountName, String billingProfileName) {
+        PagedIterable<CustomerInner> inner
+            = this.serviceClient().listByBillingProfile(billingAccountName, billingProfileName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new CustomerImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<Customer> listByBillingProfile(String billingAccountName, String billingProfileName,
+        String expand, String filter, String orderBy, Long top, Long skip, Boolean count, String search,
+        Context context) {
+        PagedIterable<CustomerInner> inner = this.serviceClient()
+            .listByBillingProfile(billingAccountName, billingProfileName, expand, filter, orderBy, top, skip, count,
+                search, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new CustomerImpl(inner1, this.manager()));
+    }
+
+    public Response<Customer> getByBillingAccountWithResponse(String billingAccountName, String customerName,
+        Context context) {
+        Response<CustomerInner> inner
+            = this.serviceClient().getByBillingAccountWithResponse(billingAccountName, customerName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new CustomerImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Customer getByBillingAccount(String billingAccountName, String customerName) {
+        CustomerInner inner = this.serviceClient().getByBillingAccount(billingAccountName, customerName);
+        if (inner != null) {
+            return new CustomerImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public PagedIterable<Customer> listByBillingAccount(String billingAccountName) {
+        PagedIterable<CustomerInner> inner = this.serviceClient().listByBillingAccount(billingAccountName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new CustomerImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<Customer> listByBillingAccount(String billingAccountName, String expand, String filter,
+        String orderBy, Long top, Long skip, Boolean count, String search, Context context) {
+        PagedIterable<CustomerInner> inner = this.serviceClient()
+            .listByBillingAccount(billingAccountName, expand, filter, orderBy, top, skip, count, search, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new CustomerImpl(inner1, this.manager()));
     }
 
     private CustomersClient serviceClient() {

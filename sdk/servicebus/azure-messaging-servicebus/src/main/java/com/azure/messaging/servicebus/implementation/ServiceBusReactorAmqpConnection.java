@@ -6,26 +6,29 @@ package com.azure.messaging.servicebus.implementation;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.AmqpSession;
+import com.azure.core.amqp.implementation.AmqpChannelProcessor;
 import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.AzureTokenManagerProvider;
+import com.azure.core.amqp.implementation.ChannelCacheWrapper;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.amqp.implementation.ProtonSessionWrapper;
 import com.azure.core.amqp.implementation.ReactorConnection;
 import com.azure.core.amqp.implementation.ReactorHandlerProvider;
 import com.azure.core.amqp.implementation.ReactorProvider;
+import com.azure.core.amqp.implementation.ReactorSession;
+import com.azure.core.amqp.implementation.RequestResponseChannel;
+import com.azure.core.amqp.implementation.RequestResponseChannelCache;
 import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.amqp.implementation.TokenManager;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
-import com.azure.core.amqp.implementation.handler.SessionHandler;
 import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
 import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
 import org.apache.qpid.proton.engine.BaseHandler;
-import org.apache.qpid.proton.engine.Session;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Scheduler;
 
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -46,17 +49,16 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusReactorAmqpConnection.class);
     private final ConcurrentHashMap<String, ServiceBusManagementNode> managementNodes = new ConcurrentHashMap<>();
     private final String connectionId;
-    private final ReactorProvider reactorProvider;
     private final ReactorHandlerProvider handlerProvider;
     private final ServiceBusAmqpLinkProvider linkProvider;
     private final TokenManagerProvider tokenManagerProvider;
     private final AmqpRetryOptions retryOptions;
     private final MessageSerializer messageSerializer;
-    private final Scheduler scheduler;
     private final String fullyQualifiedNamespace;
     private final CbsAuthorizationType authorizationType;
     private final boolean distributedTransactionsSupport;
     private final boolean isV2;
+    private final boolean useSessionChannelCache;
 
     /**
      * Creates a new AMQP connection that uses proton-j.
@@ -71,26 +73,27 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
      * @param distributedTransactionsSupport indicate if distributed transaction across different entities is required
      *        for this connection.
      * @param isV2 (temporary) flag to use either v1 or v2 receiver.
+     * @param useSessionChannelCache indicates if ReactorSessionCache and RequestResponseChannelCache should be used
+     *  when in v2 mode.
      */
     public ServiceBusReactorAmqpConnection(String connectionId, ConnectionOptions connectionOptions,
         ReactorProvider reactorProvider, ReactorHandlerProvider handlerProvider, ServiceBusAmqpLinkProvider linkProvider,
         TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer,
-        boolean distributedTransactionsSupport, boolean isV2) {
+        boolean distributedTransactionsSupport, boolean isV2, boolean useSessionChannelCache) {
         super(connectionId, connectionOptions, reactorProvider, handlerProvider, linkProvider, tokenManagerProvider,
-            messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST, isV2);
+            messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST, isV2, useSessionChannelCache);
 
         this.connectionId = connectionId;
-        this.reactorProvider = reactorProvider;
         this.handlerProvider = handlerProvider;
         this.linkProvider = linkProvider;
         this.tokenManagerProvider = tokenManagerProvider;
         this.authorizationType = connectionOptions.getAuthorizationType();
         this.retryOptions = connectionOptions.getRetry();
         this.messageSerializer = messageSerializer;
-        this.scheduler = connectionOptions.getScheduler();
         this.fullyQualifiedNamespace = connectionOptions.getFullyQualifiedNamespace();
         this.distributedTransactionsSupport = distributedTransactionsSupport;
         this.isV2 = isV2;
+        this.useSessionChannelCache = useSessionChannelCache;
     }
 
     @Override
@@ -133,9 +136,21 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
                         .addKeyValue("address", address)
                         .log("Creating management node.");
 
-                    return new ManagementChannel(createRequestResponseChannel(sessionName, linkName, address),
-                        fullyQualifiedNamespace, entityPath, tokenManager, messageSerializer,
-                        retryOptions.getTryTimeout());
+                    final ChannelCacheWrapper channelCache;
+                    if (useSessionChannelCache) {
+                        // V2 with 'SessionCache,RequestResponseChannelCache' opted-in.
+                        final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
+                        final RequestResponseChannelCache cache
+                            = new RequestResponseChannelCache(this, address, sessionName, linkName, retryPolicy);
+                        channelCache = new ChannelCacheWrapper(cache);
+                    } else {
+                        // V2 without 'SessionCache,RequestResponseChannelCache' opt-in or V1.
+                        final AmqpChannelProcessor<RequestResponseChannel> cache
+                            = createRequestResponseChannel(sessionName, linkName, address);
+                        channelCache = new ChannelCacheWrapper(cache);
+                    }
+                    return new ManagementChannel(channelCache, fullyQualifiedNamespace, entityPath, tokenManager,
+                        messageSerializer, retryOptions.getTryTimeout());
                 }));
             }));
     }
@@ -225,9 +240,9 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
     }
 
     @Override
-    protected AmqpSession createSession(String sessionName, Session session, SessionHandler handler) {
-        return new ServiceBusReactorSession(this, session, handler, sessionName, reactorProvider,
-            handlerProvider, linkProvider, getClaimsBasedSecurityNode(), tokenManagerProvider, messageSerializer, retryOptions,
+    protected ReactorSession createSession(ProtonSessionWrapper session) {
+        return new ServiceBusReactorSession(this, session, handlerProvider, linkProvider, getClaimsBasedSecurityNode(),
+            tokenManagerProvider, messageSerializer, retryOptions,
             new ServiceBusCreateSessionOptions(distributedTransactionsSupport), isV2);
     }
 }

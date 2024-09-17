@@ -5,56 +5,38 @@
 package com.azure.resourcemanager.billing.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.billing.fluent.models.CustomerInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The list of customers. */
+/**
+ * A container for a list of resources.
+ */
 @Immutable
-public final class CustomerListResult {
-    /*
-     * The list of customers.
-     */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
-    private List<CustomerInner> value;
-
-    /*
-     * Total number of records.
-     */
-    @JsonProperty(value = "totalCount", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer totalCount;
-
+public final class CustomerListResult implements JsonSerializable<CustomerListResult> {
     /*
      * The link (url) to the next page of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of CustomerListResult class. */
+    /*
+     * The list of resources.
+     */
+    private List<CustomerInner> value;
+
+    /**
+     * Creates an instance of CustomerListResult class.
+     */
     public CustomerListResult() {
     }
 
     /**
-     * Get the value property: The list of customers.
-     *
-     * @return the value value.
-     */
-    public List<CustomerInner> value() {
-        return this.value;
-    }
-
-    /**
-     * Get the totalCount property: Total number of records.
-     *
-     * @return the totalCount value.
-     */
-    public Integer totalCount() {
-        return this.totalCount;
-    }
-
-    /**
      * Get the nextLink property: The link (url) to the next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -62,13 +44,60 @@ public final class CustomerListResult {
     }
 
     /**
+     * Get the value property: The list of resources.
+     * 
+     * @return the value value.
+     */
+    public List<CustomerInner> value() {
+        return this.value;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomerListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomerListResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CustomerListResult.
+     */
+    public static CustomerListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomerListResult deserializedCustomerListResult = new CustomerListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nextLink".equals(fieldName)) {
+                    deserializedCustomerListResult.nextLink = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    List<CustomerInner> value = reader.readArray(reader1 -> CustomerInner.fromJson(reader1));
+                    deserializedCustomerListResult.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomerListResult;
+        });
     }
 }

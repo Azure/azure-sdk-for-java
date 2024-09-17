@@ -97,11 +97,13 @@ public class GlobalEndPointManagerTest {
         globalEndPointManager.markEndpointUnavailableForRead(new URI(("https://testaccount-eastus.documents.azure.com:443/")));
         globalEndPointManager.refreshLocationAsync(null, false).block(); // Cache will be refreshed as there is no preferred active region remaining
         LocationCache locationCache = this.getLocationCache(globalEndPointManager);
-        Assert.assertEquals(locationCache.getReadEndpoints().size(), 1, "ReadEnpoints should have 1 value");
+        Assert.assertEquals(locationCache.getReadEndpoints().size(), 2, "Read endpoints should have 2 values");
 
         Map<String, URI> availableReadEndpointByLocation = this.getAvailableReadEndpointByLocation(locationCache);
-        Assert.assertEquals(availableReadEndpointByLocation.size(), 1);
+        Assert.assertEquals(availableReadEndpointByLocation.size(), 2);
+
         Assert.assertTrue(availableReadEndpointByLocation.keySet().contains("East Asia"));
+        Assert.assertTrue(availableReadEndpointByLocation.keySet().contains("East US"));
 
         AtomicBoolean isRefreshing = getIsRefreshing(globalEndPointManager);
         AtomicBoolean isRefreshInBackground = getRefreshInBackground(globalEndPointManager);
@@ -349,7 +351,7 @@ public class GlobalEndPointManagerTest {
         globalEndPointManager.init();
 
         LocationCache locationCache = getLocationCache(globalEndPointManager);
-        Assert.assertEquals(locationCache.getReadEndpoints().size(), 1, "ReadEnpoints should have 1 value");
+        Assert.assertEquals(locationCache.getReadEndpoints().size(), 2, "Read endpoints should have 2 values");
 
         Map<String, URI> availableWriteEndpointByLocation = this.getAvailableWriteEndpointByLocation(locationCache);
         Map<String, URI> availableReadEndpointByLocation = this.getAvailableReadEndpointByLocation(locationCache);

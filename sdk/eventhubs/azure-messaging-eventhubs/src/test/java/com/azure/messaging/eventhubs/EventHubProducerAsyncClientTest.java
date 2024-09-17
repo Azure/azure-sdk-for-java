@@ -55,10 +55,9 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.Sinks;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
@@ -146,8 +145,7 @@ class EventHubProducerAsyncClientTest {
         .setDelay(Duration.ofMillis(500))
         .setMode(AmqpRetryMode.FIXED)
         .setTryTimeout(Duration.ofSeconds(10));
-    private final DirectProcessor<AmqpEndpointState> endpointProcessor = DirectProcessor.create();
-    private final FluxSink<AmqpEndpointState> endpointSink = endpointProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
+    private final Sinks.Many<AmqpEndpointState> endpointStates = Sinks.many().multicast().onBackpressureBuffer();
     private EventHubProducerAsyncClient producer;
     private ConnectionCacheWrapper connectionProcessor;
     private ConnectionOptions connectionOptions;
@@ -163,8 +161,8 @@ class EventHubProducerAsyncClientTest {
             CLIENT_OPTIONS, SslDomain.VerifyMode.VERIFY_PEER_NAME,
             "client-product", "client-version");
 
-        when(connection.getEndpointStates()).thenReturn(endpointProcessor);
-        endpointSink.next(AmqpEndpointState.ACTIVE);
+        when(connection.getEndpointStates()).thenReturn(endpointStates.asFlux());
+        endpointStates.emitNext(AmqpEndpointState.ACTIVE, Sinks.EmitFailureHandler.FAIL_FAST);
 
         when(connection.closeAsync()).thenReturn(Mono.empty());
 
@@ -1319,8 +1317,8 @@ class EventHubProducerAsyncClientTest {
     @Test
     void reopensOnFailure() {
         // Arrange
-        when(connection.getEndpointStates()).thenReturn(endpointProcessor);
-        endpointSink.next(AmqpEndpointState.ACTIVE);
+        when(connection.getEndpointStates()).thenReturn(endpointStates.asFlux());
+        endpointStates.emitNext(AmqpEndpointState.ACTIVE, Sinks.EmitFailureHandler.FAIL_FAST);
 
         EventHubReactorAmqpConnection[] connections = new EventHubReactorAmqpConnection[]{
             connection, connection2, connection3
@@ -1342,14 +1340,14 @@ class EventHubProducerAsyncClientTest {
             .thenReturn(Mono.just(sendLink));
         when(sendLink.send(anyList())).thenReturn(Mono.empty());
 
-        final DirectProcessor<AmqpEndpointState> connectionState2 = DirectProcessor.create();
-        when(connection2.getEndpointStates()).thenReturn(connectionState2);
+        final Sinks.Many<AmqpEndpointState> connectionState2 = Sinks.many().multicast().onBackpressureBuffer();
+        when(connection2.getEndpointStates()).thenReturn(connectionState2.asFlux());
         when(connection2.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions), eq(CLIENT_IDENTIFIER)))
             .thenReturn(Mono.just(sendLink2));
         when(sendLink2.send(any(Message.class))).thenReturn(Mono.empty());
 
-        final DirectProcessor<AmqpEndpointState> connectionState3 = DirectProcessor.create();
-        when(connection3.getEndpointStates()).thenReturn(connectionState3);
+        final Sinks.Many<AmqpEndpointState> connectionState3 = Sinks.many().multicast().onBackpressureBuffer();
+        when(connection3.getEndpointStates()).thenReturn(connectionState3.asFlux());
         when(connection3.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions), eq(CLIENT_IDENTIFIER)))
             .thenReturn(Mono.just(sendLink3));
         when(sendLink3.send(anyList())).thenReturn(Mono.empty());
@@ -1360,8 +1358,8 @@ class EventHubProducerAsyncClientTest {
             .verify(DEFAULT_TIMEOUT);
 
         // Send in an error signal like a server busy condition.
-        endpointSink.error(new AmqpException(true, AmqpErrorCondition.SERVER_BUSY_ERROR, "Test-message",
-            new AmqpErrorContext("test-namespace")));
+        endpointStates.emitError(new AmqpException(true, AmqpErrorCondition.SERVER_BUSY_ERROR, "Test-message",
+            new AmqpErrorContext("test-namespace")), Sinks.EmitFailureHandler.FAIL_FAST);
 
         StepVerifier.create(producer.send(testData2))
             .expectComplete()
@@ -1385,8 +1383,8 @@ class EventHubProducerAsyncClientTest {
     @Test
     void closesOnNonTransientFailure() {
         // Arrange
-        when(connection.getEndpointStates()).thenReturn(endpointProcessor);
-        endpointSink.next(AmqpEndpointState.ACTIVE);
+        when(connection.getEndpointStates()).thenReturn(endpointStates.asFlux());
+        endpointStates.emitNext(AmqpEndpointState.ACTIVE, Sinks.EmitFailureHandler.FAIL_FAST);
 
         EventHubReactorAmqpConnection[] connections = new EventHubReactorAmqpConnection[]{
             connection, connection2, connection3
@@ -1408,8 +1406,8 @@ class EventHubProducerAsyncClientTest {
             .thenReturn(Mono.just(sendLink));
         when(sendLink.send(anyList())).thenReturn(Mono.empty());
 
-        final DirectProcessor<AmqpEndpointState> connectionState2 = DirectProcessor.create();
-        when(connection2.getEndpointStates()).thenReturn(connectionState2);
+        final Sinks.Many<AmqpEndpointState> connectionState2 = Sinks.many().multicast().onBackpressureBuffer();
+        when(connection2.getEndpointStates()).thenReturn(connectionState2.asFlux());
         when(connection2.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions), eq(CLIENT_IDENTIFIER)))
             .thenReturn(Mono.just(sendLink2));
         when(sendLink2.send(any(Message.class))).thenReturn(Mono.empty());
@@ -1423,7 +1421,7 @@ class EventHubProducerAsyncClientTest {
             .verify(DEFAULT_TIMEOUT);
 
         // Send in an error signal like authorization failure.
-        endpointSink.error(nonTransientError);
+        endpointStates.emitError(nonTransientError, Sinks.EmitFailureHandler.FAIL_FAST);
 
         StepVerifier.create(producer.send(testData2))
             .expectErrorSatisfies(error -> {
@@ -1453,8 +1451,8 @@ class EventHubProducerAsyncClientTest {
     @Test
     void resendMessageOnTransientLinkFailure() {
         // Arrange
-        when(connection.getEndpointStates()).thenReturn(endpointProcessor);
-        endpointSink.next(AmqpEndpointState.ACTIVE);
+        when(connection.getEndpointStates()).thenReturn(endpointStates.asFlux());
+        endpointStates.emitNext(AmqpEndpointState.ACTIVE, Sinks.EmitFailureHandler.FAIL_FAST);
 
         EventHubReactorAmqpConnection[] connections = new EventHubReactorAmqpConnection[]{connection, connection2};
         connectionProcessor = createConnectionProcessor(connections, connectionOptions.getRetry(), false);
@@ -1484,12 +1482,12 @@ class EventHubProducerAsyncClientTest {
                 final Throwable error = new AmqpException(true, AmqpErrorCondition.SERVER_BUSY_ERROR, "Test-message",
                     new AmqpErrorContext("test-namespace"));
 
-                endpointSink.error(error);
+                endpointStates.emitError(error, Sinks.EmitFailureHandler.FAIL_FAST);
                 return Mono.error(error);
             });
 
-        final DirectProcessor<AmqpEndpointState> connectionState2 = DirectProcessor.create();
-        when(connection2.getEndpointStates()).thenReturn(connectionState2);
+        final Sinks.Many<AmqpEndpointState> connectionState2 = Sinks.many().multicast().onBackpressureBuffer();
+        when(connection2.getEndpointStates()).thenReturn(connectionState2.asFlux());
         when(connection2.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions), eq(CLIENT_IDENTIFIER)))
             .thenReturn(Mono.just(sendLink2));
         when(sendLink2.send(any(Message.class))).thenReturn(Mono.empty());

@@ -39,6 +39,14 @@ final class V2StackSupport {
         .build();
     private final AtomicReference<Boolean> v2StackFlag = new AtomicReference<>();
 
+    private static final String SESSION_CHANNEL_CACHE_KEY = "com.azure.core.amqp.cache";
+    private static final ConfigurationProperty<Boolean> SESSION_CHANNEL_CACHE_PROPERTY = ConfigurationPropertyBuilder.ofBoolean(SESSION_CHANNEL_CACHE_KEY)
+        .environmentVariableName(SESSION_CHANNEL_CACHE_KEY)
+        .defaultValue(true) // "SessionCache" and "RequestResponseChannelCache" are enabled by default if v2 stack is opted in.
+        .shared(true)
+        .build();
+    private final AtomicReference<Boolean> sessionChannelCacheFlag = new AtomicReference<>();
+
     private final ClientLogger logger;
 
     V2StackSupport(ClientLogger logger) {
@@ -53,6 +61,21 @@ final class V2StackSupport {
      */
     boolean isV2StackEnabled(Configuration configuration) {
         return isOptedIn(configuration, V2_STACK_PROPERTY, v2StackFlag);
+    }
+
+    /**
+     * SessionCache and RequestResponseChannelCache are enabled by default if the v2 stack is opted in via
+     * 'com.azure.messaging.eventhubs.v2', but application may opt out these two caches by setting
+     * 'com.azure.core.amqp.cache' to false.
+     *
+     * @param configuration the client configuration.
+     * @return true if SessionCache and RequestResponseChannelCache are enabled.
+     */
+    boolean isSessionChannelCacheEnabled(Configuration configuration) {
+        if (!isV2StackEnabled(configuration)) {
+            return false;
+        }
+        return !isOptedOut(configuration, SESSION_CHANNEL_CACHE_PROPERTY, sessionChannelCacheFlag);
     }
 
     private boolean isOptedOut(Configuration configuration, ConfigurationProperty<Boolean> configProperty,
@@ -115,7 +138,7 @@ final class V2StackSupport {
     }
 
     ReactorConnectionCache<EventHubReactorAmqpConnection> createConnectionCache(ConnectionOptions connectionOptions,
-        Supplier<String> eventHubNameSupplier, MessageSerializer serializer, Meter meter) {
+        Supplier<String> eventHubNameSupplier, MessageSerializer serializer, Meter meter, boolean useSessionChannelCache) {
         final Supplier<EventHubReactorAmqpConnection> connectionSupplier = () -> {
             final String connectionId = StringUtil.getRandomString("MF");
             final TokenManagerProvider tokenManagerProvider = new AzureTokenManagerProvider(
@@ -126,7 +149,7 @@ final class V2StackSupport {
             final AmqpLinkProvider linkProvider = new AmqpLinkProvider();
             return new EventHubReactorAmqpConnection(connectionId,
                 connectionOptions, eventHubNameSupplier.get(), provider, handlerProvider, linkProvider, tokenManagerProvider,
-                serializer, true);
+                serializer, true, useSessionChannelCache);
         };
         final String fullyQualifiedNamespace = connectionOptions.getFullyQualifiedNamespace();
         final String entityPath = eventHubNameSupplier.get();

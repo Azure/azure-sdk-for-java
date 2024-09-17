@@ -43,13 +43,21 @@ public final class ResourceRestoreParameters extends RestoreParametersBase {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ResourceRestoreParameters withRestoreWithTtlDisabled(Boolean restoreWithTtlDisabled) {
+        super.withRestoreWithTtlDisabled(restoreWithTtlDisabled);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**
@@ -63,6 +71,7 @@ public final class ResourceRestoreParameters extends RestoreParametersBase {
             restoreTimestampInUtc() == null
                 ? null
                 : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(restoreTimestampInUtc()));
+        jsonWriter.writeBooleanField("restoreWithTtlDisabled", restoreWithTtlDisabled());
         return jsonWriter.writeEndObject();
     }
 
@@ -86,6 +95,9 @@ public final class ResourceRestoreParameters extends RestoreParametersBase {
                 } else if ("restoreTimestampInUtc".equals(fieldName)) {
                     deserializedResourceRestoreParameters.withRestoreTimestampInUtc(reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("restoreWithTtlDisabled".equals(fieldName)) {
+                    deserializedResourceRestoreParameters
+                        .withRestoreWithTtlDisabled(reader.getNullable(JsonReader::getBoolean));
                 } else {
                     reader.skipChildren();
                 }

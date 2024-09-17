@@ -5,199 +5,179 @@
 package com.azure.resourcemanager.billing.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.ProxyResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.billing.models.BillingRoleAssignmentProperties;
+import com.azure.resourcemanager.billing.models.ProxyResourceWithTags;
+import java.io.IOException;
+import java.util.Map;
 
-/** The role assignment. */
+/**
+ * The properties of the billing role assignment.
+ */
 @Fluent
-public final class BillingRoleAssignmentInner extends ProxyResource {
+public final class BillingRoleAssignmentInner extends ProxyResourceWithTags {
     /*
-     * The properties of the role assignment.
+     * The properties of the billing role assignment.
      */
-    @JsonProperty(value = "properties")
-    private BillingRoleAssignmentProperties innerProperties;
+    private BillingRoleAssignmentProperties properties;
 
-    /** Creates an instance of BillingRoleAssignmentInner class. */
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of BillingRoleAssignmentInner class.
+     */
     public BillingRoleAssignmentInner() {
     }
 
     /**
-     * Get the innerProperties property: The properties of the role assignment.
-     *
-     * @return the innerProperties value.
+     * Get the properties property: The properties of the billing role assignment.
+     * 
+     * @return the properties value.
      */
-    private BillingRoleAssignmentProperties innerProperties() {
-        return this.innerProperties;
+    public BillingRoleAssignmentProperties properties() {
+        return this.properties;
     }
 
     /**
-     * Get the createdOn property: The date the role assignment was created.
-     *
-     * @return the createdOn value.
-     */
-    public String createdOn() {
-        return this.innerProperties() == null ? null : this.innerProperties().createdOn();
-    }
-
-    /**
-     * Get the createdByPrincipalTenantId property: The tenant Id of the user who created the role assignment.
-     *
-     * @return the createdByPrincipalTenantId value.
-     */
-    public String createdByPrincipalTenantId() {
-        return this.innerProperties() == null ? null : this.innerProperties().createdByPrincipalTenantId();
-    }
-
-    /**
-     * Get the createdByPrincipalId property: The principal Id of the user who created the role assignment.
-     *
-     * @return the createdByPrincipalId value.
-     */
-    public String createdByPrincipalId() {
-        return this.innerProperties() == null ? null : this.innerProperties().createdByPrincipalId();
-    }
-
-    /**
-     * Get the createdByUserEmailAddress property: The email address of the user who created the role assignment.
-     *
-     * @return the createdByUserEmailAddress value.
-     */
-    public String createdByUserEmailAddress() {
-        return this.innerProperties() == null ? null : this.innerProperties().createdByUserEmailAddress();
-    }
-
-    /**
-     * Get the principalId property: The principal id of the user to whom the role was assigned.
-     *
-     * @return the principalId value.
-     */
-    public String principalId() {
-        return this.innerProperties() == null ? null : this.innerProperties().principalId();
-    }
-
-    /**
-     * Set the principalId property: The principal id of the user to whom the role was assigned.
-     *
-     * @param principalId the principalId value to set.
+     * Set the properties property: The properties of the billing role assignment.
+     * 
+     * @param properties the properties value to set.
      * @return the BillingRoleAssignmentInner object itself.
      */
-    public BillingRoleAssignmentInner withPrincipalId(String principalId) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new BillingRoleAssignmentProperties();
-        }
-        this.innerProperties().withPrincipalId(principalId);
+    public BillingRoleAssignmentInner withProperties(BillingRoleAssignmentProperties properties) {
+        this.properties = properties;
         return this;
     }
 
     /**
-     * Get the principalTenantId property: The principal tenant id of the user to whom the role was assigned.
-     *
-     * @return the principalTenantId value.
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
      */
-    public String principalTenantId() {
-        return this.innerProperties() == null ? null : this.innerProperties().principalTenantId();
+    @Override
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
-     * Set the principalTenantId property: The principal tenant id of the user to whom the role was assigned.
-     *
-     * @param principalTenantId the principalTenantId value to set.
-     * @return the BillingRoleAssignmentInner object itself.
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
      */
-    public BillingRoleAssignmentInner withPrincipalTenantId(String principalTenantId) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new BillingRoleAssignmentProperties();
-        }
-        this.innerProperties().withPrincipalTenantId(principalTenantId);
-        return this;
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
-     * Get the roleDefinitionId property: The ID of the role definition.
-     *
-     * @return the roleDefinitionId value.
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
      */
-    public String roleDefinitionId() {
-        return this.innerProperties() == null ? null : this.innerProperties().roleDefinitionId();
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
-     * Set the roleDefinitionId property: The ID of the role definition.
-     *
-     * @param roleDefinitionId the roleDefinitionId value to set.
-     * @return the BillingRoleAssignmentInner object itself.
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
      */
-    public BillingRoleAssignmentInner withRoleDefinitionId(String roleDefinitionId) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new BillingRoleAssignmentProperties();
-        }
-        this.innerProperties().withRoleDefinitionId(roleDefinitionId);
-        return this;
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
-     * Get the scope property: The scope at which the role was assigned.
-     *
-     * @return the scope value.
+     * {@inheritDoc}
      */
-    public String scope() {
-        return this.innerProperties() == null ? null : this.innerProperties().scope();
-    }
-
-    /**
-     * Get the userAuthenticationType property: The authentication type.
-     *
-     * @return the userAuthenticationType value.
-     */
-    public String userAuthenticationType() {
-        return this.innerProperties() == null ? null : this.innerProperties().userAuthenticationType();
-    }
-
-    /**
-     * Set the userAuthenticationType property: The authentication type.
-     *
-     * @param userAuthenticationType the userAuthenticationType value to set.
-     * @return the BillingRoleAssignmentInner object itself.
-     */
-    public BillingRoleAssignmentInner withUserAuthenticationType(String userAuthenticationType) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new BillingRoleAssignmentProperties();
-        }
-        this.innerProperties().withUserAuthenticationType(userAuthenticationType);
-        return this;
-    }
-
-    /**
-     * Get the userEmailAddress property: The email address of the user.
-     *
-     * @return the userEmailAddress value.
-     */
-    public String userEmailAddress() {
-        return this.innerProperties() == null ? null : this.innerProperties().userEmailAddress();
-    }
-
-    /**
-     * Set the userEmailAddress property: The email address of the user.
-     *
-     * @param userEmailAddress the userEmailAddress value to set.
-     * @return the BillingRoleAssignmentInner object itself.
-     */
-    public BillingRoleAssignmentInner withUserEmailAddress(String userEmailAddress) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new BillingRoleAssignmentProperties();
-        }
-        this.innerProperties().withUserEmailAddress(userEmailAddress);
+    @Override
+    public BillingRoleAssignmentInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
+        if (properties() != null) {
+            properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BillingRoleAssignmentInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BillingRoleAssignmentInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BillingRoleAssignmentInner.
+     */
+    public static BillingRoleAssignmentInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BillingRoleAssignmentInner deserializedBillingRoleAssignmentInner = new BillingRoleAssignmentInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedBillingRoleAssignmentInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedBillingRoleAssignmentInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedBillingRoleAssignmentInner.type = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedBillingRoleAssignmentInner.withTags(tags);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedBillingRoleAssignmentInner.systemData = SystemData.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedBillingRoleAssignmentInner.properties
+                        = BillingRoleAssignmentProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBillingRoleAssignmentInner;
+        });
     }
 }
