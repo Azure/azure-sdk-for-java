@@ -1813,4 +1813,30 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
         bec2.downloadToFile(outFile.toPath().toString(), true);
         compareFiles(file, outFile, 0, file.length());
     }
+
+    @ParameterizedTest
+    @MethodSource("fourMBUploadsV2Supplier")
+    public void fourMBUploadsV2Async(int fileSize) throws IOException {
+        EncryptedBlobAsyncClient bec2 = new EncryptedBlobClientBuilder(EncryptionVersion.V2)
+            .key(fakeKey, KeyWrapAlgorithm.RSA_OAEP_256.toString())
+            .credential(ENV.getPrimaryAccount().getCredential())
+            .endpoint(cc.getBlobContainerUrl())
+            .blobName(generateBlobName())
+            .buildEncryptedBlobAsyncClient();
+
+        File file = File.createTempFile(CoreUtils.randomUuid().toString(), ".txt");
+        File outFile = File.createTempFile(CoreUtils.randomUuid().toString(), ".txt");
+
+        file.deleteOnExit();
+        outFile.deleteOnExit();
+
+        Files.write(file.toPath(), getRandomByteArray(fileSize));
+
+        StepVerifier.create(bec2.uploadFromFile(file.toPath().toString(), true)
+            .then(bec2.downloadToFile(outFile.toPath().toString(), true)))
+            .expectNextCount(1)
+            .verifyComplete();
+
+        compareFiles(file, outFile, 0, file.length());
+    }
 }

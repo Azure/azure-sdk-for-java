@@ -347,7 +347,8 @@ public class BlobClientBase {
             new com.azure.storage.common.ParallelTransferOptions().setBlockSizeLong((long) chunkSize);
         BiFunction<BlobRange, BlobRequestConditions, Mono<BlobDownloadAsyncResponse>> downloadFunc =
             (chunkRange, conditions) -> client.downloadStreamWithResponse(chunkRange, null, conditions, false, contextFinal);
-        return ChunkedDownloadUtils.downloadFirstChunk(range, parallelTransferOptions, requestConditions, downloadFunc, true)
+        return ChunkedDownloadUtils.downloadFirstChunk(range, parallelTransferOptions, requestConditions, downloadFunc,
+            true, null)
             .flatMap(tuple3 -> {
                 BlobDownloadAsyncResponse downloadResponse = tuple3.getT3();
                 return FluxUtil.collectBytesInByteBufferStream(downloadResponse.getValue())

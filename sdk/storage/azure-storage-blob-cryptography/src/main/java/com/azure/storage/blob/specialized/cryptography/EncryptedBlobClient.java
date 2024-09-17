@@ -53,11 +53,8 @@ import java.nio.file.StandardOpenOption;
 import java.time.Duration;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.function.BiFunction;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_DATA_KEY;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.NONCE_LENGTH;

@@ -4,6 +4,7 @@
 package com.azure.storage.blob.implementation.util;
 
 import com.azure.core.http.HttpHeaderName;
+import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
 import com.azure.storage.blob.models.BlobErrorCode;
@@ -11,17 +12,14 @@ import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.common.ParallelTransferOptions;
-import com.azure.storage.common.implementation.Constants;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.function.Tuple3;
 import reactor.util.function.Tuples;
 
-import java.util.Objects;
+import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static java.lang.StrictMath.toIntExact;
 
@@ -36,10 +34,11 @@ public class ChunkedDownloadUtils {
     Download the first chunk. Construct a Mono which will emit the total count for calculating the number of chunks,
     access conditions containing the etag to lock on, and the response from downloading the first chunk.
      */
+    @SuppressWarnings("unchecked")
     public static Mono<Tuple3<Long, BlobRequestConditions, BlobDownloadAsyncResponse>> downloadFirstChunk(
         BlobRange range, ParallelTransferOptions parallelTransferOptions,
         BlobRequestConditions requestConditions, BiFunction<BlobRange, BlobRequestConditions,
-        Mono<BlobDownloadAsyncResponse>> downloader, boolean eTagLock) {
+        Mono<BlobDownloadAsyncResponse>> downloader, boolean eTagLock, Context context) {
         // We will scope our initial download to either be one chunk or the total size.
         long initialChunkSize = range.getCount() != null
             && range.getCount() < parallelTransferOptions.getBlockSizeLong()
@@ -61,23 +60,11 @@ public class ChunkedDownloadUtils {
                 // Extract the total length of the blob from the contentRange header. e.g. "bytes 1-6/7"
                 long totalLength = extractTotalBlobLength(response.getDeserializedHeaders().getContentRange());
 
-                //if the blob is encrypted using V2, use the unencrypted length for range calculations
-                String metadetaString = response.getDeserializedHeaders().getMetadata().get("encryptiondata");
-                EncryptionData encryptionData;
-
-                if (response.getDeserializedHeaders().isServerEncrypted() && metadetaString != null) {
-                    String regex = "\"Protocol\":\"([^\"]+)\"";
-                    Pattern pattern = Pattern.compile(regex);
-                    Matcher matcher = pattern.matcher(metadetaString);
-                    if (matcher.find() && Objects.equals(matcher.group(1), "2.0")) {
-                        //values i pulled from CryptographyConstants
-                        int nonce = 12;
-                        int tag = 16;
-                        int regionLength = 4 * Constants.MB;
-                        long region = Math.floorDiv(totalLength, regionLength);
-                        long offset = (nonce + tag) * region;
-                        totalLength = totalLength - offset;
-                    }
+                Optional<Object> contextAdjustment = context.getData("rangeAdjustment");
+                if (contextAdjustment.isPresent()) {
+                    BiFunction<BlobDownloadAsyncResponse, Long, Long> rangeAdjustment =
+                        (BiFunction<BlobDownloadAsyncResponse, Long, Long>) contextAdjustment.get();
+                    totalLength = rangeAdjustment.apply(response, totalLength);
                 }
                 /*
                 If the user either didn't specify a count or they specified a count greater than the size of the

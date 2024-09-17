@@ -13,6 +13,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
 import com.azure.json.JsonWriter;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobServiceVersion;
@@ -60,6 +61,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
 import static com.azure.core.util.FluxUtil.monoError;
@@ -68,6 +70,8 @@ import static com.azure.storage.blob.specialized.cryptography.CryptographyConsta
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.AGENT_METADATA_KEY;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.AGENT_METADATA_VALUE;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_DATA_KEY;
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.NONCE_LENGTH;
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.TAG_LENGTH;
 
 /**
  * This class provides a client side encryption client that contains generic blob operations for Azure Storage Blobs.
@@ -757,6 +761,50 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
             });
     }
 
+    private <T> Mono<T> populateRequestConditionsAndContextDownloadToFile(BlobRequestConditions requestConditions,
+        Supplier<Mono<T>> downloadCall) {
+        return this.getPropertiesWithResponse(requestConditions)
+            .flatMap(response -> {
+                BlobRequestConditions requestConditionsFinal = requestConditions == null
+                    ? new BlobRequestConditions() : requestConditions;
+
+                requestConditionsFinal.setIfMatch(response.getValue().getETag());
+                Mono<T> result = downloadCall.get();
+
+                String encryptionDataKey = StorageImplUtils.getEncryptionDataKey(response.getValue().getMetadata());
+                if (encryptionDataKey != null) {
+                    result = result.contextWrite(context -> context.put(ENCRYPTION_DATA_KEY,
+                        EncryptionData.getAndValidateEncryptionData(encryptionDataKey, requiresEncryption)));
+                }
+                result = result.contextWrite(context -> context.put("rangeAdjustment", adjustRangeThroughContext()));
+                return result;
+            });
+    }
+
+    private BiFunction<BlobDownloadAsyncResponse, Long, Long> adjustRangeThroughContext() {
+        return (response, totalLength) -> {
+            long newLength = totalLength;
+            String metadetaString = response.getDeserializedHeaders().getMetadata().get("encryptiondata");
+            if (metadetaString == null) {
+                return newLength;
+            }
+            EncryptionData encryptionData;
+            try (JsonReader jsonReader = JsonProviders.createReader(metadetaString)) {
+                encryptionData = EncryptionData.fromJson(jsonReader);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            //if the blob is encrypted using V2, use the unencrypted length for range calculations
+            if ("2.0".equals(encryptionData.getEncryptionAgent().getProtocol())) {
+                long regionLength = getClientSideEncryptionOptions().getAuthenticatedRegionDataLengthInBytes();
+                long region = Math.floorDiv(totalLength, regionLength);
+                long offset = (NONCE_LENGTH + TAG_LENGTH) * region;
+                newLength = totalLength - offset;
+            }
+            return newLength;
+        };
+    }
+
     @ServiceMethod(returns = ReturnType.SINGLE)
     @Override
     public Mono<BlobDownloadContentAsyncResponse> downloadContentWithResponse(
@@ -815,7 +863,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
     public Mono<Response<BlobProperties>> downloadToFileWithResponse(BlobDownloadToFileOptions options) {
         options.setRequestConditions(options.getRequestConditions() == null ? new BlobRequestConditions()
             : options.getRequestConditions());
-        return populateRequestConditionsAndContext(options.getRequestConditions(),
+        return populateRequestConditionsAndContextDownloadToFile(options.getRequestConditions(),
             () -> super.downloadToFileWithResponse(options));
     }
 
