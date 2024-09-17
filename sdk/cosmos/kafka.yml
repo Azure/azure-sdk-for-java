@@ -13,7 +13,7 @@ extends:
             ACCOUNT_AAD_CLIENT_SECRET: $(spark-databricks-cosmos-spn-clientSecret)
             COSMOS.CLIENT_TELEMETRY_ENDPOINT: $(cosmos-client-telemetry-endpoint)
             COSMOS.CLIENT_TELEMETRY_COSMOS_ACCOUNT: $(cosmos-client-telemetry-cosmos-account)
-            COSMOS_ACR_NAME: $(kafka-acr-name)
+            COSMOS_ACR_NAME: $(kafka-mcr-name)
           CloudConfig:
             Public:
               SubscriptionConfigurations:
