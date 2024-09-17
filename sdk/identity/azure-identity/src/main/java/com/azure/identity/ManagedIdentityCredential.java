@@ -277,7 +277,7 @@ public final class ManagedIdentityCredential implements TokenCredential {
 
     String fetchManagedIdentityId(String clientId, String resourceId, String objectId) {
         if (clientId != null) {
-           return clientId;
+            return clientId;
         } else if (resourceId != null) {
             return resourceId;
         } else if (objectId != null) {
