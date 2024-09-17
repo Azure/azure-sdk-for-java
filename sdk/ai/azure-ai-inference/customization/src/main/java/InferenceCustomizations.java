@@ -1,6 +1,7 @@
 import com.azure.autorest.customization.ClassCustomization;
 import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.LibraryCustomization;
+import com.azure.autorest.customization.PackageCustomization;
 import org.slf4j.Logger;
 
 import java.lang.reflect.Modifier;
