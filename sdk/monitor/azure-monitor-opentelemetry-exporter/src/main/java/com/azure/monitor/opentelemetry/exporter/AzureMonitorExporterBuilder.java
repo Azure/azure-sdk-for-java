@@ -22,6 +22,7 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.opentelemetry.exporter.implementation.LogDataMapper;
@@ -107,15 +108,20 @@ public final class AzureMonitorExporterBuilder implements ConnectionStringTrait<
     }
 
     /**
-     * Sets the HTTP pipeline to use for the service client. If {@code httpPipeline} is set, all other
-     * settings are ignored.
+     * Sets the {@link HttpPipeline} to use for the service client.
      *
-     * @param httpPipeline The HTTP pipeline to use for sending service requests and receiving
-     *                     responses.
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
+     *
+     * @param pipeline {@link HttpPipeline} to use for sending service requests and receiving responses.
      * @return The updated {@link AzureMonitorExporterBuilder} object.
      */
     @Override
-    public AzureMonitorExporterBuilder pipeline(HttpPipeline httpPipeline) {
+    public AzureMonitorExporterBuilder pipeline(HttpPipeline pipeline) {
         if (frozen) {
             throw LOGGER.logExceptionAsError(new IllegalStateException(
                 "httpPipeline cannot be changed after any of the build methods have been called"));
@@ -124,10 +130,18 @@ public final class AzureMonitorExporterBuilder implements ConnectionStringTrait<
         return this;
     }
 
+
     /**
-     * Sets the HTTP client to use for sending and receiving requests to and from the service.
+     * Sets the {@link HttpClient} to use for sending and receiving requests to and from the service.
      *
-     * @param httpClient The HTTP client to use for requests.
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
+     *
+     * @param httpClient The {@link HttpClient} to use for requests.
      * @return The updated {@link AzureMonitorExporterBuilder} object.
      */
     @Override
@@ -141,38 +155,51 @@ public final class AzureMonitorExporterBuilder implements ConnectionStringTrait<
     }
 
     /**
-     * Sets the logging configuration for HTTP requests and responses.
+     * Sets the {@link HttpLogOptions logging configuration} to use when sending and receiving requests to and from
+     * the service. If a {@code logLevel} is not provided, default value of {@link HttpLogDetailLevel#NONE} is set.
      *
-     * <p>If logLevel is not provided, default value of {@link HttpLogDetailLevel#NONE} is set.
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
      *
-     * @param httpLogOptions The logging configuration to use when sending and receiving HTTP
-     *                       requests/responses.
+     * @param logOptions The {@link HttpLogOptions logging configuration} to use when sending and receiving requests to
+     * and from the service.
      * @return The updated {@link AzureMonitorExporterBuilder} object.
      */
     @Override
-    public AzureMonitorExporterBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
+    public AzureMonitorExporterBuilder httpLogOptions(HttpLogOptions logOptions) {
         if (frozen) {
             throw LOGGER.logExceptionAsError(new IllegalStateException(
                 "httpLogOptions cannot be changed after any of the build methods have been called"));
         }
-        this.httpLogOptions = httpLogOptions;
+        this.httpLogOptions = logOptions;
         return this;
     }
 
     /**
-     * Adds a policy to the set of existing policies that are executed after required policies.
+     * Adds a {@link HttpPipelinePolicy pipeline policy} to apply on each request sent.
      *
-     * @param httpPipelinePolicy a policy to be added to the http pipeline.
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
+     *
+     * @param pipelinePolicy A {@link HttpPipelinePolicy pipeline policy}.
+     * @throws NullPointerException If {@code pipelinePolicy} is {@code null}.
      * @return The updated {@link AzureMonitorExporterBuilder} object.
-     * @throws NullPointerException If {@code policy} is {@code null}.
      */
     @Override
-    public AzureMonitorExporterBuilder addPolicy(HttpPipelinePolicy httpPipelinePolicy) {
+    public AzureMonitorExporterBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
         if (frozen) {
             throw LOGGER.logExceptionAsError(new IllegalStateException(
                 "httpPipelinePolicy cannot be added after any of the build methods have been called"));
         }
-        httpPipelinePolicies.add(Objects.requireNonNull(httpPipelinePolicy, "'policy' cannot be null."));
+        httpPipelinePolicies.add(Objects.requireNonNull(pipelinePolicy, "'policy' cannot be null."));
         return this;
     }
 
@@ -220,10 +247,22 @@ public final class AzureMonitorExporterBuilder implements ConnectionStringTrait<
     }
 
     /**
-     * Sets the client options such as application ID and custom headers to set on a request.
+     * Allows for setting common properties such as application ID, headers, proxy configuration, etc. Note that it is
+     * recommended that this method be called with an instance of the {@link HttpClientOptions}
+     * class (a subclass of the {@link ClientOptions} base class). The HttpClientOptions subclass provides more
+     * configuration options suitable for HTTP clients, which is applicable for any class that implements this HttpTrait
+     * interface.
      *
-     * @param clientOptions The client options.
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
+     *
+     * @param clientOptions A configured instance of {@link HttpClientOptions}.
      * @return The updated {@link AzureMonitorExporterBuilder} object.
+     * @see HttpClientOptions
      */
     @Override
     public AzureMonitorExporterBuilder clientOptions(ClientOptions clientOptions) {
