@@ -85,7 +85,7 @@ public final class TestUtils {
 
         AzureMonitorExporterBuilder azureMonitorExporterBuilder
             = new AzureMonitorExporterBuilder().connectionString(connectionString).pipeline(httpPipeline);
-        AzureMonitor.configure(sdkBuilder, azureMonitorExporterBuilder);
+        AzureMonitor.customize(sdkBuilder, azureMonitorExporterBuilder);
 
         return sdkBuilder.addPropertiesSupplier(() -> configuration).build().getOpenTelemetrySdk();
     }

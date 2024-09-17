@@ -36,14 +36,14 @@ If you have set the Application Insights connection string with the `APPLICATION
 
 ```java readme-sample-autoconfigure-env-variable
 AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
-AzureMonitor.configure(sdkBuilder);
+AzureMonitor.customize(sdkBuilder);
 OpenTelemetry openTelemetry = sdkBuilder.build().getOpenTelemetrySdk();
 ```
 
 You can also se the connection string in the code:
 ```java readme-sample-autoconfigure
 AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
-AzureMonitor.configure(sdkBuilder, "{connection-string}");
+AzureMonitor.customize(sdkBuilder, "{connection-string}");
 OpenTelemetry openTelemetry = sdkBuilder.build().getOpenTelemetrySdk();
 ```
 
@@ -57,7 +57,7 @@ The following example shows how create a span:
 ```java readme-sample-create-span
 AutoConfiguredOpenTelemetrySdkBuilder otelSdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
 
-AzureMonitor.configure(otelSdkBuilder, "{connection-string}");
+AzureMonitor.customize(otelSdkBuilder, "{connection-string}");
 
 OpenTelemetry openTelemetry = otelSdkBuilder.build().getOpenTelemetrySdk();
 Tracer tracer = openTelemetry.getTracer("Sample");
@@ -79,7 +79,7 @@ The following example demonstrates how to add a span processor to the OpenTeleme
 ```java readme-sample-span-processor
 AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
 
-AzureMonitor.configure(sdkBuilder);
+AzureMonitor.customize(sdkBuilder);
 
 SpanProcessor spanProcessor = new SpanProcessor() {
     @Override

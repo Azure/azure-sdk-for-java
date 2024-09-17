@@ -25,32 +25,33 @@ public final class AzureMonitor {
     }
 
     /**
-     * Configures an {@link AutoConfigurationCustomizer} for Azure Monitor based on the options set.
+     * Customizes an {@link AutoConfigurationCustomizer} for Azure Monitor. The connection string to the Application Insights resource is expected to be configured with the APPLICATIONINSIGHTS_CONNECTION_STRING environment variable.
+     *
      * @param autoConfigurationCustomizer The OpenTelemetry autoconfiguration to set up.
      */
-    public static void configure(AutoConfigurationCustomizer autoConfigurationCustomizer) {
+    public static void customize(AutoConfigurationCustomizer autoConfigurationCustomizer) {
         AzureMonitorExporterBuilder azureMonitorExporterBuilder = new AzureMonitorExporterBuilder();
-        configure(autoConfigurationCustomizer, azureMonitorExporterBuilder);
+        customize(autoConfigurationCustomizer, azureMonitorExporterBuilder);
     }
 
     /**
-     * Configures an {@link AutoConfigurationCustomizer} for Azure Monitor based on the options set.
+     * Customizes an {@link AutoConfigurationCustomizer} for Azure Monitor.
      * @param autoConfigurationCustomizer The OpenTelemetry autoconfiguration to set up.
      * @param connectionString The connection string to connect to an Application Insights resource.
      */
-    public static void configure(AutoConfigurationCustomizer autoConfigurationCustomizer, String connectionString) {
+    public static void customize(AutoConfigurationCustomizer autoConfigurationCustomizer, String connectionString) {
         AzureMonitorExporterBuilder azureMonitorExporterBuilder
             = new AzureMonitorExporterBuilder().connectionString(connectionString);
-        configure(autoConfigurationCustomizer, azureMonitorExporterBuilder);
+        customize(autoConfigurationCustomizer, azureMonitorExporterBuilder);
     }
 
     /**
-     * Configures an {@link AutoConfigurationCustomizer} for Azure Monitor based on the options set.
+     * Customizes an {@link AutoConfigurationCustomizer} for Azure Monitor.
      * @param autoConfigurationCustomizer the {@link AutoConfigurationCustomizer} object.
      * @param azureMonitorExporterBuilder Advanced configuration to send the data to Azure Monitor.
      */
-    public static void configure(AutoConfigurationCustomizer autoConfigurationCustomizer,
-        AzureMonitorExporterBuilder azureMonitorExporterBuilder) {
+    public static void customize(AutoConfigurationCustomizer autoConfigurationCustomizer,
+                                 AzureMonitorExporterBuilder azureMonitorExporterBuilder) {
         autoConfigurationCustomizer.addPropertiesSupplier(() -> {
             Map<String, String> props = new HashMap<>();
             props.put("otel.traces.exporter", AzureMonitorExporterProviderKeys.EXPORTER_NAME);
