@@ -45,7 +45,7 @@ public final class EventGridSenderAsyncClient {
     /**
      * Publish a single Cloud Event to a namespace topic.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -60,9 +60,9 @@ public final class EventGridSenderAsyncClient {
      *     subject: String (Optional)
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * { }
      * }</pre>
@@ -85,7 +85,7 @@ public final class EventGridSenderAsyncClient {
     /**
      * Publish a batch of Cloud Events to a namespace topic.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -102,9 +102,9 @@ public final class EventGridSenderAsyncClient {
      *     }
      * ]
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * { }
      * }</pre>
@@ -144,18 +144,18 @@ public final class EventGridSenderAsyncClient {
     }
 
     /**
-    * Publish a single Cloud Event to a namespace topic.
-    *
-    * @param event Single Cloud Event being published.
-    * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-    * @throws IllegalArgumentException thrown if parameters fail the validation.
-    * @throws HttpResponseException thrown if the request is rejected by server.
-    * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-    * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-    * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-    * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-    * @return the result of the Publish operation on successful completion of {@link Mono}.
-    */
+     * Publish a single Cloud Event to a namespace topic.
+     *
+     * @param event Single Cloud Event being published.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of the Publish operation on successful completion of {@link Mono}.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> sendWithResponse(CloudEvent event, RequestOptions requestOptions) {
         return sendWithResponse(topicName, BinaryData.fromObject(event), requestOptions).map(response -> {
