@@ -48,6 +48,27 @@ stages:
               arguments: >
                 -SourcesDirectory .
                 -PackagesYmlPath eng/pipelines/patch-release.yml
+
+          # Process the YAML content and generate patches
+          - pwsh: |
+              $ymlContent = Get-Content eng/pipelines/patch-release.yml -Raw
+              $ymlObject = ConvertFrom-Yaml $ymlContent -Ordered
+              $packagesData = $ymlObject["extends"]["parameters"]["artifacts"]
+              $libraryList = $null
+              
+              foreach ($packageData in $packagesData) {
+                  . "${PSScriptRoot}/generatepatch.ps1" -ArtifactIds $packageData["name"] -ServiceDirectoryName $packageData["ServiceDirectory"] -BranchName $branchName
+                  $libraryList += $packageData["groupId"] + ":" + $packageData["name"] + ","
+              }
+              
+              $libraryList = $libraryList.Substring(0, $libraryList.Length - 1)
+              
+  
+              
+              python "${PSScriptRoot}/../versioning/update_versions.py" --update-type library --build-type client --ll $libraryList
+            workingDirectory: $(Build.SourcesDirectory)
+            displayName: 'Process YAML and generate patches'
+
           # Create a PR with the patches prepared
           - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
             parameters:

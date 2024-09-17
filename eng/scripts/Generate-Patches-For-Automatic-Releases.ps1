@@ -45,26 +45,7 @@ try {
 
     Write-Host "git -c user.name=`"azure-sdk`" -c user.email=`"azuresdk@microsoft.com`" commit -m $commitMessage"
     git -c user.name="azure-sdk" -c user.email="azuresdk@microsoft.com" commit -m $commitMessage
-
-    # Read the package info from the generated YAML file
-    $ymlContent = Get-Content $PackagesYmlPath -Raw
-    $ymlObject = ConvertFrom-Yaml $ymlContent -Ordered
-    $packagesData = $ymlObject["extends"]["parameters"]["artifacts"]
-    $libraryList = $null
-
-    # Reset each package to the latest stable release and update CHANGELOG, POM and README for patch release.
-    foreach ($packageData in $packagesData) {
-        . "${PSScriptRoot}/generatepatch.ps1" -ArtifactIds $packageData["name"] -ServiceDirectoryName $packageData["ServiceDirectory"] -BranchName $branchName
-        $libraryList += $packageData["groupId"] + ":" + $packageData["name"] + ","
-    }
-
-    $libraryList = $libraryList.Substring(0, $libraryList.Length - 1)
-
-    Write-Host "git checkout $branchName"
-    git checkout $branchName
-
-    # Update POMs for all libraries with dependencies on the libraries to patch. Also, update the READMEs of the latter.
-    python "${PSScriptRoot}/../versioning/update_versions.py" --update-type library --build-type client --ll $libraryList
+    Write-Host "End of Generate-Patches-For-Automatic-Releases.ps1"
 } catch {
     LogError "Failed to update dependencies in libraries and READMEs via version_client.txt"
     exit 1
