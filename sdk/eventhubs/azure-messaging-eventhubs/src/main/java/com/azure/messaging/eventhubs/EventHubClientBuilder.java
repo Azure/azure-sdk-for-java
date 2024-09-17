@@ -995,8 +995,8 @@ public class EventHubClientBuilder implements
         if (isSharedConnection.get()) {
             synchronized (connectionLock) {
                 if (eventHubConnectionProcessor == null) {
-                    final boolean useSessionChannelCache = true; // v2StackSupport.isSessionChannelCacheEnabled(configuration);
                     if (v2StackSupport.isV2StackEnabled(configuration)) {
+                        final boolean useSessionChannelCache = v2StackSupport.isSessionChannelCacheEnabled(configuration);
                         eventHubConnectionProcessor = new ConnectionCacheWrapper(buildConnectionCache(messageSerializer, meter, useSessionChannelCache));
                     } else {
                         eventHubConnectionProcessor = new ConnectionCacheWrapper(buildConnectionProcessor(messageSerializer, meter));
@@ -1010,7 +1010,7 @@ public class EventHubClientBuilder implements
             LOGGER.info("# of open clients with shared connection: {}", numberOfOpenClients);
         } else {
             if (v2StackSupport.isV2StackEnabled(configuration)) {
-                final boolean useSessionChannelCache = true; // v2StackSupport.isSessionChannelCacheEnabled(configuration);
+                final boolean useSessionChannelCache = v2StackSupport.isSessionChannelCacheEnabled(configuration);
                 processor = new ConnectionCacheWrapper(buildConnectionCache(messageSerializer, meter, useSessionChannelCache));
             } else {
                 processor = new ConnectionCacheWrapper(buildConnectionProcessor(messageSerializer, meter));

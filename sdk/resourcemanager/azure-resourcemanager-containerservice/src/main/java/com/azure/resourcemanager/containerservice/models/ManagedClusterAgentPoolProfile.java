@@ -25,10 +25,9 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
     private String name;
 
     /*
-     * If orchestratorVersion is a fully specified version <major.minor.patch>, this field will be exactly equal to it.
-     * If orchestratorVersion is <major.minor>, this field will contain the full <major.minor.patch> version being used.
+     * The current deployment or provisioning state.
      */
-    private String currentOrchestratorVersion;
+    private String provisioningState;
 
     /*
      * The version of node image
@@ -36,9 +35,10 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
     private String nodeImageVersion;
 
     /*
-     * The current deployment or provisioning state.
+     * If orchestratorVersion is a fully specified version <major.minor.patch>, this field will be exactly equal to it.
+     * If orchestratorVersion is <major.minor>, this field will contain the full <major.minor.patch> version being used.
      */
-    private String provisioningState;
+    private String currentOrchestratorVersion;
 
     /**
      * Creates an instance of ManagedClusterAgentPoolProfile class.
@@ -67,15 +67,13 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
     }
 
     /**
-     * Get the currentOrchestratorVersion property: If orchestratorVersion is a fully specified version
-     * &lt;major.minor.patch&gt;, this field will be exactly equal to it. If orchestratorVersion is &lt;major.minor&gt;,
-     * this field will contain the full &lt;major.minor.patch&gt; version being used.
+     * Get the provisioningState property: The current deployment or provisioning state.
      * 
-     * @return the currentOrchestratorVersion value.
+     * @return the provisioningState value.
      */
     @Override
-    public String currentOrchestratorVersion() {
-        return this.currentOrchestratorVersion;
+    public String provisioningState() {
+        return this.provisioningState;
     }
 
     /**
@@ -89,13 +87,15 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
     }
 
     /**
-     * Get the provisioningState property: The current deployment or provisioning state.
+     * Get the currentOrchestratorVersion property: If orchestratorVersion is a fully specified version
+     * &lt;major.minor.patch&gt;, this field will be exactly equal to it. If orchestratorVersion is &lt;major.minor&gt;,
+     * this field will contain the full &lt;major.minor.patch&gt; version being used.
      * 
-     * @return the provisioningState value.
+     * @return the currentOrchestratorVersion value.
      */
     @Override
-    public String provisioningState() {
-        return this.provisioningState;
+    public String currentOrchestratorVersion() {
+        return this.currentOrchestratorVersion;
     }
 
     /**
@@ -468,17 +468,49 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ManagedClusterAgentPoolProfile withSecurityProfile(AgentPoolSecurityProfile securityProfile) {
+        super.withSecurityProfile(securityProfile);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (name() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
                     "Missing required property name in model ManagedClusterAgentPoolProfile"));
+        }
+        if (upgradeSettings() != null) {
+            upgradeSettings().validate();
+        }
+        if (powerState() != null) {
+            powerState().validate();
+        }
+        if (kubeletConfig() != null) {
+            kubeletConfig().validate();
+        }
+        if (linuxOSConfig() != null) {
+            linuxOSConfig().validate();
+        }
+        if (creationData() != null) {
+            creationData().validate();
+        }
+        if (networkProfile() != null) {
+            networkProfile().validate();
+        }
+        if (windowsProfile() != null) {
+            windowsProfile().validate();
+        }
+        if (securityProfile() != null) {
+            securityProfile().validate();
         }
     }
 
@@ -535,6 +567,7 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
         jsonWriter.writeStringField("hostGroupID", hostGroupId());
         jsonWriter.writeJsonField("networkProfile", networkProfile());
         jsonWriter.writeJsonField("windowsProfile", windowsProfile());
+        jsonWriter.writeJsonField("securityProfile", securityProfile());
         jsonWriter.writeStringField("name", this.name);
         return jsonWriter.writeEndObject();
     }
@@ -664,6 +697,9 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
                 } else if ("windowsProfile".equals(fieldName)) {
                     deserializedManagedClusterAgentPoolProfile
                         .withWindowsProfile(AgentPoolWindowsProfile.fromJson(reader));
+                } else if ("securityProfile".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfile
+                        .withSecurityProfile(AgentPoolSecurityProfile.fromJson(reader));
                 } else if ("name".equals(fieldName)) {
                     deserializedManagedClusterAgentPoolProfile.name = reader.getString();
                 } else {

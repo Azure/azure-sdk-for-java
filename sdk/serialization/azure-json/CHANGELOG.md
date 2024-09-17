@@ -1,6 +1,6 @@
 # Release History
 
-## 1.3.0-beta.1 (Unreleased)
+## 1.4.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,16 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.3.0 (2024-09-11)
+
+### Features Added
+
+- Added the ability to configure JSONC parsing with `JsonOptions.setJsoncSupported`.
+
+### Other Changes
+
+- Updated shaded Jackson Core code to 2.17.2.
 
 ## 1.2.0 (2024-07-26)
 

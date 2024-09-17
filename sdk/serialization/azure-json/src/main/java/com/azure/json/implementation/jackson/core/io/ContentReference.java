@@ -7,7 +7,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.URI;
 import java.net.URL;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 /**
@@ -65,7 +65,7 @@ public class ContentReference
     /**
      * Marker flag to indicate whether included content is textual or not:
      * this is taken to mean, by default, that a snippet of content may be
-     * displayed for exception messages. 
+     * displayed for exception messages.
      */
     protected final boolean _isContentTextual;
 
@@ -285,7 +285,7 @@ public class ContentReference
         _truncateOffsets(offsets, b.length);
         final int start = offsets[0];
         final int length = Math.min(offsets[1], maxSnippetLen);
-        return new String(b, start, length, Charset.forName("UTF-8"));
+        return new String(b, start, length, StandardCharsets.UTF_8);
     }
 
     // Method that is given alleged start/offset pair and needs to adjust

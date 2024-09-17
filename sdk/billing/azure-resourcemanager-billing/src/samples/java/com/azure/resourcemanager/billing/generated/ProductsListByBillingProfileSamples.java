@@ -4,20 +4,25 @@
 
 package com.azure.resourcemanager.billing.generated;
 
-/** Samples for Products ListByBillingProfile. */
+/**
+ * Samples for Products ListByBillingProfile.
+ */
 public final class ProductsListByBillingProfileSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/ProductsListByBillingProfile.json
+     * x-ms-original-file:
+     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/productsListByBillingProfile.
+     * json
      */
     /**
      * Sample code: ProductsListByBillingProfile.
-     *
+     * 
      * @param manager Entry point to BillingManager.
      */
     public static void productsListByBillingProfile(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager
-            .products()
+        manager.products()
             .listByBillingProfile(
-                "{billingAccountName}", "{billingProfileName}", null, com.azure.core.util.Context.NONE);
+                "a1a9c77e-4cec-4a6c-a089-867d973a6074:a80d3b1f-c626-4e5e-82ed-1173bd91c838_2019-05-31",
+                "ea36e548-1505-41db-bebc-46fff3d37998", null, null, null, null, null, null,
+                com.azure.core.util.Context.NONE);
     }
 }

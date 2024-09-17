@@ -3,6 +3,7 @@
 
 package com.azure.core.amqp.implementation;
 
+import reactor.core.Disposable;
 import reactor.core.publisher.Mono;
 
 import java.util.Objects;
@@ -67,6 +68,20 @@ public final class ChannelCacheWrapper {
             return channelCache.closeAsync();
         } else {
             return channelProcessor.flatMap(RequestResponseChannel::closeAsync);
+        }
+    }
+
+    /**
+     * Disposes the cache.
+     */
+    public void dispose() {
+        if (channelCache != null) {
+            channelCache.dispose();
+        } else {
+            if (channelProcessor instanceof Disposable) {
+                // Invokes AmqpChannelProcessor::dispose
+                ((Disposable) channelProcessor).dispose();
+            }
         }
     }
 }

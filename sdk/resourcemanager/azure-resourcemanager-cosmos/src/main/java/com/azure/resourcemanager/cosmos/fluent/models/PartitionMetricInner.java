@@ -32,24 +32,9 @@ public final class PartitionMetricInner extends MetricInner {
     private String partitionKeyRangeId;
 
     /*
-     * The start time for the metric (ISO-8601 format).
+     * The metric values for the specified time window and timestep.
      */
-    private OffsetDateTime startTime;
-
-    /*
-     * The end time for the metric (ISO-8601 format).
-     */
-    private OffsetDateTime endTime;
-
-    /*
-     * The time grain to be used to summarize the metric values.
-     */
-    private String timeGrain;
-
-    /*
-     * The unit of the metric.
-     */
-    private UnitType unit;
+    private List<MetricValue> metricValues;
 
     /*
      * The name information for the metric.
@@ -57,9 +42,24 @@ public final class PartitionMetricInner extends MetricInner {
     private MetricName name;
 
     /*
-     * The metric values for the specified time window and timestep.
+     * The unit of the metric.
      */
-    private List<MetricValue> metricValues;
+    private UnitType unit;
+
+    /*
+     * The time grain to be used to summarize the metric values.
+     */
+    private String timeGrain;
+
+    /*
+     * The end time for the metric (ISO-8601 format).
+     */
+    private OffsetDateTime endTime;
+
+    /*
+     * The start time for the metric (ISO-8601 format).
+     */
+    private OffsetDateTime startTime;
 
     /**
      * Creates an instance of PartitionMetricInner class.
@@ -86,43 +86,13 @@ public final class PartitionMetricInner extends MetricInner {
     }
 
     /**
-     * Get the startTime property: The start time for the metric (ISO-8601 format).
+     * Get the metricValues property: The metric values for the specified time window and timestep.
      * 
-     * @return the startTime value.
+     * @return the metricValues value.
      */
     @Override
-    public OffsetDateTime startTime() {
-        return this.startTime;
-    }
-
-    /**
-     * Get the endTime property: The end time for the metric (ISO-8601 format).
-     * 
-     * @return the endTime value.
-     */
-    @Override
-    public OffsetDateTime endTime() {
-        return this.endTime;
-    }
-
-    /**
-     * Get the timeGrain property: The time grain to be used to summarize the metric values.
-     * 
-     * @return the timeGrain value.
-     */
-    @Override
-    public String timeGrain() {
-        return this.timeGrain;
-    }
-
-    /**
-     * Get the unit property: The unit of the metric.
-     * 
-     * @return the unit value.
-     */
-    @Override
-    public UnitType unit() {
-        return this.unit;
+    public List<MetricValue> metricValues() {
+        return this.metricValues;
     }
 
     /**
@@ -136,13 +106,43 @@ public final class PartitionMetricInner extends MetricInner {
     }
 
     /**
-     * Get the metricValues property: The metric values for the specified time window and timestep.
+     * Get the unit property: The unit of the metric.
      * 
-     * @return the metricValues value.
+     * @return the unit value.
      */
     @Override
-    public List<MetricValue> metricValues() {
-        return this.metricValues;
+    public UnitType unit() {
+        return this.unit;
+    }
+
+    /**
+     * Get the timeGrain property: The time grain to be used to summarize the metric values.
+     * 
+     * @return the timeGrain value.
+     */
+    @Override
+    public String timeGrain() {
+        return this.timeGrain;
+    }
+
+    /**
+     * Get the endTime property: The end time for the metric (ISO-8601 format).
+     * 
+     * @return the endTime value.
+     */
+    @Override
+    public OffsetDateTime endTime() {
+        return this.endTime;
+    }
+
+    /**
+     * Get the startTime property: The start time for the metric (ISO-8601 format).
+     * 
+     * @return the startTime value.
+     */
+    @Override
+    public OffsetDateTime startTime() {
+        return this.startTime;
     }
 
     /**
@@ -152,7 +152,12 @@ public final class PartitionMetricInner extends MetricInner {
      */
     @Override
     public void validate() {
-        super.validate();
+        if (name() != null) {
+            name().validate();
+        }
+        if (metricValues() != null) {
+            metricValues().forEach(e -> e.validate());
+        }
     }
 
     /**

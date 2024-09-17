@@ -24,7 +24,7 @@ import java.util.Map;
 public final class RecordSetsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/RecordSetTXTPut.json
+     * specification/privatedns/resource-manager/Microsoft.Network/stable/2024-06-01/examples/RecordSetTXTPut.json
      */
     /**
      * Sample code: PUT Private DNS Zone TXT Record Set.
@@ -45,7 +45,7 @@ public final class RecordSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/RecordSetAAAAPut.json
+     * specification/privatedns/resource-manager/Microsoft.Network/stable/2024-06-01/examples/RecordSetAAAAPut.json
      */
     /**
      * Sample code: PUT Private DNS Zone AAAA Record Set.
@@ -66,7 +66,7 @@ public final class RecordSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/RecordSetSOAPut.json
+     * specification/privatedns/resource-manager/Microsoft.Network/stable/2024-06-01/examples/RecordSetSOAPut.json
      */
     /**
      * Sample code: PUT Private DNS Zone SOA Record Set.
@@ -86,13 +86,14 @@ public final class RecordSetsCreateOrUpdateSamples {
                         .withSerialNumber(1L)
                         .withRefreshTime(3600L)
                         .withRetryTime(300L)
-                        .withExpireTime(2419200L)),
+                        .withExpireTime(2419200L)
+                        .withMinimumTtl(300L)),
                 null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/RecordSetMXPut.json
+     * specification/privatedns/resource-manager/Microsoft.Network/stable/2024-06-01/examples/RecordSetMXPut.json
      */
     /**
      * Sample code: PUT Private DNS Zone MX Record Set.
@@ -114,7 +115,7 @@ public final class RecordSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/RecordSetCNAMEPut.json
+     * specification/privatedns/resource-manager/Microsoft.Network/stable/2024-06-01/examples/RecordSetCNAMEPut.json
      */
     /**
      * Sample code: PUT Private DNS Zone CNAME Record Set.
@@ -135,7 +136,7 @@ public final class RecordSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/RecordSetPTRPut.json
+     * specification/privatedns/resource-manager/Microsoft.Network/stable/2024-06-01/examples/RecordSetPTRPut.json
      */
     /**
      * Sample code: PUT Private DNS Zone PTR Record Set.
@@ -156,7 +157,7 @@ public final class RecordSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/RecordSetAPut.json
+     * specification/privatedns/resource-manager/Microsoft.Network/stable/2024-06-01/examples/RecordSetAPut.json
      */
     /**
      * Sample code: PUT Private DNS Zone A Record Set.
@@ -177,7 +178,7 @@ public final class RecordSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/RecordSetSRVPut.json
+     * specification/privatedns/resource-manager/Microsoft.Network/stable/2024-06-01/examples/RecordSetSRVPut.json
      */
     /**
      * Sample code: PUT Private DNS Zone SRV Record Set.

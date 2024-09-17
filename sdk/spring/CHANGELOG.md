@@ -1,9 +1,22 @@
 # Release History
 
-## 5.16.0-beta.1 (unreleased)
+## 5.17.0-beta.1 (unreleased)
+
+### Spring Cloud Azure Autoconfigure
+This section includes changes in `spring-cloud-azure-autoconfigure` module.
+
+#### Bugs Fixed
+- Improve the jdbc properties bean post processor priority. [#38631](https://github.com/Azure/azure-sdk-for-java/issues/38631).
+
+## 5.16.0 (2024-09-09)
+- This release is compatible with Spring Boot 3.0.0-3.0.13, 3.1.0-3.1.12, 3.2.0-3.2.7, 3.3.0-3.3.3. (Note: 3.0.x (x>13), 3.1.y (y>12), 3.2.z (z>7) and 3.3.m (m>3) should be supported, but they aren't tested with this release.)
+- This release is compatible with Spring Cloud 2022.0.0-2022.0.5, 2023.0.0-2023.0.3. (Note: 2022.0.x (x>5) and 2023.0.y (y>3) should be supported, but they aren't tested with this release.)
+
+### Spring Cloud Azure Dependencies (BOM)
 
 #### Dependency Updates
-Upgrade Spring Boot dependencies version to 3.3.3 and Spring Cloud dependencies version to 2023.0.3
+- Upgrade `azure-sdk-bom` to 1.2.27.
+- Added a new dependency: `spring-cloud-azure-docker-compose`.
 
 ### Spring Cloud Azure Autoconfigure
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
@@ -13,6 +26,18 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
 #### Bugs Fixed
 - Avoid always overriding the default binder when using Kafka binder. [#37337](https://github.com/Azure/azure-sdk-for-java/issues/37337).
+- Fix to support multiple property sources auto refresh. [#26356](https://github.com/Azure/azure-sdk-for-java/issues/26356).
+
+### Spring Cloud Azure Appconfiguration Config
+This section includes changes in `spring-cloud-azure-starter-appconfiguration-config`, `spring-cloud-azure-appconfiguration-config*`, and `spring-cloud-azure-feature-management*` modules.
+
+#### Bugs Fixed
+- Support map and list when parse client_filters parameter. [#41298](https://github.com/Azure/azure-sdk-for-java/pull/41298).
+- Fix missing "additional-spring-configuration-metadata.json" in `spring-cloud-azure-starter-appconfiguration-config`. [#41502](https://github.com/Azure/azure-sdk-for-java/issues/41502).
+
+### Azure Spring Data Cosmos
+This section includes changes in `azure-spring-data-cosmos` module.
+Please refer to [azure-spring-data-cosmos/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-data-cosmos/CHANGELOG.md#5160-2024-09-09) for more details.
 
 ## 5.15.0 (2024-08-07)
 - This release is compatible with Spring Boot 3.0.0-3.0.13, 3.1.0-3.1.12, 3.2.0-3.2.7, 3.3.0-3.3.2. (Note: 3.0.x (x>13), 3.1.y (y>12), 3.2.z (z>7) and 3.3.m (m>2) should be supported, but they aren't tested with this release.)
@@ -23,7 +48,6 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 #### Dependency Updates
 - Upgrade `azure-sdk-bom` to 1.2.26.
 - Added a new dependency: `spring-cloud-azure-testcontainers`.
-- Added a new dependency: `spring-cloud-azure-docker-compose`.
 
 ### Spring Cloud Azure Autoconfigure
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
