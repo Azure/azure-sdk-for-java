@@ -3270,3 +3270,10 @@ pipelines:
           lastModifiedDate: 2024-09-17
         armory:
           lastModifiedDate: 2024-09-17
+  1326:
+    retail:
+      source:
+        credscan:
+          lastModifiedDate: 2024-09-17
+        armory:
+          lastModifiedDate: 2024-09-17
