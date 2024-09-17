@@ -63,6 +63,8 @@ public class ChunkedDownloadUtils {
 
                 //if the blob is encrypted using V2, use the unencrypted length for range calculations
                 String metadetaString = response.getDeserializedHeaders().getMetadata().get("encryptiondata");
+                EncryptionData encryptionData;
+
                 if (response.getDeserializedHeaders().isServerEncrypted() && metadetaString != null) {
                     String regex = "\"Protocol\":\"([^\"]+)\"";
                     Pattern pattern = Pattern.compile(regex);
