@@ -248,6 +248,11 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         int messageCount = 5;
         CountDownLatch latch = new CountDownLatch(messageCount);
         spanProcessor.notifyIfCondition(latch, span -> span.getName().equals("EventHubs.consume"));
+
+        StepVerifier.create(producer.send(data, new SendOptions()))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
+
         StepVerifier.create(consumer
                 .receive()
                 .take(messageCount)
@@ -264,10 +269,6 @@ public class TracingIntegrationTests extends IntegrationTestBase {
                 .parallel(messageCount, 1)
                 .runOn(Schedulers.boundedElastic(), 2))
             .expectNextCount(messageCount)
-            .expectComplete()
-            .verify(DEFAULT_TIMEOUT);
-
-        StepVerifier.create(producer.send(data, new SendOptions()))
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
 
@@ -767,7 +768,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             assertEquals("Microsoft.EventHub", readableSpan.getAttribute(AttributeKey.stringKey("az.namespace")));
             assertEquals("eventhubs", readableSpan.getAttribute(AttributeKey.stringKey("messaging.system")));
             assertEquals(entityName, readableSpan.getAttribute(AttributeKey.stringKey("messaging.destination.name")));
-            assertEquals(namespace, readableSpan.getAttribute(AttributeKey.stringKey("net.peer.name")));
+            assertEquals(namespace, readableSpan.getAttribute(AttributeKey.stringKey("server.address")));
         }
 
         public void notifyIfCondition(CountDownLatch countDownLatch, Predicate<ReadableSpan> filter) {
