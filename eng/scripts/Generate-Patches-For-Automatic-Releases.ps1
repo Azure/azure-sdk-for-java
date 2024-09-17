@@ -67,7 +67,5 @@ try {
     python "${PSScriptRoot}/../versioning/update_versions.py" --update-type library --build-type client --ll $libraryList
 } catch {
     LogError "Failed to update dependencies in libraries and READMEs via version_client.txt"
-    Write-Host "git checkout $currentBranchName"
-    git checkout $currentBranchName
     exit 1
 }
