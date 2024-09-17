@@ -4,12 +4,12 @@
 package io.clientcore.http.stress;
 
 import com.azure.perf.test.core.PerfStressOptions;
-import io.clientcore.http.stress.util.TelemetryHelper;
 import io.clientcore.core.http.client.DefaultHttpClientBuilder;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpLogOptions;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.HttpResponse;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpLoggingPolicy;
 import io.clientcore.core.http.pipeline.HttpPipeline;
@@ -18,14 +18,17 @@ import io.clientcore.core.http.pipeline.HttpRetryPolicy;
 import io.clientcore.core.util.ClientLogger;
 import io.clientcore.http.jdk.httpclient.JdkHttpClientProvider;
 import io.clientcore.http.okhttp3.OkHttpHttpClientProvider;
-import reactor.core.publisher.Mono;
-
+import io.clientcore.http.stress.util.TelemetryHelper;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Instant;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicLong;
+import reactor.core.publisher.Mono;
 
 /**
  * Performance test for simple HTTP GET against test server.
@@ -36,6 +39,7 @@ public class HttpGet extends ScenarioBase<StressOptions> {
     private static final ClientLogger LOGGER = new ClientLogger(HttpGet.class);
     private final HttpPipeline pipeline;
     private final URL url;
+    final ExecutorService executorService = Executors.newFixedThreadPool(options.getConcurrentTaskLimit());
 
     // This is almost-unique-id generator. We could use UUID, but it's a bit more expensive to use.
     private final AtomicLong clientRequestId = new AtomicLong(Instant.now().getEpochSecond());
@@ -65,13 +69,82 @@ public class HttpGet extends ScenarioBase<StressOptions> {
         try (Response<?> response = pipeline.send(request)) {
             response.getBody().toBytes();
         } catch (IOException e) {
-            new UncheckedIOException(e);
+            LOGGER.logThrowableAsError(new UncheckedIOException(e));
         }
     }
 
     @Override
     public Mono<Void> runAsync() {
-        return Mono.error(new UnsupportedOperationException("Not implemented"));
+        return TELEMETRY_HELPER.instrumentRunAsync(runInternalAsync());
+    }
+
+    @Override
+    public CompletableFuture<Void> runAsyncWithCompletableFuture() {
+        return TELEMETRY_HELPER.instrumentRunAsyncWithCompletableFuture(runAsyncWithCompletableFutureInternal());
+    }
+
+    @Override
+    public Runnable runAsyncWithExecutorService() {
+        return TELEMETRY_HELPER.instrumentRunAsyncWithRunnable(runAsyncWithExecutorServiceInternal());
+    }
+
+    @Override
+    public Runnable runAsyncWithVirtualThread() {
+        return TELEMETRY_HELPER.instrumentRunAsyncWithRunnable(runAsyncWithVirtualThreadInternal());
+    }
+
+    private Mono<Void> runInternalAsync() {
+        return Mono.usingWhen(Mono.fromCallable(() -> pipeline.send(createRequest())),
+            response -> {
+                ((HttpResponse<?>) response).getBody().toBytes();
+                return Mono.empty();
+            },
+            response -> Mono.fromRunnable(() -> {
+                try {
+                    response.close();
+                } catch (IOException e) {
+                    LOGGER.logThrowableAsError(new UncheckedIOException(e));
+                }
+            }));
+    }
+
+    // Method to run using CompletableFuture
+    private CompletableFuture<Void> runAsyncWithCompletableFutureInternal() {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                Response<?> response = pipeline.send(createRequest());
+                response.getBody().toBytes();
+            } catch (Exception e) {
+                LOGGER.logThrowableAsError(e);
+            }
+            return null;
+        }, executorService);
+    }
+
+    // Method to run using ExecutorService
+    private Runnable runAsyncWithExecutorServiceInternal() {
+        Runnable task = () -> {
+            try {
+                Response<?> response = pipeline.send(createRequest());
+                response.getBody().toBytes();
+            } catch (Exception e) {
+                LOGGER.logThrowableAsError(e);
+            }
+        };
+        return task;
+    }
+
+    // Method to run using Virtual Threads
+    private Runnable runAsyncWithVirtualThreadInternal() {
+        Runnable task = () -> {
+            try {
+                Response<?> response = pipeline.send(createRequest());
+                response.getBody().toBytes();
+            } catch (Exception e) {
+                LOGGER.logThrowableAsError(e);
+            }
+        };
+        return task;
     }
 
     private HttpRequest createRequest() {
