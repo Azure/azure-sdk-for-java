@@ -163,7 +163,6 @@ public class PerfStressProgram {
                     runTests(tests, options.isSync(), options.isCompletableFuture(), options.isExecutorService(),
                         options.isVirtualThread(),
                         options.getParallel(),
-                        options.getConcurrentTaskLimit(),
                         options.getWarmup(), "Warmup");
                 }
 
@@ -173,8 +172,7 @@ public class PerfStressProgram {
                         title += " " + (i + 1);
                     }
                     runTests(tests, options.isSync(), options.isCompletableFuture(), options.isExecutorService(),
-                        startedPlayback, options.getParallel(), options.getDuration(), options.getConcurrentTaskLimit()
-                        , title);
+                        startedPlayback, options.getParallel(), options.getDuration(), title);
                 }
             } finally {
                 try {
@@ -267,7 +265,6 @@ public class PerfStressProgram {
      * @param executorService indicate if executor service test should be run.
      * @param virtualThread indicate if virtual thread test should be run.
      * @param parallel the number of parallel threads to run the performance test on.
-     * @param concurrentTaskLimit the number of concurrent tasks to run the performance test on.
      * @param durationSeconds the duration for which performance test should be run on.
      * @param title the title of the performance tests.
      *
@@ -275,7 +272,7 @@ public class PerfStressProgram {
      * @throws IllegalStateException if zero operations completed of the performance test.
      */
     public static void runTests(PerfTestBase<?>[] tests, boolean sync, boolean completableFuture,
-                                boolean executorService, boolean virtualThread, int parallel, int concurrentTaskLimit, int durationSeconds,
+                                boolean executorService, boolean virtualThread, int parallel, int durationSeconds,
                                 String title) {
 
         long endNanoTime = System.nanoTime() + ((long) durationSeconds * 1000000000);

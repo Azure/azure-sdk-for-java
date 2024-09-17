@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
-
 package com.azure.perf.test.core;
 
 import com.azure.core.util.ExpandableStringEnum;
@@ -57,9 +54,6 @@ public class PerfStressOptions {
 
     @Parameter(names = { "--virtualthread" }, help = true, description = "Runs the performance test asynchronously with a virtual thread.")
     private boolean virtualthread = false;
-
-    @Parameter(names = { "--concurrent" }, help = true, description = "The number of concurrent requests to make.")
-    private int concurrentTaskLimit = 10;
 
     /**
      * Get the configured count for performance test.
@@ -163,14 +157,6 @@ public class PerfStressOptions {
      */
     public boolean isVirtualThread() {
         return virtualthread;
-    }
-
-    /**
-     * Get the configured concurrent task limit for performance test.
-     * @return The concurrent task limit.
-     */
-    public int getConcurrentTaskLimit() {
-        return concurrentTaskLimit;
     }
 
     /**

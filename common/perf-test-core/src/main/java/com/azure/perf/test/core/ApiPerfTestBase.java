@@ -239,7 +239,7 @@ public abstract class ApiPerfTestBase<TOptions extends PerfStressOptions> extend
         completedOperations = 0;
         lastCompletionNanoTime = 0;
         long startNanoTime = System.nanoTime();
-        Semaphore semaphore = new Semaphore(options.getConcurrentTaskLimit()); // Use configurable limit
+        Semaphore semaphore = new Semaphore(options.getParallel()); // Use configurable limit
 
         List<CompletableFuture<Void>> futures = new LinkedList<>();
         while (System.nanoTime() < endNanoTime) {
@@ -269,7 +269,7 @@ public abstract class ApiPerfTestBase<TOptions extends PerfStressOptions> extend
     public Runnable runAllAsyncWithExecutorService(long endNanoTime) {
         completedOperations = 0;
         lastCompletionNanoTime = 0;
-        final ExecutorService executor = Executors.newFixedThreadPool(options.getConcurrentTaskLimit());
+        final ExecutorService executor = Executors.newFixedThreadPool(options.getParallel());
 
         return () -> {
             try {
@@ -305,7 +305,19 @@ public abstract class ApiPerfTestBase<TOptions extends PerfStressOptions> extend
     public Runnable runAllAsyncWithVirtualThread(long endNanoTime) {
         completedOperations = 0;
         lastCompletionNanoTime = 0;
-        ExecutorService virtualThreadExecutor = createVirtualThreadExecutor();
+
+        ExecutorService virtualThreadExecutor;
+        try {
+            Method method = Executors.class.getMethod("newVirtualThreadPerTaskExecutor");
+            virtualThreadExecutor = (ExecutorService) method.invoke(null);
+        } catch (Exception e) {
+            // Skip virtual thread tests and report 0 completed operations rather than fallback
+            return () -> {
+                completedOperations = 0;
+                lastCompletionNanoTime = 0;
+            };
+        }
+
         return () -> {
             while (System.nanoTime() < endNanoTime) {
                 long startNanoTime = System.nanoTime();
@@ -321,16 +333,6 @@ public abstract class ApiPerfTestBase<TOptions extends PerfStressOptions> extend
             }
             virtualThreadExecutor.shutdown();
         };
-    }
-
-    private ExecutorService createVirtualThreadExecutor() {
-        try {
-            Method method = Executors.class.getMethod("newVirtualThreadPerTaskExecutor");
-            return (ExecutorService) method.invoke(null);
-        } catch (Exception e) {
-            // Fallback for Java versions that do not support newVirtualThreadPerTaskExecutor
-            return Executors.newCachedThreadPool();
-        }
     }
 
     /**

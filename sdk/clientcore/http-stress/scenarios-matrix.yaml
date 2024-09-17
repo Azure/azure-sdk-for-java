@@ -6,7 +6,7 @@ matrix:
   image:
     - dockerfiles/java11
     - dockerfiles/java21
-  httpClient: [default, okhttp]
+  httpClient: [default, okhttp, jdk]
   scenarios:
     get:
       imageBuildDir: ..\..\..\
