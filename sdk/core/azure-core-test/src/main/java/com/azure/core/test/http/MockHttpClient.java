@@ -9,11 +9,9 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.test.implementation.entities.HttpBinFormDataJson;
-import com.azure.core.test.implementation.entities.HttpBinFormDataJson.Form;
-import com.azure.core.test.implementation.entities.HttpBinFormDataJson.PizzaSize;
-import com.azure.core.test.implementation.entities.HttpBinJson;
-import com.azure.core.test.utils.MessageDigestUtils;
+import com.azure.core.test.implementation.models.HttpBinFormDataJson;
+import com.azure.core.test.implementation.models.HttpBinJson;
+import com.azure.core.test.implementation.models.PizzaSize;
 import com.azure.core.util.Base64Url;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
@@ -21,11 +19,14 @@ import reactor.core.publisher.Mono;
 
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -62,7 +63,7 @@ public class MockHttpClient extends NoOpHttpClient {
                         final HttpBinJson json = new HttpBinJson();
                         json.url(cleanseUrl(requestUrl));
                         json.headers(toMap(request.getHeaders()));
-                        response = new MockHttpResponse(request, 200, json);
+                        response = new MockHttpResponse(request, 200, json.toJsonBytes());
                     }
                 } else if (requestPathLower.startsWith("/bytes/")) {
                     final String byteCountString = requestPath.substring("/bytes/".length());
@@ -74,7 +75,7 @@ public class MockHttpClient extends NoOpHttpClient {
                     if (byteCount > 0) {
                         content = new byte[byteCount];
                         ThreadLocalRandom.current().nextBytes(content);
-                        newHeaders = newHeaders.set(HttpHeaderName.ETAG, MessageDigestUtils.md5(content));
+                        newHeaders = newHeaders.set(HttpHeaderName.ETAG, md5(content));
                     } else {
                         content = null;
                     }
@@ -143,42 +144,42 @@ public class MockHttpClient extends NoOpHttpClient {
                     final HttpBinJson json = new HttpBinJson();
                     json.url(cleanseUrl(requestUrl));
                     json.data(createHttpBinResponseDataForRequest(request));
-                    response = new MockHttpResponse(request, 200, json);
+                    response = new MockHttpResponse(request, 200, json.toJsonBytes());
                 } else if ("/get".equals(requestPathLower)) {
                     final HttpBinJson json = new HttpBinJson();
                     json.url(cleanseUrl(requestUrl));
                     json.headers(toMap(request.getHeaders()));
-                    response = new MockHttpResponse(request, 200, json);
+                    response = new MockHttpResponse(request, 200, json.toJsonBytes());
                 } else if ("/patch".equals(requestPathLower)) {
                     final HttpBinJson json = new HttpBinJson();
                     json.url(cleanseUrl(requestUrl));
                     json.data(createHttpBinResponseDataForRequest(request));
-                    response = new MockHttpResponse(request, 200, json);
+                    response = new MockHttpResponse(request, 200, json.toJsonBytes());
                 } else if ("/post".equals(requestPathLower)) {
                     if (contentType != null && contentType.contains("x-www-form-urlencoded")) {
                         Map<String, String> parsed = bodyToMap(request);
                         final HttpBinFormDataJson json = new HttpBinFormDataJson();
-                        Form form = new Form();
+                        HttpBinFormDataJson.Form form = new HttpBinFormDataJson.Form();
                         form.customerName(parsed.get("custname"));
                         form.customerEmail(parsed.get("custemail"));
                         form.customerTelephone(parsed.get("custtel"));
                         form.pizzaSize(PizzaSize.valueOf(parsed.get("size")));
                         form.toppings(Arrays.asList(parsed.get("toppings").split(",")));
                         json.form(form);
-                        response = new MockHttpResponse(request, 200, RESPONSE_HEADERS, json);
+                        response = new MockHttpResponse(request, 200, RESPONSE_HEADERS, json.toJsonBytes());
                     } else {
                         final HttpBinJson json = new HttpBinJson();
                         json.url(cleanseUrl(requestUrl));
                         json.data(createHttpBinResponseDataForRequest(request));
                         json.headers(toMap(request.getHeaders()));
-                        response = new MockHttpResponse(request, 200, json);
+                        response = new MockHttpResponse(request, 200, json.toJsonBytes());
                     }
                 } else if ("/put".equals(requestPathLower)) {
                     final HttpBinJson json = new HttpBinJson();
                     json.url(cleanseUrl(requestUrl));
                     json.data(createHttpBinResponseDataForRequest(request));
                     json.headers(toMap(request.getHeaders()));
-                    response = new MockHttpResponse(request, 200, RESPONSE_HEADERS, json);
+                    response = new MockHttpResponse(request, 200, RESPONSE_HEADERS, json.toJsonBytes());
                 } else if (requestPathLower.startsWith("/status/")) {
                     final String statusCodeString = requestPathLower.substring("/status/".length());
                     final int statusCode = Integer.parseInt(statusCodeString);
@@ -251,5 +252,22 @@ public class MockHttpClient extends NoOpHttpClient {
         }
 
         return builder.toString();
+    }
+
+    /**
+     * Returns base64 encoded MD5 of bytes.
+     *
+     * @param bytes bytes.
+     * @return base64 encoded MD5 of bytes.
+     * @throws RuntimeException if md5 is not found.
+     */
+    public static String md5(byte[] bytes) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("MD5");
+            digest.update(bytes);
+            return Base64.getEncoder().encodeToString(digest.digest());
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

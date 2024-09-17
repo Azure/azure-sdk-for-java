@@ -23,7 +23,7 @@ autorest --java --use=C:/work/autorest.java
 
 ``` yaml $(tag) == 'formrecognizer-v2.1'
 use: '@autorest/java@4.1.27'
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/cognitiveservices/data-plane/FormRecognizer/stable/v2.1/FormRecognizer.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/cognitiveservices/data-plane/FormRecognizer/stable/v2.1/FormRecognizer.json
 java: true
 output-folder: ..\
 generate-client-as-impl: true

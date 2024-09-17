@@ -6,6 +6,7 @@ package com.azure.identity.implementation;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
+import com.azure.core.experimental.credential.PopTokenRequestContext;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
@@ -41,11 +42,13 @@ import com.microsoft.aad.msal4j.ClaimsRequest;
 import com.microsoft.aad.msal4j.ClientCredentialFactory;
 import com.microsoft.aad.msal4j.ConfidentialClientApplication;
 import com.microsoft.aad.msal4j.DeviceCodeFlowParameters;
+import com.microsoft.aad.msal4j.HttpMethod;
 import com.microsoft.aad.msal4j.IBroker;
 import com.microsoft.aad.msal4j.IClientCredential;
 import com.microsoft.aad.msal4j.InteractiveRequestParameters;
-import com.microsoft.aad.msal4j.ManagedIdentityId;
 import com.microsoft.aad.msal4j.ManagedIdentityApplication;
+import com.microsoft.aad.msal4j.ManagedIdentityId;
+import com.microsoft.aad.msal4j.ManagedIdentitySourceType;
 import com.microsoft.aad.msal4j.OnBehalfOfParameters;
 import com.microsoft.aad.msal4j.Prompt;
 import com.microsoft.aad.msal4j.PublicClientApplication;
@@ -55,8 +58,8 @@ import com.microsoft.aad.msal4j.UserNamePasswordParameters;
 import reactor.core.publisher.Mono;
 
 import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -69,6 +72,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.Proxy;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -121,6 +125,7 @@ public abstract class IdentityClientBase {
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
     private static final ClientOptions DEFAULT_CLIENT_OPTIONS = new ClientOptions();
+    private static final Map<String, HttpMethod> HTTP_METHOD_HASH_MAP = new HashMap<>(8);
 
 
     private final Map<String, String> properties = CoreUtils.getProperties(AZURE_IDENTITY_PROPERTIES);
@@ -466,7 +471,7 @@ public abstract class IdentityClientBase {
             .builder(managedIdentityId)
             .logPii(options.isUnsafeSupportLoggingEnabled());
 
-        if ("DEFAULT_TO_IMDS".equals(String.valueOf(ManagedIdentityApplication.getManagedIdentitySource()))) {
+        if ("DEFAULT_TO_IMDS".equals(String.valueOf(getManagedIdentitySourceType()))) {
             options.setUseImdsRetryStrategy();
         }
 
@@ -482,6 +487,13 @@ public abstract class IdentityClientBase {
         }
 
         return miBuilder.build();
+    }
+
+
+    // temporary workaround until msal4j fixes a bug.
+    ManagedIdentitySourceType getManagedIdentitySourceType() {
+        return ManagedIdentityApplication.builder(ManagedIdentityId.systemAssigned())
+            .build().getManagedIdentitySource();
     }
 
     ConfidentialClientApplication getWorkloadIdentityConfidentialClient() {
@@ -591,12 +603,42 @@ public abstract class IdentityClientBase {
                 extraQueryParameters.put("msal_request_type", "consumer_passthrough");
                 builder.extraQueryParameters(extraQueryParameters);
             }
+
+            if (request instanceof PopTokenRequestContext
+                && ((PopTokenRequestContext) request).isProofOfPossessionEnabled()) {
+                PopTokenRequestContext requestContext = (PopTokenRequestContext) request;
+                try {
+                    builder.proofOfPossession(mapToMsalHttpMethod(requestContext.getResourceRequestMethod()),
+                        requestContext.getResourceRequestUrl().toURI(), requestContext.getProofOfPossessionNonce());
+                } catch (URISyntaxException e) {
+                    throw new IllegalArgumentException(e);
+                }
+            }
         }
 
         if (loginHint != null) {
             builder.loginHint(loginHint);
         }
         return builder;
+    }
+
+    static HttpMethod mapToMsalHttpMethod(String methodName) {
+        if (HTTP_METHOD_HASH_MAP.containsKey(methodName)) {
+            return HTTP_METHOD_HASH_MAP.get(methodName);
+        }
+
+        // Invalidate the cache if it grows too large. This is a simple cache and does not need to be large.
+        if (HTTP_METHOD_HASH_MAP.size() > 10) {
+            HTTP_METHOD_HASH_MAP.clear();
+        }
+
+        for (HttpMethod method : HttpMethod.values()) {
+            if (method.methodName.equalsIgnoreCase(methodName)) {
+                HTTP_METHOD_HASH_MAP.put(methodName, method);
+                return method;
+            }
+        }
+        throw new IllegalArgumentException("No enum constant with method name: " + methodName);
     }
 
     UserNamePasswordParameters.UserNamePasswordParametersBuilder buildUsernamePasswordFlowParameters(TokenRequestContext request, String username, String password) {
@@ -835,12 +877,39 @@ public abstract class IdentityClientBase {
             connection.connect();
 
             return MSIToken.fromJson(JsonProviders.createReader(connection.getInputStream()));
+        } catch (IOException exception) {
+            if (connection == null) {
+                throw LOGGER.logExceptionAsError(new RuntimeException(
+                    "Could not connect to the authority host: " + url + ".", exception));
+            }
+            int responseCode;
+            try {
+                responseCode = connection.getResponseCode();
+            } catch (Exception e) {
+                throw LoggingUtil.logCredentialUnavailableException(LOGGER, options,
+                    new CredentialUnavailableException(
+                        "WorkloadIdentityCredential authentication unavailable. "
+                            + "Connection to the authority host cannot be established, "
+                            + e.getMessage() + ".", e));
+            }
+            if (responseCode == 400) {
+                throw LoggingUtil.logCredentialUnavailableException(LOGGER, options,
+                    new CredentialUnavailableException(
+                        "WorkloadIdentityCredential authentication unavailable. "
+                            + "The request to the authority host was invalid. "
+                            + "Additional details: " + exception.getMessage() + ".", exception));
+            }
+
+            throw LOGGER.logExceptionAsError(new RuntimeException(
+                "Couldn't acquire access token from Workload Identity.", exception));
         } finally {
             if (connection != null) {
                 connection.disconnect();
             }
         }
     }
+
+
 
     String getSafeWorkingDirectory() {
         if (isWindowsPlatform()) {

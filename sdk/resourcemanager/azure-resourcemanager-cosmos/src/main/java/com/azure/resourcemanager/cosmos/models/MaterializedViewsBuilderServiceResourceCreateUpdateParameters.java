@@ -11,7 +11,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Parameters for Create or Update request for MaterializedViewsBuilderServiceResource.
+ * Properties for Create or Update request for MaterializedViewsBuilderServiceResource.
  */
 @Fluent
 public final class MaterializedViewsBuilderServiceResourceCreateUpdateParameters
@@ -62,7 +62,6 @@ public final class MaterializedViewsBuilderServiceResourceCreateUpdateParameters
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

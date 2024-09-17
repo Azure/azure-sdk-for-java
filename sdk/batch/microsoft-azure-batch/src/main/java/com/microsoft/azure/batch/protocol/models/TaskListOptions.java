@@ -20,7 +20,7 @@ public class TaskListOptions {
     /**
      * An OData $filter clause. For more information on constructing this
      * filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-tasks.
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-tasks.
      */
     @JsonProperty(value = "")
     private String filter;
@@ -75,7 +75,7 @@ public class TaskListOptions {
     private DateTimeRfc1123 ocpDate;
 
     /**
-     * Get an OData $filter clause. For more information on constructing this filter, see https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-tasks.
+     * Get an OData $filter clause. For more information on constructing this filter, see https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-tasks.
      *
      * @return the filter value
      */
@@ -84,7 +84,7 @@ public class TaskListOptions {
     }
 
     /**
-     * Set an OData $filter clause. For more information on constructing this filter, see https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-tasks.
+     * Set an OData $filter clause. For more information on constructing this filter, see https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-tasks.
      *
      * @param filter the filter value to set
      * @return the TaskListOptions object itself.

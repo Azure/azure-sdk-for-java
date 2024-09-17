@@ -55,7 +55,13 @@ public enum ComputeNodeState {
     PREEMPTED("preempted"),
 
     /** The Compute Node is undergoing an OS upgrade operation. */
-    UPGRADING_OS("upgradingos");
+    UPGRADING_OS("upgradingos"),
+
+    /** The Compute Node is deallocated. */
+    DEALLOCATED("deallocated"),
+
+    /** The Compute Node is deallocating. */
+    DEALLOCATING("deallocating");
 
     /** The actual serialized value for a ComputeNodeState instance. */
     private String value;

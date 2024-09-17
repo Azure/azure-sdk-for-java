@@ -17,7 +17,6 @@ import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.SessionContainer;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.guava25.base.Charsets;
-import com.azure.cosmos.implementation.guava25.base.Function;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableSet;
 import com.azure.cosmos.implementation.guava25.hash.BloomFilter;
@@ -52,6 +51,7 @@ import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.models.ThroughputResponse;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.fasterxml.jackson.databind.JsonNode;
+import org.assertj.core.api.AssertionsForClassTypes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.BeforeClass;
@@ -62,6 +62,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -72,6 +73,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -100,7 +102,7 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
     @DataProvider(name = "readYouWriteWithNoExplicitRegionSwitchingTestContext")
     public Object[][] readYouWriteWithNoExplicitRegionSwitchingTestContext() {
 
-        Function<CosmosAsyncContainer, Set<String>> pointReadYourPointCreate_BothFromFirstPreferredRegionFunc = (container) -> {
+        BiFunction<CosmosAsyncContainer, Boolean, Set<String>> pointReadYourPointCreate_BothFromFirstPreferredRegionFunc = (container, shouldInjectPreferredRegions) -> {
             TestObject testObjectToBeCreated = TestObject.create();
 
             String id = testObjectToBeCreated.getId();
@@ -115,7 +117,7 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
             return ImmutableSet.of(pk);
         };
 
-        Function<CosmosAsyncContainer, Set<String>> pointReadAfterPartitionSplitAndPointCreate_BothFromFirstPreferredRegionFunc = (container) -> {
+        BiFunction<CosmosAsyncContainer, Boolean, Set<String>> pointReadAfterPartitionSplitAndPointCreate_BothFromFirstPreferredRegionFunc = (container, shouldInjectPreferredRegions) -> {
 
             TestObject testObjectToBeCreated = TestObject.create();
             String pk = testObjectToBeCreated.getMypk();
@@ -151,7 +153,7 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
             return ImmutableSet.of(pk);
         };
 
-        Function<CosmosAsyncContainer, Set<String>> pointReadYourLatestUpsert_UpsertsFromPreferredRegionReadFromPreferredRegionFunc = (container) -> {
+        BiFunction<CosmosAsyncContainer, Boolean, Set<String>> pointReadYourLatestUpsert_UpsertsFromPreferredRegionReadFromPreferredRegionFunc = (container, shouldInjectPreferredRegions) -> {
             TestObject testObjectToBeCreated = TestObject.create();
 
             String id = testObjectToBeCreated.getId();
@@ -173,7 +175,7 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
             return ImmutableSet.of(pk);
         };
 
-        Function<CosmosAsyncContainer, Set<String>> queryTargetedToLogicalPartitionFollowingCreates_queryFromFirstPreferredRegionCreateInFirstPreferredRegionFunc = (container) -> {
+        BiFunction<CosmosAsyncContainer, Boolean, Set<String>> queryTargetedToLogicalPartitionFollowingCreates_queryFromFirstPreferredRegionCreateInFirstPreferredRegionFunc = (container, shouldInjectPreferredRegions) -> {
             Map<String, TestObject> idToTestObjectsCreated = new HashMap<>();
 
             TestObject testObjectToBeCreated = TestObject.create();
@@ -207,7 +209,7 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
             return ImmutableSet.of(pk);
         };
 
-        Function<CosmosAsyncContainer, Set<String>> crossPartitionedQueryFollowingCreates_queryFromFirstPreferredRegionCreatesInFirstPreferredRegionFunc = (container) -> {
+        BiFunction<CosmosAsyncContainer, Boolean, Set<String>> crossPartitionedQueryFollowingCreates_queryFromFirstPreferredRegionCreatesInFirstPreferredRegionFunc = (container, shouldInjectPreferredRegions) -> {
 
             Map<String, TestObject> idToTestObjectsCreated = new HashMap<>();
 
@@ -245,7 +247,7 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
             return ImmutableSet.of(testObjectToBeCreated1.getMypk(), testObjectToBeCreated2.getMypk());
         };
 
-        Function<CosmosAsyncContainer, Set<String>> deleteYourLatestUpsert_deleteAndUpsertInFirstPreferredRegionFunc = (container) -> {
+        BiFunction<CosmosAsyncContainer, Boolean, Set<String>> deleteYourLatestUpsert_deleteAndUpsertInFirstPreferredRegionFunc = (container, shouldInjectPreferredRegions) -> {
             TestObject testObjectToBeCreated = TestObject.create();
 
             String id = testObjectToBeCreated.getId();
@@ -261,7 +263,7 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
             return ImmutableSet.of(pk);
         };
 
-        Function<CosmosAsyncContainer, Set<String>> replaceYourLatestUpsert_replaceAndUpsertInFirstPreferredRegionFunc = (container) -> {
+        BiFunction<CosmosAsyncContainer, Boolean, Set<String>> replaceYourLatestUpsert_replaceAndUpsertInFirstPreferredRegionFunc = (container, shouldInjectPreferredRegions) -> {
             TestObject testObjectToBeCreated = TestObject.create();
 
             String id = testObjectToBeCreated.getId();
@@ -280,7 +282,7 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
             return ImmutableSet.of(pk);
         };
 
-        Function<CosmosAsyncContainer, Set<String>> readYourPatchYourCreateFunc = (container) -> {
+        BiFunction<CosmosAsyncContainer, Boolean, Set<String>> readYourPatchYourCreateFunc = (container, shouldInjectPreferredRegions) -> {
             TestObject testObjectToBeCreated = TestObject.create();
 
             String id = testObjectToBeCreated.getId();
@@ -312,7 +314,7 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
             return ImmutableSet.of(pk);
         };
 
-        Function<CosmosAsyncContainer, Set<String>> bulkReadYourBulkCreateFunc = (container) -> {
+        BiFunction<CosmosAsyncContainer, Boolean, Set<String>> bulkReadYourBulkCreateFunc = (container, shouldInjectPreferredRegions) -> {
 
             int createOperationCount = 10;
             List<String> idsToCreate = new ArrayList<>();
@@ -357,7 +359,7 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
             return pksRead;
         };
 
-        Function<CosmosAsyncContainer, Set<String>> changeFeed_fromBeginning_forFullRange_withSessionGuaranteeFunc = (container) -> {
+        BiFunction<CosmosAsyncContainer, Boolean, Set<String>> changeFeed_fromBeginning_forFullRange_withSessionGuaranteeFunc = (container, shouldInjectPreferredRegions) -> {
 
             int createOperationCount = 10;
             Set<String> idsAddedByBulkCreate = new HashSet<>();
@@ -414,7 +416,7 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
             return idsReceivedFromChangeFeedRequest;
         };
 
-        Function<CosmosAsyncContainer, Set<String>> readYourCreateGuaranteeWithinBatchFunc = (container) -> {
+        BiFunction<CosmosAsyncContainer, Boolean, Set<String>> readYourCreateGuaranteeWithinBatchFunc = (container, shouldInjectPreferredRegions) -> {
             String documentId = UUID.randomUUID().toString();
             PartitionKey partitionKey = new PartitionKey(documentId);
 
@@ -436,7 +438,7 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
             return ImmutableSet.of(documentId);
         };
 
-        Function<CosmosAsyncContainer, Set<String>> changeFeed_fromBeginning_forLogicalPartition_withSessionGuaranteeFunc = (container) -> {
+        BiFunction<CosmosAsyncContainer, Boolean, Set<String>> changeFeed_fromBeginning_forLogicalPartition_withSessionGuaranteeFunc = (container, shouldInjectPreferredRegions) -> {
             int createOperationCount = 10;
             Set<String> idsAddedByBulkCreate = new HashSet<>();
 
@@ -496,14 +498,24 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
             return idsReceivedFromChangeFeedRequest;
         };
 
-        return new Object[][] {
+        Object[][] readYouWriteWithNoExplicitRegionSwitching_testConfigs = new Object[][] {
             {
                 pointReadYourPointCreate_BothFromFirstPreferredRegionFunc,
                 "pointReadYourPointCreate_BothFromFirstPreferredRegion",
                 "Document read should have succeeded...",
                 !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
                 !SPLIT_REQUESTED_FLAG,
-                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                true
+            },
+            {
+                pointReadYourPointCreate_BothFromFirstPreferredRegionFunc,
+                "pointReadYourPointCreate_BothFromFirstPreferredRegion",
+                "Document read should have succeeded...",
+                !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                !SPLIT_REQUESTED_FLAG,
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                false
             },
             {
                 pointReadAfterPartitionSplitAndPointCreate_BothFromFirstPreferredRegionFunc,
@@ -511,7 +523,8 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                 "Document read should have succeeded...",
                 !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
                 SPLIT_REQUESTED_FLAG,
-                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                true
             },
             {
                 pointReadYourLatestUpsert_UpsertsFromPreferredRegionReadFromPreferredRegionFunc,
@@ -519,7 +532,17 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                 "Document read should have succeeded...",
                 !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
                 !SPLIT_REQUESTED_FLAG,
-                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                true
+            },
+            {
+                pointReadYourLatestUpsert_UpsertsFromPreferredRegionReadFromPreferredRegionFunc,
+                "pointReadAfterPartitionSplitAndPointCreate_BothFromFirstPreferredRegion",
+                "Document read should have succeeded...",
+                !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                !SPLIT_REQUESTED_FLAG,
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                false
             },
             {
                 queryTargetedToLogicalPartitionFollowingCreates_queryFromFirstPreferredRegionCreateInFirstPreferredRegionFunc,
@@ -527,7 +550,17 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                 "Document query should have succeeded...",
                 !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
                 !SPLIT_REQUESTED_FLAG,
-                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                true
+            },
+            {
+                queryTargetedToLogicalPartitionFollowingCreates_queryFromFirstPreferredRegionCreateInFirstPreferredRegionFunc,
+                "queryTargetedToLogicalPartitionFollowingCreates_queryFromFirstPreferredRegionCreateInFirstPreferredRegion",
+                "Document query should have succeeded...",
+                !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                !SPLIT_REQUESTED_FLAG,
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                false
             },
             {
                 crossPartitionedQueryFollowingCreates_queryFromFirstPreferredRegionCreatesInFirstPreferredRegionFunc,
@@ -535,7 +568,17 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                 "Document query should have succeeded...",
                 !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
                 !SPLIT_REQUESTED_FLAG,
-                MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+                MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                true
+            },
+            {
+                crossPartitionedQueryFollowingCreates_queryFromFirstPreferredRegionCreatesInFirstPreferredRegionFunc,
+                "queryTargetedToLogicalPartitionFollowingCreates_queryFromFirstPreferredRegionCreateInFirstPreferredRegion",
+                "Document query should have succeeded...",
+                !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                !SPLIT_REQUESTED_FLAG,
+                MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                false
             },
             {
                 deleteYourLatestUpsert_deleteAndUpsertInFirstPreferredRegionFunc,
@@ -543,7 +586,17 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                 "Document query should have succeeded...",
                 !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
                 !SPLIT_REQUESTED_FLAG,
-                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                true
+            },
+            {
+                deleteYourLatestUpsert_deleteAndUpsertInFirstPreferredRegionFunc,
+                "deleteYourLatestUpsert_deleteAndUpsertInFirstPreferredRegion",
+                "Document query should have succeeded...",
+                !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                !SPLIT_REQUESTED_FLAG,
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                false
             },
             {
                 replaceYourLatestUpsert_replaceAndUpsertInFirstPreferredRegionFunc,
@@ -551,7 +604,17 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                 "Document replace operation should have succeeded...",
                 !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
                 !SPLIT_REQUESTED_FLAG,
-                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                true
+            },
+            {
+                replaceYourLatestUpsert_replaceAndUpsertInFirstPreferredRegionFunc,
+                "replaceYourLatestUpsert_replaceAndUpsertInFirstPreferredRegion",
+                "Document replace operation should have succeeded...",
+                !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                !SPLIT_REQUESTED_FLAG,
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                false
             },
             {
                 readYourPatchYourCreateFunc,
@@ -559,7 +622,17 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                 "Document patch operation should have succeeded...",
                 !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
                 !SPLIT_REQUESTED_FLAG,
-                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                true
+            },
+            {
+                readYourPatchYourCreateFunc,
+                "readYourPatchYourCreate",
+                "Document patch operation should have succeeded...",
+                !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                !SPLIT_REQUESTED_FLAG,
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                false
             },
             {
                 bulkReadYourBulkCreateFunc,
@@ -567,7 +640,17 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                 "Bulk operation should have succeeded...",
                 !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
                 !SPLIT_REQUESTED_FLAG,
-                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                true
+            },
+            {
+                bulkReadYourBulkCreateFunc,
+                "bulkReadYourBulkCreate",
+                "Bulk operation should have succeeded...",
+                !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                !SPLIT_REQUESTED_FLAG,
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                false
             },
             {
                 changeFeed_fromBeginning_forFullRange_withSessionGuaranteeFunc,
@@ -575,7 +658,17 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                 "Change feed operation should have succeeded...",
                 !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
                 !SPLIT_REQUESTED_FLAG,
-                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                true
+            },
+            {
+                changeFeed_fromBeginning_forFullRange_withSessionGuaranteeFunc,
+                "changeFeed_fromBeginning_forFullRange_withSessionGuarantee",
+                "Change feed operation should have succeeded...",
+                !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                !SPLIT_REQUESTED_FLAG,
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                false
             },
             {
                 changeFeed_fromBeginning_forLogicalPartition_withSessionGuaranteeFunc,
@@ -583,7 +676,17 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                 "Change feed operation should have succeeded...",
                 !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
                 !SPLIT_REQUESTED_FLAG,
-                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                true
+            },
+            {
+                changeFeed_fromBeginning_forLogicalPartition_withSessionGuaranteeFunc,
+                "changeFeed_fromBeginning_forLogicalPartition_withSessionGuarantee",
+                "Change feed operation should have succeeded...",
+                !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                !SPLIT_REQUESTED_FLAG,
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                false
             },
             {
                 readYourCreateGuaranteeWithinBatchFunc,
@@ -591,15 +694,27 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                 "Read your create within batch should have succeeded...",
                 !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
                 !SPLIT_REQUESTED_FLAG,
-                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                true
+            },
+            {
+                readYourCreateGuaranteeWithinBatchFunc,
+                "readYourCreateGuaranteeWithinBatch",
+                "Read your create within batch should have succeeded...",
+                !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                !SPLIT_REQUESTED_FLAG,
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                false
             }
         };
+
+        return readYouWriteWithNoExplicitRegionSwitching_testConfigs;
     }
 
     @DataProvider(name = "readManyWithNoExplicitRegionSwitchingTestContext")
     public Object[][] readManyWithNoExplicitRegionSwitchingTestContext() {
 
-        Function<CosmosAsyncContainer, Set<String>> readManyWithSolelyPointReadsFunc = (container) -> {
+        BiFunction<CosmosAsyncContainer, Boolean, Set<String>> readManyWithSolelyPointReadsFunc = (container, shouldUsePreferredRegions) -> {
 
             int createOperationCount = 100;
 
@@ -662,7 +777,7 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
             return idsToUseWithReadMany;
         };
 
-        Function<CosmosAsyncContainer, Set<String>> readManyWithSolelyQueriesFunc = (container) -> {
+        BiFunction<CosmosAsyncContainer, Boolean, Set<String>> readManyWithSolelyQueriesFunc = (container, shouldUsePreferredRegions) -> {
 
             int createOperationCount = 100;
             Set<String> idsToUseWithReadMany = new HashSet<>();
@@ -692,28 +807,46 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
             return idsToUseWithReadMany;
         };
 
-        return new Object[][]{
+        Object[][] readManyWithNoExplicitRegionSwitching_testConfigs = new Object[][]{
             {
                 readManyWithSolelyPointReadsFunc,
                 "readManyWithSolelyPointReads",
                 "readMany operation with solely point reads should have succeeded...",
-                !BLOOM_FILTER_FORCED_ACCESSED_FLAG
+                !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                true
+            },
+            {
+                readManyWithSolelyPointReadsFunc,
+                "readManyWithSolelyPointReads",
+                "readMany operation with solely point reads should have succeeded...",
+                !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                false
             },
             {
                 readManyWithSolelyQueriesFunc,
                 "readManyWithSolelyQueries",
                 "readMany operation with solely queries should have succeeded...",
-                !BLOOM_FILTER_FORCED_ACCESSED_FLAG
+                !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                true
+            },
+            {
+                readManyWithSolelyQueriesFunc,
+                "readManyWithSolelyQueries",
+                "readMany operation with solely queries should have succeeded...",
+                !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                false
             }
         };
+
+        return readManyWithNoExplicitRegionSwitching_testConfigs;
     }
 
     @DataProvider(name = "readManyWithExplicitRegionSwitchingTestContext")
     public Object[][] readManyWithExplicitRegionSwitchingTestContext() {
 
-        Function<CosmosAsyncContainer, Set<String>> readManyWithSolelyPointReadFollowingCreates_readManyInSecondPreferredRegion_createsInFirstPreferredRegion_supportingQueriesThroughHelperContainer_Func = (container) -> {
+        BiFunction<CosmosAsyncContainer, Boolean, Set<String>> readManyWithSolelyPointReadFollowingCreates_readManyInSecondPreferredRegion_createsInFirstPreferredRegion_supportingQueriesThroughHelperContainer_Func = (container, shouldInjectPreferredRegions) -> {
 
-            try (CosmosAsyncClient client = buildAsyncClient(getClientBuilder(), this.readRegions, false)) {
+            try (CosmosAsyncClient client = buildAsyncClient(getClientBuilder(), this.readRegions, false, shouldInjectPreferredRegions)) {
 
                 CosmosAsyncDatabase database = client.getDatabase(container.getDatabase().getId());
                 CosmosAsyncContainer helperContainer = database.getContainer(container.getId());
@@ -794,7 +927,7 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
             return new HashSet<>();
         };
 
-        Function<CosmosAsyncContainer, Set<String>> readManyWithSolelyQueriesFollowingCreates_readManyInSecondPreferredRegion_createsInFirstPreferredRegion_Func = (container) -> {
+        BiFunction<CosmosAsyncContainer, Boolean, Set<String>> readManyWithSolelyQueriesFollowingCreates_readManyInSecondPreferredRegion_createsInFirstPreferredRegion_Func = (container, shouldInjectPreferredRegions) -> {
 
             Set<String> idsToUseWithReadMany = new HashSet<>();
             int createOperationCount = 100;
@@ -830,26 +963,44 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
             return idsToUseWithReadMany;
         };
 
-        return new Object[][] {
+        Object[][] readManyWithExplicitRegionSwitching_testConfigs = new Object[][] {
             {
                 readManyWithSolelyPointReadFollowingCreates_readManyInSecondPreferredRegion_createsInFirstPreferredRegion_supportingQueriesThroughHelperContainer_Func,
                 "readManyWithSolelyPointReadFollowingCreates_readManyInSecondPreferredRegion_createsInFirstPreferredRegion_supportingQueriesThroughHelperContainer",
                 "readMany operation with solely point reads should have succeeded...",
-                BLOOM_FILTER_FORCED_ACCESSED_FLAG
+                BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                true
+            },
+            {
+                readManyWithSolelyPointReadFollowingCreates_readManyInSecondPreferredRegion_createsInFirstPreferredRegion_supportingQueriesThroughHelperContainer_Func,
+                "readManyWithSolelyPointReadFollowingCreates_readManyInSecondPreferredRegion_createsInFirstPreferredRegion_supportingQueriesThroughHelperContainer",
+                "readMany operation with solely point reads should have succeeded...",
+                BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                false
             },
             {
                 readManyWithSolelyQueriesFollowingCreates_readManyInSecondPreferredRegion_createsInFirstPreferredRegion_Func,
                 "readManyWithSolelyQueriesFollowingCreates_readManyInSecondPreferredRegion_createsInFirstPreferredRegion",
                 "readMany operation with solely queries should have succeeded...",
-                !BLOOM_FILTER_FORCED_ACCESSED_FLAG
+                !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                true
+            },
+            {
+                readManyWithSolelyQueriesFollowingCreates_readManyInSecondPreferredRegion_createsInFirstPreferredRegion_Func,
+                "readManyWithSolelyQueriesFollowingCreates_readManyInSecondPreferredRegion_createsInFirstPreferredRegion",
+                "readMany operation with solely queries should have succeeded...",
+                !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                false
             }
         };
+
+        return readManyWithExplicitRegionSwitching_testConfigs;
     }
 
     @DataProvider(name = "readYouWriteWithExplicitRegionSwitchingTestContext")
     public Object[][] readYouWriteWithExplicitRegionSwitchingTestContext() {
 
-        Function<CosmosAsyncContainer, Set<String>> pointReadYourPointCreate_CreateFromFirstPreferredRegionReadFromSecondPreferredRegionFunc = (container) -> {
+        BiFunction<CosmosAsyncContainer, Boolean, Set<String>> pointReadYourPointCreate_CreateFromFirstPreferredRegionReadFromSecondPreferredRegionFunc = (container, shouldUsePreferredRegions) -> {
             TestObject testObjectToBeCreated = TestObject.create();
 
             String id = testObjectToBeCreated.getId();
@@ -871,7 +1022,7 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
             return ImmutableSet.of(pk);
         };
 
-        Function<CosmosAsyncContainer, Set<String>> pointReadAfterPartitionSplitAndPointCreate_CreateFromFirstPreferredRegionReadFromSecondPreferredRegionFunc = (container) -> {
+        BiFunction<CosmosAsyncContainer, Boolean, Set<String>> pointReadAfterPartitionSplitAndPointCreate_CreateFromFirstPreferredRegionReadFromSecondPreferredRegionFunc = (container, shouldUsePreferredRegions) -> {
             TestObject testObjectToBeCreated = TestObject.create();
 
             String id = testObjectToBeCreated.getId();
@@ -906,7 +1057,7 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
             return ImmutableSet.of(pk);
         };
 
-        Function<CosmosAsyncContainer, Set<String>> deleteYourLatestUpsert_deleteInSecondPreferredRegionAndUpsertInFirstPreferredRegionFunc = (container) -> {
+        BiFunction<CosmosAsyncContainer, Boolean, Set<String>> deleteYourLatestUpsert_deleteInSecondPreferredRegionAndUpsertInFirstPreferredRegionFunc = (container, shouldUsePreferredRegions) -> {
             TestObject testObjectToBeCreated = TestObject.create();
 
             String id = testObjectToBeCreated.getId();
@@ -922,7 +1073,7 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
             return ImmutableSet.of(pk);
         };
 
-        Function<CosmosAsyncContainer, Set<String>> replaceYourLatestUpsert_replaceInSecondPreferredRegionAndUpsertInFirstPreferredRegionFunc = (container) -> {
+        BiFunction<CosmosAsyncContainer, Boolean, Set<String>> replaceYourLatestUpsert_replaceInSecondPreferredRegionAndUpsertInFirstPreferredRegionFunc = (container, shouldUsePreferredRegions) -> {
             TestObject testObjectToBeCreated = TestObject.create();
 
             String id = testObjectToBeCreated.getId();
@@ -946,7 +1097,7 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
             return ImmutableSet.of(pk);
         };
 
-        Function<CosmosAsyncContainer, Set<String>> readYourPatchYourCreate_createInFirstPreferredRegion_readAndPatchInSecondPreferredRegionFunc = (container) -> {
+        BiFunction<CosmosAsyncContainer, Boolean, Set<String>> readYourPatchYourCreate_createInFirstPreferredRegion_readAndPatchInSecondPreferredRegionFunc = (container, shouldUsePreferredRegions) -> {
             TestObject testObjectToBeCreated = TestObject.create();
 
             String id = testObjectToBeCreated.getId();
@@ -990,7 +1141,7 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
             return ImmutableSet.of(pk);
         };
 
-        Function<CosmosAsyncContainer, Set<String>> readYourCreate_readBatchInSecondPreferredRegion_createBatchInFirstPreferredRegionFunc = (container) -> {
+        BiFunction<CosmosAsyncContainer, Boolean, Set<String>> readYourCreate_readBatchInSecondPreferredRegion_createBatchInFirstPreferredRegionFunc = (container, shouldUsePreferredRegions) -> {
             String documentId = UUID.randomUUID().toString();
             PartitionKey partitionKey = new PartitionKey(documentId);
 
@@ -1029,11 +1180,11 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
             return ImmutableSet.of(documentId);
         };
 
-        Function<CosmosAsyncContainer, Set<String>> bulkReadFromSecondPreferredRegionYourBulkCreateInFirstPreferredRegionFunc = (container) -> {
+        BiFunction<CosmosAsyncContainer, Boolean, Set<String>> bulkReadFromSecondPreferredRegionYourBulkCreateInFirstPreferredRegionFunc = (container, shouldUsePreferredRegions) -> {
             int createOperationCount = 10;
             List<String> idsToCreate = new ArrayList<>();
 
-            CosmosAsyncClient client = buildAsyncClient(getClientBuilder(), this.writeRegions, false);
+            CosmosAsyncClient client = buildAsyncClient(getClientBuilder(), this.writeRegions, false, shouldUsePreferredRegions);
             CosmosAsyncDatabase database = client.getDatabase(container.getDatabase().getId());
             CosmosAsyncContainer helperContainer = database.getContainer(container.getId());
 
@@ -1086,69 +1237,81 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
             return idsRead;
         };
 
-        Function<CosmosAsyncContainer, Set<String>> changeFeed_fromBeginning_fromSecondPreferredRegion_forFullRange_withCreatesOnFirstPreferredRegion_withSessionGuaranteeFunc = (container) -> {
+        BiFunction<CosmosAsyncContainer, Boolean, Set<String>> changeFeed_fromBeginning_fromSecondPreferredRegion_forFullRange_withCreatesOnFirstPreferredRegion_withSessionGuaranteeFunc = (container, shouldUsePreferredRegions) -> {
             int createOperationCount = 10;
             Set<String> idsAddedByCreates = new HashSet<>();
 
-            Flux<CosmosItemOperation> createOperationsFlux = Flux.range(0, createOperationCount).map(i -> {
-                String documentId = UUID.randomUUID().toString();
-                TestItem testItem = new TestItem(documentId, documentId, documentId);
+            deleteAllDocuments(container);
 
-                idsAddedByCreates.add(documentId);
-                return CosmosBulkOperations.getCreateItemOperation(testItem, new PartitionKey(documentId));
-            });
+            try (CosmosAsyncClient client = buildAsyncClient(getClientBuilder(), this.writeRegions, true, shouldUsePreferredRegions)) {
 
-            List<CosmosBulkOperationResponse<Object>> bulkCreateResponses = container
-                .executeBulkOperations(createOperationsFlux)
-                .collectList()
-                .block();
+                Flux<CosmosItemOperation> createOperationsFlux = Flux.range(0, createOperationCount).map(i -> {
+                    String documentId = UUID.randomUUID().toString();
+                    TestItem testItem = new TestItem(documentId, documentId, documentId);
 
-            assertThat(bulkCreateResponses).isNotNull();
-            assertThat(bulkCreateResponses.size()).isEqualTo(createOperationCount);
+                    idsAddedByCreates.add(documentId);
+                    return CosmosBulkOperations.getCreateItemOperation(testItem, new PartitionKey(documentId));
+                });
 
-            CosmosChangeFeedRequestOptions changeFeedRequestOptions = CosmosChangeFeedRequestOptions
-                .createForProcessingFromBeginning(FeedRange.forFullRange())
-                .setExcludedRegions(ImmutableList.of(this.writeRegions.get(0)));
+                CosmosAsyncContainer helperContainer = client.getDatabase(container.getDatabase().getId()).getContainer(container.getId());
 
-            Iterator<FeedResponse<JsonNode>> responseIterator = container
-                .queryChangeFeed(changeFeedRequestOptions, JsonNode.class)
-                .byPage()
-                .toIterable()
-                .iterator();
+                List<CosmosBulkOperationResponse<Object>> bulkCreateResponses = helperContainer
+                    .executeBulkOperations(createOperationsFlux)
+                    .collectList()
+                    .block();
 
-            List<JsonNode> results = new ArrayList<>();
+                assertThat(bulkCreateResponses).isNotNull();
+                assertThat(bulkCreateResponses.size()).isEqualTo(createOperationCount);
 
-            while (responseIterator.hasNext()) {
-                FeedResponse<JsonNode> response = responseIterator.next();
+                CosmosChangeFeedRequestOptions changeFeedRequestOptions = CosmosChangeFeedRequestOptions
+                    .createForProcessingFromBeginning(FeedRange.forFullRange())
+                    .setExcludedRegions(ImmutableList.of(this.writeRegions.get(0)));
 
-                assertThat(response).isNotNull();
-                assertThat(response.getResults()).isNotNull();
+                Iterator<FeedResponse<JsonNode>> responseIterator = helperContainer
+                    .queryChangeFeed(changeFeedRequestOptions, JsonNode.class)
+                    .byPage()
+                    .toIterable()
+                    .iterator();
 
-                results.addAll(response.getResults());
+                List<JsonNode> results = new ArrayList<>();
 
-                changeFeedRequestOptions = CosmosChangeFeedRequestOptions.createForProcessingFromContinuation(response.getContinuationToken());
+                while (responseIterator.hasNext()) {
+                    FeedResponse<JsonNode> response = responseIterator.next();
 
-                if (results.size() >= idsAddedByCreates.size()) {
-                    break;
+                    assertThat(response).isNotNull();
+                    assertThat(response.getResults()).isNotNull();
+
+                    results.addAll(response.getResults());
+
+                    changeFeedRequestOptions = CosmosChangeFeedRequestOptions.createForProcessingFromContinuation(response.getContinuationToken());
+
+                    if (results.size() >= idsAddedByCreates.size()) {
+                        break;
+                    }
                 }
+
+                assertThat(results.size() >= idsAddedByCreates.size()).isTrue();
+
+                Set<String> idsReceivedFromChangeFeedRequest = new HashSet<>();
+
+                results.forEach(instanceReceivedFromChangeFeedRequest ->
+                    idsReceivedFromChangeFeedRequest.add(instanceReceivedFromChangeFeedRequest.get("id").asText()));
+
+                idsAddedByCreates.forEach(idAddedByBulkCreate ->
+                    assertThat(idsReceivedFromChangeFeedRequest.contains(idAddedByBulkCreate)).isTrue());
+
+                return idsReceivedFromChangeFeedRequest;
+            } catch (Exception ex) {
+                logger.error("Exception occurred : ", ex);
+                fail("Bulk creates or change feed operations failed!");
             }
 
-            assertThat(results.size() >= idsAddedByCreates.size()).isTrue();
-
-            Set<String> idsReceivedFromChangeFeedRequest = new HashSet<>();
-
-            results.forEach(instanceReceivedFromChangeFeedRequest ->
-                idsReceivedFromChangeFeedRequest.add(instanceReceivedFromChangeFeedRequest.get("id").asText()));
-
-            idsAddedByCreates.forEach(idAddedByBulkCreate ->
-                assertThat(idsReceivedFromChangeFeedRequest.contains(idAddedByBulkCreate)).isTrue());
-
-            return idsReceivedFromChangeFeedRequest;
+            return new HashSet<>();
         };
 
-        Function<CosmosAsyncContainer, Set<String>> changeFeed_fromBeginningAndFromSecondPreferredRegion_forLogicalPartition_withCreatesOnFirstPreferredRegion_withSessionGuaranteeFunc = (container) -> {
+        BiFunction<CosmosAsyncContainer, Boolean, Set<String>> changeFeed_fromBeginningAndFromSecondPreferredRegion_forLogicalPartition_withCreatesOnFirstPreferredRegion_withSessionGuaranteeFunc = (container, shouldUsePreferredRegions) -> {
 
-            try (CosmosAsyncClient client = buildAsyncClient(getClientBuilder(), this.writeRegions, false)) {
+            try (CosmosAsyncClient client = buildAsyncClient(getClientBuilder(), this.writeRegions, false, shouldUsePreferredRegions)) {
                 int createOperationCount = 10;
                 Set<String> idsAddedByBulkCreate = new HashSet<>();
 
@@ -1218,7 +1381,7 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
             return new HashSet<>();
         };
 
-        Function<CosmosAsyncContainer, Set<String>> pointReadFollowsQueryFollowsPointCreate_createInFirstPreferredRegion_pointReadAndQueryInSecondPreferredRegion_Func = (container) -> {
+        BiFunction<CosmosAsyncContainer, Boolean, Set<String>> pointReadFollowsQueryFollowsPointCreate_createInFirstPreferredRegion_pointReadAndQueryInSecondPreferredRegion_Func = (container, shouldUsePreferredRegions) -> {
             TestObject testObjectToBeCreated = TestObject.create();
 
             String id = testObjectToBeCreated.getId();
@@ -1249,8 +1412,8 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
             return ImmutableSet.of(pk);
         };
 
-        Function<CosmosAsyncContainer, Set<String>> pointReadFollowsQueryOnDifferentPartitionAsPointReadFollowsPointCreate_createInFirstPreferredRegion_pointReadAndQueryInSecondPreferredRegion_Func = (container) -> {
-            try (CosmosAsyncClient client = buildAsyncClient(getClientBuilder(), this.writeRegions, false)) {
+        BiFunction<CosmosAsyncContainer, Boolean, Set<String>> pointReadFollowsQueryOnDifferentPartitionAsPointReadFollowsPointCreate_createInFirstPreferredRegion_pointReadAndQueryInSecondPreferredRegion_Func = (container, shouldUsePreferredRegions) -> {
+            try (CosmosAsyncClient client = buildAsyncClient(getClientBuilder(), this.writeRegions, false, shouldUsePreferredRegions)) {
 
                 int createOperationCount = 100;
 
@@ -1325,14 +1488,24 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
             return new HashSet<>();
         };
 
-        return new Object[][] {
+        Object[][] pointReadYourPointCreate_CreateFromFirstPreferredRegionReadFromSecondPreferredRegion_testConfigs = new Object[][] {
             {
                 pointReadYourPointCreate_CreateFromFirstPreferredRegionReadFromSecondPreferredRegionFunc,
                 "pointReadYourPointCreate_CreateFromFirstPreferredRegionReadFromSecondPreferredRegion",
                 "Document read should have succeeded...",
                 BLOOM_FILTER_FORCED_ACCESSED_FLAG,
                 !SPLIT_REQUESTED_FLAG,
-                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                true
+            },
+            {
+                pointReadYourPointCreate_CreateFromFirstPreferredRegionReadFromSecondPreferredRegionFunc,
+                "pointReadYourPointCreate_CreateFromFirstPreferredRegionReadFromSecondPreferredRegion",
+                "Document read should have succeeded...",
+                BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                !SPLIT_REQUESTED_FLAG,
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                false
             },
             {
                 pointReadAfterPartitionSplitAndPointCreate_CreateFromFirstPreferredRegionReadFromSecondPreferredRegionFunc,
@@ -1340,7 +1513,8 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                 "Document read should have succeeded...",
                 BLOOM_FILTER_FORCED_ACCESSED_FLAG,
                 SPLIT_REQUESTED_FLAG,
-                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                true
             },
             {
                 deleteYourLatestUpsert_deleteInSecondPreferredRegionAndUpsertInFirstPreferredRegionFunc,
@@ -1348,7 +1522,17 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                 "Document read should have succeeded...",
                 BLOOM_FILTER_FORCED_ACCESSED_FLAG,
                 !SPLIT_REQUESTED_FLAG,
-                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                true
+            },
+            {
+                deleteYourLatestUpsert_deleteInSecondPreferredRegionAndUpsertInFirstPreferredRegionFunc,
+                "deleteYourLatestUpsert_deleteInSecondPreferredRegionAndUpsertInFirstPreferredRegion",
+                "Document read should have succeeded...",
+                BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                !SPLIT_REQUESTED_FLAG,
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                false
             },
             {
                 replaceYourLatestUpsert_replaceInSecondPreferredRegionAndUpsertInFirstPreferredRegionFunc,
@@ -1356,7 +1540,17 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                 "Document replace should have succeeded...",
                 BLOOM_FILTER_FORCED_ACCESSED_FLAG,
                 !SPLIT_REQUESTED_FLAG,
-                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                true
+            },
+            {
+                replaceYourLatestUpsert_replaceInSecondPreferredRegionAndUpsertInFirstPreferredRegionFunc,
+                "replaceYourLatestUpsert_replaceInSecondPreferredRegionAndUpsertInFirstPreferredRegion",
+                "Document replace should have succeeded...",
+                BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                !SPLIT_REQUESTED_FLAG,
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                false
             },
             {
                 readYourPatchYourCreate_createInFirstPreferredRegion_readAndPatchInSecondPreferredRegionFunc,
@@ -1364,7 +1558,17 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                 "Document patch or read should have succeeded...",
                 BLOOM_FILTER_FORCED_ACCESSED_FLAG,
                 !SPLIT_REQUESTED_FLAG,
-                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                true
+            },
+            {
+                readYourPatchYourCreate_createInFirstPreferredRegion_readAndPatchInSecondPreferredRegionFunc,
+                "readYourPatchYourCreate_createInFirstPreferredRegion_readAndPatchInSecondPreferredRegion",
+                "Document patch or read should have succeeded...",
+                BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                !SPLIT_REQUESTED_FLAG,
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                false
             },
             {
                 readYourCreate_readBatchInSecondPreferredRegion_createBatchInFirstPreferredRegionFunc,
@@ -1372,7 +1576,17 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                 "Batch with read operations should have succeeded...",
                 BLOOM_FILTER_FORCED_ACCESSED_FLAG,
                 !SPLIT_REQUESTED_FLAG,
-                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                true
+            },
+            {
+                readYourCreate_readBatchInSecondPreferredRegion_createBatchInFirstPreferredRegionFunc,
+                "readYourCreate_readBatchInSecondPreferredRegion_createBatchInFirstPreferredRegion",
+                "Batch with read operations should have succeeded...",
+                BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                !SPLIT_REQUESTED_FLAG,
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                false
             },
             {
                 bulkReadFromSecondPreferredRegionYourBulkCreateInFirstPreferredRegionFunc,
@@ -1380,7 +1594,17 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                 "Bulk execution with read operations should have succeeded...",
                 !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
                 !SPLIT_REQUESTED_FLAG,
-                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                true
+            },
+            {
+                bulkReadFromSecondPreferredRegionYourBulkCreateInFirstPreferredRegionFunc,
+                "bulkReadFromSecondPreferredRegionYourBulkCreateInFirstPreferredRegion",
+                "Bulk execution with read operations should have succeeded...",
+                !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                !SPLIT_REQUESTED_FLAG,
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                false
             },
             {
                 changeFeed_fromBeginning_fromSecondPreferredRegion_forFullRange_withCreatesOnFirstPreferredRegion_withSessionGuaranteeFunc,
@@ -1388,7 +1612,17 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                 "Change feed execution should have succeeded...",
                 !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
                 !SPLIT_REQUESTED_FLAG,
-                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                true
+            },
+            {
+                changeFeed_fromBeginning_fromSecondPreferredRegion_forFullRange_withCreatesOnFirstPreferredRegion_withSessionGuaranteeFunc,
+                "changeFeed_fromBeginning_fromSecondPreferredRegion_forFullRange_withCreatesOnFirstPreferredRegion_withSessionGuarantee",
+                "Change feed execution should have succeeded...",
+                !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                !SPLIT_REQUESTED_FLAG,
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                false
             },
             {
                 changeFeed_fromBeginningAndFromSecondPreferredRegion_forLogicalPartition_withCreatesOnFirstPreferredRegion_withSessionGuaranteeFunc,
@@ -1396,7 +1630,17 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                 "Change feed execution should have succeeded...",
                 BLOOM_FILTER_FORCED_ACCESSED_FLAG,
                 !SPLIT_REQUESTED_FLAG,
-                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                true
+            },
+            {
+                changeFeed_fromBeginningAndFromSecondPreferredRegion_forLogicalPartition_withCreatesOnFirstPreferredRegion_withSessionGuaranteeFunc,
+                "changeFeed_fromBeginningAndFromSecondPreferredRegion_forLogicalPartition_withCreatesOnFirstPreferredRegion_withSessionGuarantee",
+                "Change feed execution should have succeeded...",
+                BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                !SPLIT_REQUESTED_FLAG,
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                false
             },
             {
                 readYourCreate_readBatchInSecondPreferredRegion_createBatchInFirstPreferredRegionFunc,
@@ -1404,7 +1648,17 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                 "Batch with read operations should have succeeded...",
                 BLOOM_FILTER_FORCED_ACCESSED_FLAG,
                 !SPLIT_REQUESTED_FLAG,
-                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                true
+            },
+            {
+                readYourCreate_readBatchInSecondPreferredRegion_createBatchInFirstPreferredRegionFunc,
+                "readYourCreate_readBatchInSecondPreferredRegion_createBatchInFirstPreferredRegion",
+                "Batch with read operations should have succeeded...",
+                BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                !SPLIT_REQUESTED_FLAG,
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                false
             },
             {
                 pointReadFollowsQueryFollowsPointCreate_createInFirstPreferredRegion_pointReadAndQueryInSecondPreferredRegion_Func,
@@ -1412,7 +1666,17 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                 "Point read or query operation should have succeeded...",
                 !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
                 !SPLIT_REQUESTED_FLAG,
-                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                true
+            },
+            {
+                pointReadFollowsQueryFollowsPointCreate_createInFirstPreferredRegion_pointReadAndQueryInSecondPreferredRegion_Func,
+                "pointReadFollowsQueryFollowsPointCreate_createInFirstPreferredRegion_pointReadAndQueryInSecondPreferredRegion",
+                "Point read or query operation should have succeeded...",
+                !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                !SPLIT_REQUESTED_FLAG,
+                !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                false
             },
             {
                 pointReadFollowsQueryOnDifferentPartitionAsPointReadFollowsPointCreate_createInFirstPreferredRegion_pointReadAndQueryInSecondPreferredRegion_Func,
@@ -1420,9 +1684,21 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                 "Point read or query should have succeeded!",
                 BLOOM_FILTER_FORCED_ACCESSED_FLAG,
                 !SPLIT_REQUESTED_FLAG,
-                MULTI_PARTITION_CONTAINER_REQUESTED_FLAG
+                MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                true
+            },
+            {
+                pointReadFollowsQueryOnDifferentPartitionAsPointReadFollowsPointCreate_createInFirstPreferredRegion_pointReadAndQueryInSecondPreferredRegion_Func,
+                "pointReadFollowsQueryOnDifferentPartitionAsPointReadFollowsPointCreate_createInFirstPreferredRegion_pointReadAndQueryInSecondPreferredRegion",
+                "Point read or query should have succeeded!",
+                BLOOM_FILTER_FORCED_ACCESSED_FLAG,
+                !SPLIT_REQUESTED_FLAG,
+                MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
+                false
             }
         };
+
+        return pointReadYourPointCreate_CreateFromFirstPreferredRegionReadFromSecondPreferredRegion_testConfigs;
     }
 
     @BeforeClass(groups = {"multi-region", "multi-master"})
@@ -1434,11 +1710,14 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
             GlobalEndpointManager globalEndpointManager = ReflectionUtils.getGlobalEndpointManager(rxDocumentClient);
             DatabaseAccount databaseAccount = globalEndpointManager.getLatestDatabaseAccount();
 
-            Map<String, String> writeRegionMap = getRegionMap(databaseAccount, true);
-            Map<String, String> readRegionMap = getRegionMap(databaseAccount, false);
+            AccountLevelLocationContext accountLevelReadableLocationContext = getAccountLevelLocationContext(databaseAccount, false);
+            AccountLevelLocationContext accountLevelWriteableLocationContext = getAccountLevelLocationContext(databaseAccount, true);
 
-            this.readRegions = new ArrayList<>(readRegionMap.keySet());
-            this.writeRegions = new ArrayList<>(writeRegionMap.keySet());
+            validate(accountLevelReadableLocationContext, false);
+            validate(accountLevelWriteableLocationContext, true);
+
+            this.readRegions = accountLevelReadableLocationContext.serviceOrderedReadableRegions;
+            this.writeRegions = accountLevelWriteableLocationContext.serviceOrderedWriteableRegions;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -1446,18 +1725,19 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
 
     @Test(groups = {"multi-region"}, dataProvider = "readYouWriteWithNoExplicitRegionSwitchingTestContext", timeOut = 80 * TIMEOUT)
     public void readYouWriteWithNoExplicitRegionSwitching(
-        Function<CosmosAsyncContainer, Set<String>> func,
+        BiFunction<CosmosAsyncContainer, Boolean, Set<String>> func,
         String testId,
         String genericErrorMessage,
         boolean shouldBloomFilterBeAccessed,
         boolean shouldSinglePartitionContainerBeSplit,
-        boolean isMultiPartitionContainerRequired) throws InterruptedException {
+        boolean isMultiPartitionContainerRequired,
+        boolean shouldInjectPreferredRegions) throws InterruptedException {
 
         logger.info("Executing test with id : {}", testId);
 
         assertThat(this.readRegions.size()).isGreaterThan(1);
 
-        CosmosAsyncClient client = buildAsyncClient(getClientBuilder(), this.readRegions, true);
+        CosmosAsyncClient client = buildAsyncClient(getClientBuilder(), this.readRegions, true, shouldInjectPreferredRegions);
         CosmosAsyncDatabase database = getSharedCosmosDatabase(client);
         CosmosContainerProperties expectedCosmosContainerProperties;
 
@@ -1484,7 +1764,7 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
         try {
             RxDocumentClientImpl documentClient = (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(client);
             String normalizedSecondPreferredRegion = this.readRegions.get(1).toLowerCase(Locale.ROOT).trim().replace(" ", "");
-            Set<String> possiblePartitionKeysWhichSawRequestsInSecondPreferredRegion = func.apply(resolvedContainer);
+            Set<String> possiblePartitionKeysWhichSawRequestsInSecondPreferredRegion = func.apply(resolvedContainer, shouldInjectPreferredRegions);
 
             assertThat(possiblePartitionKeysWhichSawRequestsInSecondPreferredRegion.size())
                 .as("possiblePartitionKeysWhichSawRequestsInSecondPreferredRegion size should be greater than or equal to 1.")
@@ -1516,18 +1796,19 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
 
     @Test(groups = {"multi-master"}, dataProvider = "readYouWriteWithExplicitRegionSwitchingTestContext", timeOut = 80 * TIMEOUT)
     public void readYouWriteWithExplicitRegionSwitching(
-        Function<CosmosAsyncContainer, Set<String>> func,
+        BiFunction<CosmosAsyncContainer, Boolean, Set<String>> func,
         String testId,
         String genericErrorMessage,
         boolean shouldBloomFilterBeAccessed,
         boolean shouldSinglePartitionContainerBeSplit,
-        boolean isMultiPartitionContainerRequired) throws InterruptedException {
+        boolean isMultiPartitionContainerRequired,
+        boolean shouldInjectPreferredRegions) throws InterruptedException {
 
         logger.info("Executing test with id : {}", testId);
 
         assertThat(this.writeRegions.size()).isGreaterThan(1);
 
-        CosmosAsyncClient client = buildAsyncClient(getClientBuilder(), this.writeRegions, true);
+        CosmosAsyncClient client = buildAsyncClient(getClientBuilder(), this.writeRegions, true, shouldInjectPreferredRegions);
         CosmosAsyncDatabase database = getSharedCosmosDatabase(client);
         CosmosContainerProperties expectedCosmosContainerProperties;
         CosmosAsyncContainer resolvedContainer;
@@ -1553,7 +1834,7 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
         try {
             RxDocumentClientImpl documentClient = (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(client);
             String normalizedSecondPreferredRegion = this.writeRegions.get(1).toLowerCase(Locale.ROOT).trim().replace(" ", "");
-            Set<String> possiblePartitionKeysWhichSawRequestsInSecondPreferredRegion = func.apply(resolvedContainer);
+            Set<String> possiblePartitionKeysWhichSawRequestsInSecondPreferredRegion = func.apply(resolvedContainer, shouldInjectPreferredRegions);
 
             assertThat(possiblePartitionKeysWhichSawRequestsInSecondPreferredRegion.size())
                 .as("possiblePartitionKeysWhichSawRequestsInSecondPreferredRegion size should be greater than or equal to 1.")
@@ -1585,15 +1866,17 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
 
     @Test(groups = {"multi-region"}, dataProvider = "readManyWithNoExplicitRegionSwitchingTestContext", timeOut = 10 * TIMEOUT)
     public void readManyWithNoExplicitRegionSwitching(
-        Function<CosmosAsyncContainer, Set<String>> func,
+        BiFunction<CosmosAsyncContainer, Boolean, Set<String>> func,
         String testId,
         String genericErrorMessage,
-        boolean shouldBloomFilterBeAccessed) throws InterruptedException {
+        boolean shouldBloomFilterBeAccessed,
+        boolean shouldInjectPreferredRegions) throws InterruptedException {
+
         logger.info("Executing test with id : {}", testId);
 
         assertThat(this.readRegions.size()).isGreaterThan(1);
 
-        CosmosAsyncClient client = buildAsyncClient(getClientBuilder(), this.readRegions, true);
+        CosmosAsyncClient client = buildAsyncClient(getClientBuilder(), this.readRegions, true, shouldInjectPreferredRegions);
         CosmosAsyncDatabase database = getSharedCosmosDatabase(client);
 
         String containerId = UUID.randomUUID().toString();
@@ -1610,7 +1893,7 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
         try {
             RxDocumentClientImpl documentClient = (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(client);
             String normalizedSecondPreferredRegion = this.readRegions.get(1).toLowerCase(Locale.ROOT).trim().replace(" ", "");
-            Set<String> possiblePartitionKeysWhichSawRequestsInSecondPreferredRegion = func.apply(resolvedContainer);
+            Set<String> possiblePartitionKeysWhichSawRequestsInSecondPreferredRegion = func.apply(resolvedContainer, shouldInjectPreferredRegions);
 
             assertThat(possiblePartitionKeysWhichSawRequestsInSecondPreferredRegion.size())
                 .as("possiblePartitionKeysWhichSawRequestsInSecondPreferredRegion size should be greater than or equal to 1.")
@@ -1638,15 +1921,16 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
 
     @Test(groups = {"multi-master"}, dataProvider = "readManyWithExplicitRegionSwitchingTestContext", timeOut = 10 * TIMEOUT)
     public void readManyWithExplicitRegionSwitching(
-        Function<CosmosAsyncContainer, Set<String>> func,
+        BiFunction<CosmosAsyncContainer, Boolean, Set<String>> func,
         String testId,
         String genericErrorMessage,
-        boolean shouldBloomFilterBeAccessed) throws InterruptedException {
+        boolean shouldBloomFilterBeAccessed,
+        boolean shouldInjectPreferredRegions) throws InterruptedException {
         logger.info("Executing test with id : {}", testId);
 
         assertThat(this.writeRegions.size()).isGreaterThan(1);
 
-        CosmosAsyncClient client = buildAsyncClient(getClientBuilder(), this.writeRegions, true);
+        CosmosAsyncClient client = buildAsyncClient(getClientBuilder(), this.writeRegions, true, shouldInjectPreferredRegions);
         CosmosAsyncDatabase database = getSharedCosmosDatabase(client);
 
         String containerId = UUID.randomUUID().toString();
@@ -1663,7 +1947,7 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
         try {
             RxDocumentClientImpl documentClient = (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(client);
             String normalizedSecondPreferredRegion = this.writeRegions.get(1).toLowerCase(Locale.ROOT).trim().replace(" ", "");
-            Set<String> possiblePartitionKeysWhichSawRequestsInSecondPreferredRegion = func.apply(resolvedContainer);
+            Set<String> possiblePartitionKeysWhichSawRequestsInSecondPreferredRegion = func.apply(resolvedContainer, shouldInjectPreferredRegions);
 
             assertThat(possiblePartitionKeysWhichSawRequestsInSecondPreferredRegion.size())
                 .as("possiblePartitionKeysWhichSawRequestsInSecondPreferredRegion size should be greater than or equal to 1.")
@@ -1767,9 +2051,14 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
         logger.info("FPP Rate : {}", fppRate);
     }
 
-    private static CosmosAsyncClient buildAsyncClient(CosmosClientBuilder clientBuilder, List<String> preferredRegions, boolean isRegionScopedSessionCapturingEnabled) {
+    private static CosmosAsyncClient buildAsyncClient(
+        CosmosClientBuilder clientBuilder,
+        List<String> preferredRegions,
+        boolean isRegionScopedSessionCapturingEnabled,
+        boolean shouldPreferredRegionsBeInjectedInClient) {
+
         clientBuilder = clientBuilder
-            .preferredRegions(preferredRegions)
+            .preferredRegions(shouldPreferredRegionsBeInjectedInClient ? preferredRegions : Collections.emptyList())
             // override this to ensure a write requests can indeed be routed
             // to a satellite region in a multi-write account
             .multipleWriteRegionsEnabled(true);
@@ -1777,17 +2066,29 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
         return clientBuilder.buildAsyncClient();
     }
 
-    private static Map<String, String> getRegionMap(DatabaseAccount databaseAccount, boolean writeOnly) {
+    private AccountLevelLocationContext getAccountLevelLocationContext(DatabaseAccount databaseAccount, boolean writeOnly) {
         Iterator<DatabaseAccountLocation> locationIterator =
             writeOnly ? databaseAccount.getWritableLocations().iterator() : databaseAccount.getReadableLocations().iterator();
+
+        List<String> serviceOrderedReadableRegions = new ArrayList<>();
+        List<String> serviceOrderedWriteableRegions = new ArrayList<>();
         Map<String, String> regionMap = new ConcurrentHashMap<>();
 
         while (locationIterator.hasNext()) {
             DatabaseAccountLocation accountLocation = locationIterator.next();
             regionMap.put(accountLocation.getName(), accountLocation.getEndpoint());
+
+            if (writeOnly) {
+                serviceOrderedWriteableRegions.add(accountLocation.getName());
+            } else {
+                serviceOrderedReadableRegions.add(accountLocation.getName());
+            }
         }
 
-        return regionMap;
+        return new AccountLevelLocationContext(
+            serviceOrderedReadableRegions,
+            serviceOrderedWriteableRegions,
+            regionMap);
     }
 
     private static void validateTestObjectEquality(TestObject testObject1, TestObject testObject2) {
@@ -1835,6 +2136,44 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                     collectionNameBasedLink,
                     normalizedRegion))
                 .isFalse();
+        }
+    }
+
+    private static void deleteAllDocuments(CosmosAsyncContainer asyncContainer) {
+        asyncContainer
+            .queryItems("SELECT * FROM C", TestObject.class)
+            .collectList()
+            .flatMapMany(Flux::fromIterable)
+            .flatMap(testObject -> asyncContainer.deleteItem(testObject.getId(), new PartitionKey(testObject.getMypk())))
+            .blockLast();
+    }
+
+    private static void validate(AccountLevelLocationContext accountLevelLocationContext, boolean isWriteOnly) {
+
+        AssertionsForClassTypes.assertThat(accountLevelLocationContext).isNotNull();
+
+        if (isWriteOnly) {
+            AssertionsForClassTypes.assertThat(accountLevelLocationContext.serviceOrderedWriteableRegions).isNotNull();
+            AssertionsForClassTypes.assertThat(accountLevelLocationContext.serviceOrderedWriteableRegions.size()).isGreaterThanOrEqualTo(1);
+        } else {
+            AssertionsForClassTypes.assertThat(accountLevelLocationContext.serviceOrderedReadableRegions).isNotNull();
+            AssertionsForClassTypes.assertThat(accountLevelLocationContext.serviceOrderedReadableRegions.size()).isGreaterThanOrEqualTo(1);
+        }
+    }
+
+    private static class AccountLevelLocationContext {
+        private final List<String> serviceOrderedReadableRegions;
+        private final List<String> serviceOrderedWriteableRegions;
+        private final Map<String, String> regionNameToEndpoint;
+
+        public AccountLevelLocationContext(
+            List<String> serviceOrderedReadableRegions,
+            List<String> serviceOrderedWriteableRegions,
+            Map<String, String> regionNameToEndpoint) {
+
+            this.serviceOrderedReadableRegions = serviceOrderedReadableRegions;
+            this.serviceOrderedWriteableRegions = serviceOrderedWriteableRegions;
+            this.regionNameToEndpoint = regionNameToEndpoint;
         }
     }
 }

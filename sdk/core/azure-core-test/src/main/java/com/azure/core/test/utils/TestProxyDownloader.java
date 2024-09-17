@@ -7,12 +7,8 @@ import com.azure.core.test.implementation.TestingHelpers;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
-import org.apache.commons.compress.archivers.ArchiveEntry;
-import org.apache.commons.compress.archivers.ArchiveInputStream;
-import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
-import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
-import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
-import org.apache.commons.compress.archivers.zip.ZipArchiveInputStream;
+import org.apache.tools.tar.TarEntry;
+import org.apache.tools.tar.TarInputStream;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -27,7 +23,12 @@ import java.nio.file.StandardCopyOption;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Locale;
+import java.util.concurrent.Callable;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.zip.GZIPInputStream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 /**
  * Class for managing downloads of the test proxy
@@ -64,65 +65,56 @@ public final class TestProxyDownloader {
 
     private static void extractTestProxy(PlatformInfo platformInfo) {
         Path zipFile = getZipFileLocation(platformInfo.getExtension());
-        if (Files.exists(PROXY_PATH)) {
-            try {
-                Files.walk(PROXY_PATH).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
-            } catch (IOException e) {
-                throw new RuntimeException(String.format("Could not delete old test proxy zip file %s", zipFile), e);
-            }
-        }
-
         try {
+            if (Files.exists(PROXY_PATH)) {
+                Files.walk(PROXY_PATH).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
+            }
+
             if (platformInfo.extension.equals("tar.gz")) {
-                try (InputStream file = Files.newInputStream(zipFile);
-                    InputStream buffer = new BufferedInputStream(file);
-                    GZIPInputStream gzipInputStream = new GZIPInputStream(buffer);
-                    ArchiveInputStream<TarArchiveEntry> archive = new TarArchiveInputStream(gzipInputStream)) {
-                    decompress(archive);
+                try (TarInputStream tar = new TarInputStream(new GZIPInputStream(Files.newInputStream(zipFile)))) {
+                    decompress(tar::getNextEntry, TestProxyDownloader::getTarOutputFile, TarEntry::isDirectory, tar);
                 }
             } else {
-                try (InputStream file = Files.newInputStream(zipFile);
-                    InputStream buffer = new BufferedInputStream(file);
-                    ArchiveInputStream<ZipArchiveEntry> archive = new ZipArchiveInputStream(buffer)) {
-                    decompress(archive);
+                try (ZipInputStream zip = new ZipInputStream(new BufferedInputStream(Files.newInputStream(zipFile)))) {
+                    decompress(zip::getNextEntry, TestProxyDownloader::getZipOuptutFile, ZipEntry::isDirectory, zip);
                 }
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    private static void decompress(ArchiveInputStream<?> archive) {
-        try {
-            ArchiveEntry entry = archive.getNextEntry();
+    private static <T> void decompress(Callable<T> entryGetter, Function<T, File> outputFileFunc,
+        Predicate<T> isDirectory, InputStream archive) throws Exception {
+        T entry = entryGetter.call();
 
-            while (entry != null) {
-
-                File outputFile = getOutputFile(entry);
-                if (entry.isDirectory()) {
-                    if (!outputFile.isDirectory() && !outputFile.mkdirs()) {
-                        throw new RuntimeException("Could not create all required directories");
-                    }
-                } else {
-                    File parent = outputFile.getParentFile();
-                    if (!parent.isDirectory() && !parent.mkdirs()) {
-                        throw new RuntimeException("Could not create all required directories");
-                    }
-                    try (OutputStream outputStream = Files.newOutputStream(outputFile.toPath())) {
-                        TestingHelpers.copy(archive, outputStream);
-                        if (outputFile.getName().equals(TestProxyUtils.getProxyProcessName())) {
-                            outputFile.setExecutable(true, false);
-                        }
+        while (entry != null) {
+            File outputFile = outputFileFunc.apply(entry);
+            if (isDirectory.test(entry)) {
+                if (!outputFile.isDirectory() && !outputFile.mkdirs()) {
+                    throw new RuntimeException("Could not create all required directories");
+                }
+            } else {
+                File parent = outputFile.getParentFile();
+                if (!parent.isDirectory() && !parent.mkdirs()) {
+                    throw new RuntimeException("Could not create all required directories");
+                }
+                try (OutputStream outputStream = Files.newOutputStream(outputFile.toPath())) {
+                    TestingHelpers.copy(archive, outputStream);
+                    if (outputFile.getName().equals(TestProxyUtils.getProxyProcessName())) {
+                        outputFile.setExecutable(true, false);
                     }
                 }
-                entry = archive.getNextEntry();
             }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+            entry = entryGetter.call();
         }
     }
 
-    private static File getOutputFile(ArchiveEntry entry) {
+    private static File getZipOuptutFile(ZipEntry entry) {
+        return new File(PROXY_PATH.toFile(), entry.getName());
+    }
+
+    private static File getTarOutputFile(TarEntry entry) {
         return new File(PROXY_PATH.toFile(), entry.getName());
     }
 

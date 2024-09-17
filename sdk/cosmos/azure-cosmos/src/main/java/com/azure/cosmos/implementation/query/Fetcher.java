@@ -97,7 +97,8 @@ abstract class Fetcher<T> {
 
     protected abstract String applyServerResponseContinuation(
         String serverContinuationToken,
-        RxDocumentServiceRequest request);
+        RxDocumentServiceRequest request,
+        FeedResponse<T> response);
 
     protected abstract boolean isFullyDrained(boolean isChangeFeed, FeedResponse<T> response);
 
@@ -109,7 +110,7 @@ abstract class Fetcher<T> {
 
     private void updateState(FeedResponse<T> response, RxDocumentServiceRequest request) {
         String transformedContinuation =
-            this.applyServerResponseContinuation(response.getContinuationToken(), request);
+            this.applyServerResponseContinuation(response.getContinuationToken(), request, response);
 
         ModelBridgeInternal.setFeedResponseContinuationToken(transformedContinuation, response);
         if (top.get() != -1) {

@@ -466,7 +466,10 @@ public class ReactorConnection implements AmqpConnection {
 
     /**
      * Creates a bidirectional link between the message broker and the client.
-     *
+     * <p>
+     *  TODO (anu): this method will be removed when dropping the v1 support. The libraries completely on
+     *   v2 stack will use {@link #newRequestResponseChannel(String, String, String)} API instead.
+     * </p>
      * @param sessionName Name of the session.
      * @param linkName Name of the link.
      * @param entityPath Address to the message broker.
@@ -500,8 +503,17 @@ public class ReactorConnection implements AmqpConnection {
             channel -> channel.getEndpointStates(), retryPolicy, loggingContext));
     }
 
-    // Note: The V1 'createRequestResponseChannel(...)' internal API will be removed once entirely on the V2 stack.
-    Mono<RequestResponseChannel> newRequestResponseChannel(String sessionName, String name, String entityPath) {
+    /**
+     * Creates a bidirectional channel between the message broker and the client.
+     *
+     * @param sessionName the AMQP session to host the channel.
+     * @param name the channel name.
+     * @param entityPath the address to the message broker.
+     *
+     * @return A new {@link RequestResponseChannel} to communicate with the message broker.
+     */
+    protected Mono<RequestResponseChannel> newRequestResponseChannel(String sessionName, String name,
+        String entityPath) {
         assert isV2 && useSessionChannelCache;
         Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
 

@@ -4,115 +4,61 @@
 
 package com.azure.resourcemanager.billing.models;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.billing.fluent.models.BillingAccountInner;
-import java.util.List;
+import java.util.Map;
 
-/** An immutable client-side representation of BillingAccount. */
+/**
+ * An immutable client-side representation of BillingAccount.
+ */
 public interface BillingAccount {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
-     * Gets the displayName property: The billing account name.
-     *
-     * @return the displayName value.
+     * Gets the tags property: Dictionary of metadata associated with the resource. It may not be populated for all
+     * resource types. Maximum key/value length supported of 256 characters. Keys/value should not empty value nor null.
+     * Keys can not contain &lt; &gt; % &amp; \ ? /.
+     * 
+     * @return the tags value.
      */
-    String displayName();
+    Map<String, String> tags();
 
     /**
-     * Gets the soldTo property: The address of the individual or organization that is responsible for the billing
-     * account.
-     *
-     * @return the soldTo value.
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
      */
-    AddressDetails soldTo();
+    SystemData systemData();
 
     /**
-     * Gets the agreementType property: The type of agreement.
-     *
-     * @return the agreementType value.
+     * Gets the properties property: A billing account.
+     * 
+     * @return the properties value.
      */
-    AgreementType agreementType();
-
-    /**
-     * Gets the accountType property: The type of customer.
-     *
-     * @return the accountType value.
-     */
-    AccountType accountType();
-
-    /**
-     * Gets the accountStatus property: The current status of the billing account.
-     *
-     * @return the accountStatus value.
-     */
-    AccountStatus accountStatus();
-
-    /**
-     * Gets the billingProfiles property: The billing profiles associated with the billing account. By default this is
-     * not populated, unless it's specified in $expand.
-     *
-     * @return the billingProfiles value.
-     */
-    BillingProfilesOnExpand billingProfiles();
-
-    /**
-     * Gets the enrollmentDetails property: The details about the associated legacy enrollment. By default this is not
-     * populated, unless it's specified in $expand.
-     *
-     * @return the enrollmentDetails value.
-     */
-    Enrollment enrollmentDetails();
-
-    /**
-     * Gets the departments property: The departments associated to the enrollment.
-     *
-     * @return the departments value.
-     */
-    List<Department> departments();
-
-    /**
-     * Gets the enrollmentAccounts property: The accounts associated to the enrollment.
-     *
-     * @return the enrollmentAccounts value.
-     */
-    List<EnrollmentAccount> enrollmentAccounts();
-
-    /**
-     * Gets the hasReadAccess property: Indicates whether user has read access to the billing account.
-     *
-     * @return the hasReadAccess value.
-     */
-    Boolean hasReadAccess();
-
-    /**
-     * Gets the notificationEmailAddress property: Notification email address, only for legacy accounts.
-     *
-     * @return the notificationEmailAddress value.
-     */
-    String notificationEmailAddress();
+    BillingAccountProperties properties();
 
     /**
      * Gets the inner com.azure.resourcemanager.billing.fluent.models.BillingAccountInner object.
-     *
+     * 
      * @return the inner object.
      */
     BillingAccountInner innerModel();
