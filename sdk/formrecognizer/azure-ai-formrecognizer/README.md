@@ -60,7 +60,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-formrecognizer</artifactId>
-    <version>4.1.10</version>
+    <version>4.1.11</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -68,24 +68,24 @@ add the direct dependency to your project as follows.
 
 This table shows the relationship between SDK versions and supported API versions of the service:
 
-| SDK version    |Supported API version of service
-|----------------|-
-| 3.0.x          | 2.0
-| 3.1.X - 3.1.12 | 2.0, 2.1 (default)
-| 4.0.0          | 2.0, 2.1, 2022-08-31 (default)
-| 4.1.0          | 2.0, 2.1, 2022-08-31, 2023-07-31 (default)
+| SDK version    | Supported API version of service           |
+|----------------|--------------------------------------------|
+| 3.0.x          | 2.0                                        |
+| 3.1.X - 3.1.12 | 2.0, 2.1 (default)                         |
+| 4.0.0          | 2.0, 2.1, 2022-08-31 (default)             |
+| 4.1.0          | 2.0, 2.1, 2022-08-31, 2023-07-31 (default) |
 
 > Note: Starting with version 4.0.X, a new set of clients were introduced to leverage the newest features
 > of the Form Recognizer service. Please see the [Migration Guide][migration_guide] for detailed instructions on how to update application
 > code from client library version 3.1.X or lower to the latest version. For more information, see [Changelog][changelog].
 > The below table describes the relationship of each client and its supported API version(s):
 
-|API version|Supported clients
-|-|-
-|2023-07-31 | DocumentAnalysisClient and DocumentModelAdministrationClient
-|2022-08-31 | DocumentAnalysisClient and DocumentModelAdministrationClient
-|2.1 | FormRecognizerClient and FormTrainingClient
-|2.0 | FormRecognizerClient and FormTrainingClient
+| API version | Supported clients                                            |
+|-------------|--------------------------------------------------------------|
+| 2023-07-31  | DocumentAnalysisClient and DocumentModelAdministrationClient |
+| 2022-08-31  | DocumentAnalysisClient and DocumentModelAdministrationClient |
+| 2.1         | FormRecognizerClient and FormTrainingClient                  |
+| 2.0         | FormRecognizerClient and FormTrainingClient                  |
 
 #### Create a Form Recognizer resource
 Form Recognizer supports both [multi-service and single-service access][service_access]. Create a Cognitive Service's
