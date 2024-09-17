@@ -7,6 +7,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.jdk.httpclient.implementation.JdkHttpClientProxySelector;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.SharedExecutorService;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.io.IOException;
@@ -83,8 +84,8 @@ public class JdkHttpClientBuilder {
     /**
      * Sets the executor to be used for asynchronous and dependent tasks. This cannot be null.
      * <p>
-     * If this method is not invoked prior to {@linkplain #build() building}, a default executor is created for each
-     * newly built {@code HttpClient}.
+     * If this method is not invoked prior to {@link #build()}, {@link SharedExecutorService} will be used as the
+     * default for each newly built {@code HttpClient}.
      *
      * @param executor the executor to be used for asynchronous and dependent tasks
      * @return the updated JdkHttpClientBuilder object
@@ -245,6 +246,8 @@ public class JdkHttpClientBuilder {
 
         if (executor != null) {
             httpClientBuilder.executor(executor);
+        } else {
+            httpClientBuilder.executor(SharedExecutorService.getInstance());
         }
 
         if (buildProxyOptions != null) {

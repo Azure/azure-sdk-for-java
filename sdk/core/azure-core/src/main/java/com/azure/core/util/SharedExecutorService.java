@@ -3,6 +3,7 @@
 
 package com.azure.core.util;
 
+import com.azure.core.implementation.ImplUtils;
 import com.azure.core.implementation.ReflectionUtils;
 import com.azure.core.implementation.ReflectiveInvoker;
 import com.azure.core.util.logging.ClientLogger;
@@ -10,6 +11,7 @@ import com.azure.core.util.logging.ClientLogger;
 import java.time.Duration;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -20,6 +22,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
 /**
@@ -140,10 +143,9 @@ public final class SharedExecutorService implements ExecutorService {
         CREATE_VIRTUAL_THREAD_FACTORY = createVirtualThreadFactory;
     }
 
-    private final ExecutorService executorService;
+    final AtomicReference<ExecutorWithMetadata> executor = new AtomicReference<>();
 
     private SharedExecutorService() {
-        this.executorService = createSharedExecutor();
     }
 
     /**
@@ -155,43 +157,69 @@ public final class SharedExecutorService implements ExecutorService {
         return INSTANCE;
     }
 
-    //    /**
-    //     * Sets the backing executor service for the shared instance.
-    //     * <p>
-    //     * This updates the executor service for all users of the {@link #getInstance() shared instance}. Meaning, if
-    //     * another area in code already had a reference to the shared instance, it will now use the passed executor service
-    //     * to execute tasks.
-    //     * <p>
-    //     * If the executor service is already set, this will replace it with the new executor service. If the replaced
-    //     * executor service was created by this class, it will be shut down.
-    //     * <p>
-    //     * If the passed executor service is null, this will throw a {@link NullPointerException}. If the passed executor
-    //     *
-    //     * @param executorService The executor service to set as the shared instance.
-    //     * @throws NullPointerException If the passed executor service is null.
-    //     * @throws IllegalStateException If the passed executor service is shutdown or terminated.
-    //     */
-    //    public static void setExecutorService(ExecutorService executorService) {
-    //        // We allow for the global executor service to be set from an external source to allow for consumers of the SDK
-    //        // to use their own thread management to run Azure SDK tasks. This allows for the SDKs to perform deeper
-    //        // integration into an environment, such as the consumer environment knowing details about capacity, allowing
-    //        // the custom executor service to better manage resources than our more general 10x the number of processors.
-    //        // Another scenario could be an executor service that creates threads with specific permissions, such as
-    //        // allowing Azure Core or Jackson to perform deep reflection on classes that are not normally allowed.
-    //        Objects.requireNonNull(executorService, "'executorService' cannot be null.");
-    //        if (executorService.isShutdown() || executorService.isTerminated()) {
-    //            throw new IllegalStateException("The passed executor service is shutdown or terminated.");
-    //        }
-    //
-    //        ExecutorWithMetadata existing
-    //            = INSTANCE.wrappedExecutorService.getAndSet(new ExecutorWithMetadata(executorService, null));
-    //
-    //        if (existing != null) {
-    //            // This is calling ExecutorWithMetadata.shutdown() which will shutdown the executor service if it was
-    //            // created by this class. Otherwise, it's a no-op.
-    //            existing.shutdown();
-    //        }
-    //    }
+    /**
+     * Sets the backing executor service for the shared instance.
+     * <p>
+     * This updates the executor service for all users of the {@link #getInstance() shared instance}. Meaning, if
+     * another area in code already had a reference to the shared instance, it will now use the passed executor service
+     * to execute tasks.
+     * <p>
+     * If the executor service is already set, this will replace it with the new executor service. If the replaced
+     * executor service was created by this class, it will be shut down.
+     * <p>
+     * If the passed executor service is null, this will throw a {@link NullPointerException}. If the passed executor
+     * service is shutdown or terminated, this will throw an {@link IllegalStateException}.
+     *
+     * @param executorService The executor service to set as the shared instance.
+     * @return The previously set {@link ExecutorService}, or null if one wasn't set or if the one set was the
+     * {@link ExecutorService} created by this class.
+     * @throws NullPointerException If the passed executor service is null.
+     * @throws IllegalStateException If the passed executor service is shutdown or terminated.
+     */
+    public static ExecutorService setExecutorService(ExecutorService executorService) {
+        // We allow for the global executor service to be set from an external source to allow for consumers of the SDK
+        // to use their own thread management to run Azure SDK tasks. This allows for the SDKs to perform deeper
+        // integration into an environment, such as the consumer environment knowing details about capacity, allowing
+        // the custom executor service to better manage resources than our more general 10x the number of processors.
+        // Another scenario could be an executor service that creates threads with specific permissions, such as
+        // allowing Azure Core or Jackson to perform deep reflection on classes that are not normally allowed.
+        Objects.requireNonNull(executorService, "'executorService' cannot be null.");
+        if (executorService.isShutdown() || executorService.isTerminated()) {
+            throw new IllegalStateException("The passed executor service is shutdown or terminated.");
+        }
+
+        ExecutorWithMetadata existing = INSTANCE.executor.getAndSet(new ExecutorWithMetadata(executorService, null));
+
+        if (existing != null) {
+            // This is calling ExecutorWithMetadata.shutdown() which will shutdown the executor service if it was
+            // created by this class. Otherwise, it's a no-op.
+            existing.shutdown();
+            return (existing.shutdownThread == null) ? existing.executorService : null;
+        }
+
+        return null;
+    }
+
+    /**
+     * Resets the state of the {@link #getInstance()} to an uninitialized state.
+     * <p>
+     * This will shut down the executor service if it was created by this class. Otherwise, it will return the executor
+     * service that was set externally, without shutting it down.
+     *
+     * @return The executor service set as the shared instance if it wasn't set by this class, otherwise null.
+     */
+    public static ExecutorService reset() {
+        ExecutorWithMetadata existing = INSTANCE.executor.getAndSet(null);
+
+        if (existing != null) {
+            // This is calling ExecutorWithMetadata.shutdown() which will shutdown the executor service if it was
+            // created by this class. Otherwise, it's a no-op.
+            existing.shutdown();
+            return (existing.shutdownThread == null) ? existing.executorService : null;
+        }
+
+        return null;
+    }
 
     /**
      * Shutdown isn't supported for this executor service as it is shared by multiple consumers.
@@ -304,17 +332,16 @@ public final class SharedExecutorService implements ExecutorService {
     }
 
     private ExecutorService ensureNotShutdown() {
-        return executorService;
-        //        return wrappedExecutorService.updateAndGet(wrapper -> {
-        //            if (wrapper == null || wrapper.executorService.isShutdown() || wrapper.executorService.isTerminated()) {
-        //                return createSharedExecutor();
-        //            } else {
-        //                return wrapper;
-        //            }
-        //        }).executorService;
+        return executor.updateAndGet(wrapper -> {
+            if (wrapper == null || wrapper.executorService.isShutdown() || wrapper.executorService.isTerminated()) {
+                return createSharedExecutor();
+            } else {
+                return wrapper;
+            }
+        }).executorService;
     }
 
-    private static ExecutorService createSharedExecutor() {
+    private static ExecutorWithMetadata createSharedExecutor() {
         ThreadFactory threadFactory;
         if (VIRTUAL_THREAD_SUPPORTED && THREAD_POOL_VIRTUAL) {
             try {
@@ -334,7 +361,7 @@ public final class SharedExecutorService implements ExecutorService {
         Thread shutdownThread = CoreUtils.createExecutorServiceShutdownThread(executorService, Duration.ofSeconds(5));
         CoreUtils.addShutdownHookSafely(shutdownThread);
 
-        return executorService;
+        return new ExecutorWithMetadata(executorService, shutdownThread);
     }
 
     private static ThreadFactory createVirtualThreadFactory() throws Exception {
@@ -352,22 +379,22 @@ public final class SharedExecutorService implements ExecutorService {
         };
     }
 
-    //    private static final class ExecutorWithMetadata {
-    //        private final Thread shutdownThread;
-    //        private final ExecutorService executorService;
-    //
-    //        ExecutorWithMetadata(ExecutorService executorService, Thread shutdownThread) {
-    //            this.executorService = executorService;
-    //            this.shutdownThread = shutdownThread;
-    //        }
-    //
-    //        void shutdown() {
-    //            // The executor service is only shutdown if there is a shutdown thread as that indicates the executor
-    //            // service was created by this class.
-    //            if (shutdownThread != null) {
-    //                executorService.shutdown();
-    //                ImplUtils.removeShutdownHookSafely(shutdownThread);
-    //            }
-    //        }
-    //    }
+    static final class ExecutorWithMetadata {
+        final Thread shutdownThread;
+        final ExecutorService executorService;
+
+        ExecutorWithMetadata(ExecutorService executorService, Thread shutdownThread) {
+            this.executorService = executorService;
+            this.shutdownThread = shutdownThread;
+        }
+
+        void shutdown() {
+            // The executor service is only shutdown if there is a shutdown thread as that indicates the executor
+            // service was created by this class.
+            if (shutdownThread != null) {
+                executorService.shutdown();
+                ImplUtils.removeShutdownHookSafely(shutdownThread);
+            }
+        }
+    }
 }
