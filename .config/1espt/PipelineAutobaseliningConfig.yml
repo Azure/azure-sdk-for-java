@@ -3277,3 +3277,12 @@ pipelines:
           lastModifiedDate: 2024-09-17
         armory:
           lastModifiedDate: 2024-09-17
+  1327:
+    retail:
+      source:
+        credscan:
+          lastModifiedDate: 2024-09-17
+        psscriptanalyzer:
+          lastModifiedDate: 2024-09-17
+        armory:
+          lastModifiedDate: 2024-09-17
