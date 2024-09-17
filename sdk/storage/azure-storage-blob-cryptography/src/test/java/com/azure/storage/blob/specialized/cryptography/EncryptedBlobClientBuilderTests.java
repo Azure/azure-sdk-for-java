@@ -314,7 +314,7 @@ public class EncryptedBlobClientBuilderTests {
     @ParameterizedTest
     @MethodSource("encryptedRegionLengthWithIllegalVersionSupplier")
     public void encryptedRegionLengthWithIllegalVersion(EncryptionVersion version) {
-        assertThrows(IllegalArgumentException.class, ()->  new EncryptedBlobClientBuilder(version)
+        assertThrows(IllegalArgumentException.class, () -> new EncryptedBlobClientBuilder(version)
             .blobName("foo")
             .containerName("container")
             .key(new FakeKey("keyId", randomData), "keyWrapAlgorithm")
