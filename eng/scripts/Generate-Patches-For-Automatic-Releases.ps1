@@ -65,17 +65,6 @@ try {
 
     # Update POMs for all libraries with dependencies on the libraries to patch. Also, update the READMEs of the latter.
     python "${PSScriptRoot}/../versioning/update_versions.py" --update-type library --build-type client --ll $libraryList
-
-    Write-Host "git add -A"
-    git add -A
-
-    $commitMessage = "Updated dependencies in libraries and READMEs via version_client.txt"
-
-    Write-Host "git -c user.name=`"azure-sdk`" -c user.email=`"azuresdk@microsoft.com`" commit -m $commitMessage"
-    git -c user.name="azure-sdk" -c user.email="azuresdk@microsoft.com" commit -m $commitMessage
-
-#    Write-Host "git -c user.name=`"azure-sdk`" -c user.email=`"azuresdk@microsoft.com`" push $remoteName $branchName"
-#    git -c user.name="azure-sdk" -c user.email="azuresdk@microsoft.com" push $remoteName $branchName
 } catch {
     LogError "Failed to update dependencies in libraries and READMEs via version_client.txt"
     exit 1
