@@ -21,6 +21,7 @@ spec:
           export MESSAGE_SIZE_IN_BYTES={{ .Stress.messageSizeInBytes }}
           export SEND_BATCH_SIZE={{ default 5 .Stress.sendBatchSize }}
           export SEND_CONCURRENCY={{ default 20 .Stress.sendConcurrency }}
+          export IDLE_DURATION_MINUTES={{ default 0 .Stress.idleDurationMinutes }}
           export CONTAINER_NAME=sender
           export DELAY_START_MINUTES=1
           java \
@@ -56,6 +57,7 @@ spec:
           export PROCESSOR_FAILURE_RATIO={{ default 0 .Stress.processorFailureRatio }}
           export PREFETCH_COUNT={{ default 0 .Stress.prefetchCount }}
           export FORWARD_PARTITIONS_COUNT={{ default 32 .Stress.forwardPartitionsCount }}
+          export IDLE_DURATION_MINUTES={{ default 0 .Stress.idleDurationMinutes }}
           export CONTAINER_NAME=receiver
           java \
           -Dotel.service.name={{ .Release.Name }}-{{ .Stress.BaseName }} \
