@@ -87,21 +87,21 @@ chatMessages.add(new ChatRequestAssistantMessage("Of course, me hearty! What can
 chatMessages.add(new ChatRequestUserMessage("What's the best way to train a parrot?"));
 
 try {
-        ChatCompletions chatCompletions = client.complete(new ChatCompletionsOptions(chatMessages));
-    } catch (HttpResponseException e) {
-        System.out.println(e.getMessage());
-        // Do something with the exception
-    }
+    ChatCompletions chatCompletions = client.complete(new ChatCompletionsOptions(chatMessages));
+} catch (HttpResponseException e) {
+    System.out.println(e.getMessage());
+    // Do something with the exception
+}
 ```
 
 With async clients, you can catch and handle exceptions in the error callbacks:
 
 ```java readme-sample-troubleshootingExceptions-async
 asyncClient.complete(new ChatCompletionsOptions(chatMessages))
-        .doOnSuccess(ignored -> System.out.println("Success!"))
-        .doOnError(
+    .doOnSuccess(ignored -> System.out.println("Success!"))
+    .doOnError(
         error -> error instanceof ResourceNotFoundException,
-    error -> System.out.println("Exception: 'getChatCompletions' could not be performed."));
+        error -> System.out.println("Exception: 'getChatCompletions' could not be performed."));
 ```
 
 ### Authentication errors

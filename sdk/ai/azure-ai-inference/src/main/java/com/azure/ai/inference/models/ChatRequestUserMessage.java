@@ -143,6 +143,9 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
      * @throws RuntimeException If the deserialized JSON object was missing any required properties.
      */
     public static ChatRequestUserMessage fromContentItems(List<ChatMessageContentItem> contentItems) {
+        if (contentItems == null || contentItems.isEmpty()) {
+            throw new RuntimeException("Content items cannot be null or empty.");
+        }
         String jsonPrompt = "{\"content\":[";
         for (ChatMessageContentItem item : contentItems) {
             if (item instanceof ChatMessageTextContentItem) {

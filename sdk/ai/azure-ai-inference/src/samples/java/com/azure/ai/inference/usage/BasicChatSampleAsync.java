@@ -6,13 +6,11 @@ package com.azure.ai.inference.usage;
 
 import com.azure.ai.inference.ChatCompletionsAsyncClient;
 import com.azure.ai.inference.ChatCompletionsClientBuilder;
-import com.azure.ai.inference.models.*;
+import com.azure.ai.inference.models.ChatChoice;
+import com.azure.ai.inference.models.ChatResponseMessage;
+import com.azure.ai.inference.models.CompletionsUsage;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.CoreUtils;
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public final class BasicChatSampleAsync {
@@ -23,7 +21,7 @@ public final class BasicChatSampleAsync {
         String key = Configuration.getGlobalConfiguration().get("AZURE_API_KEY");
         String endpoint = Configuration.getGlobalConfiguration().get("MODEL_ENDPOINT");
         ChatCompletionsAsyncClient client = new ChatCompletionsClientBuilder()
-    	    .credential(new AzureKeyCredential(key))
+            .credential(new AzureKeyCredential(key))
             .endpoint(endpoint)
             .buildAsyncClient();
 

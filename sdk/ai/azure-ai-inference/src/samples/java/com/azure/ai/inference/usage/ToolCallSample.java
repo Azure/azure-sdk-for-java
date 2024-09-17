@@ -6,7 +6,20 @@ package com.azure.ai.inference.usage;
 
 import com.azure.ai.inference.ChatCompletionsClient;
 import com.azure.ai.inference.ChatCompletionsClientBuilder;
-import com.azure.ai.inference.models.*;
+import com.azure.ai.inference.models.ChatCompletionsFunctionToolCall;
+import com.azure.ai.inference.models.ChatCompletionsFunctionToolDefinition;
+import com.azure.ai.inference.models.ChatCompletionsOptions;
+import com.azure.ai.inference.models.ChatRequestMessage;
+import com.azure.ai.inference.models.ChatRequestAssistantMessage;
+import com.azure.ai.inference.models.ChatRequestSystemMessage;
+import com.azure.ai.inference.models.ChatRequestToolMessage;
+import com.azure.ai.inference.models.ChatRequestUserMessage;
+import com.azure.ai.inference.models.CompletionsFinishReason;
+import com.azure.ai.inference.models.FunctionCall;
+import com.azure.ai.inference.models.FunctionDefinition;
+import com.azure.ai.inference.models.StreamingChatChoiceUpdate;
+import com.azure.ai.inference.models.StreamingChatCompletionsUpdate;
+import com.azure.ai.inference.models.StreamingChatResponseToolCallUpdate;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
@@ -30,7 +43,7 @@ public final class ToolCallSample {
         String endpoint = Configuration.getGlobalConfiguration().get("MODEL_ENDPOINT");
         ChatCompletionsClient client = new ChatCompletionsClientBuilder()
             .scopes(scopes) // remove for non-Azure OpenAI models
-    	    .credential(defaultCredential)
+            .credential(defaultCredential)
             .endpoint(endpoint)
             .buildClient();
 

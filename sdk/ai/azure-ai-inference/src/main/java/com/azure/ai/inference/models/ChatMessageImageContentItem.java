@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.io.File;
 import java.io.FileInputStream;
@@ -48,20 +49,20 @@ public final class ChatMessageImageContentItem extends ChatMessageContentItem {
      *
      * @param filePath path to the imageFile.
      * @param imageFormat format of the image
+     * @throws RuntimeException If an error occurs while reading the file or file not found.
      */
     public ChatMessageImageContentItem(Path filePath, String imageFormat) {
-        try {
-            File imageFile = filePath.toFile();
-            FileInputStream fileInputStreamReader = new FileInputStream(imageFile);
+        File imageFile = filePath.toFile();
+        try (FileInputStream fileInputStreamReader = new FileInputStream(imageFile)) {
             byte[] bytes = new byte[(int) imageFile.length()];
             fileInputStreamReader.read(bytes);
-            String encodedFile = new String(Base64.getEncoder().encode(bytes), "UTF-8");
+            String encodedFile = new String(Base64.getEncoder().encode(bytes), StandardCharsets.UTF_8);
             String urlTemplate = "data:image/%s;base64,%s";
             this.imageUrl = new ChatMessageImageUrl(String.format(urlTemplate, imageFormat, encodedFile));
         } catch (FileNotFoundException e) {
             throw new RuntimeException("Local file not found.", e);
         } catch (IOException e) {
-            throw new RuntimeException("IO Error.", e);
+            throw new RuntimeException(e);
         }
     }
 

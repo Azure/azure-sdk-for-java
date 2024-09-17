@@ -6,7 +6,12 @@ package com.azure.ai.inference.usage;
 
 import com.azure.ai.inference.ChatCompletionsAsyncClient;
 import com.azure.ai.inference.ChatCompletionsClientBuilder;
-import com.azure.ai.inference.models.*;
+import com.azure.ai.inference.models.ChatRequestMessage;
+import com.azure.ai.inference.models.ChatRequestUserMessage;
+import com.azure.ai.inference.models.ChatRequestSystemMessage;
+import com.azure.ai.inference.models.ChatRequestAssistantMessage;
+import com.azure.ai.inference.models.ChatCompletionsOptions;
+import com.azure.ai.inference.models.StreamingChatResponseMessageUpdate;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -23,7 +28,7 @@ public final class StreamingChatSampleAsync {
         String key = Configuration.getGlobalConfiguration().get("AZURE_API_KEY");
         String endpoint = Configuration.getGlobalConfiguration().get("MODEL_ENDPOINT");
         ChatCompletionsAsyncClient client = new ChatCompletionsClientBuilder()
-    	    .credential(new AzureKeyCredential(key))
+            .credential(new AzureKeyCredential(key))
             .endpoint(endpoint)
             .buildAsyncClient();
 

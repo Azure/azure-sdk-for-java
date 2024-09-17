@@ -22,7 +22,7 @@ public final class TextEmbeddingsSample {
         String key = Configuration.getGlobalConfiguration().get("AZURE_EMBEDDINGS_KEY");
         String endpoint = Configuration.getGlobalConfiguration().get("EMBEDDINGS_MODEL_ENDPOINT");
         EmbeddingsClient client = new EmbeddingsClientBuilder()
-    	    .credential(new AzureKeyCredential(key))
+            .credential(new AzureKeyCredential(key))
             .endpoint(endpoint)
             .buildClient();
 

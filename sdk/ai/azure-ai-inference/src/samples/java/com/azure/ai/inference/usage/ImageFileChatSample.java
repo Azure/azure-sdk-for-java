@@ -6,7 +6,15 @@ package com.azure.ai.inference.usage;
 
 import com.azure.ai.inference.ChatCompletionsClient;
 import com.azure.ai.inference.ChatCompletionsClientBuilder;
-import com.azure.ai.inference.models.*;
+import com.azure.ai.inference.models.ChatChoice;
+import com.azure.ai.inference.models.ChatCompletions;
+import com.azure.ai.inference.models.ChatCompletionsOptions;
+import com.azure.ai.inference.models.ChatMessageContentItem;
+import com.azure.ai.inference.models.ChatMessageImageContentItem;
+import com.azure.ai.inference.models.ChatMessageTextContentItem;
+import com.azure.ai.inference.models.ChatRequestMessage;
+import com.azure.ai.inference.models.ChatRequestUserMessage;
+import com.azure.ai.inference.models.ChatRequestSystemMessage;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
 
@@ -26,7 +34,7 @@ public final class ImageFileChatSample {
         String key = Configuration.getGlobalConfiguration().get("AZURE_API_KEY");
         String endpoint = Configuration.getGlobalConfiguration().get("MODEL_ENDPOINT");
         ChatCompletionsClient client = new ChatCompletionsClientBuilder()
-    	    .credential(new AzureKeyCredential(key))
+            .credential(new AzureKeyCredential(key))
             .endpoint(endpoint)
             .buildClient();
 

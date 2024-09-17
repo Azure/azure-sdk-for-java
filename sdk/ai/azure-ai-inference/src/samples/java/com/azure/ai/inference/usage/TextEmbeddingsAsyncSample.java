@@ -6,7 +6,8 @@ package com.azure.ai.inference.usage;
 
 import com.azure.ai.inference.EmbeddingsAsyncClient;
 import com.azure.ai.inference.EmbeddingsClientBuilder;
-import com.azure.ai.inference.models.*;
+import com.azure.ai.inference.models.EmbeddingItem;
+import com.azure.ai.inference.models.EmbeddingsUsage;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
 
@@ -22,7 +23,7 @@ public final class TextEmbeddingsAsyncSample {
         String key = Configuration.getGlobalConfiguration().get("AZURE_EMBEDDINGS_KEY");
         String endpoint = Configuration.getGlobalConfiguration().get("EMBEDDINGS_MODEL_ENDPOINT");
         EmbeddingsAsyncClient client = new EmbeddingsClientBuilder()
-    	    .credential(new AzureKeyCredential(key))
+            .credential(new AzureKeyCredential(key))
             .endpoint(endpoint)
             .buildAsyncClient();
 
@@ -48,10 +49,10 @@ public final class TextEmbeddingsAsyncSample {
             error -> System.err.println("There was an error getting embeddings." + error),
             () -> System.out.println("Completed called getEmbeddings."));
 
-            // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep
-            // the thread so the program does not end before the send operation is complete. Using .block() instead of
-            // .subscribe() will turn this into a synchronous call.
-            TimeUnit.SECONDS.sleep(10);
+        // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep
+        // the thread so the program does not end before the send operation is complete. Using .block() instead of
+        // .subscribe() will turn this into a synchronous call.
+        TimeUnit.SECONDS.sleep(10);
 
-        }
+    }
 }

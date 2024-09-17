@@ -19,7 +19,7 @@ public final class BasicChatSample {
         String key = Configuration.getGlobalConfiguration().get("AZURE_API_KEY");
         String endpoint = Configuration.getGlobalConfiguration().get("MODEL_ENDPOINT");
         ChatCompletionsClient client = new ChatCompletionsClientBuilder()
-    	    .credential(new AzureKeyCredential(key))
+            .credential(new AzureKeyCredential(key))
             .endpoint(endpoint)
             .buildClient();
 

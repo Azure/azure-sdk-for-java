@@ -8,10 +8,7 @@ import com.azure.ai.inference.ChatCompletionsClient;
 import com.azure.ai.inference.ChatCompletionsClientBuilder;
 import com.azure.ai.inference.models.ChatChoice;
 import com.azure.ai.inference.models.ChatCompletions;
-import com.azure.core.credential.AccessToken;
-import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
@@ -27,7 +24,7 @@ public final class BasicChatAADSample {
         String endpoint = Configuration.getGlobalConfiguration().get("MODEL_ENDPOINT");
         ChatCompletionsClient client = new ChatCompletionsClientBuilder()
             .scopes(scopes) // remove for non-Azure OpenAI models
-    	    .credential(defaultCredential)
+            .credential(defaultCredential)
             .endpoint(endpoint)
             .buildClient();
 

@@ -4,8 +4,15 @@
 
 package com.azure.ai.inference;
 
+import com.azure.ai.inference.models.ChatChoice;
+import com.azure.ai.inference.models.ChatCompletions;
 import com.azure.ai.inference.models.ChatCompletionsOptions;
-import com.azure.ai.inference.models.*;
+import com.azure.ai.inference.models.ChatRequestMessage;
+import com.azure.ai.inference.models.ChatRequestAssistantMessage;
+import com.azure.ai.inference.models.ChatRequestSystemMessage;
+import com.azure.ai.inference.models.ChatRequestUserMessage;
+import com.azure.ai.inference.models.ChatResponseMessage;
+import com.azure.ai.inference.models.StreamingChatResponseMessageUpdate;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
@@ -126,11 +133,11 @@ public final class ReadmeSamples {
         chatMessages.add(new ChatRequestUserMessage("What's the best way to train a parrot?"));
 
         try {
-                ChatCompletions chatCompletions = client.complete(new ChatCompletionsOptions(chatMessages));
-            } catch (HttpResponseException e) {
-                System.out.println(e.getMessage());
-                // Do something with the exception
-            }
+            ChatCompletions chatCompletions = client.complete(new ChatCompletionsOptions(chatMessages));
+        } catch (HttpResponseException e) {
+            System.out.println(e.getMessage());
+            // Do something with the exception
+        }
         // END: readme-sample-troubleshootingExceptions
     }
 
@@ -148,10 +155,10 @@ public final class ReadmeSamples {
 
         // BEGIN: readme-sample-troubleshootingExceptions-async
         asyncClient.complete(new ChatCompletionsOptions(chatMessages))
-                .doOnSuccess(ignored -> System.out.println("Success!"))
-                .doOnError(
+            .doOnSuccess(ignored -> System.out.println("Success!"))
+            .doOnError(
                 error -> error instanceof ResourceNotFoundException,
-            error -> System.out.println("Exception: 'getChatCompletions' could not be performed."));
+                error -> System.out.println("Exception: 'getChatCompletions' could not be performed."));
         // END: readme-sample-troubleshootingExceptions-async
     }
 
