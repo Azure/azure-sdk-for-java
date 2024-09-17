@@ -149,8 +149,7 @@ public final class ChatCompletionsAsyncClient {
      * provided prompt data along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BinaryData>> completeWithResponse(BinaryData completeRequest,
-        RequestOptions requestOptions) {
+    private Mono<Response<BinaryData>> completeWithResponse(BinaryData completeRequest, RequestOptions requestOptions) {
         return this.serviceClient.completeWithResponseAsync(completeRequest, requestOptions);
     }
 
