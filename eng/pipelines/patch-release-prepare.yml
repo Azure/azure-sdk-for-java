@@ -11,14 +11,6 @@
 trigger: none
 pr: none
 
-parameters:
-  PROwner: azure-sdk
-  RepoOwner: Azure
-  RepoName: $(Build.Repository.Name)
-  WorkingDirectory: $(System.DefaultWorkingDirectory)
-  ScriptDirectory: eng/common/scripts
-  SkipCheckingForChanges: false
-
 stages:
   - stage: PreparePatchRelease
     displayName: Prepare Patch Release
@@ -44,12 +36,12 @@ stages:
           - template: /eng/common/pipelines/templates/steps/git-push-changes.yml
             parameters:
               BaseRepoBranch: $(BaseBranchName)
-              BaseRepoOwner: ${{ parameters.PROwner }}
-              TargetRepoOwner: ${{ parameters.RepoOwner }}
-              TargetRepoName: ${{ parameters.RepoName }}
-              WorkingDirectory: ${{ parameters.WorkingDirectory }}
-              ScriptDirectory: ${{ parameters.ScriptDirectory }}
-              SkipCheckingForChanges: ${{ parameters.SkipCheckingForChanges }}
+              BaseRepoOwner: azure-sdk
+              TargetRepoOwner: Azure
+              TargetRepoName: $(Build.Repository.Name)
+              WorkingDirectory: $(System.DefaultWorkingDirectory)
+              ScriptDirectory: eng/common/scripts
+              SkipCheckingForChanges: false
             displayName: 'Push release branch $(BaseBranchName)'
             # Run the script to generate patches for automatic releases
           - task: PowerShell@2
