@@ -74,6 +74,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
 
     private final AtomicReference<TokenCredential> cachedCredential = new AtomicReference<>();
 
+    // delemete
     private TestSpanProcessor spanProcessor;
     private EventHubProducerAsyncClient producer;
     private EventHubConsumerAsyncClient consumer;
