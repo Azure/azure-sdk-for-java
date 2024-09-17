@@ -66,7 +66,14 @@ class PartitionPump implements AutoCloseable, AsyncCloseable {
     @Override
     public void close() {
         // provide some timeout to avoid infinite/long wait.
-        closeAsync().block(Duration.ofSeconds(10));
+        try {
+            closeAsync().block(Duration.ofSeconds(10));
+        } catch (RuntimeException error) {
+            // timeout
+            LOGGER.atInfo()
+                .addKeyValue(PARTITION_ID_KEY, partitionId)
+                .log("Exception occurred disposing of consumer client.", error);
+        }
     }
 
     @Override

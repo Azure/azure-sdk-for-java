@@ -290,7 +290,11 @@ public class EventProcessorClient {
      * <!-- end com.azure.messaging.eventhubs.eventprocessorclient.startstop -->
      */
     public synchronized void stop() {
-        stop(DEFAULT_STOP_TIMEOUT);
+        try {
+            stop(DEFAULT_STOP_TIMEOUT);
+        } catch (RuntimeException e) {
+            logger.info("Error while stopping the event processor", e);
+        }
     }
 
     /**
@@ -302,6 +306,8 @@ public class EventProcessorClient {
      * </p>
      *
      * @param timeout The maximum amount of time to wait for the processor to stop processing.
+     *
+     * @throws RuntimeException if the event processor encounters timout or another error while stopping.
      */
     public synchronized void stop(Duration timeout) {
         if (!isRunning.compareAndSet(true, false)) {
@@ -312,15 +318,8 @@ public class EventProcessorClient {
 
         scheduler.get().shutdown();
 
-        Mono<Boolean> awaitTermination = Mono.fromCallable(() -> scheduler.get().awaitTermination(timeout.toMillis(), TimeUnit.MILLISECONDS))
-            .doOnError(e -> logger.verbose("Error while waiting for scheduler to terminate", e));
-
-        try {
-            Mono.when(awaitTermination, stopProcessing())
-                .block(timeout);
-        } catch (RuntimeException e) {
-            logger.verbose("Error while stopping the event processor", e);
-        }
+        Mono.when(Mono.fromCallable(() -> scheduler.get().awaitTermination(timeout.toMillis(), TimeUnit.MILLISECONDS)), stopProcessing())
+            .block(timeout);
     }
 
     /**
