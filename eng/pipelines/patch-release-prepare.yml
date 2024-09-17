@@ -31,6 +31,7 @@ stages:
           # Checkout a new release branch
           - pwsh: |
               $currentDate = Get-Date -Format "yyyyMMdd"
+              Write-Host "##vso[task.setvariable variable=PatchDate]$currentDate"
               $branchName = "release/patch/$currentDate"
               Write-Host "git checkout main"
               git checkout main
@@ -50,7 +51,7 @@ stages:
           # Create a PR with the patches prepared
           - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
             parameters:
-              PRBranchName: prepare-patch-release-$(Build.BuildId)
-              CommitMsg: "Patch release preparation"
-              PRTitle: "Prepare patch release"
+              PRBranchName: prepare-patch-release-$(PatchDate)-$(Build.BuildId)
+              CommitMsg: "Patch release preparation $(PatchDate)"
+              PRTitle: "Prepare patch release $(PatchDate)"
               CloseAfterOpenForTesting: '${{ parameters.TestPipeline }}'
