@@ -1,8 +1,8 @@
-# Azure Model client library for Java
+# Azure AI Inference client library for Java
 
-Azure Model client library for Java.
+Azure AI Inference client library for Java.
 
-This package contains Microsoft Azure Model client library.
+This package contains the Azure AI Inference client library.
 
 ## Documentation
 

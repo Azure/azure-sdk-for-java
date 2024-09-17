@@ -19,7 +19,6 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Flux;
@@ -150,52 +149,9 @@ public final class ChatCompletionsAsyncClient {
      * provided prompt data along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BinaryData>> completeWithBinaryResponse(BinaryData completeRequest,
+    private Mono<Response<BinaryData>> completeWithResponse(BinaryData completeRequest,
         RequestOptions requestOptions) {
         return this.serviceClient.completeWithResponseAsync(completeRequest, requestOptions);
-    }
-
-    /**
-     * Gets chat completions for the provided chat messages.
-     * Completions support a wide variety of tasks and generate text that continues from or "completes"
-     * provided prompt data. The method makes a REST API call to the `/chat/completions` route
-     * on the given endpoint.
-     *
-     * @param options The configuration information for a chat completions request. Completions support a
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return chat completions for the provided chat messages.
-     * Completions support a wide variety of tasks and generate text that continues from or "completes"
-     * provided prompt data along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ChatCompletions>> completeWithResponse(ChatCompletionsOptions options) {
-        RequestOptions requestOptions = new RequestOptions();
-        CompleteRequest completeRequestObj
-            = new CompleteRequest(options.getMessages()).setFrequencyPenalty(options.getFrequencyPenalty())
-                .setStream(options.isStream())
-                .setPresencePenalty(options.getPresencePenalty())
-                .setTemperature(options.getTemperature())
-                .setTopP(options.getTopP())
-                .setMaxTokens(options.getMaxTokens())
-                .setResponseFormat(options.getResponseFormat())
-                .setStop(options.getStop())
-                .setTools(options.getTools())
-                .setToolChoice(options.getToolChoice())
-                .setSeed(options.getSeed())
-                .setModel(options.getModel());
-        BinaryData completeRequest = BinaryData.fromObject(completeRequestObj);
-        ExtraParameters extraParams = options.getExtraParams();
-        if (extraParams != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("extra-parameters"), extraParams.toString());
-        }
-        return completeWithBinaryResponse(completeRequest, requestOptions)
-            .map(methodDataResponse -> new SimpleResponse<>(methodDataResponse,
-                methodDataResponse.getValue().toObject(ChatCompletions.class)));
     }
 
     /**
@@ -244,7 +200,7 @@ public final class ChatCompletionsAsyncClient {
     public Flux<StreamingChatCompletionsUpdate> completeStream(ChatCompletionsOptions options) {
         options.setStream(true);
         RequestOptions requestOptions = new RequestOptions();
-        Flux<ByteBuffer> responseStream = completeWithBinaryResponse(BinaryData.fromObject(options), requestOptions)
+        Flux<ByteBuffer> responseStream = completeWithResponse(BinaryData.fromObject(options), requestOptions)
             .flatMapMany(response -> response.getValue().toFluxByteBuffer());
         InferenceServerSentEvents<StreamingChatCompletionsUpdate> chatCompletionsStream
             = new InferenceServerSentEvents<>(responseStream, StreamingChatCompletionsUpdate.class);
@@ -309,7 +265,7 @@ public final class ChatCompletionsAsyncClient {
         if (extraParams != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("extra-parameters"), extraParams.toString());
         }
-        return completeWithBinaryResponse(completeRequest, requestOptions).flatMap(FluxUtil::toMono)
+        return completeWithResponse(completeRequest, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(ChatCompletions.class));
     }
 

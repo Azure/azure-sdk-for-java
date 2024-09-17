@@ -19,9 +19,7 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
-import java.util.Objects;
 import com.azure.ai.inference.implementation.InferenceServerSentEvents;
 import com.azure.ai.inference.models.ChatCompletionsOptions;
 import com.azure.ai.inference.implementation.ChatCompletionsUtils;
@@ -150,9 +148,8 @@ public final class ChatCompletionsClient {
      * provided prompt data along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ChatCompletions> completeWithResponse(BinaryData completeRequest, RequestOptions requestOptions) {
-        Response<BinaryData> response = serviceClient.completeWithResponse(completeRequest, requestOptions);
-        return new SimpleResponse<>(response, response.getValue().toObject(ChatCompletions.class));
+    public Response<BinaryData> completeWithResponse(BinaryData completeRequest, RequestOptions requestOptions) {
+        return this.serviceClient.completeWithResponse(completeRequest, requestOptions);
     }
 
     /**
@@ -220,7 +217,7 @@ public final class ChatCompletionsClient {
         if (extraParams != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("extra-parameters"), extraParams.toString());
         }
-        return Objects.requireNonNull(completeWithResponse(completeRequest, requestOptions)).getValue();
+        return completeWithResponse(completeRequest, requestOptions).getValue().toObject(ChatCompletions.class);
     }
 
     /**

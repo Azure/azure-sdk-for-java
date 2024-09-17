@@ -4,7 +4,7 @@
 package com.azure.ai.inference;
 
 import com.azure.ai.inference.implementation.ImageEmbeddingsClientImpl;
-import com.azure.ai.inference.implementation.models.EmbedRequest1;
+import com.azure.ai.inference.implementation.models.ImageEmbedRequest;
 import com.azure.ai.inference.models.EmbeddingEncodingFormat;
 import com.azure.ai.inference.models.EmbeddingInput;
 import com.azure.ai.inference.models.EmbeddingInputType;
@@ -58,7 +58,7 @@ public final class ImageEmbeddingsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     input (Required): [
@@ -76,9 +76,9 @@ public final class ImageEmbeddingsClient {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     data (Required): [
@@ -115,7 +115,7 @@ public final class ImageEmbeddingsClient {
      * Returns information about the AI model.
      * The method makes a REST API call to the `/info` route on the given endpoint.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     model_name: String (Required)
@@ -158,7 +158,7 @@ public final class ImageEmbeddingsClient {
     EmbeddingsResult embed(List<EmbeddingInput> input) {
         // Generated convenience method for embedWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        EmbedRequest1 embedRequest1Obj = new EmbedRequest1(input);
+        ImageEmbedRequest embedRequest1Obj = new ImageEmbedRequest(input);
         BinaryData embedRequest1 = BinaryData.fromObject(embedRequest1Obj);
         return embedWithResponse(embedRequest1, requestOptions).getValue().toObject(EmbeddingsResult.class);
     }
@@ -216,7 +216,7 @@ public final class ImageEmbeddingsClient {
         EmbeddingEncodingFormat encodingFormat, EmbeddingInputType inputType, String model) {
         // Generated convenience method for embedWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        EmbedRequest1 embedRequest1Obj = new EmbedRequest1(input).setDimensions(dimensions)
+        ImageEmbedRequest embedRequest1Obj = new ImageEmbedRequest(input).setDimensions(dimensions)
             .setEncodingFormat(encodingFormat)
             .setInputType(inputType)
             .setModel(model);

@@ -18,10 +18,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * The EmbedRequest1 model.
+ * The ImageEmbedRequest model.
  */
 @Fluent
-public final class EmbedRequest1 implements JsonSerializable<EmbedRequest1> {
+public final class ImageEmbedRequest implements JsonSerializable<ImageEmbedRequest> {
 
     /*
      * Input image to embed. To embed multiple inputs in a single request, pass an array.
@@ -71,7 +71,7 @@ public final class EmbedRequest1 implements JsonSerializable<EmbedRequest1> {
      * @param input the input value to set.
      */
     @Generated
-    public EmbedRequest1(List<EmbeddingInput> input) {
+    public ImageEmbedRequest(List<EmbeddingInput> input) {
         this.input = input;
     }
 
@@ -104,10 +104,10 @@ public final class EmbedRequest1 implements JsonSerializable<EmbedRequest1> {
      * Returns a 422 error if the model doesn't support the value or parameter.
      *
      * @param dimensions the dimensions value to set.
-     * @return the EmbedRequest1 object itself.
+     * @return the ImageEmbedRequest object itself.
      */
     @Generated
-    public EmbedRequest1 setDimensions(Integer dimensions) {
+    public ImageEmbedRequest setDimensions(Integer dimensions) {
         this.dimensions = dimensions;
         return this;
     }
@@ -130,10 +130,10 @@ public final class EmbedRequest1 implements JsonSerializable<EmbedRequest1> {
      * Returns a 422 error if the model doesn't support the value or parameter.
      *
      * @param encodingFormat the encodingFormat value to set.
-     * @return the EmbedRequest1 object itself.
+     * @return the ImageEmbedRequest object itself.
      */
     @Generated
-    public EmbedRequest1 setEncodingFormat(EmbeddingEncodingFormat encodingFormat) {
+    public ImageEmbedRequest setEncodingFormat(EmbeddingEncodingFormat encodingFormat) {
         this.encodingFormat = encodingFormat;
         return this;
     }
@@ -154,10 +154,10 @@ public final class EmbedRequest1 implements JsonSerializable<EmbedRequest1> {
      * Returns a 422 error if the model doesn't support the value or parameter.
      *
      * @param inputType the inputType value to set.
-     * @return the EmbedRequest1 object itself.
+     * @return the ImageEmbedRequest object itself.
      */
     @Generated
-    public EmbedRequest1 setInputType(EmbeddingInputType inputType) {
+    public ImageEmbedRequest setInputType(EmbeddingInputType inputType) {
         this.inputType = inputType;
         return this;
     }
@@ -176,10 +176,10 @@ public final class EmbedRequest1 implements JsonSerializable<EmbedRequest1> {
      * Set the model property: ID of the specific AI model to use, if more than one model is available on the endpoint.
      *
      * @param model the model value to set.
-     * @return the EmbedRequest1 object itself.
+     * @return the ImageEmbedRequest object itself.
      */
     @Generated
-    public EmbedRequest1 setModel(String model) {
+    public ImageEmbedRequest setModel(String model) {
         this.model = model;
         return this;
     }
@@ -198,10 +198,10 @@ public final class EmbedRequest1 implements JsonSerializable<EmbedRequest1> {
      * Set the additionalProperties property: Additional properties.
      *
      * @param additionalProperties the additionalProperties value to set.
-     * @return the EmbedRequest1 object itself.
+     * @return the ImageEmbedRequest object itself.
      */
     @Generated
-    public EmbedRequest1 setAdditionalProperties(Map<String, Object> additionalProperties) {
+    public ImageEmbedRequest setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
     }
@@ -228,16 +228,16 @@ public final class EmbedRequest1 implements JsonSerializable<EmbedRequest1> {
     }
 
     /**
-     * Reads an instance of EmbedRequest1 from the JsonReader.
+     * Reads an instance of ImageEmbedRequest from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of EmbedRequest1 if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of ImageEmbedRequest if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the EmbedRequest1.
      */
     @Generated
-    public static EmbedRequest1 fromJson(JsonReader jsonReader) throws IOException {
+    public static ImageEmbedRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             List<EmbeddingInput> input = null;
             Integer dimensions = null;
@@ -265,13 +265,13 @@ public final class EmbedRequest1 implements JsonSerializable<EmbedRequest1> {
                     additionalProperties.put(fieldName, reader.readUntyped());
                 }
             }
-            EmbedRequest1 deserializedEmbedRequest1 = new EmbedRequest1(input);
-            deserializedEmbedRequest1.dimensions = dimensions;
-            deserializedEmbedRequest1.encodingFormat = encodingFormat;
-            deserializedEmbedRequest1.inputType = inputType;
-            deserializedEmbedRequest1.model = model;
-            deserializedEmbedRequest1.additionalProperties = additionalProperties;
-            return deserializedEmbedRequest1;
+            ImageEmbedRequest deserializedImageEmbedRequest = new ImageEmbedRequest(input);
+            deserializedImageEmbedRequest.dimensions = dimensions;
+            deserializedImageEmbedRequest.encodingFormat = encodingFormat;
+            deserializedImageEmbedRequest.inputType = inputType;
+            deserializedImageEmbedRequest.model = model;
+            deserializedImageEmbedRequest.additionalProperties = additionalProperties;
+            return deserializedImageEmbedRequest;
         });
     }
 }

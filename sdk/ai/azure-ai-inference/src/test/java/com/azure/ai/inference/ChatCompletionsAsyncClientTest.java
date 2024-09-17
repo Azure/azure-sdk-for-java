@@ -66,19 +66,4 @@ public class ChatCompletionsAsyncClientTest extends ChatCompletionsClientTestBas
                 .verifyComplete();
         });
     }
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.inference.TestUtils#getTestParameters")
-    public void testGetChatCompletionsFromResponse(HttpClient httpClient) {
-        client = getChatCompletionsAsyncClient(httpClient);
-        getChatCompletionsFromOptionsRunner((options) -> {
-            StepVerifier.create(
-                client.completeWithResponse(options))
-                .assertNext(resultCompletionsResponse -> {
-                    assertNotNull(resultCompletionsResponse.getValue().getUsage());
-                    assertCompletions(1, resultCompletionsResponse.getValue());
-                })
-                .verifyComplete();
-        });
-    }
-
 }

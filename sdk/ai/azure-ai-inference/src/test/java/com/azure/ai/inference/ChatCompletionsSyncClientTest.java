@@ -68,9 +68,10 @@ public class ChatCompletionsSyncClientTest extends ChatCompletionsClientTestBase
     public void testGetCompletionsWithResponse(HttpClient httpClient) {
         client = getChatCompletionsClient(httpClient);
         getChatCompletionsFromOptionsRunner((options) -> {
-            Response<ChatCompletions> response = client.completeWithResponse(
+            Response<BinaryData> binaryDataResponse = client.completeWithResponse(
                 BinaryData.fromObject(options), new RequestOptions());
-            assertCompletions(1, response.getValue());
+            ChatCompletions response = binaryDataResponse.getValue().toObject(ChatCompletions.class);
+            assertCompletions(1, response);
         });
     }
 
