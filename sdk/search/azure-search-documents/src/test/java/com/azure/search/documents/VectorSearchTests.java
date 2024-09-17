@@ -89,7 +89,6 @@ public class VectorSearchTests extends SearchTestBase {
 
         searchIndexClient = new SearchIndexClientBuilder()
             .endpoint(ENDPOINT)
-            .serviceVersion(SearchServiceVersion.V2024_09_01_PREVIEW)
             .credential(TestHelpers.getTestTokenCredential())
             .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY)
             .buildClient();
@@ -511,9 +510,13 @@ public class VectorSearchTests extends SearchTestBase {
                     .setVectorSearchDimensions(1536)
                     .setVectorSearchProfileName("my-vector-profile"))
             .setVectorSearch(new VectorSearch()
-                .setCompressions(new VectorSearchCompression(compressionName).setTruncationDimension(100)));
+                .setProfiles(Collections.singletonList(
+                    new VectorSearchProfile("my-vector-profile", "my-vector-config")))
+                .setAlgorithms(Collections.singletonList(new HnswAlgorithmConfiguration("my-vector-config")))
+                .setCompressions(new BinaryQuantizationCompression(compressionName).setTruncationDimension(100)));
 
         searchIndexClient.createIndex(searchIndex);
+
         indexesToDelete.add(indexName);
 
         SearchIndex retrievedIndex = searchIndexClient.getIndex(indexName);
@@ -581,6 +584,9 @@ public class VectorSearchTests extends SearchTestBase {
                     .setVectorSearchDimensions(5)
                     .setVectorSearchProfileName("my-vector-profile"))
             .setVectorSearch(new VectorSearch()
+                .setProfiles(Collections.singletonList(
+                    new VectorSearchProfile("my-vector-profile", "my-vector-config")))
+                .setAlgorithms(Collections.singletonList(new HnswAlgorithmConfiguration("my-vector-config")))
                 .setCompressions(new BinaryQuantizationCompression(compressionName)));
 
         SearchIndexAsyncClient searchIndexAsyncClient = getSearchIndexClientBuilder(false).buildAsyncClient();
@@ -616,6 +622,7 @@ public class VectorSearchTests extends SearchTestBase {
                     .setVectorSearchDimensions(5)
                     .setVectorSearchProfileName("my-vector-profile"))
             .setVectorSearch(new VectorSearch()
+                .setAlgorithms()
                 .setCompressions(new BinaryQuantizationCompression(compressionName)));
 
         SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
