@@ -46,7 +46,7 @@ public final class TestUtils {
         return new EventHubClientBuilder()
             .connectionString(options.getEventHubsConnectionString())
             .retryOptions(new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(5)))
-             .eventHubName(options.getEventHubsEventHubName())
+            .eventHubName(options.getEventHubsEventHubName())
             .transportType(options.getAmqpTransportType());
     }
 
