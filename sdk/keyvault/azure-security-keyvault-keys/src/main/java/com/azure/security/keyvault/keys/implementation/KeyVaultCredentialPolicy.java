@@ -114,6 +114,7 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
                 TokenRequestContext tokenRequestContext = new TokenRequestContext()
                     .addScopes(this.challenge.getScopes())
                     .setTenantId(this.challenge.getTenantId())
+                    .setCaeEnabled(true)
                     .setClaims(this.challenge.getClaims());
 
                 return setAuthorizationHeader(context, tokenRequestContext);
@@ -221,6 +222,7 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
             TokenRequestContext tokenRequestContext = new TokenRequestContext()
                 .addScopes(this.challenge.getScopes())
                 .setTenantId(this.challenge.getTenantId())
+                .setCaeEnabled(true)
                 .setClaims(this.challenge.getClaims());
 
             return setAuthorizationHeader(context, tokenRequestContext)
@@ -242,6 +244,7 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
             TokenRequestContext tokenRequestContext = new TokenRequestContext()
                 .addScopes(this.challenge.getScopes())
                 .setTenantId(this.challenge.getTenantId())
+                .setCaeEnabled(true)
                 .setClaims(this.challenge.getClaims());
 
             setAuthorizationHeaderSync(context, tokenRequestContext);
@@ -346,6 +349,7 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
         TokenRequestContext tokenRequestContext = new TokenRequestContext()
             .addScopes(this.challenge.getScopes())
             .setTenantId(this.challenge.getTenantId())
+            .setCaeEnabled(true)
             .setClaims(this.challenge.getClaims());
 
         setAuthorizationHeaderSync(context, tokenRequestContext);
