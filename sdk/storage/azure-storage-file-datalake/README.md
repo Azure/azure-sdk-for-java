@@ -57,7 +57,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-storage-file-datalake</artifactId>
-    <version>12.21.0-beta.1</version>
+    <version>12.21.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
