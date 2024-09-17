@@ -379,9 +379,7 @@ public final class EventGridReceiverClient {
             requestOptions.addQueryParam("maxEvents", String.valueOf(maxEvents), false);
         }
         if (maxWaitTime != null) {
-            // Ensure the http client timeout is longer than the maxWaitTime
-            addTimeoutToContext(requestOptions, maxWaitTime);
-            requestOptions.addQueryParam("maxWaitTime", String.valueOf(maxWaitTime.getSeconds()), false);
+            return receiveWithResponse(maxEvents, maxWaitTime, new RequestOptions()).getValue();
         }
         return receiveWithResponse(topicName, subscriptionName, requestOptions).getValue()
             .toObject(ReceiveResult.class);

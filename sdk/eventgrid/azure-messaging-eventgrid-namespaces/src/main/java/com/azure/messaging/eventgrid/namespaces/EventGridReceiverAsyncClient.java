@@ -387,9 +387,8 @@ public final class EventGridReceiverAsyncClient {
             requestOptions.addQueryParam("maxEvents", String.valueOf(maxEvents), false);
         }
         if (maxWaitTime != null) {
-            // Ensure the http client timeout is longer than the maxWaitTime
-            EventGridReceiverClient.addTimeoutToContext(requestOptions, maxWaitTime);
-            requestOptions.addQueryParam("maxWaitTime", String.valueOf(maxWaitTime.getSeconds()), false);
+            return receiveWithResponse(maxEvents, maxWaitTime, new RequestOptions())
+                .map(Response::getValue);
         }
         return receiveWithResponse(topicName, subscriptionName, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(ReceiveResult.class));
