@@ -5,6 +5,7 @@ extends:
   parameters:
     UseFederatedAuth: true
     ServiceDirectory: search
+    Clouds: 'Preview'
     SupportedClouds: 'Preview,UsGov,China'
     TimeoutInMinutes: 60
     CloudConfig:
