@@ -92,9 +92,14 @@ extends:
       - name: perf-test-core
         groupId: com.azure
     LiveTestStages:
-      - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
+      - template: ../../eng/pipelines/templates/stages/archetype-sdk-tests.yml
         parameters:
           ServiceDirectory: eventhubs
+          TimeoutInMinutes: 120
+          SupportedClouds: 'Public'
+          EnvVars:
+            AZURE_LOG_LEVEL: 1
+          ReleaseDependsOnLiveTests: ${{ parameters.release_dependsonlivetests }}
           Artifacts:
             - name: azure-messaging-eventhubs
               groupId: com.azure
