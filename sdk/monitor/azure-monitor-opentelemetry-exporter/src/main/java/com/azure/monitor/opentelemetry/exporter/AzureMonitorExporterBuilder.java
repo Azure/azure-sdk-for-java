@@ -271,19 +271,6 @@ public final class AzureMonitorExporterBuilder implements ConnectionStringTrait<
     }
 
     /**
-     * Creates an Azure Monitor trace exporter based on the options set in the builder. This
-     * exporter is an implementation of OpenTelemetry {@link SpanExporter}.
-     *
-     * @return An instance of {@link SpanExporter}.
-     * @throws NullPointerException if the connection string is not set on this builder or if the
-     * environment variable "APPLICATIONINSIGHTS_CONNECTION_STRING" is not set.
-     */
-    public SpanExporter buildSpanExporter() {
-        ConfigProperties defaultConfig = DefaultConfigProperties.create(Collections.emptyMap());
-        return buildSpanExporter(defaultConfig);
-    }
-
-    /**
      * Creates an Azure Monitor span exporter based on the options set in the builder. This
      * exporter is an implementation of OpenTelemetry {@link SpanExporter}.
      *
@@ -298,18 +285,6 @@ public final class AzureMonitorExporterBuilder implements ConnectionStringTrait<
             statsbeatModule);
     }
 
-    /**
-     * Creates an Azure Monitor log record exporter based on the options set in the builder. This
-     * exporter is an implementation of OpenTelemetry {@link LogRecordExporter}.
-     *
-     * @return An instance of {@link LogRecordExporter}.
-     * @throws NullPointerException if the connection string is not set on this builder or if the
-     * environment variable "APPLICATIONINSIGHTS_CONNECTION_STRING" is not set.
-     */
-    public LogRecordExporter buildLogRecordExporter() {
-        ConfigProperties defaultConfig = DefaultConfigProperties.create(Collections.emptyMap());
-        return buildLogRecordExporter(defaultConfig);
-    }
 
     /**
      * Creates an Azure Monitor log record exporter based on the options set in the builder. This
@@ -342,22 +317,6 @@ public final class AzureMonitorExporterBuilder implements ConnectionStringTrait<
             startStatsbeatModule(statsbeatModule, configProperties, tempDir); // wait till TelemetryItemExporter has been initialized before starting StatsbeatModule
             frozen = true;
         }
-    }
-
-    /**
-     * Creates an Azure monitor metric exporter based on the options set in the builder. This
-     * exporter is an implementation of OpenTelemetry {@link MetricExporter}.
-     *
-     * <p>When a new {@link MetricExporter} is created, it will automatically start {@link
-     * HeartbeatExporter}.
-     *
-     * @return An instance of {@link MetricExporter}.
-     * @throws NullPointerException if the connection string is not set on this builder or if the
-     *                              environment variable "APPLICATIONINSIGHTS_CONNECTION_STRING" is not set.
-     */
-    public MetricExporter buildMetricExporter() {
-        ConfigProperties defaultConfig = DefaultConfigProperties.create(Collections.emptyMap());
-        return buildMetricExporter(defaultConfig);
     }
 
     /**
