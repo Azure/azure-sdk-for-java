@@ -74,8 +74,8 @@ try {
     Write-Host "git -c user.name=`"azure-sdk`" -c user.email=`"azuresdk@microsoft.com`" commit -m $commitMessage"
     git -c user.name="azure-sdk" -c user.email="azuresdk@microsoft.com" commit -m $commitMessage
 
-    Write-Host "git -c user.name=`"azure-sdk`" -c user.email=`"azuresdk@microsoft.com`" push $remoteName $branchName"
-    git -c user.name="azure-sdk" -c user.email="azuresdk@microsoft.com" push $remoteName $branchName
+#    Write-Host "git -c user.name=`"azure-sdk`" -c user.email=`"azuresdk@microsoft.com`" push $remoteName $branchName"
+#    git -c user.name="azure-sdk" -c user.email="azuresdk@microsoft.com" push $remoteName $branchName
 } catch {
     LogError "Failed to update dependencies in libraries and READMEs via version_client.txt"
     exit 1
