@@ -35,6 +35,9 @@ stages:
               $branchName = "release/patch/$currentDate"
               Write-Host "git checkout -b $branchName"
               git checkout -b $branchName
+              Write-Host "git push origin $branchName"
+              git push origin $branchName
+              Write-Host "##vso[task.setvariable variable=BaseBranchName]$branchName"
             workingDirectory: $(Build.SourcesDirectory)
             displayName: 'Create release branch'
           # Run the script to generate patches for automatic releases
@@ -49,6 +52,7 @@ stages:
           # Create a PR with the patches prepared
           - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
             parameters:
+              BaseBranchName: $(BaseBranchName)
               PRBranchName: prepare-patch-release-$(PatchDate)-$(Build.BuildId)
               CommitMsg: "Patch release preparation $(PatchDate)"
               PRTitle: "Prepare patch release $(PatchDate)"
