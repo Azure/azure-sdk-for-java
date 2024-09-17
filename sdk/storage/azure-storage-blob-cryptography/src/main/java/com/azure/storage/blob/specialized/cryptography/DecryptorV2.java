@@ -30,7 +30,6 @@ import static com.azure.storage.blob.specialized.cryptography.CryptographyConsta
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.AES_GCM_NO_PADDING;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.AES_KEY_SIZE_BITS;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.EMPTY_BUFFER;
-import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_PROTOCOL_V2;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.TAG_LENGTH;
 
 class DecryptorV2 extends Decryptor {
@@ -97,7 +96,7 @@ class DecryptorV2 extends Decryptor {
                 byte[] protocolBytes = new byte[3];
                 try {
                     keyStream.read(protocolBytes);
-                    if (ByteBuffer.wrap(ENCRYPTION_PROTOCOL_V2.getBytes(StandardCharsets.UTF_8))
+                    if (ByteBuffer.wrap(encryptionData.getEncryptionAgent().getProtocol().getBytes(StandardCharsets.UTF_8))
                         .compareTo(ByteBuffer.wrap(protocolBytes)) != 0) {
                         return Mono.error(LOGGER.logExceptionAsError(
                             new IllegalStateException("Padded wrapped key did not match protocol version")));
