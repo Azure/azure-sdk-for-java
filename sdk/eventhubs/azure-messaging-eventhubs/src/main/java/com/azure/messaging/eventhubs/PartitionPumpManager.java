@@ -98,7 +98,7 @@ class PartitionPumpManager {
         List<String> partitionIds = new ArrayList<>(partitionPumps.keySet());
         return Flux.fromIterable(partitionIds)
             .flatMap(partitionId -> {
-                final PartitionPump pump = partitionPumps.remove(partitionId);
+                final PartitionPump pump = partitionPumps.get(partitionId);
                 return pump.closeAsync()
                     .doOnError(ex -> LOGGER.atWarning()
                         .addKeyValue(PARTITION_ID_KEY, partitionId)
@@ -107,8 +107,9 @@ class PartitionPumpManager {
                     .doOnCancel(() -> LOGGER.atWarning()
                         .addKeyValue(PARTITION_ID_KEY, partitionId)
                         .addKeyValue(SIGNAL_TYPE_KEY, SignalType.CANCEL)
-                        .log(Messages.FAILED_CLOSE_CONSUMER_PARTITION));
-           }).then();
+                        .log(Messages.FAILED_CLOSE_CONSUMER_PARTITION))
+                    .doFinally(__ -> partitionPumps.remove(partitionId));
+            }).then();
     }
 
     /**

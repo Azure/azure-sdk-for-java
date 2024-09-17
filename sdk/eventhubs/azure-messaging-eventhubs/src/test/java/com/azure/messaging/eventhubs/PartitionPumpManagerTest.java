@@ -27,6 +27,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.test.publisher.TestPublisher;
 
@@ -342,11 +343,13 @@ public class PartitionPumpManagerTest {
         final String partition1 = "01";
         final EventHubConsumerAsyncClient client1 = mock(EventHubConsumerAsyncClient.class);
         final Scheduler scheduler1 = mock(Scheduler.class);
+        when(scheduler1.disposeGracefully()).thenReturn(Mono.empty());
         final PartitionPump pump1 = new PartitionPump(partition1, client1, scheduler1);
 
         final String partition2 = "02";
         final EventHubConsumerAsyncClient client2 = mock(EventHubConsumerAsyncClient.class);
         final Scheduler scheduler2 = mock(Scheduler.class);
+        when(scheduler2.disposeGracefully()).thenReturn(Mono.empty());
         final PartitionPump pump2 = new PartitionPump(partition2, client2, scheduler2);
 
         manager.getPartitionPumps().put(partition1, pump1);
@@ -356,10 +359,10 @@ public class PartitionPumpManagerTest {
         manager.stopAllPartitionPumps().block();
 
         // Assert
-        verify(scheduler1).dispose();
+        verify(scheduler1).disposeGracefully();
         verify(client1).close();
 
-        verify(scheduler2).dispose();
+        verify(scheduler2).disposeGracefully();
         verify(client2).close();
 
         assertTrue(manager.getPartitionPumps().isEmpty());

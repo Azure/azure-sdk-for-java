@@ -78,7 +78,7 @@ import java.util.stream.Collectors;
 @ServiceClient(builder = EventProcessorClientBuilder.class)
 public class EventProcessorClient {
     private static final long BASE_JITTER_IN_SECONDS = 2; // the initial delay jitter before starting the processor
-    private static final Duration DEFAULT_STOP_TIMEOUT = Duration.ofSeconds(10);
+    private static final Duration DEFAULT_STOP_TIMEOUT = Duration.ofSeconds(30);
     private final ClientLogger logger;
 
     private final String identifier;
@@ -315,8 +315,12 @@ public class EventProcessorClient {
         Mono<Boolean> awaitTermination = Mono.fromCallable(() -> scheduler.get().awaitTermination(timeout.toMillis(), TimeUnit.MILLISECONDS))
             .doOnError(e -> logger.verbose("Error while waiting for scheduler to terminate", e));
 
-        Mono.when(awaitTermination, stopProcessing())
-            .block(timeout);
+        try {
+            Mono.when(awaitTermination, stopProcessing())
+                .block(timeout);
+        } catch (RuntimeException e) {
+            logger.verbose("Error while stopping the event processor", e);
+        }
     }
 
     /**
