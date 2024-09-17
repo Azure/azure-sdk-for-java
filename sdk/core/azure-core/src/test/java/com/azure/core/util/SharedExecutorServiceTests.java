@@ -12,9 +12,12 @@ import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.api.parallel.Isolated;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -102,5 +105,31 @@ public class SharedExecutorServiceTests {
         // And since we defined it within the SDK it should be an InternalExecutorService instance.
         assertInstanceOf(SharedExecutorService.InternalExecutorService.class,
             SharedExecutorService.getInstance().executor);
+    }
+
+    @Test
+    @Order(5)
+    public void loadTest() throws InterruptedException, ExecutionException {
+        int taskCount = 100 * Runtime.getRuntime().availableProcessors();
+        List<Future<Void>> futures = new ArrayList<>(taskCount);
+        for (int i = 0; i < taskCount; i++) {
+            futures.add(SharedExecutorService.getInstance().submit(() -> {
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException ignored) {
+
+                }
+
+                return null;
+            }));
+        }
+
+        while (!futures.stream().allMatch(Future::isDone)) {
+            Thread.sleep(1000);
+        }
+
+        for (Future<Void> future : futures) {
+            future.get();
+        }
     }
 }

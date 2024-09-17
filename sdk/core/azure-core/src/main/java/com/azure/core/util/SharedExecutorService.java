@@ -16,7 +16,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
-import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -123,7 +123,7 @@ public final class SharedExecutorService implements ExecutorService {
             getVirtualThreadBuilder = ReflectionUtils.getMethodInvoker(null,
                 Class.forName("java.lang.Thread").getDeclaredMethod("ofVirtual"));
             setVirtualThreadBuilderThreadName = ReflectionUtils.getMethodInvoker(null,
-                Class.forName("java.lang.Thread$Builder").getDeclaredMethod("name", String.class));
+                Class.forName("java.lang.Thread$Builder").getDeclaredMethod("name", String.class, long.class));
             createVirtualThreadFactory = ReflectionUtils.getMethodInvoker(null,
                 Class.forName("java.lang.Thread$Builder").getDeclaredMethod("factory"));
             virtualThreadSupported = true;
@@ -352,8 +352,8 @@ public final class SharedExecutorService implements ExecutorService {
             threadFactory = createNonVirtualThreadFactory();
         }
 
-        ExecutorService executorService = new ThreadPoolExecutor(THREAD_POOL_SIZE, Integer.MAX_VALUE,
-            THREAD_POOL_KEEP_ALIVE_MILLIS, TimeUnit.MILLISECONDS, new SynchronousQueue<>(), threadFactory);
+        ExecutorService executorService = new ThreadPoolExecutor(THREAD_POOL_SIZE, THREAD_POOL_SIZE,
+            THREAD_POOL_KEEP_ALIVE_MILLIS, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>(), threadFactory);
         Thread shutdownThread = CoreUtils.createExecutorServiceShutdownThread(executorService, Duration.ofSeconds(5));
         CoreUtils.addShutdownHookSafely(shutdownThread);
 
@@ -362,8 +362,13 @@ public final class SharedExecutorService implements ExecutorService {
 
     private static ThreadFactory createVirtualThreadFactory() throws Exception {
         Object virtualThreadBuilder = GET_VIRTUAL_THREAD_BUILDER.invokeStatic();
-        SET_VIRTUAL_THREAD_BUILDER_THREAD_NAME.invokeWithArguments(virtualThreadBuilder, AZURE_SDK_THREAD_NAME);
-        return (ThreadFactory) CREATE_VIRTUAL_THREAD_FACTORY.invokeWithArguments(virtualThreadBuilder);
+        SET_VIRTUAL_THREAD_BUILDER_THREAD_NAME.invokeWithArguments(virtualThreadBuilder, AZURE_SDK_THREAD_NAME,
+            AZURE_SDK_THREAD_COUNTER.get());
+        ThreadFactory virtual = (ThreadFactory) CREATE_VIRTUAL_THREAD_FACTORY.invokeWithArguments(virtualThreadBuilder);
+        return r -> {
+            AZURE_SDK_THREAD_COUNTER.incrementAndGet();
+            return virtual.newThread(r);
+        };
     }
 
     private static ThreadFactory createNonVirtualThreadFactory() {
