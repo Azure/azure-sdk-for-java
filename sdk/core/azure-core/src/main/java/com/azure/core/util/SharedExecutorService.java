@@ -352,8 +352,8 @@ public final class SharedExecutorService implements ExecutorService {
             threadFactory = createNonVirtualThreadFactory();
         }
 
-        ExecutorService executorService = new ThreadPoolExecutor(0, THREAD_POOL_SIZE, THREAD_POOL_KEEP_ALIVE_MILLIS,
-            TimeUnit.MILLISECONDS, new SynchronousQueue<>(), threadFactory);
+        ExecutorService executorService = new ThreadPoolExecutor(THREAD_POOL_SIZE, Integer.MAX_VALUE,
+            THREAD_POOL_KEEP_ALIVE_MILLIS, TimeUnit.MILLISECONDS, new SynchronousQueue<>(), threadFactory);
         Thread shutdownThread = CoreUtils.createExecutorServiceShutdownThread(executorService, Duration.ofSeconds(5));
         CoreUtils.addShutdownHookSafely(shutdownThread);
 
