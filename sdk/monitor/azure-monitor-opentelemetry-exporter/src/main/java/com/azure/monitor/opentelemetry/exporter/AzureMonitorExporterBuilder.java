@@ -192,7 +192,6 @@ public final class AzureMonitorExporterBuilder implements ConnectionStringTrait<
      * @param retryOptions The {@link RetryOptions} to use for all the requests made through the client.
      * @return The updated {@link AzureMonitorExporterBuilder} object.
      */
-
     @Override
     public AzureMonitorExporterBuilder retryOptions(RetryOptions retryOptions) {
         if (frozen) {
