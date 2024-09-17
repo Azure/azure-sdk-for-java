@@ -12,7 +12,6 @@ pr:
       - sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob/
       - sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-jedis/
     exclude:
-      - sdk/eventhubs/pom.xml
       - sdk/eventhubs/azure-messaging-eventhubs/pom.xml
       - sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob/pom.xml
       - sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-jedis/pom.xml

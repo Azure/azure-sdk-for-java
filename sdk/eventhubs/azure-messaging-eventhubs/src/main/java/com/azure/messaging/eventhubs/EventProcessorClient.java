@@ -9,6 +9,8 @@ import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.implementation.PartitionProcessor;
 import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsTracer;
 import com.azure.messaging.eventhubs.models.ErrorContext;
+import com.azure.messaging.eventhubs.models.PartitionOwnership;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -318,7 +320,17 @@ public class EventProcessorClient {
 
         scheduler.get().shutdown();
 
-        Mono.when(Mono.fromCallable(() -> scheduler.get().awaitTermination(timeout.toMillis(), TimeUnit.MILLISECONDS)), stopProcessing())
+        Mono<Boolean> awaitScheduler = Mono.fromCallable(() -> scheduler.get().awaitTermination(timeout.toMillis(), TimeUnit.MILLISECONDS));
+        Flux<PartitionOwnership> clearOwnership =
+            checkpointStore.listOwnership(fullyQualifiedNamespace, eventHubName, consumerGroup)
+                .filter(ownership -> identifier.equals(ownership.getOwnerId()))
+                .map(ownership -> ownership.setOwnerId(""))
+                .collect(Collectors.toList())
+                .flatMapMany(checkpointStore::claimOwnership);
+
+        Mono.when(awaitScheduler,
+                partitionPumpManager.stopAllPartitionPumps(),
+                clearOwnership)
             .block(timeout);
     }
 
@@ -330,17 +342,5 @@ public class EventProcessorClient {
      */
     public synchronized boolean isRunning() {
         return isRunning.get();
-    }
-
-    private Mono<Void> stopProcessing() {
-        return Mono.when(
-            partitionPumpManager.stopAllPartitionPumps(),
-
-            // finally, remove ownerid from checkpointstore as the processor is shutting down
-            checkpointStore.listOwnership(fullyQualifiedNamespace, eventHubName, consumerGroup)
-                .filter(ownership -> identifier.equals(ownership.getOwnerId()))
-                .map(ownership -> ownership.setOwnerId(""))
-                .collect(Collectors.toList())
-                .flatMapMany(checkpointStore::claimOwnership));
     }
 }
