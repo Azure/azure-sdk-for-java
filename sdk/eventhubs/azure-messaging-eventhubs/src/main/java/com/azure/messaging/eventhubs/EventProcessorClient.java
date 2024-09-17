@@ -78,7 +78,7 @@ import java.util.stream.Collectors;
 @ServiceClient(builder = EventProcessorClientBuilder.class)
 public class EventProcessorClient {
     private static final long BASE_JITTER_IN_SECONDS = 2; // the initial delay jitter before starting the processor
-    private static final Duration DEFAULT_STOP_TIMEOUT = Duration.ofSeconds(30);
+    private static final Duration DEFAULT_STOP_TIMEOUT = Duration.ofSeconds(10);
     private final ClientLogger logger;
 
     private final String identifier;
@@ -248,12 +248,12 @@ public class EventProcessorClient {
      * shutdown and any open resources will be closed.
      *
      * <p>
-     * Subsequent calls to stop will be ignored if the event processor is not running.
+     * Subsequent calls to stop will be ignored if the event processor is not running or is being stopped.
      * </p>
      *
      * <p>
-     * This method will do the best effort to stop processing gracefully and will block for up to 10 seconds for the
-     * processor to stop. Use {@link #stop(Duration)} to specify a different timeout.
+     * This method will do the best effort to stop processing gracefully and will block for up to 10 seconds waiting for
+     * the processor to stop. Use {@link #stop(Duration)} overload to specify a different timeout.
      * </p>
      *
      * <p><strong>Stopping the processor</strong></p>
@@ -298,7 +298,7 @@ public class EventProcessorClient {
      * shutdown and any open resources will be closed.
      *
      * <p>
-     * Subsequent calls to stop will be ignored if the event processor is not running.
+     * Subsequent calls to stop will be ignored if the event processor is not running or is being stopped.
      * </p>
      *
      * @param timeout The maximum amount of time to wait for the processor to stop processing.
@@ -342,6 +342,6 @@ public class EventProcessorClient {
                 .filter(ownership -> identifier.equals(ownership.getOwnerId()))
                 .map(ownership -> ownership.setOwnerId(""))
                 .collect(Collectors.toList())
-                .flatMapMany(checkpointStore::claimOwnership).then());
+                .flatMapMany(checkpointStore::claimOwnership));
     }
 }
