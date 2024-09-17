@@ -10,9 +10,9 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 import com.azure.json.JsonProviders;
 import java.io.StringReader;
-import java.util.List;
 
 /**
  * A request chat message representing user input to the assistant.
