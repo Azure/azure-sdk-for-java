@@ -413,6 +413,9 @@ public final class EventGridReceiverClient {
             // Ensure the http client timeout is longer than the maxWaitTime
             addTimeoutToContext(requestOptions, maxWaitTime);
             requestOptions.addQueryParam("maxWaitTime", String.valueOf(maxWaitTime.getSeconds()), false);
+        } else {
+            // Extend the timeout with a buffer past the default maxWaitTime.
+            addTimeoutToContext(requestOptions, Duration.ofSeconds(65));
         }
         Response<BinaryData> response = receiveWithResponse(topicName, subscriptionName, requestOptions);
         return new SimpleResponse<>(response, response.getValue().toObject(ReceiveResult.class));
