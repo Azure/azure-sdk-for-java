@@ -10,16 +10,15 @@ import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.identity.implementation.IdentityClientBuilder;
-import com.azure.identity.implementation.IdentityClientOptions;
-import com.azure.identity.implementation.ManagedIdentityParameters;
-import com.azure.identity.implementation.ManagedIdentityType;
+import com.azure.identity.implementation.*;
 import com.azure.identity.implementation.util.LoggingUtil;
 import com.microsoft.aad.msal4j.ManagedIdentityApplication;
 import com.microsoft.aad.msal4j.ManagedIdentitySourceType;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.AbstractMap;
+import java.util.Map;
 
 /**
  * <p><a href="https://learn.microsoft.com/entra/identity/managed-identities-azure-resources/">Azure
@@ -89,7 +88,7 @@ public final class ManagedIdentityCredential implements TokenCredential {
 
     final ManagedIdentityServiceCredential managedIdentityServiceCredential;
     private final IdentityClientOptions identityClientOptions;
-
+    private final String managedIdentityId;
     static final String PROPERTY_IMDS_ENDPOINT = "IMDS_ENDPOINT";
     static final String PROPERTY_IDENTITY_SERVER_THUMBPRINT = "IDENTITY_SERVER_THUMBPRINT";
     static final String AZURE_FEDERATED_TOKEN_FILE = "AZURE_FEDERATED_TOKEN_FILE";
@@ -115,6 +114,8 @@ public final class ManagedIdentityCredential implements TokenCredential {
         Configuration configuration = identityClientOptions.getConfiguration() == null
             ? Configuration.getGlobalConfiguration().clone() : identityClientOptions.getConfiguration();
 
+        this.managedIdentityId = fetchManagedIdentityId(clientId, resourceId, objectId);
+
         /*
          * Choose credential based on available environment variables in this order:
          *
@@ -138,6 +139,42 @@ public final class ManagedIdentityCredential implements TokenCredential {
                 .identityClientOptions(updateIdentityClientOptions(ManagedIdentityType.AKS,
                     identityClientOptions, configuration))
                 .build());
+        }  else if (configuration.contains(USE_AZURE_IDENTITY_CLIENT_LIBRARY_LEGACY_MI)) {
+            if (configuration.contains(Configuration.PROPERTY_MSI_ENDPOINT)) {
+                managedIdentityServiceCredential = new AppServiceMsiCredential(clientId, clientBuilder
+                    .identityClientOptions(updateIdentityClientOptions(ManagedIdentityType.APP_SERVICE,
+                        identityClientOptions, configuration))
+                    .build());
+            } else if (configuration.contains(Configuration.PROPERTY_IDENTITY_ENDPOINT)) {
+                if (configuration.contains(Configuration.PROPERTY_IDENTITY_HEADER)) {
+                    if (configuration.get(PROPERTY_IDENTITY_SERVER_THUMBPRINT) != null) {
+                        managedIdentityServiceCredential = new ServiceFabricMsiCredential(clientId, clientBuilder
+                            .identityClientOptions(updateIdentityClientOptions(ManagedIdentityType.SERVICE_FABRIC,
+                                identityClientOptions, configuration))
+                            .build());
+                    } else {
+                        managedIdentityServiceCredential = new AppServiceMsiCredential(clientId, clientBuilder
+                            .identityClientOptions(updateIdentityClientOptions(ManagedIdentityType.APP_SERVICE,
+                                identityClientOptions, configuration))
+                            .build());
+                    }
+                } else if (configuration.get(PROPERTY_IMDS_ENDPOINT) != null) {
+                    managedIdentityServiceCredential = new ArcIdentityCredential(clientId, clientBuilder
+                        .identityClientOptions(updateIdentityClientOptions(ManagedIdentityType.ARC,
+                            identityClientOptions, configuration))
+                        .build());
+                } else {
+                    managedIdentityServiceCredential = new VirtualMachineMsiCredential(clientId, clientBuilder
+                        .identityClientOptions(updateIdentityClientOptions(ManagedIdentityType.VM,
+                            identityClientOptions, configuration))
+                        .build());
+                }
+            } else {
+                managedIdentityServiceCredential = new VirtualMachineMsiCredential(clientId, clientBuilder
+                    .identityClientOptions(updateIdentityClientOptions(ManagedIdentityType.VM,
+                        identityClientOptions, configuration))
+                    .build());
+            }
         } else {
             identityClientOptions.setManagedIdentityType(getManagedIdentityEnv(configuration));
             managedIdentityServiceCredential = new ManagedIdentityMsalCredential(clientId, clientBuilder.build());
@@ -195,7 +232,7 @@ public final class ManagedIdentityCredential implements TokenCredential {
                     + " https://aka.ms/azsdk/java/identity/managedidentitycredential/troubleshoot")));
         }
 
-        if (!CoreUtils.isNullOrEmpty(getClientId())) {
+        if (!CoreUtils.isNullOrEmpty(managedIdentityId)) {
             ManagedIdentitySourceType managedIdentitySourceType = ManagedIdentityApplication.getManagedIdentitySource();
             if (managedIdentitySourceType.equals(ManagedIdentitySourceType.CLOUD_SHELL)
                 || managedIdentitySourceType.equals(ManagedIdentitySourceType.AZURE_ARC)) {
@@ -234,6 +271,19 @@ public final class ManagedIdentityCredential implements TokenCredential {
             return ManagedIdentityType.AKS;
         } else {
             return ManagedIdentityType.VM;
+        }
+    }
+
+    public static String fetchManagedIdentityId(String clientId, String resourceId,
+                                                                                String objectId) {
+        if (clientId != null) {
+           return clientId;
+        } else if (resourceId != null) {
+            return resourceId;
+        } else if (objectId != null) {
+            return objectId;
+        } else {
+            return null;
         }
     }
 }
