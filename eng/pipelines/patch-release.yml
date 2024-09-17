@@ -4,16 +4,8 @@ extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-client-patch.yml
   parameters:
     artifacts:
-    - name: azure-sdk-template
+    - name: azure-identity-extensions
       groupId: com.azure
-      safeName: azuresdktemplate
-      ServiceDirectory: template
-    - name: azure-sdk-template-two
-      groupId: com.azure
-      safeName: azuresdktemplatetwo
-      ServiceDirectory: template
-    - name: azure-sdk-template-three
-      groupId: com.azure
-      safeName: azuresdktemplatethree
-      ServiceDirectory: template
+      safeName: azureidentityextensions
+      ServiceDirectory: identity
 
