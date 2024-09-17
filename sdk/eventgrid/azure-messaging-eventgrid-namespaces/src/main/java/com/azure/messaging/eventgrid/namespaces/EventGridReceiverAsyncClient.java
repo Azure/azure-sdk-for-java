@@ -667,10 +667,6 @@ public final class EventGridReceiverAsyncClient {
 
     /**
      * Gets the topicName for this client.
-     * @return the topic name.
-    
-    /**
-     * Gets the topicName for this client.
      *
      * @return the topic name.
      */
