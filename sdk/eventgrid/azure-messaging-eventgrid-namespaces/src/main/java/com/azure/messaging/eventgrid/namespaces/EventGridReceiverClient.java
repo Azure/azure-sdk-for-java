@@ -690,7 +690,7 @@ public final class EventGridReceiverClient {
      * @param timeout The timeout to add.
      * @return The updated context.
      */
-    private void addTimeoutToContext(RequestOptions requestOptions, Duration timeout) {
+    static void addTimeoutToContext(RequestOptions requestOptions, Duration timeout) {
         Context context = requestOptions.getContext();
         if (context == null) {
             context = new Context("azure-response-timeout", timeout.plusSeconds(5));

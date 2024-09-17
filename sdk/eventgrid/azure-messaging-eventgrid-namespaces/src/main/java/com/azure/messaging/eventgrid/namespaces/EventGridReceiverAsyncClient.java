@@ -388,7 +388,7 @@ public final class EventGridReceiverAsyncClient {
         }
         if (maxWaitTime != null) {
             // Ensure the http client timeout is longer than the maxWaitTime
-            addTimeoutToContext(requestOptions, maxWaitTime);
+            EventGridReceiverClient.addTimeoutToContext(requestOptions, maxWaitTime);
             requestOptions.addQueryParam("maxWaitTime", String.valueOf(maxWaitTime.getSeconds()), false);
         }
         return receiveWithResponse(topicName, subscriptionName, requestOptions).flatMap(FluxUtil::toMono)
@@ -422,7 +422,7 @@ public final class EventGridReceiverAsyncClient {
         }
         if (maxWaitTime != null) {
             // Ensure the http client timeout is longer than the maxWaitTime
-            addTimeoutToContext(requestOptions, maxWaitTime);
+            EventGridReceiverClient.addTimeoutToContext(requestOptions, maxWaitTime);
             requestOptions.addQueryParam("maxWaitTime", String.valueOf(maxWaitTime.getSeconds()), false);
         }
         return receiveWithResponse(topicName, subscriptionName, requestOptions)
@@ -696,21 +696,5 @@ public final class EventGridReceiverAsyncClient {
      */
     public String getSubscriptionName() {
         return subscriptionName;
-    }
-
-    /**
-     * Adds a timeout (maxWaitTime) to a context.
-     * @param requestOptions The request options to update.
-     * @param timeout The timeout to add.
-     * @return The updated context.
-     */
-    private void addTimeoutToContext(RequestOptions requestOptions, Duration timeout) {
-        Context context = requestOptions.getContext();
-        if (context == null) {
-            context = new Context("azure-response-timeout", timeout.plusSeconds(5));
-        } else {
-            context = context.addData("azure-response-timeout", timeout.plusSeconds(5));
-        }
-        requestOptions.setContext(context);
     }
 }
