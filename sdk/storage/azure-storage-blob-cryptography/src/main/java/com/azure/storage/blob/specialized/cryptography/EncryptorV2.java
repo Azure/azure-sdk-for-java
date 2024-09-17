@@ -24,17 +24,18 @@ import java.util.Map;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.AES_GCM_NO_PADDING;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.AES_KEY_SIZE_BITS;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.EMPTY_BUFFER;
-import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_PROTOCOL_V2;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.NONCE_LENGTH;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.TAG_LENGTH;
 
 class EncryptorV2 extends Encryptor {
     private static final ClientLogger LOGGER = new ClientLogger(EncryptorV2.class);
     private final BlobClientSideEncryptionOptions encryptionOptions;
+    private final String encryptionProtocol;
 
-    protected EncryptorV2(SecretKey aesKey, BlobClientSideEncryptionOptions encryptionOptions) {
+    protected EncryptorV2(SecretKey aesKey, BlobClientSideEncryptionOptions encryptionOptions, String encryptionProtocol) {
         super(aesKey);
         this.encryptionOptions = encryptionOptions;
+        this.encryptionProtocol = encryptionProtocol;
     }
 
     @Override
@@ -46,7 +47,7 @@ class EncryptorV2 extends Encryptor {
              */
             ByteArrayOutputStream keyStream = new ByteArrayOutputStream((AES_KEY_SIZE_BITS / 8) + 8);
             // This will always be three bytes
-            keyStream.write(ENCRYPTION_PROTOCOL_V2.getBytes(StandardCharsets.UTF_8));
+            keyStream.write(encryptionProtocol.getBytes(StandardCharsets.UTF_8));
             // Key wrapping requires 8-byte alignment. Pad will 0s
             for (int i = 0; i < 5; i++) {
                 keyStream.write(0);
@@ -61,7 +62,7 @@ class EncryptorV2 extends Encryptor {
     @Override
     protected EncryptionData buildEncryptionData(Map<String, String> keyWrappingMetadata, WrappedKey wrappedKey) {
         return super.buildEncryptionData(keyWrappingMetadata, wrappedKey)
-            .setEncryptionAgent(new EncryptionAgent(ENCRYPTION_PROTOCOL_V2,
+            .setEncryptionAgent(new EncryptionAgent(encryptionProtocol,
                 EncryptionAlgorithm.AES_GCM_256))
             .setEncryptedRegionInfo(new EncryptedRegionInfo(encryptionOptions.getAuthenticatedRegionDataLengthInBytes(), NONCE_LENGTH));
     }

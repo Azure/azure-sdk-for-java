@@ -12,6 +12,7 @@ import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
@@ -80,6 +81,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.OpenOption;
@@ -122,6 +124,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
     private EncryptedBlobClient ebc; // encrypted client for download
     private FakeKey fakeKey;
     private FakeKeyResolver fakeKeyResolver;
+    private static final HttpHeaderName X_MS_META_ENCRYPTIONDATA = HttpHeaderName.fromString("x-ms-meta-encryptiondata");
 
     @Override
     protected void beforeTest() {
@@ -1736,7 +1739,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
     public void uploadAndDownloadDifferentRegionLength(int regionLength, int dataSize) {
         ByteBuffer data = getRandomData(dataSize);
         ebc = new EncryptedBlobClient(mockAesKey(getEncryptedClientBuilder(fakeKey, null, ENV.getPrimaryAccount().getCredential(),
-            cc.getBlobContainerUrl(), EncryptionVersion.V2)
+            cc.getBlobContainerUrl(), EncryptionVersion.V2_1)
             .blobName(generateBlobName())
             .clientSideEncryptionOptions(new BlobClientSideEncryptionOptions().setAuthenticatedRegionDataLengthInBytes(regionLength))
             .buildEncryptedBlobAsyncClient()));
@@ -1753,7 +1756,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
     public void uploadAndDownloadToFileDifferentRegionLength(int regionLength, int fileSize) throws IOException {
         File file = getRandomFile(fileSize);
         ebc = new EncryptedBlobClient(mockAesKey(getEncryptedClientBuilder(fakeKey, null,
-            ENV.getPrimaryAccount().getCredential(), cc.getBlobContainerUrl(), EncryptionVersion.V2)
+            ENV.getPrimaryAccount().getCredential(), cc.getBlobContainerUrl(), EncryptionVersion.V2_1)
             .blobName(generateBlobName())
             .clientSideEncryptionOptions(new BlobClientSideEncryptionOptions()
                 .setAuthenticatedRegionDataLengthInBytes(regionLength))
@@ -1776,7 +1779,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
         ByteBuffer data = getRandomData(dataSize);
         String blobName = generateBlobName();
         ebc = new EncryptedBlobClient(mockAesKey(getEncryptedClientBuilder(fakeKey, null,
-            ENV.getPrimaryAccount().getCredential(), cc.getBlobContainerUrl(), EncryptionVersion.V2)
+            ENV.getPrimaryAccount().getCredential(), cc.getBlobContainerUrl(), EncryptionVersion.V2_1)
             .blobName(blobName)
             .clientSideEncryptionOptions(new BlobClientSideEncryptionOptions()
                 .setAuthenticatedRegionDataLengthInBytes(regionLength))
@@ -1788,13 +1791,91 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
         // Create another client without the authenticated region data length set
         // This client should be using the default 4MB region size
         EncryptedBlobClient ebc2 = new EncryptedBlobClient(mockAesKey(getEncryptedClientBuilder(fakeKey, null,
-            ENV.getPrimaryAccount().getCredential(), cc.getBlobContainerUrl(), EncryptionVersion.V2)
+            ENV.getPrimaryAccount().getCredential(), cc.getBlobContainerUrl(), EncryptionVersion.V2_1)
             .blobName(blobName)
             .buildEncryptedBlobAsyncClient()));
 
         ebc2.downloadStream(plaintextOut);
 
         assertArraysEqual(data.array(), plaintextOut.toByteArray());
+    }
+
+    @ParameterizedTest
+    @MethodSource("uploadAndDownloadV21WithOlderVersionsSupplier")
+    public void uploadAndDownloadV21WithOlderVersions(int regionLength, int dataSize, EncryptionVersion version) {
+        ByteBuffer data = getRandomData(dataSize);
+        String blobName = generateBlobName();
+        ebc = new EncryptedBlobClient(mockAesKey(getEncryptedClientBuilder(fakeKey, null,
+            ENV.getPrimaryAccount().getCredential(), cc.getBlobContainerUrl(), EncryptionVersion.V2_1)
+            .blobName(blobName)
+            .clientSideEncryptionOptions(new BlobClientSideEncryptionOptions()
+                .setAuthenticatedRegionDataLengthInBytes(regionLength))
+            .buildEncryptedBlobAsyncClient()));
+        ebc.uploadWithResponse(new BlobParallelUploadOptions(BinaryData.fromByteBuffer(data.duplicate())), null, null);
+
+        ByteArrayOutputStream plaintextOut = new ByteArrayOutputStream();
+
+        // Setting the encryption version to something other than V2_1 should not impact the
+        // ability to download and decrypt the blob as the downloaded uses the blob metadata
+        // to dictate what encryption protocol version to use.
+        EncryptedBlobClient ebc2 = new EncryptedBlobClient(mockAesKey(getEncryptedClientBuilder(fakeKey, null,
+            ENV.getPrimaryAccount().getCredential(), cc.getBlobContainerUrl(), version)
+            .blobName(blobName)
+            .buildEncryptedBlobAsyncClient()));
+
+        ebc2.downloadStream(plaintextOut);
+
+        assertArraysEqual(data.array(), plaintextOut.toByteArray());
+    }
+
+    private static Stream<Arguments> validateContentEncryptionKeyProtocolSupplier() {
+        return Stream.of(
+            Arguments.of(EncryptionVersion.V2, "2.0"),
+            Arguments.of(EncryptionVersion.V2_1, "2.1"));
+    }
+
+    @ParameterizedTest
+    @MethodSource("validateContentEncryptionKeyProtocolSupplier")
+    public void validateContentEncryptionKeyProtocol(EncryptionVersion version, String expectedVersion) throws IOException {
+        bec = getEncryptionClient(version, generateBlobName());
+        bec.uploadWithResponse(new BlobParallelUploadOptions(DATA.getDefaultInputStream()), null, null);
+        Response<BlobProperties> response = bec.getPropertiesWithResponse(null, null, null);
+        String encryptionMetadata = response.getHeaders().get(X_MS_META_ENCRYPTIONDATA).getValue();
+        EncryptionData encryptionData;
+        try (JsonReader jsonReader = JsonProviders.createReader(encryptionMetadata)) {
+            encryptionData = EncryptionData.fromJson(jsonReader);
+        }
+        byte[] cek = fakeKey.unwrapKey(encryptionData.getWrappedContentKey().getAlgorithm(),
+            encryptionData.getWrappedContentKey().getEncryptedKey()).block();
+
+        ByteArrayInputStream keyStream = new ByteArrayInputStream(cek);
+        byte[] protocolBytes = new byte[3];
+        keyStream.read(protocolBytes);
+
+        assertEquals(ByteBuffer.wrap(expectedVersion.getBytes(StandardCharsets.UTF_8)), ByteBuffer.wrap(protocolBytes));
+    }
+
+    private static Stream<Arguments> validateEncryptionProtocolUploadSupplier() {
+        return Stream.of(
+            Arguments.of(EncryptionVersion.V1, "1.0"),
+            Arguments.of(EncryptionVersion.V2, "2.0"),
+            Arguments.of(EncryptionVersion.V2_1, "2.1"));
+    }
+
+    @ParameterizedTest
+    @MethodSource("validateEncryptionProtocolUploadSupplier")
+    public void validateEncryptionProtocolUpload(EncryptionVersion version, String expectedVersion) throws IOException {
+        bec = getEncryptionClient(version, generateBlobName());
+        bec.uploadWithResponse(new BlobParallelUploadOptions(DATA.getDefaultInputStream()), null, null);
+        Response<BlobProperties> response = bec.getPropertiesWithResponse(null, null, null);
+        String encryptionMetadata = response.getHeaders().get(X_MS_META_ENCRYPTIONDATA).getValue();
+
+        EncryptionData encryptionData;
+        try (JsonReader jsonReader = JsonProviders.createReader(encryptionMetadata)) {
+            encryptionData = EncryptionData.fromJson(jsonReader);
+        }
+
+        assertEquals(expectedVersion, encryptionData.getEncryptionAgent().getProtocol());
     }
 
     private static Stream<Arguments> uploadAndDownloadDifferentRegionLengthSupplier() {
@@ -1818,6 +1899,19 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
             Arguments.of(25, Constants.KB), // unaligned
             Arguments.of(6 * Constants.MB, Constants.KB), // testing region smaller than data size
             Arguments.of(6 * Constants.MB, 8 * Constants.MB) // testing greater than default 4MB region size
+        );
+    }
+
+    private static Stream<Arguments> uploadAndDownloadV21WithOlderVersionsSupplier() {
+        return Stream.of(
+            Arguments.of(4 * Constants.KB, 4 * Constants.MB, EncryptionVersion.V1),
+            Arguments.of(4 * Constants.KB, 4 * Constants.MB, EncryptionVersion.V2),
+            Arguments.of(10 * Constants.KB, 4 * Constants.MB, EncryptionVersion.V1), // unaligned
+            Arguments.of(10 * Constants.KB, 4 * Constants.MB, EncryptionVersion.V2), // unaligned
+            Arguments.of(16, Constants.KB, EncryptionVersion.V1), // minimum boundary
+            Arguments.of(16, Constants.KB, EncryptionVersion.V2), // minimum boundary
+            Arguments.of(6 * Constants.MB, 8 * Constants.MB, EncryptionVersion.V1), // testing greater than default 4MB region size
+            Arguments.of(6 * Constants.MB, 8 * Constants.MB, EncryptionVersion.V2) // testing greater than default 4MB region size
         );
     }
 

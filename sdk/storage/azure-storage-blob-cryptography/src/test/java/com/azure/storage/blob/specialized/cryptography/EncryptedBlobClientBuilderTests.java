@@ -291,7 +291,7 @@ public class EncryptedBlobClientBuilderTests {
     @ParameterizedTest
     @ValueSource(longs = { 16, 4 * Constants.KB, 4 * Constants.MB, Constants.GB })
     public void encryptedRegionLength(long regionLength) {
-        EncryptedBlobClient encryptedBlobClient = new EncryptedBlobClientBuilder(EncryptionVersion.V2)
+        EncryptedBlobClient encryptedBlobClient = new EncryptedBlobClientBuilder(EncryptionVersion.V2_1)
             .blobName("foo")
             .containerName("container")
             .key(new FakeKey("keyId", randomData), "keyWrapAlgorithm")
@@ -309,6 +309,25 @@ public class EncryptedBlobClientBuilderTests {
             .key(new FakeKey("keyId", randomData), "keyWrapAlgorithm")
             .buildEncryptedBlobClient();
         assertEquals(4 * Constants.MB, encryptedBlobClient.getClientSideEncryptionOptions().getAuthenticatedRegionDataLengthInBytes());
+    }
+
+    @ParameterizedTest
+    @MethodSource("encryptedRegionLengthWithIllegalVersionSupplier")
+    public void encryptedRegionLengthWithIllegalVersion(EncryptionVersion version) {
+        assertThrows(IllegalArgumentException.class, () -> new EncryptedBlobClientBuilder(version)
+            .blobName("foo")
+            .containerName("container")
+            .key(new FakeKey("keyId", randomData), "keyWrapAlgorithm")
+            .clientSideEncryptionOptions(new BlobClientSideEncryptionOptions()
+                .setAuthenticatedRegionDataLengthInBytes(Constants.KB))
+            .buildEncryptedBlobClient());
+    }
+
+    private static Stream<Arguments> encryptedRegionLengthWithIllegalVersionSupplier() {
+        return Stream.of(
+            Arguments.of(EncryptionVersion.V1),
+            Arguments.of(EncryptionVersion.V2)
+        );
     }
 
 
