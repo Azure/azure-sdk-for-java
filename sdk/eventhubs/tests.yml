@@ -1,4 +1,21 @@
 trigger: none
+pr:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/eventhubs/tests.yml
+      - sdk/eventhubs/azure-messaging-eventhubs/
+      - sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob/
+      - sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-jedis/
+    exclude:
+      - sdk/eventhubs/pom.xml
+      - sdk/eventhubs/azure-messaging-eventhubs/pom.xml
+      - sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob/pom.xml
+      - sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-jedis/pom.xml
 
 extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
