@@ -18,6 +18,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -42,7 +44,7 @@ public class SharedExecutorServiceTests {
     @Test
     @Order(1)
     public void startsUninitialized() {
-        assertNull(SharedExecutorService.getInstance().executor.get());
+        assertNull(SharedExecutorService.getInstance().executor);
     }
 
     @Test
@@ -52,22 +54,26 @@ public class SharedExecutorServiceTests {
         }).get();
 
         // ExecutorService should be set when there isn't one available.
-        assertNotNull(SharedExecutorService.getInstance().executor.get());
+        assertNotNull(SharedExecutorService.getInstance().executor);
 
-        // And since we defined it within the SDK we add a shutdown thread.
-        assertNotNull(SharedExecutorService.getInstance().executor.get().shutdownThread);
+        // And since we defined it within the SDK it should be an InternalExecutorService instance.
+        assertInstanceOf(SharedExecutorService.InternalExecutorService.class,
+            SharedExecutorService.getInstance().executor);
     }
 
     @Test
     @Order(3)
     public void settingCustomExecutorShutsDownDefault() throws ExecutionException, InterruptedException {
-        ExecutorService defaultService = SharedExecutorService.getInstance().executor.get().executorService;
+        ExecutorService defaultService = SharedExecutorService.getInstance().executor;
         AtomicInteger callCount = new AtomicInteger();
         ExecutorService executorService = Executors.newCachedThreadPool(r -> {
             callCount.getAndIncrement();
             return new Thread(r);
         });
-        SharedExecutorService.setExecutorService(executorService);
+
+        // Should return null as the ExecutorService set should have been instantiated by SharedExecutorService itself.
+        // Which in that case null is returned here as the caller shouldn't interact with it.
+        assertNull(SharedExecutorService.setExecutorService(executorService));
         SharedExecutorService.getInstance().submit(() -> {
         }).get();
 
@@ -77,7 +83,8 @@ public class SharedExecutorServiceTests {
         assertTrue(defaultService.isShutdown());
 
         // Custom ExecutorService doesn't have a shutdown thread.
-        assertNull(SharedExecutorService.getInstance().executor.get().shutdownThread);
+        ExecutorService internal = SharedExecutorService.getInstance().executor;
+        assertFalse(internal instanceof SharedExecutorService.InternalExecutorService);
 
         // Shut down custom ExecutorService for next test validation.
         executorService.shutdown();
@@ -90,9 +97,10 @@ public class SharedExecutorServiceTests {
         }).get();
 
         // Custom ExecutorService was shut down, need to set one again.
-        assertNotNull(SharedExecutorService.getInstance().executor.get());
+        assertNotNull(SharedExecutorService.getInstance().executor);
 
-        // And since we defined it within the SDK we add a shutdown thread.
-        assertNotNull(SharedExecutorService.getInstance().executor.get().shutdownThread);
+        // And since we defined it within the SDK it should be an InternalExecutorService instance.
+        assertInstanceOf(SharedExecutorService.InternalExecutorService.class,
+            SharedExecutorService.getInstance().executor);
     }
 }

@@ -22,13 +22,14 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 import java.util.function.Function;
 
 /**
  * An {@link ExecutorService} that is shared by multiple consumers.
  * <p>
- * The shared executor service is created using the following configuration settings:
+ * If {@link SharedExecutorService#setExecutorService(ExecutorService)} isn't called a default shared executor service
+ * is created using the following configuration settings:
  * <ul>
  *     <li>{@code azure.sdk.shared.threadpool.maxpoolsize} system property or
  *     {@code AZURE_SDK_SHARED_THREADPOOL_MAXPOOLSIZE} environment variable - The maximum pool size of the shared
@@ -143,7 +144,9 @@ public final class SharedExecutorService implements ExecutorService {
         CREATE_VIRTUAL_THREAD_FACTORY = createVirtualThreadFactory;
     }
 
-    final AtomicReference<ExecutorWithMetadata> executor = new AtomicReference<>();
+    volatile ExecutorService executor;
+    private static final AtomicReferenceFieldUpdater<SharedExecutorService, ExecutorService> EXECUTOR_UPDATER
+        = AtomicReferenceFieldUpdater.newUpdater(SharedExecutorService.class, ExecutorService.class, "executor");
 
     private SharedExecutorService() {
     }
@@ -188,16 +191,15 @@ public final class SharedExecutorService implements ExecutorService {
             throw new IllegalStateException("The passed executor service is shutdown or terminated.");
         }
 
-        ExecutorWithMetadata existing = INSTANCE.executor.getAndSet(new ExecutorWithMetadata(executorService, null));
+        ExecutorService existing = EXECUTOR_UPDATER.getAndSet(INSTANCE, executorService);
 
-        if (existing != null) {
-            // This is calling ExecutorWithMetadata.shutdown() which will shutdown the executor service if it was
-            // created by this class. Otherwise, it's a no-op.
+        if (existing instanceof InternalExecutorService) {
+            // Only the InternalExecutorService should be shut down when setting a new ExecutorService.
             existing.shutdown();
-            return (existing.shutdownThread == null) ? existing.executorService : null;
+            return null;
         }
 
-        return null;
+        return existing;
     }
 
     /**
@@ -209,16 +211,15 @@ public final class SharedExecutorService implements ExecutorService {
      * @return The executor service set as the shared instance if it wasn't set by this class, otherwise null.
      */
     public static ExecutorService reset() {
-        ExecutorWithMetadata existing = INSTANCE.executor.getAndSet(null);
+        ExecutorService existing = EXECUTOR_UPDATER.getAndSet(INSTANCE, null);
 
-        if (existing != null) {
-            // This is calling ExecutorWithMetadata.shutdown() which will shutdown the executor service if it was
-            // created by this class. Otherwise, it's a no-op.
+        if (existing instanceof InternalExecutorService) {
+            // Only the InternalExecutorService should be shut down when resetting SharedExecutorService.
             existing.shutdown();
-            return (existing.shutdownThread == null) ? existing.executorService : null;
+            return null;
         }
 
-        return null;
+        return existing;
     }
 
     /**
@@ -332,16 +333,11 @@ public final class SharedExecutorService implements ExecutorService {
     }
 
     private ExecutorService ensureNotShutdown() {
-        return executor.updateAndGet(wrapper -> {
-            if (wrapper == null || wrapper.executorService.isShutdown() || wrapper.executorService.isTerminated()) {
-                return createSharedExecutor();
-            } else {
-                return wrapper;
-            }
-        }).executorService;
+        return EXECUTOR_UPDATER.updateAndGet(INSTANCE,
+            ex -> (ex == null || ex.isShutdown() || ex.isTerminated()) ? createSharedExecutor() : ex);
     }
 
-    private static ExecutorWithMetadata createSharedExecutor() {
+    private static ExecutorService createSharedExecutor() {
         ThreadFactory threadFactory;
         if (VIRTUAL_THREAD_SUPPORTED && THREAD_POOL_VIRTUAL) {
             try {
@@ -361,7 +357,7 @@ public final class SharedExecutorService implements ExecutorService {
         Thread shutdownThread = CoreUtils.createExecutorServiceShutdownThread(executorService, Duration.ofSeconds(5));
         CoreUtils.addShutdownHookSafely(shutdownThread);
 
-        return new ExecutorWithMetadata(executorService, shutdownThread);
+        return new InternalExecutorService(executorService, shutdownThread);
     }
 
     private static ThreadFactory createVirtualThreadFactory() throws Exception {
@@ -379,22 +375,82 @@ public final class SharedExecutorService implements ExecutorService {
         };
     }
 
-    static final class ExecutorWithMetadata {
-        final Thread shutdownThread;
-        final ExecutorService executorService;
+    static final class InternalExecutorService implements ExecutorService {
+        private final ExecutorService wrapped;
+        private final Thread shutdownThread;
 
-        ExecutorWithMetadata(ExecutorService executorService, Thread shutdownThread) {
-            this.executorService = executorService;
+        private InternalExecutorService(ExecutorService wrapped, Thread shutdownThread) {
+            this.wrapped = wrapped;
             this.shutdownThread = shutdownThread;
         }
 
-        void shutdown() {
-            // The executor service is only shutdown if there is a shutdown thread as that indicates the executor
-            // service was created by this class.
-            if (shutdownThread != null) {
-                executorService.shutdown();
-                ImplUtils.removeShutdownHookSafely(shutdownThread);
-            }
+        @Override
+        public <T> T invokeAny(Collection<? extends Callable<T>> tasks, long timeout, TimeUnit unit)
+            throws InterruptedException, ExecutionException, TimeoutException {
+            return wrapped.invokeAny(tasks, timeout, unit);
+        }
+
+        @Override
+        public <T> T invokeAny(Collection<? extends Callable<T>> tasks)
+            throws InterruptedException, ExecutionException {
+            return wrapped.invokeAny(tasks);
+        }
+
+        @Override
+        public <T> List<Future<T>> invokeAll(Collection<? extends Callable<T>> tasks, long timeout, TimeUnit unit)
+            throws InterruptedException {
+            return wrapped.invokeAll(tasks, timeout, unit);
+        }
+
+        @Override
+        public <T> List<Future<T>> invokeAll(Collection<? extends Callable<T>> tasks) throws InterruptedException {
+            return wrapped.invokeAll(tasks);
+        }
+
+        @Override
+        public Future<?> submit(Runnable task) {
+            return wrapped.submit(task);
+        }
+
+        @Override
+        public <T> Future<T> submit(Runnable task, T result) {
+            return wrapped.submit(task, result);
+        }
+
+        @Override
+        public <T> Future<T> submit(Callable<T> task) {
+            return wrapped.submit(task);
+        }
+
+        @Override
+        public boolean awaitTermination(long timeout, TimeUnit unit) throws InterruptedException {
+            return wrapped.awaitTermination(timeout, unit);
+        }
+
+        @Override
+        public boolean isTerminated() {
+            return wrapped.isTerminated();
+        }
+
+        @Override
+        public boolean isShutdown() {
+            return wrapped.isShutdown();
+        }
+
+        @Override
+        public List<Runnable> shutdownNow() {
+            return wrapped.shutdownNow();
+        }
+
+        @Override
+        public void shutdown() {
+            wrapped.shutdown();
+            ImplUtils.removeShutdownHookSafely(shutdownThread);
+        }
+
+        @Override
+        public void execute(Runnable command) {
+            wrapped.execute(command);
         }
     }
 }
