@@ -56,7 +56,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-storage-blob</artifactId>
-    <version>12.28.0-beta.1</version>
+    <version>12.28.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
