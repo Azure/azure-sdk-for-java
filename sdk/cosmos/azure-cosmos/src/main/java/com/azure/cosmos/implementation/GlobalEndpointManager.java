@@ -4,7 +4,6 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
-import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
 import com.azure.cosmos.implementation.routing.LocationCache;
 import com.azure.cosmos.implementation.routing.LocationHelper;
 import org.slf4j.Logger;
@@ -21,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.function.Function;
 
 /**
@@ -44,6 +44,10 @@ public class GlobalEndpointManager implements AutoCloseable {
     private volatile boolean isClosed;
     private AtomicBoolean firstTimeDatabaseAccountInitialization = new AtomicBoolean(true);
     private volatile DatabaseAccount latestDatabaseAccount;
+
+    private final ReentrantReadWriteLock.WriteLock databaseAccountWriteLock;
+
+    private final ReentrantReadWriteLock.ReadLock databaseAccountReadLock;
 
     private volatile Throwable latestDatabaseRefreshError;
 
@@ -71,6 +75,10 @@ public class GlobalEndpointManager implements AutoCloseable {
             this.isRefreshing = new AtomicBoolean(false);
             this.refreshInBackground = new AtomicBoolean(false);
             this.isClosed = false;
+            ReentrantReadWriteLock reentrantReadWriteLock = new ReentrantReadWriteLock();
+
+            this.databaseAccountWriteLock = reentrantReadWriteLock.writeLock();
+            this.databaseAccountReadLock = reentrantReadWriteLock.readLock();
         } catch (Exception e) {
             throw new IllegalArgumentException(e);
         }
@@ -188,11 +196,18 @@ public class GlobalEndpointManager implements AutoCloseable {
             if (forceRefresh) {
                 Mono<DatabaseAccount> databaseAccountObs = getDatabaseAccountFromAnyLocationsAsync(
                     this.defaultEndpoint,
-                    new ArrayList<>(this.connectionPolicy.getPreferredRegions()),
+                    new ArrayList<>(this.getEffectivePreferredRegions()),
                     this::getDatabaseAccountAsync);
 
                 return databaseAccountObs.map(dbAccount -> {
-                    this.locationCache.onDatabaseAccountRead(dbAccount);
+                    this.databaseAccountWriteLock.lock();
+
+                    try {
+                        this.locationCache.onDatabaseAccountRead(dbAccount);
+                    } finally {
+                        this.databaseAccountWriteLock.unlock();
+                    }
+
                     return dbAccount;
                 }).flatMap(dbAccount -> {
                     return Mono.empty();
@@ -220,7 +235,9 @@ public class GlobalEndpointManager implements AutoCloseable {
     }
 
     public int getPreferredLocationCount() {
-        return this.connectionPolicy.getPreferredRegions() != null ? this.connectionPolicy.getPreferredRegions().size() : 0;
+        List<String> effectivePreferredRegions = this.getEffectivePreferredRegions();
+
+        return effectivePreferredRegions != null ? effectivePreferredRegions.size() : 0;
     }
 
     private Mono<Void> refreshLocationPrivateAsync(DatabaseAccount databaseAccount) {
@@ -228,7 +245,13 @@ public class GlobalEndpointManager implements AutoCloseable {
             logger.debug("refreshLocationPrivateAsync() refreshing locations");
 
             if (databaseAccount != null) {
-                this.locationCache.onDatabaseAccountRead(databaseAccount);
+                this.databaseAccountWriteLock.lock();
+
+                try {
+                    this.locationCache.onDatabaseAccountRead(databaseAccount);
+                } finally {
+                    this.databaseAccountWriteLock.unlock();
+                }
             }
 
             Utils.ValueHolder<Boolean> canRefreshInBackground = new Utils.ValueHolder<>();
@@ -240,11 +263,18 @@ public class GlobalEndpointManager implements AutoCloseable {
 
                     Mono<DatabaseAccount> databaseAccountObs = getDatabaseAccountFromAnyLocationsAsync(
                             this.defaultEndpoint,
-                            new ArrayList<>(this.connectionPolicy.getPreferredRegions()),
+                            new ArrayList<>(this.getEffectivePreferredRegions()),
                             this::getDatabaseAccountAsync);
 
                     return databaseAccountObs.map(dbAccount -> {
-                        this.locationCache.onDatabaseAccountRead(dbAccount);
+                        this.databaseAccountWriteLock.lock();
+
+                        try {
+                            this.locationCache.onDatabaseAccountRead(dbAccount);
+                        } finally {
+                            this.databaseAccountWriteLock.unlock();
+                        }
+
                         this.isRefreshing.set(false);
                         return dbAccount;
                     }).flatMap(dbAccount -> {
@@ -300,7 +330,7 @@ public class GlobalEndpointManager implements AutoCloseable {
                             }
 
                             logger.debug("startRefreshLocationTimerAsync() - Invoking refresh, I was registered on [{}]", now);
-                            Mono<DatabaseAccount> databaseAccountObs = GlobalEndpointManager.getDatabaseAccountFromAnyLocationsAsync(this.defaultEndpoint, new ArrayList<>(this.connectionPolicy.getPreferredRegions()),
+                            Mono<DatabaseAccount> databaseAccountObs = GlobalEndpointManager.getDatabaseAccountFromAnyLocationsAsync(this.defaultEndpoint, new ArrayList<>(this.getEffectivePreferredRegions()),
                                     this::getDatabaseAccountAsync);
 
                             return databaseAccountObs.flatMap(dbAccount -> {
@@ -321,8 +351,15 @@ public class GlobalEndpointManager implements AutoCloseable {
         return this.owner.getDatabaseAccountFromEndpoint(serviceEndpoint)
             .doOnNext(databaseAccount -> {
                 if(databaseAccount != null) {
-                    this.latestDatabaseAccount = databaseAccount;
-                    this.setLatestDatabaseRefreshError(null);
+
+                    this.databaseAccountWriteLock.lock();
+
+                    try {
+                        this.latestDatabaseAccount = databaseAccount;
+                        this.setLatestDatabaseRefreshError(null);
+                    } finally {
+                        this.databaseAccountWriteLock.unlock();
+                    }
                 }
 
                 logger.debug("account retrieved: {}", databaseAccount);
@@ -339,5 +376,26 @@ public class GlobalEndpointManager implements AutoCloseable {
 
     public ConnectionPolicy getConnectionPolicy() {
         return this.connectionPolicy;
+    }
+
+    private List<String> getEffectivePreferredRegions() {
+
+        if (this.connectionPolicy.getPreferredRegions() != null && !this.connectionPolicy.getPreferredRegions().isEmpty()) {
+            return this.connectionPolicy.getPreferredRegions();
+        }
+
+        // when latestDatabaseAccount is initialized
+        // the locationCache reflects account-level region information
+
+        this.databaseAccountReadLock.lock();
+
+        try {
+            if (this.latestDatabaseAccount == null) {
+                return Collections.emptyList();
+            }
+            return this.locationCache.getEffectivePreferredLocations();
+        } finally {
+            this.databaseAccountReadLock.unlock();
+        }
     }
 }

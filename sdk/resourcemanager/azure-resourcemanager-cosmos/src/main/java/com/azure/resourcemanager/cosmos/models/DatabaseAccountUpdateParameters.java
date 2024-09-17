@@ -761,8 +761,8 @@ public final class DatabaseAccountUpdateParameters implements JsonSerializable<D
     }
 
     /**
-     * Get the enableBurstCapacity property: Flag to indicate enabling/disabling of Burst Capacity Preview feature on
-     * the account.
+     * Get the enableBurstCapacity property: Flag to indicate enabling/disabling of Burst Capacity feature on the
+     * account.
      * 
      * @return the enableBurstCapacity value.
      */
@@ -771,8 +771,8 @@ public final class DatabaseAccountUpdateParameters implements JsonSerializable<D
     }
 
     /**
-     * Set the enableBurstCapacity property: Flag to indicate enabling/disabling of Burst Capacity Preview feature on
-     * the account.
+     * Set the enableBurstCapacity property: Flag to indicate enabling/disabling of Burst Capacity feature on the
+     * account.
      * 
      * @param enableBurstCapacity the enableBurstCapacity value to set.
      * @return the DatabaseAccountUpdateParameters object itself.

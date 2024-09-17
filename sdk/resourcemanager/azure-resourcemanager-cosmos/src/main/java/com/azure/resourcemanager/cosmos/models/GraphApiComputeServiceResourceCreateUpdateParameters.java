@@ -11,7 +11,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Parameters for Create or Update request for GraphAPIComputeServiceResource.
+ * Properties for Create or Update request for GraphAPIComputeServiceResource.
  */
 @Fluent
 public final class GraphApiComputeServiceResourceCreateUpdateParameters extends ServiceResourceCreateUpdateProperties {
@@ -61,7 +61,6 @@ public final class GraphApiComputeServiceResourceCreateUpdateParameters extends 
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

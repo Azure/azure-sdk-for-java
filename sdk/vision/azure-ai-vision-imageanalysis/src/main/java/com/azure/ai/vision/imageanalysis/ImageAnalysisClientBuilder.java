@@ -44,31 +44,6 @@ import java.util.Objects;
 
 /**
  * A builder for creating a new instance of the ImageAnalysisClient type.
- *
- * <!-- src_embed com.azure.ai.vision.imageanalysis.sync-client -->
- * <pre>
- * &#47;&#47;
- * &#47;&#47; Create a synchronous Image Analysis client.
- * &#47;&#47;
- * ImageAnalysisClient client = new ImageAnalysisClientBuilder&#40;&#41;
- *     .endpoint&#40;endpoint&#41;
- *     .credential&#40;new KeyCredential&#40;key&#41;&#41;
- *     .buildClient&#40;&#41;;
- * </pre>
- * <!-- end com.azure.ai.vision.imageanalysis.sync-client -->
- *
- * <!-- src_embed com.azure.ai.vision.imageanalysis.async-client -->
- * <pre>
- * &#47;&#47;
- * &#47;&#47; Create an asynchronous Image Analysis client.
- * &#47;&#47;
- * ImageAnalysisAsyncClient client = new ImageAnalysisClientBuilder&#40;&#41;
- *     .endpoint&#40;endpoint&#41;
- *     .credential&#40;new KeyCredential&#40;key&#41;&#41;
- *     .buildAsyncClient&#40;&#41;;
- * </pre>
- * <!-- end com.azure.ai.vision.imageanalysis.async-client -->
- *
  */
 @ServiceClientBuilder(serviceClients = { ImageAnalysisClient.class, ImageAnalysisAsyncClient.class })
 public final class ImageAnalysisClientBuilder implements HttpTrait<ImageAnalysisClientBuilder>,

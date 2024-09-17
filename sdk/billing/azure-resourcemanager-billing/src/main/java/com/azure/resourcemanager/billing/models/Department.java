@@ -4,136 +4,63 @@
 
 package com.azure.resourcemanager.billing.models;
 
-import com.azure.core.annotation.Fluent;
-import com.azure.core.management.ProxyResource;
-import com.azure.resourcemanager.billing.fluent.models.DepartmentProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
+import com.azure.core.management.SystemData;
+import com.azure.resourcemanager.billing.fluent.models.DepartmentInner;
+import java.util.Map;
 
-/** A department. */
-@Fluent
-public final class Department extends ProxyResource {
-    /*
-     * A department.
+/**
+ * An immutable client-side representation of Department.
+ */
+public interface Department {
+    /**
+     * Gets the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
      */
-    @JsonProperty(value = "properties")
-    private DepartmentProperties innerProperties;
-
-    /** Creates an instance of Department class. */
-    public Department() {
-    }
+    String id();
 
     /**
-     * Get the innerProperties property: A department.
-     *
-     * @return the innerProperties value.
+     * Gets the name property: The name of the resource.
+     * 
+     * @return the name value.
      */
-    private DepartmentProperties innerProperties() {
-        return this.innerProperties;
-    }
+    String name();
 
     /**
-     * Get the departmentName property: The name of the department.
-     *
-     * @return the departmentName value.
+     * Gets the type property: The type of the resource.
+     * 
+     * @return the type value.
      */
-    public String departmentName() {
-        return this.innerProperties() == null ? null : this.innerProperties().departmentName();
-    }
+    String type();
 
     /**
-     * Set the departmentName property: The name of the department.
-     *
-     * @param departmentName the departmentName value to set.
-     * @return the Department object itself.
+     * Gets the tags property: Dictionary of metadata associated with the resource. It may not be populated for all
+     * resource types. Maximum key/value length supported of 256 characters. Keys/value should not empty value nor null.
+     * Keys can not contain &lt; &gt; % &amp; \ ? /.
+     * 
+     * @return the tags value.
      */
-    public Department withDepartmentName(String departmentName) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DepartmentProperties();
-        }
-        this.innerProperties().withDepartmentName(departmentName);
-        return this;
-    }
+    Map<String, String> tags();
 
     /**
-     * Get the costCenter property: The cost center associated with the department.
-     *
-     * @return the costCenter value.
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
      */
-    public String costCenter() {
-        return this.innerProperties() == null ? null : this.innerProperties().costCenter();
-    }
+    SystemData systemData();
 
     /**
-     * Set the costCenter property: The cost center associated with the department.
-     *
-     * @param costCenter the costCenter value to set.
-     * @return the Department object itself.
+     * Gets the properties property: Optional grouping of enrollment accounts to segment costs into logical groupings
+     * and set budgets.
+     * 
+     * @return the properties value.
      */
-    public Department withCostCenter(String costCenter) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DepartmentProperties();
-        }
-        this.innerProperties().withCostCenter(costCenter);
-        return this;
-    }
+    DepartmentProperties properties();
 
     /**
-     * Get the status property: The status of the department.
-     *
-     * @return the status value.
+     * Gets the inner com.azure.resourcemanager.billing.fluent.models.DepartmentInner object.
+     * 
+     * @return the inner object.
      */
-    public String status() {
-        return this.innerProperties() == null ? null : this.innerProperties().status();
-    }
-
-    /**
-     * Set the status property: The status of the department.
-     *
-     * @param status the status value to set.
-     * @return the Department object itself.
-     */
-    public Department withStatus(String status) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DepartmentProperties();
-        }
-        this.innerProperties().withStatus(status);
-        return this;
-    }
-
-    /**
-     * Get the enrollmentAccounts property: Associated enrollment accounts. By default this is not populated, unless
-     * it's specified in $expand.
-     *
-     * @return the enrollmentAccounts value.
-     */
-    public List<EnrollmentAccount> enrollmentAccounts() {
-        return this.innerProperties() == null ? null : this.innerProperties().enrollmentAccounts();
-    }
-
-    /**
-     * Set the enrollmentAccounts property: Associated enrollment accounts. By default this is not populated, unless
-     * it's specified in $expand.
-     *
-     * @param enrollmentAccounts the enrollmentAccounts value to set.
-     * @return the Department object itself.
-     */
-    public Department withEnrollmentAccounts(List<EnrollmentAccount> enrollmentAccounts) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DepartmentProperties();
-        }
-        this.innerProperties().withEnrollmentAccounts(enrollmentAccounts);
-        return this;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
-        }
-    }
+    DepartmentInner innerModel();
 }

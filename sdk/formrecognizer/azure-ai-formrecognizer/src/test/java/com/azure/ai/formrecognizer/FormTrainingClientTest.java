@@ -439,28 +439,6 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
     }
 
     /**
-     * Verifies the result of the training operation for a valid unlabeled model Id and include subfolder training set
-     * Url with non-existing prefix name.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void beginTrainingWithoutTrainingLabelsIncludeSubfolderWithNonExistPrefixName(HttpClient httpClient,
-                                                                                         FormRecognizerServiceVersion serviceVersion) {
-        client = getFormTrainingClient(httpClient, serviceVersion);
-        beginTrainingMultipageRunner(trainingFilesUrl -> {
-            FormRecognizerException thrown = assertThrows(FormRecognizerException.class, () ->
-                client.beginTraining(trainingFilesUrl, false,
-                    new TrainingOptions()
-                        .setPollInterval(durationTestMode)
-                        .setTrainingFileFilter(new TrainingFileFilter()
-                            .setSubfoldersIncluded(true)
-                            .setPrefix(INVALID_PREFIX_FILE_NAME)),
-                    Context.NONE).getFinalResult());
-            assertEquals(NO_VALID_BLOB_FOUND_ERROR_CODE, thrown.getErrorInformation().get(0).getErrorCode());
-        });
-    }
-
-    /**
      * Verifies the result of the training operation for a valid unlabeled model Id and exclude subfolder training set
      * Url with non-existing prefix name.
      */

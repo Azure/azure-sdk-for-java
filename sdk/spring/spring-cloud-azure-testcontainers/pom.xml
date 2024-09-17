@@ -12,7 +12,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-cloud-azure-testcontainers</artifactId>
-  <version>5.16.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-testcontainers;current} -->
+  <version>5.17.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-testcontainers;current} -->
 
   <name>Spring Cloud Azure Testcontainers</name>
   <description>Spring Cloud Azure Testcontainers</description>
@@ -55,13 +55,13 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-autoconfigure</artifactId>
-      <version>5.16.0-beta.1</version>  <!-- {x-version-update;com.azure.spring:spring-cloud-azure-autoconfigure;current} -->
+      <version>5.17.0-beta.1</version>  <!-- {x-version-update;com.azure.spring:spring-cloud-azure-autoconfigure;current} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-spring-data-cosmos</artifactId>
-      <version>5.16.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;current} -->
+      <version>5.17.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;current} -->
       <optional>true</optional>
     </dependency>
 
@@ -127,38 +127,6 @@
 
   <build>
     <plugins>
-      <plugin>
-        <groupId>com.github.spotbugs</groupId>
-        <artifactId>spotbugs-maven-plugin</artifactId>
-        <version>4.8.2.0</version> <!-- {x-version-update;springboot3_com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
-        <configuration>
-          <skip>true</skip>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>com.diffplug.spotless</groupId>
-        <artifactId>spotless-maven-plugin</artifactId>
-        <version>2.30.0</version> <!-- {x-version-update;springboot3_com.diffplug.spotless:spotless-maven-plugin;external_dependency} -->
-        <configuration>
-          <skip>true</skip>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.revapi</groupId>
-        <artifactId>revapi-maven-plugin</artifactId>
-        <version>0.14.6</version> <!-- {x-version-update;springboot3_org.revapi:revapi-maven-plugin;external_dependency} -->
-        <configuration>
-          <skip>true</skip>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>com.azure.tools</groupId>
-        <artifactId>codesnippet-maven-plugin</artifactId>
-        <version>1.0.0-beta.10</version> <!-- {x-version-update;com.azure.tools:codesnippet-maven-plugin;external_dependency} -->
-        <configuration>
-          <skip>true</skip>
-        </configuration>
-      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>

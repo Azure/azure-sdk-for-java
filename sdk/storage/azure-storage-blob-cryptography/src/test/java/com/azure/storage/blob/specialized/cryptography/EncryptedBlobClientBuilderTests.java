@@ -23,6 +23,7 @@ import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.implementation.util.BlobUserAgentModificationPolicy;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RetryPolicyType;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,6 +32,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -278,6 +280,56 @@ public class EncryptedBlobClientBuilderTests {
         String encodedName = Utility.urlEncode(originalBlobName);
         assertTrue(encryptedBlobClient.getBlobUrl().contains(encodedName));
     }
+
+    @ParameterizedTest
+    @ValueSource(longs = { 0, -1, 15, 4L * Constants.GB })
+    public void illegalRegionLength(long regionLength) {
+        assertThrows(IllegalArgumentException.class, () -> new BlobClientSideEncryptionOptions()
+                    .setAuthenticatedRegionDataLengthInBytes(regionLength));
+    }
+
+    @ParameterizedTest
+    @ValueSource(longs = { 16, 4 * Constants.KB, 4 * Constants.MB, Constants.GB })
+    public void encryptedRegionLength(long regionLength) {
+        EncryptedBlobClient encryptedBlobClient = new EncryptedBlobClientBuilder(EncryptionVersion.V2_1)
+            .blobName("foo")
+            .containerName("container")
+            .key(new FakeKey("keyId", randomData), "keyWrapAlgorithm")
+            .clientSideEncryptionOptions(new BlobClientSideEncryptionOptions()
+                    .setAuthenticatedRegionDataLengthInBytes(regionLength))
+                .buildEncryptedBlobClient();
+        assertEquals(regionLength, encryptedBlobClient.getClientSideEncryptionOptions().getAuthenticatedRegionDataLengthInBytes());
+    }
+
+    @Test
+    public void encryptedRegionLengthDefault() {
+        EncryptedBlobClient encryptedBlobClient = new EncryptedBlobClientBuilder(EncryptionVersion.V2)
+            .blobName("foo")
+            .containerName("container")
+            .key(new FakeKey("keyId", randomData), "keyWrapAlgorithm")
+            .buildEncryptedBlobClient();
+        assertEquals(4 * Constants.MB, encryptedBlobClient.getClientSideEncryptionOptions().getAuthenticatedRegionDataLengthInBytes());
+    }
+
+    @ParameterizedTest
+    @MethodSource("encryptedRegionLengthWithIllegalVersionSupplier")
+    public void encryptedRegionLengthWithIllegalVersion(EncryptionVersion version) {
+        assertThrows(IllegalArgumentException.class, () -> new EncryptedBlobClientBuilder(version)
+            .blobName("foo")
+            .containerName("container")
+            .key(new FakeKey("keyId", randomData), "keyWrapAlgorithm")
+            .clientSideEncryptionOptions(new BlobClientSideEncryptionOptions()
+                .setAuthenticatedRegionDataLengthInBytes(Constants.KB))
+            .buildEncryptedBlobClient());
+    }
+
+    private static Stream<Arguments> encryptedRegionLengthWithIllegalVersionSupplier() {
+        return Stream.of(
+            Arguments.of(EncryptionVersion.V1),
+            Arguments.of(EncryptionVersion.V2)
+        );
+    }
+
 
     private static void sendAndValidateUserAgentHeader(HttpPipeline pipeline, String url) {
         boolean foundPolicy = false;
