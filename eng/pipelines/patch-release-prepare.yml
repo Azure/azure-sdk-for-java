@@ -33,6 +33,8 @@ stages:
               Write-Host "##vso[task.setvariable variable=BaseBranchName]$branchName"
             workingDirectory: $(Build.SourcesDirectory)
             displayName: 'Create release branch'
+
+          # Push the release branch to the repo
           - template: /eng/common/pipelines/templates/steps/git-push-changes.yml
             parameters:
               BaseRepoBranch: $(BaseBranchName)
@@ -42,8 +44,8 @@ stages:
               WorkingDirectory: $(System.DefaultWorkingDirectory)
               ScriptDirectory: eng/common/scripts
               SkipCheckingForChanges: false
-            displayName: 'Push release branch $(BaseBranchName)'
-            # Run the script to generate patches for automatic releases
+
+          # Run the script to generate patches for automatic releases
           - task: PowerShell@2
             displayName: 'Run Generate-Patches-For-Automatic-Releases script'
             inputs:
