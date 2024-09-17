@@ -42,24 +42,29 @@ import com.microsoft.aad.msal4j.ClaimsRequest;
 import com.microsoft.aad.msal4j.ClientCredentialFactory;
 import com.microsoft.aad.msal4j.ConfidentialClientApplication;
 import com.microsoft.aad.msal4j.DeviceCodeFlowParameters;
+import com.microsoft.aad.msal4j.HttpMethod;
 import com.microsoft.aad.msal4j.IBroker;
 import com.microsoft.aad.msal4j.IClientCredential;
 import com.microsoft.aad.msal4j.InteractiveRequestParameters;
-import com.microsoft.aad.msal4j.ManagedIdentityId;
 import com.microsoft.aad.msal4j.ManagedIdentityApplication;
+import com.microsoft.aad.msal4j.ManagedIdentityId;
+import com.microsoft.aad.msal4j.ManagedIdentitySourceType;
 import com.microsoft.aad.msal4j.OnBehalfOfParameters;
 import com.microsoft.aad.msal4j.Prompt;
 import com.microsoft.aad.msal4j.PublicClientApplication;
 import com.microsoft.aad.msal4j.SystemBrowserOptions;
 import com.microsoft.aad.msal4j.TokenProviderResult;
 import com.microsoft.aad.msal4j.UserNamePasswordParameters;
+<<<<<<< HEAD
 import com.microsoft.aad.msal4j.HttpMethod;
 import com.microsoft.aad.msal4j.ManagedIdentitySourceType;
+=======
+>>>>>>> upstream/main
 import reactor.core.publisher.Mono;
 
 import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -499,6 +504,13 @@ public abstract class IdentityClientBase {
         }
 
         return miBuilder.build();
+    }
+
+
+    // temporary workaround until msal4j fixes a bug.
+    ManagedIdentitySourceType getManagedIdentitySourceType() {
+        return ManagedIdentityApplication.builder(ManagedIdentityId.systemAssigned())
+            .build().getManagedIdentitySource();
     }
 
     ConfidentialClientApplication getWorkloadIdentityConfidentialClient() {
