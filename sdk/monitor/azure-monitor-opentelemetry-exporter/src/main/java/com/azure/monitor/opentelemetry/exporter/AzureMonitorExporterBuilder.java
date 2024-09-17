@@ -285,7 +285,6 @@ public final class AzureMonitorExporterBuilder implements ConnectionStringTrait<
             statsbeatModule);
     }
 
-
     /**
      * Creates an Azure Monitor log record exporter based on the options set in the builder. This
      * exporter is an implementation of OpenTelemetry {@link LogRecordExporter}.
