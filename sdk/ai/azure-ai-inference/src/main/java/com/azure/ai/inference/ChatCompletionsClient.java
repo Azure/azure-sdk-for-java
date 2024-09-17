@@ -4,6 +4,7 @@
 package com.azure.ai.inference;
 
 import com.azure.ai.inference.implementation.ChatCompletionsClientImpl;
+import com.azure.ai.inference.implementation.accesshelpers.ChatCompletionsOptionsAccessHelper;
 import com.azure.ai.inference.implementation.models.CompleteRequest;
 import com.azure.ai.inference.models.ChatCompletions;
 import com.azure.ai.inference.models.ExtraParameters;
@@ -257,7 +258,7 @@ public final class ChatCompletionsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public IterableStream<StreamingChatCompletionsUpdate> completeStream(ChatCompletionsOptions options) {
-        options.setStream(true);
+        ChatCompletionsOptionsAccessHelper.setStream(options, true);
         RequestOptions requestOptions = new RequestOptions();
         CompleteRequest completeRequestObj
             = new CompleteRequest(options.getMessages()).setFrequencyPenalty(options.getFrequencyPenalty())

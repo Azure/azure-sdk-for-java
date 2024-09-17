@@ -4,6 +4,7 @@
 
 package com.azure.ai.inference.models;
 
+import com.azure.ai.inference.implementation.accesshelpers.ChatCompletionsOptionsAccessHelper;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.BinaryData;
@@ -20,6 +21,14 @@ import java.util.List;
  */
 @Fluent
 public final class ChatCompletionsOptions implements JsonSerializable<ChatCompletionsOptions> {
+    static {
+        ChatCompletionsOptionsAccessHelper.setAccessor(new ChatCompletionsOptionsAccessHelper.ChatCompletionsOptionsAccessor() {
+            @Override
+            public void setStream(ChatCompletionsOptions options, boolean stream) {
+                options.setStream(stream);
+            }
+        });
+    }
     /*
      * The collection of context messages associated with this chat completions request.
      * Typical usage begins with a chat message for the System role that provides instructions for
@@ -202,8 +211,7 @@ public final class ChatCompletionsOptions implements JsonSerializable<ChatComple
      * @param stream the stream value to set.
      * @return the ChatCompletionsOptions object itself.
      */
-    @Generated
-    public ChatCompletionsOptions setStream(Boolean stream) {
+    private ChatCompletionsOptions setStream(Boolean stream) {
         this.stream = stream;
         return this;
     }

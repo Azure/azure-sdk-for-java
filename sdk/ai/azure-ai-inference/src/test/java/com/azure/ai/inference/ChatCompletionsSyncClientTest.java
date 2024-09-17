@@ -3,6 +3,7 @@
 package com.azure.ai.inference;
 
 import com.azure.ai.inference.implementation.InferenceServerSentEvents;
+import com.azure.ai.inference.implementation.accesshelpers.ChatCompletionsOptionsAccessHelper;
 import com.azure.ai.inference.models.*;
 import com.azure.core.http.HttpClient;
 
@@ -108,7 +109,7 @@ public class ChatCompletionsSyncClientTest extends ChatCompletionsClientTestBase
     public void testGetChatCompletionsStreamWithResponse(HttpClient httpClient) {
         client = getChatCompletionsClient(httpClient);
         getChatCompletionsFromOptionsRunner(options -> {
-            options.setStream(true);
+            ChatCompletionsOptionsAccessHelper.setStream(options, true);
             Response<BinaryData> response = client.completeStreamWithResponse(
                 BinaryData.fromObject(options), new RequestOptions());
             assertResponseRequestHeader(response.getRequest());

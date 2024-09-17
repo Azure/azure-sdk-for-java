@@ -4,6 +4,7 @@
 package com.azure.ai.inference;
 
 import com.azure.ai.inference.implementation.ChatCompletionsClientImpl;
+import com.azure.ai.inference.implementation.accesshelpers.ChatCompletionsOptionsAccessHelper;
 import com.azure.ai.inference.implementation.models.CompleteRequest;
 import com.azure.ai.inference.models.ChatCompletions;
 import com.azure.ai.inference.models.ExtraParameters;
@@ -197,7 +198,7 @@ public final class ChatCompletionsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public Flux<StreamingChatCompletionsUpdate> completeStream(ChatCompletionsOptions options) {
-        options.setStream(true);
+        ChatCompletionsOptionsAccessHelper.setStream(options, true);
         RequestOptions requestOptions = new RequestOptions();
         Flux<ByteBuffer> responseStream = completeWithResponse(BinaryData.fromObject(options), requestOptions)
             .flatMapMany(response -> response.getValue().toFluxByteBuffer());
