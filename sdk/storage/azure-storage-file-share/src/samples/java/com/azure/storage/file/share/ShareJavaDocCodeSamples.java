@@ -671,7 +671,7 @@ public class ShareJavaDocCodeSamples {
 
     /**
      * Generates a code sample for using {@link ShareClient#createPermissionWithResponse(String, Context)} and
-     * {@link ShareClient#createPermissionWithResponse(ShareFilePermission, Context)}
+     * {@link ShareClient#createPermissionWithResponse(ShareFilePermission, Duration, Context)}
      */
     public void createPermissionWithResponse() {
         ShareClient shareClient = createClientWithSASToken();
@@ -683,7 +683,7 @@ public class ShareJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.share.ShareClient.createPermissionWithResponse#ShareFilePermission-context
         ShareFilePermission permission = new ShareFilePermission().setPermission("filePermission")
             .setPermissionFormat(FilePermissionFormat.BINARY);
-        Response<String> response1 = shareClient.createPermissionWithResponse(permission, Context.NONE);
+        Response<String> response1 = shareClient.createPermissionWithResponse(permission, null, Context.NONE);
         System.out.printf("The file permission key is %s", response1.getValue());
         // END: com.azure.storage.file.share.ShareClient.createPermissionWithResponse#ShareFilePermission-context
     }
@@ -708,7 +708,7 @@ public class ShareJavaDocCodeSamples {
 
     /**
      * Generates a code sample for using {@link ShareClient#getPermissionWithResponse(String, Context)} and
-     * {@link ShareClient#getPermissionWithResponse(String, FilePermissionFormat, Context)}
+     * {@link ShareClient#getPermissionWithResponse(String, FilePermissionFormat, Duration, Context)}
      */
     public void getPermissionWithResponse() {
         ShareClient shareClient = createClientWithSASToken();
@@ -720,11 +720,9 @@ public class ShareJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.share.ShareClient.getPermissionWithResponse#string-FilePermissionFormat-context
         FilePermissionFormat filePermissionFormat = FilePermissionFormat.BINARY;
         Response<String> response1 = shareClient.getPermissionWithResponse("filePermissionKey",
-            filePermissionFormat, Context.NONE);
+            filePermissionFormat, null, Context.NONE);
         System.out.printf("The file permission is %s", response1.getValue());
         // END: com.azure.storage.file.share.ShareClient.getPermissionWithResponse#string-FilePermissionFormat-context
-
-
     }
 
     /**
