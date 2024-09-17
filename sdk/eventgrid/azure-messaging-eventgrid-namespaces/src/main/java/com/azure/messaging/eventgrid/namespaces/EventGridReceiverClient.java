@@ -442,25 +442,6 @@ public final class EventGridReceiverClient {
     }
 
     /**
-     * Receive a Cloud Event from a subscription. This method will wait 60 seconds for a response.
-     *
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of the Receive operation response along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ReceiveResult> receiveWithResponse(RequestOptions requestOptions) {
-        // Generated convenience method for receiveWithResponse
-        Response<BinaryData> response = receiveWithResponse(topicName, subscriptionName, requestOptions);
-        return new SimpleResponse<>(response, response.getValue().toObject(ReceiveResult.class));
-    }
-
-    /**
      * Acknowledge a batch of Cloud Events. The response will include the set of successfully acknowledged lock tokens,
      * along with other failed lock tokens with their corresponding error information. Successfully acknowledged events
      * will no longer be available to be received by any consumer.
@@ -587,30 +568,6 @@ public final class EventGridReceiverClient {
         BinaryData request = BinaryData.fromObject(requestObj);
         return releaseWithResponse(topicName, subscriptionName, request, requestOptions).getValue()
             .toObject(ReleaseResult.class);
-    }
-
-    /**
-     * Release a batch of Cloud Events. The response will include the set of successfully released lock tokens, along
-     * with other failed lock tokens with their corresponding error information. Successfully released events can be
-     * received by consumers.
-     *
-     * @param lockTokens Array of lock tokens.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of the Release operation along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ReleaseResult> releaseWithResponse(List<String> lockTokens, RequestOptions requestOptions) {
-        // Generated convenience method for releaseWithResponse
-        ReleaseRequest requestObj = new ReleaseRequest(lockTokens);
-        BinaryData request = BinaryData.fromObject(requestObj);
-        Response<BinaryData> response = releaseWithResponse(topicName, subscriptionName, request, requestOptions);
-        return new SimpleResponse<>(response, response.getValue().toObject(ReleaseResult.class));
     }
 
     /**
