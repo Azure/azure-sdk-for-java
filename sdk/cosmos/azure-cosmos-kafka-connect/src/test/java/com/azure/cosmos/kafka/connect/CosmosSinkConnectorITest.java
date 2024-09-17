@@ -44,6 +44,7 @@ public class CosmosSinkConnectorITest extends KafkaCosmosIntegrationTestSuiteBas
     private static final Logger logger = LoggerFactory.getLogger(CosmosSinkConnectorITest.class);
     private CosmosAsyncClient client;
 
+
     @DataProvider(name = "sinkAuthParameterProvider")
     public static Object[][] sinkAuthParameterProvider() {
         return new Object[][]{
