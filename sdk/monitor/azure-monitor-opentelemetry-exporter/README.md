@@ -32,7 +32,7 @@ right corner.
 
 ### Setup the OpenTelemetry SDK to work with Azure Monitor exporter
 
-If you have set the Application Insights connection string with the `APPLICATIONINSIGHTS_CONNECTION_STRING` environment variable, you configure OpenTelemetry SDK auto-configuration for Azure in the following way:
+If you have set the Application Insights connection string with the `APPLICATIONINSIGHTS_CONNECTION_STRING` environment variable, you can configure OpenTelemetry SDK auto-configuration for Azure in the following way:
 
 ```java readme-sample-autoconfigure-env-variable
 AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
