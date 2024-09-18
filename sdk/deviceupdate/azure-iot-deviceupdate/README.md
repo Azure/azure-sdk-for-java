@@ -24,7 +24,7 @@ For the best development experience, developers should use the official Microsof
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-iot-deviceupdate</artifactId>
-  <version>1.0.21</version>
+  <version>1.0.22</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
