@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 /**
- * Auto config for Azure Spring Monitor
+ * Auto-configuration for Azure Monitor OpenTelemetry Distro / Application Insights in Spring Boot native image Java application.
  */
 @Configuration(proxyBeanMethods = false)
 @AutoConfigureBefore(OpenTelemetryAutoConfiguration.class)

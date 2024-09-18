@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Package containing the classes for Application Insights for Spring native.
+ * Package containing the auto-configuration for Azure Monitor OpenTelemetry Distro / Application Insights in Spring Boot native image Java application.
  */
 package com.azure.spring.cloud.autoconfigure.monitor;
