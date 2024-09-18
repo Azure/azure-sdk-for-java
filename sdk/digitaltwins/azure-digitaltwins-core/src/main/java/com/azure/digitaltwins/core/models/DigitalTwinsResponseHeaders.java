@@ -4,6 +4,7 @@
 package com.azure.digitaltwins.core.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * A helper class to represent the HTTP response headers returned by the service.
@@ -13,13 +14,8 @@ public final class DigitalTwinsResponseHeaders {
     /*
      * The ETag property.
      */
+    @JsonProperty(value = "ETag")
     private String eTag;
-
-    /**
-     * Creates a new instance of {@link DigitalTwinsResponseHeaders}.
-     */
-    public DigitalTwinsResponseHeaders() {
-    }
 
     /**
      * Get the eTag property: The ETag property.

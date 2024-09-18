@@ -5,37 +5,20 @@
 package com.azure.digitaltwins.core.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.http.HttpHeaderName;
-import com.azure.core.http.HttpHeaders;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The QueriesQueryTwinsHeaders model.
- */
+/** The QueriesQueryTwinsHeaders model. */
 @Fluent
 public final class QueriesQueryTwinsHeaders {
     /*
      * The query-charge property.
      */
+    @JsonProperty(value = "query-charge")
     private Float queryCharge;
-
-    private static final HttpHeaderName QUERY_CHARGE = HttpHeaderName.fromString("query-charge");
-
-    // HttpHeaders containing the raw property values.
-    /**
-     * Creates an instance of QueriesQueryTwinsHeaders class.
-     * 
-     * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
-     */
-    public QueriesQueryTwinsHeaders(HttpHeaders rawHeaders) {
-        String queryCharge = rawHeaders.getValue(QUERY_CHARGE);
-        if (queryCharge != null) {
-            this.queryCharge = Float.parseFloat(queryCharge);
-        }
-    }
 
     /**
      * Get the queryCharge property: The query-charge property.
-     * 
+     *
      * @return the queryCharge value.
      */
     public Float getQueryCharge() {
@@ -44,7 +27,7 @@ public final class QueriesQueryTwinsHeaders {
 
     /**
      * Set the queryCharge property: The query-charge property.
-     * 
+     *
      * @param queryCharge the queryCharge value to set.
      * @return the QueriesQueryTwinsHeaders object itself.
      */
@@ -52,4 +35,11 @@ public final class QueriesQueryTwinsHeaders {
         this.queryCharge = queryCharge;
         return this;
     }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {}
 }
