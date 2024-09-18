@@ -19,7 +19,7 @@ import java.time.ZoneOffset;
 public abstract class KeyVaultBackupClientTestBase extends KeyVaultAdministrationClientTestBase {
     protected final String blobStorageUrl = IS_MANAGED_HSM_DEPLOYED
         ? getStorageEndpoint() + Configuration.getGlobalConfiguration().get("BLOB_CONTAINER_NAME")
-        : "https://tb5d8675f0aa83a18prim.blob.core.windows.net/backup";
+        : "https://ta70c2fe596f0a0dfprim.blob.core.windows.net/backup";
     protected final String sasToken = IS_MANAGED_HSM_DEPLOYED ? generateSasToken() : "REDACTED";
 
     KeyVaultBackupClientBuilder getClientBuilder(HttpClient httpClient, boolean forCleanup) {
@@ -32,13 +32,7 @@ public abstract class KeyVaultBackupClientTestBase extends KeyVaultAdministratio
     public abstract void beginBackup(HttpClient httpClient);
 
     @Test
-    public abstract void beginPreBackup(HttpClient httpClient);
-
-    @Test
     public abstract void beginRestore(HttpClient httpClient);
-
-    @Test
-    public abstract void beginPreRestore(HttpClient httpClient);
 
     @Test
     public abstract void beginSelectiveKeyRestore(HttpClient httpClient);
