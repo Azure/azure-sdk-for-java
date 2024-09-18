@@ -67,11 +67,11 @@ import org.mockito.Mock;
 import org.mockito.MockedConstruction;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.ReplayProcessor;
-import reactor.core.publisher.Sinks;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
@@ -136,7 +136,8 @@ class ServiceBusReceiverAsyncClientTest {
     private final String messageTrackingUUID = UUID.randomUUID().toString();
     private final ReplayProcessor<AmqpEndpointState> endpointProcessor = ReplayProcessor.cacheLast();
     private final FluxSink<AmqpEndpointState> endpointSink = endpointProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
-    private final Sinks.Many<Message> messagesSink = Sinks.many().multicast().onBackpressureBuffer();
+    private final DirectProcessor<Message> messageProcessor = DirectProcessor.create();
+    private final FluxSink<Message> messageSink = messageProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
 
     private ServiceBusConnectionProcessor connectionProcessor;
     private ConnectionCacheWrapper connectionCacheWrapper;
@@ -176,11 +177,11 @@ class ServiceBusReceiverAsyncClientTest {
         // in ReactorExecutor.
         // 5/23/2023: The above note is invalid as the ServiceBusReactorReceiver (i.e., type of amqpReceiveLink
         // variable) always publishes messages using boundedElastic (irrespective of v1 or v2).
-        when(amqpReceiveLink.receive()).thenReturn(messagesSink.asFlux().publishOn(Schedulers.single()));
+        when(amqpReceiveLink.receive()).thenReturn(messageProcessor.publishOn(Schedulers.single()));
         when(amqpReceiveLink.getEndpointStates()).thenReturn(endpointProcessor);
         when(amqpReceiveLink.addCredits(anyInt())).thenReturn(Mono.empty());
 
-        when(sessionReceiveLink.receive()).thenReturn(messagesSink.asFlux().publishOn(Schedulers.single()));
+        when(sessionReceiveLink.receive()).thenReturn(messageProcessor.publishOn(Schedulers.single()));
         when(sessionReceiveLink.getEndpointStates()).thenReturn(endpointProcessor);
         when(sessionReceiveLink.addCredits(anyInt())).thenReturn(Mono.empty());
 
@@ -334,7 +335,7 @@ class ServiceBusReceiverAsyncClientTest {
 
         // Act & Assert
         StepVerifier.create(receiver.receiveMessages().take(numberOfEvents))
-            .then(() -> messages.forEach(m -> messagesSink.emitNext(m, Sinks.EmitFailureHandler.FAIL_FAST)))
+            .then(() -> messages.forEach(m -> messageSink.next(m)))
             .expectNextCount(numberOfEvents)
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
@@ -379,7 +380,7 @@ class ServiceBusReceiverAsyncClientTest {
 
             // Act & Assert
             StepVerifier.create(mySessionReceiver.receiveMessages().take(numberOfEvents))
-                .then(() -> messages.forEach(m -> messagesSink.emitNext(m, Sinks.EmitFailureHandler.FAIL_FAST)))
+                .then(() -> messages.forEach(messageSink::next))
                 .expectNextCount(numberOfEvents)
                 .expectComplete()
                 .verify(DEFAULT_TIMEOUT);
@@ -586,7 +587,7 @@ class ServiceBusReceiverAsyncClientTest {
         StepVerifier.create(receiver.receiveMessages()
                 .take(1)
                 .flatMap(receivedMessage -> receiver.deadLetter(receivedMessage, deadLetterOptions)))
-            .then(() -> messagesSink.emitNext(message, Sinks.EmitFailureHandler.FAIL_FAST))
+            .then(() -> messageSink.next(message))
             .expectNext()
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
@@ -688,7 +689,7 @@ class ServiceBusReceiverAsyncClientTest {
                 return operation;
             })
             )
-            .then(() -> messagesSink.emitNext(message, Sinks.EmitFailureHandler.FAIL_FAST))
+            .then(() -> messageSink.next(message))
             .expectNext()
             .expectErrorSatisfies(throwable -> {
                 Assertions.assertTrue(throwable instanceof ServiceBusException);
@@ -727,7 +728,7 @@ class ServiceBusReceiverAsyncClientTest {
         try {
             // Act & Assert
             StepVerifier.create(receiver2.receiveMessages().take(numberOfEvents))
-                .then(() -> messages.forEach(m -> messagesSink.emitNext(m, Sinks.EmitFailureHandler.FAIL_FAST)))
+                .then(() -> messages.forEach(m -> messageSink.next(m)))
                 .expectNextCount(messagesToReceive)
                 .expectErrorSatisfies(throwable -> {
                     Assertions.assertTrue(throwable instanceof ServiceBusException);
@@ -1033,7 +1034,7 @@ class ServiceBusReceiverAsyncClientTest {
         // Act & Assert
 
         StepVerifier.create(receiver.receiveMessages().take(numberOfEvents))
-            .then(() -> messages.forEach(m -> messagesSink.emitNext(m, Sinks.EmitFailureHandler.FAIL_FAST)))
+            .then(() -> messages.forEach(m -> messageSink.next(m)))
             .expectNextCount(numberOfEvents)
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
@@ -1319,7 +1320,7 @@ class ServiceBusReceiverAsyncClientTest {
             // Act & Assert
             StepVerifier.create(receiver2.receiveMessages().take(numberOfEvents)
                     .doOnComplete(() -> LOGGER.log(LogLevel.VERBOSE, () -> "take complete..")))
-                .then(() -> messages.forEach(m -> messagesSink.emitNext(m, Sinks.EmitFailureHandler.FAIL_FAST)))
+                .then(() -> messages.forEach(m -> messageSink.next(m)))
                 .expectNextCount(numberOfEvents)
                 .expectComplete()
                 .verify(DEFAULT_TIMEOUT);
@@ -1365,7 +1366,7 @@ class ServiceBusReceiverAsyncClientTest {
         try {
             // Act & Assert
             StepVerifier.create(sessionReceiver2.receiveMessages().take(numberOfEvents))
-                .then(() -> messages.forEach(m -> messagesSink.emitNext(m, Sinks.EmitFailureHandler.FAIL_FAST)))
+                .then(() -> messages.forEach(m -> messageSink.next(m)))
                 .expectNextCount(numberOfEvents)
                 .expectComplete()
                 .verify(DEFAULT_TIMEOUT);
@@ -1397,7 +1398,7 @@ class ServiceBusReceiverAsyncClientTest {
 
         // Act & Assert
         StepVerifier.create(receiver.receiveMessages().take(2))
-            .then(() -> messages.forEach(m -> messagesSink.emitNext(m, Sinks.EmitFailureHandler.FAIL_FAST)))
+            .then(() -> messages.forEach(m -> messageSink.next(m)))
             .expectNextCount(2)
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
@@ -1544,7 +1545,7 @@ class ServiceBusReceiverAsyncClientTest {
 
         // Act & Assert
         StepVerifier.create(receiver.receiveMessages().take(2).flatMap(msg -> receiver.complete(msg)))
-            .then(() -> messages.forEach(m -> messagesSink.emitNext(m, Sinks.EmitFailureHandler.FAIL_FAST)))
+            .then(() -> messages.forEach(m -> messageSink.next(m)))
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
 
@@ -1582,7 +1583,7 @@ class ServiceBusReceiverAsyncClientTest {
 
         // Act & Assert
         StepVerifier.create(receiver.receiveMessages().take(1))
-            .then(() -> messages.forEach(m -> messagesSink.emitNext(m, Sinks.EmitFailureHandler.FAIL_FAST)))
+            .then(() -> messages.forEach(m -> messageSink.next(m)))
             .expectNextCount(1)
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
@@ -1615,7 +1616,7 @@ class ServiceBusReceiverAsyncClientTest {
 
         // Act & Assert
         StepVerifier.create(receiver.receiveMessages().take(1))
-            .then(() -> messages.forEach(m -> messagesSink.emitNext(m, Sinks.EmitFailureHandler.FAIL_FAST)))
+            .then(() -> messages.forEach(m -> messageSink.next(m)))
             .expectNextCount(1)
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
@@ -1664,7 +1665,7 @@ class ServiceBusReceiverAsyncClientTest {
         if (!isV2) {
             return;
         }
-        when(amqpReceiveLink.receive()).thenReturn(messagesSink.asFlux().publishOn(Schedulers.boundedElastic()));
+        when(amqpReceiveLink.receive()).thenReturn(messageProcessor.publishOn(Schedulers.boundedElastic()));
         when(connection.connectAndAwaitToActive()).thenReturn(Mono.just(connection));
         final ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache = new ReactorConnectionCache<>(
             () -> connection, NAMESPACE, ENTITY_PATH,

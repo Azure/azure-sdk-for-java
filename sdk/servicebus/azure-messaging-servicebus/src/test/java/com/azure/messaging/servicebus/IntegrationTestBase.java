@@ -6,6 +6,7 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
+import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.amqp.models.AmqpMessageBody;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.experimental.util.tracing.LoggingTracerProvider;
@@ -42,7 +43,6 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -72,7 +72,6 @@ public abstract class IntegrationTestBase extends TestBase {
     private List<AutoCloseable> toClose = new ArrayList<>();
     private String testName;
     private final Scheduler scheduler = Schedulers.parallel();
-    private final AtomicReference<TokenCredential> credentialCached = new AtomicReference<>();
 
     protected static final byte[] CONTENTS_BYTES = "Some-contents".getBytes(StandardCharsets.UTF_8);
     protected String sessionId;
@@ -91,7 +90,7 @@ public abstract class IntegrationTestBase extends TestBase {
 
         logger.info("========= SET-UP [{}] =========", testName);
 
-        assertRunnable();
+        assumeTrue(getTestMode() == TestMode.RECORD);
 
         toClose = new ArrayList<>();
         optionsWithTracing = new ClientOptions().setTracingOptions(new LoggingTracerProvider.LoggingTracingOptions());
@@ -107,6 +106,39 @@ public abstract class IntegrationTestBase extends TestBase {
 
         logger.info("Disposing of subscriptions, consumers and clients.");
         dispose();
+    }
+
+    /**
+     * Gets the test mode for this API test. If AZURE_TEST_MODE equals {@link TestMode#RECORD} and Event Hubs connection
+     * string is set, then we return {@link TestMode#RECORD}. Otherwise, {@link TestMode#PLAYBACK} is returned.
+     */
+    @Override
+    public TestMode getTestMode() {
+        if (super.getTestMode() == TestMode.PLAYBACK) {
+            return TestMode.PLAYBACK;
+        }
+
+        return CoreUtils.isNullOrEmpty(getConnectionString()) ? TestMode.PLAYBACK : TestMode.RECORD;
+    }
+
+    public static String getConnectionString() {
+        return TestUtils.getConnectionString(false);
+    }
+
+    public static String getConnectionString(boolean withSas) {
+        return TestUtils.getConnectionString(withSas);
+    }
+
+    protected static ConnectionStringProperties getConnectionStringProperties() {
+        return new ConnectionStringProperties(getConnectionString(false));
+    }
+
+    protected static ConnectionStringProperties getConnectionStringProperties(boolean withSas) {
+        return new ConnectionStringProperties(getConnectionString(withSas));
+    }
+
+    public String getFullyQualifiedDomainName() {
+        return TestUtils.getFullyQualifiedDomainName();
     }
 
     /**
@@ -172,67 +204,46 @@ public abstract class IntegrationTestBase extends TestBase {
     }
 
     /**
-     * Creates a new instance of {@link ServiceBusClientBuilder} with authentication set up in {@link TestMode#LIVE} and
-     * {@link TestMode#RECORD} modes.
-     *
-     * @return the builder with authentication set up.
-     * @throws org.opentest4j.TestAbortedException if the test mode is {@link TestMode#PLAYBACK}.
+     * Creates a new instance of {@link ServiceBusClientBuilder} with the default integration test settings and uses a
+     * connection string to authenticate.
      */
-    protected ServiceBusClientBuilder getAuthenticatedBuilder() {
-        final TestMode mode = super.getTestMode();
-        final ServiceBusClientBuilder builder = new ServiceBusClientBuilder();
-        if (mode == TestMode.LIVE) {
-            final String fullyQualifiedDomainName = TestUtils.getFullyQualifiedDomainName(false);
-            assumeTrue(!CoreUtils.isNullOrEmpty(fullyQualifiedDomainName), "FullyQualifiedDomainName is not set.");
-            final TokenCredential credential = TestUtils.getPipelineCredential(credentialCached);
-            return builder.credential(fullyQualifiedDomainName, credential);
-        } else if (mode == TestMode.RECORD) {
-            final String connectionString = TestUtils.getConnectionString(false);
-            if (CoreUtils.isNullOrEmpty(connectionString)) {
-                final String fullyQualifiedDomainName = TestUtils.getFullyQualifiedDomainName(false);
-                assumeTrue(!CoreUtils.isNullOrEmpty(fullyQualifiedDomainName), "FullyQualifiedDomainName is not set.");
-                final TokenCredential credential = new DefaultAzureCredentialBuilder().build();
-                return builder.credential(fullyQualifiedDomainName, credential);
-            } else {
-                return builder.connectionString(connectionString);
-            }
-        } else {
-            // Throws org.opentest4j.TestAbortedException exception.
-            assumeTrue(false, "Integration tests are not enabled in playback mode.");
-            return null;
-        }
+    protected ServiceBusClientBuilder getBuilder() {
+        return getBuilder(false);
     }
 
     /**
-     * Creates a new instance of {@link ServiceBusClientBuilder} with the default integration test settings.
+     * Creates a new instance of {@link ServiceBusClientBuilder} with the default integration test settings and uses a
+     * connection string to authenticate if {@code useCredentials} is false. Otherwise, uses a service principal through
+     * {@link com.azure.identity.ClientSecretCredential}.
      */
-    protected ServiceBusClientBuilder getBuilder() {
-        return getAuthenticatedBuilder()
+    protected ServiceBusClientBuilder getBuilder(boolean useCredentials) {
+        final ServiceBusClientBuilder builder = new ServiceBusClientBuilder()
             .proxyOptions(ProxyOptions.SYSTEM_DEFAULTS)
             .retryOptions(RETRY_OPTIONS)
             .clientOptions(optionsWithTracing)
             .transportType(AmqpTransportType.AMQP)
             .scheduler(scheduler)
             .configuration(v1OrV2(true));
-    }
 
-    protected ServiceBusClientBuilder getBuilder(boolean sharedConnection) {
-        ServiceBusClientBuilder builder;
-        if (sharedConnection && sharedBuilder == null) {
-            sharedBuilder = getBuilder();
-            builder = sharedBuilder;
-        } else if (sharedConnection) {
-            builder = sharedBuilder;
+        logger.info("Getting Builder using credentials : [{}] ", useCredentials);
+        if (useCredentials) {
+            final String fullyQualifiedDomainName = getFullyQualifiedDomainName();
+
+            assumeTrue(fullyQualifiedDomainName != null && !fullyQualifiedDomainName.isEmpty(),
+                "AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME variable needs to be set when using credentials.");
+
+            final TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
+
+            return builder.credential(fullyQualifiedDomainName, tokenCredential);
         } else {
-            builder = getBuilder();
+            return builder.connectionString(getConnectionString());
         }
-        return builder;
     }
 
-    protected ServiceBusSenderClientBuilder getSenderBuilder(MessagingEntityType entityType,
+    protected ServiceBusSenderClientBuilder getSenderBuilder(boolean useCredentials, MessagingEntityType entityType,
         int entityIndex, boolean isSessionAware, boolean sharedConnection) {
 
-        ServiceBusClientBuilder builder = getBuilder(sharedConnection);
+        ServiceBusClientBuilder builder = getBuilder(useCredentials, sharedConnection);
         switch (entityType) {
             case QUEUE:
                 final String queueName = isSessionAware ? getSessionQueueName(entityIndex) : getQueueName(entityIndex);
@@ -249,10 +260,10 @@ public abstract class IntegrationTestBase extends TestBase {
         }
     }
 
-    protected ServiceBusReceiverClientBuilder getReceiverBuilder(MessagingEntityType entityType,
+    protected ServiceBusReceiverClientBuilder getReceiverBuilder(boolean useCredentials, MessagingEntityType entityType,
         int entityIndex, boolean sharedConnection) {
 
-        ServiceBusClientBuilder builder = getBuilder(sharedConnection);
+        ServiceBusClientBuilder builder = getBuilder(useCredentials, sharedConnection);
         switch (entityType) {
             case QUEUE:
                 final String queueName = getQueueName(entityIndex);
@@ -272,10 +283,10 @@ public abstract class IntegrationTestBase extends TestBase {
         }
     }
 
-    protected ServiceBusSessionReceiverClientBuilder getSessionReceiverBuilder(MessagingEntityType entityType,
-        int entityIndex, boolean sharedConnection, AmqpRetryOptions retryOptions) {
+    protected ServiceBusSessionReceiverClientBuilder getSessionReceiverBuilder(boolean useCredentials,
+        MessagingEntityType entityType, int entityIndex, boolean sharedConnection, AmqpRetryOptions retryOptions) {
 
-        ServiceBusClientBuilder builder = getBuilder(sharedConnection);
+        ServiceBusClientBuilder builder = getBuilder(useCredentials, sharedConnection);
 
         switch (entityType) {
             case QUEUE:
@@ -442,6 +453,19 @@ public abstract class IntegrationTestBase extends TestBase {
         }
     }
 
+    protected ServiceBusClientBuilder getBuilder(boolean useCredentials, boolean sharedConnection) {
+        ServiceBusClientBuilder builder;
+        if (sharedConnection && sharedBuilder == null) {
+            sharedBuilder = getBuilder(useCredentials);
+            builder = sharedBuilder;
+        } else if (sharedConnection) {
+            builder = sharedBuilder;
+        } else {
+            builder = getBuilder(useCredentials);
+        }
+        return builder;
+    }
+
     protected final Configuration v1OrV2(boolean isV2) {
         final TestConfigurationSource configSource = new TestConfigurationSource();
         if (isV2) {
@@ -461,39 +485,5 @@ public abstract class IntegrationTestBase extends TestBase {
         }
         return new ConfigurationBuilder(configSource)
             .build();
-    }
-
-    /**
-     * Asserts that if the integration tests can be run. This method is expected to be called at the beginning of each
-     * test run.
-     *
-     * @throws org.opentest4j.TestAbortedException if the integration tests cannot be run.
-     */
-    protected void assertRunnable() {
-        final TestMode mode = super.getTestMode();
-        if (mode == TestMode.PLAYBACK) {
-            // AMQP traffic never gets recorded so there is no PLAYBACK supported.
-            assumeTrue(false, "Skipping integration tests in playback mode.");
-            return;
-        }
-
-        if (mode == TestMode.RECORD) {
-            // RECORD mode used in SDK-dev setup not on CI pipeline.
-            if (!CoreUtils.isNullOrEmpty(TestUtils.getConnectionString(false))) {
-                // integration tests are runnable using the connection string.
-                return;
-            }
-            if (!CoreUtils.isNullOrEmpty(TestUtils.getFullyQualifiedDomainName(false))) {
-                // best effort check:
-                // integration tests are potentially runnable using DefaultAzureCredential. Here we're assuming that
-                // in RECORD mode with FullyQualifiedDomainName set, the dev environment is also set up for one of the
-                // token credential type in DefaultAzureCredential (all token credentials requires FullyQualifiedDomainName).
-                return;
-            }
-            assumeTrue(false, "Not running integration in record mode (missing authentication set up).");
-            return;
-        }
-        // The CI pipeline is expected to have federated identity configured, so tests are runnable.
-        assert mode == TestMode.LIVE;
     }
 }
