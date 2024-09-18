@@ -24,51 +24,51 @@ The following sections provide code samples covering common scenario operations 
 
 All of these samples need the endpoint to your Metrics Advisor resource ([instructions on how to get endpoint][get-endpoint-instructions]), and your Metrics Advisor API key ([instructions on how to get key][get-key-instructions]).
 
-| **File Name**                                                                | **Description**                                                        |
-|------------------------------------------------------------------------------|------------------------------------------------------------------------|
-| [DataFeedSample][data_feed_sample]                                           |                                                                        |
-| & [DataFeedAsyncSample][data_feed_async_sample]                              | Create, list, get, update, and delete data feeds                       |
-| [AnomalyDetectionConfigurationSample][anomaly_detection_sample]              |                                                                        |
-| & [AnomalyDetectionConfigurationAsyncSample][anomaly_detection_async_sample] | Create, list, get, update, and delete anomaly detection configurations |
-| [DatafeedIngestionSample][data_feed_ingestion_sample]                        |                                                                        |
-| & [DatafeedIngestionSampleAsyncSample][data_feed_ingestion_async_sample]     | List, get progress, and refresh data feed ingestion                    |
-| [HookSample][hook_sample]                                                    |                                                                        |
-| & [HookAsyncSample][hook_async_sample]                                       | Create, list, get, update, and delete hooks                            ||[MetricFeedbackSample][metric_feedback_sample]
-| [MetricFeedbackSample][metric_feedback_sample]                               |                                                                        |
-| & [MetricFeedbackAsyncSample][metric_feedback_async_sample]                  | Create, get and list feedbacks                                         |
+|**File Name**|**Description**|
+|----------------|-------------|
+|[DataFeedSample][data_feed_sample]
+& [DataFeedAsyncSample][data_feed_async_sample] | Create, list, get, update, and delete data feeds|
+|[AnomalyDetectionConfigurationSample][anomaly_detection_sample] 
+& [AnomalyDetectionConfigurationAsyncSample][anomaly_detection_async_sample] | Create, list, get, update, and delete anomaly detection configurations|
+|[DatafeedIngestionSample][data_feed_ingestion_sample] 
+& [DatafeedIngestionSampleAsyncSample][data_feed_ingestion_async_sample] | List, get progress, and refresh data feed ingestion|
+|[HookSample][hook_sample]
+& [HookAsyncSample][hook_async_sample] | Create, list, get, update, and delete hooks||[MetricFeedbackSample][metric_feedback_sample]
+|[MetricFeedbackSample][metric_feedback_sample]
+& [MetricFeedbackAsyncSample][metric_feedback_async_sample] | Create, get and list feedbacks|
 
-Querying APIs
+Querying API's
 
-| **File Name**                                                                                 | **Description**                                        |
-|-----------------------------------------------------------------------------------------------|--------------------------------------------------------|
-| [ListAlertsSample][list_alerts_sample]                                                        |                                                        |
-| & [ListAlertsAsyncSample][list_alerts_async_sample]                                           | List alerts produced by an AlertConfiguration          |
-| [ListDimensionValuesForMetricSample][list_dimension_values_sample]                            |                                                        |
-| & [ListDimensionValuesForMetricAsyncSample][list_dimension_values_async_sample]               | List dimension values for a metric                     |
-| [ListEnrichedSeriesSample][list_enrichment_series_sample]                                     |                                                        |
-| & [ListEnrichedSeriesAsyncSample][list_enrichment_series_async_sample]                        | List enriched time series                              |
-| [ListEnrichmentStatusForMetricSample][list_enrichment_status_sample]                          |                                                        |
-| & [ListEnrichmentStatusForMetricAsyncSample][list_enrichment_status_async_sample]             | List enrichment statuses for a metric                  |
-| [ListIncidentRootCausesSample][list_incident_root_causes_sample]                              |                                                        |
-| & [ListIncidentRootCausesAsyncSample][list_incident_root_causes_async_sample]                 | List root causes for an incident                       |
-| [ListIncidentsAlertedSample][list_incidents_alerted_sample]                                   |                                                        |
-| & [ListIncidentsAlertedAsyncSample][list_incidents_alerted_async_sample]                      | List incidents in an anomaly alert                     |
-| [ListIncidentsDetectedSample][list_incidents_sample]                                          |                                                        |
-| & [ListIncidentsDetectedAsyncSample][list_incidents_async_sample]                             | List incidents detected by a detection configuration   |
-| [ListsAnomaliesForAlertsSample][list_anomaly_alert_sample]                                    |                                                        |
-| & [ListsAnomaliesForAlertsAsyncSample][list_anomaly_alert_async_sample]                       | List anomalies triggered for an anomaly alert          |
-| [ListsAnomaliesForDetectionConfigSample][list_anomalies_detection_config_sample]              |                                                        |
-| & [ListsAnomaliesForDetectionConfigAsyncSample][list_anomalies_detection_config_async_sample] | List anomalies identified by a detection configuration |
-| [ListSeriesDataForMetricSample][list_series_data_sample]                                      |                                                        |
-| & [ListSeriesDataForMetricAsyncSample][list_series_data_async_sample]                         | List metric series data for a metric                   |
-| [ListSeriesDefinitionsForMetricSample][list_series_def_sample]                                |                                                        |
-| & [ListSeriesDefinitionsForMetricAsyncSample][list_series_def_async_sample]                   | List series definition for a metric                    |
+|**File Name**|**Description**|
+|----------------|-------------|
+|[ListAlertsSample][list_alerts_sample]
+& [ListAlertsAsyncSample][list_alerts_async_sample] | List alerts produced by an AlertConfiguration|
+|[ListDimensionValuesForMetricSample][list_dimension_values_sample]
+& [ListDimensionValuesForMetricAsyncSample][list_dimension_values_async_sample] | List dimension values for a metric|
+|[ListEnrichedSeriesSample][list_enrichment_series_sample]
+& [ListEnrichedSeriesAsyncSample][list_enrichment_series_async_sample] | List enriched time series|
+|[ListEnrichmentStatusForMetricSample][list_enrichment_status_sample]
+& [ListEnrichmentStatusForMetricAsyncSample][list_enrichment_status_async_sample] | List enrichment statuses for a metric|
+|[ListIncidentRootCausesSample][list_incident_root_causes_sample]
+& [ListIncidentRootCausesAsyncSample][list_incident_root_causes_async_sample] | List root causes for an incident|
+|[ListIncidentsAlertedSample][list_incidents_alerted_sample]
+& [ListIncidentsAlertedAsyncSample][list_incidents_alerted_async_sample] | List incidents in an anomaly alert|
+|[ListIncidentsDetectedSample][list_incidents_sample]
+& [ListIncidentsDetectedAsyncSample][list_incidents_async_sample] | List incidents detected by a detection configuration|
+|[ListsAnomaliesForAlertsSample][list_anomaly_alert_sample]
+& [ListsAnomaliesForAlertsAsyncSample][list_anomaly_alert_async_sample] | List anomalies triggered for an anomaly alert|
+|[ListsAnomaliesForDetectionConfigSample][list_anomalies_detection_config_sample]
+& [ListsAnomaliesForDetectionConfigAsyncSample][list_anomalies_detection_config_async_sample] | List anomalies identified by a detection configuration|
+|[ListSeriesDataForMetricSample][list_series_data_sample]
+& [ListSeriesDataForMetricAsyncSample][list_series_data_async_sample] | List metric series data for a metric|
+|[ListSeriesDefinitionsForMetricSample][list_series_def_sample]
+& [ListSeriesDefinitionsForMetricAsyncSample][list_series_def_async_sample] | List series definition for a metric|
 
 ## Troubleshooting
 Troubleshooting steps can be found [here][SDK_README_TROUBLESHOOTING].
 
 ## Next steps
-Check out the [API reference documentation][api_reference_doc] to learn more about
+Check out the [API reference documentation][java_ma_ref_docs] to learn more about
 what you can do with the Azure Metrics Advisor client library.
 
 ## Contributing
@@ -82,9 +82,7 @@ Guidelines][SDK_README_CONTRIBUTING] for more information.
 [SDK_README_KEY_CONCEPTS]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/metricsadvisor/azure-ai-metricsadvisor#key-concepts
 [SDK_README_DEPENDENCY]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/metricsadvisor/azure-ai-metricsadvisor#include-the-package
 [SDK_README_NEXT_STEPS]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/metricsadvisor/azure-ai-metricsadvisor#next-steps
-[get-endpoint-instructions]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/metricsadvisor/azure-ai-metricsadvisor#looking-up-the-endpoint
-[get-key-instructions]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/metricsadvisor/azure-ai-metricsadvisor#create-a-metricsadvisor-client-using-metricsadvisorkeycredential
-[api_reference_doc]: https://docs.microsoft.com/java/api/com.azure.ai.metricsadvisor?view=azure-java-preview
+[java_ma_ref_docs]: https://aka.ms/azsdk-java-metricsadvisor-ref-docs
 [data_feed_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/metricsadvisor/azure-ai-metricsadvisor/src/samples/java/com/azure/ai/metricsadvisor/administration/DatafeedSample.java
 [data_feed_async_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/metricsadvisor/azure-ai-metricsadvisor/src/samples/java/com/azure/ai/metricsadvisor/administration/DatafeedAsyncSample.java
 [anomaly_detection_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/metricsadvisor/azure-ai-metricsadvisor/src/samples/java/com/azure/ai/metricsadvisor/administration/AnomalyDetectionConfigurationSample.java
