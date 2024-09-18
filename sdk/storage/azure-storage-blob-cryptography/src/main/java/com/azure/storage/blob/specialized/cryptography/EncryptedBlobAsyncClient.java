@@ -736,14 +736,14 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
         BlobRequestConditions requestConditions, boolean getRangeContentMd5) {
         if (EncryptedBlobClient.isRangeRequest(range)) {
             return populateRequestConditionsAndContext(requestConditions,
-                () -> super.downloadStreamWithResponse(range, options, requestConditions, getRangeContentMd5));
+                () -> super.downloadStreamWithResponse(range, options, requestConditions, getRangeContentMd5), false);
         } else {
             return super.downloadStreamWithResponse(range, options, requestConditions, getRangeContentMd5);
         }
     }
 
     private <T> Mono<T> populateRequestConditionsAndContext(BlobRequestConditions requestConditions,
-        Supplier<Mono<T>> downloadCall) {
+        Supplier<Mono<T>> downloadCall, Boolean isDownloadToFile) {
         return this.getPropertiesWithResponse(requestConditions)
             .flatMap(response -> {
                 BlobRequestConditions requestConditionsFinal = requestConditions == null
@@ -757,26 +757,9 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
                     result = result.contextWrite(context -> context.put(ENCRYPTION_DATA_KEY,
                         EncryptionData.getAndValidateEncryptionData(encryptionDataKey, requiresEncryption)));
                 }
-                return result;
-            });
-    }
-
-    private <T> Mono<T> populateRequestConditionsAndContextDownloadToFile(BlobRequestConditions requestConditions,
-        Supplier<Mono<T>> downloadCall) {
-        return this.getPropertiesWithResponse(requestConditions)
-            .flatMap(response -> {
-                BlobRequestConditions requestConditionsFinal = requestConditions == null
-                    ? new BlobRequestConditions() : requestConditions;
-
-                requestConditionsFinal.setIfMatch(response.getValue().getETag());
-                Mono<T> result = downloadCall.get();
-
-                String encryptionDataKey = StorageImplUtils.getEncryptionDataKey(response.getValue().getMetadata());
-                if (encryptionDataKey != null) {
-                    result = result.contextWrite(context -> context.put(ENCRYPTION_DATA_KEY,
-                        EncryptionData.getAndValidateEncryptionData(encryptionDataKey, requiresEncryption)));
+                if (isDownloadToFile) {
+                    result = result.contextWrite(context -> context.put("rangeAdjustment", adjustRangeThroughContext()));
                 }
-                result = result.contextWrite(context -> context.put("rangeAdjustment", adjustRangeThroughContext()));
                 return result;
             });
     }
@@ -811,7 +794,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
         DownloadRetryOptions options,
         BlobRequestConditions requestConditions) {
         return populateRequestConditionsAndContext(requestConditions,
-            () -> super.downloadContentWithResponse(options, requestConditions));
+            () -> super.downloadContentWithResponse(options, requestConditions), false);
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -863,8 +846,8 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
     public Mono<Response<BlobProperties>> downloadToFileWithResponse(BlobDownloadToFileOptions options) {
         options.setRequestConditions(options.getRequestConditions() == null ? new BlobRequestConditions()
             : options.getRequestConditions());
-        return populateRequestConditionsAndContextDownloadToFile(options.getRequestConditions(),
-            () -> super.downloadToFileWithResponse(options));
+        return populateRequestConditionsAndContext(options.getRequestConditions(),
+            () -> super.downloadToFileWithResponse(options), true);
     }
 
     /**
