@@ -27,6 +27,7 @@ import com.azure.messaging.eventhubs.models.SendOptions;
 import org.apache.avro.Schema;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
@@ -90,6 +91,11 @@ public class SchemaRegistryApacheAvroSerializerIntegrationTest extends TestProxy
         } else if (interceptorManager.isRecordMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
+    }
+
+    @Override
+    protected void afterTest() {
+        Mockito.framework().clearInlineMock(this);
     }
 
     /**
