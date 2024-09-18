@@ -4,49 +4,47 @@
 package com.azure.communication.messages.models.channels;
 
 import com.azure.communication.messages.models.MessageTemplateBindings;
-import com.azure.communication.messages.models.MessageTemplateBindingsKind;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
 /**
  * The template bindings for WhatsApp.
  */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
+@JsonTypeName("whatsApp")
 @Fluent
 public final class WhatsAppMessageTemplateBindings extends MessageTemplateBindings {
-
-    /*
-     * The type discriminator describing a template bindings type.
-     */
-    @Generated
-    private MessageTemplateBindingsKind kind = MessageTemplateBindingsKind.WHATS_APP;
 
     /*
      * The header template bindings
      */
     @Generated
+    @JsonProperty(value = "header")
     private List<WhatsAppMessageTemplateBindingsComponent> headerProperty;
 
     /*
      * The body template bindings
      */
     @Generated
+    @JsonProperty(value = "body")
     private List<WhatsAppMessageTemplateBindingsComponent> body;
 
     /*
      * The footer template bindings
      */
     @Generated
+    @JsonProperty(value = "footer")
     private List<WhatsAppMessageTemplateBindingsComponent> footer;
 
     /*
      * The button template bindings
      */
     @Generated
+    @JsonProperty(value = "buttons")
     private List<WhatsAppMessageTemplateBindingsButton> buttons;
 
     /**
@@ -54,17 +52,6 @@ public final class WhatsAppMessageTemplateBindings extends MessageTemplateBindin
      */
     @Generated
     public WhatsAppMessageTemplateBindings() {
-    }
-
-    /**
-     * Get the kind property: The type discriminator describing a template bindings type.
-     *
-     * @return the kind value.
-     */
-    @Generated
-    @Override
-    public MessageTemplateBindingsKind getKind() {
-        return this.kind;
     }
 
     /**
@@ -154,63 +141,5 @@ public final class WhatsAppMessageTemplateBindings extends MessageTemplateBindin
     public WhatsAppMessageTemplateBindings setButtons(List<WhatsAppMessageTemplateBindingsButton> buttons) {
         this.buttons = buttons;
         return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
-        jsonWriter.writeArrayField("header", this.headerProperty, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("body", this.body, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("footer", this.footer, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("buttons", this.buttons, (writer, element) -> writer.writeJson(element));
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of WhatsAppMessageTemplateBindings from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of WhatsAppMessageTemplateBindings if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the WhatsAppMessageTemplateBindings.
-     */
-    @Generated
-    public static WhatsAppMessageTemplateBindings fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            WhatsAppMessageTemplateBindings deserializedWhatsAppMessageTemplateBindings
-                = new WhatsAppMessageTemplateBindings();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("kind".equals(fieldName)) {
-                    deserializedWhatsAppMessageTemplateBindings.kind
-                        = MessageTemplateBindingsKind.fromString(reader.getString());
-                } else if ("header".equals(fieldName)) {
-                    List<WhatsAppMessageTemplateBindingsComponent> headerProperty
-                        = reader.readArray(reader1 -> WhatsAppMessageTemplateBindingsComponent.fromJson(reader1));
-                    deserializedWhatsAppMessageTemplateBindings.headerProperty = headerProperty;
-                } else if ("body".equals(fieldName)) {
-                    List<WhatsAppMessageTemplateBindingsComponent> body
-                        = reader.readArray(reader1 -> WhatsAppMessageTemplateBindingsComponent.fromJson(reader1));
-                    deserializedWhatsAppMessageTemplateBindings.body = body;
-                } else if ("footer".equals(fieldName)) {
-                    List<WhatsAppMessageTemplateBindingsComponent> footer
-                        = reader.readArray(reader1 -> WhatsAppMessageTemplateBindingsComponent.fromJson(reader1));
-                    deserializedWhatsAppMessageTemplateBindings.footer = footer;
-                } else if ("buttons".equals(fieldName)) {
-                    List<WhatsAppMessageTemplateBindingsButton> buttons
-                        = reader.readArray(reader1 -> WhatsAppMessageTemplateBindingsButton.fromJson(reader1));
-                    deserializedWhatsAppMessageTemplateBindings.buttons = buttons;
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            return deserializedWhatsAppMessageTemplateBindings;
-        });
     }
 }
