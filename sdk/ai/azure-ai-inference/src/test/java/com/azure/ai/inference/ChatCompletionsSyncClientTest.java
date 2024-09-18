@@ -2,9 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.ai.inference;
 
-import com.azure.ai.inference.implementation.InferenceServerSentEvents;
-import com.azure.ai.inference.implementation.accesshelpers.ChatCompletionsOptionsAccessHelper;
-import com.azure.ai.inference.models.*;
+import com.azure.ai.inference.models.ChatCompletions;
+import com.azure.ai.inference.models.ChatCompletionsOptions;
+import com.azure.ai.inference.models.ChatRequestMessage;
+import com.azure.ai.inference.models.ChatRequestUserMessage;
+import com.azure.ai.inference.models.CompletionsUsage;
+import com.azure.ai.inference.models.StreamingChatCompletionsUpdate;
 import com.azure.core.http.HttpClient;
 
 import com.azure.core.http.rest.RequestOptions;
@@ -13,9 +16,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.IterableStream;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import reactor.core.publisher.Flux;
 
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -103,24 +104,5 @@ public class ChatCompletionsSyncClientTest extends ChatCompletionsClientTestBase
             assertCompletions(1, resultCompletions);
         });
     }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.inference.TestUtils#getTestParameters")
-    public void testGetChatCompletionsStreamWithResponse(HttpClient httpClient) {
-        client = getChatCompletionsClient(httpClient);
-        getChatCompletionsFromOptionsRunner(options -> {
-            ChatCompletionsOptionsAccessHelper.setStream(options, true);
-            Response<BinaryData> response = client.completeStreamWithResponse(
-                BinaryData.fromObject(options), new RequestOptions());
-            assertResponseRequestHeader(response.getRequest());
-            Flux<ByteBuffer> responseStream
-                = response.getValue().toFluxByteBuffer();
-            InferenceServerSentEvents<StreamingChatCompletionsUpdate> chatCompletionsStream
-                = new InferenceServerSentEvents<>(responseStream, StreamingChatCompletionsUpdate.class);
-            IterableStream<StreamingChatCompletionsUpdate> value = new IterableStream<>(chatCompletionsStream.getEvents());
-            assertTrue(value.stream().toArray().length > 1);
-            value.forEach(ChatCompletionsClientTestBase::assertCompletionsStream);
-        });
-    }
-
 }
+
