@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.experimental.implementation;
+package com.azure.identity.broker.shr.resources;
 
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpResponse;
