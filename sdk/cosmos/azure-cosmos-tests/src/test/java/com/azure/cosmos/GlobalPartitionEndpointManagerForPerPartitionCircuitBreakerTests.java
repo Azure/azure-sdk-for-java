@@ -4,19 +4,18 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.GlobalEndpointManager;
-import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
+import com.azure.cosmos.implementation.PartitionKeyRangeWrapper;
 import com.azure.cosmos.implementation.PointOperationContextForCircuitBreaker;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
+import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.LocationHealthStatus;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.LocationSpecificHealthContext;
-import com.azure.cosmos.implementation.PartitionKeyRangeWrapper;
-import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import org.apache.commons.lang3.tuple.Pair;
 import org.mockito.Mockito;
 import org.slf4j.Logger;
@@ -920,7 +919,6 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreakerTests {
                 new AtomicBoolean(false),
                 false,
                 collectionLink,
-                new MetadataDiagnosticsContext(),
                 new SerializationDiagnosticsContext()));
 
         return request;

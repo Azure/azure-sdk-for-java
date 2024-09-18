@@ -18,7 +18,6 @@ import com.azure.cosmos.implementation.WriteRetryPolicy;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.time.StopWatch;
-import com.azure.cosmos.implementation.circuitBreaker.PartitionLevelCircuitBreakerConfig;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.guava25.base.Preconditions;
 import com.azure.cosmos.implementation.routing.LocationHelper;
