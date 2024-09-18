@@ -1224,7 +1224,7 @@ public final class OpenAIClientImpl {
      *     model: String (Optional)
      *     data_sources (Optional): [
      *          (Optional){
-     *             type: String(azure_search/azure_ml_index/azure_cosmos_db/elasticsearch/pinecone) (Required)
+     *             type: String(azure_search/azure_cosmos_db/elasticsearch/pinecone/mongo_db) (Required)
      *         }
      *     ]
      *     enhancements (Optional): {
@@ -1260,6 +1260,7 @@ public final class OpenAIClientImpl {
      *          (Required){
      *             message (Optional): {
      *                 role: String(system/assistant/user/function/tool) (Required)
+     *                 refusal: String (Required)
      *                 content: String (Required)
      *                 tool_calls (Optional): [
      *                      (Optional){
@@ -1279,6 +1280,7 @@ public final class OpenAIClientImpl {
      *                             url: String (Optional)
      *                             filepath: String (Optional)
      *                             chunk_id: String (Optional)
+     *                             rerank_score: Double (Optional)
      *                         }
      *                     ]
      *                     intent: String (Optional)
@@ -1289,12 +1291,12 @@ public final class OpenAIClientImpl {
      *                             url: String (Optional)
      *                             filepath: String (Optional)
      *                             chunk_id: String (Optional)
+     *                             rerank_score: Double (Optional)
      *                             search_queries (Required): [
      *                                 String (Required)
      *                             ]
      *                             data_source_index: int (Required)
      *                             original_search_score: Double (Optional)
-     *                             rerank_score: Double (Optional)
      *                             filter_reason: String(score/rerank) (Optional)
      *                         }
      *                     ]
@@ -1318,6 +1320,9 @@ public final class OpenAIClientImpl {
      *                             }
      *                         ]
      *                     }
+     *                 ]
+     *                 refusal (Required): [
+     *                     (recursive schema, see above)
      *                 ]
      *             }
      *             index: int (Required)
@@ -1476,7 +1481,7 @@ public final class OpenAIClientImpl {
      *     model: String (Optional)
      *     data_sources (Optional): [
      *          (Optional){
-     *             type: String(azure_search/azure_ml_index/azure_cosmos_db/elasticsearch/pinecone) (Required)
+     *             type: String(azure_search/azure_cosmos_db/elasticsearch/pinecone/mongo_db) (Required)
      *         }
      *     ]
      *     enhancements (Optional): {
@@ -1512,6 +1517,7 @@ public final class OpenAIClientImpl {
      *          (Required){
      *             message (Optional): {
      *                 role: String(system/assistant/user/function/tool) (Required)
+     *                 refusal: String (Required)
      *                 content: String (Required)
      *                 tool_calls (Optional): [
      *                      (Optional){
@@ -1531,6 +1537,7 @@ public final class OpenAIClientImpl {
      *                             url: String (Optional)
      *                             filepath: String (Optional)
      *                             chunk_id: String (Optional)
+     *                             rerank_score: Double (Optional)
      *                         }
      *                     ]
      *                     intent: String (Optional)
@@ -1541,12 +1548,12 @@ public final class OpenAIClientImpl {
      *                             url: String (Optional)
      *                             filepath: String (Optional)
      *                             chunk_id: String (Optional)
+     *                             rerank_score: Double (Optional)
      *                             search_queries (Required): [
      *                                 String (Required)
      *                             ]
      *                             data_source_index: int (Required)
      *                             original_search_score: Double (Optional)
-     *                             rerank_score: Double (Optional)
      *                             filter_reason: String(score/rerank) (Optional)
      *                         }
      *                     ]
@@ -1570,6 +1577,9 @@ public final class OpenAIClientImpl {
      *                             }
      *                         ]
      *                     }
+     *                 ]
+     *                 refusal (Required): [
+     *                     (recursive schema, see above)
      *                 ]
      *             }
      *             index: int (Required)

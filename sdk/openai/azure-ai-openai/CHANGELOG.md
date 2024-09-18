@@ -9,7 +9,8 @@
 - Added `roleInformation` property in `AzureCosmosDBChatExtensionParameters` class to support role information.
 - Added `rerank_score` property in `AzureChatExtensionDataSourceResponseCitation` class to support re-rank score.
 - Added `refusal` property in `ChatChoiceLogProbabilityInfo`, `ChatMessageContentItem`, `ChatResponseMessage` classes and a new type of content item class `ChatMessageRefusalContentItem` to support refusal.
-- Added `json_schema` property in `ChatCompletionsResponseFormat` class to support JSON schema.
+- Added `json_schema` property in `ChatCompletionsResponseFormat` class to support JSON schema. 
+  New classes `ChatCompletionsJsonSchemaResponseFormat` and `ChatCompletionsJsonSchemaResponseFormatJsonSchema` are added to support JSON schema response format.
 - Added `username_and_password` in `OnYourDataAuthenticationOptions` class and an input option class`OnYourDataUsernameAndPasswordAuthenticationOptions`  to support username and password authentication.
 - Added `intergrated` property in `OnYourDataVectorizationSource` class and `OnYourDataVectorizationSourceType` to support integrated vectorization source.
 
