@@ -51,7 +51,7 @@ public final class AzureMonitor {
      * @param azureMonitorExporterBuilder Advanced configuration to send the data to Azure Monitor.
      */
     public static void customize(AutoConfigurationCustomizer autoConfigurationCustomizer,
-                                 AzureMonitorExporterBuilder azureMonitorExporterBuilder) {
+        AzureMonitorExporterBuilder azureMonitorExporterBuilder) {
         autoConfigurationCustomizer.addPropertiesSupplier(() -> {
             Map<String, String> props = new HashMap<>();
             props.put("otel.traces.exporter", AzureMonitorExporterProviderKeys.EXPORTER_NAME);

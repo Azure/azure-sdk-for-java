@@ -130,7 +130,6 @@ public final class AzureMonitorExporterBuilder implements ConnectionStringTrait<
         return this;
     }
 
-
     /**
      * Sets the {@link HttpClient} to use for sending and receiving requests to and from the service.
      *
