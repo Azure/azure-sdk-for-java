@@ -1,0 +1,26 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.communication.azure.com/availablePhoneNumbers/countries/US/areaCodes?phoneNumberType=tollFree&assignmentType=application&api-version=2022-12-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.13 (17.0.5; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "818c4085-171f-427e-87a7-6dfebf2f9061"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "api-supported-versions" : "2021-03-07, 2022-12-01",
+      "X-Processing-Time" : "2953ms",
+      "MS-CV" : "8oGNfZtBMEKQqHyczrCicQ.0",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0SaOkYwAAAADRiVYeFuCfQ6BjQuAsmL6CTUVYMzFFREdFMDMxMAA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "StatusCode" : "200",
+      "Body" : "{\"areaCodes\":[{\"areaCode\":\"888\"},{\"areaCode\":\"877\"},{\"areaCode\":\"866\"},{\"areaCode\":\"855\"},{\"areaCode\":\"844\"},{\"areaCode\":\"800\"},{\"areaCode\":\"833\"},{\"areaCode\":\"88\"}],\"nextLink\":null}",
+      "Date" : "Thu, 22 Dec 2022 18:34:52 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
