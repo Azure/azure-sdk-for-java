@@ -29,7 +29,7 @@ public final class MetricValue {
      * @param count the number of samples in the time range.
      */
     public MetricValue(OffsetDateTime timeStamp, Double average, Double minimum, Double maximum, Double total,
-        Double count) {
+                       Double count) {
         this.timeStamp = timeStamp;
         this.average = average;
         this.minimum = minimum;
