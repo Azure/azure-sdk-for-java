@@ -1201,7 +1201,7 @@ public class SearchIndexingBufferedSenderUnitTests {
         }).subscribe();
 
         AtomicLong secondFlushCompletionTime = new AtomicLong();
-        Mono.using(() -> 1, ignored -> batchingClient.flush(), ignored -> {
+        Mono.using(() -> 1, ignored -> batchingClient.close(), ignored -> {
             secondFlushCompletionTime.set(System.nanoTime());
             countDownLatch.countDown();
         }).subscribe();
