@@ -10,11 +10,7 @@ import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.identity.implementation.IdentityClientBase;
-import com.azure.identity.implementation.IdentityClientBuilder;
-import com.azure.identity.implementation.IdentityClientOptions;
-import com.azure.identity.implementation.ManagedIdentityType;
-import com.azure.identity.implementation.ManagedIdentityParameters;
+import com.azure.identity.implementation.*;
 import com.azure.identity.implementation.util.LoggingUtil;
 import com.microsoft.aad.msal4j.ManagedIdentitySourceType;
 import reactor.core.publisher.Mono;
@@ -234,7 +230,7 @@ public final class ManagedIdentityCredential implements TokenCredential {
         }
 
         if (!CoreUtils.isNullOrEmpty(managedIdentityId)) {
-            ManagedIdentitySourceType managedIdentitySourceType = IdentityClientBase.getManagedIdentitySourceType();
+            ManagedIdentitySourceType managedIdentitySourceType = IdentityClient.getManagedIdentitySourceType();
             if (managedIdentitySourceType.equals(ManagedIdentitySourceType.CLOUD_SHELL)
                 || managedIdentitySourceType.equals(ManagedIdentitySourceType.AZURE_ARC)) {
                 return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER, identityClientOptions,

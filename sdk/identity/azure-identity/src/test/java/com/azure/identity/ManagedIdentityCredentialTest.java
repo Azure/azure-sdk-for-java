@@ -26,6 +26,7 @@ import static org.mockito.Mockito.when;
 public class ManagedIdentityCredentialTest {
 
     private static final String CLIENT_ID = UUID.randomUUID().toString();
+    private static final String OBJECT_ID = UUID.randomUUID().toString();
 
     @Test
     public void testVirtualMachineMSICredentialConfigurations() {
@@ -98,6 +99,23 @@ public class ManagedIdentityCredentialTest {
             .configuration(configuration).clientId(CLIENT_ID).build();
         StepVerifier.create(credential.getToken(request))
             .expectErrorMatches(t -> t instanceof ClientAuthenticationException)
+            .verify();
+    }
+
+    @Test
+    public void testCloudshellUserAssigned() {
+        // setup
+        String endpoint = "http://localhost";
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
+        Configuration configuration = TestUtils.createTestConfiguration(new TestConfigurationSource()
+            .put("MSI_ENDPOINT", endpoint));
+
+
+        // test
+        ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder()
+            .configuration(configuration).objectId(OBJECT_ID).build();
+        StepVerifier.create(credential.getToken(request))
+            .expectErrorMatches(t -> t instanceof CredentialUnavailableException)
             .verify();
     }
 
