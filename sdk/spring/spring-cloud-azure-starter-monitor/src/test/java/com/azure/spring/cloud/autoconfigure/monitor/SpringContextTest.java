@@ -14,7 +14,7 @@ class SpringContextTest {
     // The tests of the Spring Monitor features are done in the spring-cloud-azure-starter-monitor-test Maven module
     @Test
     void loadContext() {
-        this.contextRunner.withConfiguration(AutoConfigurations.of(AzureSpringMonitorAutoConfig.class, SelfDiagAutoConfig.class)).run(context -> {
+        this.contextRunner.withConfiguration(AutoConfigurations.of(AzureSpringMonitorAutoConfiguration.class, SelfDiagAutoConfig.class)).run(context -> {
         });
     }
 

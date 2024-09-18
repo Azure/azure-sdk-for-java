@@ -29,9 +29,9 @@ import java.util.function.Function;
 @Configuration(proxyBeanMethods = false)
 @AutoConfigureBefore(OpenTelemetryAutoConfiguration.class)
 @ConditionalOnProperty(name = "otel.sdk.disabled", havingValue = "false", matchIfMissing = true)
-public class AzureSpringMonitorAutoConfig {
+public class AzureSpringMonitorAutoConfiguration {
 
-    private static final Logger LOG = LoggerFactory.getLogger(AzureSpringMonitorAutoConfig.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AzureSpringMonitorAutoConfiguration.class);
 
     private static final Function<ConfigProperties, Map<String, String>> OTEL_DISABLE_CONFIG = configProperties -> {
         Map<String, String> properties = new HashMap<>();
@@ -57,7 +57,7 @@ public class AzureSpringMonitorAutoConfig {
      * @param connectionString connection string system property
      * @param httpPipeline an instance of HttpPipeline
      */
-    AzureSpringMonitorAutoConfig(@Value("${applicationinsights.connection.string:}") String connectionString, ObjectProvider<HttpPipeline> httpPipeline) {
+    AzureSpringMonitorAutoConfiguration(@Value("${applicationinsights.connection.string:}") String connectionString, ObjectProvider<HttpPipeline> httpPipeline) {
         this.connectionString = connectionString;
         this.httpPipeline = httpPipeline;
         if (!isNativeRuntimeExecution()) {
