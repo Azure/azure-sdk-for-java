@@ -5,13 +5,8 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 
 /** The AcsChatMemberAddedToThreadWithUserEventData model. */
 @Fluent
@@ -19,16 +14,19 @@ public final class AcsChatMemberAddedToThreadWithUserEventData extends AcsChatTh
     /*
      * The time at which the user was added to the thread
      */
+    @JsonProperty(value = "time")
     private OffsetDateTime time;
 
     /*
      * The MRI of the user who added the user
      */
+    @JsonProperty(value = "addedBy")
     private String addedBy;
 
     /*
      * The details of the user who was added
      */
+    @JsonProperty(value = "memberAdded")
     private AcsChatThreadMemberProperties memberAdded;
 
     /**
@@ -96,66 +94,5 @@ public final class AcsChatMemberAddedToThreadWithUserEventData extends AcsChatTh
     public AcsChatMemberAddedToThreadWithUserEventData setMemberAdded(AcsChatThreadMemberProperties memberAdded) {
         this.memberAdded = memberAdded;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("recipientCommunicationIdentifier", getRecipientCommunicationIdentifier());
-        jsonWriter.writeStringField("transactionId", getTransactionId());
-        jsonWriter.writeStringField("threadId", getThreadId());
-        jsonWriter.writeStringField("createTime",
-            this.getCreateTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.getCreateTime()));
-        jsonWriter.writeNumberField("version", this.getVersion());
-        jsonWriter.writeStringField("time",
-            this.time == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.time));
-        jsonWriter.writeStringField("addedBy", this.addedBy);
-        jsonWriter.writeJsonField("memberAdded", this.memberAdded);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of AcsChatThreadEventBaseProperties from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of AcsChatThreadEventBaseProperties if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the AcsChatThreadEventBaseProperties.
-     */
-    public static AcsChatMemberAddedToThreadWithUserEventData fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            AcsChatMemberAddedToThreadWithUserEventData acsChatMemberAddedToThreadWithUserEventData
-                = new AcsChatMemberAddedToThreadWithUserEventData();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("recipientCommunicationIdentifier".equals(fieldName)) {
-                    acsChatMemberAddedToThreadWithUserEventData
-                        .setRecipientCommunicationIdentifier(CommunicationIdentifierModel.fromJson(reader));
-                } else if ("transactionId".equals(fieldName)) {
-                    acsChatMemberAddedToThreadWithUserEventData.setTransactionId(reader.getString());
-                } else if ("threadId".equals(fieldName)) {
-                    acsChatMemberAddedToThreadWithUserEventData.setThreadId(reader.getString());
-                } else if ("createTime".equals(fieldName)) {
-                    acsChatMemberAddedToThreadWithUserEventData.setCreateTime(
-                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
-                } else if ("version".equals(fieldName)) {
-                    acsChatMemberAddedToThreadWithUserEventData.setVersion(reader.getNullable(JsonReader::getLong));
-                } else if ("time".equals(fieldName)) {
-                    acsChatMemberAddedToThreadWithUserEventData.setTime(
-                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
-                } else if ("addedBy".equals(fieldName)) {
-                    acsChatMemberAddedToThreadWithUserEventData.setAddedBy(reader.getString());
-                } else if ("memberAdded".equals(fieldName)) {
-                    acsChatMemberAddedToThreadWithUserEventData.setMemberAdded(
-                        AcsChatThreadMemberProperties.fromJson(reader));
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return acsChatMemberAddedToThreadWithUserEventData;
-        });
     }
 }
