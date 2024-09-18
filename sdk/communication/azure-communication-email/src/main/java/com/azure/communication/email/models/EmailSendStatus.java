@@ -5,59 +5,48 @@
 package com.azure.communication.email.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Status of operation.
- */
+/** Status of operation. */
 public final class EmailSendStatus extends ExpandableStringEnum<EmailSendStatus> {
-    /**
-     * Static value NotStarted for EmailSendStatus.
-     */
+    /** Static value NotStarted for EmailSendStatus. */
     public static final EmailSendStatus NOT_STARTED = fromString("NotStarted");
 
-    /**
-     * Static value Running for EmailSendStatus.
-     */
+    /** Static value Running for EmailSendStatus. */
     public static final EmailSendStatus RUNNING = fromString("Running");
 
-    /**
-     * Static value Succeeded for EmailSendStatus.
-     */
+    /** Static value Succeeded for EmailSendStatus. */
     public static final EmailSendStatus SUCCEEDED = fromString("Succeeded");
 
-    /**
-     * Static value Failed for EmailSendStatus.
-     */
+    /** Static value Failed for EmailSendStatus. */
     public static final EmailSendStatus FAILED = fromString("Failed");
 
-    /**
-     * Static value Canceled for EmailSendStatus.
-     */
+    /** Static value Canceled for EmailSendStatus. */
     public static final EmailSendStatus CANCELED = fromString("Canceled");
 
     /**
      * Creates a new instance of EmailSendStatus value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public EmailSendStatus() {
-    }
+    public EmailSendStatus() {}
 
     /**
      * Creates or finds a EmailSendStatus from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding EmailSendStatus.
      */
+    @JsonCreator
     public static EmailSendStatus fromString(String name) {
         return fromString(name, EmailSendStatus.class);
     }
 
     /**
      * Gets known EmailSendStatus values.
-     * 
+     *
      * @return known EmailSendStatus values.
      */
     public static Collection<EmailSendStatus> values() {
