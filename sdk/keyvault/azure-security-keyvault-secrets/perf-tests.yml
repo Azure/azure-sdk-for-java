@@ -5,18 +5,20 @@ Project: sdk/keyvault/azure-security-keyvault-perf
 PrimaryPackage: 'com.azure:azure-security-keyvault-secrets'
 
 PackageVersions:
-- 'com.azure:azure-security-keyvault-certificates': 4.6.6 # {x-version-update;com.azure:azure-security-keyvault-certificates;dependency}
-  'com.azure:azure-security-keyvault-keys': 4.8.7 # {x-version-update;com.azure:azure-security-keyvault-keys;dependency}
-  'com.azure:azure-security-keyvault-secrets': 4.8.6 # {x-version-update;com.azure:azure-security-keyvault-secrets;dependency}
-  'com.azure:azure-core': 1.51.0 # {x-version-update;com.azure:azure-core;dependency}
-  'com.azure:azure-core-http-netty': 1.15.3 # {x-version-update;com.azure:azure-core-http-netty;dependency}
-  'com.azure:azure-identity': 1.13.2 # {x-version-update;com.azure:azure-identity;dependency}
+- 'com.azure:azure-security-keyvault-certificates': 4.3.5
+  'com.azure:azure-security-keyvault-keys': 4.4.6
+  'com.azure:azure-security-keyvault-secrets': 4.4.6
+  'com.azure:azure-core': 1.31.0
+  'com.azure:azure-core-http-netty': 1.12.4
+  'com.azure:azure-identity': 1.5.4
+  'io.projectreactor:reactor-core': 3.4.9
 - 'com.azure:azure-security-keyvault-certificates': source
   'com.azure:azure-security-keyvault-keys': source
   'com.azure:azure-security-keyvault-secrets': source
   'com.azure:azure-core': source
   'com.azure:azure-core-http-netty': source
   'com.azure:azure-identity': source
+  'io.projectreactor:reactor-core': source
 
 Tests:
 - Test: get-secret
