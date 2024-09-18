@@ -1,33 +1,14 @@
 # Release History
 
-## 5.19.0-beta.3 (Unreleased)
-
-### Features Added
-
-- Integrated RequestResponseChannelCache (CBS, Management channel cache) and ReactorSessionCache, these caches are activated when V2 stack is opted-in using the configuration `com.azure.messaging.eventhubs.v2`. ([39107](https://github.com/Azure/azure-sdk-for-java/pull/39107)), ([41805](https://github.com/Azure/azure-sdk-for-java/pull/41805))
-- Add `EventProcessorClient.stop(Duration timeout)` to stop the `EventProcessorClient` and await it to shut down. The `EventProcessorClient.stop()`
-  method now will wait for up to the default timeout (10 seconds) waiting for the processor to stop. ([#41878](https://github.com/Azure/azure-sdk-for-java/pull/41878))
-
-### Breaking Changes
-
-### Bugs Fixed
-
-- Fixes the event size computation in EventHubSerializer to include size of delivery annotations. ([41605](https://github.com/Azure/azure-sdk-for-java/issues/41605))
-
-### Other Changes
-
-## 5.19.0-beta.2 (2024-08-20)
-
-### Features Added
-
-- Enabling V2 stack support for Event Hubs, which can be opt-in using the configuration ` com.azure.messaging.eventhubs.v2`. ([40435](https://github.com/Azure/azure-sdk-for-java/pull/40435))
+## 5.18.7 (2024-08-24)
 
 ### Other Changes
 
 #### Dependency Updates
 
-- Upgraded `azure-core` from `1.50.0` to version `1.51.0`.
 - Upgraded `azure-core-amqp` from `2.9.7` to version `2.9.8`.
+- Upgraded `azure-core` from `1.50.0` to version `1.51.0`.
+
 
 ## 5.18.6 (2024-07-26)
 

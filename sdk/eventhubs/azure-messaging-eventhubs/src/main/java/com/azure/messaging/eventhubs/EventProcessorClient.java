@@ -9,16 +9,12 @@ import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.implementation.PartitionProcessor;
 import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsTracer;
 import com.azure.messaging.eventhubs.models.ErrorContext;
-import com.azure.messaging.eventhubs.models.PartitionOwnership;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -80,8 +76,8 @@ import java.util.stream.Collectors;
  */
 @ServiceClient(builder = EventProcessorClientBuilder.class)
 public class EventProcessorClient {
+
     private static final long BASE_JITTER_IN_SECONDS = 2; // the initial delay jitter before starting the processor
-    private static final Duration DEFAULT_STOP_TIMEOUT = Duration.ofSeconds(10);
     private final ClientLogger logger;
 
     private final String identifier;
@@ -249,14 +245,8 @@ public class EventProcessorClient {
     /**
      * Stops processing events for all partitions owned by this event processor. All {@link PartitionProcessor} will be
      * shutdown and any open resources will be closed.
-     *
      * <p>
-     * Subsequent calls to stop will be ignored if the event processor is not running or is being stopped.
-     * </p>
-     *
-     * <p>
-     * This method will do the best effort to stop processing gracefully and will block for up to 10 seconds waiting for
-     * the processor to stop. Use {@link #stop(Duration)} overload to specify a different timeout.
+     * Subsequent calls to stop will be ignored if the event processor is not running.
      * </p>
      *
      * <p><strong>Stopping the processor</strong></p>
@@ -293,44 +283,13 @@ public class EventProcessorClient {
      * <!-- end com.azure.messaging.eventhubs.eventprocessorclient.startstop -->
      */
     public synchronized void stop() {
-        try {
-            stop(DEFAULT_STOP_TIMEOUT);
-        } catch (RuntimeException e) {
-            logger.info("Error while stopping the event processor", e);
-        }
-    }
-
-    /**
-     * Stops processing events for all partitions owned by this event processor. All {@link PartitionProcessor} will be
-     * shutdown and any open resources will be closed.
-     *
-     * <p>
-     * Subsequent calls to stop will be ignored if the event processor is not running or is being stopped.
-     * </p>
-     *
-     * @param timeout The maximum amount of time to wait for the processor to stop processing.
-     *
-     * @throws RuntimeException if the event processor encounters timout or another error while stopping.
-     */
-    public synchronized void stop(Duration timeout) {
         if (!isRunning.compareAndSet(true, false)) {
             logger.info("Event processor has already stopped");
             return;
         }
         runner.get().cancel(true);
-
-        Mono<Boolean> awaitScheduler = Mono.fromRunnable(() -> shutdownWithAwait(scheduler.get(), timeout.toMillis()));
-        Flux<PartitionOwnership> clearOwnership =
-            checkpointStore.listOwnership(fullyQualifiedNamespace, eventHubName, consumerGroup)
-                .filter(ownership -> identifier.equals(ownership.getOwnerId()))
-                .map(ownership -> ownership.setOwnerId(""))
-                .collect(Collectors.toList())
-                .flatMapMany(p -> checkpointStore.claimOwnership(p).onErrorResume(ex -> Mono.empty()));
-
-        Mono.when(awaitScheduler,
-                partitionPumpManager.stopAllPartitionPumps().onErrorResume(ex -> Mono.empty()),
-                clearOwnership.onErrorResume(ex -> Mono.empty()))
-            .block(timeout);
+        scheduler.get().shutdown();
+        stopProcessing();
     }
 
     /**
@@ -343,15 +302,14 @@ public class EventProcessorClient {
         return isRunning.get();
     }
 
-    private void shutdownWithAwait(ExecutorService service, long timeoutMillis) {
-        service.shutdown();
-        try {
-            if (!service.awaitTermination(timeoutMillis, TimeUnit.MILLISECONDS)) {
-                service.shutdownNow();
-            }
-        } catch (InterruptedException ex) {
-            service.shutdownNow();
-            Thread.currentThread().interrupt();
-        }
+    private void stopProcessing() {
+        partitionPumpManager.stopAllPartitionPumps();
+        // finally, remove ownerid from checkpointstore as the processor is shutting down
+        checkpointStore.listOwnership(fullyQualifiedNamespace, eventHubName, consumerGroup)
+            .filter(ownership -> identifier.equals(ownership.getOwnerId()))
+            .map(ownership -> ownership.setOwnerId(""))
+            .collect(Collectors.toList())
+            .flatMapMany(checkpointStore::claimOwnership)
+            .blockLast(Duration.ofSeconds(10)); // block until the checkpoint store is updated
     }
 }

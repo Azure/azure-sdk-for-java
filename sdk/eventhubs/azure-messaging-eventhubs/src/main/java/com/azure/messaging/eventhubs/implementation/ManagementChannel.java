@@ -6,7 +6,6 @@ package com.azure.messaging.eventhubs.implementation;
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.implementation.AmqpConstants;
-import com.azure.core.amqp.implementation.ChannelCacheWrapper;
 import com.azure.core.amqp.implementation.ExceptionUtil;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RequestResponseChannel;
@@ -61,7 +60,7 @@ public class ManagementChannel implements EventHubManagementNode {
 
     private static final ClientLogger LOGGER = new ClientLogger(ManagementChannel.class);
     private final TokenCredential tokenProvider;
-    private final ChannelCacheWrapper channelCache;
+    private final Mono<RequestResponseChannel> channelMono;
     private final Scheduler scheduler;
     private final String eventHubName;
     private final MessageSerializer messageSerializer;
@@ -76,13 +75,13 @@ public class ManagementChannel implements EventHubManagementNode {
     /**
      * Creates an instance that is connected to the {@code eventHubName}'s management node.
      *
-     * @param channelCache a cache that if needed obtain and cache the {@link RequestResponseChannel}.
+     * @param responseChannelMono Mono that completes with a new {@link RequestResponseChannel}.
      * @param eventHubName The name of the Event Hub.
      * @param credential Credential to authorize user for access to the Event Hub.
      * @param tokenManagerProvider Provides a token manager that will keep track and maintain tokens.
      * @param messageSerializer Maps responses from the management channel.
      */
-    ManagementChannel(ChannelCacheWrapper channelCache, String eventHubName, TokenCredential credential,
+    ManagementChannel(Mono<RequestResponseChannel> responseChannelMono, String eventHubName, TokenCredential credential,
         TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer,
         Scheduler scheduler) {
 
@@ -91,11 +90,11 @@ public class ManagementChannel implements EventHubManagementNode {
         this.tokenProvider = Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.eventHubName = Objects.requireNonNull(eventHubName, "'eventHubName' cannot be null.");
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
-        this.channelCache = Objects.requireNonNull(channelCache, "'channelCache' cannot be null.");
+        this.channelMono = Objects.requireNonNull(responseChannelMono, "'responseChannelMono' cannot be null.");
         this.scheduler = Objects.requireNonNull(scheduler, "'scheduler' cannot be null.");
 
         //@formatter:off
-        this.subscription = channelCache.get()
+        this.subscription = responseChannelMono
             .flatMapMany(e -> e.getEndpointStates().distinctUntilChanged())
             .subscribe(e -> {
                 LOGGER.info("Management endpoint state: {}", e);
@@ -159,7 +158,7 @@ public class ManagementChannel implements EventHubManagementNode {
             final ApplicationProperties applicationProperties = new ApplicationProperties(properties);
             request.setApplicationProperties(applicationProperties);
 
-            return channelCache.get().flatMap(channel -> channel.sendWithAck(request)
+            return channelMono.flatMap(channel -> channel.sendWithAck(request)
                 .handle((message, sink) -> {
                     if (RequestResponseUtils.isSuccessful(message)) {
                         sink.next(messageSerializer.deserialize(message, responseType));
@@ -187,6 +186,8 @@ public class ManagementChannel implements EventHubManagementNode {
         isDisposed = true;
         subscription.dispose();
 
-        channelCache.dispose();
+        if (channelMono instanceof Disposable) {
+            ((Disposable) channelMono).dispose();
+        }
     }
 }

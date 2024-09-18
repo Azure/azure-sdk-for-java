@@ -7,6 +7,7 @@ import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.metrics.Meter;
 import com.azure.core.util.tracing.Tracer;
+import com.azure.messaging.eventhubs.implementation.EventHubConnectionProcessor;
 import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
 import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsConsumerInstrumentation;
 import reactor.core.publisher.Flux;
@@ -28,7 +29,7 @@ import java.util.Objects;
 class EventHubAsyncClient implements Closeable {
     private static final ClientLogger LOGGER = new ClientLogger(EventHubAsyncClient.class);
     private final MessageSerializer messageSerializer;
-    private final ConnectionCacheWrapper connectionProcessor;
+    private final EventHubConnectionProcessor connectionProcessor;
     private final Scheduler scheduler;
     private final boolean isSharedConnection;
     private final Runnable onClientClose;
@@ -36,7 +37,7 @@ class EventHubAsyncClient implements Closeable {
     private final Tracer tracer;
     private final Meter meter;
 
-    EventHubAsyncClient(ConnectionCacheWrapper connectionProcessor, MessageSerializer messageSerializer,
+    EventHubAsyncClient(EventHubConnectionProcessor connectionProcessor, MessageSerializer messageSerializer,
         Scheduler scheduler, boolean isSharedConnection, Runnable onClientClose, String identifier, Meter meter, Tracer tracer) {
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
         this.connectionProcessor = Objects.requireNonNull(connectionProcessor,
