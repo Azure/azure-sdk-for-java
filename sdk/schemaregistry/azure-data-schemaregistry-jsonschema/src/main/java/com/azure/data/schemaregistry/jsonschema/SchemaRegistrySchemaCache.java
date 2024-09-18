@@ -7,13 +7,16 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import com.azure.data.schemaregistry.SchemaRegistryAsyncClient;
+import com.azure.data.schemaregistry.SchemaRegistryClient;
 import com.azure.data.schemaregistry.models.SchemaFormat;
 import com.azure.data.schemaregistry.models.SchemaProperties;
+import com.azure.data.schemaregistry.models.SchemaRegistrySchema;
 import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.azure.core.util.FluxUtil.monoError;
 
@@ -27,21 +30,82 @@ class SchemaRegistrySchemaCache {
     private static final ClientLogger LOGGER = new ClientLogger(SchemaRegistrySchemaCache.class);
 
     private final SchemaCache cache;
-    private final SchemaRegistryAsyncClient schemaRegistryClient;
+    private final SchemaRegistryAsyncClient schemaRegistryAsyncClient;
+    private final SchemaRegistryClient schemaRegistryClient;
     private final String schemaGroup;
     private final boolean autoRegisterSchemas;
     private final Object lock = new Object();
 
-    SchemaRegistrySchemaCache(SchemaRegistryAsyncClient schemaRegistryClient, String schemaGroup,
-        boolean autoRegisterSchemas, int capacity) {
+    SchemaRegistrySchemaCache(SchemaRegistryAsyncClient registryAsyncClient, SchemaRegistryClient registryClient,
+        String schemaGroup, boolean autoRegisterSchemas, int capacity) {
 
-        this.schemaRegistryClient = schemaRegistryClient;
+        this.schemaRegistryAsyncClient = registryAsyncClient;
+        this.schemaRegistryClient = registryClient;
         this.schemaGroup = schemaGroup;
         this.autoRegisterSchemas = autoRegisterSchemas;
         this.cache = new SchemaCache(capacity);
     }
 
-    Mono<String> getSchemaId(String schemaFullName, String schemaDefinition) {
+    /**
+     * The schema id.  If {@link SchemaRegistryClient} is not set, the async client is used instead.
+     *
+     * @param schemaFullName Full name of schema in Schema Registry.
+     * @param schemaDefinition Schema definition.
+     * @return The ID of the schema.
+     *
+     * @throws IllegalStateException When SchemaRegistryJsonSchemaSerializer.schemaGroup is not set.
+     */
+    String getSchemaId(String schemaFullName, String schemaDefinition) {
+        if (schemaRegistryClient == null) {
+            return getSchemaIdAsync(schemaFullName, schemaDefinition).block();
+        }
+
+        final String existingSchemaId;
+        synchronized (lock) {
+            existingSchemaId = cache.getSchemaId(schemaDefinition);
+        }
+
+        if (existingSchemaId != null) {
+            return existingSchemaId;
+        }
+
+        // It is possible to create the serializer without setting the schema group. This is the case when
+        // autoRegisterSchemas is false. (ie. You are only using it to deserialize messages.)
+        if (CoreUtils.isNullOrEmpty(schemaGroup)) {
+            throw LOGGER.logExceptionAsError(new IllegalStateException("Cannot serialize when 'schemaGroup' is not set."
+                + " Please set in SchemaRegistryJsonSchemaSerializer.schemaGroup when creating serializer."));
+        }
+
+        final SchemaProperties serviceCall;
+        if (autoRegisterSchemas) {
+            serviceCall = this.schemaRegistryClient
+                .registerSchema(schemaGroup, schemaFullName, schemaDefinition, SchemaFormat.JSON);
+        } else {
+            serviceCall = this.schemaRegistryClient.getSchemaProperties(
+                schemaGroup, schemaFullName, schemaDefinition, SchemaFormat.JSON);
+        }
+
+        final String schemaId = serviceCall.getId();
+
+        synchronized (lock) {
+            cache.put(schemaId, schemaDefinition);
+            logCacheStatus();
+        }
+
+        return schemaId;
+    }
+
+    /**
+     * The schema id.
+     *
+     * @param schemaFullName Full name of schema in Schema Registry.
+     * @param schemaDefinition Schema definition.
+     * @return A Mono that completes with the ID of the schema.
+     *
+     * @throws IllegalStateException When SchemaRegistryJsonSchemaSerializer.schemaGroup is not set or
+     * {@link SchemaRegistryAsyncClient} is not set.
+     */
+    Mono<String> getSchemaIdAsync(String schemaFullName, String schemaDefinition) {
         final String existingSchemaId;
         synchronized (lock) {
             existingSchemaId = cache.getSchemaId(schemaDefinition);
@@ -52,18 +116,24 @@ class SchemaRegistrySchemaCache {
         }
 
         // It is possible to create the serializer without setting the schema group. This is the case when
-        // autoRegisterSchemas is false. (ie. You are only using it to deserialize messages.)
+        // autoRegisterSchemas is false. (i.e. You are only using it to deserialize messages.)
         if (CoreUtils.isNullOrEmpty(schemaGroup)) {
             return monoError(LOGGER, new IllegalStateException("Cannot serialize when 'schemaGroup' is not set. Please"
                 + " set in SchemaRegistryJsonSchemaSerializer.schemaGroup when creating serializer."));
         }
 
+        if (Objects.isNull(schemaRegistryAsyncClient)) {
+            return monoError(LOGGER, new IllegalStateException("Cannot use async methods if SchemaRegistryAsyncClient "
+                + "Set client in SchemaRegistryJsonSchemaSerializer.schemaRegistryClient(SchemaRegistryAsyncClient)."
+            ));
+        }
+
         final Mono<SchemaProperties> serviceCall;
         if (autoRegisterSchemas) {
-            serviceCall = this.schemaRegistryClient
+            serviceCall = this.schemaRegistryAsyncClient
                 .registerSchema(schemaGroup, schemaFullName, schemaDefinition, SchemaFormat.JSON);
         } else {
-            serviceCall = this.schemaRegistryClient.getSchemaProperties(
+            serviceCall = this.schemaRegistryAsyncClient.getSchemaProperties(
                 schemaGroup, schemaFullName, schemaDefinition, SchemaFormat.JSON);
         }
 
@@ -79,16 +149,61 @@ class SchemaRegistrySchemaCache {
         });
     }
 
-    Mono<String> getSchema(String schemaId) {
-        synchronized (lock) {
-            final String existing = cache.get(schemaId);
-
-            if (existing != null) {
-                return Mono.just(existing);
-            }
+    /**
+     * The schema id.  {@link SchemaRegistryAsyncClient} is used if {@link SchemaRegistryClient} is not set.
+     *
+     * @param schemaId Id to get the schema definition.
+     * @return The schema definition associated with the id.
+     */
+    String getSchemaDefinition(String schemaId) {
+        if (schemaRegistryClient == null) {
+            return getSchemaDefinitionAsync(schemaId).block();
         }
 
-        return schemaRegistryClient.getSchema(schemaId)
+        final String existing;
+        synchronized (lock) {
+            existing = cache.get(schemaId);
+        }
+
+        if (existing != null) {
+            return existing;
+        }
+
+        final SchemaRegistrySchema registryObject = schemaRegistryClient.getSchema(schemaId);
+        final String schemaString = registryObject.getDefinition();
+
+        synchronized (lock) {
+            cache.put(schemaId, schemaString);
+            logCacheStatus();
+        }
+
+        return schemaString;
+    }
+
+    /**
+     * The schema id.  {@link SchemaRegistryAsyncClient} is used if {@link SchemaRegistryClient} is not set.
+     *
+     * @param schemaId Id to get the schema definition.
+     * @return The schema definition associated with the id.
+     * @throws IllegalStateException When {@link SchemaRegistryAsyncClient} is not set.
+     */
+    Mono<String> getSchemaDefinitionAsync(String schemaId) {
+        final String existing;
+        synchronized (lock) {
+            existing = cache.get(schemaId);
+        }
+
+        if (existing != null) {
+            return Mono.just(existing);
+        }
+
+        if (Objects.isNull(schemaRegistryAsyncClient)) {
+            return monoError(LOGGER, new IllegalStateException("Cannot use async methods if SchemaRegistryAsyncClient "
+                + "Set client in SchemaRegistryJsonSchemaSerializer.schemaRegistryClient(SchemaRegistryAsyncClient)."
+            ));
+        }
+
+        return schemaRegistryAsyncClient.getSchema(schemaId)
             .handle((registryObject, sink) -> {
                 final String schemaString = registryObject.getDefinition();
 
