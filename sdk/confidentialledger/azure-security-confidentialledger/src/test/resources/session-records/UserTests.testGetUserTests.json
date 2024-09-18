@@ -1,0 +1,44 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.confidential-ledger.core.azure.com/ledgerIdentity/java-sdk-live-tests-ledger?api-version=2022-05-13",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-security-confidentialledger/1.1.0-beta.1 (18.0.2.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "dbc762bc-7740-4532-97b5-b7a41603ed17"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-machineName" : "identityservice-74474fbb54-bngc4",
+      "Server" : "Kestrel",
+      "x-ms-image-digest" : "sha256:99312b48a4a36c2a35a64344ef1a7d53831ef6d94f7f4dbde1c0e95b272869e2",
+      "x-ms-image-tag" : "1.0.02181.52-650996ff8a6192801b2212d88c07f72145942d6f",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"ledgerTlsCertificate\":\"-----BEGIN CERTIFICATE-----\\nMIIBezCCASGgAwIBAgIRAKLZijU4vM4pdXBFECX9udEwCgYIKoZIzj0EAwIwFjEU\\nMBIGA1UEAwwLQ0NGIE5ldHdvcmswHhcNMjMwMzAxMTM1NDU5WhcNMjMwNTMwMTM1\\nNDU4WjAWMRQwEgYDVQQDDAtDQ0YgTmV0d29yazBZMBMGByqGSM49AgEGCCqGSM49\\nAwEHA0IABMEG2833BvKMjevK2yR4iNnbmLVxFCfUOSAMEihqiq/YQGRuuQgdjDE9\\nPlAeW3768OgMRx5k8EomiwA1CFJRhJWjUDBOMAwGA1UdEwQFMAMBAf8wHQYDVR0O\\nBBYEFOr/ulXMbmxjEG4+VqP7GLIQr81gMB8GA1UdIwQYMBaAFOr/ulXMbmxjEG4+\\nVqP7GLIQr81gMAoGCCqGSM49BAMCA0gAMEUCIQC5M+E/wBy0wBx+5b+avIm4IML7\\nj/H/n54VbAPbkd3xxAIgYvb4at1tOSYV8w3p3N4geyXcsQSZazMHv+Yywtlto/I=\\n-----END CERTIFICATE-----\\n\",\"ledgerId\":\"java-sdk-live-tests-ledger\"}",
+      "Date" : "Wed, 01 Mar 2023 14:31:12 GMT",
+      "x-ms-client-request-id" : "dbc762bc-7740-4532-97b5-b7a41603ed17",
+      "x-ms-correlation-request-id" : "fcda5b0d-0457-4810-ad84-c3fef5dcaf05",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.confidential-ledger.azure.com/app/users/d958292f-5b70-4b66-9502-562217cc7eaa?api-version=2022-05-13",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-security-confidentialledger/1.1.0-beta.1 (18.0.2.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "851c4014-e489-4270-a1ab-4547b225761f"
+    },
+    "Response" : {
+      "content-length" : "80",
+      "content-type" : "application/json",
+      "retry-after" : "0",
+      "x-ms-ccf-transaction-id" : "2.38",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "173986792",
+      "Body" : "{\"assignedRole\":\"Administrator\",\"userId\":\"d958292f-5b70-4b66-9502-562217cc7eaa\"}",
+      "x-ms-client-request-id" : "851c4014-e489-4270-a1ab-4547b225761f"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
