@@ -450,5 +450,15 @@ directive:
     $.OcrSkillLineEnding["x-ms-enum"].name = "OcrLineEnding";
 ```
 
+### QueryDebugMode is missing vector property
+
+```yaml $(tag) == 'searchindex'
+directive:
+- from: "searchindex.json"
+  where: $.definitions.QueryDebugMode
+  transform: >
+    $.enum.push("vector");
+    $["x-ms-enum"].values.push({ "value": "vector", "name": "Vector", description: "Allows the user to further explore their hybrid and vector query results." });
+```
 
 
