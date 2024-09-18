@@ -1,26 +1,14 @@
 # Release History
 
-## 4.9.0-beta.2 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
-## 4.9.0-beta.1 (2024-07-29)
-
-### Features Added
-- Added a new configuration flag to cryptography clients to defer all cryptographic operations to the Key Vault service. ([#40384](https://github.com/Azure/azure-sdk-for-java/pull/40384))
+## 4.8.7 (2024-08-24)
 
 ### Other Changes
 
 #### Dependency Updates
 
-- Upgraded `azure-core` from `1.49.1` to version `1.50.0`.
-- Upgraded `azure-core-http-netty` from `1.15.1` to version `1.15.2`.
+- Upgraded `azure-core` from `1.50.0` to version `1.51.0`.
+- Upgraded `azure-core-http-netty` from `1.15.2` to version `1.15.3`.
+
 
 ## 4.8.6 (2024-07-29)
 
@@ -32,6 +20,7 @@
 - Upgraded `azure-json` from `1.1.0` to version `1.2.0`.
 - Upgraded `azure-core` from `1.49.1` to version `1.50.0`.
 
+
 ## 4.8.5 (2024-06-27)
 
 ### Other Changes
@@ -40,6 +29,7 @@
 
 - Upgraded `azure-core` from `1.49.0` to version `1.49.1`.
 - Upgraded `azure-core-http-netty` from `1.15.0` to version `1.15.1`.
+
 
 ## 4.8.4 (2024-05-13)
 
@@ -830,11 +820,11 @@ For details on the Azure SDK for Java (August 2019 Preview) release refer to the
 - Removed static builder method from clients. Builders are now instantiable.
 
 ## 4.0.0-preview.1 (2019-06-28)
-Version 4.0.0-preview.1 is a preview of our efforts in creating a client library that is developer-friendly, idiomatic to the Java ecosystem, and as consistent across different languages and platforms as possible. The principles that guide our efforts can be found in the [Azure SDK Design Guidelines for Java](https://aka.ms/azsdk/guide/java).
+Version 4.0.0-preview.1 is a preview of our efforts in creating a client library that is developer-friendly, idiomatic to the Java ecosystem, and as consistent across different languages and platforms as possible. The principles that guide our efforts can be found in the [Azure SDK Design Guidelines for Java](https://azuresdkspecs.z5.web.core.windows.net/JavaSpec.html).
 
 For details on the Azure SDK for Java (July 2019 Preview) release, you can refer to the [release announcement](https://aka.ms/azure-sdk-preview1-java).
 
-This library is not a direct replacement for keys management operations from microsoft-azure-keyvault. Applications using that library would require code changes to use `azure-keyvault-keys`.
+This library is not a direct replacement for keys management operations from [microsoft-azure-keyvault](https://github.com/Azure/azure-sdk-for-java/tree/azure-security-keyvault-keys_4.7.3/sdk/keyvault/microsoft-azure-keyvault). Applications using that library would require code changes to use `azure-keyvault-keys`.
 This package's
 [documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-keyvault-keys_4.0.0-preview.1/keyvault/client/keys/README.md)
 and
