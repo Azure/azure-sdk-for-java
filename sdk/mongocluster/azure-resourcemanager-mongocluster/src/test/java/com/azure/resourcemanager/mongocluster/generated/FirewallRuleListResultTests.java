@@ -12,10 +12,10 @@ public final class FirewallRuleListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FirewallRuleListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"InProgress\",\"startIpAddress\":\"evndh\",\"endIpAddress\":\"rwpdappdsbdkvwrw\"},\"id\":\"eusnhutj\",\"name\":\"ltmrldh\",\"type\":\"gjzzdatqxhocdg\"},{\"properties\":{\"provisioningState\":\"InProgress\",\"startIpAddress\":\"gphuticndvka\",\"endIpAddress\":\"zwyiftyhxhur\"},\"id\":\"ftyxolniw\",\"name\":\"wcukjfkgiawxk\",\"type\":\"ryplwckbasyypn\"}],\"nextLink\":\"hsgcbacphejkot\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"startIpAddress\":\"wyqkgfgibm\",\"endIpAddress\":\"dgak\"},\"id\":\"s\",\"name\":\"xybz\",\"type\":\"qedqytbciqfoufl\"},{\"properties\":{\"provisioningState\":\"Failed\",\"startIpAddress\":\"zsm\",\"endIpAddress\":\"dmgloug\"},\"id\":\"kwtmutduqktapspw\",\"name\":\"cuertu\",\"type\":\"kdosvqw\"},{\"properties\":{\"provisioningState\":\"Canceled\",\"startIpAddress\":\"gbbjfddgmbmbe\",\"endIpAddress\":\"ppbhtqqrolfp\"},\"id\":\"s\",\"name\":\"lgbquxig\",\"type\":\"yjgzjaoyfhrtxiln\"},{\"properties\":{\"provisioningState\":\"Updating\",\"startIpAddress\":\"jysvl\",\"endIpAddress\":\"juvf\"},\"id\":\"wrlyxwjkcprb\",\"name\":\"wbxgjvt\",\"type\":\"vpys\"}],\"nextLink\":\"dnrujqguhmuouqfp\"}")
             .toObject(FirewallRuleListResult.class);
-        Assertions.assertEquals("evndh", model.value().get(0).properties().startIpAddress());
-        Assertions.assertEquals("rwpdappdsbdkvwrw", model.value().get(0).properties().endIpAddress());
-        Assertions.assertEquals("hsgcbacphejkot", model.nextLink());
+        Assertions.assertEquals("wyqkgfgibm", model.value().get(0).properties().startIpAddress());
+        Assertions.assertEquals("dgak", model.value().get(0).properties().endIpAddress());
+        Assertions.assertEquals("dnrujqguhmuouqfp", model.nextLink());
     }
 }

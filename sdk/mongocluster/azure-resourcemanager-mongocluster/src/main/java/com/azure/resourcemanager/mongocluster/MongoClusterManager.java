@@ -30,11 +30,13 @@ import com.azure.resourcemanager.mongocluster.implementation.MongoClustersImpl;
 import com.azure.resourcemanager.mongocluster.implementation.OperationsImpl;
 import com.azure.resourcemanager.mongocluster.implementation.PrivateEndpointConnectionsImpl;
 import com.azure.resourcemanager.mongocluster.implementation.PrivateLinksImpl;
+import com.azure.resourcemanager.mongocluster.implementation.ReplicasImpl;
 import com.azure.resourcemanager.mongocluster.models.FirewallRules;
 import com.azure.resourcemanager.mongocluster.models.MongoClusters;
 import com.azure.resourcemanager.mongocluster.models.Operations;
 import com.azure.resourcemanager.mongocluster.models.PrivateEndpointConnections;
 import com.azure.resourcemanager.mongocluster.models.PrivateLinks;
+import com.azure.resourcemanager.mongocluster.models.Replicas;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -57,6 +59,8 @@ public final class MongoClusterManager {
     private PrivateEndpointConnections privateEndpointConnections;
 
     private PrivateLinks privateLinks;
+
+    private Replicas replicas;
 
     private final DocumentDBClient clientObject;
 
@@ -327,6 +331,18 @@ public final class MongoClusterManager {
             this.privateLinks = new PrivateLinksImpl(clientObject.getPrivateLinks(), this);
         }
         return privateLinks;
+    }
+
+    /**
+     * Gets the resource collection API of Replicas.
+     * 
+     * @return Resource collection API of Replicas.
+     */
+    public Replicas replicas() {
+        if (this.replicas == null) {
+            this.replicas = new ReplicasImpl(clientObject.getReplicas(), this);
+        }
+        return replicas;
     }
 
     /**

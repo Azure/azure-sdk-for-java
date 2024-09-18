@@ -9,7 +9,7 @@ package com.azure.resourcemanager.mongocluster.generated;
  */
 public final class FirewallRulesDeleteSamples {
     /*
-     * x-ms-original-file: 2024-03-01-preview/MongoClusters_FirewallRuleDelete.json
+     * x-ms-original-file: 2024-06-01-preview/MongoClusters_FirewallRuleDelete.json
      */
     /**
      * Sample code: Deletes a firewall rule on a Mongo Cluster resource.

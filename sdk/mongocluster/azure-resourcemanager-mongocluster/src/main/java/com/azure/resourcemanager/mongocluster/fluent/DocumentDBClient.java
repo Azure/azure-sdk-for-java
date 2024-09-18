@@ -80,4 +80,11 @@ public interface DocumentDBClient {
      * @return the PrivateLinksClient object.
      */
     PrivateLinksClient getPrivateLinks();
+
+    /**
+     * Gets the ReplicasClient object to access its operations.
+     * 
+     * @return the ReplicasClient object.
+     */
+    ReplicasClient getReplicas();
 }
