@@ -24,9 +24,12 @@ import com.azure.messaging.eventhubs.models.PartitionEvent;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
 import com.azure.messaging.eventhubs.models.ReceiveOptions;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.core.publisher.SignalType;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -36,6 +39,7 @@ import java.util.stream.Collectors;
 import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTITION_ID_KEY;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.SEQUENCE_NUMBER_KEY;
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.SIGNAL_TYPE_KEY;
 
 /**
  * The partition pump manager that keeps track of all the partition pumps started by this {@link EventProcessorClient}.
@@ -90,18 +94,21 @@ class PartitionPumpManager {
      * Stops all partition pumps that are actively consuming events. This method is invoked when the {@link
      * EventProcessorClient} is requested to stop.
      */
-    void stopAllPartitionPumps() {
-        this.partitionPumps.forEach((partitionId, eventHubConsumer) -> {
-            try {
-                eventHubConsumer.close();
-            } catch (Exception ex) {
-                LOGGER.atWarning()
-                    .addKeyValue(PARTITION_ID_KEY, partitionId)
-                    .log(Messages.FAILED_CLOSE_CONSUMER_PARTITION, ex);
-            } finally {
-                partitionPumps.remove(partitionId);
-            }
-        });
+    Mono<Void> stopAllPartitionPumps() {
+        List<String> partitionIds = new ArrayList<>(partitionPumps.keySet());
+        return Flux.fromIterable(partitionIds)
+            .flatMap(partitionId -> {
+                final PartitionPump pump = partitionPumps.remove(partitionId);
+                return pump.closeAsync()
+                    .doOnError(ex -> LOGGER.atWarning()
+                        .addKeyValue(PARTITION_ID_KEY, partitionId)
+                        .addKeyValue(SIGNAL_TYPE_KEY, SignalType.ON_ERROR)
+                        .log(Messages.FAILED_CLOSE_CONSUMER_PARTITION, ex))
+                    .doOnCancel(() -> LOGGER.atWarning()
+                        .addKeyValue(PARTITION_ID_KEY, partitionId)
+                        .addKeyValue(SIGNAL_TYPE_KEY, SignalType.CANCEL)
+                        .log(Messages.FAILED_CLOSE_CONSUMER_PARTITION));
+            }).then();
     }
 
     /**
