@@ -29,7 +29,7 @@ import java.util.function.Function;
 @Configuration(proxyBeanMethods = false)
 @AutoConfigureBefore(OpenTelemetryAutoConfiguration.class)
 @ConditionalOnProperty(name = "otel.sdk.disabled", havingValue = "false", matchIfMissing = true)
-public class AzureSpringMonitorAutoConfiguration {
+class AzureSpringMonitorAutoConfiguration {
 
     private static final Logger LOG = LoggerFactory.getLogger(AzureSpringMonitorAutoConfiguration.class);
 
