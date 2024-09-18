@@ -51,7 +51,6 @@ OpenTelemetry openTelemetry = sdkBuilder.build().getOpenTelemetrySdk();
 
 The following sections provide code samples using the OpenTelemetry Azure Monitor Exporter client library and OpenTelemetry API.
 
-
 The following example shows how create a span:
 
 ```java readme-sample-create-span
