@@ -127,7 +127,7 @@ public class SchemaRegistryJsonSchemaSerializerTests {
      * Serializes an object, and registers the schema when auto-register is set to true.
      */
     @Test
-    public void serializeNoArgConstructor() throws IOException {
+    public void serializeNoArgConstructor() {
         // Arrange
         SerializerOptions serializerOptions = new SerializerOptions(SCHEMA_GROUP, true,
             100, JSON_SERIALIZER);
@@ -289,7 +289,7 @@ public class SchemaRegistryJsonSchemaSerializerTests {
      * Deserializes a message into its object and validates it.
      */
     @Test
-    public void deserialize() throws IOException {
+    public void deserialize() {
         // Arrange
         SerializerOptions serializerOptions = new SerializerOptions(SCHEMA_GROUP, false,
             100, JSON_SERIALIZER);
@@ -324,7 +324,7 @@ public class SchemaRegistryJsonSchemaSerializerTests {
      * Deserializes a message and throws an error when the schema is not valid.
      */
     @Test
-    public void deserializeErrorNotMatchingSchema() throws IOException {
+    public void deserializeErrorNotMatchingSchema() {
         // Arrange
         SerializerOptions serializerOptions = new SerializerOptions(SCHEMA_GROUP, false,
             100, JSON_SERIALIZER);
@@ -357,7 +357,7 @@ public class SchemaRegistryJsonSchemaSerializerTests {
      * Deserializes a message and user method throws an error. We expect user code to return normally.
      */
     @Test
-    public void deserializeErrorIsValidThrowsException() throws IOException {
+    public void deserializeErrorIsValidThrowsException() {
         // Arrange
         SerializerOptions serializerOptions = new SerializerOptions(SCHEMA_GROUP, false,
             100, JSON_SERIALIZER);
