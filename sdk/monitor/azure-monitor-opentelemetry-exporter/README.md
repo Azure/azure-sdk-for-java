@@ -76,7 +76,7 @@ try (Scope scope = span.makeCurrent()) {
 The following example demonstrates how to add a span processor to the OpenTelemetry SDK autoconfiguration.
 
 ```java readme-sample-span-processor
-    private static final AttributeKey<String> ATTRIBUTE_KEY = AttributeKey.stringKey("attributeKey");
+private static final AttributeKey<String> ATTRIBUTE_KEY = AttributeKey.stringKey("attributeKey");
 
 public void spanProcessor() {
     AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
