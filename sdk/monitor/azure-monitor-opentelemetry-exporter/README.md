@@ -40,7 +40,7 @@ AzureMonitor.customize(sdkBuilder);
 OpenTelemetry openTelemetry = sdkBuilder.build().getOpenTelemetrySdk();
 ```
 
-You can also se the connection string in the code:
+You can also set the connection string in the code:
 ```java readme-sample-autoconfigure
 AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
 AzureMonitor.customize(sdkBuilder, "{connection-string}");
