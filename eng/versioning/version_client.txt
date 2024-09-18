@@ -180,7 +180,7 @@ com.azure:azure-security-keyvault-administration;4.5.7;4.6.0-beta.1
 com.azure:azure-security-keyvault-certificates;4.6.6;4.7.0-beta.1
 com.azure:azure-security-keyvault-jca;2.8.1;2.9.0-beta.3
 com.azure:azure-security-test-keyvault-jca;1.0.0;1.0.0
-com.azure:azure-security-keyvault-keys;4.8.7;4.9.0-beta.2
+com.azure:azure-security-keyvault-keys;4.8.7;4.8.8
 com.azure:azure-security-keyvault-secrets;4.8.6;4.9.0-beta.1
 com.azure:azure-security-keyvault-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-sdk-template;1.1.1234;1.2.2-beta.1
