@@ -76,37 +76,39 @@ try (Scope scope = span.makeCurrent()) {
 The following example demonstrates how to add a span processor to the OpenTelemetry SDK autoconfiguration.
 
 ```java readme-sample-span-processor
-AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
-
-AzureMonitor.customize(sdkBuilder);
-
-SpanProcessor spanProcessor = new SpanProcessor() {
-
     private static final AttributeKey<String> ATTRIBUTE_KEY = AttributeKey.stringKey("attributeKey");
-    
-    @Override
-    public void onStart(Context context, ReadWriteSpan span) {
-        span.setAttribute(ATTRIBUTE_KEY, "attributeValue");
-    }
 
-    @Override
-    public boolean isStartRequired() {
-        return true;
-    }
+public void spanProcessor() {
+    AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
 
-    @Override
-    public void onEnd(ReadableSpan readableSpan) {
-    }
+    AzureMonitor.customize(sdkBuilder);
 
-    @Override
-    public boolean isEndRequired() {
-        return false;
-    }
-};
+    SpanProcessor spanProcessor = new SpanProcessor() {
 
-sdkBuilder.addTracerProviderCustomizer(
-    (sdkTracerProviderBuilder, configProperties) -> sdkTracerProviderBuilder
-        .addSpanProcessor(spanProcessor));
+        @Override
+        public void onStart(Context context, ReadWriteSpan span) {
+            span.setAttribute(ATTRIBUTE_KEY, "attributeValue");
+        }
+
+        @Override
+        public boolean isStartRequired() {
+            return true;
+        }
+
+        @Override
+        public void onEnd(ReadableSpan readableSpan) {
+        }
+
+        @Override
+        public boolean isEndRequired() {
+            return false;
+        }
+    };
+
+    sdkBuilder.addTracerProviderCustomizer(
+        (sdkTracerProviderBuilder, configProperties) -> sdkTracerProviderBuilder
+            .addSpanProcessor(spanProcessor));
+}
 ```
 More advanced examples with OpenTelemetry APIs:
 * [Advanced examples - 1][advanced_examples_1]

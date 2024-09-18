@@ -114,18 +114,15 @@ public class ReadmeSamples {
         // END: readme-sample-create-span
     }
 
-    /**
-     * Sample to add a span processor to the OpenTelemetry SDK auto-configuration
-     */
+    // BEGIN: readme-sample-span-processor
+    private static final AttributeKey<String> ATTRIBUTE_KEY = AttributeKey.stringKey("attributeKey");
+
     public void spanProcessor() {
-        // BEGIN: readme-sample-span-processor
         AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
 
         AzureMonitor.customize(sdkBuilder);
 
         SpanProcessor spanProcessor = new SpanProcessor() {
-
-            private static final AttributeKey<String> ATTRIBUTE_KEY = AttributeKey.stringKey("attributeKey");
 
             @Override
             public void onStart(Context context, ReadWriteSpan span) {
@@ -150,6 +147,7 @@ public class ReadmeSamples {
         sdkBuilder.addTracerProviderCustomizer(
             (sdkTracerProviderBuilder, configProperties) -> sdkTracerProviderBuilder
                 .addSpanProcessor(spanProcessor));
-        // END: readme-sample-span-processor
     }
+    // END: readme-sample-span-processor
+
 }
