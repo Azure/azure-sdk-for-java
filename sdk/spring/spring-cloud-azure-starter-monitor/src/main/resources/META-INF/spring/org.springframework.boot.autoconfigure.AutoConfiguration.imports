@@ -1,2 +1,2 @@
-com.azure.monitor.applicationinsights.spring.AzureSpringMonitorAutoConfig
-com.azure.monitor.applicationinsights.spring.selfdiagnostics.implementation.SelfDiagAutoConfig
+com.azure.spring.cloud.autoconfigure.monitor.AzureSpringMonitorAutoConfig
+com.azure.spring.cloud.autoconfigure.monitor.selfdiagnostics.implementation.SelfDiagAutoConfig

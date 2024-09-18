@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.monitor.applicationinsights.spring.selfdiagnostics.implementation;
+package com.azure.spring.cloud.autoconfigure.monitor.selfdiagnostics.implementation;
 
 import ch.qos.logback.classic.Level;
-import com.azure.monitor.applicationinsights.spring.selfdiagnostics.SelfDiagnosticsLevel;
+import com.azure.spring.cloud.autoconfigure.monitor.selfdiagnostics.SelfDiagnosticsLevel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;

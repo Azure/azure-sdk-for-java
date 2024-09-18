@@ -4,4 +4,4 @@
 /**
  * Package containing the classes for Application Insights for Spring native.
  */
-package com.azure.monitor.applicationinsights.spring;
+package com.azure.spring.cloud.autoconfigure.monitor;
