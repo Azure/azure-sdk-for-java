@@ -13,9 +13,10 @@ import com.azure.messaging.eventhubs.models.PartitionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.ConnectableFlux;
+import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.Sinks;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
@@ -297,7 +298,7 @@ class MachineInformation implements AutoCloseable {
     private final Logger logger = LoggerFactory.getLogger(MachineInformation.class);
     private final AtomicReference<List<Integer>> temperatures = new AtomicReference<>(new ArrayList<>());
     private final ConnectableFlux<AverageTemperature> averageTemperatures;
-    private final Sinks.One<Boolean> onDispose = Sinks.one();
+    private final DirectProcessor<Boolean> onDispose = DirectProcessor.create();
     private final AtomicBoolean isDisposed = new AtomicBoolean();
 
     private volatile Instant lastReported = Instant.EPOCH;
@@ -311,7 +312,7 @@ class MachineInformation implements AutoCloseable {
     MachineInformation(String identifier, Duration reportingInterval) {
         this.identifier = identifier;
         this.averageTemperatures = Flux.interval(reportingInterval)
-            .takeUntilOther(onDispose.asMono())
+            .takeUntilOther(onDispose)
             .map(unused -> {
                 final Instant timeCalculated = Instant.now();
                 final List<Integer> temperaturesInInterval = temperatures.getAndSet(new ArrayList<>());
@@ -380,7 +381,9 @@ class MachineInformation implements AutoCloseable {
             return;
         }
 
-        onDispose.emitValue(true, Sinks.EmitFailureHandler.FAIL_FAST);
+        final FluxSink<Boolean> sink = onDispose.sink();
+        sink.next(true);
+        sink.complete();
     }
 }
 

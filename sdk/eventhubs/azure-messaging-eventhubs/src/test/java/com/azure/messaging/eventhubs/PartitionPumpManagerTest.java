@@ -27,7 +27,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.test.publisher.TestPublisher;
 
@@ -216,7 +215,7 @@ public class PartitionPumpManagerTest {
             }));
         } finally {
             // Want to make sure we dispose of resources we create. (ie. schedulers)
-            manager.stopAllPartitionPumps().block();
+            manager.stopAllPartitionPumps();
         }
     }
 
@@ -343,26 +342,24 @@ public class PartitionPumpManagerTest {
         final String partition1 = "01";
         final EventHubConsumerAsyncClient client1 = mock(EventHubConsumerAsyncClient.class);
         final Scheduler scheduler1 = mock(Scheduler.class);
-        when(scheduler1.disposeGracefully()).thenReturn(Mono.empty());
         final PartitionPump pump1 = new PartitionPump(partition1, client1, scheduler1);
 
         final String partition2 = "02";
         final EventHubConsumerAsyncClient client2 = mock(EventHubConsumerAsyncClient.class);
         final Scheduler scheduler2 = mock(Scheduler.class);
-        when(scheduler2.disposeGracefully()).thenReturn(Mono.empty());
         final PartitionPump pump2 = new PartitionPump(partition2, client2, scheduler2);
 
         manager.getPartitionPumps().put(partition1, pump1);
         manager.getPartitionPumps().put(partition2, pump2);
 
         // Act
-        manager.stopAllPartitionPumps().block();
+        manager.stopAllPartitionPumps();
 
         // Assert
-        verify(scheduler1).disposeGracefully();
+        verify(scheduler1).dispose();
         verify(client1).close();
 
-        verify(scheduler2).disposeGracefully();
+        verify(scheduler2).dispose();
         verify(client2).close();
 
         assertTrue(manager.getPartitionPumps().isEmpty());
@@ -442,7 +439,7 @@ public class PartitionPumpManagerTest {
 
             assertEquals(3, eventCounter.get());
         } finally {
-            manager.stopAllPartitionPumps().block();
+            manager.stopAllPartitionPumps();
         }
     }
 
@@ -504,7 +501,7 @@ public class PartitionPumpManagerTest {
             assertTrue(maxPrefetched.get() <= maxExpectedPrefetched,
                 String.format("Expected at most %s events to be prefetched, got %s", maxExpectedPrefetched, maxPrefetched.get()));
         } finally {
-            manager.stopAllPartitionPumps().block();
+            manager.stopAllPartitionPumps();
         }
     }
 
@@ -543,7 +540,7 @@ public class PartitionPumpManagerTest {
             assertTrue(receiveCounter.await(20, TimeUnit.SECONDS));
             verify(partitionProcessor, never()).processError(any(ErrorContext.class));
         } finally {
-            manager.stopAllPartitionPumps().block();
+            manager.stopAllPartitionPumps();
         }
     }
 
@@ -583,7 +580,7 @@ public class PartitionPumpManagerTest {
             assertFalse(receiveCounter.await(10, TimeUnit.SECONDS));
             verify(partitionProcessor, never()).processError(any(ErrorContext.class));
         } finally {
-            manager.stopAllPartitionPumps().block();
+            manager.stopAllPartitionPumps();
         }
     }
 
@@ -862,7 +859,7 @@ public class PartitionPumpManagerTest {
             verify(consumerAsyncClient).close();
 
         } finally {
-            manager.stopAllPartitionPumps().block();
+            manager.stopAllPartitionPumps();
         }
     }
 
@@ -952,7 +949,7 @@ public class PartitionPumpManagerTest {
             verify(consumerAsyncClient).close();
 
         } finally {
-            manager.stopAllPartitionPumps().block();
+            manager.stopAllPartitionPumps();
         }
     }
 
@@ -1040,7 +1037,7 @@ public class PartitionPumpManagerTest {
             verify(consumerAsyncClient).close();
 
         } finally {
-            manager.stopAllPartitionPumps().block();
+            manager.stopAllPartitionPumps();
         }
     }
 

@@ -50,7 +50,7 @@ import java.util.Map;
  * Verifies we authorize with Event Hubs CBS node correctly.
  */
 @Tag(TestUtils.INTEGRATION)
-class NonFederatedCBSChannelTest extends IntegrationTestBase {
+class CBSChannelTest extends IntegrationTestBase {
     private static final String CONNECTION_ID = "CbsChannelTest-Connection";
     private static String product;
     private static String clientVersion;
@@ -71,8 +71,8 @@ class NonFederatedCBSChannelTest extends IntegrationTestBase {
     private String tokenAudience;
     private AutoCloseable closeable;
 
-    NonFederatedCBSChannelTest() {
-        super(new ClientLogger(NonFederatedCBSChannelTest.class));
+    CBSChannelTest() {
+        super(new ClientLogger(CBSChannelTest.class));
     }
 
     @BeforeAll
@@ -86,13 +86,10 @@ class NonFederatedCBSChannelTest extends IntegrationTestBase {
     protected void beforeTest() {
         closeable = MockitoAnnotations.openMocks(this);
 
-        connectionProperties = new ConnectionStringProperties(TestUtils.getConnectionString(false));
-
-        final String eventHubName = TestUtils.getEventHubName();
-
+        connectionProperties = TestUtils.getConnectionStringProperties();
         azureTokenManagerProvider = new AzureTokenManagerProvider(CbsAuthorizationType.SHARED_ACCESS_SIGNATURE,
             connectionProperties.getEndpoint().getHost(), ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE);
-        tokenAudience = azureTokenManagerProvider.getScopesFromResource(eventHubName);
+        tokenAudience = azureTokenManagerProvider.getScopesFromResource(connectionProperties.getEntityPath());
 
         retryOptions = new AmqpRetryOptions().setTryTimeout(Duration.ofMinutes(1));
         reactorProvider = new ReactorProvider();
@@ -181,7 +178,7 @@ class NonFederatedCBSChannelTest extends IntegrationTestBase {
             ReactorProvider reactorProvider, ReactorHandlerProvider handlerProvider, AmqpLinkProvider linkProvider,
             TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer) {
             super(connectionId, connectionOptions, reactorProvider, handlerProvider, linkProvider, tokenManagerProvider,
-                messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.SECOND, false, false);
+                messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.SECOND, true);
         }
 
         private Mono<RequestResponseChannel> getCBSChannel(String linkName) {
