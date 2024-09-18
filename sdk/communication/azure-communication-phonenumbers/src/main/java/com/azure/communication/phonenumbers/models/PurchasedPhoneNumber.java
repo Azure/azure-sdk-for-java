@@ -5,67 +5,64 @@
 package com.azure.communication.phonenumbers.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/**
- * Represents a purchased phone number.
- */
+/** The PurchasedPhoneNumber model. */
 @Immutable
-public final class PurchasedPhoneNumber implements JsonSerializable<PurchasedPhoneNumber> {
+public final class PurchasedPhoneNumber {
     /*
      * The id of the phone number, e.g. 11234567890.
      */
+    @JsonProperty(value = "id", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * String of the E.164 format of the phone number, e.g. +11234567890.
      */
+    @JsonProperty(value = "phoneNumber", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String phoneNumber;
 
     /*
      * The ISO 3166-2 code of the phone number's country, e.g. US.
      */
+    @JsonProperty(value = "countryCode", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String countryCode;
 
     /*
      * The phone number's type, e.g. geographic, tollFree.
      */
+    @JsonProperty(value = "phoneNumberType", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private PhoneNumberType phoneNumberType;
 
     /*
      * Capabilities of a phone number.
      */
+    @JsonProperty(value = "capabilities", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private PhoneNumberCapabilities capabilities;
 
     /*
-     * The assignment type of the phone number. A phone number can be assigned to a person, or to an application.
+     * The assignment type of the phone number. A phone number can be assigned
+     * to a person, or to an application.
      */
+    @JsonProperty(value = "assignmentType", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private PhoneNumberAssignmentType assignmentType;
 
     /*
      * The date and time that the phone number was purchased.
      */
+    @JsonProperty(value = "purchaseDate", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime purchaseDate;
 
     /*
      * The incurred cost for a single phone number.
      */
+    @JsonProperty(value = "cost", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private PhoneNumberCost cost;
 
     /**
-     * Creates an instance of PurchasedPhoneNumber class.
-     */
-    public PurchasedPhoneNumber() {
-    }
-
-    /**
      * Get the id property: The id of the phone number, e.g. 11234567890.
-     * 
+     *
      * @return the id value.
      */
     public String getId() {
@@ -74,7 +71,7 @@ public final class PurchasedPhoneNumber implements JsonSerializable<PurchasedPho
 
     /**
      * Get the phoneNumber property: String of the E.164 format of the phone number, e.g. +11234567890.
-     * 
+     *
      * @return the phoneNumber value.
      */
     public String getPhoneNumber() {
@@ -83,7 +80,7 @@ public final class PurchasedPhoneNumber implements JsonSerializable<PurchasedPho
 
     /**
      * Get the countryCode property: The ISO 3166-2 code of the phone number's country, e.g. US.
-     * 
+     *
      * @return the countryCode value.
      */
     public String getCountryCode() {
@@ -92,7 +89,7 @@ public final class PurchasedPhoneNumber implements JsonSerializable<PurchasedPho
 
     /**
      * Get the phoneNumberType property: The phone number's type, e.g. geographic, tollFree.
-     * 
+     *
      * @return the phoneNumberType value.
      */
     public PhoneNumberType getPhoneNumberType() {
@@ -101,7 +98,7 @@ public final class PurchasedPhoneNumber implements JsonSerializable<PurchasedPho
 
     /**
      * Get the capabilities property: Capabilities of a phone number.
-     * 
+     *
      * @return the capabilities value.
      */
     public PhoneNumberCapabilities getCapabilities() {
@@ -111,7 +108,7 @@ public final class PurchasedPhoneNumber implements JsonSerializable<PurchasedPho
     /**
      * Get the assignmentType property: The assignment type of the phone number. A phone number can be assigned to a
      * person, or to an application.
-     * 
+     *
      * @return the assignmentType value.
      */
     public PhoneNumberAssignmentType getAssignmentType() {
@@ -120,7 +117,7 @@ public final class PurchasedPhoneNumber implements JsonSerializable<PurchasedPho
 
     /**
      * Get the purchaseDate property: The date and time that the phone number was purchased.
-     * 
+     *
      * @return the purchaseDate value.
      */
     public OffsetDateTime getPurchaseDate() {
@@ -129,62 +126,10 @@ public final class PurchasedPhoneNumber implements JsonSerializable<PurchasedPho
 
     /**
      * Get the cost property: The incurred cost for a single phone number.
-     * 
+     *
      * @return the cost value.
      */
     public PhoneNumberCost getCost() {
         return this.cost;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of PurchasedPhoneNumber from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of PurchasedPhoneNumber if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the PurchasedPhoneNumber.
-     */
-    public static PurchasedPhoneNumber fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            PurchasedPhoneNumber deserializedPurchasedPhoneNumber = new PurchasedPhoneNumber();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("id".equals(fieldName)) {
-                    deserializedPurchasedPhoneNumber.id = reader.getString();
-                } else if ("phoneNumber".equals(fieldName)) {
-                    deserializedPurchasedPhoneNumber.phoneNumber = reader.getString();
-                } else if ("countryCode".equals(fieldName)) {
-                    deserializedPurchasedPhoneNumber.countryCode = reader.getString();
-                } else if ("phoneNumberType".equals(fieldName)) {
-                    deserializedPurchasedPhoneNumber.phoneNumberType = PhoneNumberType.fromString(reader.getString());
-                } else if ("capabilities".equals(fieldName)) {
-                    deserializedPurchasedPhoneNumber.capabilities = PhoneNumberCapabilities.fromJson(reader);
-                } else if ("assignmentType".equals(fieldName)) {
-                    deserializedPurchasedPhoneNumber.assignmentType
-                        = PhoneNumberAssignmentType.fromString(reader.getString());
-                } else if ("purchaseDate".equals(fieldName)) {
-                    deserializedPurchasedPhoneNumber.purchaseDate
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
-                } else if ("cost".equals(fieldName)) {
-                    deserializedPurchasedPhoneNumber.cost = PhoneNumberCost.fromJson(reader);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedPurchasedPhoneNumber;
-        });
     }
 }
