@@ -5,6 +5,7 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.eventhubs.implementation.AmqpReceiveLinkProcessor;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties;
 import com.azure.messaging.eventhubs.models.PartitionContext;
@@ -29,7 +30,7 @@ class EventHubPartitionAsyncConsumer implements AutoCloseable {
     private static final ClientLogger LOGGER = new ClientLogger(EventHubPartitionAsyncConsumer.class);
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final AtomicReference<LastEnqueuedEventProperties> lastEnqueuedEventProperties = new AtomicReference<>();
-    private final MessageFluxWrapper amqpReceiveLinkProcessor;
+    private final AmqpReceiveLinkProcessor amqpReceiveLinkProcessor;
     private final MessageSerializer messageSerializer;
     private final String fullyQualifiedNamespace;
     private final String eventHubName;
@@ -41,7 +42,7 @@ class EventHubPartitionAsyncConsumer implements AutoCloseable {
 
     private volatile Long currentOffset;
 
-    EventHubPartitionAsyncConsumer(MessageFluxWrapper amqpReceiveLinkProcessor,
+    EventHubPartitionAsyncConsumer(AmqpReceiveLinkProcessor amqpReceiveLinkProcessor,
         MessageSerializer messageSerializer, String fullyQualifiedNamespace, String eventHubName, String consumerGroup,
         String partitionId, AtomicReference<Supplier<EventPosition>> currentEventPosition,
         boolean trackLastEnqueuedEventProperties) {
@@ -66,7 +67,7 @@ class EventHubPartitionAsyncConsumer implements AutoCloseable {
                 : EventPosition.fromOffset(offset);
         });
 
-        this.emitterProcessor = amqpReceiveLinkProcessor.flux()
+        this.emitterProcessor = amqpReceiveLinkProcessor
             .map(this::onMessageReceived)
             .doOnNext(event -> {
                 // Keep track of the last position so if the link goes down, we don't start from the original location.

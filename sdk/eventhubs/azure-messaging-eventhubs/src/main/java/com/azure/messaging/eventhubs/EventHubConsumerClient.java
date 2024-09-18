@@ -127,7 +127,6 @@ public class EventHubConsumerClient implements Closeable {
     private final Duration timeout;
     private final AtomicInteger idGenerator = new AtomicInteger();
     private final EventHubsTracer tracer;
-    private final SynchronousPartitionReceiver syncReceiver;
 
     EventHubConsumerClient(EventHubConsumerAsyncClient consumer, Duration tryTimeout) {
         Objects.requireNonNull(tryTimeout, "'tryTimeout' cannot be null.");
@@ -135,7 +134,6 @@ public class EventHubConsumerClient implements Closeable {
         this.consumer = Objects.requireNonNull(consumer, "'consumer' cannot be null.");
         this.timeout = tryTimeout;
         this.tracer = consumer.getInstrumentation().getTracer();
-        this.syncReceiver = new SynchronousPartitionReceiver(consumer); // used in V2 mode.
     }
 
     /**
@@ -261,11 +259,6 @@ public class EventHubConsumerClient implements Closeable {
                 new IllegalArgumentException("'maximumWaitTime' cannot be zero or less."));
         }
 
-        if (consumer.isV2()) {
-            return syncReceiver.receive(partitionId, startingPosition, defaultReceiveOptions, maximumMessageCount,
-                maximumWaitTime);
-        }
-
         Instant startTime = tracer.isEnabled() ? Instant.now() : null;
 
         Flux<PartitionEvent> events = Flux.create(emitter -> {
@@ -319,11 +312,6 @@ public class EventHubConsumerClient implements Closeable {
                 new IllegalArgumentException("'maximumWaitTime' cannot be zero or less."));
         }
 
-        if (consumer.isV2()) {
-            return syncReceiver.receive(partitionId, startingPosition, receiveOptions, maximumMessageCount,
-                maximumWaitTime);
-        }
-
         Instant startTime = tracer.isEnabled() ? Instant.now() : null;
         Flux<PartitionEvent> events = Flux.create(emitter -> {
             queueWork(partitionId, maximumMessageCount, startingPosition, maximumWaitTime, receiveOptions, emitter);
@@ -337,7 +325,6 @@ public class EventHubConsumerClient implements Closeable {
      */
     @Override
     public void close() {
-        syncReceiver.dispose();
         consumer.close();
     }
 

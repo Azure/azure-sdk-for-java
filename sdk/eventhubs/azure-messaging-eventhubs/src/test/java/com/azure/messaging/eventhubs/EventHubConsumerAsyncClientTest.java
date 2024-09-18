@@ -6,7 +6,6 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryMode;
 import com.azure.core.amqp.AmqpRetryOptions;
-import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
@@ -15,8 +14,6 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
-import com.azure.core.amqp.implementation.ReactorConnectionCache;
-import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.test.utils.metrics.TestHistogram;
@@ -35,7 +32,6 @@ import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubConnectionProcessor;
 import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
-import com.azure.messaging.eventhubs.implementation.EventHubReactorAmqpConnection;
 import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsConsumerInstrumentation;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties;
@@ -65,7 +61,6 @@ import reactor.test.publisher.TestPublisher;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
@@ -139,7 +134,7 @@ class EventHubConsumerAsyncClientTest {
     private Runnable onClientClosed;
 
     private EventHubConsumerAsyncClient consumer;
-    private ConnectionCacheWrapper connectionProcessor;
+    private EventHubConnectionProcessor connectionProcessor;
     private AutoCloseable mockCloseable;
 
     @BeforeEach
@@ -167,7 +162,9 @@ class EventHubConsumerAsyncClientTest {
 
         when(connection.closeAsync()).thenReturn(Mono.empty());
 
-        connectionProcessor = createConnectionProcessor(connection, RETRY_OPTIONS, false);
+        connectionProcessor = Flux.<EventHubAmqpConnection>create(sink -> sink.next(connection))
+            .subscribeWith(new EventHubConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
+                "event-hub-name", connectionOptions.getRetry()));
 
         consumer = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, messageSerializer,
             CONSUMER_GROUP, PREFETCH, false, onClientClosed, CLIENT_IDENTIFIER, DEFAULT_INSTRUMENTATION);
@@ -309,7 +306,8 @@ class EventHubConsumerAsyncClientTest {
         final int numberOfEvents = 10;
 
         EventHubAmqpConnection connection1 = mock(EventHubAmqpConnection.class);
-        ConnectionCacheWrapper eventHubConnection = createConnectionProcessor(connection1, RETRY_OPTIONS, false);
+        EventHubConnectionProcessor eventHubConnection = Flux.<EventHubAmqpConnection>create(sink -> sink.next(connection1))
+            .subscribeWith(new EventHubConnectionProcessor(HOSTNAME, EVENT_HUB_NAME, RETRY_OPTIONS));
 
         when(connection1.getEndpointStates()).thenReturn(endpointProcessor.flux());
 
@@ -543,7 +541,8 @@ class EventHubConsumerAsyncClientTest {
         when(amqpReceiveLink.getCredits()).thenReturn(numberOfEvents);
 
         EventHubAmqpConnection connection1 = mock(EventHubAmqpConnection.class);
-        ConnectionCacheWrapper eventHubConnection = createConnectionProcessor(connection1, RETRY_OPTIONS, false);
+        EventHubConnectionProcessor eventHubConnection = Flux.<EventHubAmqpConnection>create(sink -> sink.next(connection1))
+            .subscribeWith(new EventHubConnectionProcessor(HOSTNAME, EVENT_HUB_NAME, RETRY_OPTIONS));
 
         when(connection1.getEndpointStates()).thenReturn(endpointProcessor.flux());
 
@@ -618,7 +617,8 @@ class EventHubConsumerAsyncClientTest {
         when(amqpReceiveLink.getCredits()).thenReturn(numberOfEvents);
 
         EventHubAmqpConnection connection1 = mock(EventHubAmqpConnection.class);
-        ConnectionCacheWrapper eventHubConnection = createConnectionProcessor(connection1, RETRY_OPTIONS, false);
+        EventHubConnectionProcessor eventHubConnection = Flux.<EventHubAmqpConnection>create(sink -> sink.next(connection1))
+            .subscribeWith(new EventHubConnectionProcessor(HOSTNAME, EVENT_HUB_NAME, RETRY_OPTIONS));
 
         when(connection1.getEndpointStates()).thenReturn(endpointProcessor.flux());
 
@@ -691,7 +691,8 @@ class EventHubConsumerAsyncClientTest {
     void doesNotCloseSharedConnection() {
         // Arrange
         EventHubAmqpConnection connection1 = mock(EventHubAmqpConnection.class);
-        ConnectionCacheWrapper eventHubConnection = createConnectionProcessor(connection1, RETRY_OPTIONS, false);
+        EventHubConnectionProcessor eventHubConnection = Flux.<EventHubAmqpConnection>create(sink -> sink.next(connection1))
+            .subscribeWith(new EventHubConnectionProcessor(HOSTNAME, EVENT_HUB_NAME, RETRY_OPTIONS));
         EventHubConsumerAsyncClient sharedConsumer = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
             eventHubConnection, messageSerializer, CONSUMER_GROUP, PREFETCH, true, onClientClosed, CLIENT_IDENTIFIER,
             DEFAULT_INSTRUMENTATION);
@@ -712,7 +713,7 @@ class EventHubConsumerAsyncClientTest {
     @Test
     void closesDedicatedConnection() {
         // Arrange
-        ConnectionCacheWrapper hubConnection = mock(ConnectionCacheWrapper.class);
+        EventHubConnectionProcessor hubConnection = mock(EventHubConnectionProcessor.class);
         EventHubConsumerAsyncClient dedicatedConsumer = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
             hubConnection, messageSerializer, CONSUMER_GROUP, PREFETCH, false, onClientClosed, CLIENT_IDENTIFIER,
             DEFAULT_INSTRUMENTATION);
@@ -992,17 +993,5 @@ class EventHubConsumerAsyncClientTest {
         assertEquals(EVENT_HUB_NAME, attributes.get("entityName"));
         assertEquals(CONSUMER_GROUP, attributes.get("consumerGroup"));
         assertEquals(entityPath, attributes.get("partitionId"));
-    }
-
-    private ConnectionCacheWrapper createConnectionProcessor(EventHubAmqpConnection connection, AmqpRetryOptions retryOptions, boolean isV2) {
-        if (isV2) {
-            final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
-            final ReactorConnectionCache<EventHubReactorAmqpConnection> cache = new ReactorConnectionCache<>(null, HOSTNAME, EVENT_HUB_NAME, retryPolicy, new HashMap<>(0));
-            return new ConnectionCacheWrapper(cache);
-        } else {
-            final EventHubConnectionProcessor processor = Flux.<EventHubAmqpConnection>create(sink -> sink.next(connection))
-                .subscribeWith(new EventHubConnectionProcessor(HOSTNAME, "event-hub-name", retryOptions));
-            return new ConnectionCacheWrapper(processor);
-        }
     }
 }
