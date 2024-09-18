@@ -152,7 +152,7 @@ com.azure:azure-messaging-eventgrid;4.24.0;4.24.1
 com.azure:azure-messaging-eventgrid-namespaces;1.0.1;1.0.2
 com.azure:azure-messaging-eventgrid-cloudnative-cloudevents;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-messaging-eventhubs;5.18.7;5.18.8
-com.azure:azure-messaging-eventhubs-checkpointstore-blob;1.19.7;1.20.0-beta.3
+com.azure:azure-messaging-eventhubs-checkpointstore-blob;1.19.7;1.19.8
 com.azure:azure-messaging-eventhubs-checkpointstore-jedis;1.0.0-beta.3;1.0.0-beta.4
 com.azure:azure-messaging-eventhubs-stress;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-eventhubs-track1-perf;1.0.0-beta.1;1.0.0-beta.1
