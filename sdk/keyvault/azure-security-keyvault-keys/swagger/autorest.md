@@ -33,7 +33,7 @@ autorest
 use: '@autorest/java@4.1.22'
 output-folder: ../
 java: true
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/8af9817c15d688c941cda106758045b5deb9a069/specification/keyvault/data-plane/Microsoft.KeyVault/preview/7.6-preview.1/keys.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/551275acb80e1f8b39036b79dfc35a8f63b601a7/specification/keyvault/data-plane/Microsoft.KeyVault/stable/7.4/keys.json
 title: KeyClient
 namespace: com.azure.security.keyvault.keys
 models-subpackage: implementation.models
