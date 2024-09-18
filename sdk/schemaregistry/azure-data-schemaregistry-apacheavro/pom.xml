@@ -16,7 +16,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-data-schemaregistry-apacheavro</artifactId>
-  <version>1.1.21</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry-apacheavro;current} -->
+  <version>1.1.20</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry-apacheavro;current} -->
 
   <name>Microsoft Azure client library for Schema Registry Apache Avro Serializer</name>
   <description>Apache Avro-specific serializer for Azure Schema Registry client library</description>
@@ -50,17 +50,30 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.52.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.51.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-data-schemaregistry</artifactId>
-      <version>1.5.0</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry;current} -->
+      <version>1.4.9</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry;current} -->
     </dependency>
     <dependency>
       <groupId>org.apache.avro</groupId>
       <artifactId>avro</artifactId>
       <version>1.11.3</version> <!-- {x-version-update;org.apache.avro:avro;external_dependency} -->
+    </dependency>
+
+    <!-- Explicitly stating these because org.apache.avro uses an older version of jackson which is resolved since it
+      is close to the root for dependencies. -->
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-core</artifactId>
+      <version>2.17.2</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>2.17.2</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
     </dependency>
 
     <!-- Test dependencies -->
@@ -97,13 +110,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.13.3</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.13.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs</artifactId>
-      <version>5.18.7</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
+      <version>5.18.6</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -139,6 +152,8 @@
             <bannedDependencies>
               <includes>
                 <include>org.apache.avro:avro:[1.11.3]</include> <!-- {x-include-update;org.apache.avro:avro;external_dependency} -->
+                <include>com.fasterxml.jackson.core:jackson-core:[2.17.2]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
+                <include>com.fasterxml.jackson.core:jackson-databind:[2.17.2]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
