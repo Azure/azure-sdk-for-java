@@ -124,9 +124,12 @@ public class ReadmeSamples {
         AzureMonitor.customize(sdkBuilder);
 
         SpanProcessor spanProcessor = new SpanProcessor() {
+
+            private static final AttributeKey<String> ATTRIBUTE_KEY = AttributeKey.stringKey("attributeKey");
+
             @Override
             public void onStart(Context context, ReadWriteSpan span) {
-                span.setAttribute(AttributeKey.stringKey("attributeKey"), "attributeValue");
+                span.setAttribute(ATTRIBUTE_KEY, "attributeValue");
             }
 
             @Override
