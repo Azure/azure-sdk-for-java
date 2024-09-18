@@ -5,75 +5,75 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.SecurityEventSqlInjectionAdditionalProperties;
 import com.azure.resourcemanager.sql.models.SecurityEventType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** The properties of a security event. */
+/**
+ * The properties of a security event.
+ */
 @Immutable
-public final class SecurityEventProperties {
+public final class SecurityEventProperties implements JsonSerializable<SecurityEventProperties> {
     /*
      * The time when the security event occurred.
      */
-    @JsonProperty(value = "eventTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime eventTime;
 
     /*
      * The type of the security event.
      */
-    @JsonProperty(value = "securityEventType", access = JsonProperty.Access.WRITE_ONLY)
     private SecurityEventType securityEventType;
 
     /*
      * The subscription name
      */
-    @JsonProperty(value = "subscription", access = JsonProperty.Access.WRITE_ONLY)
     private String subscription;
 
     /*
      * The server name
      */
-    @JsonProperty(value = "server", access = JsonProperty.Access.WRITE_ONLY)
     private String server;
 
     /*
      * The database name
      */
-    @JsonProperty(value = "database", access = JsonProperty.Access.WRITE_ONLY)
     private String database;
 
     /*
      * The IP address of the client who executed the statement.
      */
-    @JsonProperty(value = "clientIp", access = JsonProperty.Access.WRITE_ONLY)
     private String clientIp;
 
     /*
      * The application used to execute the statement.
      */
-    @JsonProperty(value = "applicationName", access = JsonProperty.Access.WRITE_ONLY)
     private String applicationName;
 
     /*
      * The principal user who executed the statement
      */
-    @JsonProperty(value = "principalName", access = JsonProperty.Access.WRITE_ONLY)
     private String principalName;
 
     /*
      * The sql injection additional properties, populated only if the type of the security event is sql injection.
      */
-    @JsonProperty(value = "securityEventSqlInjectionAdditionalProperties", access = JsonProperty.Access.WRITE_ONLY)
     private SecurityEventSqlInjectionAdditionalProperties securityEventSqlInjectionAdditionalProperties;
 
-    /** Creates an instance of SecurityEventProperties class. */
+    /**
+     * Creates an instance of SecurityEventProperties class.
+     */
     public SecurityEventProperties() {
     }
 
     /**
      * Get the eventTime property: The time when the security event occurred.
-     *
+     * 
      * @return the eventTime value.
      */
     public OffsetDateTime eventTime() {
@@ -82,7 +82,7 @@ public final class SecurityEventProperties {
 
     /**
      * Get the securityEventType property: The type of the security event.
-     *
+     * 
      * @return the securityEventType value.
      */
     public SecurityEventType securityEventType() {
@@ -91,7 +91,7 @@ public final class SecurityEventProperties {
 
     /**
      * Get the subscription property: The subscription name.
-     *
+     * 
      * @return the subscription value.
      */
     public String subscription() {
@@ -100,7 +100,7 @@ public final class SecurityEventProperties {
 
     /**
      * Get the server property: The server name.
-     *
+     * 
      * @return the server value.
      */
     public String server() {
@@ -109,7 +109,7 @@ public final class SecurityEventProperties {
 
     /**
      * Get the database property: The database name.
-     *
+     * 
      * @return the database value.
      */
     public String database() {
@@ -118,7 +118,7 @@ public final class SecurityEventProperties {
 
     /**
      * Get the clientIp property: The IP address of the client who executed the statement.
-     *
+     * 
      * @return the clientIp value.
      */
     public String clientIp() {
@@ -127,7 +127,7 @@ public final class SecurityEventProperties {
 
     /**
      * Get the applicationName property: The application used to execute the statement.
-     *
+     * 
      * @return the applicationName value.
      */
     public String applicationName() {
@@ -136,7 +136,7 @@ public final class SecurityEventProperties {
 
     /**
      * Get the principalName property: The principal user who executed the statement.
-     *
+     * 
      * @return the principalName value.
      */
     public String principalName() {
@@ -146,7 +146,7 @@ public final class SecurityEventProperties {
     /**
      * Get the securityEventSqlInjectionAdditionalProperties property: The sql injection additional properties,
      * populated only if the type of the security event is sql injection.
-     *
+     * 
      * @return the securityEventSqlInjectionAdditionalProperties value.
      */
     public SecurityEventSqlInjectionAdditionalProperties securityEventSqlInjectionAdditionalProperties() {
@@ -155,12 +155,66 @@ public final class SecurityEventProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (securityEventSqlInjectionAdditionalProperties() != null) {
             securityEventSqlInjectionAdditionalProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SecurityEventProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SecurityEventProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SecurityEventProperties.
+     */
+    public static SecurityEventProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SecurityEventProperties deserializedSecurityEventProperties = new SecurityEventProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("eventTime".equals(fieldName)) {
+                    deserializedSecurityEventProperties.eventTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("securityEventType".equals(fieldName)) {
+                    deserializedSecurityEventProperties.securityEventType
+                        = SecurityEventType.fromString(reader.getString());
+                } else if ("subscription".equals(fieldName)) {
+                    deserializedSecurityEventProperties.subscription = reader.getString();
+                } else if ("server".equals(fieldName)) {
+                    deserializedSecurityEventProperties.server = reader.getString();
+                } else if ("database".equals(fieldName)) {
+                    deserializedSecurityEventProperties.database = reader.getString();
+                } else if ("clientIp".equals(fieldName)) {
+                    deserializedSecurityEventProperties.clientIp = reader.getString();
+                } else if ("applicationName".equals(fieldName)) {
+                    deserializedSecurityEventProperties.applicationName = reader.getString();
+                } else if ("principalName".equals(fieldName)) {
+                    deserializedSecurityEventProperties.principalName = reader.getString();
+                } else if ("securityEventSqlInjectionAdditionalProperties".equals(fieldName)) {
+                    deserializedSecurityEventProperties.securityEventSqlInjectionAdditionalProperties
+                        = SecurityEventSqlInjectionAdditionalProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSecurityEventProperties;
+        });
     }
 }

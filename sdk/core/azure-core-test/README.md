@@ -35,7 +35,7 @@ To use this package, add the following to your _pom.xml_.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-test</artifactId>
-  <version>1.26.0</version>
+  <version>1.27.0-beta.1</version>
 </dependency>
 ```
 

@@ -8,6 +8,7 @@ import com.azure.ai.vision.imageanalysis.models.ImageAnalysisResult;
 import com.azure.ai.vision.imageanalysis.models.VisualFeatures;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.util.BinaryData;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.io.File;
 import java.util.Arrays;
 import reactor.core.publisher.Mono;
@@ -28,21 +29,21 @@ public class ImageAnalysisAsyncJavaDocCodeSnippets {
             System.exit(1);
         }
 
-        analysisFromFile();
+        analysisFromFileUsingApiKeyAuth();
 
-        analysisFromUrl();
+        analysisFromUrlUsingEntraIdAuth();
     }
 
-    private static void analysisFromFile() {
-        // BEGIN: com.azure.ai.vision.imageanalysis.async-client
+    private static void analysisFromFileUsingApiKeyAuth() {
+        // BEGIN: com.azure.ai.vision.imageanalysis.async-client-api-key-auth
         //
-        // Create an asynchronous Image Analysis client.
+        // Create an asynchronous Image Analysis client with API key authentication.
         //
         ImageAnalysisAsyncClient client = new ImageAnalysisClientBuilder()
             .endpoint(endpoint)
             .credential(new KeyCredential(key))
             .buildAsyncClient();
-        // END: com.azure.ai.vision.imageanalysis.async-client
+        // END: com.azure.ai.vision.imageanalysis.async-client-api-key-auth
 
         // BEGIN: com.azure.ai.vision.imageanalysis.async-analysis-from-file
         //
@@ -72,12 +73,17 @@ public class ImageAnalysisAsyncJavaDocCodeSnippets {
         ImageAnalysisSyncJavaDocCodeSnippets.printAnalysisResults(result.block());
     }
 
-    private static void analysisFromUrl() {
+    private static void analysisFromUrlUsingEntraIdAuth() {
 
+        // BEGIN: com.azure.ai.vision.imageanalysis.async-client-entra-id-auth
+        //
+        // Create an asynchronous Image Analysis client with Entra ID authentication.
+        //
         ImageAnalysisAsyncClient client = new ImageAnalysisClientBuilder()
             .endpoint(endpoint)
-            .credential(new KeyCredential(key))
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
+        // END: com.azure.ai.vision.imageanalysis.async-client-entra-id-auth
 
         // BEGIN: com.azure.ai.vision.imageanalysis.async-analysis-from-url
         //

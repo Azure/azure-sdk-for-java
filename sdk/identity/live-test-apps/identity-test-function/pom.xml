@@ -4,7 +4,7 @@
 
     <groupId>com.azure</groupId>
     <artifactId>identity-test-function</artifactId>
-    <version>1.0-SNAPSHOT</version> <!-- {x-version-update;com.azure:identity-test-function;current} -->
+    <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:identity-test-function;current} -->
     <packaging>jar</packaging>
 
     <name>Azure Java Functions</name>
@@ -29,7 +29,7 @@
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-storage-blob</artifactId>
-            <version>12.26.1</version><!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+            <version>12.27.1</version><!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
         </dependency>
     </dependencies>
 

@@ -5,42 +5,45 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Command job definition. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "jobInputType",
-    defaultImpl = JobInput.class)
-@JsonTypeName("JobInput")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "mltable", value = MLTableJobInput.class),
-    @JsonSubTypes.Type(name = "custom_model", value = CustomModelJobInput.class),
-    @JsonSubTypes.Type(name = "mlflow_model", value = MLFlowModelJobInput.class),
-    @JsonSubTypes.Type(name = "literal", value = LiteralJobInput.class),
-    @JsonSubTypes.Type(name = "triton_model", value = TritonModelJobInput.class),
-    @JsonSubTypes.Type(name = "uri_file", value = UriFileJobInput.class),
-    @JsonSubTypes.Type(name = "uri_folder", value = UriFolderJobInput.class)
-})
+/**
+ * Command job definition.
+ */
 @Fluent
-public class JobInput {
+public class JobInput implements JsonSerializable<JobInput> {
+    /*
+     * [Required] Specifies the type of job.
+     */
+    private JobInputType jobInputType = JobInputType.fromString("JobInput");
+
     /*
      * Description for the input.
      */
-    @JsonProperty(value = "description")
     private String description;
 
-    /** Creates an instance of JobInput class. */
+    /**
+     * Creates an instance of JobInput class.
+     */
     public JobInput() {
     }
 
     /**
+     * Get the jobInputType property: [Required] Specifies the type of job.
+     * 
+     * @return the jobInputType value.
+     */
+    public JobInputType jobInputType() {
+        return this.jobInputType;
+    }
+
+    /**
      * Get the description property: Description for the input.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -49,7 +52,7 @@ public class JobInput {
 
     /**
      * Set the description property: Description for the input.
-     *
+     * 
      * @param description the description value to set.
      * @return the JobInput object itself.
      */
@@ -60,9 +63,85 @@ public class JobInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("jobInputType", this.jobInputType == null ? null : this.jobInputType.toString());
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JobInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JobInput if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the JobInput.
+     */
+    public static JobInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("jobInputType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("mltable".equals(discriminatorValue)) {
+                    return MLTableJobInput.fromJson(readerToUse.reset());
+                } else if ("custom_model".equals(discriminatorValue)) {
+                    return CustomModelJobInput.fromJson(readerToUse.reset());
+                } else if ("mlflow_model".equals(discriminatorValue)) {
+                    return MLFlowModelJobInput.fromJson(readerToUse.reset());
+                } else if ("literal".equals(discriminatorValue)) {
+                    return LiteralJobInput.fromJson(readerToUse.reset());
+                } else if ("triton_model".equals(discriminatorValue)) {
+                    return TritonModelJobInput.fromJson(readerToUse.reset());
+                } else if ("uri_file".equals(discriminatorValue)) {
+                    return UriFileJobInput.fromJson(readerToUse.reset());
+                } else if ("uri_folder".equals(discriminatorValue)) {
+                    return UriFolderJobInput.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static JobInput fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JobInput deserializedJobInput = new JobInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("jobInputType".equals(fieldName)) {
+                    deserializedJobInput.jobInputType = JobInputType.fromString(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedJobInput.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJobInput;
+        });
     }
 }

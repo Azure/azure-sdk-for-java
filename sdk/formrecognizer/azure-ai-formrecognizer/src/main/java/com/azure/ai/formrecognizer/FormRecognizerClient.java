@@ -3,10 +3,29 @@
 
 package com.azure.ai.formrecognizer;
 
+import com.azure.ai.formrecognizer.implementation.AnalyzersImpl;
+import com.azure.ai.formrecognizer.implementation.CustomModelsImpl;
+import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImpl;
+import com.azure.ai.formrecognizer.implementation.Utility;
 import com.azure.ai.formrecognizer.implementation.models.AnalyzeOperationResult;
+import com.azure.ai.formrecognizer.implementation.models.AnalyzersAnalyzeBusinessCardHeaders;
+import com.azure.ai.formrecognizer.implementation.models.AnalyzersAnalyzeIdDocumentHeaders;
+import com.azure.ai.formrecognizer.implementation.models.AnalyzersAnalyzeInvoiceHeaders;
+import com.azure.ai.formrecognizer.implementation.models.AnalyzersAnalyzeLayoutHeaders;
+import com.azure.ai.formrecognizer.implementation.models.AnalyzersAnalyzeReceiptHeaders;
+import com.azure.ai.formrecognizer.implementation.models.ContentType;
+import com.azure.ai.formrecognizer.implementation.models.CustomModelsAnalyzeDocumentHeaders;
+import com.azure.ai.formrecognizer.implementation.models.ErrorResponseException;
+import com.azure.ai.formrecognizer.implementation.models.Language;
+import com.azure.ai.formrecognizer.implementation.models.Locale;
 import com.azure.ai.formrecognizer.implementation.models.OperationStatus;
+import com.azure.ai.formrecognizer.implementation.models.ReadingOrder;
+import com.azure.ai.formrecognizer.implementation.models.SourcePath;
+import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.FormPage;
+import com.azure.ai.formrecognizer.models.FormRecognizerErrorInformation;
 import com.azure.ai.formrecognizer.models.FormRecognizerException;
+import com.azure.ai.formrecognizer.models.FormRecognizerLocale;
 import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
 import com.azure.ai.formrecognizer.models.RecognizeBusinessCardsOptions;
 import com.azure.ai.formrecognizer.models.RecognizeContentOptions;
@@ -18,15 +37,35 @@ import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.ResponseBase;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.core.util.polling.PollResponse;
+import com.azure.core.util.polling.PollingContext;
 import com.azure.core.util.polling.SyncPoller;
-import reactor.core.publisher.Flux;
 
 import java.io.InputStream;
-import java.nio.ByteBuffer;
 import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
+import java.util.function.BiFunction;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
-import static com.azure.ai.formrecognizer.implementation.Utility.toFluxByteBuffer;
+import static com.azure.ai.formrecognizer.Transforms.toRecognizedForm;
+import static com.azure.ai.formrecognizer.Transforms.toRecognizedLayout;
+import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Constants.DEFAULT_POLL_INTERVAL;
+import static com.azure.ai.formrecognizer.implementation.Utility.getRecognizeBusinessCardsOptions;
+import static com.azure.ai.formrecognizer.implementation.Utility.getRecognizeContentOptions;
+import static com.azure.ai.formrecognizer.implementation.Utility.getRecognizeCustomFormOptions;
+import static com.azure.ai.formrecognizer.implementation.Utility.getRecognizeIdentityDocumentOptions;
+import static com.azure.ai.formrecognizer.implementation.Utility.getRecognizeInvoicesOptions;
+import static com.azure.ai.formrecognizer.implementation.Utility.getRecognizeReceiptOptions;
+import static com.azure.ai.formrecognizer.implementation.Utility.parseModelId;
 
 /**
  * <p>This class provides an synchronous client to connect to the Form Recognizer Azure Cognitive Service.</p>
@@ -94,16 +133,20 @@ import static com.azure.ai.formrecognizer.implementation.Utility.toFluxByteBuffe
  */
 @ServiceClient(builder = FormRecognizerClientBuilder.class)
 public final class FormRecognizerClient {
-    private final FormRecognizerAsyncClient client;
+    private static final ClientLogger LOGGER = new ClientLogger(FormRecognizerClient.class);
+    private final AnalyzersImpl analyzersImpl;
+    private final CustomModelsImpl customModelsImpl;
 
     /**
      * Create a {@link FormRecognizerClient client} that sends requests to the Form Recognizer service's endpoint.
      * Each service call goes through the {@link FormRecognizerClientBuilder#pipeline http pipeline}.
      *
-     * @param client The {@link FormRecognizerClient} that the client routes its request through.
+     * @param service The proxy service used to perform REST calls.
+     * @param serviceVersion The service version
      */
-    FormRecognizerClient(FormRecognizerAsyncClient client) {
-        this.client = client;
+    FormRecognizerClient(FormRecognizerClientImpl service, FormRecognizerServiceVersion serviceVersion) {
+        this.analyzersImpl = service.getAnalyzers();
+        this.customModelsImpl = service.getCustomModels();
     }
 
     /**
@@ -188,8 +231,37 @@ public final class FormRecognizerClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeCustomFormsFromUrl(
         String modelId, String formUrl, RecognizeCustomFormsOptions recognizeCustomFormsOptions, Context context) {
-        return client.beginRecognizeCustomFormsFromUrl(formUrl, modelId, recognizeCustomFormsOptions, context)
-            .getSyncPoller();
+        return beginRecognizeCustomFormsFromUrlInternal(formUrl, modelId, recognizeCustomFormsOptions, context);
+    }
+
+    private SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeCustomFormsFromUrlInternal(String formUrl, String modelId, RecognizeCustomFormsOptions recognizeCustomFormsOptions, Context context) {
+        if (CoreUtils.isNullOrEmpty(formUrl)) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'formUrl' is required and cannot"
+                + " be null or empty"));
+        }
+        if (CoreUtils.isNullOrEmpty(modelId)) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'modelId' is required and cannot"
+                + " be null or empty"));
+        }
+        final RecognizeCustomFormsOptions finalRecognizeCustomFormsOptions
+            = getRecognizeCustomFormOptions(recognizeCustomFormsOptions);
+        UUID modelUuid = UUID.fromString(modelId);
+        final boolean isFieldElementsIncluded = finalRecognizeCustomFormsOptions.isFieldElementsIncluded();
+        return SyncPoller.createPoller(DEFAULT_POLL_INTERVAL,
+            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
+                analyzeActivationOperation(modelUuid,
+                    formUrl,
+                    null,
+                    null,
+                    0,
+                    isFieldElementsIncluded,
+                    finalRecognizeCustomFormsOptions,
+                    context).apply(cxt)),
+            pollingOperation(resultUid ->
+                customModelsImpl.getAnalyzeResultWithResponse(modelUuid, resultUid, context)),
+            getCancellationIsNotSupported(),
+            fetchingOperation(resultId -> customModelsImpl.getAnalyzeResultWithResponse(modelUuid, resultId,
+                context), isFieldElementsIncluded, modelId));
     }
 
     /**
@@ -284,9 +356,37 @@ public final class FormRecognizerClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeCustomForms(String modelId,
         InputStream form, long length, RecognizeCustomFormsOptions recognizeCustomFormsOptions, Context context) {
-        Flux<ByteBuffer> buffer = toFluxByteBuffer(form);
-        return client.beginRecognizeCustomForms(modelId, buffer, length, recognizeCustomFormsOptions, context)
-            .getSyncPoller();
+        return beginRecognizeCustomFormsInternal(modelId, form, length, recognizeCustomFormsOptions, context);
+    }
+
+    private SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeCustomFormsInternal(String modelId, InputStream form, long length,
+                                                                                                              RecognizeCustomFormsOptions recognizeCustomFormsOptions, Context context) {
+        if (form == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'form' is required and cannot"
+                + " be null or empty"));
+        }
+        if (CoreUtils.isNullOrEmpty(modelId)) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'modelId' is required and cannot"
+                + " be null or empty"));
+        }
+        final RecognizeCustomFormsOptions finalRecognizeCustomFormsOptions
+            = getRecognizeCustomFormOptions(recognizeCustomFormsOptions);
+        UUID modelUuid = UUID.fromString(modelId);
+        final boolean isFieldElementsIncluded = finalRecognizeCustomFormsOptions.isFieldElementsIncluded();
+        return SyncPoller.createPoller(DEFAULT_POLL_INTERVAL,
+            cxt -> {
+                try {
+                    return new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, analyzeActivationOperation(modelUuid, null, finalRecognizeCustomFormsOptions.getContentType(),
+                        BinaryData.fromStream(form), length, isFieldElementsIncluded, finalRecognizeCustomFormsOptions, context).apply(cxt));
+                } catch (ErrorResponseException ex) {
+                    throw LOGGER.logExceptionAsError(Utility.getHttpResponseException(ex));
+                }
+            },
+            pollingOperation(resultUid ->
+                        customModelsImpl.getAnalyzeResultWithResponse(modelUuid, resultUid, context)),
+                    getCancellationIsNotSupported(),
+                fetchingOperation(resultId -> customModelsImpl.getAnalyzeResultWithResponse(modelUuid, resultId,
+                    context), isFieldElementsIncluded, modelId));
     }
 
     /**
@@ -370,7 +470,48 @@ public final class FormRecognizerClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<FormRecognizerOperationResult, List<FormPage>> beginRecognizeContentFromUrl(String formUrl,
         RecognizeContentOptions recognizeContentOptions, Context context) {
-        return client.beginRecognizeContentFromUrl(formUrl, recognizeContentOptions, context).getSyncPoller();
+        return beginRecognizeContentFromUrlInternal(formUrl, recognizeContentOptions, context);
+    }
+
+    private SyncPoller<FormRecognizerOperationResult, List<FormPage>> beginRecognizeContentFromUrlInternal(String formUrl,
+                                                                                           RecognizeContentOptions recognizeContentOptions, Context context) {
+        if (formUrl == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'formUrl' is required and cannot be null."));
+        }
+
+        RecognizeContentOptions finalRecognizeContentOptions = getRecognizeContentOptions(recognizeContentOptions);
+
+        return SyncPoller.createPoller(DEFAULT_POLL_INTERVAL,
+            (cxt) -> {
+                try {
+                    ResponseBase<AnalyzersAnalyzeLayoutHeaders, Void> analyzeLayoutWithResponse = analyzersImpl.analyzeLayoutWithResponse(
+                        finalRecognizeContentOptions.getPages(),
+                        Language.fromString(Objects.toString(finalRecognizeContentOptions.getLanguage(), null)),
+                        ReadingOrder.fromString(
+                            Objects.toString(finalRecognizeContentOptions.getReadingOrder(), null)),
+                        new SourcePath().setSource(formUrl),
+                        context);
+                    return new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, new FormRecognizerOperationResult(parseModelId(analyzeLayoutWithResponse.getDeserializedHeaders().getOperationLocation())));
+                } catch (ErrorResponseException ex) {
+                    throw LOGGER.logExceptionAsError(Utility.getHttpResponseException(ex));
+                }
+            },
+            pollingOperation(resultId -> {
+                try {
+                    return analyzersImpl.getAnalyzeLayoutResultWithResponse(resultId, context);
+                } catch (ErrorResponseException ex) {
+                    throw LOGGER.logExceptionAsError(Utility.getHttpResponseException(ex));
+                }
+            }),
+            getCancellationIsNotSupported(),
+            pollingContext -> {
+                final String resultId = pollingContext.getLatestResponse().getValue().getResultId();
+                try {
+                    return toRecognizedLayout(analyzersImpl.getAnalyzeLayoutResultWithResponse(UUID.fromString(resultId), context).getValue().getAnalyzeResult(), true);
+                } catch (ErrorResponseException ex) {
+                    throw LOGGER.logExceptionAsError(Utility.getHttpResponseException(ex));
+                }
+            });
     }
 
     /**
@@ -461,8 +602,39 @@ public final class FormRecognizerClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<FormRecognizerOperationResult, List<FormPage>> beginRecognizeContent(InputStream form,
         long length, RecognizeContentOptions recognizeContentOptions, Context context) {
-        Flux<ByteBuffer> buffer = toFluxByteBuffer(form);
-        return client.beginRecognizeContent(buffer, length, recognizeContentOptions, context).getSyncPoller();
+        return beginRecognizeContentInternal(form, length, recognizeContentOptions, context);
+    }
+
+    private SyncPoller<FormRecognizerOperationResult, List<FormPage>> beginRecognizeContentInternal(InputStream form, long length, RecognizeContentOptions recognizeContentOptions, Context context) {
+        if (form == null) {
+            throw LOGGER.logExceptionAsError(new NullPointerException("'form' is required and cannot be null."));
+        }
+
+        RecognizeContentOptions finalRecognizeContentOptions = getRecognizeContentOptions(recognizeContentOptions);
+
+        return SyncPoller.createPoller(DEFAULT_POLL_INTERVAL,
+            (cxt) -> {
+                ResponseBase<AnalyzersAnalyzeLayoutHeaders, Void> analyzeLayoutWithResponse = analyzersImpl.analyzeLayoutWithResponse(
+                    finalRecognizeContentOptions.getContentType() != null ? ContentType.fromString(finalRecognizeContentOptions.getContentType().toString()) : null,
+                    finalRecognizeContentOptions.getPages(),
+                    Language.fromString(Objects.toString(finalRecognizeContentOptions.getLanguage(), null)),
+                    ReadingOrder.fromString(
+                        Objects.toString(finalRecognizeContentOptions.getReadingOrder(), null)),
+                    BinaryData.fromStream(form),
+                    length,
+                    context);
+                return new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, new FormRecognizerOperationResult(parseModelId(analyzeLayoutWithResponse.getDeserializedHeaders().getOperationLocation())));
+            },
+            pollingOperation(resultId -> analyzersImpl.getAnalyzeLayoutResultWithResponse(resultId, context)),
+            getCancellationIsNotSupported(),
+            pollingContext -> {
+                final String resultId = pollingContext.getLatestResponse().getValue().getResultId();
+                try {
+                    return toRecognizedLayout(analyzersImpl.getAnalyzeLayoutResultWithResponse(UUID.fromString(resultId), context).getValue().getAnalyzeResult(), true);
+                } catch (ErrorResponseException ex) {
+                    throw LOGGER.logExceptionAsError(Utility.getHttpResponseException(ex));
+                }
+            });
     }
 
     /**
@@ -624,7 +796,37 @@ public final class FormRecognizerClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeReceiptsFromUrl(
         String receiptUrl, RecognizeReceiptsOptions recognizeReceiptsOptions, Context context) {
-        return client.beginRecognizeReceiptsFromUrl(receiptUrl, recognizeReceiptsOptions, context).getSyncPoller();
+        return beginRecognizeReceiptsFromUrlInternal(receiptUrl, recognizeReceiptsOptions, context);
+    }
+
+    private SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeReceiptsFromUrlInternal(String receiptUrl, RecognizeReceiptsOptions recognizeReceiptsOptions, Context context) {
+        if (receiptUrl == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'receiptUrl' is required and cannot be null."));
+        }
+
+        RecognizeReceiptsOptions finalRecognizeReceiptsOptions = getRecognizeReceiptOptions(recognizeReceiptsOptions);
+        final boolean isFieldElementsIncluded = finalRecognizeReceiptsOptions.isFieldElementsIncluded();
+        final FormRecognizerLocale localeInfo  = finalRecognizeReceiptsOptions.getLocale();
+
+        return SyncPoller.createPoller(DEFAULT_POLL_INTERVAL,
+            (cxt) -> {
+                ResponseBase<AnalyzersAnalyzeReceiptHeaders, Void> analyzeReceiptWithResponse = analyzersImpl.analyzeReceiptWithResponse(
+                    isFieldElementsIncluded,
+                    Locale.fromString(Objects.toString(localeInfo, null)),
+                    finalRecognizeReceiptsOptions.getPages(),
+                    new SourcePath().setSource(receiptUrl), context);
+                return new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, new FormRecognizerOperationResult(parseModelId(analyzeReceiptWithResponse.getDeserializedHeaders().getOperationLocation())));
+            },
+            pollingOperation(resultId -> analyzersImpl.getAnalyzeReceiptResultWithResponse(resultId, context)),
+            getCancellationIsNotSupported(),
+            pollingContext -> {
+                final String resultId = pollingContext.getLatestResponse().getValue().getResultId();
+                try {
+                    return toRecognizedForm(analyzersImpl.getAnalyzeReceiptResultWithResponse(UUID.fromString(resultId), context).getValue().getAnalyzeResult(), true, null);
+                } catch (ErrorResponseException ex) {
+                    throw LOGGER.logExceptionAsError(Utility.getHttpResponseException(ex));
+                }
+            });
     }
 
     /**
@@ -794,8 +996,49 @@ public final class FormRecognizerClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeReceipts(InputStream receipt,
         long length, RecognizeReceiptsOptions recognizeReceiptsOptions, Context context) {
-        Flux<ByteBuffer> buffer = toFluxByteBuffer(receipt);
-        return client.beginRecognizeReceipts(buffer, length, recognizeReceiptsOptions, context).getSyncPoller();
+        return beginRecognizeReceiptsInternal(receipt, length, recognizeReceiptsOptions, context);
+    }
+
+    private SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeReceiptsInternal(InputStream receipt, long length, RecognizeReceiptsOptions recognizeReceiptsOptions, Context context) {
+        if (receipt == null) {
+            throw LOGGER.logExceptionAsError(new NullPointerException("'receipt' is required and cannot be null."));
+        }
+
+        RecognizeReceiptsOptions finalRecognizeReceiptsOptions = getRecognizeReceiptOptions(recognizeReceiptsOptions);
+        final boolean isFieldElementsIncluded = finalRecognizeReceiptsOptions.isFieldElementsIncluded();
+        final FormRecognizerLocale localeInfo  = finalRecognizeReceiptsOptions.getLocale();
+
+        return SyncPoller.createPoller(DEFAULT_POLL_INTERVAL,
+            (cxt) -> {
+                try {
+                    ResponseBase<AnalyzersAnalyzeReceiptHeaders, Void> analyzeReceiptWithResponse = analyzersImpl.analyzeReceiptWithResponse(
+                        finalRecognizeReceiptsOptions.getContentType() != null ? ContentType.fromString(finalRecognizeReceiptsOptions.getContentType().toString()) : null,
+                        isFieldElementsIncluded,
+                        Locale.fromString(Objects.toString(localeInfo, null)),
+                        finalRecognizeReceiptsOptions.getPages(),
+                        BinaryData.fromStream(receipt),
+                        length, context);
+                    return new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, new FormRecognizerOperationResult(parseModelId(analyzeReceiptWithResponse.getDeserializedHeaders().getOperationLocation())));
+                } catch (ErrorResponseException ex) {
+                    throw LOGGER.logExceptionAsError(Utility.getHttpResponseException(ex));
+                }
+            },
+            pollingOperation(resultId -> {
+                try {
+                    return analyzersImpl.getAnalyzeReceiptResultWithResponse(resultId, context);
+                } catch (ErrorResponseException ex) {
+                    throw LOGGER.logExceptionAsError(Utility.getHttpResponseException(ex));
+                }
+            }),
+            getCancellationIsNotSupported(),
+            pollingContext -> {
+                final String resultId = pollingContext.getLatestResponse().getValue().getResultId();
+                try {
+                    return toRecognizedForm(analyzersImpl.getAnalyzeReceiptResultWithResponse(UUID.fromString(resultId), context).getValue().getAnalyzeResult(), isFieldElementsIncluded, null);
+                } catch (ErrorResponseException ex) {
+                    throw LOGGER.logExceptionAsError(Utility.getHttpResponseException(ex));
+                }
+            });
     }
 
     /**
@@ -947,8 +1190,47 @@ public final class FormRecognizerClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeBusinessCardsFromUrl(
         String businessCardUrl, RecognizeBusinessCardsOptions recognizeBusinessCardsOptions, Context context) {
-        return client.beginRecognizeBusinessCardsFromUrl(businessCardUrl, recognizeBusinessCardsOptions, context)
-            .getSyncPoller();
+        return beginRecognizeBusinessCardsFromUrlInternal(businessCardUrl, recognizeBusinessCardsOptions, context);
+    }
+
+    private SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeBusinessCardsFromUrlInternal(String businessCardUrl, RecognizeBusinessCardsOptions recognizeBusinessCardsOptions, Context context) {
+        if (businessCardUrl == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'businessCardUrl' is required and cannot be null."));
+        }
+
+        RecognizeBusinessCardsOptions finalRecognizeBusinessCardsOptions = getRecognizeBusinessCardsOptions(recognizeBusinessCardsOptions);
+        final boolean isFieldElementsIncluded = finalRecognizeBusinessCardsOptions.isFieldElementsIncluded();
+        final FormRecognizerLocale localeInfo  = finalRecognizeBusinessCardsOptions.getLocale();
+
+        return SyncPoller.createPoller(DEFAULT_POLL_INTERVAL,
+            (cxt) -> {
+                try {
+                    ResponseBase<AnalyzersAnalyzeBusinessCardHeaders, Void> analyzeBusinessCardWithResponse = analyzersImpl.analyzeBusinessCardWithResponse(
+                        isFieldElementsIncluded,
+                        Locale.fromString(Objects.toString(localeInfo, null)),
+                        finalRecognizeBusinessCardsOptions.getPages(),
+                        new SourcePath().setSource(businessCardUrl), context);
+                    return new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, new FormRecognizerOperationResult(parseModelId(analyzeBusinessCardWithResponse.getDeserializedHeaders().getOperationLocation())));
+                } catch (ErrorResponseException ex) {
+                    throw LOGGER.logExceptionAsError(Utility.getHttpResponseException(ex));
+                }
+            },
+            pollingOperation(resultId -> {
+                try {
+                    return analyzersImpl.getAnalyzeBusinessCardResultWithResponse(resultId, context);
+                } catch (ErrorResponseException ex) {
+                    throw LOGGER.logExceptionAsError(Utility.getHttpResponseException(ex));
+                }
+            }),
+            getCancellationIsNotSupported(),
+            pollingContext -> {
+                final String resultId = pollingContext.getLatestResponse().getValue().getResultId();
+                try {
+                    return toRecognizedForm(analyzersImpl.getAnalyzeBusinessCardResultWithResponse(UUID.fromString(resultId), context).getValue().getAnalyzeResult(), true, null);
+                } catch (ErrorResponseException ex) {
+                    throw LOGGER.logExceptionAsError(Utility.getHttpResponseException(ex));
+                }
+            });
     }
 
     /**
@@ -1112,8 +1394,44 @@ public final class FormRecognizerClient {
     public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeBusinessCards(
         InputStream businessCard, long length, RecognizeBusinessCardsOptions recognizeBusinessCardsOptions,
         Context context) {
-        return client.beginRecognizeBusinessCards(toFluxByteBuffer(businessCard), length, recognizeBusinessCardsOptions,
-            context).getSyncPoller();
+        return beginRecognizeBusinessCardsInternal(businessCard, length, recognizeBusinessCardsOptions,
+            context);
+    }
+
+    private SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeBusinessCardsInternal(InputStream businessCard, long length, RecognizeBusinessCardsOptions recognizeBusinessCardsOptions, Context context) {
+        if (businessCard == null) {
+            throw LOGGER.logExceptionAsError(new NullPointerException("'businessCard' is required and cannot be null."));
+        }
+
+        RecognizeBusinessCardsOptions finalBusinessCardOptions = getRecognizeBusinessCardsOptions(recognizeBusinessCardsOptions);
+        final boolean isFieldElementsIncluded = finalBusinessCardOptions.isFieldElementsIncluded();
+        final FormRecognizerLocale localeInfo  = finalBusinessCardOptions.getLocale();
+
+        return SyncPoller.createPoller(DEFAULT_POLL_INTERVAL,
+            (cxt) -> {
+                try {
+                    ResponseBase<AnalyzersAnalyzeBusinessCardHeaders, Void> analyzeBusinessCardWithResponse = analyzersImpl.analyzeBusinessCardWithResponse(
+                        finalBusinessCardOptions.getContentType() != null ? ContentType.fromString(finalBusinessCardOptions.getContentType().toString()) : null,
+                        isFieldElementsIncluded,
+                        Locale.fromString(Objects.toString(localeInfo, null)),
+                        finalBusinessCardOptions.getPages(),
+                        BinaryData.fromStream(businessCard),
+                        length, context);
+                    return new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, new FormRecognizerOperationResult(parseModelId(analyzeBusinessCardWithResponse.getDeserializedHeaders().getOperationLocation())));
+                } catch (ErrorResponseException ex) {
+                    throw LOGGER.logExceptionAsError(Utility.getHttpResponseException(ex));
+                }
+            },
+            pollingOperation(resultId -> analyzersImpl.getAnalyzeBusinessCardResultWithResponse(resultId, context)),
+            getCancellationIsNotSupported(),
+            pollingContext -> {
+                final String resultId = pollingContext.getLatestResponse().getValue().getResultId();
+                try {
+                    return toRecognizedForm(analyzersImpl.getAnalyzeBusinessCardResultWithResponse(UUID.fromString(resultId), context).getValue().getAnalyzeResult(), isFieldElementsIncluded, null);
+                } catch (ErrorResponseException ex) {
+                    throw LOGGER.logExceptionAsError(Utility.getHttpResponseException(ex));
+                }
+            });
     }
 
     /**
@@ -1217,7 +1535,47 @@ public final class FormRecognizerClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeInvoicesFromUrl(
         String invoiceUrl, RecognizeInvoicesOptions recognizeInvoicesOptions, Context context) {
-        return client.beginRecognizeInvoicesFromUrl(invoiceUrl, recognizeInvoicesOptions, context).getSyncPoller();
+        return beginRecognizeInvoicesFromUrlInternal(invoiceUrl, recognizeInvoicesOptions, context);
+    }
+
+    private SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeInvoicesFromUrlInternal(String invoiceUrl, RecognizeInvoicesOptions recognizeInvoicesOptions, Context context) {
+        if (invoiceUrl == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'invoiceUrl' is required and cannot be null."));
+        }
+
+        RecognizeInvoicesOptions finalRecognizeInvoicesOptions = getRecognizeInvoicesOptions(recognizeInvoicesOptions);
+        final boolean isFieldElementsIncluded = finalRecognizeInvoicesOptions.isFieldElementsIncluded();
+        final FormRecognizerLocale localeInfo  = finalRecognizeInvoicesOptions.getLocale();
+
+        return SyncPoller.createPoller(DEFAULT_POLL_INTERVAL,
+            (cxt) -> {
+                try {
+                    ResponseBase<AnalyzersAnalyzeInvoiceHeaders, Void> analyzeInvoiceWithResponse = analyzersImpl.analyzeInvoiceWithResponse(
+                        isFieldElementsIncluded,
+                        Locale.fromString(Objects.toString(localeInfo, null)),
+                        finalRecognizeInvoicesOptions.getPages(),
+                        new SourcePath().setSource(invoiceUrl), context);
+                    return new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, new FormRecognizerOperationResult(parseModelId(analyzeInvoiceWithResponse.getDeserializedHeaders().getOperationLocation())));
+                } catch (ErrorResponseException ex) {
+                    throw LOGGER.logExceptionAsError(Utility.getHttpResponseException(ex));
+                }
+            },
+            pollingOperation(resultId -> {
+                try {
+                    return analyzersImpl.getAnalyzeInvoiceResultWithResponse(resultId, context);
+                } catch (ErrorResponseException ex) {
+                    throw LOGGER.logExceptionAsError(Utility.getHttpResponseException(ex));
+                }
+            }),
+            getCancellationIsNotSupported(),
+            pollingContext -> {
+                final String resultId = pollingContext.getLatestResponse().getValue().getResultId();
+                try {
+                    return toRecognizedForm(analyzersImpl.getAnalyzeInvoiceResultWithResponse(UUID.fromString(resultId), context).getValue().getAnalyzeResult(), true, null);
+                } catch (ErrorResponseException ex) {
+                    throw LOGGER.logExceptionAsError(Utility.getHttpResponseException(ex));
+                }
+            });
     }
 
     /**
@@ -1330,8 +1688,49 @@ public final class FormRecognizerClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeInvoices(InputStream invoice,
         long length, RecognizeInvoicesOptions recognizeInvoicesOptions, Context context) {
-        Flux<ByteBuffer> buffer = toFluxByteBuffer(invoice);
-        return client.beginRecognizeInvoices(buffer, length, recognizeInvoicesOptions, context).getSyncPoller();
+        return beginRecognizeInvoicesInternal(invoice, length, recognizeInvoicesOptions, context);
+    }
+
+    private SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeInvoicesInternal(InputStream businessCard, long length, RecognizeInvoicesOptions recognizeInvoicesOptions, Context context) {
+        if (businessCard == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'businessCard' is required and cannot be null."));
+        }
+
+        RecognizeInvoicesOptions finalInvoiceOptions = getRecognizeInvoicesOptions(recognizeInvoicesOptions);
+        final boolean isFieldElementsIncluded = finalInvoiceOptions.isFieldElementsIncluded();
+        final FormRecognizerLocale localeInfo  = finalInvoiceOptions.getLocale();
+
+        return SyncPoller.createPoller(DEFAULT_POLL_INTERVAL,
+            (cxt) -> {
+                try {
+                    ResponseBase<AnalyzersAnalyzeInvoiceHeaders, Void> analyzeInvoiceWithResponse = analyzersImpl.analyzeInvoiceWithResponse(
+                        finalInvoiceOptions.getContentType() != null ? ContentType.fromString(finalInvoiceOptions.getContentType().toString()) : null,
+                        isFieldElementsIncluded,
+                        Locale.fromString(Objects.toString(localeInfo, null)),
+                        finalInvoiceOptions.getPages(),
+                        BinaryData.fromStream(businessCard),
+                        length, context);
+                    return new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, new FormRecognizerOperationResult(parseModelId(analyzeInvoiceWithResponse.getDeserializedHeaders().getOperationLocation())));
+                } catch (ErrorResponseException ex) {
+                    throw LOGGER.logExceptionAsError(Utility.getHttpResponseException(ex));
+                }
+            },
+            pollingOperation(resultId -> {
+                try {
+                    return analyzersImpl.getAnalyzeInvoiceResultWithResponse(resultId, context);
+                } catch (ErrorResponseException ex) {
+                    throw LOGGER.logExceptionAsError(Utility.getHttpResponseException(ex));
+                }
+            }),
+            getCancellationIsNotSupported(),
+            pollingContext -> {
+                final String resultId = pollingContext.getLatestResponse().getValue().getResultId();
+                try {
+                    return toRecognizedForm(analyzersImpl.getAnalyzeInvoiceResultWithResponse(UUID.fromString(resultId), context).getValue().getAnalyzeResult(), isFieldElementsIncluded, null);
+                } catch (ErrorResponseException ex) {
+                    throw LOGGER.logExceptionAsError(Utility.getHttpResponseException(ex));
+                }
+            });
     }
 
     /**
@@ -1506,8 +1905,36 @@ public final class FormRecognizerClient {
     public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeIdentityDocumentsFromUrl(
         String identityDocumentUrl, RecognizeIdentityDocumentOptions recognizeIdentityDocumentOptions,
         Context context) {
-        return client.beginRecognizeIdentityDocumentsFromUrl(identityDocumentUrl, recognizeIdentityDocumentOptions,
-            context).getSyncPoller();
+        return beginRecognizeIdentityDocumentsFromUrlInternal(identityDocumentUrl, recognizeIdentityDocumentOptions,
+            context);
+    }
+
+    private SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeIdentityDocumentsFromUrlInternal(String identityDocumentUrl, RecognizeIdentityDocumentOptions recognizeIdentityDocumentOptions, Context context) {
+        if (identityDocumentUrl == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'identityDocumentUrl' is required and cannot be null."));
+        }
+
+        RecognizeIdentityDocumentOptions finalRecognizeInvoicesOptions = getRecognizeIdentityDocumentOptions(recognizeIdentityDocumentOptions);
+        final boolean isFieldElementsIncluded = finalRecognizeInvoicesOptions.isFieldElementsIncluded();
+
+        return SyncPoller.createPoller(DEFAULT_POLL_INTERVAL,
+            (cxt) -> {
+                ResponseBase<AnalyzersAnalyzeIdDocumentHeaders, Void> analyzeInvoiceWithResponse = analyzersImpl.analyzeIdDocumentWithResponse(
+                    isFieldElementsIncluded,
+                    finalRecognizeInvoicesOptions.getPages(),
+                    new SourcePath().setSource(identityDocumentUrl), context);
+                return new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, new FormRecognizerOperationResult(parseModelId(analyzeInvoiceWithResponse.getDeserializedHeaders().getOperationLocation())));
+            },
+            pollingOperation(resultId -> analyzersImpl.getAnalyzeIdDocumentResultWithResponse(resultId, context)),
+            getCancellationIsNotSupported(),
+            pollingContext -> {
+                final String resultId = pollingContext.getLatestResponse().getValue().getResultId();
+                try {
+                    return toRecognizedForm(analyzersImpl.getAnalyzeIdDocumentResultWithResponse(UUID.fromString(resultId), context).getValue().getAnalyzeResult(), true, null);
+                } catch (ErrorResponseException ex) {
+                    throw LOGGER.logExceptionAsError(Utility.getHttpResponseException(ex));
+                }
+            });
     }
 
     /**
@@ -1690,7 +2117,135 @@ public final class FormRecognizerClient {
     public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeIdentityDocuments(
         InputStream identityDocument, long length, RecognizeIdentityDocumentOptions recognizeIdentityDocumentOptions,
         Context context) {
-        return client.beginRecognizeIdentityDocuments(toFluxByteBuffer(identityDocument), length,
-            recognizeIdentityDocumentOptions, context).getSyncPoller();
+        return beginRecognizeIdentityDocumentsInternal(identityDocument, length,
+            recognizeIdentityDocumentOptions, context);
+    }
+
+    private SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeIdentityDocumentsInternal(InputStream identityDocument, long length, RecognizeIdentityDocumentOptions recognizeIdentityDocumentOptions, Context context) {
+        if (identityDocument == null) {
+            throw LOGGER.logExceptionAsError(new NullPointerException("'identityDocument' is required and cannot be null."));
+        }
+
+        RecognizeIdentityDocumentOptions finalRecognizeIdentityDocumentOptions = getRecognizeIdentityDocumentOptions(recognizeIdentityDocumentOptions);
+        final boolean isFieldElementsIncluded = finalRecognizeIdentityDocumentOptions.isFieldElementsIncluded();
+
+        return SyncPoller.createPoller(DEFAULT_POLL_INTERVAL,
+            (cxt) -> {
+                try {
+                    ResponseBase<AnalyzersAnalyzeIdDocumentHeaders, Void> analyzeIdDocumentWithResponse = analyzersImpl.analyzeIdDocumentWithResponse(
+                        finalRecognizeIdentityDocumentOptions.getContentType() != null ? ContentType.fromString(finalRecognizeIdentityDocumentOptions.getContentType().toString()) : null,
+                        isFieldElementsIncluded,
+                        finalRecognizeIdentityDocumentOptions.getPages(),
+                        BinaryData.fromStream(identityDocument),
+                        length, context);
+                    return new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, new FormRecognizerOperationResult(parseModelId(analyzeIdDocumentWithResponse.getDeserializedHeaders().getOperationLocation())));
+                } catch (ErrorResponseException ex) {
+                    throw LOGGER.logExceptionAsError(Utility.getHttpResponseException(ex));
+                }
+            },
+            pollingOperation(resultId -> {
+                try {
+                    return analyzersImpl.getAnalyzeIdDocumentResultWithResponse(resultId, context);
+                } catch (ErrorResponseException ex) {
+                    throw LOGGER.logExceptionAsError(Utility.getHttpResponseException(ex));
+                }
+            }),
+            getCancellationIsNotSupported(),
+            pollingContext -> {
+                final String resultId = pollingContext.getLatestResponse().getValue().getResultId();
+                try {
+                    return toRecognizedForm(analyzersImpl.getAnalyzeIdDocumentResultWithResponse(UUID.fromString(resultId), context).getValue().getAnalyzeResult(), isFieldElementsIncluded, null);
+                } catch (ErrorResponseException ex) {
+                    throw LOGGER.logExceptionAsError(Utility.getHttpResponseException(ex));
+                }
+            });
+    }
+
+    /*
+     * Poller's POLLING operation.
+     */
+    private Function<PollingContext<FormRecognizerOperationResult>, PollResponse<FormRecognizerOperationResult>>
+        pollingOperation(Function<UUID, Response<AnalyzeOperationResult>> pollingFunction) {
+        return pollingContext -> {
+            final PollResponse<FormRecognizerOperationResult> operationResultPollResponse =
+                pollingContext.getLatestResponse();
+            final UUID resultUuid = UUID.fromString(operationResultPollResponse.getValue().getResultId());
+            Response<AnalyzeOperationResult> p = pollingFunction.apply(resultUuid);
+            return processAnalyzeModelResponse(p, operationResultPollResponse);
+        };
+    }
+
+    private Function<PollingContext<FormRecognizerOperationResult>, List<RecognizedForm>>
+        fetchingOperation(Function<UUID, Response<AnalyzeOperationResult>> fetchingFunction,
+        boolean isFieldElementsIncluded, String modelId) {
+        return pollingContext -> {
+            try {
+                final UUID resultUuid = UUID.fromString(pollingContext.getLatestResponse().getValue().getResultId());
+                Response<AnalyzeOperationResult> modelSimpleResponse = fetchingFunction.apply(resultUuid);
+                return toRecognizedForm(modelSimpleResponse.getValue().getAnalyzeResult(), isFieldElementsIncluded, modelId);
+            } catch (RuntimeException ex) {
+                throw LOGGER.logExceptionAsError(ex);
+            }
+        };
+    }
+
+    private PollResponse<FormRecognizerOperationResult> processAnalyzeModelResponse(
+        Response<AnalyzeOperationResult> analyzeOperationResultResponse,
+        PollResponse<FormRecognizerOperationResult> operationResultPollResponse) {
+        LongRunningOperationStatus status;
+        switch (analyzeOperationResultResponse.getValue().getStatus()) {
+            case NOT_STARTED:
+            case RUNNING:
+                status = LongRunningOperationStatus.IN_PROGRESS;
+                break;
+            case SUCCEEDED:
+                status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
+                break;
+            case FAILED:
+                throw LOGGER.logExceptionAsError(new FormRecognizerException("Analyze operation failed",
+                    analyzeOperationResultResponse.getValue().getAnalyzeResult().getErrors().stream()
+                        .map(errorInformation -> new FormRecognizerErrorInformation(errorInformation.getCode(),
+                            errorInformation.getMessage()))
+                        .collect(Collectors.toList())));
+            default:
+                status = LongRunningOperationStatus.fromString(
+                    analyzeOperationResultResponse.getValue().getStatus().toString(), true);
+                break;
+        }
+        return new PollResponse<>(status, operationResultPollResponse.getValue());
+    }
+
+    private BiFunction<PollingContext<FormRecognizerOperationResult>, PollResponse<FormRecognizerOperationResult>, FormRecognizerOperationResult>
+        getCancellationIsNotSupported() {
+        return (pollingContext, activationResponse) -> {
+            throw LOGGER.logExceptionAsError(new RuntimeException("Cancellation is not supported"));
+        };
+    }
+
+    private Function<PollingContext<FormRecognizerOperationResult>, FormRecognizerOperationResult> analyzeActivationOperation(UUID modelId, String formUrl,
+                                                                                                                              FormContentType contentType, BinaryData form, long length, boolean isFieldElementsIncluded,
+                                                                                                                              RecognizeCustomFormsOptions finalRecognizeCustomFormsOptions, Context context) {
+        return (pollingContext) ->
+            new FormRecognizerOperationResult(parseModelId(analyzeDocument(modelId, formUrl, contentType, form, length, isFieldElementsIncluded,
+            finalRecognizeCustomFormsOptions, context)
+                .getDeserializedHeaders().getOperationLocation()));
+    }
+
+    private ResponseBase<CustomModelsAnalyzeDocumentHeaders, Void> analyzeDocument(UUID modelId, String formUrl,
+        FormContentType contentType, BinaryData form, long length, boolean isFieldElementsIncluded,
+        RecognizeCustomFormsOptions finalRecognizeCustomFormsOptions, Context context) {
+        try {
+            if (formUrl != null) {
+                return customModelsImpl.analyzeDocumentWithResponse(modelId, isFieldElementsIncluded,
+                    finalRecognizeCustomFormsOptions.getPages(), new SourcePath().setSource(formUrl), context);
+            } else {
+                return customModelsImpl.analyzeDocumentWithResponse(modelId,
+                    contentType != null ? ContentType.fromString(contentType.toString()) : null,
+                    isFieldElementsIncluded,
+                    finalRecognizeCustomFormsOptions.getPages(), form, length, context);
+            }
+        } catch (ErrorResponseException ex) {
+            throw LOGGER.logExceptionAsError(Utility.getHttpResponseException(ex));
+        }
     }
 }

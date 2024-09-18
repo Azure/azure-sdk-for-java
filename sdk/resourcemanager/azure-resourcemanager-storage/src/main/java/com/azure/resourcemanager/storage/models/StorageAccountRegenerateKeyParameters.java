@@ -6,17 +6,21 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The parameters used to regenerate the storage account key.
  */
 @Fluent
-public final class StorageAccountRegenerateKeyParameters {
+public final class StorageAccountRegenerateKeyParameters
+    implements JsonSerializable<StorageAccountRegenerateKeyParameters> {
     /*
      * The name of storage keys that want to be regenerated, possible values are key1, key2, kerb1, kerb2.
      */
-    @JsonProperty(value = "keyName", required = true)
     private String keyName;
 
     /**
@@ -61,4 +65,42 @@ public final class StorageAccountRegenerateKeyParameters {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(StorageAccountRegenerateKeyParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("keyName", this.keyName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageAccountRegenerateKeyParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageAccountRegenerateKeyParameters if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the StorageAccountRegenerateKeyParameters.
+     */
+    public static StorageAccountRegenerateKeyParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageAccountRegenerateKeyParameters deserializedStorageAccountRegenerateKeyParameters
+                = new StorageAccountRegenerateKeyParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("keyName".equals(fieldName)) {
+                    deserializedStorageAccountRegenerateKeyParameters.keyName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageAccountRegenerateKeyParameters;
+        });
+    }
 }

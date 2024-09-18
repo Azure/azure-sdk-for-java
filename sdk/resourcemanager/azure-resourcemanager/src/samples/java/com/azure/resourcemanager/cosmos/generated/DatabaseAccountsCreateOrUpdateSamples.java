@@ -33,7 +33,6 @@ import com.azure.resourcemanager.cosmos.models.RestoreMode;
 import com.azure.resourcemanager.cosmos.models.RestoreParameters;
 import com.azure.resourcemanager.cosmos.models.ServerVersion;
 import com.azure.resourcemanager.cosmos.models.VirtualNetworkRule;
-
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -44,11 +43,12 @@ import java.util.Map;
  */
 public final class DatabaseAccountsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBRestoreDatabaseAccountCreateUpdate.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-08-15/examples/
+     * CosmosDBRestoreDatabaseAccountCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBRestoreDatabaseAccountCreateUpdate.json.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
@@ -77,6 +77,7 @@ public final class DatabaseAccountsCreateOrUpdateSamples {
                 .withRestoreParameters(new RestoreParameters().withRestoreSource(
                     "/subscriptions/subid/providers/Microsoft.DocumentDB/locations/westus/restorableDatabaseAccounts/1a97b4bb-f6a0-430e-ade1-638d781830cc")
                     .withRestoreTimestampInUtc(OffsetDateTime.parse("2021-03-11T22:05:09Z"))
+                    .withRestoreWithTtlDisabled(false)
                     .withRestoreMode(RestoreMode.POINT_IN_TIME)
                     .withDatabasesToRestore(Arrays.asList(
                         new DatabaseRestoreResource().withDatabaseName("db1")
@@ -87,11 +88,12 @@ public final class DatabaseAccountsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBDatabaseAccountCreateMax.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-08-15/examples/
+     * CosmosDBDatabaseAccountCreateMax.json
      */
     /**
      * Sample code: CosmosDBDatabaseAccountCreateMax.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBDatabaseAccountCreateMax(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -144,11 +146,12 @@ public final class DatabaseAccountsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBDatabaseAccountCreateMin.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-08-15/examples/
+     * CosmosDBDatabaseAccountCreateMin.json
      */
     /**
      * Sample code: CosmosDBDatabaseAccountCreateMin.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBDatabaseAccountCreateMin(com.azure.resourcemanager.AzureResourceManager azure) {

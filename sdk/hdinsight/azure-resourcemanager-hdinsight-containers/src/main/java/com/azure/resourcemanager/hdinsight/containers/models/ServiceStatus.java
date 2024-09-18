@@ -6,29 +6,30 @@ package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Describes the status of a service of a HDInsight on AKS cluster.
  */
 @Fluent
-public final class ServiceStatus {
+public final class ServiceStatus implements JsonSerializable<ServiceStatus> {
     /*
      * Kind of the service. E.g. "Zookeeper".
      */
-    @JsonProperty(value = "kind", required = true)
     private String kind;
 
     /*
      * Indicates if the service is ready / healthy. Values can be "true", "false", "unknown" or anything else.
      */
-    @JsonProperty(value = "ready", required = true)
     private String ready;
 
     /*
      * A message describing the error if any.
      */
-    @JsonProperty(value = "message")
     private String message;
 
     /**
@@ -106,14 +107,57 @@ public final class ServiceStatus {
      */
     public void validate() {
         if (kind() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property kind in model ServiceStatus"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property kind in model ServiceStatus"));
         }
         if (ready() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property ready in model ServiceStatus"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property ready in model ServiceStatus"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ServiceStatus.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", this.kind);
+        jsonWriter.writeStringField("ready", this.ready);
+        jsonWriter.writeStringField("message", this.message);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServiceStatus from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServiceStatus if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ServiceStatus.
+     */
+    public static ServiceStatus fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServiceStatus deserializedServiceStatus = new ServiceStatus();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("kind".equals(fieldName)) {
+                    deserializedServiceStatus.kind = reader.getString();
+                } else if ("ready".equals(fieldName)) {
+                    deserializedServiceStatus.ready = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedServiceStatus.message = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServiceStatus;
+        });
+    }
 }

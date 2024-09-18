@@ -5,30 +5,31 @@
 package com.azure.resourcemanager.resources.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.resources.models.ResourceNameStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Resource Name valid if not a reserved word, does not contain a reserved word and does not start with a reserved word.
  */
 @Fluent
-public final class CheckResourceNameResultInner {
+public final class CheckResourceNameResultInner implements JsonSerializable<CheckResourceNameResultInner> {
     /*
      * Name of Resource
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Type of Resource
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /*
      * Is the resource name Allowed or Reserved
      */
-    @JsonProperty(value = "status")
     private ResourceNameStatus status;
 
     /**
@@ -103,5 +104,47 @@ public final class CheckResourceNameResultInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CheckResourceNameResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CheckResourceNameResultInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CheckResourceNameResultInner.
+     */
+    public static CheckResourceNameResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CheckResourceNameResultInner deserializedCheckResourceNameResultInner = new CheckResourceNameResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedCheckResourceNameResultInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedCheckResourceNameResultInner.type = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedCheckResourceNameResultInner.status = ResourceNameStatus.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCheckResourceNameResultInner;
+        });
     }
 }

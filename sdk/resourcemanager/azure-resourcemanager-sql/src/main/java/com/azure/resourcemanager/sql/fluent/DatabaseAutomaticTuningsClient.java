@@ -11,13 +11,15 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.fluent.models.DatabaseAutomaticTuningInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DatabaseAutomaticTuningsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DatabaseAutomaticTuningsClient.
+ */
 public interface DatabaseAutomaticTuningsClient {
     /**
      * Gets a database's automatic tuning.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -26,14 +28,14 @@ public interface DatabaseAutomaticTuningsClient {
      * @return a database's automatic tuning along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<DatabaseAutomaticTuningInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName);
+    Mono<Response<DatabaseAutomaticTuningInner>> getWithResponseAsync(String resourceGroupName, String serverName,
+        String databaseName);
 
     /**
      * Gets a database's automatic tuning.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -46,9 +48,9 @@ public interface DatabaseAutomaticTuningsClient {
 
     /**
      * Gets a database's automatic tuning.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param context The context to associate with this operation.
@@ -58,14 +60,14 @@ public interface DatabaseAutomaticTuningsClient {
      * @return a database's automatic tuning along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DatabaseAutomaticTuningInner> getWithResponse(
-        String resourceGroupName, String serverName, String databaseName, Context context);
+    Response<DatabaseAutomaticTuningInner> getWithResponse(String resourceGroupName, String serverName,
+        String databaseName, Context context);
 
     /**
      * Gets a database's automatic tuning.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -78,9 +80,9 @@ public interface DatabaseAutomaticTuningsClient {
 
     /**
      * Update automatic tuning properties for target database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param parameters The requested automatic tuning resource state.
@@ -90,14 +92,14 @@ public interface DatabaseAutomaticTuningsClient {
      * @return database-level Automatic Tuning along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<DatabaseAutomaticTuningInner>> updateWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName, DatabaseAutomaticTuningInner parameters);
+    Mono<Response<DatabaseAutomaticTuningInner>> updateWithResponseAsync(String resourceGroupName, String serverName,
+        String databaseName, DatabaseAutomaticTuningInner parameters);
 
     /**
      * Update automatic tuning properties for target database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param parameters The requested automatic tuning resource state.
@@ -107,14 +109,14 @@ public interface DatabaseAutomaticTuningsClient {
      * @return database-level Automatic Tuning on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<DatabaseAutomaticTuningInner> updateAsync(
-        String resourceGroupName, String serverName, String databaseName, DatabaseAutomaticTuningInner parameters);
+    Mono<DatabaseAutomaticTuningInner> updateAsync(String resourceGroupName, String serverName, String databaseName,
+        DatabaseAutomaticTuningInner parameters);
 
     /**
      * Update automatic tuning properties for target database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param parameters The requested automatic tuning resource state.
@@ -125,18 +127,14 @@ public interface DatabaseAutomaticTuningsClient {
      * @return database-level Automatic Tuning along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DatabaseAutomaticTuningInner> updateWithResponse(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        DatabaseAutomaticTuningInner parameters,
-        Context context);
+    Response<DatabaseAutomaticTuningInner> updateWithResponse(String resourceGroupName, String serverName,
+        String databaseName, DatabaseAutomaticTuningInner parameters, Context context);
 
     /**
      * Update automatic tuning properties for target database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param parameters The requested automatic tuning resource state.
@@ -146,6 +144,6 @@ public interface DatabaseAutomaticTuningsClient {
      * @return database-level Automatic Tuning.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DatabaseAutomaticTuningInner update(
-        String resourceGroupName, String serverName, String databaseName, DatabaseAutomaticTuningInner parameters);
+    DatabaseAutomaticTuningInner update(String resourceGroupName, String serverName, String databaseName,
+        DatabaseAutomaticTuningInner parameters);
 }

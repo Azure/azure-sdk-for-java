@@ -5,55 +5,57 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The managed server family capability. */
+/**
+ * The managed server family capability.
+ */
 @Fluent
-public final class ManagedInstanceFamilyCapability {
+public final class ManagedInstanceFamilyCapability implements JsonSerializable<ManagedInstanceFamilyCapability> {
     /*
      * Family name.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * SKU name.
      */
-    @JsonProperty(value = "sku", access = JsonProperty.Access.WRITE_ONLY)
     private String sku;
 
     /*
      * List of supported license types.
      */
-    @JsonProperty(value = "supportedLicenseTypes", access = JsonProperty.Access.WRITE_ONLY)
     private List<LicenseTypeCapability> supportedLicenseTypes;
 
     /*
      * List of supported virtual cores values.
      */
-    @JsonProperty(value = "supportedVcoresValues", access = JsonProperty.Access.WRITE_ONLY)
     private List<ManagedInstanceVcoresCapability> supportedVcoresValues;
 
     /*
      * The status of the capability.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private CapabilityStatus status;
 
     /*
      * The reason for the capability not being available.
      */
-    @JsonProperty(value = "reason")
     private String reason;
 
-    /** Creates an instance of ManagedInstanceFamilyCapability class. */
+    /**
+     * Creates an instance of ManagedInstanceFamilyCapability class.
+     */
     public ManagedInstanceFamilyCapability() {
     }
 
     /**
      * Get the name property: Family name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -62,7 +64,7 @@ public final class ManagedInstanceFamilyCapability {
 
     /**
      * Get the sku property: SKU name.
-     *
+     * 
      * @return the sku value.
      */
     public String sku() {
@@ -71,7 +73,7 @@ public final class ManagedInstanceFamilyCapability {
 
     /**
      * Get the supportedLicenseTypes property: List of supported license types.
-     *
+     * 
      * @return the supportedLicenseTypes value.
      */
     public List<LicenseTypeCapability> supportedLicenseTypes() {
@@ -80,7 +82,7 @@ public final class ManagedInstanceFamilyCapability {
 
     /**
      * Get the supportedVcoresValues property: List of supported virtual cores values.
-     *
+     * 
      * @return the supportedVcoresValues value.
      */
     public List<ManagedInstanceVcoresCapability> supportedVcoresValues() {
@@ -89,7 +91,7 @@ public final class ManagedInstanceFamilyCapability {
 
     /**
      * Get the status property: The status of the capability.
-     *
+     * 
      * @return the status value.
      */
     public CapabilityStatus status() {
@@ -98,7 +100,7 @@ public final class ManagedInstanceFamilyCapability {
 
     /**
      * Get the reason property: The reason for the capability not being available.
-     *
+     * 
      * @return the reason value.
      */
     public String reason() {
@@ -107,7 +109,7 @@ public final class ManagedInstanceFamilyCapability {
 
     /**
      * Set the reason property: The reason for the capability not being available.
-     *
+     * 
      * @param reason the reason value to set.
      * @return the ManagedInstanceFamilyCapability object itself.
      */
@@ -118,7 +120,7 @@ public final class ManagedInstanceFamilyCapability {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -128,5 +130,57 @@ public final class ManagedInstanceFamilyCapability {
         if (supportedVcoresValues() != null) {
             supportedVcoresValues().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("reason", this.reason);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedInstanceFamilyCapability from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedInstanceFamilyCapability if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedInstanceFamilyCapability.
+     */
+    public static ManagedInstanceFamilyCapability fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedInstanceFamilyCapability deserializedManagedInstanceFamilyCapability
+                = new ManagedInstanceFamilyCapability();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedManagedInstanceFamilyCapability.name = reader.getString();
+                } else if ("sku".equals(fieldName)) {
+                    deserializedManagedInstanceFamilyCapability.sku = reader.getString();
+                } else if ("supportedLicenseTypes".equals(fieldName)) {
+                    List<LicenseTypeCapability> supportedLicenseTypes
+                        = reader.readArray(reader1 -> LicenseTypeCapability.fromJson(reader1));
+                    deserializedManagedInstanceFamilyCapability.supportedLicenseTypes = supportedLicenseTypes;
+                } else if ("supportedVcoresValues".equals(fieldName)) {
+                    List<ManagedInstanceVcoresCapability> supportedVcoresValues
+                        = reader.readArray(reader1 -> ManagedInstanceVcoresCapability.fromJson(reader1));
+                    deserializedManagedInstanceFamilyCapability.supportedVcoresValues = supportedVcoresValues;
+                } else if ("status".equals(fieldName)) {
+                    deserializedManagedInstanceFamilyCapability.status
+                        = CapabilityStatus.fromString(reader.getString());
+                } else if ("reason".equals(fieldName)) {
+                    deserializedManagedInstanceFamilyCapability.reason = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedInstanceFamilyCapability;
+        });
     }
 }

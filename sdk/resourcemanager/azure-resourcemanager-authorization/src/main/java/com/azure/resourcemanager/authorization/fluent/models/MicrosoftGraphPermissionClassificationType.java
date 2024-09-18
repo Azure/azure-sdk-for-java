@@ -5,28 +5,37 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** permissionClassificationType. */
+/**
+ * permissionClassificationType.
+ */
 public final class MicrosoftGraphPermissionClassificationType
     extends ExpandableStringEnum<MicrosoftGraphPermissionClassificationType> {
-    /** Static value low for MicrosoftGraphPermissionClassificationType. */
+    /**
+     * Static value low for MicrosoftGraphPermissionClassificationType.
+     */
     public static final MicrosoftGraphPermissionClassificationType LOW = fromString("low");
 
-    /** Static value medium for MicrosoftGraphPermissionClassificationType. */
+    /**
+     * Static value medium for MicrosoftGraphPermissionClassificationType.
+     */
     public static final MicrosoftGraphPermissionClassificationType MEDIUM = fromString("medium");
 
-    /** Static value high for MicrosoftGraphPermissionClassificationType. */
+    /**
+     * Static value high for MicrosoftGraphPermissionClassificationType.
+     */
     public static final MicrosoftGraphPermissionClassificationType HIGH = fromString("high");
 
-    /** Static value unknownFutureValue for MicrosoftGraphPermissionClassificationType. */
-    public static final MicrosoftGraphPermissionClassificationType UNKNOWN_FUTURE_VALUE =
-        fromString("unknownFutureValue");
+    /**
+     * Static value unknownFutureValue for MicrosoftGraphPermissionClassificationType.
+     */
+    public static final MicrosoftGraphPermissionClassificationType UNKNOWN_FUTURE_VALUE
+        = fromString("unknownFutureValue");
 
     /**
      * Creates a new instance of MicrosoftGraphPermissionClassificationType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -35,18 +44,17 @@ public final class MicrosoftGraphPermissionClassificationType
 
     /**
      * Creates or finds a MicrosoftGraphPermissionClassificationType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MicrosoftGraphPermissionClassificationType.
      */
-    @JsonCreator
     public static MicrosoftGraphPermissionClassificationType fromString(String name) {
         return fromString(name, MicrosoftGraphPermissionClassificationType.class);
     }
 
     /**
      * Gets known MicrosoftGraphPermissionClassificationType values.
-     *
+     * 
      * @return known MicrosoftGraphPermissionClassificationType values.
      */
     public static Collection<MicrosoftGraphPermissionClassificationType> values() {

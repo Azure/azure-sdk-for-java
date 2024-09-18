@@ -23,69 +23,60 @@ import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for BatchDeployments CreateOrUpdate. */
+/**
+ * Samples for BatchDeployments CreateOrUpdate.
+ */
 public final class BatchDeploymentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/BatchDeployment/createOrUpdate.json
+     * x-ms-original-file:
+     * specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/
+     * examples/Workspace/BatchDeployment/createOrUpdate.json
      */
     /**
-     * Sample code: CreateOrUpdate Batch Deployment.
-     *
+     * Sample code: CreateOrUpdate Workspace Batch Deployment.
+     * 
      * @param manager Entry point to MachineLearningManager.
      */
-    public static void createOrUpdateBatchDeployment(
+    public static void createOrUpdateWorkspaceBatchDeployment(
         com.azure.resourcemanager.machinelearning.MachineLearningManager manager) throws IOException {
-        manager
-            .batchDeployments()
+        manager.batchDeployments()
             .define("testDeploymentName")
             .withRegion("string")
             .withExistingBatchEndpoint("test-rg", "my-aml-workspace", "testEndpointName")
-            .withProperties(
-                new BatchDeploymentProperties()
-                    .withCodeConfiguration(
-                        new CodeConfiguration().withCodeId("fakeTokenPlaceholder").withScoringScript("string"))
-                    .withDescription("string")
-                    .withEnvironmentId("string")
-                    .withEnvironmentVariables(mapOf("string", "string"))
-                    .withProperties(mapOf("string", "string"))
-                    .withCompute("string")
-                    .withErrorThreshold(1)
-                    .withLoggingLevel(BatchLoggingLevel.INFO)
-                    .withMaxConcurrencyPerInstance(1)
-                    .withMiniBatchSize(1L)
-                    .withModel(new IdAssetReference().withAssetId("string"))
-                    .withOutputAction(BatchOutputAction.SUMMARY_ONLY)
-                    .withOutputFileName("string")
-                    .withResources(
-                        new DeploymentResourceConfiguration()
-                            .withInstanceCount(1)
-                            .withInstanceType("string")
-                            .withProperties(
-                                mapOf(
-                                    "string",
-                                    SerializerFactory
-                                        .createDefaultManagementSerializerAdapter()
-                                        .deserialize(
-                                            "{\"cd3c37dc-2876-4ca4-8a54-21bd7619724a\":null}",
-                                            Object.class,
-                                            SerializerEncoding.JSON))))
-                    .withRetrySettings(new BatchRetrySettings().withMaxRetries(1).withTimeout(Duration.parse("PT5M"))))
+            .withProperties(new BatchDeploymentProperties().withDescription("string")
+                .withProperties(mapOf("string", "string"))
+                .withCodeConfiguration(
+                    new CodeConfiguration().withCodeId("fakeTokenPlaceholder").withScoringScript("string"))
+                .withEnvironmentId("string")
+                .withEnvironmentVariables(mapOf("string", "string"))
+                .withCompute("string")
+                .withErrorThreshold(1)
+                .withRetrySettings(new BatchRetrySettings().withMaxRetries(1).withTimeout(Duration.parse("PT5M")))
+                .withMiniBatchSize(1L)
+                .withLoggingLevel(BatchLoggingLevel.INFO)
+                .withModel(new IdAssetReference().withAssetId("string"))
+                .withMaxConcurrencyPerInstance(1)
+                .withOutputAction(BatchOutputAction.SUMMARY_ONLY)
+                .withOutputFileName("string")
+                .withResources(new DeploymentResourceConfiguration().withInstanceCount(1)
+                    .withInstanceType("string")
+                    .withProperties(mapOf("string",
+                        SerializerFactory.createDefaultManagementSerializerAdapter()
+                            .deserialize("{\"cd3c37dc-2876-4ca4-8a54-21bd7619724a\":null}", Object.class,
+                                SerializerEncoding.JSON)))))
             .withTags(mapOf())
-            .withIdentity(
-                new ManagedServiceIdentity()
-                    .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
-                    .withUserAssignedIdentities(mapOf("string", new UserAssignedIdentity())))
             .withKind("string")
-            .withSku(
-                new Sku()
-                    .withName("string")
-                    .withTier(SkuTier.FREE)
-                    .withSize("string")
-                    .withFamily("string")
-                    .withCapacity(1))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
+                .withUserAssignedIdentities(mapOf("string", new UserAssignedIdentity())))
+            .withSku(new Sku().withName("string")
+                .withTier(SkuTier.FREE)
+                .withSize("string")
+                .withFamily("string")
+                .withCapacity(1))
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

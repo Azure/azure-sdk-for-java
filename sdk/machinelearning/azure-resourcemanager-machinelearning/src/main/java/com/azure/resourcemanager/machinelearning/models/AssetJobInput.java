@@ -6,50 +6,36 @@ package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Asset input type. */
+/**
+ * Asset input type.
+ */
 @Fluent
-public class AssetJobInput {
-    /*
-     * Input Asset Delivery Mode.
-     */
-    @JsonProperty(value = "mode")
-    private InputDeliveryMode mode;
-
+public class AssetJobInput implements JsonSerializable<AssetJobInput> {
     /*
      * [Required] Input Asset URI.
      */
-    @JsonProperty(value = "uri", required = true)
     private String uri;
 
-    /** Creates an instance of AssetJobInput class. */
+    /*
+     * Input Asset Delivery Mode.
+     */
+    private InputDeliveryMode mode;
+
+    /**
+     * Creates an instance of AssetJobInput class.
+     */
     public AssetJobInput() {
     }
 
     /**
-     * Get the mode property: Input Asset Delivery Mode.
-     *
-     * @return the mode value.
-     */
-    public InputDeliveryMode mode() {
-        return this.mode;
-    }
-
-    /**
-     * Set the mode property: Input Asset Delivery Mode.
-     *
-     * @param mode the mode value to set.
-     * @return the AssetJobInput object itself.
-     */
-    public AssetJobInput withMode(InputDeliveryMode mode) {
-        this.mode = mode;
-        return this;
-    }
-
-    /**
      * Get the uri property: [Required] Input Asset URI.
-     *
+     * 
      * @return the uri value.
      */
     public String uri() {
@@ -58,7 +44,7 @@ public class AssetJobInput {
 
     /**
      * Set the uri property: [Required] Input Asset URI.
-     *
+     * 
      * @param uri the uri value to set.
      * @return the AssetJobInput object itself.
      */
@@ -68,17 +54,76 @@ public class AssetJobInput {
     }
 
     /**
+     * Get the mode property: Input Asset Delivery Mode.
+     * 
+     * @return the mode value.
+     */
+    public InputDeliveryMode mode() {
+        return this.mode;
+    }
+
+    /**
+     * Set the mode property: Input Asset Delivery Mode.
+     * 
+     * @param mode the mode value to set.
+     * @return the AssetJobInput object itself.
+     */
+    public AssetJobInput withMode(InputDeliveryMode mode) {
+        this.mode = mode;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (uri() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property uri in model AssetJobInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property uri in model AssetJobInput"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AssetJobInput.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("uri", this.uri);
+        jsonWriter.writeStringField("mode", this.mode == null ? null : this.mode.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AssetJobInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AssetJobInput if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AssetJobInput.
+     */
+    public static AssetJobInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AssetJobInput deserializedAssetJobInput = new AssetJobInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("uri".equals(fieldName)) {
+                    deserializedAssetJobInput.uri = reader.getString();
+                } else if ("mode".equals(fieldName)) {
+                    deserializedAssetJobInput.mode = InputDeliveryMode.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAssetJobInput;
+        });
+    }
 }

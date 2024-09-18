@@ -17,6 +17,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.cryptography.AsyncKeyEncryptionKey;
 import com.azure.core.cryptography.AsyncKeyEncryptionKeyResolver;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -151,6 +152,7 @@ public final class EncryptedBlobClientBuilder implements
     private BlobServiceVersion version;
     private CpkInfo customerProvidedKey;
     private EncryptionScope encryptionScope;
+    private BlobClientSideEncryptionOptions clientSideEncryptionOptions;
 
     /**
      * Creates a new instance of the EncryptedBlobClientBuilder
@@ -172,6 +174,7 @@ public final class EncryptedBlobClientBuilder implements
      * preferred for security reasons, though v1 continues to be supported for compatibility reasons. Note that even a
      * client configured to encrypt using v2 can decrypt blobs that use the v1 protocol.
      */
+    @SuppressWarnings("deprecation")
     public EncryptedBlobClientBuilder(EncryptionVersion version) {
         Objects.requireNonNull(version);
         logOptions = getDefaultHttpLogOptions();
@@ -246,9 +249,11 @@ public final class EncryptedBlobClientBuilder implements
         }
         BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
 
+        this.clientSideEncryptionOptions = this.clientSideEncryptionOptions == null ? new BlobClientSideEncryptionOptions() : this.clientSideEncryptionOptions;
+
         return new EncryptedBlobAsyncClient(addBlobUserAgentModificationPolicy(getHttpPipeline()), endpoint,
             serviceVersion, accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope,
-            keyWrapper, keyWrapAlgorithm, versionId, encryptionVersion, requiresEncryption);
+            keyWrapper, keyWrapAlgorithm, versionId, encryptionVersion, requiresEncryption, clientSideEncryptionOptions);
     }
 
 
@@ -321,8 +326,7 @@ public final class EncryptedBlobClientBuilder implements
         List<HttpPipelinePolicy> policies = new ArrayList<>();
 
         policies.add(new BlobDecryptionPolicy(keyWrapper, keyResolver, requiresEncryption));
-        String applicationId = clientOptions.getApplicationId() != null ? clientOptions.getApplicationId()
-            : logOptions.getApplicationId();
+        String applicationId = CoreUtils.getApplicationId(clientOptions, logOptions);
 
         // adding modified user-agent string that will contain "azstorage-clientsideencryption/" + encryption version
         String modifiedUserAgent = modifyUserAgentString(applicationId, userAgentConfiguration);
@@ -338,9 +342,8 @@ public final class EncryptedBlobClientBuilder implements
 
         // We need to place this policy right before the credential policy since headers may affect the string to sign
         // of the request.
-        HttpHeaders headers = new HttpHeaders();
-        clientOptions.getHeaders().forEach(header -> headers.put(header.getName(), header.getValue()));
-        if (headers.getSize() > 0) {
+        HttpHeaders headers = CoreUtils.createHttpHeadersFromClientOptions(clientOptions);
+        if (headers != null) {
             policies.add(new AddHeadersPolicy(headers));
         }
         policies.add(new MetadataValidationPolicy());
@@ -361,8 +364,8 @@ public final class EncryptedBlobClientBuilder implements
         HttpPolicyProviders.addAfterRetryPolicies(policies);
 
         policies.add(new ResponseValidationPolicyBuilder()
-            .addOptionalEcho(Constants.HeaderConstants.CLIENT_REQUEST_ID)
-            .addOptionalEcho(Constants.HeaderConstants.ENCRYPTION_KEY_SHA256)
+            .addOptionalEcho(HttpHeaderName.X_MS_CLIENT_REQUEST_ID)
+            .addOptionalEcho(Constants.HeaderConstants.ENCRYPTION_KEY_SHA256_HEADER_NAME)
             .build());
 
         policies.add(new HttpLoggingPolicy(logOptions));
@@ -711,7 +714,7 @@ public final class EncryptedBlobClientBuilder implements
 
     /**
      * Sets the request retry options for all the requests made through the client.
-     *
+     * <p>
      * Setting this is mutually exclusive with using {@link #retryOptions(RetryOptions)}.
      *
      * @param retryOptions {@link RequestRetryOptions}.
@@ -913,6 +916,18 @@ public final class EncryptedBlobClientBuilder implements
      */
     public EncryptedBlobClientBuilder requiresEncryption(boolean requiresEncryption) {
         this.requiresEncryption = requiresEncryption;
+        return this;
+    }
+
+    /**
+     * Sets the encryption options for the blob.
+     *
+     * @param clientSideEncryptionOptions The {@link BlobClientSideEncryptionOptions} for the blob.
+     * @return the updated EncryptedBlobClientBuilder object
+     */
+    public EncryptedBlobClientBuilder clientSideEncryptionOptions(
+        BlobClientSideEncryptionOptions clientSideEncryptionOptions) {
+        this.clientSideEncryptionOptions = clientSideEncryptionOptions;
         return this;
     }
 }

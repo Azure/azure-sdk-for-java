@@ -11,7 +11,6 @@ import com.azure.resourcemanager.cosmos.models.CassandraTableResource;
 import com.azure.resourcemanager.cosmos.models.ClusterKey;
 import com.azure.resourcemanager.cosmos.models.Column;
 import com.azure.resourcemanager.cosmos.models.CreateUpdateOptions;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,11 +20,12 @@ import java.util.Map;
  */
 public final class CassandraResourcesCreateUpdateCassandraTableSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBCassandraTableCreateUpdate.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-08-15/examples/
+     * CosmosDBCassandraTableCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBCassandraTableCreateUpdate.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBCassandraTableCreateUpdate(com.azure.resourcemanager.AzureResourceManager azure) {

@@ -5,28 +5,20 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
- * Parameters for Create or Update request for MaterializedViewsBuilderServiceResource.
+ * Properties for Create or Update request for MaterializedViewsBuilderServiceResource.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "serviceType",
-    defaultImpl = MaterializedViewsBuilderServiceResourceCreateUpdateParameters.class,
-    visible = true)
-@JsonTypeName("MaterializedViewsBuilder")
 @Fluent
 public final class MaterializedViewsBuilderServiceResourceCreateUpdateParameters
     extends ServiceResourceCreateUpdateProperties {
     /*
      * ServiceType for the service.
      */
-    @JsonTypeId
-    @JsonProperty(value = "serviceType", required = true)
     private ServiceType serviceType = ServiceType.MATERIALIZED_VIEWS_BUILDER;
 
     /**
@@ -70,6 +62,53 @@ public final class MaterializedViewsBuilderServiceResourceCreateUpdateParameters
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("instanceSize", instanceSize() == null ? null : instanceSize().toString());
+        jsonWriter.writeNumberField("instanceCount", instanceCount());
+        jsonWriter.writeStringField("serviceType", this.serviceType == null ? null : this.serviceType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MaterializedViewsBuilderServiceResourceCreateUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MaterializedViewsBuilderServiceResourceCreateUpdateParameters if the JsonReader was
+     * pointing to an instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the
+     * MaterializedViewsBuilderServiceResourceCreateUpdateParameters.
+     */
+    public static MaterializedViewsBuilderServiceResourceCreateUpdateParameters fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            MaterializedViewsBuilderServiceResourceCreateUpdateParameters deserializedMaterializedViewsBuilderServiceResourceCreateUpdateParameters
+                = new MaterializedViewsBuilderServiceResourceCreateUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instanceSize".equals(fieldName)) {
+                    deserializedMaterializedViewsBuilderServiceResourceCreateUpdateParameters
+                        .withInstanceSize(ServiceSize.fromString(reader.getString()));
+                } else if ("instanceCount".equals(fieldName)) {
+                    deserializedMaterializedViewsBuilderServiceResourceCreateUpdateParameters
+                        .withInstanceCount(reader.getNullable(JsonReader::getInt));
+                } else if ("serviceType".equals(fieldName)) {
+                    deserializedMaterializedViewsBuilderServiceResourceCreateUpdateParameters.serviceType
+                        = ServiceType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMaterializedViewsBuilderServiceResourceCreateUpdateParameters;
+        });
     }
 }

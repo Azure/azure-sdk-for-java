@@ -13,7 +13,7 @@ import java.util.Arrays;
 public final class AccountsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2023-11-01/examples/Accounts_CreateOrUpdate.json
+     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2024-03-01/examples/Accounts_CreateOrUpdate.json
      */
     /**
      * Sample code: Accounts_CreateOrUpdate.
@@ -26,7 +26,7 @@ public final class AccountsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2023-11-01/examples/Accounts_CreateOrUpdateAD.json
+     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2024-03-01/examples/Accounts_CreateOrUpdateAD.json
      */
     /**
      * Sample code: Accounts_CreateOrUpdateWithActiveDirectory.

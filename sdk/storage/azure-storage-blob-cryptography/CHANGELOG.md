@@ -1,5 +1,24 @@
 # Release History
 
+## 12.27.0-beta.2 (Unreleased)
+
+### Features Added
+- Added configuration to allow encrypted blobs to be uploaded using a configurable authenticated region length via 
+  `BlobClientSideEncryptionOptions`. The region length can be configured to range between 16 bytes to 1GB. The region 
+  length can be set via `BlobClientSideEncryptionOptions.setAuthenticatedRegionDataLengthInBytes(long authenticatedRegionDataLength)`. 
+  Note: This change only applies `EncryptionVersion.V2`. Also, only applies to upload operations, this does not directly 
+  change the authenticated region length used to download and decrypt blobs.
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 12.27.0-beta.1 (2024-08-06)
+
+### Features Added
+- Added support for service version 2024-11-04.
+
 ## 12.26.0 (2024-07-18)
 
 ### Features Added

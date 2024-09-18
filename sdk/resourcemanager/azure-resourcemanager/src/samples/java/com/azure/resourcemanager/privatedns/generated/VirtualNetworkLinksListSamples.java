@@ -4,22 +4,25 @@
 
 package com.azure.resourcemanager.privatedns.generated;
 
-/** Samples for VirtualNetworkLinks List. */
+/**
+ * Samples for VirtualNetworkLinks List.
+ */
 public final class VirtualNetworkLinksListSamples {
     /*
-     * x-ms-original-file: specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/VirtualNetworkLinkList.json
+     * x-ms-original-file:
+     * specification/privatedns/resource-manager/Microsoft.Network/stable/2024-06-01/examples/VirtualNetworkLinkList.
+     * json
      */
     /**
      * Sample code: Get Private DNS Zone Virtual Network Links.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getPrivateDNSZoneVirtualNetworkLinks(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .privateDnsZones()
+        azure.privateDnsZones()
             .manager()
             .serviceClient()
             .getVirtualNetworkLinks()
-            .list("resourceGroup1", "privatezone1.com", null, com.azure.core.util.Context.NONE);
+            .list("resourceGroup1", "privatelink.contoso.com", null, com.azure.core.util.Context.NONE);
     }
 }

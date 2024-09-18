@@ -18,55 +18,46 @@ import org.junit.jupiter.api.Assertions;
 public final class ImageVerticalTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ImageVertical model =
-            BinaryData
-                .fromString(
-                    "{\"limitSettings\":{\"maxConcurrentTrials\":4557833,\"maxTrials\":267543853,\"timeout\":\"PT33H18M38S\"},\"sweepSettings\":{\"earlyTermination\":{\"policyType\":\"EarlyTerminationPolicy\",\"delayEvaluation\":1370366721,\"evaluationInterval\":1583622668},\"samplingAlgorithm\":\"Grid\"},\"validationData\":{\"jobInputType\":\"mltable\",\"mode\":\"ReadOnlyMount\",\"uri\":\"lbcnndt\",\"description\":\"xawqy\"},\"validationDataSize\":69.16610610373561}")
-                .toObject(ImageVertical.class);
-        Assertions.assertEquals(4557833, model.limitSettings().maxConcurrentTrials());
-        Assertions.assertEquals(267543853, model.limitSettings().maxTrials());
-        Assertions.assertEquals(Duration.parse("PT33H18M38S"), model.limitSettings().timeout());
-        Assertions.assertEquals(1370366721, model.sweepSettings().earlyTermination().delayEvaluation());
-        Assertions.assertEquals(1583622668, model.sweepSettings().earlyTermination().evaluationInterval());
-        Assertions.assertEquals(SamplingAlgorithmType.GRID, model.sweepSettings().samplingAlgorithm());
-        Assertions.assertEquals("xawqy", model.validationData().description());
+        ImageVertical model = BinaryData.fromString(
+            "{\"limitSettings\":{\"maxTrials\":1994872439,\"timeout\":\"PT128H24M14S\",\"maxConcurrentTrials\":963869601},\"sweepSettings\":{\"samplingAlgorithm\":\"Random\",\"earlyTermination\":{\"policyType\":\"EarlyTerminationPolicy\",\"evaluationInterval\":676982942,\"delayEvaluation\":1015925891}},\"validationData\":{\"jobInputType\":\"mltable\",\"uri\":\"nirupkqnst\",\"mode\":\"ReadOnlyMount\",\"description\":\"ibjg\"},\"validationDataSize\":70.27294181684461}")
+            .toObject(ImageVertical.class);
+        Assertions.assertEquals(1994872439, model.limitSettings().maxTrials());
+        Assertions.assertEquals(Duration.parse("PT128H24M14S"), model.limitSettings().timeout());
+        Assertions.assertEquals(963869601, model.limitSettings().maxConcurrentTrials());
+        Assertions.assertEquals(SamplingAlgorithmType.RANDOM, model.sweepSettings().samplingAlgorithm());
+        Assertions.assertEquals(676982942, model.sweepSettings().earlyTermination().evaluationInterval());
+        Assertions.assertEquals(1015925891, model.sweepSettings().earlyTermination().delayEvaluation());
+        Assertions.assertEquals("ibjg", model.validationData().description());
+        Assertions.assertEquals("nirupkqnst", model.validationData().uri());
         Assertions.assertEquals(InputDeliveryMode.READ_ONLY_MOUNT, model.validationData().mode());
-        Assertions.assertEquals("lbcnndt", model.validationData().uri());
-        Assertions.assertEquals(69.16610610373561D, model.validationDataSize());
+        Assertions.assertEquals(70.27294181684461D, model.validationDataSize());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ImageVertical model =
-            new ImageVertical()
-                .withLimitSettings(
-                    new ImageLimitSettings()
-                        .withMaxConcurrentTrials(4557833)
-                        .withMaxTrials(267543853)
-                        .withTimeout(Duration.parse("PT33H18M38S")))
+        ImageVertical model
+            = new ImageVertical()
+                .withLimitSettings(new ImageLimitSettings().withMaxTrials(1994872439)
+                    .withTimeout(Duration.parse("PT128H24M14S"))
+                    .withMaxConcurrentTrials(963869601))
                 .withSweepSettings(
-                    new ImageSweepSettings()
-                        .withEarlyTermination(
-                            new EarlyTerminationPolicy()
-                                .withDelayEvaluation(1370366721)
-                                .withEvaluationInterval(1583622668))
-                        .withSamplingAlgorithm(SamplingAlgorithmType.GRID))
-                .withValidationData(
-                    new MLTableJobInput()
-                        .withDescription("xawqy")
-                        .withMode(InputDeliveryMode.READ_ONLY_MOUNT)
-                        .withUri("lbcnndt"))
-                .withValidationDataSize(69.16610610373561D);
+                    new ImageSweepSettings().withSamplingAlgorithm(SamplingAlgorithmType.RANDOM)
+                        .withEarlyTermination(new EarlyTerminationPolicy().withEvaluationInterval(676982942)
+                            .withDelayEvaluation(1015925891)))
+                .withValidationData(new MLTableJobInput().withDescription("ibjg")
+                    .withUri("nirupkqnst")
+                    .withMode(InputDeliveryMode.READ_ONLY_MOUNT))
+                .withValidationDataSize(70.27294181684461D);
         model = BinaryData.fromObject(model).toObject(ImageVertical.class);
-        Assertions.assertEquals(4557833, model.limitSettings().maxConcurrentTrials());
-        Assertions.assertEquals(267543853, model.limitSettings().maxTrials());
-        Assertions.assertEquals(Duration.parse("PT33H18M38S"), model.limitSettings().timeout());
-        Assertions.assertEquals(1370366721, model.sweepSettings().earlyTermination().delayEvaluation());
-        Assertions.assertEquals(1583622668, model.sweepSettings().earlyTermination().evaluationInterval());
-        Assertions.assertEquals(SamplingAlgorithmType.GRID, model.sweepSettings().samplingAlgorithm());
-        Assertions.assertEquals("xawqy", model.validationData().description());
+        Assertions.assertEquals(1994872439, model.limitSettings().maxTrials());
+        Assertions.assertEquals(Duration.parse("PT128H24M14S"), model.limitSettings().timeout());
+        Assertions.assertEquals(963869601, model.limitSettings().maxConcurrentTrials());
+        Assertions.assertEquals(SamplingAlgorithmType.RANDOM, model.sweepSettings().samplingAlgorithm());
+        Assertions.assertEquals(676982942, model.sweepSettings().earlyTermination().evaluationInterval());
+        Assertions.assertEquals(1015925891, model.sweepSettings().earlyTermination().delayEvaluation());
+        Assertions.assertEquals("ibjg", model.validationData().description());
+        Assertions.assertEquals("nirupkqnst", model.validationData().uri());
         Assertions.assertEquals(InputDeliveryMode.READ_ONLY_MOUNT, model.validationData().mode());
-        Assertions.assertEquals("lbcnndt", model.validationData().uri());
-        Assertions.assertEquals(69.16610610373561D, model.validationDataSize());
+        Assertions.assertEquals(70.27294181684461D, model.validationDataSize());
     }
 }

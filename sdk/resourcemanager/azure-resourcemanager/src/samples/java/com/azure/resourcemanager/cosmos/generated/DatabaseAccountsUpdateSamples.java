@@ -20,7 +20,6 @@ import com.azure.resourcemanager.cosmos.models.PeriodicModeBackupPolicy;
 import com.azure.resourcemanager.cosmos.models.PeriodicModeProperties;
 import com.azure.resourcemanager.cosmos.models.ResourceIdentityType;
 import com.azure.resourcemanager.cosmos.models.VirtualNetworkRule;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,11 +29,12 @@ import java.util.Map;
  */
 public final class DatabaseAccountsUpdateSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBDatabaseAccountPatch.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-08-15/examples/
+     * CosmosDBDatabaseAccountPatch.json
      */
     /**
      * Sample code: CosmosDBDatabaseAccountPatch.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBDatabaseAccountPatch(com.azure.resourcemanager.AzureResourceManager azure) {

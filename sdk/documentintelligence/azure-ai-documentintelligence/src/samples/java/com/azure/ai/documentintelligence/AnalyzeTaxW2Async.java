@@ -19,7 +19,7 @@ import java.util.Map;
 
 /**
  * Async Sample for analyzing commonly found W-2 fields from a local file input stream of a tax W-2 document.
- * See fields found on a US Tax W2 document <a href=https://aka.ms/documentintelligence/taxusw2fieldschema>here</a>
+ * See fields found on a US Tax W2 document <a href=https://aka.ms/formrecognizer/taxusw2fieldschema>here</a>
  */
 public class AnalyzeTaxW2Async {
     /**
@@ -40,6 +40,7 @@ public class AnalyzeTaxW2Async {
 
         PollerFlux<AnalyzeResultOperation, AnalyzeResult> analyzeW2Poller =
             client.beginAnalyzeDocument("prebuilt-tax.us.w2", null,
+                null,
                 null,
                 null,
                 null,

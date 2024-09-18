@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.util.Collection;
 
 /**
@@ -31,7 +29,7 @@ public final class PublicNetworkAccessFlag extends ExpandableStringEnum<PublicNe
 
     /**
      * Creates a new instance of PublicNetworkAccessFlag value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -40,18 +38,17 @@ public final class PublicNetworkAccessFlag extends ExpandableStringEnum<PublicNe
 
     /**
      * Creates or finds a PublicNetworkAccessFlag from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PublicNetworkAccessFlag.
      */
-    @JsonCreator
     public static PublicNetworkAccessFlag fromString(String name) {
         return fromString(name, PublicNetworkAccessFlag.class);
     }
 
     /**
      * Gets known PublicNetworkAccessFlag values.
-     *
+     * 
      * @return known PublicNetworkAccessFlag values.
      */
     public static Collection<PublicNetworkAccessFlag> values() {

@@ -5,6 +5,9 @@
 package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cdn.models.ActivatedResourceReference;
 import com.azure.resourcemanager.cdn.models.AfdEndpointProtocols;
 import com.azure.resourcemanager.cdn.models.AfdProvisioningState;
@@ -15,7 +18,7 @@ import com.azure.resourcemanager.cdn.models.ForwardingProtocol;
 import com.azure.resourcemanager.cdn.models.HttpsRedirect;
 import com.azure.resourcemanager.cdn.models.LinkToDefaultDomain;
 import com.azure.resourcemanager.cdn.models.ResourceReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -26,14 +29,17 @@ public final class RouteProperties extends RouteUpdatePropertiesParameters {
     /*
      * Provisioning status
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private AfdProvisioningState provisioningState;
 
     /*
      * The deploymentStatus property.
      */
-    @JsonProperty(value = "deploymentStatus", access = JsonProperty.Access.WRITE_ONLY)
     private DeploymentStatus deploymentStatus;
+
+    /*
+     * The name of the endpoint which holds the route.
+     */
+    private String endpointName;
 
     /**
      * Creates an instance of RouteProperties class.
@@ -57,6 +63,16 @@ public final class RouteProperties extends RouteUpdatePropertiesParameters {
      */
     public DeploymentStatus deploymentStatus() {
         return this.deploymentStatus;
+    }
+
+    /**
+     * Get the endpointName property: The name of the endpoint which holds the route.
+     * 
+     * @return the endpointName value.
+     */
+    @Override
+    public String endpointName() {
+        return this.endpointName;
     }
 
     /**
@@ -166,5 +182,89 @@ public final class RouteProperties extends RouteUpdatePropertiesParameters {
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("customDomains", customDomains(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("originGroup", originGroup());
+        jsonWriter.writeStringField("originPath", originPath());
+        jsonWriter.writeArrayField("ruleSets", ruleSets(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("supportedProtocols", supportedProtocols(),
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeArrayField("patternsToMatch", patternsToMatch(),
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("cacheConfiguration", cacheConfiguration());
+        jsonWriter.writeStringField("forwardingProtocol",
+            forwardingProtocol() == null ? null : forwardingProtocol().toString());
+        jsonWriter.writeStringField("linkToDefaultDomain",
+            linkToDefaultDomain() == null ? null : linkToDefaultDomain().toString());
+        jsonWriter.writeStringField("httpsRedirect", httpsRedirect() == null ? null : httpsRedirect().toString());
+        jsonWriter.writeStringField("enabledState", enabledState() == null ? null : enabledState().toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RouteProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RouteProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RouteProperties.
+     */
+    public static RouteProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RouteProperties deserializedRouteProperties = new RouteProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("endpointName".equals(fieldName)) {
+                    deserializedRouteProperties.endpointName = reader.getString();
+                } else if ("customDomains".equals(fieldName)) {
+                    List<ActivatedResourceReference> customDomains
+                        = reader.readArray(reader1 -> ActivatedResourceReference.fromJson(reader1));
+                    deserializedRouteProperties.withCustomDomains(customDomains);
+                } else if ("originGroup".equals(fieldName)) {
+                    deserializedRouteProperties.withOriginGroup(ResourceReference.fromJson(reader));
+                } else if ("originPath".equals(fieldName)) {
+                    deserializedRouteProperties.withOriginPath(reader.getString());
+                } else if ("ruleSets".equals(fieldName)) {
+                    List<ResourceReference> ruleSets = reader.readArray(reader1 -> ResourceReference.fromJson(reader1));
+                    deserializedRouteProperties.withRuleSets(ruleSets);
+                } else if ("supportedProtocols".equals(fieldName)) {
+                    List<AfdEndpointProtocols> supportedProtocols
+                        = reader.readArray(reader1 -> AfdEndpointProtocols.fromString(reader1.getString()));
+                    deserializedRouteProperties.withSupportedProtocols(supportedProtocols);
+                } else if ("patternsToMatch".equals(fieldName)) {
+                    List<String> patternsToMatch = reader.readArray(reader1 -> reader1.getString());
+                    deserializedRouteProperties.withPatternsToMatch(patternsToMatch);
+                } else if ("cacheConfiguration".equals(fieldName)) {
+                    deserializedRouteProperties.withCacheConfiguration(AfdRouteCacheConfiguration.fromJson(reader));
+                } else if ("forwardingProtocol".equals(fieldName)) {
+                    deserializedRouteProperties
+                        .withForwardingProtocol(ForwardingProtocol.fromString(reader.getString()));
+                } else if ("linkToDefaultDomain".equals(fieldName)) {
+                    deserializedRouteProperties
+                        .withLinkToDefaultDomain(LinkToDefaultDomain.fromString(reader.getString()));
+                } else if ("httpsRedirect".equals(fieldName)) {
+                    deserializedRouteProperties.withHttpsRedirect(HttpsRedirect.fromString(reader.getString()));
+                } else if ("enabledState".equals(fieldName)) {
+                    deserializedRouteProperties.withEnabledState(EnabledState.fromString(reader.getString()));
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedRouteProperties.provisioningState = AfdProvisioningState.fromString(reader.getString());
+                } else if ("deploymentStatus".equals(fieldName)) {
+                    deserializedRouteProperties.deploymentStatus = DeploymentStatus.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRouteProperties;
+        });
     }
 }

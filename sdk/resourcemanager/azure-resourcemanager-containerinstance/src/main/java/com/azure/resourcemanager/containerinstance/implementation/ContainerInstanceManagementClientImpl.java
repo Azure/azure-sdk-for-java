@@ -17,7 +17,9 @@ import com.azure.resourcemanager.containerinstance.fluent.SubnetServiceAssociati
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import java.time.Duration;
 
-/** Initializes a new instance of the ContainerInstanceManagementClientImpl type. */
+/**
+ * Initializes a new instance of the ContainerInstanceManagementClientImpl type.
+ */
 @ServiceClient(builder = ContainerInstanceManagementClientBuilder.class)
 public final class ContainerInstanceManagementClientImpl extends AzureServiceClient
     implements ContainerInstanceManagementClient {
@@ -30,127 +32,147 @@ public final class ContainerInstanceManagementClientImpl extends AzureServiceCli
     /**
      * Gets Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
      * part of the URI for every service call.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String getSubscriptionId() {
         return this.subscriptionId;
     }
 
-    /** server parameter. */
+    /**
+     * server parameter.
+     */
     private final String endpoint;
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
         return this.endpoint;
     }
 
-    /** Api Version. */
+    /**
+     * Api Version.
+     */
     private final String apiVersion;
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     public String getApiVersion() {
         return this.apiVersion;
     }
 
-    /** The HTTP pipeline to send requests through. */
+    /**
+     * The HTTP pipeline to send requests through.
+     */
     private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
+    /**
+     * The serializer to serialize an object into a string.
+     */
     private final SerializerAdapter serializerAdapter;
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     SerializerAdapter getSerializerAdapter() {
         return this.serializerAdapter;
     }
 
-    /** The default poll interval for long-running operation. */
+    /**
+     * The default poll interval for long-running operation.
+     */
     private final Duration defaultPollInterval;
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     public Duration getDefaultPollInterval() {
         return this.defaultPollInterval;
     }
 
-    /** The ContainerGroupsClient object to access its operations. */
+    /**
+     * The ContainerGroupsClient object to access its operations.
+     */
     private final ContainerGroupsClient containerGroups;
 
     /**
      * Gets the ContainerGroupsClient object to access its operations.
-     *
+     * 
      * @return the ContainerGroupsClient object.
      */
     public ContainerGroupsClient getContainerGroups() {
         return this.containerGroups;
     }
 
-    /** The OperationsClient object to access its operations. */
+    /**
+     * The OperationsClient object to access its operations.
+     */
     private final OperationsClient operations;
 
     /**
      * Gets the OperationsClient object to access its operations.
-     *
+     * 
      * @return the OperationsClient object.
      */
     public OperationsClient getOperations() {
         return this.operations;
     }
 
-    /** The LocationsClient object to access its operations. */
+    /**
+     * The LocationsClient object to access its operations.
+     */
     private final LocationsClient locations;
 
     /**
      * Gets the LocationsClient object to access its operations.
-     *
+     * 
      * @return the LocationsClient object.
      */
     public LocationsClient getLocations() {
         return this.locations;
     }
 
-    /** The ContainersClient object to access its operations. */
+    /**
+     * The ContainersClient object to access its operations.
+     */
     private final ContainersClient containers;
 
     /**
      * Gets the ContainersClient object to access its operations.
-     *
+     * 
      * @return the ContainersClient object.
      */
     public ContainersClient getContainers() {
         return this.containers;
     }
 
-    /** The SubnetServiceAssociationLinksClient object to access its operations. */
+    /**
+     * The SubnetServiceAssociationLinksClient object to access its operations.
+     */
     private final SubnetServiceAssociationLinksClient subnetServiceAssociationLinks;
 
     /**
      * Gets the SubnetServiceAssociationLinksClient object to access its operations.
-     *
+     * 
      * @return the SubnetServiceAssociationLinksClient object.
      */
     public SubnetServiceAssociationLinksClient getSubnetServiceAssociationLinks() {
@@ -159,22 +181,17 @@ public final class ContainerInstanceManagementClientImpl extends AzureServiceCli
 
     /**
      * Initializes an instance of ContainerInstanceManagementClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
      * @param subscriptionId Subscription credentials which uniquely identify Microsoft Azure subscription. The
-     *     subscription ID forms part of the URI for every service call.
+     * subscription ID forms part of the URI for every service call.
      * @param endpoint server parameter.
      */
-    ContainerInstanceManagementClientImpl(
-        HttpPipeline httpPipeline,
-        SerializerAdapter serializerAdapter,
-        Duration defaultPollInterval,
-        AzureEnvironment environment,
-        String subscriptionId,
-        String endpoint) {
+    ContainerInstanceManagementClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
+        Duration defaultPollInterval, AzureEnvironment environment, String subscriptionId, String endpoint) {
         super(httpPipeline, serializerAdapter, environment);
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;

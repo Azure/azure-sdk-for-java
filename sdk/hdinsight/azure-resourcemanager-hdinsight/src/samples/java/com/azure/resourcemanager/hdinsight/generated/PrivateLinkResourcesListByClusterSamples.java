@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.hdinsight.generated;
 
-/** Samples for PrivateLinkResources ListByCluster. */
+/**
+ * Samples for PrivateLinkResources ListByCluster.
+ */
 public final class PrivateLinkResourcesListByClusterSamples {
     /*
-     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2023-04-15-preview/examples/GetAllPrivateLinkResourcesInCluster.json
+     * x-ms-original-file:
+     * specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2024-08-01-preview/examples/
+     * GetAllPrivateLinkResourcesInCluster.json
      */
     /**
      * Sample code: Get all private link resources in a specific HDInsight cluster.
-     *
+     * 
      * @param manager Entry point to HDInsightManager.
      */
     public static void getAllPrivateLinkResourcesInASpecificHDInsightCluster(

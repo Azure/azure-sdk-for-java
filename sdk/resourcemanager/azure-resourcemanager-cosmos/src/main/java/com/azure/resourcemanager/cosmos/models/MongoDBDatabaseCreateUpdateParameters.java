@@ -6,9 +6,11 @@ package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cosmos.fluent.models.MongoDBDatabaseCreateUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -19,8 +21,22 @@ public final class MongoDBDatabaseCreateUpdateParameters extends ArmResourceProp
     /*
      * Properties to create and update Azure Cosmos DB MongoDB database.
      */
-    @JsonProperty(value = "properties", required = true)
     private MongoDBDatabaseCreateUpdateProperties innerProperties = new MongoDBDatabaseCreateUpdateProperties();
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
      * Creates an instance of MongoDBDatabaseCreateUpdateParameters class.
@@ -30,11 +46,41 @@ public final class MongoDBDatabaseCreateUpdateParameters extends ArmResourceProp
 
     /**
      * Get the innerProperties property: Properties to create and update Azure Cosmos DB MongoDB database.
-     *
+     * 
      * @return the innerProperties value.
      */
     private MongoDBDatabaseCreateUpdateProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -57,7 +103,7 @@ public final class MongoDBDatabaseCreateUpdateParameters extends ArmResourceProp
 
     /**
      * Get the resource property: The standard JSON format of a MongoDB database.
-     *
+     * 
      * @return the resource value.
      */
     public MongoDBDatabaseResource resource() {
@@ -66,7 +112,7 @@ public final class MongoDBDatabaseCreateUpdateParameters extends ArmResourceProp
 
     /**
      * Set the resource property: The standard JSON format of a MongoDB database.
-     *
+     * 
      * @param resource the resource value to set.
      * @return the MongoDBDatabaseCreateUpdateParameters object itself.
      */
@@ -81,7 +127,7 @@ public final class MongoDBDatabaseCreateUpdateParameters extends ArmResourceProp
     /**
      * Get the options property: A key-value pair of options to be applied for the request. This corresponds to the
      * headers sent with the request.
-     *
+     * 
      * @return the options value.
      */
     public CreateUpdateOptions options() {
@@ -91,7 +137,7 @@ public final class MongoDBDatabaseCreateUpdateParameters extends ArmResourceProp
     /**
      * Set the options property: A key-value pair of options to be applied for the request. This corresponds to the
      * headers sent with the request.
-     *
+     * 
      * @param options the options value to set.
      * @return the MongoDBDatabaseCreateUpdateParameters object itself.
      */
@@ -105,12 +151,11 @@ public final class MongoDBDatabaseCreateUpdateParameters extends ArmResourceProp
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -118,7 +163,64 @@ public final class MongoDBDatabaseCreateUpdateParameters extends ArmResourceProp
         } else {
             innerProperties().validate();
         }
+        if (location() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property location in model MongoDBDatabaseCreateUpdateParameters"));
+        }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(MongoDBDatabaseCreateUpdateParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MongoDBDatabaseCreateUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MongoDBDatabaseCreateUpdateParameters if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MongoDBDatabaseCreateUpdateParameters.
+     */
+    public static MongoDBDatabaseCreateUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MongoDBDatabaseCreateUpdateParameters deserializedMongoDBDatabaseCreateUpdateParameters
+                = new MongoDBDatabaseCreateUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMongoDBDatabaseCreateUpdateParameters.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedMongoDBDatabaseCreateUpdateParameters.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedMongoDBDatabaseCreateUpdateParameters.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedMongoDBDatabaseCreateUpdateParameters.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedMongoDBDatabaseCreateUpdateParameters.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedMongoDBDatabaseCreateUpdateParameters.innerProperties
+                        = MongoDBDatabaseCreateUpdateProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMongoDBDatabaseCreateUpdateParameters;
+        });
+    }
 }

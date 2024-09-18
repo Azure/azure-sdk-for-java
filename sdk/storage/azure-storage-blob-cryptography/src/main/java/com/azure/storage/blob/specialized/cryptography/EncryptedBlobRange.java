@@ -11,7 +11,6 @@ import com.azure.storage.blob.models.BlobRange;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_BLOCK_SIZE;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_PROTOCOL_V1;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_PROTOCOL_V2;
-import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.GCM_ENCRYPTION_REGION_LENGTH;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.NONCE_LENGTH;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.TAG_LENGTH;
 
@@ -128,24 +127,25 @@ final class EncryptedBlobRange {
             case ENCRYPTION_PROTOCOL_V2:
                 // Calculate offsetAdjustment.
                 // Get the start of the encryption region for the original offset
-                long regionNumber = originalRange.getOffset() / GCM_ENCRYPTION_REGION_LENGTH;
+                long authenticatedRegionDataLength = encryptionData.getEncryptedRegionInfo().getDataLength();
+                long regionNumber = originalRange.getOffset() / authenticatedRegionDataLength;
 
                 long regionStartOffset = regionNumber
-                    * (NONCE_LENGTH + GCM_ENCRYPTION_REGION_LENGTH + TAG_LENGTH);
+                    * (NONCE_LENGTH + authenticatedRegionDataLength + TAG_LENGTH);
 
                 // This is the plaintext original offset minus the beginning of the containing encryption region also in plaintext.
                 // It is effectively the amount of extra plaintext we grabbed. This is necessary because the nonces and tags
                 // are stored in the data, which skews our counting.
-                this.amountPlaintextToSkip = originalRange.getOffset() - (regionNumber * GCM_ENCRYPTION_REGION_LENGTH);
+                this.amountPlaintextToSkip = originalRange.getOffset() - (regionNumber * authenticatedRegionDataLength);
 
                 if (originalRange.getCount() != null) {
                     // Get the end of the encryption region for the end of the original range
                     regionNumber = (originalRange.getOffset() + originalRange.getCount() - 1)
-                        / GCM_ENCRYPTION_REGION_LENGTH;
+                        / authenticatedRegionDataLength;
                     // Read: Get the starting offset for the last encryption region as above and add the length of a region
                     // to get the end offset for the region
                     long regionEndOffset = (regionNumber + 1)
-                        * (NONCE_LENGTH + GCM_ENCRYPTION_REGION_LENGTH + TAG_LENGTH);
+                        * (NONCE_LENGTH + authenticatedRegionDataLength + TAG_LENGTH);
                     // adjusted download count is the difference in the end and start of the range.
                     this.adjustedDownloadCount = regionEndOffset - regionStartOffset;
                 }

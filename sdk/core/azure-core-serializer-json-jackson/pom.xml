@@ -15,7 +15,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-core-serializer-json-jackson</artifactId>
   <packaging>jar</packaging>
-  <version>1.5.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-serializer-json-jackson;current} -->
+  <version>1.6.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-serializer-json-jackson;current} -->
 
   <name>Microsoft Azure Jackson JSON Serializer Library</name>
   <description>This package contains the Jackson JSON serializer client plugin for azure-core.</description>
@@ -53,6 +53,7 @@
       --add-opens com.azure.core.serializer.json.jackson/com.azure.core.serializer.json.jackson.implementation=com.fasterxml.jackson.databind
       --add-opens com.azure.core.serializer.json.jackson/com.azure.core.serializer.json.jackson.implementation=com.azure.core
       --add-opens com.azure.core.serializer.json.jackson/com.azure.core.serializer.json.jackson.implementation=ALL-UNNAMED
+      --add-opens com.azure.core.serializer.json.jackson/com.azure.core.serializer.json.jackson.implementation.nojackson=com.azure.core
     </javaModulesSurefireArgLine>
 
     <!-- Enables fail on deprecated API usage. -->
@@ -81,7 +82,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-json</artifactId>
-      <version>1.2.0</version> <!-- {x-version-update;com.azure:azure-json;dependency} -->
+      <version>1.3.0</version> <!-- {x-version-update;com.azure:azure-json;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -91,7 +92,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.51.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.53.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
 
     <dependency>
@@ -125,7 +126,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-json</artifactId>
-      <version>1.2.0</version> <!-- {x-version-update;com.azure:azure-json;dependency} -->
+      <version>1.3.0</version> <!-- {x-version-update;com.azure:azure-json;dependency} -->
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>

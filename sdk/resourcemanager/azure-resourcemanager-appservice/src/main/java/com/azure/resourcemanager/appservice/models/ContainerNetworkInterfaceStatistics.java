@@ -5,59 +5,56 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The ContainerNetworkInterfaceStatistics model.
  */
 @Fluent
-public final class ContainerNetworkInterfaceStatistics {
+public final class ContainerNetworkInterfaceStatistics
+    implements JsonSerializable<ContainerNetworkInterfaceStatistics> {
     /*
      * The rxBytes property.
      */
-    @JsonProperty(value = "rxBytes")
     private Long rxBytes;
 
     /*
      * The rxPackets property.
      */
-    @JsonProperty(value = "rxPackets")
     private Long rxPackets;
 
     /*
      * The rxErrors property.
      */
-    @JsonProperty(value = "rxErrors")
     private Long rxErrors;
 
     /*
      * The rxDropped property.
      */
-    @JsonProperty(value = "rxDropped")
     private Long rxDropped;
 
     /*
      * The txBytes property.
      */
-    @JsonProperty(value = "txBytes")
     private Long txBytes;
 
     /*
      * The txPackets property.
      */
-    @JsonProperty(value = "txPackets")
     private Long txPackets;
 
     /*
      * The txErrors property.
      */
-    @JsonProperty(value = "txErrors")
     private Long txErrors;
 
     /*
      * The txDropped property.
      */
-    @JsonProperty(value = "txDropped")
     private Long txDropped;
 
     /**
@@ -232,5 +229,63 @@ public final class ContainerNetworkInterfaceStatistics {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("rxBytes", this.rxBytes);
+        jsonWriter.writeNumberField("rxPackets", this.rxPackets);
+        jsonWriter.writeNumberField("rxErrors", this.rxErrors);
+        jsonWriter.writeNumberField("rxDropped", this.rxDropped);
+        jsonWriter.writeNumberField("txBytes", this.txBytes);
+        jsonWriter.writeNumberField("txPackets", this.txPackets);
+        jsonWriter.writeNumberField("txErrors", this.txErrors);
+        jsonWriter.writeNumberField("txDropped", this.txDropped);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContainerNetworkInterfaceStatistics from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContainerNetworkInterfaceStatistics if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ContainerNetworkInterfaceStatistics.
+     */
+    public static ContainerNetworkInterfaceStatistics fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContainerNetworkInterfaceStatistics deserializedContainerNetworkInterfaceStatistics
+                = new ContainerNetworkInterfaceStatistics();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("rxBytes".equals(fieldName)) {
+                    deserializedContainerNetworkInterfaceStatistics.rxBytes = reader.getNullable(JsonReader::getLong);
+                } else if ("rxPackets".equals(fieldName)) {
+                    deserializedContainerNetworkInterfaceStatistics.rxPackets = reader.getNullable(JsonReader::getLong);
+                } else if ("rxErrors".equals(fieldName)) {
+                    deserializedContainerNetworkInterfaceStatistics.rxErrors = reader.getNullable(JsonReader::getLong);
+                } else if ("rxDropped".equals(fieldName)) {
+                    deserializedContainerNetworkInterfaceStatistics.rxDropped = reader.getNullable(JsonReader::getLong);
+                } else if ("txBytes".equals(fieldName)) {
+                    deserializedContainerNetworkInterfaceStatistics.txBytes = reader.getNullable(JsonReader::getLong);
+                } else if ("txPackets".equals(fieldName)) {
+                    deserializedContainerNetworkInterfaceStatistics.txPackets = reader.getNullable(JsonReader::getLong);
+                } else if ("txErrors".equals(fieldName)) {
+                    deserializedContainerNetworkInterfaceStatistics.txErrors = reader.getNullable(JsonReader::getLong);
+                } else if ("txDropped".equals(fieldName)) {
+                    deserializedContainerNetworkInterfaceStatistics.txDropped = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContainerNetworkInterfaceStatistics;
+        });
     }
 }

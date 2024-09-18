@@ -4,18 +4,24 @@
 
 package com.azure.resourcemanager.billing.generated;
 
-/** Samples for Invoices ListByBillingSubscription. */
+import java.time.LocalDate;
+
+/**
+ * Samples for Invoices ListByBillingSubscription.
+ */
 public final class InvoicesListByBillingSubscriptionSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/BillingSubscriptionInvoicesList.json
+     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
+     * invoicesListByBillingSubscription.json
      */
     /**
-     * Sample code: BillingSubscriptionsListByBillingAccount.
-     *
+     * Sample code: InvoicesListByBillingSubscription.
+     * 
      * @param manager Entry point to BillingManager.
      */
-    public static void billingSubscriptionsListByBillingAccount(
-        com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.invoices().listByBillingSubscription("2022-01-01", "2022-06-30", com.azure.core.util.Context.NONE);
+    public static void invoicesListByBillingSubscription(com.azure.resourcemanager.billing.BillingManager manager) {
+        manager.invoices()
+            .listByBillingSubscription(LocalDate.parse("2023-01-01"), LocalDate.parse("2023-06-30"), null, null, null,
+                null, null, null, com.azure.core.util.Context.NONE);
     }
 }

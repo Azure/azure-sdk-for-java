@@ -29,6 +29,11 @@
   </properties>
 
   <dependencies>
+    <dependency>
+      <groupId>org.bouncycastle</groupId>
+      <artifactId>bcpkix-lts8on</artifactId>
+      <version>2.73.6</version> <!-- {x-version-update;org.bouncycastle:bcpkix-lts8on;external_dependency} -->
+    </dependency>
     <!-- Apache HttpClient -->
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
@@ -86,7 +91,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.50.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.52.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
       <scope>test</scope>
     </dependency>
     <!-- JUnit -->
@@ -135,6 +140,17 @@
               <shadeTestJar>false</shadeTestJar>
               <createSourcesJar>${createSourcesJar}</createSourcesJar>
               <shadeSourcesContent>true</shadeSourcesContent>
+              <filters>
+                <filter>
+                  <artifact>org.bouncycastle:*</artifact>
+                  <excludes>
+                    <exclude>META-INF/*.SF</exclude>
+                    <exclude>META-INF/*.DSA</exclude>
+                    <exclude>META-INF/*.RSA</exclude>
+                    <exclude>META-INF/services/java.security.Provider</exclude>
+                  </excludes>
+                </filter>
+              </filters>
               <relocations>
                 <relocation>
                   <pattern>com.fasterxml.jackson</pattern>
@@ -162,6 +178,10 @@
                 <relocation>
                   <pattern>org.slf4j</pattern>
                   <shadedPattern>com.azure.security.keyvault.jca.implementation.shaded.org.slf4j</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>org.bouncycastle</pattern>
+                  <shadedPattern>com.azure.security.keyvault.jca.implementation.shaded.org.bouncycastle</shadedPattern>
                 </relocation>
               </relocations>
               <transformers>
@@ -221,6 +241,7 @@
           <rules>
             <bannedDependencies>
               <includes>
+                <include>org.bouncycastle:bcpkix-lts8on:[2.73.6]</include> <!-- {x-include-update;org.bouncycastle:bcpkix-lts8on;external_dependency} -->
                 <include>com.fasterxml.jackson.core:jackson-databind:[2.17.2]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
                 <include>org.conscrypt:conscrypt-openjdk-uber:[2.5.2]</include> <!-- {x-include-update;org.conscrypt:conscrypt-openjdk-uber;external_dependency} -->
                 <include>org.apache.httpcomponents:httpclient:[4.5.14]</include> <!-- {x-include-update;org.apache.httpcomponents:httpclient;external_dependency} -->

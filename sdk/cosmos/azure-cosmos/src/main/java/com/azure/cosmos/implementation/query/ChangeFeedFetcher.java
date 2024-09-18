@@ -7,6 +7,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.InvalidPartitionExceptionRetryPolicy;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
@@ -36,9 +37,11 @@ import java.util.function.Supplier;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 class ChangeFeedFetcher<T> extends Fetcher<T> {
+    private final static ImplementationBridgeHelpers.FeedResponseHelper.FeedResponseAccessor  feedResponseAccessor =
+        ImplementationBridgeHelpers.FeedResponseHelper.getFeedResponseAccessor();
     private final ChangeFeedState changeFeedState;
     private final Supplier<RxDocumentServiceRequest> createRequestFunc;
-    private final DocumentClientRetryPolicy feedRangeContinuationRetryPolicy;
+    private final Supplier<DocumentClientRetryPolicy> feedRangeContinuationRetryPolicySupplier;
 
     public ChangeFeedFetcher(
         RxDocumentClientImpl client,
@@ -59,61 +62,28 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
         checkNotNull(changeFeedState, "Argument 'changeFeedState' must not be null.");
         this.changeFeedState = changeFeedState;
 
-        // constructing retry policies for changeFeed requests
-        DocumentClientRetryPolicy retryPolicyInstance =
-            client.getResetSessionTokenRetryPolicy().getRequestPolicy(null);
-
         // For changeFeedProcessor with pkRange version, ChangeFeedState.containerRid will be name based rather than resouceId,
         // due to the inconsistency of the ChangeFeedState.containerRid format, so in order to generate the correct path,
         // we use a RxDocumentServiceRequest here
         RxDocumentServiceRequest documentServiceRequest = createRequestFunc.get();
         String collectionLink = PathsHelper.generatePath(
             ResourceType.DocumentCollection, documentServiceRequest, false);
-        retryPolicyInstance = new InvalidPartitionExceptionRetryPolicy(
-            client.getCollectionCache(),
-            retryPolicyInstance,
-            collectionLink,
-            requestOptionProperties);
 
-        if (isSplitHandlingDisabled) {
-            // True for ChangeFeedProcessor - where all retry-logic is handled
-            this.feedRangeContinuationRetryPolicy = retryPolicyInstance;
-        } else {
-            // TODO @fabianm wire up clientContext - for now no availability strategy is wired up for ChangeFeed
-            // requests - and this is expected/by design for now. But it is certainly worth discussing/checking whether
-            // we should include change feed requests as well - there are a few challenges especially for multi master
-            // accounts depending on the consistency level - and usually change feed is not processed in OLTP
-            // scenarios, so, keeping it out of scope for now is a reasonable decision. But probably worth
-            // double checking this decision in a few months.
-            retryPolicyInstance = new PartitionKeyRangeGoneRetryPolicy(client,
-                client.getCollectionCache(),
-                client.getPartitionKeyRangeCache(),
-                collectionLink,
-                retryPolicyInstance,
-                requestOptionProperties);
-
-            this.feedRangeContinuationRetryPolicy = new FeedRangeContinuationFeedRangeGoneRetryPolicy(
+        this.feedRangeContinuationRetryPolicySupplier =
+            () -> this.getFeedRangeContinuationRetryPolicy(
                 client,
-                this.changeFeedState,
-                retryPolicyInstance,
                 requestOptionProperties,
-                retryPolicyInstance.getRetryContext(),
-                () -> this.getOperationContextText());
-        }
-
-        this.createRequestFunc = () -> {
-            RxDocumentServiceRequest request = createRequestFunc.get();
-            request.requestContext.setClientRetryPolicySupplier(() -> this.feedRangeContinuationRetryPolicy);
-            this.feedRangeContinuationRetryPolicy.onBeforeSendRequest(request);
-            return request;
-        };
+                collectionLink,
+                isSplitHandlingDisabled);
+        this.createRequestFunc = createRequestFunc;
     }
 
     @Override
     public Mono<FeedResponse<T>> nextPage() {
+        DocumentClientRetryPolicy retryPolicy = this.feedRangeContinuationRetryPolicySupplier.get();
 
-        if (this.feedRangeContinuationRetryPolicy == null) {
-            return this.nextPageInternal();
+        if (retryPolicy == null) {
+            return this.nextPageInternal(null);
         }
 
         // There are two conditions that require retries
@@ -131,12 +101,12 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
         //               so nextPageInternal below has the logic to return empty result
         //               if not all continuations have been drained yet.
         return ObservableHelper.inlineIfPossible(
-            this::nextPageInternal,
-            this.feedRangeContinuationRetryPolicy);
+            () -> nextPageInternal(retryPolicy),
+            retryPolicy);
     }
 
-    private Mono<FeedResponse<T>> nextPageInternal() {
-        return Mono.fromSupplier(this::nextPageCore)
+    private Mono<FeedResponse<T>> nextPageInternal(DocumentClientRetryPolicy retryPolicy) {
+        return Mono.fromSupplier(() -> nextPageCore(retryPolicy))
                    .flatMap(Function.identity())
                    .flatMap((r) -> {
                        FeedRangeContinuation continuationSnapshot =
@@ -159,10 +129,13 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
     @Override
     protected String applyServerResponseContinuation(
         String serverContinuationToken,
-        RxDocumentServiceRequest request) {
+        RxDocumentServiceRequest request,
+        FeedResponse<T> response) {
 
+        boolean isNoChanges = feedResponseAccessor.getNoChanges(response);
+        boolean shouldMoveToNextTokenOnETagReplace = !isNoChanges;
         return this.changeFeedState.applyServerResponseContinuation(
-            serverContinuationToken, request);
+            serverContinuationToken, request, shouldMoveToNextTokenOnETagReplace);
     }
 
     @Override
@@ -181,8 +154,16 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
     }
 
     @Override
-    protected RxDocumentServiceRequest createRequest(int maxItemCount) {
+    protected RxDocumentServiceRequest createRequest(
+        int maxItemCount,
+        DocumentClientRetryPolicy documentClientRetryPolicy) {
         RxDocumentServiceRequest request = this.createRequestFunc.get();
+
+        if (documentClientRetryPolicy != null) {
+            request.requestContext.setClientRetryPolicySupplier(() -> documentClientRetryPolicy);
+            documentClientRetryPolicy.onBeforeSendRequest(request);
+        }
+
         this.changeFeedState.populateRequest(request, maxItemCount);
         return request;
     }
@@ -287,5 +268,52 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
         public RetryContext getRetryContext() {
             return this.retryContext;
         }
+    }
+
+    private DocumentClientRetryPolicy getFeedRangeContinuationRetryPolicy(
+        RxDocumentClientImpl client,
+        Map<String, Object> requestOptionProperties,
+        String collectionLink,
+        boolean isSplitHandlingDisabled) {
+
+        DocumentClientRetryPolicy feedRangeContinuationRetryPolicy;
+
+        // constructing retry policies for changeFeed requests
+        DocumentClientRetryPolicy retryPolicyInstance =
+            client.getResetSessionTokenRetryPolicy().getRequestPolicy(null);
+
+        retryPolicyInstance = new InvalidPartitionExceptionRetryPolicy(
+            client.getCollectionCache(),
+            retryPolicyInstance,
+            collectionLink,
+            requestOptionProperties);
+
+        if (isSplitHandlingDisabled) {
+            // True for ChangeFeedProcessor - where all retry-logic is handled
+            feedRangeContinuationRetryPolicy = retryPolicyInstance;
+        } else {
+            // TODO @fabianm wire up clientContext - for now no availability strategy is wired up for ChangeFeed
+            // requests - and this is expected/by design for now. But it is certainly worth discussing/checking whether
+            // we should include change feed requests as well - there are a few challenges especially for multi master
+            // accounts depending on the consistency level - and usually change feed is not processed in OLTP
+            // scenarios, so, keeping it out of scope for now is a reasonable decision. But probably worth
+            // double checking this decision in a few months.
+            retryPolicyInstance = new PartitionKeyRangeGoneRetryPolicy(client,
+                client.getCollectionCache(),
+                client.getPartitionKeyRangeCache(),
+                collectionLink,
+                retryPolicyInstance,
+                requestOptionProperties);
+
+            feedRangeContinuationRetryPolicy = new FeedRangeContinuationFeedRangeGoneRetryPolicy(
+                client,
+                this.changeFeedState,
+                retryPolicyInstance,
+                requestOptionProperties,
+                retryPolicyInstance.getRetryContext(),
+                this::getOperationContextText);
+        }
+
+        return feedRangeContinuationRetryPolicy;
     }
 }

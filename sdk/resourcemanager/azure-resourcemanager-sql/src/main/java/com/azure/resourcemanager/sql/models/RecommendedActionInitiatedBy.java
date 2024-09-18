@@ -4,18 +4,23 @@
 
 package com.azure.resourcemanager.sql.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Gets if approval for applying this recommended action was given by user/system. */
+/**
+ * Gets if approval for applying this recommended action was given by user/system.
+ */
 public enum RecommendedActionInitiatedBy {
-    /** Enum value User. */
+    /**
+     * Enum value User.
+     */
     USER("User"),
 
-    /** Enum value System. */
+    /**
+     * Enum value System.
+     */
     SYSTEM("System");
 
-    /** The actual serialized value for a RecommendedActionInitiatedBy instance. */
+    /**
+     * The actual serialized value for a RecommendedActionInitiatedBy instance.
+     */
     private final String value;
 
     RecommendedActionInitiatedBy(String value) {
@@ -24,11 +29,10 @@ public enum RecommendedActionInitiatedBy {
 
     /**
      * Parses a serialized value to a RecommendedActionInitiatedBy instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed RecommendedActionInitiatedBy object, or null if unable to parse.
      */
-    @JsonCreator
     public static RecommendedActionInitiatedBy fromString(String value) {
         if (value == null) {
             return null;
@@ -42,8 +46,9 @@ public enum RecommendedActionInitiatedBy {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

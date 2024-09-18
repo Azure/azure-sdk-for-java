@@ -5,78 +5,71 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Specifications of the Metrics for Azure Monitoring.
  */
 @Fluent
-public final class MetricSpecification {
+public final class MetricSpecification implements JsonSerializable<MetricSpecification> {
     /*
      * Name of the metric
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Localized friendly display name of the metric
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * Localized friendly description of the metric
      */
-    @JsonProperty(value = "displayDescription")
     private String displayDescription;
 
     /*
      * Unit that makes sense for the metric
      */
-    @JsonProperty(value = "unit")
     private String unit;
 
     /*
      * Name of the metric category that the metric belongs to. A metric can only belong to a single category.
      */
-    @JsonProperty(value = "category")
     private String category;
 
     /*
      * Only provide one value for this field. Valid values: Average, Minimum, Maximum, Total, Count.
      */
-    @JsonProperty(value = "aggregationType")
     private String aggregationType;
 
     /*
      * Supported aggregation types
      */
-    @JsonProperty(value = "supportedAggregationTypes")
     private List<String> supportedAggregationTypes;
 
     /*
      * Supported time grain types
      */
-    @JsonProperty(value = "supportedTimeGrainTypes")
     private List<String> supportedTimeGrainTypes;
 
     /*
      * Optional. If set to true, then zero will be returned for time duration where no metric is emitted/published.
      */
-    @JsonProperty(value = "fillGapWithZero")
     private Boolean fillGapWithZero;
 
     /*
      * Dimensions of the metric
      */
-    @JsonProperty(value = "dimensions")
     private List<MetricDimension> dimensions;
 
     /*
      * Name of the MDM namespace. Optional.
      */
-    @JsonProperty(value = "sourceMdmNamespace")
     private String sourceMdmNamespace;
 
     /**
@@ -188,8 +181,8 @@ public final class MetricSpecification {
     }
 
     /**
-     * Get the aggregationType property: Only provide one value for this field. Valid values: Average, Minimum,
-     * Maximum, Total, Count.
+     * Get the aggregationType property: Only provide one value for this field. Valid values: Average, Minimum, Maximum,
+     * Total, Count.
      * 
      * @return the aggregationType value.
      */
@@ -198,8 +191,8 @@ public final class MetricSpecification {
     }
 
     /**
-     * Set the aggregationType property: Only provide one value for this field. Valid values: Average, Minimum,
-     * Maximum, Total, Count.
+     * Set the aggregationType property: Only provide one value for this field. Valid values: Average, Minimum, Maximum,
+     * Total, Count.
      * 
      * @param aggregationType the aggregationType value to set.
      * @return the MetricSpecification object itself.
@@ -250,8 +243,8 @@ public final class MetricSpecification {
     }
 
     /**
-     * Get the fillGapWithZero property: Optional. If set to true, then zero will be returned for time duration where
-     * no metric is emitted/published.
+     * Get the fillGapWithZero property: Optional. If set to true, then zero will be returned for time duration where no
+     * metric is emitted/published.
      * 
      * @return the fillGapWithZero value.
      */
@@ -260,8 +253,8 @@ public final class MetricSpecification {
     }
 
     /**
-     * Set the fillGapWithZero property: Optional. If set to true, then zero will be returned for time duration where
-     * no metric is emitted/published.
+     * Set the fillGapWithZero property: Optional. If set to true, then zero will be returned for time duration where no
+     * metric is emitted/published.
      * 
      * @param fillGapWithZero the fillGapWithZero value to set.
      * @return the MetricSpecification object itself.
@@ -320,5 +313,76 @@ public final class MetricSpecification {
         if (dimensions() != null) {
             dimensions().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("displayDescription", this.displayDescription);
+        jsonWriter.writeStringField("unit", this.unit);
+        jsonWriter.writeStringField("category", this.category);
+        jsonWriter.writeStringField("aggregationType", this.aggregationType);
+        jsonWriter.writeArrayField("supportedAggregationTypes", this.supportedAggregationTypes,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("supportedTimeGrainTypes", this.supportedTimeGrainTypes,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("fillGapWithZero", this.fillGapWithZero);
+        jsonWriter.writeArrayField("dimensions", this.dimensions, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("sourceMdmNamespace", this.sourceMdmNamespace);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MetricSpecification from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MetricSpecification if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MetricSpecification.
+     */
+    public static MetricSpecification fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MetricSpecification deserializedMetricSpecification = new MetricSpecification();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedMetricSpecification.name = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedMetricSpecification.displayName = reader.getString();
+                } else if ("displayDescription".equals(fieldName)) {
+                    deserializedMetricSpecification.displayDescription = reader.getString();
+                } else if ("unit".equals(fieldName)) {
+                    deserializedMetricSpecification.unit = reader.getString();
+                } else if ("category".equals(fieldName)) {
+                    deserializedMetricSpecification.category = reader.getString();
+                } else if ("aggregationType".equals(fieldName)) {
+                    deserializedMetricSpecification.aggregationType = reader.getString();
+                } else if ("supportedAggregationTypes".equals(fieldName)) {
+                    List<String> supportedAggregationTypes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMetricSpecification.supportedAggregationTypes = supportedAggregationTypes;
+                } else if ("supportedTimeGrainTypes".equals(fieldName)) {
+                    List<String> supportedTimeGrainTypes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMetricSpecification.supportedTimeGrainTypes = supportedTimeGrainTypes;
+                } else if ("fillGapWithZero".equals(fieldName)) {
+                    deserializedMetricSpecification.fillGapWithZero = reader.getNullable(JsonReader::getBoolean);
+                } else if ("dimensions".equals(fieldName)) {
+                    List<MetricDimension> dimensions = reader.readArray(reader1 -> MetricDimension.fromJson(reader1));
+                    deserializedMetricSpecification.dimensions = dimensions;
+                } else if ("sourceMdmNamespace".equals(fieldName)) {
+                    deserializedMetricSpecification.sourceMdmNamespace = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMetricSpecification;
+        });
     }
 }

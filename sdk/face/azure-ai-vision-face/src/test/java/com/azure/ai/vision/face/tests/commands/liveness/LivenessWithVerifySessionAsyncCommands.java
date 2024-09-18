@@ -4,7 +4,7 @@
 package com.azure.ai.vision.face.tests.commands.liveness;
 
 import com.azure.ai.vision.face.FaceSessionAsyncClient;
-import com.azure.ai.vision.face.models.CreateLivenessSessionContent;
+import com.azure.ai.vision.face.models.CreateLivenessWithVerifySessionContent;
 import com.azure.ai.vision.face.models.CreateLivenessWithVerifySessionResult;
 import com.azure.ai.vision.face.models.LivenessWithVerifySession;
 import com.azure.ai.vision.face.tests.function.FunctionUtils;
@@ -19,7 +19,7 @@ class LivenessWithVerifySessionAsyncCommands implements ILivenessWithVerifySessi
     }
 
     public Mono<CreateLivenessWithVerifySessionResult> createLivenessWithVerifySession(
-        CreateLivenessSessionContent content, BinaryData verifyImage) {
+        CreateLivenessWithVerifySessionContent content, BinaryData verifyImage) {
         return mAsyncClient.createLivenessWithVerifySession(content, verifyImage);
     }
 
@@ -34,7 +34,7 @@ class LivenessWithVerifySessionAsyncCommands implements ILivenessWithVerifySessi
 
     @Override
     public CreateLivenessWithVerifySessionResult createLivenessWithVerifySessionSync(
-        CreateLivenessSessionContent content, BinaryData verifyImage) {
+        CreateLivenessWithVerifySessionContent content, BinaryData verifyImage) {
         return  FunctionUtils.callAndAwait(() -> createLivenessWithVerifySession(content, verifyImage));
     }
 

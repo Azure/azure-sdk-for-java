@@ -334,7 +334,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreakerTests {
         int exceptionCountToHandle
             = globalPartitionEndpointManagerForPerPartitionCircuitBreaker.getConsecutiveExceptionBasedCircuitBreaker().getAllowedExceptionCountToMaintainStatus(LocationHealthStatus.HealthyWithFailures, readOperationTrue);
 
-        for (int i = 1; i <= exceptionCountToHandle + 1; i++) {
+        for (int i = 1; i <= exceptionCountToHandle; i++) {
             globalPartitionEndpointManagerForPerPartitionCircuitBreaker
                 .handleLocationExceptionForPartitionKeyRange(request, LocationEastUs2EndpointToLocationPair.getKey());
         }
@@ -420,7 +420,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreakerTests {
         int exceptionCountToHandle
             = globalPartitionEndpointManagerForPerPartitionCircuitBreaker.getConsecutiveExceptionBasedCircuitBreaker().getAllowedExceptionCountToMaintainStatus(LocationHealthStatus.HealthyWithFailures, readOperationTrue);
 
-        for (int i = 1; i <= exceptionCountToHandle + 1; i++) {
+        for (int i = 1; i <= exceptionCountToHandle; i++) {
             globalPartitionEndpointManagerForPerPartitionCircuitBreaker
                 .handleLocationExceptionForPartitionKeyRange(request, LocationEastUs2EndpointToLocationPair.getKey());
         }
@@ -513,7 +513,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreakerTests {
         int exceptionCountToHandle
             = globalPartitionEndpointManagerForPerPartitionCircuitBreaker.getConsecutiveExceptionBasedCircuitBreaker().getAllowedExceptionCountToMaintainStatus(LocationHealthStatus.HealthyWithFailures, readOperationTrue);
 
-        for (int i = 1; i <= exceptionCountToHandle + 1; i++) {
+        for (int i = 1; i <= exceptionCountToHandle; i++) {
             globalPartitionEndpointManagerForPerPartitionCircuitBreaker
                 .handleLocationExceptionForPartitionKeyRange(request, LocationEastUs2EndpointToLocationPair.getKey());
         }
@@ -554,7 +554,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreakerTests {
 
         exceptionCountToHandle = globalPartitionEndpointManagerForPerPartitionCircuitBreaker.getConsecutiveExceptionBasedCircuitBreaker().getAllowedExceptionCountToMaintainStatus(LocationHealthStatus.HealthyTentative, readOperationTrue);
 
-        for (int i = 1; i <= exceptionCountToHandle + 1; i++) {
+        for (int i = 1; i <= exceptionCountToHandle; i++) {
             globalPartitionEndpointManagerForPerPartitionCircuitBreaker
                 .handleLocationExceptionForPartitionKeyRange(request, LocationEastUs2EndpointToLocationPair.getKey());
         }
@@ -607,7 +607,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreakerTests {
             .getConsecutiveExceptionBasedCircuitBreaker()
             .getAllowedExceptionCountToMaintainStatus(LocationHealthStatus.HealthyWithFailures, readOperationTrue);
 
-        for (int i = 1; i <= exceptionCountToHandle + 1; i++) {
+        for (int i = 1; i <= exceptionCountToHandle; i++) {
             globalPartitionEndpointManagerForPerPartitionCircuitBreaker
                 .handleLocationExceptionForPartitionKeyRange(request, LocationEastUs2EndpointToLocationPair.getKey());
             globalPartitionEndpointManagerForPerPartitionCircuitBreaker
@@ -687,7 +687,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreakerTests {
         int exceptionCountToHandle
             = globalPartitionEndpointManagerForPerPartitionCircuitBreaker.getConsecutiveExceptionBasedCircuitBreaker().getAllowedExceptionCountToMaintainStatus(LocationHealthStatus.HealthyWithFailures, readOperationTrue);
 
-        for (int i = 1; i <= exceptionCountToHandle + 1; i++) {
+        for (int i = 1; i <= exceptionCountToHandle; i++) {
             globalPartitionEndpointManagerForPerPartitionCircuitBreaker
                 .handleLocationExceptionForPartitionKeyRange(request1, LocationEastUs2EndpointToLocationPair.getKey());
         }

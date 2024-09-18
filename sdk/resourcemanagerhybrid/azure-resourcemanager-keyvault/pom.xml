@@ -68,7 +68,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-keys</artifactId>
-      <version>4.8.6</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;dependency} -->
+      <version>4.8.7</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;dependency} -->
       <exclusions>
         <exclusion>
           <groupId>com.azure</groupId>
@@ -79,7 +79,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-secrets</artifactId>
-      <version>4.8.5</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
+      <version>4.8.6</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
       <exclusions>
         <exclusion>
           <groupId>com.azure</groupId>
@@ -102,7 +102,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.15.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.15.4</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

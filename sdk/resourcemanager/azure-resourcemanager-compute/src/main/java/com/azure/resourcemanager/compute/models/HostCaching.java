@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.compute.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * The host caching of the disk. Valid values are 'None', 'ReadOnly', and 'ReadWrite'.
  */
@@ -41,7 +38,6 @@ public enum HostCaching {
      * @param value the serialized value to parse.
      * @return the parsed HostCaching object, or null if unable to parse.
      */
-    @JsonCreator
     public static HostCaching fromString(String value) {
         if (value == null) {
             return null;
@@ -58,7 +54,6 @@ public enum HostCaching {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

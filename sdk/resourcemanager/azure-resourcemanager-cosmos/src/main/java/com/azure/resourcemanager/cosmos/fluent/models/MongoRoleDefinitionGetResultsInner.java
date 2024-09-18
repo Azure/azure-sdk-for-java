@@ -5,12 +5,14 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cosmos.models.ArmProxyResource;
 import com.azure.resourcemanager.cosmos.models.MongoRoleDefinitionType;
 import com.azure.resourcemanager.cosmos.models.Privilege;
 import com.azure.resourcemanager.cosmos.models.Role;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -21,8 +23,22 @@ public final class MongoRoleDefinitionGetResultsInner extends ArmProxyResource {
     /*
      * Properties related to the Mongo Role Definition.
      */
-    @JsonProperty(value = "properties")
     private MongoRoleDefinitionResource innerProperties;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
      * Creates an instance of MongoRoleDefinitionGetResultsInner class.
@@ -32,7 +48,7 @@ public final class MongoRoleDefinitionGetResultsInner extends ArmProxyResource {
 
     /**
      * Get the innerProperties property: Properties related to the Mongo Role Definition.
-     *
+     * 
      * @return the innerProperties value.
      */
     private MongoRoleDefinitionResource innerProperties() {
@@ -40,8 +56,38 @@ public final class MongoRoleDefinitionGetResultsInner extends ArmProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the roleName property: A user-friendly name for the Role Definition. Must be unique for the database account.
-     *
+     * 
      * @return the roleName value.
      */
     public String roleName() {
@@ -50,7 +96,7 @@ public final class MongoRoleDefinitionGetResultsInner extends ArmProxyResource {
 
     /**
      * Set the roleName property: A user-friendly name for the Role Definition. Must be unique for the database account.
-     *
+     * 
      * @param roleName the roleName value to set.
      * @return the MongoRoleDefinitionGetResultsInner object itself.
      */
@@ -64,7 +110,7 @@ public final class MongoRoleDefinitionGetResultsInner extends ArmProxyResource {
 
     /**
      * Get the type property: Indicates whether the Role Definition was built-in or user created.
-     *
+     * 
      * @return the type value.
      */
     public MongoRoleDefinitionType typePropertiesType() {
@@ -73,7 +119,7 @@ public final class MongoRoleDefinitionGetResultsInner extends ArmProxyResource {
 
     /**
      * Set the type property: Indicates whether the Role Definition was built-in or user created.
-     *
+     * 
      * @param type the type value to set.
      * @return the MongoRoleDefinitionGetResultsInner object itself.
      */
@@ -87,7 +133,7 @@ public final class MongoRoleDefinitionGetResultsInner extends ArmProxyResource {
 
     /**
      * Get the databaseName property: The database name for which access is being granted for this Role Definition.
-     *
+     * 
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -96,7 +142,7 @@ public final class MongoRoleDefinitionGetResultsInner extends ArmProxyResource {
 
     /**
      * Set the databaseName property: The database name for which access is being granted for this Role Definition.
-     *
+     * 
      * @param databaseName the databaseName value to set.
      * @return the MongoRoleDefinitionGetResultsInner object itself.
      */
@@ -112,7 +158,7 @@ public final class MongoRoleDefinitionGetResultsInner extends ArmProxyResource {
      * Get the privileges property: A set of privileges contained by the Role Definition. This will allow application of
      * this Role Definition on the entire database account or any underlying Database / Collection. Scopes higher than
      * Database are not enforceable as privilege.
-     *
+     * 
      * @return the privileges value.
      */
     public List<Privilege> privileges() {
@@ -123,7 +169,7 @@ public final class MongoRoleDefinitionGetResultsInner extends ArmProxyResource {
      * Set the privileges property: A set of privileges contained by the Role Definition. This will allow application of
      * this Role Definition on the entire database account or any underlying Database / Collection. Scopes higher than
      * Database are not enforceable as privilege.
-     *
+     * 
      * @param privileges the privileges value to set.
      * @return the MongoRoleDefinitionGetResultsInner object itself.
      */
@@ -137,7 +183,7 @@ public final class MongoRoleDefinitionGetResultsInner extends ArmProxyResource {
 
     /**
      * Get the roles property: The set of roles inherited by this Role Definition.
-     *
+     * 
      * @return the roles value.
      */
     public List<Role> roles() {
@@ -146,7 +192,7 @@ public final class MongoRoleDefinitionGetResultsInner extends ArmProxyResource {
 
     /**
      * Set the roles property: The set of roles inherited by this Role Definition.
-     *
+     * 
      * @param roles the roles value to set.
      * @return the MongoRoleDefinitionGetResultsInner object itself.
      */
@@ -160,14 +206,58 @@ public final class MongoRoleDefinitionGetResultsInner extends ArmProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MongoRoleDefinitionGetResultsInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MongoRoleDefinitionGetResultsInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MongoRoleDefinitionGetResultsInner.
+     */
+    public static MongoRoleDefinitionGetResultsInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MongoRoleDefinitionGetResultsInner deserializedMongoRoleDefinitionGetResultsInner
+                = new MongoRoleDefinitionGetResultsInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMongoRoleDefinitionGetResultsInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedMongoRoleDefinitionGetResultsInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedMongoRoleDefinitionGetResultsInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedMongoRoleDefinitionGetResultsInner.innerProperties
+                        = MongoRoleDefinitionResource.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMongoRoleDefinitionGetResultsInner;
+        });
     }
 }

@@ -5,27 +5,36 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** onlineMeetingProviderType. */
+/**
+ * onlineMeetingProviderType.
+ */
 public final class MicrosoftGraphOnlineMeetingProviderType
     extends ExpandableStringEnum<MicrosoftGraphOnlineMeetingProviderType> {
-    /** Static value unknown for MicrosoftGraphOnlineMeetingProviderType. */
+    /**
+     * Static value unknown for MicrosoftGraphOnlineMeetingProviderType.
+     */
     public static final MicrosoftGraphOnlineMeetingProviderType UNKNOWN = fromString("unknown");
 
-    /** Static value skypeForBusiness for MicrosoftGraphOnlineMeetingProviderType. */
+    /**
+     * Static value skypeForBusiness for MicrosoftGraphOnlineMeetingProviderType.
+     */
     public static final MicrosoftGraphOnlineMeetingProviderType SKYPE_FOR_BUSINESS = fromString("skypeForBusiness");
 
-    /** Static value skypeForConsumer for MicrosoftGraphOnlineMeetingProviderType. */
+    /**
+     * Static value skypeForConsumer for MicrosoftGraphOnlineMeetingProviderType.
+     */
     public static final MicrosoftGraphOnlineMeetingProviderType SKYPE_FOR_CONSUMER = fromString("skypeForConsumer");
 
-    /** Static value teamsForBusiness for MicrosoftGraphOnlineMeetingProviderType. */
+    /**
+     * Static value teamsForBusiness for MicrosoftGraphOnlineMeetingProviderType.
+     */
     public static final MicrosoftGraphOnlineMeetingProviderType TEAMS_FOR_BUSINESS = fromString("teamsForBusiness");
 
     /**
      * Creates a new instance of MicrosoftGraphOnlineMeetingProviderType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -34,18 +43,17 @@ public final class MicrosoftGraphOnlineMeetingProviderType
 
     /**
      * Creates or finds a MicrosoftGraphOnlineMeetingProviderType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MicrosoftGraphOnlineMeetingProviderType.
      */
-    @JsonCreator
     public static MicrosoftGraphOnlineMeetingProviderType fromString(String name) {
         return fromString(name, MicrosoftGraphOnlineMeetingProviderType.class);
     }
 
     /**
      * Gets known MicrosoftGraphOnlineMeetingProviderType values.
-     *
+     * 
      * @return known MicrosoftGraphOnlineMeetingProviderType values.
      */
     public static Collection<MicrosoftGraphOnlineMeetingProviderType> values() {

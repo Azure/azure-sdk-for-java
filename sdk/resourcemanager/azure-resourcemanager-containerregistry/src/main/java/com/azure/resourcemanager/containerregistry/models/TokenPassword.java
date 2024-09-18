@@ -5,36 +5,38 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * The password that will be used for authenticating the token of a container registry.
  */
 @Fluent
-public final class TokenPassword {
+public final class TokenPassword implements JsonSerializable<TokenPassword> {
     /*
      * The creation datetime of the password.
      */
-    @JsonProperty(value = "creationTime")
     private OffsetDateTime creationTime;
 
     /*
      * The expiry datetime of the password.
      */
-    @JsonProperty(value = "expiry")
     private OffsetDateTime expiry;
 
     /*
      * The password name "password1" or "password2"
      */
-    @JsonProperty(value = "name")
     private TokenPasswordName name;
 
     /*
      * The password value.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private String value;
 
     /**
@@ -118,5 +120,53 @@ public final class TokenPassword {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("creationTime",
+            this.creationTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.creationTime));
+        jsonWriter.writeStringField("expiry",
+            this.expiry == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expiry));
+        jsonWriter.writeStringField("name", this.name == null ? null : this.name.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TokenPassword from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TokenPassword if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TokenPassword.
+     */
+    public static TokenPassword fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TokenPassword deserializedTokenPassword = new TokenPassword();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("creationTime".equals(fieldName)) {
+                    deserializedTokenPassword.creationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("expiry".equals(fieldName)) {
+                    deserializedTokenPassword.expiry = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("name".equals(fieldName)) {
+                    deserializedTokenPassword.name = TokenPasswordName.fromString(reader.getString());
+                } else if ("value".equals(fieldName)) {
+                    deserializedTokenPassword.value = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTokenPassword;
+        });
     }
 }

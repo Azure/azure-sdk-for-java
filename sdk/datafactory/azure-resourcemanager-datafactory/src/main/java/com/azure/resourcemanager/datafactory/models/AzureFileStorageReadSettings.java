@@ -5,91 +5,75 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Azure File Storage read settings.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "type",
-    defaultImpl = AzureFileStorageReadSettings.class,
-    visible = true)
-@JsonTypeName("AzureFileStorageReadSettings")
 @Fluent
 public final class AzureFileStorageReadSettings extends StoreReadSettings {
     /*
      * The read setting type.
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private String type = "AzureFileStorageReadSettings";
 
     /*
      * If true, files under the folder path will be read recursively. Default is true. Type: boolean (or Expression with
      * resultType boolean).
      */
-    @JsonProperty(value = "recursive")
     private Object recursive;
 
     /*
      * Azure File Storage wildcardFolderPath. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "wildcardFolderPath")
     private Object wildcardFolderPath;
 
     /*
      * Azure File Storage wildcardFileName. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "wildcardFileName")
     private Object wildcardFileName;
 
     /*
      * The prefix filter for the Azure File name starting from root path. Type: string (or Expression with resultType
      * string).
      */
-    @JsonProperty(value = "prefix")
     private Object prefix;
 
     /*
      * Point to a text file that lists each file (relative path to the path configured in the dataset) that you want to
      * copy. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "fileListPath")
     private Object fileListPath;
 
     /*
      * Indicates whether to enable partition discovery. Type: boolean (or Expression with resultType boolean).
      */
-    @JsonProperty(value = "enablePartitionDiscovery")
     private Object enablePartitionDiscovery;
 
     /*
      * Specify the root path where partition discovery starts from. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "partitionRootPath")
     private Object partitionRootPath;
 
     /*
      * Indicates whether the source files need to be deleted after copy completion. Default is false. Type: boolean (or
      * Expression with resultType boolean).
      */
-    @JsonProperty(value = "deleteFilesAfterCompletion")
     private Object deleteFilesAfterCompletion;
 
     /*
      * The start of file's modified datetime. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "modifiedDatetimeStart")
     private Object modifiedDatetimeStart;
 
     /*
      * The end of file's modified datetime. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "modifiedDatetimeEnd")
     private Object modifiedDatetimeEnd;
 
     /**
@@ -354,5 +338,88 @@ public final class AzureFileStorageReadSettings extends StoreReadSettings {
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
+        jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeUntypedField("recursive", this.recursive);
+        jsonWriter.writeUntypedField("wildcardFolderPath", this.wildcardFolderPath);
+        jsonWriter.writeUntypedField("wildcardFileName", this.wildcardFileName);
+        jsonWriter.writeUntypedField("prefix", this.prefix);
+        jsonWriter.writeUntypedField("fileListPath", this.fileListPath);
+        jsonWriter.writeUntypedField("enablePartitionDiscovery", this.enablePartitionDiscovery);
+        jsonWriter.writeUntypedField("partitionRootPath", this.partitionRootPath);
+        jsonWriter.writeUntypedField("deleteFilesAfterCompletion", this.deleteFilesAfterCompletion);
+        jsonWriter.writeUntypedField("modifiedDatetimeStart", this.modifiedDatetimeStart);
+        jsonWriter.writeUntypedField("modifiedDatetimeEnd", this.modifiedDatetimeEnd);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureFileStorageReadSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureFileStorageReadSettings if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureFileStorageReadSettings.
+     */
+    public static AzureFileStorageReadSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureFileStorageReadSettings deserializedAzureFileStorageReadSettings = new AzureFileStorageReadSettings();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("maxConcurrentConnections".equals(fieldName)) {
+                    deserializedAzureFileStorageReadSettings.withMaxConcurrentConnections(reader.readUntyped());
+                } else if ("disableMetricsCollection".equals(fieldName)) {
+                    deserializedAzureFileStorageReadSettings.withDisableMetricsCollection(reader.readUntyped());
+                } else if ("type".equals(fieldName)) {
+                    deserializedAzureFileStorageReadSettings.type = reader.getString();
+                } else if ("recursive".equals(fieldName)) {
+                    deserializedAzureFileStorageReadSettings.recursive = reader.readUntyped();
+                } else if ("wildcardFolderPath".equals(fieldName)) {
+                    deserializedAzureFileStorageReadSettings.wildcardFolderPath = reader.readUntyped();
+                } else if ("wildcardFileName".equals(fieldName)) {
+                    deserializedAzureFileStorageReadSettings.wildcardFileName = reader.readUntyped();
+                } else if ("prefix".equals(fieldName)) {
+                    deserializedAzureFileStorageReadSettings.prefix = reader.readUntyped();
+                } else if ("fileListPath".equals(fieldName)) {
+                    deserializedAzureFileStorageReadSettings.fileListPath = reader.readUntyped();
+                } else if ("enablePartitionDiscovery".equals(fieldName)) {
+                    deserializedAzureFileStorageReadSettings.enablePartitionDiscovery = reader.readUntyped();
+                } else if ("partitionRootPath".equals(fieldName)) {
+                    deserializedAzureFileStorageReadSettings.partitionRootPath = reader.readUntyped();
+                } else if ("deleteFilesAfterCompletion".equals(fieldName)) {
+                    deserializedAzureFileStorageReadSettings.deleteFilesAfterCompletion = reader.readUntyped();
+                } else if ("modifiedDatetimeStart".equals(fieldName)) {
+                    deserializedAzureFileStorageReadSettings.modifiedDatetimeStart = reader.readUntyped();
+                } else if ("modifiedDatetimeEnd".equals(fieldName)) {
+                    deserializedAzureFileStorageReadSettings.modifiedDatetimeEnd = reader.readUntyped();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedAzureFileStorageReadSettings.withAdditionalProperties(additionalProperties);
+
+            return deserializedAzureFileStorageReadSettings;
+        });
     }
 }

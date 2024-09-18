@@ -180,10 +180,6 @@ public enum JsonToken {
         return _serializedChars;
     }
 
-    public final byte[] asByteArray() {
-        return _serializedBytes;
-    }
-
     /**
      * @return {@code True} if this token is {@code VALUE_NUMBER_INT} or {@code VALUE_NUMBER_FLOAT},
      *   {@code false} otherwise
@@ -215,7 +211,7 @@ public enum JsonToken {
      *
      * @return {@code True} if this token is {@code END_OBJECT} or {@code END_ARRAY},
      *   {@code false} otherwise
-     * 
+     *
      * @since 2.3
      */
     public final boolean isStructEnd() {

@@ -5,27 +5,29 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Access profile for managed cluster API server.
  */
 @Fluent
-public final class ManagedClusterApiServerAccessProfile {
+public final class ManagedClusterApiServerAccessProfile
+    implements JsonSerializable<ManagedClusterApiServerAccessProfile> {
     /*
      * IP ranges are specified in CIDR format, e.g. 137.117.106.88/29. This feature is not compatible with clusters that
      * use Public IP Per Node, or clusters that are using a Basic Load Balancer. For more information see [API server
      * authorized IP ranges](https://docs.microsoft.com/azure/aks/api-server-authorized-ip-ranges).
      */
-    @JsonProperty(value = "authorizedIPRanges")
     private List<String> authorizedIpRanges;
 
     /*
      * For more details, see [Creating a private AKS cluster](https://docs.microsoft.com/azure/aks/private-clusters).
      */
-    @JsonProperty(value = "enablePrivateCluster")
     private Boolean enablePrivateCluster;
 
     /*
@@ -33,19 +35,16 @@ public final class ManagedClusterApiServerAccessProfile {
      * zone](https://docs.microsoft.com/azure/aks/private-clusters#configure-private-dns-zone). Allowed values are
      * 'system' and 'none'.
      */
-    @JsonProperty(value = "privateDNSZone")
     private String privateDnsZone;
 
     /*
      * Whether to create additional public FQDN for private cluster or not.
      */
-    @JsonProperty(value = "enablePrivateClusterPublicFQDN")
     private Boolean enablePrivateClusterPublicFqdn;
 
     /*
      * Whether to disable run command for the cluster or not.
      */
-    @JsonProperty(value = "disableRunCommand")
     private Boolean disableRunCommand;
 
     /**
@@ -59,7 +58,7 @@ public final class ManagedClusterApiServerAccessProfile {
      * is not compatible with clusters that use Public IP Per Node, or clusters that are using a Basic Load Balancer.
      * For more information see [API server authorized IP
      * ranges](https://docs.microsoft.com/azure/aks/api-server-authorized-ip-ranges).
-     *
+     * 
      * @return the authorizedIpRanges value.
      */
     public List<String> authorizedIpRanges() {
@@ -71,7 +70,7 @@ public final class ManagedClusterApiServerAccessProfile {
      * is not compatible with clusters that use Public IP Per Node, or clusters that are using a Basic Load Balancer.
      * For more information see [API server authorized IP
      * ranges](https://docs.microsoft.com/azure/aks/api-server-authorized-ip-ranges).
-     *
+     * 
      * @param authorizedIpRanges the authorizedIpRanges value to set.
      * @return the ManagedClusterApiServerAccessProfile object itself.
      */
@@ -83,7 +82,7 @@ public final class ManagedClusterApiServerAccessProfile {
     /**
      * Get the enablePrivateCluster property: For more details, see [Creating a private AKS
      * cluster](https://docs.microsoft.com/azure/aks/private-clusters).
-     *
+     * 
      * @return the enablePrivateCluster value.
      */
     public Boolean enablePrivateCluster() {
@@ -93,7 +92,7 @@ public final class ManagedClusterApiServerAccessProfile {
     /**
      * Set the enablePrivateCluster property: For more details, see [Creating a private AKS
      * cluster](https://docs.microsoft.com/azure/aks/private-clusters).
-     *
+     * 
      * @param enablePrivateCluster the enablePrivateCluster value to set.
      * @return the ManagedClusterApiServerAccessProfile object itself.
      */
@@ -106,7 +105,7 @@ public final class ManagedClusterApiServerAccessProfile {
      * Get the privateDnsZone property: The default is System. For more details see [configure private DNS
      * zone](https://docs.microsoft.com/azure/aks/private-clusters#configure-private-dns-zone). Allowed values are
      * 'system' and 'none'.
-     *
+     * 
      * @return the privateDnsZone value.
      */
     public String privateDnsZone() {
@@ -117,7 +116,7 @@ public final class ManagedClusterApiServerAccessProfile {
      * Set the privateDnsZone property: The default is System. For more details see [configure private DNS
      * zone](https://docs.microsoft.com/azure/aks/private-clusters#configure-private-dns-zone). Allowed values are
      * 'system' and 'none'.
-     *
+     * 
      * @param privateDnsZone the privateDnsZone value to set.
      * @return the ManagedClusterApiServerAccessProfile object itself.
      */
@@ -129,7 +128,7 @@ public final class ManagedClusterApiServerAccessProfile {
     /**
      * Get the enablePrivateClusterPublicFqdn property: Whether to create additional public FQDN for private cluster or
      * not.
-     *
+     * 
      * @return the enablePrivateClusterPublicFqdn value.
      */
     public Boolean enablePrivateClusterPublicFqdn() {
@@ -139,7 +138,7 @@ public final class ManagedClusterApiServerAccessProfile {
     /**
      * Set the enablePrivateClusterPublicFqdn property: Whether to create additional public FQDN for private cluster or
      * not.
-     *
+     * 
      * @param enablePrivateClusterPublicFqdn the enablePrivateClusterPublicFqdn value to set.
      * @return the ManagedClusterApiServerAccessProfile object itself.
      */
@@ -151,7 +150,7 @@ public final class ManagedClusterApiServerAccessProfile {
 
     /**
      * Get the disableRunCommand property: Whether to disable run command for the cluster or not.
-     *
+     * 
      * @return the disableRunCommand value.
      */
     public Boolean disableRunCommand() {
@@ -160,7 +159,7 @@ public final class ManagedClusterApiServerAccessProfile {
 
     /**
      * Set the disableRunCommand property: Whether to disable run command for the cluster or not.
-     *
+     * 
      * @param disableRunCommand the disableRunCommand value to set.
      * @return the ManagedClusterApiServerAccessProfile object itself.
      */
@@ -171,9 +170,63 @@ public final class ManagedClusterApiServerAccessProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("authorizedIPRanges", this.authorizedIpRanges,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("enablePrivateCluster", this.enablePrivateCluster);
+        jsonWriter.writeStringField("privateDNSZone", this.privateDnsZone);
+        jsonWriter.writeBooleanField("enablePrivateClusterPublicFQDN", this.enablePrivateClusterPublicFqdn);
+        jsonWriter.writeBooleanField("disableRunCommand", this.disableRunCommand);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedClusterApiServerAccessProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedClusterApiServerAccessProfile if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedClusterApiServerAccessProfile.
+     */
+    public static ManagedClusterApiServerAccessProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedClusterApiServerAccessProfile deserializedManagedClusterApiServerAccessProfile
+                = new ManagedClusterApiServerAccessProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("authorizedIPRanges".equals(fieldName)) {
+                    List<String> authorizedIpRanges = reader.readArray(reader1 -> reader1.getString());
+                    deserializedManagedClusterApiServerAccessProfile.authorizedIpRanges = authorizedIpRanges;
+                } else if ("enablePrivateCluster".equals(fieldName)) {
+                    deserializedManagedClusterApiServerAccessProfile.enablePrivateCluster
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("privateDNSZone".equals(fieldName)) {
+                    deserializedManagedClusterApiServerAccessProfile.privateDnsZone = reader.getString();
+                } else if ("enablePrivateClusterPublicFQDN".equals(fieldName)) {
+                    deserializedManagedClusterApiServerAccessProfile.enablePrivateClusterPublicFqdn
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("disableRunCommand".equals(fieldName)) {
+                    deserializedManagedClusterApiServerAccessProfile.disableRunCommand
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedClusterApiServerAccessProfile;
+        });
     }
 }

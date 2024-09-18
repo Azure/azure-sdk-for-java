@@ -11,17 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class JobOutputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        JobOutput model =
-            BinaryData
-                .fromString("{\"jobOutputType\":\"JobOutput\",\"description\":\"qmbzmq\"}")
-                .toObject(JobOutput.class);
-        Assertions.assertEquals("qmbzmq", model.description());
+        JobOutput model = BinaryData.fromString("{\"jobOutputType\":\"JobOutput\",\"description\":\"o\"}")
+            .toObject(JobOutput.class);
+        Assertions.assertEquals("o", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JobOutput model = new JobOutput().withDescription("qmbzmq");
+        JobOutput model = new JobOutput().withDescription("o");
         model = BinaryData.fromObject(model).toObject(JobOutput.class);
-        Assertions.assertEquals("qmbzmq", model.description());
+        Assertions.assertEquals("o", model.description());
     }
 }

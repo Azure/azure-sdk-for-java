@@ -7,33 +7,55 @@ package com.azure.resourcemanager.privatedns.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.privatedns.models.ProvisioningState;
+import com.azure.resourcemanager.privatedns.models.ResolutionPolicy;
 import com.azure.resourcemanager.privatedns.models.VirtualNetworkLinkState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** Describes a link to virtual network for a Private DNS zone. */
+/**
+ * Describes a link to virtual network for a Private DNS zone.
+ */
 @Fluent
 public final class VirtualNetworkLinkInner extends Resource {
     /*
      * The ETag of the virtual network link.
      */
-    @JsonProperty(value = "etag")
     private String etag;
 
     /*
      * Properties of the virtual network link to the Private DNS zone.
      */
-    @JsonProperty(value = "properties")
     private VirtualNetworkLinkProperties innerProperties;
 
-    /** Creates an instance of VirtualNetworkLinkInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of VirtualNetworkLinkInner class.
+     */
     public VirtualNetworkLinkInner() {
     }
 
     /**
      * Get the etag property: The ETag of the virtual network link.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -42,7 +64,7 @@ public final class VirtualNetworkLinkInner extends Resource {
 
     /**
      * Set the etag property: The ETag of the virtual network link.
-     *
+     * 
      * @param etag the etag value to set.
      * @return the VirtualNetworkLinkInner object itself.
      */
@@ -53,21 +75,55 @@ public final class VirtualNetworkLinkInner extends Resource {
 
     /**
      * Get the innerProperties property: Properties of the virtual network link to the Private DNS zone.
-     *
+     * 
      * @return the innerProperties value.
      */
     private VirtualNetworkLinkProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VirtualNetworkLinkInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VirtualNetworkLinkInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -76,7 +132,7 @@ public final class VirtualNetworkLinkInner extends Resource {
 
     /**
      * Get the virtualNetwork property: The reference of the virtual network.
-     *
+     * 
      * @return the virtualNetwork value.
      */
     public SubResource virtualNetwork() {
@@ -85,7 +141,7 @@ public final class VirtualNetworkLinkInner extends Resource {
 
     /**
      * Set the virtualNetwork property: The reference of the virtual network.
-     *
+     * 
      * @param virtualNetwork the virtualNetwork value to set.
      * @return the VirtualNetworkLinkInner object itself.
      */
@@ -100,7 +156,7 @@ public final class VirtualNetworkLinkInner extends Resource {
     /**
      * Get the registrationEnabled property: Is auto-registration of virtual machine records in the virtual network in
      * the Private DNS zone enabled?.
-     *
+     * 
      * @return the registrationEnabled value.
      */
     public Boolean registrationEnabled() {
@@ -110,7 +166,7 @@ public final class VirtualNetworkLinkInner extends Resource {
     /**
      * Set the registrationEnabled property: Is auto-registration of virtual machine records in the virtual network in
      * the Private DNS zone enabled?.
-     *
+     * 
      * @param registrationEnabled the registrationEnabled value to set.
      * @return the VirtualNetworkLinkInner object itself.
      */
@@ -123,10 +179,37 @@ public final class VirtualNetworkLinkInner extends Resource {
     }
 
     /**
+     * Get the resolutionPolicy property: The resolution policy on the virtual network link. Only applicable for virtual
+     * network links to privatelink zones, and for A,AAAA,CNAME queries. When set to 'NxDomainRedirect', Azure DNS
+     * resolver falls back to public resolution if private dns query resolution results in non-existent domain response.
+     * 
+     * @return the resolutionPolicy value.
+     */
+    public ResolutionPolicy resolutionPolicy() {
+        return this.innerProperties() == null ? null : this.innerProperties().resolutionPolicy();
+    }
+
+    /**
+     * Set the resolutionPolicy property: The resolution policy on the virtual network link. Only applicable for virtual
+     * network links to privatelink zones, and for A,AAAA,CNAME queries. When set to 'NxDomainRedirect', Azure DNS
+     * resolver falls back to public resolution if private dns query resolution results in non-existent domain response.
+     * 
+     * @param resolutionPolicy the resolutionPolicy value to set.
+     * @return the VirtualNetworkLinkInner object itself.
+     */
+    public VirtualNetworkLinkInner withResolutionPolicy(ResolutionPolicy resolutionPolicy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualNetworkLinkProperties();
+        }
+        this.innerProperties().withResolutionPolicy(resolutionPolicy);
+        return this;
+    }
+
+    /**
      * Get the virtualNetworkLinkState property: The status of the virtual network link to the Private DNS zone.
      * Possible values are 'InProgress' and 'Done'. This is a read-only property and any attempt to set this value will
      * be ignored.
-     *
+     * 
      * @return the virtualNetworkLinkState value.
      */
     public VirtualNetworkLinkState virtualNetworkLinkState() {
@@ -136,7 +219,7 @@ public final class VirtualNetworkLinkInner extends Resource {
     /**
      * Get the provisioningState property: The provisioning state of the resource. This is a read-only property and any
      * attempt to set this value will be ignored.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -145,12 +228,72 @@ public final class VirtualNetworkLinkInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+        if (location() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property location in model VirtualNetworkLinkInner"));
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(VirtualNetworkLinkInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("etag", this.etag);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualNetworkLinkInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualNetworkLinkInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VirtualNetworkLinkInner.
+     */
+    public static VirtualNetworkLinkInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualNetworkLinkInner deserializedVirtualNetworkLinkInner = new VirtualNetworkLinkInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedVirtualNetworkLinkInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedVirtualNetworkLinkInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedVirtualNetworkLinkInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedVirtualNetworkLinkInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedVirtualNetworkLinkInner.withTags(tags);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedVirtualNetworkLinkInner.etag = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedVirtualNetworkLinkInner.innerProperties = VirtualNetworkLinkProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualNetworkLinkInner;
+        });
     }
 }

@@ -9,7 +9,6 @@ import com.azure.resourcemanager.cosmos.models.AuthenticationMethod;
 import com.azure.resourcemanager.cosmos.models.Certificate;
 import com.azure.resourcemanager.cosmos.models.ClusterResourceProperties;
 import com.azure.resourcemanager.cosmos.models.SeedNode;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,11 +18,12 @@ import java.util.Map;
  */
 public final class CassandraClustersCreateUpdateSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBManagedCassandraClusterCreate.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-08-15/examples/
+     * CosmosDBManagedCassandraClusterCreate.json
      */
     /**
      * Sample code: CosmosDBManagedCassandraClusterCreate.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBManagedCassandraClusterCreate(com.azure.resourcemanager.AzureResourceManager azure) {

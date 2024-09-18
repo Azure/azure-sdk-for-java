@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.eventhubs.generated;
 
 import com.azure.resourcemanager.eventhubs.fluent.models.ClusterQuotaConfigurationPropertiesInner;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,7 +19,7 @@ public final class ConfigurationPatchSamples {
      */
     /**
      * Sample code: ClustersQuotasConfigurationPatch.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void clustersQuotasConfigurationPatch(com.azure.resourcemanager.AzureResourceManager azure) {

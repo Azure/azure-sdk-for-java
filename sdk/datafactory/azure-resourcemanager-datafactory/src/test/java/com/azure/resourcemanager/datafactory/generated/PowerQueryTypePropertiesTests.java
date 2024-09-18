@@ -20,54 +20,51 @@ public final class PowerQueryTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PowerQueryTypeProperties model = BinaryData.fromString(
-            "{\"sources\":[{\"script\":\"ou\",\"schemaLinkedService\":{\"referenceName\":\"ud\",\"parameters\":{\"ncdgmoqueq\":\"datakaprhknqiijg\",\"ldxwhieproqksm\":\"datahkkyowltjouw\",\"yotnplfacqo\":\"dataxmcvprstvkitbfjt\",\"wetjtdrhutf\":\"datacqrq\"}},\"name\":\"oadtxopgehpadkmd\",\"description\":\"sszxvctkbbxuh\",\"dataset\":{\"referenceName\":\"lsi\",\"parameters\":{\"yngsuxxcz\":\"dataclabv\"}},\"linkedService\":{\"referenceName\":\"yqjoghdsa\",\"parameters\":{\"ormovdxxurntujmo\":\"dataa\",\"wemhdee\":\"datalu\",\"rhrhtsl\":\"datajslkyozdsfzjue\"}},\"flowlet\":{\"type\":\"DataFlowReference\",\"referenceName\":\"vxjnxv\",\"datasetParameters\":\"databfiobpnjodfc\",\"parameters\":{\"q\":\"dataqwm\"},\"\":{\"cywnfyszza\":\"dataxsazuxejgw\",\"ozsyvrm\":\"datazsinqbdnddb\",\"eeih\":\"datajmyitrchwudl\"}}}],\"script\":\"mnoejhqlfmsib\",\"documentLocale\":\"yrfgxkyd\"}")
+            "{\"sources\":[{\"script\":\"n\",\"schemaLinkedService\":{\"referenceName\":\"ge\",\"parameters\":{\"dyfhb\":\"dataqx\",\"aqjsgyzstujr\":\"datawkhojqttbspvkhg\",\"sf\":\"dataxrk\"}},\"name\":\"rlduyehiiittugy\",\"description\":\"wrldax\",\"dataset\":{\"referenceName\":\"fqa\",\"parameters\":{\"dzciggb\":\"dataozjv\",\"o\":\"datavt\",\"doey\":\"datawalzyxwhoeamoeo\",\"kwmnfeub\":\"datafpnimtwuuhaueg\"}},\"linkedService\":{\"referenceName\":\"jyrkwfug\",\"parameters\":{\"rhzz\":\"datarrkuumnqd\"}},\"flowlet\":{\"type\":\"DataFlowReference\",\"referenceName\":\"ueoqusvwluj\",\"datasetParameters\":\"datawnibittoz\",\"parameters\":{\"ctxegt\":\"dataqumqvfmwcaddt\",\"elfnzzryiz\":\"datagwyur\"},\"\":{\"ayunomirhpfabenq\":\"datagdebx\",\"mgewayxf\":\"dataam\"}}}],\"script\":\"bcpjstbhem\",\"documentLocale\":\"u\"}")
             .toObject(PowerQueryTypeProperties.class);
-        Assertions.assertEquals("oadtxopgehpadkmd", model.sources().get(0).name());
-        Assertions.assertEquals("sszxvctkbbxuh", model.sources().get(0).description());
-        Assertions.assertEquals("lsi", model.sources().get(0).dataset().referenceName());
-        Assertions.assertEquals("yqjoghdsa", model.sources().get(0).linkedService().referenceName());
+        Assertions.assertEquals("rlduyehiiittugy", model.sources().get(0).name());
+        Assertions.assertEquals("wrldax", model.sources().get(0).description());
+        Assertions.assertEquals("fqa", model.sources().get(0).dataset().referenceName());
+        Assertions.assertEquals("jyrkwfug", model.sources().get(0).linkedService().referenceName());
         Assertions.assertEquals(DataFlowReferenceType.DATA_FLOW_REFERENCE, model.sources().get(0).flowlet().type());
-        Assertions.assertEquals("vxjnxv", model.sources().get(0).flowlet().referenceName());
-        Assertions.assertEquals("ud", model.sources().get(0).schemaLinkedService().referenceName());
-        Assertions.assertEquals("ou", model.sources().get(0).script());
-        Assertions.assertEquals("mnoejhqlfmsib", model.script());
-        Assertions.assertEquals("yrfgxkyd", model.documentLocale());
+        Assertions.assertEquals("ueoqusvwluj", model.sources().get(0).flowlet().referenceName());
+        Assertions.assertEquals("ge", model.sources().get(0).schemaLinkedService().referenceName());
+        Assertions.assertEquals("n", model.sources().get(0).script());
+        Assertions.assertEquals("bcpjstbhem", model.script());
+        Assertions.assertEquals("u", model.documentLocale());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PowerQueryTypeProperties model
-            = new PowerQueryTypeProperties()
-                .withSources(
-                    Arrays.asList(new PowerQuerySource().withName("oadtxopgehpadkmd")
-                        .withDescription("sszxvctkbbxuh")
-                        .withDataset(new DatasetReference().withReferenceName("lsi")
-                            .withParameters(mapOf("yngsuxxcz", "dataclabv")))
-                        .withLinkedService(new LinkedServiceReference().withReferenceName("yqjoghdsa")
-                            .withParameters(mapOf("ormovdxxurntujmo", "dataa", "wemhdee", "datalu", "rhrhtsl",
-                                "datajslkyozdsfzjue")))
-                        .withFlowlet(new DataFlowReference().withType(DataFlowReferenceType.DATA_FLOW_REFERENCE)
-                            .withReferenceName("vxjnxv")
-                            .withDatasetParameters("databfiobpnjodfc")
-                            .withParameters(mapOf("q", "dataqwm"))
-                            .withAdditionalProperties(mapOf()))
-                        .withSchemaLinkedService(new LinkedServiceReference().withReferenceName("ud")
-                            .withParameters(mapOf("ncdgmoqueq", "datakaprhknqiijg", "ldxwhieproqksm",
-                                "datahkkyowltjouw", "yotnplfacqo", "dataxmcvprstvkitbfjt", "wetjtdrhutf", "datacqrq")))
-                        .withScript("ou")))
-                .withScript("mnoejhqlfmsib")
-                .withDocumentLocale("yrfgxkyd");
+        PowerQueryTypeProperties model = new PowerQueryTypeProperties()
+            .withSources(Arrays.asList(new PowerQuerySource().withName("rlduyehiiittugy")
+                .withDescription("wrldax")
+                .withDataset(new DatasetReference().withReferenceName("fqa")
+                    .withParameters(mapOf("dzciggb", "dataozjv", "o", "datavt", "doey", "datawalzyxwhoeamoeo",
+                        "kwmnfeub", "datafpnimtwuuhaueg")))
+                .withLinkedService(new LinkedServiceReference().withReferenceName("jyrkwfug")
+                    .withParameters(mapOf("rhzz", "datarrkuumnqd")))
+                .withFlowlet(new DataFlowReference().withType(DataFlowReferenceType.DATA_FLOW_REFERENCE)
+                    .withReferenceName("ueoqusvwluj")
+                    .withDatasetParameters("datawnibittoz")
+                    .withParameters(mapOf("ctxegt", "dataqumqvfmwcaddt", "elfnzzryiz", "datagwyur"))
+                    .withAdditionalProperties(mapOf()))
+                .withSchemaLinkedService(new LinkedServiceReference().withReferenceName("ge")
+                    .withParameters(mapOf("dyfhb", "dataqx", "aqjsgyzstujr", "datawkhojqttbspvkhg", "sf", "dataxrk")))
+                .withScript("n")))
+            .withScript("bcpjstbhem")
+            .withDocumentLocale("u");
         model = BinaryData.fromObject(model).toObject(PowerQueryTypeProperties.class);
-        Assertions.assertEquals("oadtxopgehpadkmd", model.sources().get(0).name());
-        Assertions.assertEquals("sszxvctkbbxuh", model.sources().get(0).description());
-        Assertions.assertEquals("lsi", model.sources().get(0).dataset().referenceName());
-        Assertions.assertEquals("yqjoghdsa", model.sources().get(0).linkedService().referenceName());
+        Assertions.assertEquals("rlduyehiiittugy", model.sources().get(0).name());
+        Assertions.assertEquals("wrldax", model.sources().get(0).description());
+        Assertions.assertEquals("fqa", model.sources().get(0).dataset().referenceName());
+        Assertions.assertEquals("jyrkwfug", model.sources().get(0).linkedService().referenceName());
         Assertions.assertEquals(DataFlowReferenceType.DATA_FLOW_REFERENCE, model.sources().get(0).flowlet().type());
-        Assertions.assertEquals("vxjnxv", model.sources().get(0).flowlet().referenceName());
-        Assertions.assertEquals("ud", model.sources().get(0).schemaLinkedService().referenceName());
-        Assertions.assertEquals("ou", model.sources().get(0).script());
-        Assertions.assertEquals("mnoejhqlfmsib", model.script());
-        Assertions.assertEquals("yrfgxkyd", model.documentLocale());
+        Assertions.assertEquals("ueoqusvwluj", model.sources().get(0).flowlet().referenceName());
+        Assertions.assertEquals("ge", model.sources().get(0).schemaLinkedService().referenceName());
+        Assertions.assertEquals("n", model.sources().get(0).script());
+        Assertions.assertEquals("bcpjstbhem", model.script());
+        Assertions.assertEquals("u", model.documentLocale());
     }
 
     // Use "Map.of" if available

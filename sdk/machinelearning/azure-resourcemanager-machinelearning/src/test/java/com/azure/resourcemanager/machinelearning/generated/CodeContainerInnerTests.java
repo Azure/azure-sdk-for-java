@@ -14,43 +14,31 @@ import org.junit.jupiter.api.Assertions;
 public final class CodeContainerInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CodeContainerInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"isArchived\":true,\"latestVersion\":\"zbhd\",\"nextVersion\":\"mlmz\",\"description\":\"oftrmaequia\",\"properties\":{\"nswhcc\":\"cslfaoqzpiyylha\",\"aivwitqscywu\":\"ph\"},\"tags\":{\"i\":\"oluhczbwemh\",\"wmsweypqwd\":\"sbrgz\",\"mkttlstvlzywem\":\"ggicccnxqhue\",\"lusiy\":\"zrncsdt\"}},\"id\":\"sfgytguslfead\",\"name\":\"ygqukyhejh\",\"type\":\"isxgfp\"}")
-                .toObject(CodeContainerInner.class);
-        Assertions.assertEquals("oftrmaequia", model.properties().description());
-        Assertions.assertEquals("cslfaoqzpiyylha", model.properties().properties().get("nswhcc"));
-        Assertions.assertEquals("oluhczbwemh", model.properties().tags().get("i"));
+        CodeContainerInner model = BinaryData.fromString(
+            "{\"properties\":{\"provisioningState\":\"Updating\",\"isArchived\":true,\"latestVersion\":\"buruvd\",\"nextVersion\":\"vsmzlxwab\",\"description\":\"oefki\",\"tags\":{\"gkfbtndoaong\":\"tpuqujmq\",\"tcje\":\"jcntuj\",\"zfoqouicybxar\":\"ftwwaezkojvdc\"},\"properties\":{\"x\":\"zuf\",\"khazxkhnzbonlwn\":\"iqopidoamciod\",\"szzcmrvexztv\":\"oegokdwbwh\",\"gsfraoyzkoow\":\"t\"}},\"id\":\"mnguxawqaldsyu\",\"name\":\"ximerqfobwyznk\",\"type\":\"ykutwpf\"}")
+            .toObject(CodeContainerInner.class);
+        Assertions.assertEquals("oefki", model.properties().description());
+        Assertions.assertEquals("tpuqujmq", model.properties().tags().get("gkfbtndoaong"));
+        Assertions.assertEquals("zuf", model.properties().properties().get("x"));
         Assertions.assertEquals(true, model.properties().isArchived());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CodeContainerInner model =
-            new CodeContainerInner()
-                .withProperties(
-                    new CodeContainerProperties()
-                        .withDescription("oftrmaequia")
-                        .withProperties(mapOf("nswhcc", "cslfaoqzpiyylha", "aivwitqscywu", "ph"))
-                        .withTags(
-                            mapOf(
-                                "i",
-                                "oluhczbwemh",
-                                "wmsweypqwd",
-                                "sbrgz",
-                                "mkttlstvlzywem",
-                                "ggicccnxqhue",
-                                "lusiy",
-                                "zrncsdt"))
-                        .withIsArchived(true));
+        CodeContainerInner model
+            = new CodeContainerInner().withProperties(new CodeContainerProperties().withDescription("oefki")
+                .withTags(mapOf("gkfbtndoaong", "tpuqujmq", "tcje", "jcntuj", "zfoqouicybxar", "ftwwaezkojvdc"))
+                .withProperties(mapOf("x", "zuf", "khazxkhnzbonlwn", "iqopidoamciod", "szzcmrvexztv", "oegokdwbwh",
+                    "gsfraoyzkoow", "t"))
+                .withIsArchived(true));
         model = BinaryData.fromObject(model).toObject(CodeContainerInner.class);
-        Assertions.assertEquals("oftrmaequia", model.properties().description());
-        Assertions.assertEquals("cslfaoqzpiyylha", model.properties().properties().get("nswhcc"));
-        Assertions.assertEquals("oluhczbwemh", model.properties().tags().get("i"));
+        Assertions.assertEquals("oefki", model.properties().description());
+        Assertions.assertEquals("tpuqujmq", model.properties().tags().get("gkfbtndoaong"));
+        Assertions.assertEquals("zuf", model.properties().properties().get("x"));
         Assertions.assertEquals(true, model.properties().isArchived());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

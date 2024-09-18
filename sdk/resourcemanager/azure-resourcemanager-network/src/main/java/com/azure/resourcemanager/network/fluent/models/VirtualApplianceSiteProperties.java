@@ -5,31 +5,32 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.Office365PolicyProperties;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Properties of the rule group.
  */
 @Fluent
-public final class VirtualApplianceSiteProperties {
+public final class VirtualApplianceSiteProperties implements JsonSerializable<VirtualApplianceSiteProperties> {
     /*
      * Address Prefix.
      */
-    @JsonProperty(value = "addressPrefix")
     private String addressPrefix;
 
     /*
      * Office 365 Policy.
      */
-    @JsonProperty(value = "o365Policy")
     private Office365PolicyProperties o365Policy;
 
     /*
      * The provisioning state of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /**
@@ -96,5 +97,48 @@ public final class VirtualApplianceSiteProperties {
         if (o365Policy() != null) {
             o365Policy().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("addressPrefix", this.addressPrefix);
+        jsonWriter.writeJsonField("o365Policy", this.o365Policy);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualApplianceSiteProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualApplianceSiteProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualApplianceSiteProperties.
+     */
+    public static VirtualApplianceSiteProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualApplianceSiteProperties deserializedVirtualApplianceSiteProperties
+                = new VirtualApplianceSiteProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("addressPrefix".equals(fieldName)) {
+                    deserializedVirtualApplianceSiteProperties.addressPrefix = reader.getString();
+                } else if ("o365Policy".equals(fieldName)) {
+                    deserializedVirtualApplianceSiteProperties.o365Policy = Office365PolicyProperties.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedVirtualApplianceSiteProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualApplianceSiteProperties;
+        });
     }
 }

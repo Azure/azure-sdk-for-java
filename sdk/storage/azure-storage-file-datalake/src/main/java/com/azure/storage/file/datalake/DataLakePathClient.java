@@ -38,8 +38,8 @@ import com.azure.storage.file.datalake.implementation.models.PathsDeleteHeaders;
 import com.azure.storage.file.datalake.implementation.models.PathsGetPropertiesHeaders;
 import com.azure.storage.file.datalake.implementation.models.PathsSetAccessControlHeaders;
 import com.azure.storage.file.datalake.implementation.models.SourceModifiedAccessConditions;
-import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.implementation.util.BuilderHelper;
+import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.implementation.util.DataLakeSasImplUtil;
 import com.azure.storage.file.datalake.implementation.util.ModelHelper;
 import com.azure.storage.file.datalake.models.AccessControlChangeResult;
@@ -69,6 +69,7 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
+import java.util.function.Consumer;
 
 import static com.azure.storage.common.implementation.StorageImplUtils.sendRequest;
 
@@ -133,10 +134,14 @@ public class DataLakePathClient {
         this.customerProvidedKey = customerProvidedKey;
         this.isTokenCredentialAuthenticated = isTokenCredentialAuthenticated;
 
-        // Split on / in the path
-        String[] pathParts = pathName.split("/");
-        // Grab last part of path
-        this.objectName = pathParts[pathParts.length - 1];
+        if (("").equals(pathName) || ("/").equals(pathName)) {
+            this.objectName = pathName;
+        } else {
+            // Split on / in the path
+            String[] pathParts = pathName.split("/");
+            // Grab last part of path
+            this.objectName = pathParts[pathParts.length - 1];
+        }
     }
 
     /**
@@ -429,13 +434,13 @@ public class DataLakePathClient {
 
         Context finalContext = context == null ? Context.NONE : context;
 
-        Callable<ResponseBase<PathsCreateHeaders, Void>> operation = () ->
-            this.dataLakeStorage.getPaths().createWithResponse(null, null, pathResourceType, null, null, null,
-                finalOptions.getSourceLeaseId(), ModelHelper.buildMetadataString(finalOptions.getMetadata()),
-                finalOptions.getPermissions(), finalOptions.getUmask(), finalOptions.getOwner(),
-                finalOptions.getGroup(), acl, finalOptions.getProposedLeaseId(), leaseDuration, expiryOptions,
-                finalExpiresOnString, finalOptions.getEncryptionContext(), finalOptions.getPathHttpHeaders(), lac, mac,
-                null, customerProvidedKey, finalContext);
+        Callable<ResponseBase<PathsCreateHeaders, Void>> operation = () -> this.dataLakeStorage.getPaths()
+            .createWithResponse(null, null, pathResourceType, null, null, null, finalOptions.getSourceLeaseId(),
+                ModelHelper.buildMetadataString(finalOptions.getMetadata()), finalOptions.getPermissions(),
+                finalOptions.getUmask(), finalOptions.getOwner(), finalOptions.getGroup(), acl,
+                finalOptions.getProposedLeaseId(), leaseDuration, expiryOptions, finalExpiresOnString,
+                finalOptions.getEncryptionContext(), finalOptions.getPathHttpHeaders(), lac, mac, null,
+                customerProvidedKey, finalContext);
 
         ResponseBase<PathsCreateHeaders, Void> response = sendRequest(operation, timeout,
             DataLakeStorageException.class);
@@ -1363,9 +1368,9 @@ public class DataLakePathClient {
             .setIfUnmodifiedSince(requestConditions.getIfUnmodifiedSince());
 
         Context finalContext = context == null ? Context.NONE : context;
-        Callable<ResponseBase<PathsGetPropertiesHeaders, Void>> operation =
-            () -> this.dataLakeStorage.getPaths().getPropertiesWithResponse(null, null,
-                PathGetPropertiesAction.GET_ACCESS_CONTROL, userPrincipalNameReturned, lac, mac, finalContext);
+        Callable<ResponseBase<PathsGetPropertiesHeaders, Void>> operation = () -> this.dataLakeStorage.getPaths()
+            .getPropertiesWithResponse(null, null, PathGetPropertiesAction.GET_ACCESS_CONTROL,
+                userPrincipalNameReturned, lac, mac, finalContext);
         ResponseBase<PathsGetPropertiesHeaders, Void> response = sendRequest(operation, timeout,
             DataLakeStorageException.class);
 
@@ -1412,14 +1417,13 @@ public class DataLakePathClient {
         }
         String finalRenameSource = signature != null ? renameSource + "?" + signature : renameSource;
 
-        Callable<ResponseBase<PathsCreateHeaders, Void>> operation = () ->
-            dataLakePathClient.dataLakeStorage.getPaths().createWithResponse(null /* request id */, null /* timeout */,
-                null /* pathResourceType */, null /* continuation */, PathRenameMode.LEGACY, finalRenameSource,
+        Callable<ResponseBase<PathsCreateHeaders, Void>> operation = () -> dataLakePathClient.dataLakeStorage.getPaths()
+            .createWithResponse(null /* request id */, null /* timeout */, null /* pathResourceType */,
+                null /* continuation */, PathRenameMode.LEGACY, finalRenameSource,
                 finalSourceRequestConditions.getLeaseId(), null /* properties */, null /* permissions */,
                 null /* umask */, null /* owner */, null /* group */, null /* acl */, null /* proposedLeaseId */,
-                null /* leaseDuration */, null /* expiryOptions */, null /* expiresOn */,
-                null /* encryptionContext */, null /* pathHttpHeaders */, destLac, destMac, sourceConditions,
-                null /* cpkInfo */, finalContext);
+                null /* leaseDuration */, null /* expiryOptions */, null /* expiresOn */, null /* encryptionContext */,
+                null /* pathHttpHeaders */, destLac, destMac, sourceConditions, null /* cpkInfo */, finalContext);
 
         ResponseBase<PathsCreateHeaders, Void> response = sendRequest(operation, timeout,
             DataLakeStorageException.class);
@@ -1664,9 +1668,31 @@ public class DataLakePathClient {
      */
     public String generateUserDelegationSas(DataLakeServiceSasSignatureValues dataLakeServiceSasSignatureValues,
         UserDelegationKey userDelegationKey, String accountName, Context context) {
+        return generateUserDelegationSas(dataLakeServiceSasSignatureValues, userDelegationKey, accountName,
+            null, context);
+    }
+
+    /**
+     * Generates a user delegation SAS for the path using the specified {@link DataLakeServiceSasSignatureValues}.
+     * <p>See {@link DataLakeServiceSasSignatureValues} for more information on how to construct a user delegation SAS.
+     * </p>
+     *
+     * @param dataLakeServiceSasSignatureValues {@link DataLakeServiceSasSignatureValues}
+     * @param userDelegationKey A {@link UserDelegationKey} object used to sign the SAS values.
+     * See {@link DataLakeServiceClient#getUserDelegationKey(OffsetDateTime, OffsetDateTime)} for more information
+     * on how to get a user delegation key.
+     * @param accountName The account name.
+     * @param stringToSignHandler For debugging purposes only. Returns the string to sign that was used to generate the
+     * signature.
+     * @param context Additional context that is passed through the code when generating a SAS.
+     *
+     * @return A {@code String} representing the SAS query parameters.
+     */
+    public String generateUserDelegationSas(DataLakeServiceSasSignatureValues dataLakeServiceSasSignatureValues,
+        UserDelegationKey userDelegationKey, String accountName, Consumer<String> stringToSignHandler, Context context) {
         return new DataLakeSasImplUtil(dataLakeServiceSasSignatureValues, getFileSystemName(), getObjectPath(),
             PathResourceType.DIRECTORY.equals(this.pathResourceType))
-            .generateUserDelegationSas(userDelegationKey, accountName, context);
+            .generateUserDelegationSas(userDelegationKey, accountName, stringToSignHandler, context);
     }
 
     /**
@@ -1722,9 +1748,25 @@ public class DataLakePathClient {
      * @return A {@code String} representing the SAS query parameters.
      */
     public String generateSas(DataLakeServiceSasSignatureValues dataLakeServiceSasSignatureValues, Context context) {
-        return new DataLakeSasImplUtil(dataLakeServiceSasSignatureValues, getFileSystemName(), getObjectPath(),
-            PathResourceType.DIRECTORY.equals(this.pathResourceType))
-            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), context);
+        return generateSas(dataLakeServiceSasSignatureValues, null, context);
     }
 
+    /**
+     * Generates a service SAS for the path using the specified {@link DataLakeServiceSasSignatureValues}
+     * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>See {@link DataLakeServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
+     *
+     * @param dataLakeServiceSasSignatureValues {@link DataLakeServiceSasSignatureValues}
+     * @param stringToSignHandler For debugging purposes only. Returns the string to sign that was used to generate the
+     * signature.
+     * @param context Additional context that is passed through the code when generating a SAS.
+     *
+     * @return A {@code String} representing the SAS query parameters.
+     */
+    public String generateSas(DataLakeServiceSasSignatureValues dataLakeServiceSasSignatureValues,
+        Consumer<String> stringToSignHandler, Context context) {
+        return new DataLakeSasImplUtil(dataLakeServiceSasSignatureValues, getFileSystemName(), getObjectPath(),
+            PathResourceType.DIRECTORY.equals(this.pathResourceType))
+            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), stringToSignHandler, context);
+    }
 }

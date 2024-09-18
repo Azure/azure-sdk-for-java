@@ -24,8 +24,10 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.standbypool.fluent.OperationsClient;
+import com.azure.resourcemanager.standbypool.fluent.StandbyContainerGroupPoolRuntimeViewsClient;
 import com.azure.resourcemanager.standbypool.fluent.StandbyContainerGroupPoolsClient;
 import com.azure.resourcemanager.standbypool.fluent.StandbyPoolClient;
+import com.azure.resourcemanager.standbypool.fluent.StandbyVirtualMachinePoolRuntimeViewsClient;
 import com.azure.resourcemanager.standbypool.fluent.StandbyVirtualMachinePoolsClient;
 import com.azure.resourcemanager.standbypool.fluent.StandbyVirtualMachinesClient;
 import java.io.IOException;
@@ -43,12 +45,12 @@ import reactor.core.publisher.Mono;
 @ServiceClient(builder = StandbyPoolClientBuilder.class)
 public final class StandbyPoolClientImpl implements StandbyPoolClient {
     /**
-     * Server parameter.
+     * Service host.
      */
     private final String endpoint;
 
     /**
-     * Gets Server parameter.
+     * Gets Service host.
      * 
      * @return the endpoint value.
      */
@@ -169,6 +171,20 @@ public final class StandbyPoolClientImpl implements StandbyPoolClient {
     }
 
     /**
+     * The StandbyVirtualMachinePoolRuntimeViewsClient object to access its operations.
+     */
+    private final StandbyVirtualMachinePoolRuntimeViewsClient standbyVirtualMachinePoolRuntimeViews;
+
+    /**
+     * Gets the StandbyVirtualMachinePoolRuntimeViewsClient object to access its operations.
+     * 
+     * @return the StandbyVirtualMachinePoolRuntimeViewsClient object.
+     */
+    public StandbyVirtualMachinePoolRuntimeViewsClient getStandbyVirtualMachinePoolRuntimeViews() {
+        return this.standbyVirtualMachinePoolRuntimeViews;
+    }
+
+    /**
      * The StandbyContainerGroupPoolsClient object to access its operations.
      */
     private final StandbyContainerGroupPoolsClient standbyContainerGroupPools;
@@ -183,13 +199,27 @@ public final class StandbyPoolClientImpl implements StandbyPoolClient {
     }
 
     /**
+     * The StandbyContainerGroupPoolRuntimeViewsClient object to access its operations.
+     */
+    private final StandbyContainerGroupPoolRuntimeViewsClient standbyContainerGroupPoolRuntimeViews;
+
+    /**
+     * Gets the StandbyContainerGroupPoolRuntimeViewsClient object to access its operations.
+     * 
+     * @return the StandbyContainerGroupPoolRuntimeViewsClient object.
+     */
+    public StandbyContainerGroupPoolRuntimeViewsClient getStandbyContainerGroupPoolRuntimeViews() {
+        return this.standbyContainerGroupPoolRuntimeViews;
+    }
+
+    /**
      * Initializes an instance of StandbyPoolClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
-     * @param endpoint Server parameter.
+     * @param endpoint Service host.
      * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      */
     StandbyPoolClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, Duration defaultPollInterval,
@@ -199,11 +229,13 @@ public final class StandbyPoolClientImpl implements StandbyPoolClient {
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2023-12-01-preview";
+        this.apiVersion = "2024-03-01-preview";
         this.operations = new OperationsClientImpl(this);
         this.standbyVirtualMachinePools = new StandbyVirtualMachinePoolsClientImpl(this);
         this.standbyVirtualMachines = new StandbyVirtualMachinesClientImpl(this);
+        this.standbyVirtualMachinePoolRuntimeViews = new StandbyVirtualMachinePoolRuntimeViewsClientImpl(this);
         this.standbyContainerGroupPools = new StandbyContainerGroupPoolsClientImpl(this);
+        this.standbyContainerGroupPoolRuntimeViews = new StandbyContainerGroupPoolRuntimeViewsClientImpl(this);
     }
 
     /**

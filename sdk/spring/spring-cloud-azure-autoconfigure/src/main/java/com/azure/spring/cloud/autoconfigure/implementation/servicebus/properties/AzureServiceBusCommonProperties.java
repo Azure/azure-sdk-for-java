@@ -35,6 +35,13 @@ public abstract class AzureServiceBusCommonProperties extends AbstractAzureAmqpC
      */
     private ServiceBusEntityType entityType;
 
+    /**
+     * Sets a custom endpoint address when connecting to the Service Bus service. This can be useful when your network
+     * does not allow connecting to the standard Azure Service Bus endpoint address, but does allow connecting through
+     * an intermediary. For example: {@literal https://my.custom.endpoint.com:55300}.
+     */
+    private String customEndpointAddress;
+
     private String extractFqdnFromConnectionString() {
         if (this.connectionString == null) {
             return null;
@@ -93,4 +100,11 @@ public abstract class AzureServiceBusCommonProperties extends AbstractAzureAmqpC
         this.entityType = type;
     }
 
+    public String getCustomEndpointAddress() {
+        return customEndpointAddress;
+    }
+
+    public void setCustomEndpointAddress(String customEndpointAddress) {
+        this.customEndpointAddress = customEndpointAddress;
+    }
 }

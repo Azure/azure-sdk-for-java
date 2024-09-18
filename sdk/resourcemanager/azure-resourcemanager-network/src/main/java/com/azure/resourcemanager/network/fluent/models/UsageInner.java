@@ -6,43 +6,42 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.UsageName;
 import com.azure.resourcemanager.network.models.UsageUnit;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * The network resource usage.
  */
 @Fluent
-public final class UsageInner {
+public final class UsageInner implements JsonSerializable<UsageInner> {
     /*
      * Resource identifier.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * An enum describing the unit of measurement.
      */
-    @JsonProperty(value = "unit", required = true)
     private UsageUnit unit;
 
     /*
      * The current value of the usage.
      */
-    @JsonProperty(value = "currentValue", required = true)
     private long currentValue;
 
     /*
      * The limit of usage.
      */
-    @JsonProperty(value = "limit", required = true)
     private long limit;
 
     /*
      * The name of the type of usage.
      */
-    @JsonProperty(value = "name", required = true)
     private UsageName name;
 
     /**
@@ -159,4 +158,52 @@ public final class UsageInner {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(UsageInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("unit", this.unit == null ? null : this.unit.toString());
+        jsonWriter.writeLongField("currentValue", this.currentValue);
+        jsonWriter.writeLongField("limit", this.limit);
+        jsonWriter.writeJsonField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UsageInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UsageInner if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the UsageInner.
+     */
+    public static UsageInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UsageInner deserializedUsageInner = new UsageInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("unit".equals(fieldName)) {
+                    deserializedUsageInner.unit = UsageUnit.fromString(reader.getString());
+                } else if ("currentValue".equals(fieldName)) {
+                    deserializedUsageInner.currentValue = reader.getLong();
+                } else if ("limit".equals(fieldName)) {
+                    deserializedUsageInner.limit = reader.getLong();
+                } else if ("name".equals(fieldName)) {
+                    deserializedUsageInner.name = UsageName.fromJson(reader);
+                } else if ("id".equals(fieldName)) {
+                    deserializedUsageInner.id = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUsageInner;
+        });
+    }
 }

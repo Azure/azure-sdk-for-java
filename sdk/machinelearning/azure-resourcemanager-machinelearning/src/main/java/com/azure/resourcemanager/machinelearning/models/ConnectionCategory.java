@@ -5,23 +5,525 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Category of the connection. */
+/**
+ * Category of the connection.
+ */
 public final class ConnectionCategory extends ExpandableStringEnum<ConnectionCategory> {
-    /** Static value PythonFeed for ConnectionCategory. */
+    /**
+     * Static value PythonFeed for ConnectionCategory.
+     */
     public static final ConnectionCategory PYTHON_FEED = fromString("PythonFeed");
 
-    /** Static value ContainerRegistry for ConnectionCategory. */
+    /**
+     * Static value ContainerRegistry for ConnectionCategory.
+     */
     public static final ConnectionCategory CONTAINER_REGISTRY = fromString("ContainerRegistry");
 
-    /** Static value Git for ConnectionCategory. */
+    /**
+     * Static value Git for ConnectionCategory.
+     */
     public static final ConnectionCategory GIT = fromString("Git");
 
     /**
+     * Static value S3 for ConnectionCategory.
+     */
+    public static final ConnectionCategory S3 = fromString("S3");
+
+    /**
+     * Static value Snowflake for ConnectionCategory.
+     */
+    public static final ConnectionCategory SNOWFLAKE = fromString("Snowflake");
+
+    /**
+     * Static value AzureSqlDb for ConnectionCategory.
+     */
+    public static final ConnectionCategory AZURE_SQL_DB = fromString("AzureSqlDb");
+
+    /**
+     * Static value AzureSynapseAnalytics for ConnectionCategory.
+     */
+    public static final ConnectionCategory AZURE_SYNAPSE_ANALYTICS = fromString("AzureSynapseAnalytics");
+
+    /**
+     * Static value AzureMySqlDb for ConnectionCategory.
+     */
+    public static final ConnectionCategory AZURE_MY_SQL_DB = fromString("AzureMySqlDb");
+
+    /**
+     * Static value AzurePostgresDb for ConnectionCategory.
+     */
+    public static final ConnectionCategory AZURE_POSTGRES_DB = fromString("AzurePostgresDb");
+
+    /**
+     * Static value ADLSGen2 for ConnectionCategory.
+     */
+    public static final ConnectionCategory ADLSGEN2 = fromString("ADLSGen2");
+
+    /**
+     * Static value Redis for ConnectionCategory.
+     */
+    public static final ConnectionCategory REDIS = fromString("Redis");
+
+    /**
+     * Static value ApiKey for ConnectionCategory.
+     */
+    public static final ConnectionCategory API_KEY = fromString("ApiKey");
+
+    /**
+     * Static value AzureOpenAI for ConnectionCategory.
+     */
+    public static final ConnectionCategory AZURE_OPEN_AI = fromString("AzureOpenAI");
+
+    /**
+     * Static value CognitiveSearch for ConnectionCategory.
+     */
+    public static final ConnectionCategory COGNITIVE_SEARCH = fromString("CognitiveSearch");
+
+    /**
+     * Static value CognitiveService for ConnectionCategory.
+     */
+    public static final ConnectionCategory COGNITIVE_SERVICE = fromString("CognitiveService");
+
+    /**
+     * Static value CustomKeys for ConnectionCategory.
+     */
+    public static final ConnectionCategory CUSTOM_KEYS = fromString("CustomKeys");
+
+    /**
+     * Static value AzureBlob for ConnectionCategory.
+     */
+    public static final ConnectionCategory AZURE_BLOB = fromString("AzureBlob");
+
+    /**
+     * Static value AzureOneLake for ConnectionCategory.
+     */
+    public static final ConnectionCategory AZURE_ONE_LAKE = fromString("AzureOneLake");
+
+    /**
+     * Static value CosmosDb for ConnectionCategory.
+     */
+    public static final ConnectionCategory COSMOS_DB = fromString("CosmosDb");
+
+    /**
+     * Static value CosmosDbMongoDbApi for ConnectionCategory.
+     */
+    public static final ConnectionCategory COSMOS_DB_MONGO_DB_API = fromString("CosmosDbMongoDbApi");
+
+    /**
+     * Static value AzureDataExplorer for ConnectionCategory.
+     */
+    public static final ConnectionCategory AZURE_DATA_EXPLORER = fromString("AzureDataExplorer");
+
+    /**
+     * Static value AzureMariaDb for ConnectionCategory.
+     */
+    public static final ConnectionCategory AZURE_MARIA_DB = fromString("AzureMariaDb");
+
+    /**
+     * Static value AzureDatabricksDeltaLake for ConnectionCategory.
+     */
+    public static final ConnectionCategory AZURE_DATABRICKS_DELTA_LAKE = fromString("AzureDatabricksDeltaLake");
+
+    /**
+     * Static value AzureSqlMi for ConnectionCategory.
+     */
+    public static final ConnectionCategory AZURE_SQL_MI = fromString("AzureSqlMi");
+
+    /**
+     * Static value AzureTableStorage for ConnectionCategory.
+     */
+    public static final ConnectionCategory AZURE_TABLE_STORAGE = fromString("AzureTableStorage");
+
+    /**
+     * Static value AmazonRdsForOracle for ConnectionCategory.
+     */
+    public static final ConnectionCategory AMAZON_RDS_FOR_ORACLE = fromString("AmazonRdsForOracle");
+
+    /**
+     * Static value AmazonRdsForSqlServer for ConnectionCategory.
+     */
+    public static final ConnectionCategory AMAZON_RDS_FOR_SQL_SERVER = fromString("AmazonRdsForSqlServer");
+
+    /**
+     * Static value AmazonRedshift for ConnectionCategory.
+     */
+    public static final ConnectionCategory AMAZON_REDSHIFT = fromString("AmazonRedshift");
+
+    /**
+     * Static value Db2 for ConnectionCategory.
+     */
+    public static final ConnectionCategory DB2 = fromString("Db2");
+
+    /**
+     * Static value Drill for ConnectionCategory.
+     */
+    public static final ConnectionCategory DRILL = fromString("Drill");
+
+    /**
+     * Static value GoogleBigQuery for ConnectionCategory.
+     */
+    public static final ConnectionCategory GOOGLE_BIG_QUERY = fromString("GoogleBigQuery");
+
+    /**
+     * Static value Greenplum for ConnectionCategory.
+     */
+    public static final ConnectionCategory GREENPLUM = fromString("Greenplum");
+
+    /**
+     * Static value Hbase for ConnectionCategory.
+     */
+    public static final ConnectionCategory HBASE = fromString("Hbase");
+
+    /**
+     * Static value Hive for ConnectionCategory.
+     */
+    public static final ConnectionCategory HIVE = fromString("Hive");
+
+    /**
+     * Static value Impala for ConnectionCategory.
+     */
+    public static final ConnectionCategory IMPALA = fromString("Impala");
+
+    /**
+     * Static value Informix for ConnectionCategory.
+     */
+    public static final ConnectionCategory INFORMIX = fromString("Informix");
+
+    /**
+     * Static value MariaDb for ConnectionCategory.
+     */
+    public static final ConnectionCategory MARIA_DB = fromString("MariaDb");
+
+    /**
+     * Static value MicrosoftAccess for ConnectionCategory.
+     */
+    public static final ConnectionCategory MICROSOFT_ACCESS = fromString("MicrosoftAccess");
+
+    /**
+     * Static value MySql for ConnectionCategory.
+     */
+    public static final ConnectionCategory MY_SQL = fromString("MySql");
+
+    /**
+     * Static value Netezza for ConnectionCategory.
+     */
+    public static final ConnectionCategory NETEZZA = fromString("Netezza");
+
+    /**
+     * Static value Oracle for ConnectionCategory.
+     */
+    public static final ConnectionCategory ORACLE = fromString("Oracle");
+
+    /**
+     * Static value Phoenix for ConnectionCategory.
+     */
+    public static final ConnectionCategory PHOENIX = fromString("Phoenix");
+
+    /**
+     * Static value PostgreSql for ConnectionCategory.
+     */
+    public static final ConnectionCategory POSTGRE_SQL = fromString("PostgreSql");
+
+    /**
+     * Static value Presto for ConnectionCategory.
+     */
+    public static final ConnectionCategory PRESTO = fromString("Presto");
+
+    /**
+     * Static value SapOpenHub for ConnectionCategory.
+     */
+    public static final ConnectionCategory SAP_OPEN_HUB = fromString("SapOpenHub");
+
+    /**
+     * Static value SapBw for ConnectionCategory.
+     */
+    public static final ConnectionCategory SAP_BW = fromString("SapBw");
+
+    /**
+     * Static value SapHana for ConnectionCategory.
+     */
+    public static final ConnectionCategory SAP_HANA = fromString("SapHana");
+
+    /**
+     * Static value SapTable for ConnectionCategory.
+     */
+    public static final ConnectionCategory SAP_TABLE = fromString("SapTable");
+
+    /**
+     * Static value Spark for ConnectionCategory.
+     */
+    public static final ConnectionCategory SPARK = fromString("Spark");
+
+    /**
+     * Static value SqlServer for ConnectionCategory.
+     */
+    public static final ConnectionCategory SQL_SERVER = fromString("SqlServer");
+
+    /**
+     * Static value Sybase for ConnectionCategory.
+     */
+    public static final ConnectionCategory SYBASE = fromString("Sybase");
+
+    /**
+     * Static value Teradata for ConnectionCategory.
+     */
+    public static final ConnectionCategory TERADATA = fromString("Teradata");
+
+    /**
+     * Static value Vertica for ConnectionCategory.
+     */
+    public static final ConnectionCategory VERTICA = fromString("Vertica");
+
+    /**
+     * Static value Cassandra for ConnectionCategory.
+     */
+    public static final ConnectionCategory CASSANDRA = fromString("Cassandra");
+
+    /**
+     * Static value Couchbase for ConnectionCategory.
+     */
+    public static final ConnectionCategory COUCHBASE = fromString("Couchbase");
+
+    /**
+     * Static value MongoDbV2 for ConnectionCategory.
+     */
+    public static final ConnectionCategory MONGO_DB_V2 = fromString("MongoDbV2");
+
+    /**
+     * Static value MongoDbAtlas for ConnectionCategory.
+     */
+    public static final ConnectionCategory MONGO_DB_ATLAS = fromString("MongoDbAtlas");
+
+    /**
+     * Static value AmazonS3Compatible for ConnectionCategory.
+     */
+    public static final ConnectionCategory AMAZON_S3COMPATIBLE = fromString("AmazonS3Compatible");
+
+    /**
+     * Static value FileServer for ConnectionCategory.
+     */
+    public static final ConnectionCategory FILE_SERVER = fromString("FileServer");
+
+    /**
+     * Static value FtpServer for ConnectionCategory.
+     */
+    public static final ConnectionCategory FTP_SERVER = fromString("FtpServer");
+
+    /**
+     * Static value GoogleCloudStorage for ConnectionCategory.
+     */
+    public static final ConnectionCategory GOOGLE_CLOUD_STORAGE = fromString("GoogleCloudStorage");
+
+    /**
+     * Static value Hdfs for ConnectionCategory.
+     */
+    public static final ConnectionCategory HDFS = fromString("Hdfs");
+
+    /**
+     * Static value OracleCloudStorage for ConnectionCategory.
+     */
+    public static final ConnectionCategory ORACLE_CLOUD_STORAGE = fromString("OracleCloudStorage");
+
+    /**
+     * Static value Sftp for ConnectionCategory.
+     */
+    public static final ConnectionCategory SFTP = fromString("Sftp");
+
+    /**
+     * Static value GenericHttp for ConnectionCategory.
+     */
+    public static final ConnectionCategory GENERIC_HTTP = fromString("GenericHttp");
+
+    /**
+     * Static value ODataRest for ConnectionCategory.
+     */
+    public static final ConnectionCategory ODATA_REST = fromString("ODataRest");
+
+    /**
+     * Static value Odbc for ConnectionCategory.
+     */
+    public static final ConnectionCategory ODBC = fromString("Odbc");
+
+    /**
+     * Static value GenericRest for ConnectionCategory.
+     */
+    public static final ConnectionCategory GENERIC_REST = fromString("GenericRest");
+
+    /**
+     * Static value AmazonMws for ConnectionCategory.
+     */
+    public static final ConnectionCategory AMAZON_MWS = fromString("AmazonMws");
+
+    /**
+     * Static value Concur for ConnectionCategory.
+     */
+    public static final ConnectionCategory CONCUR = fromString("Concur");
+
+    /**
+     * Static value Dynamics for ConnectionCategory.
+     */
+    public static final ConnectionCategory DYNAMICS = fromString("Dynamics");
+
+    /**
+     * Static value DynamicsAx for ConnectionCategory.
+     */
+    public static final ConnectionCategory DYNAMICS_AX = fromString("DynamicsAx");
+
+    /**
+     * Static value DynamicsCrm for ConnectionCategory.
+     */
+    public static final ConnectionCategory DYNAMICS_CRM = fromString("DynamicsCrm");
+
+    /**
+     * Static value GoogleAdWords for ConnectionCategory.
+     */
+    public static final ConnectionCategory GOOGLE_AD_WORDS = fromString("GoogleAdWords");
+
+    /**
+     * Static value Hubspot for ConnectionCategory.
+     */
+    public static final ConnectionCategory HUBSPOT = fromString("Hubspot");
+
+    /**
+     * Static value Jira for ConnectionCategory.
+     */
+    public static final ConnectionCategory JIRA = fromString("Jira");
+
+    /**
+     * Static value Magento for ConnectionCategory.
+     */
+    public static final ConnectionCategory MAGENTO = fromString("Magento");
+
+    /**
+     * Static value Marketo for ConnectionCategory.
+     */
+    public static final ConnectionCategory MARKETO = fromString("Marketo");
+
+    /**
+     * Static value Office365 for ConnectionCategory.
+     */
+    public static final ConnectionCategory OFFICE365 = fromString("Office365");
+
+    /**
+     * Static value Eloqua for ConnectionCategory.
+     */
+    public static final ConnectionCategory ELOQUA = fromString("Eloqua");
+
+    /**
+     * Static value Responsys for ConnectionCategory.
+     */
+    public static final ConnectionCategory RESPONSYS = fromString("Responsys");
+
+    /**
+     * Static value OracleServiceCloud for ConnectionCategory.
+     */
+    public static final ConnectionCategory ORACLE_SERVICE_CLOUD = fromString("OracleServiceCloud");
+
+    /**
+     * Static value PayPal for ConnectionCategory.
+     */
+    public static final ConnectionCategory PAY_PAL = fromString("PayPal");
+
+    /**
+     * Static value QuickBooks for ConnectionCategory.
+     */
+    public static final ConnectionCategory QUICK_BOOKS = fromString("QuickBooks");
+
+    /**
+     * Static value Salesforce for ConnectionCategory.
+     */
+    public static final ConnectionCategory SALESFORCE = fromString("Salesforce");
+
+    /**
+     * Static value SalesforceServiceCloud for ConnectionCategory.
+     */
+    public static final ConnectionCategory SALESFORCE_SERVICE_CLOUD = fromString("SalesforceServiceCloud");
+
+    /**
+     * Static value SalesforceMarketingCloud for ConnectionCategory.
+     */
+    public static final ConnectionCategory SALESFORCE_MARKETING_CLOUD = fromString("SalesforceMarketingCloud");
+
+    /**
+     * Static value SapCloudForCustomer for ConnectionCategory.
+     */
+    public static final ConnectionCategory SAP_CLOUD_FOR_CUSTOMER = fromString("SapCloudForCustomer");
+
+    /**
+     * Static value SapEcc for ConnectionCategory.
+     */
+    public static final ConnectionCategory SAP_ECC = fromString("SapEcc");
+
+    /**
+     * Static value ServiceNow for ConnectionCategory.
+     */
+    public static final ConnectionCategory SERVICE_NOW = fromString("ServiceNow");
+
+    /**
+     * Static value SharePointOnlineList for ConnectionCategory.
+     */
+    public static final ConnectionCategory SHARE_POINT_ONLINE_LIST = fromString("SharePointOnlineList");
+
+    /**
+     * Static value Shopify for ConnectionCategory.
+     */
+    public static final ConnectionCategory SHOPIFY = fromString("Shopify");
+
+    /**
+     * Static value Square for ConnectionCategory.
+     */
+    public static final ConnectionCategory SQUARE = fromString("Square");
+
+    /**
+     * Static value WebTable for ConnectionCategory.
+     */
+    public static final ConnectionCategory WEB_TABLE = fromString("WebTable");
+
+    /**
+     * Static value Xero for ConnectionCategory.
+     */
+    public static final ConnectionCategory XERO = fromString("Xero");
+
+    /**
+     * Static value Zoho for ConnectionCategory.
+     */
+    public static final ConnectionCategory ZOHO = fromString("Zoho");
+
+    /**
+     * Static value GenericContainerRegistry for ConnectionCategory.
+     */
+    public static final ConnectionCategory GENERIC_CONTAINER_REGISTRY = fromString("GenericContainerRegistry");
+
+    /**
+     * Static value OpenAI for ConnectionCategory.
+     */
+    public static final ConnectionCategory OPEN_AI = fromString("OpenAI");
+
+    /**
+     * Static value Serp for ConnectionCategory.
+     */
+    public static final ConnectionCategory SERP = fromString("Serp");
+
+    /**
+     * Static value BingLLMSearch for ConnectionCategory.
+     */
+    public static final ConnectionCategory BING_LLMSEARCH = fromString("BingLLMSearch");
+
+    /**
+     * Static value Serverless for ConnectionCategory.
+     */
+    public static final ConnectionCategory SERVERLESS = fromString("Serverless");
+
+    /**
+     * Static value AIServices for ConnectionCategory.
+     */
+    public static final ConnectionCategory AISERVICES = fromString("AIServices");
+
+    /**
      * Creates a new instance of ConnectionCategory value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +532,17 @@ public final class ConnectionCategory extends ExpandableStringEnum<ConnectionCat
 
     /**
      * Creates or finds a ConnectionCategory from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ConnectionCategory.
      */
-    @JsonCreator
     public static ConnectionCategory fromString(String name) {
         return fromString(name, ConnectionCategory.class);
     }
 
     /**
      * Gets known ConnectionCategory values.
-     *
+     * 
      * @return known ConnectionCategory values.
      */
     public static Collection<ConnectionCategory> values() {

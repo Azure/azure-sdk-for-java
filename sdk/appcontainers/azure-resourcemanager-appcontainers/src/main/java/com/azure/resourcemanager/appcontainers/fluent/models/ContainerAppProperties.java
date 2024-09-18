@@ -10,7 +10,6 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appcontainers.models.Configuration;
-import com.azure.resourcemanager.appcontainers.models.ContainerAppPropertiesPatchingConfiguration;
 import com.azure.resourcemanager.appcontainers.models.ContainerAppProvisioningState;
 import com.azure.resourcemanager.appcontainers.models.Template;
 import java.io.IOException;
@@ -40,11 +39,6 @@ public final class ContainerAppProperties implements JsonSerializable<ContainerA
      * Workload profile name to pin for container app execution.
      */
     private String workloadProfileName;
-
-    /*
-     * Container App auto patch configuration.
-     */
-    private ContainerAppPropertiesPatchingConfiguration patchingConfiguration;
 
     /*
      * Name of the latest revision of the Container App.
@@ -162,27 +156,6 @@ public final class ContainerAppProperties implements JsonSerializable<ContainerA
     }
 
     /**
-     * Get the patchingConfiguration property: Container App auto patch configuration.
-     * 
-     * @return the patchingConfiguration value.
-     */
-    public ContainerAppPropertiesPatchingConfiguration patchingConfiguration() {
-        return this.patchingConfiguration;
-    }
-
-    /**
-     * Set the patchingConfiguration property: Container App auto patch configuration.
-     * 
-     * @param patchingConfiguration the patchingConfiguration value to set.
-     * @return the ContainerAppProperties object itself.
-     */
-    public ContainerAppProperties
-        withPatchingConfiguration(ContainerAppPropertiesPatchingConfiguration patchingConfiguration) {
-        this.patchingConfiguration = patchingConfiguration;
-        return this;
-    }
-
-    /**
      * Get the latestRevisionName property: Name of the latest revision of the Container App.
      * 
      * @return the latestRevisionName value.
@@ -282,9 +255,6 @@ public final class ContainerAppProperties implements JsonSerializable<ContainerA
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (patchingConfiguration() != null) {
-            patchingConfiguration().validate();
-        }
         if (configuration() != null) {
             configuration().validate();
         }
@@ -302,7 +272,6 @@ public final class ContainerAppProperties implements JsonSerializable<ContainerA
         jsonWriter.writeStringField("managedEnvironmentId", this.managedEnvironmentId);
         jsonWriter.writeStringField("environmentId", this.environmentId);
         jsonWriter.writeStringField("workloadProfileName", this.workloadProfileName);
-        jsonWriter.writeJsonField("patchingConfiguration", this.patchingConfiguration);
         jsonWriter.writeJsonField("configuration", this.configuration);
         jsonWriter.writeJsonField("template", this.template);
         return jsonWriter.writeEndObject();
@@ -332,9 +301,6 @@ public final class ContainerAppProperties implements JsonSerializable<ContainerA
                     deserializedContainerAppProperties.environmentId = reader.getString();
                 } else if ("workloadProfileName".equals(fieldName)) {
                     deserializedContainerAppProperties.workloadProfileName = reader.getString();
-                } else if ("patchingConfiguration".equals(fieldName)) {
-                    deserializedContainerAppProperties.patchingConfiguration
-                        = ContainerAppPropertiesPatchingConfiguration.fromJson(reader);
                 } else if ("latestRevisionName".equals(fieldName)) {
                     deserializedContainerAppProperties.latestRevisionName = reader.getString();
                 } else if ("latestReadyRevisionName".equals(fieldName)) {

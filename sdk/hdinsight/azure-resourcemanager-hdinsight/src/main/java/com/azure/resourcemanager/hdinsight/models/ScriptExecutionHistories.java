@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ScriptExecutionHistories. */
+/**
+ * Resource collection API of ScriptExecutionHistories.
+ */
 public interface ScriptExecutionHistories {
     /**
      * Lists all scripts' execution history for the specified cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,7 +26,7 @@ public interface ScriptExecutionHistories {
 
     /**
      * Lists all scripts' execution history for the specified cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
@@ -33,12 +35,12 @@ public interface ScriptExecutionHistories {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list script execution history response as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<RuntimeScriptActionDetail> listByCluster(
-        String resourceGroupName, String clusterName, Context context);
+    PagedIterable<RuntimeScriptActionDetail> listByCluster(String resourceGroupName, String clusterName,
+        Context context);
 
     /**
      * Promotes the specified ad-hoc script execution to a persisted script.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param scriptExecutionId The script execution Id.
@@ -48,12 +50,12 @@ public interface ScriptExecutionHistories {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> promoteWithResponse(
-        String resourceGroupName, String clusterName, String scriptExecutionId, Context context);
+    Response<Void> promoteWithResponse(String resourceGroupName, String clusterName, String scriptExecutionId,
+        Context context);
 
     /**
      * Promotes the specified ad-hoc script execution to a persisted script.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param scriptExecutionId The script execution Id.

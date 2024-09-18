@@ -37,24 +37,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ServerDevOpsAuditSettingsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ServerDevOpsAuditSettingsClient.
+ */
 public final class ServerDevOpsAuditSettingsClientImpl implements ServerDevOpsAuditSettingsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ServerDevOpsAuditSettingsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SqlManagementClientImpl client;
 
     /**
      * Initializes an instance of ServerDevOpsAuditSettingsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ServerDevOpsAuditSettingsClientImpl(SqlManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    ServerDevOpsAuditSettingsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(ServerDevOpsAuditSettingsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -65,85 +69,63 @@ public final class ServerDevOpsAuditSettingsClientImpl implements ServerDevOpsAu
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientS")
     public interface ServerDevOpsAuditSettingsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/devOpsAuditingSettings")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/devOpsAuditingSettings")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ServerDevOpsAuditSettingsListResult>> listByServer(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ServerDevOpsAuditSettingsListResult>> listByServer(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/devOpsAuditingSettings/{devOpsAuditingSettingsName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/devOpsAuditingSettings/{devOpsAuditingSettingsName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ServerDevOpsAuditingSettingsInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
+        Mono<Response<ServerDevOpsAuditingSettingsInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
             @PathParam("devOpsAuditingSettingsName") String devOpsAuditingSettingsName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/devOpsAuditingSettings/{devOpsAuditingSettingsName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/devOpsAuditingSettings/{devOpsAuditingSettingsName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
             @PathParam("devOpsAuditingSettingsName") String devOpsAuditingSettingsName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") ServerDevOpsAuditingSettingsInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ServerDevOpsAuditSettingsListResult>> listByServerNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Lists DevOps audit settings of a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of server DevOps audit settings along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ServerDevOpsAuditingSettingsInner>> listByServerSinglePageAsync(
-        String resourceGroupName, String serverName) {
+    private Mono<PagedResponse<ServerDevOpsAuditingSettingsInner>> listByServerSinglePageAsync(String resourceGroupName,
+        String serverName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -153,57 +135,37 @@ public final class ServerDevOpsAuditSettingsClientImpl implements ServerDevOpsAu
             return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByServer(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<ServerDevOpsAuditingSettingsInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByServer(this.client.getEndpoint(), resourceGroupName, serverName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+            .<PagedResponse<ServerDevOpsAuditingSettingsInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists DevOps audit settings of a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of server DevOps audit settings along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ServerDevOpsAuditingSettingsInner>> listByServerSinglePageAsync(
-        String resourceGroupName, String serverName, Context context) {
+    private Mono<PagedResponse<ServerDevOpsAuditingSettingsInner>> listByServerSinglePageAsync(String resourceGroupName,
+        String serverName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -213,38 +175,23 @@ public final class ServerDevOpsAuditSettingsClientImpl implements ServerDevOpsAu
             return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByServer(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByServer(this.client.getEndpoint(), resourceGroupName, serverName, this.client.getSubscriptionId(),
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists DevOps audit settings of a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -253,16 +200,15 @@ public final class ServerDevOpsAuditSettingsClientImpl implements ServerDevOpsAu
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ServerDevOpsAuditingSettingsInner> listByServerAsync(String resourceGroupName, String serverName) {
-        return new PagedFlux<>(
-            () -> listByServerSinglePageAsync(resourceGroupName, serverName),
+        return new PagedFlux<>(() -> listByServerSinglePageAsync(resourceGroupName, serverName),
             nextLink -> listByServerNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists DevOps audit settings of a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -271,18 +217,17 @@ public final class ServerDevOpsAuditSettingsClientImpl implements ServerDevOpsAu
      * @return a list of server DevOps audit settings as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ServerDevOpsAuditingSettingsInner> listByServerAsync(
-        String resourceGroupName, String serverName, Context context) {
-        return new PagedFlux<>(
-            () -> listByServerSinglePageAsync(resourceGroupName, serverName, context),
+    private PagedFlux<ServerDevOpsAuditingSettingsInner> listByServerAsync(String resourceGroupName, String serverName,
+        Context context) {
+        return new PagedFlux<>(() -> listByServerSinglePageAsync(resourceGroupName, serverName, context),
             nextLink -> listByServerNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists DevOps audit settings of a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -296,9 +241,9 @@ public final class ServerDevOpsAuditSettingsClientImpl implements ServerDevOpsAu
 
     /**
      * Lists DevOps audit settings of a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -307,16 +252,16 @@ public final class ServerDevOpsAuditSettingsClientImpl implements ServerDevOpsAu
      * @return a list of server DevOps audit settings as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ServerDevOpsAuditingSettingsInner> listByServer(
-        String resourceGroupName, String serverName, Context context) {
+    public PagedIterable<ServerDevOpsAuditingSettingsInner> listByServer(String resourceGroupName, String serverName,
+        Context context) {
         return new PagedIterable<>(listByServerAsync(resourceGroupName, serverName, context));
     }
 
     /**
      * Gets a server's DevOps audit settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param devOpsAuditingSettingsName The name of the devops audit settings. This should always be 'default'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -325,13 +270,11 @@ public final class ServerDevOpsAuditSettingsClientImpl implements ServerDevOpsAu
      * @return a server's DevOps audit settings along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ServerDevOpsAuditingSettingsInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, String devOpsAuditingSettingsName) {
+    public Mono<Response<ServerDevOpsAuditingSettingsInner>> getWithResponseAsync(String resourceGroupName,
+        String serverName, String devOpsAuditingSettingsName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -341,39 +284,24 @@ public final class ServerDevOpsAuditSettingsClientImpl implements ServerDevOpsAu
             return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
         if (devOpsAuditingSettingsName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter devOpsAuditingSettingsName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter devOpsAuditingSettingsName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            devOpsAuditingSettingsName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, serverName,
+            devOpsAuditingSettingsName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a server's DevOps audit settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param devOpsAuditingSettingsName The name of the devops audit settings. This should always be 'default'.
      * @param context The context to associate with this operation.
@@ -383,13 +311,11 @@ public final class ServerDevOpsAuditSettingsClientImpl implements ServerDevOpsAu
      * @return a server's DevOps audit settings along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ServerDevOpsAuditingSettingsInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, String devOpsAuditingSettingsName, Context context) {
+    private Mono<Response<ServerDevOpsAuditingSettingsInner>> getWithResponseAsync(String resourceGroupName,
+        String serverName, String devOpsAuditingSettingsName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -399,36 +325,24 @@ public final class ServerDevOpsAuditSettingsClientImpl implements ServerDevOpsAu
             return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
         if (devOpsAuditingSettingsName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter devOpsAuditingSettingsName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter devOpsAuditingSettingsName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                devOpsAuditingSettingsName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, serverName, devOpsAuditingSettingsName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets a server's DevOps audit settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param devOpsAuditingSettingsName The name of the devops audit settings. This should always be 'default'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -437,17 +351,17 @@ public final class ServerDevOpsAuditSettingsClientImpl implements ServerDevOpsAu
      * @return a server's DevOps audit settings on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ServerDevOpsAuditingSettingsInner> getAsync(
-        String resourceGroupName, String serverName, String devOpsAuditingSettingsName) {
+    public Mono<ServerDevOpsAuditingSettingsInner> getAsync(String resourceGroupName, String serverName,
+        String devOpsAuditingSettingsName) {
         return getWithResponseAsync(resourceGroupName, serverName, devOpsAuditingSettingsName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets a server's DevOps audit settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param devOpsAuditingSettingsName The name of the devops audit settings. This should always be 'default'.
      * @param context The context to associate with this operation.
@@ -457,16 +371,16 @@ public final class ServerDevOpsAuditSettingsClientImpl implements ServerDevOpsAu
      * @return a server's DevOps audit settings along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ServerDevOpsAuditingSettingsInner> getWithResponse(
-        String resourceGroupName, String serverName, String devOpsAuditingSettingsName, Context context) {
+    public Response<ServerDevOpsAuditingSettingsInner> getWithResponse(String resourceGroupName, String serverName,
+        String devOpsAuditingSettingsName, Context context) {
         return getWithResponseAsync(resourceGroupName, serverName, devOpsAuditingSettingsName, context).block();
     }
 
     /**
      * Gets a server's DevOps audit settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param devOpsAuditingSettingsName The name of the devops audit settings. This should always be 'default'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -475,16 +389,16 @@ public final class ServerDevOpsAuditSettingsClientImpl implements ServerDevOpsAu
      * @return a server's DevOps audit settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServerDevOpsAuditingSettingsInner get(
-        String resourceGroupName, String serverName, String devOpsAuditingSettingsName) {
+    public ServerDevOpsAuditingSettingsInner get(String resourceGroupName, String serverName,
+        String devOpsAuditingSettingsName) {
         return getWithResponse(resourceGroupName, serverName, devOpsAuditingSettingsName, Context.NONE).getValue();
     }
 
     /**
      * Creates or updates a server's DevOps audit settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param devOpsAuditingSettingsName The name of the devops audit settings. This should always be 'default'.
      * @param parameters Properties of DevOps audit settings.
@@ -494,16 +408,11 @@ public final class ServerDevOpsAuditSettingsClientImpl implements ServerDevOpsAu
      * @return a server DevOps auditing settings along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        String devOpsAuditingSettingsName,
-        ServerDevOpsAuditingSettingsInner parameters) {
+    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String serverName,
+        String devOpsAuditingSettingsName, ServerDevOpsAuditingSettingsInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -513,16 +422,12 @@ public final class ServerDevOpsAuditSettingsClientImpl implements ServerDevOpsAu
             return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
         if (devOpsAuditingSettingsName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter devOpsAuditingSettingsName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter devOpsAuditingSettingsName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -531,27 +436,17 @@ public final class ServerDevOpsAuditSettingsClientImpl implements ServerDevOpsAu
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            devOpsAuditingSettingsName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, serverName,
+                devOpsAuditingSettingsName, this.client.getSubscriptionId(), this.client.getApiVersion(), parameters,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates a server's DevOps audit settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param devOpsAuditingSettingsName The name of the devops audit settings. This should always be 'default'.
      * @param parameters Properties of DevOps audit settings.
@@ -562,17 +457,12 @@ public final class ServerDevOpsAuditSettingsClientImpl implements ServerDevOpsAu
      * @return a server DevOps auditing settings along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        String devOpsAuditingSettingsName,
-        ServerDevOpsAuditingSettingsInner parameters,
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String serverName, String devOpsAuditingSettingsName, ServerDevOpsAuditingSettingsInner parameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -582,16 +472,12 @@ public final class ServerDevOpsAuditSettingsClientImpl implements ServerDevOpsAu
             return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
         if (devOpsAuditingSettingsName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter devOpsAuditingSettingsName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter devOpsAuditingSettingsName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -600,24 +486,16 @@ public final class ServerDevOpsAuditSettingsClientImpl implements ServerDevOpsAu
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                devOpsAuditingSettingsName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, serverName,
+            devOpsAuditingSettingsName, this.client.getSubscriptionId(), this.client.getApiVersion(), parameters,
+            accept, context);
     }
 
     /**
      * Creates or updates a server's DevOps audit settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param devOpsAuditingSettingsName The name of the devops audit settings. This should always be 'default'.
      * @param parameters Properties of DevOps audit settings.
@@ -628,28 +506,20 @@ public final class ServerDevOpsAuditSettingsClientImpl implements ServerDevOpsAu
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ServerDevOpsAuditingSettingsInner>, ServerDevOpsAuditingSettingsInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String serverName,
-            String devOpsAuditingSettingsName,
+        beginCreateOrUpdateAsync(String resourceGroupName, String serverName, String devOpsAuditingSettingsName,
             ServerDevOpsAuditingSettingsInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, serverName, devOpsAuditingSettingsName, parameters);
-        return this
-            .client
-            .<ServerDevOpsAuditingSettingsInner, ServerDevOpsAuditingSettingsInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ServerDevOpsAuditingSettingsInner.class,
-                ServerDevOpsAuditingSettingsInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, serverName, devOpsAuditingSettingsName, parameters);
+        return this.client.<ServerDevOpsAuditingSettingsInner, ServerDevOpsAuditingSettingsInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ServerDevOpsAuditingSettingsInner.class,
+            ServerDevOpsAuditingSettingsInner.class, this.client.getContext());
     }
 
     /**
      * Creates or updates a server's DevOps audit settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param devOpsAuditingSettingsName The name of the devops audit settings. This should always be 'default'.
      * @param parameters Properties of DevOps audit settings.
@@ -661,31 +531,21 @@ public final class ServerDevOpsAuditSettingsClientImpl implements ServerDevOpsAu
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ServerDevOpsAuditingSettingsInner>, ServerDevOpsAuditingSettingsInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String serverName,
-            String devOpsAuditingSettingsName,
-            ServerDevOpsAuditingSettingsInner parameters,
-            Context context) {
+        beginCreateOrUpdateAsync(String resourceGroupName, String serverName, String devOpsAuditingSettingsName,
+            ServerDevOpsAuditingSettingsInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, serverName, devOpsAuditingSettingsName, parameters, context);
-        return this
-            .client
-            .<ServerDevOpsAuditingSettingsInner, ServerDevOpsAuditingSettingsInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ServerDevOpsAuditingSettingsInner.class,
-                ServerDevOpsAuditingSettingsInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, serverName,
+            devOpsAuditingSettingsName, parameters, context);
+        return this.client.<ServerDevOpsAuditingSettingsInner, ServerDevOpsAuditingSettingsInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ServerDevOpsAuditingSettingsInner.class,
+            ServerDevOpsAuditingSettingsInner.class, context);
     }
 
     /**
      * Creates or updates a server's DevOps audit settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param devOpsAuditingSettingsName The name of the devops audit settings. This should always be 'default'.
      * @param parameters Properties of DevOps audit settings.
@@ -696,20 +556,17 @@ public final class ServerDevOpsAuditSettingsClientImpl implements ServerDevOpsAu
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerDevOpsAuditingSettingsInner>, ServerDevOpsAuditingSettingsInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String serverName,
-            String devOpsAuditingSettingsName,
+        beginCreateOrUpdate(String resourceGroupName, String serverName, String devOpsAuditingSettingsName,
             ServerDevOpsAuditingSettingsInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, devOpsAuditingSettingsName, parameters)
+        return this.beginCreateOrUpdateAsync(resourceGroupName, serverName, devOpsAuditingSettingsName, parameters)
             .getSyncPoller();
     }
 
     /**
      * Creates or updates a server's DevOps audit settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param devOpsAuditingSettingsName The name of the devops audit settings. This should always be 'default'.
      * @param parameters Properties of DevOps audit settings.
@@ -721,21 +578,18 @@ public final class ServerDevOpsAuditSettingsClientImpl implements ServerDevOpsAu
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerDevOpsAuditingSettingsInner>, ServerDevOpsAuditingSettingsInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String serverName,
-            String devOpsAuditingSettingsName,
-            ServerDevOpsAuditingSettingsInner parameters,
-            Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, devOpsAuditingSettingsName, parameters, context)
+        beginCreateOrUpdate(String resourceGroupName, String serverName, String devOpsAuditingSettingsName,
+            ServerDevOpsAuditingSettingsInner parameters, Context context) {
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serverName, devOpsAuditingSettingsName, parameters, context)
             .getSyncPoller();
     }
 
     /**
      * Creates or updates a server's DevOps audit settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param devOpsAuditingSettingsName The name of the devops audit settings. This should always be 'default'.
      * @param parameters Properties of DevOps audit settings.
@@ -745,21 +599,17 @@ public final class ServerDevOpsAuditSettingsClientImpl implements ServerDevOpsAu
      * @return a server DevOps auditing settings on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ServerDevOpsAuditingSettingsInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serverName,
-        String devOpsAuditingSettingsName,
-        ServerDevOpsAuditingSettingsInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, devOpsAuditingSettingsName, parameters)
-            .last()
+    public Mono<ServerDevOpsAuditingSettingsInner> createOrUpdateAsync(String resourceGroupName, String serverName,
+        String devOpsAuditingSettingsName, ServerDevOpsAuditingSettingsInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, serverName, devOpsAuditingSettingsName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates a server's DevOps audit settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param devOpsAuditingSettingsName The name of the devops audit settings. This should always be 'default'.
      * @param parameters Properties of DevOps audit settings.
@@ -770,12 +620,8 @@ public final class ServerDevOpsAuditSettingsClientImpl implements ServerDevOpsAu
      * @return a server DevOps auditing settings on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ServerDevOpsAuditingSettingsInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serverName,
-        String devOpsAuditingSettingsName,
-        ServerDevOpsAuditingSettingsInner parameters,
-        Context context) {
+    private Mono<ServerDevOpsAuditingSettingsInner> createOrUpdateAsync(String resourceGroupName, String serverName,
+        String devOpsAuditingSettingsName, ServerDevOpsAuditingSettingsInner parameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, serverName, devOpsAuditingSettingsName, parameters, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -783,9 +629,9 @@ public final class ServerDevOpsAuditSettingsClientImpl implements ServerDevOpsAu
 
     /**
      * Creates or updates a server's DevOps audit settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param devOpsAuditingSettingsName The name of the devops audit settings. This should always be 'default'.
      * @param parameters Properties of DevOps audit settings.
@@ -795,19 +641,16 @@ public final class ServerDevOpsAuditSettingsClientImpl implements ServerDevOpsAu
      * @return a server DevOps auditing settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServerDevOpsAuditingSettingsInner createOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        String devOpsAuditingSettingsName,
-        ServerDevOpsAuditingSettingsInner parameters) {
+    public ServerDevOpsAuditingSettingsInner createOrUpdate(String resourceGroupName, String serverName,
+        String devOpsAuditingSettingsName, ServerDevOpsAuditingSettingsInner parameters) {
         return createOrUpdateAsync(resourceGroupName, serverName, devOpsAuditingSettingsName, parameters).block();
     }
 
     /**
      * Creates or updates a server's DevOps audit settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param devOpsAuditingSettingsName The name of the devops audit settings. This should always be 'default'.
      * @param parameters Properties of DevOps audit settings.
@@ -818,26 +661,21 @@ public final class ServerDevOpsAuditSettingsClientImpl implements ServerDevOpsAu
      * @return a server DevOps auditing settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServerDevOpsAuditingSettingsInner createOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        String devOpsAuditingSettingsName,
-        ServerDevOpsAuditingSettingsInner parameters,
-        Context context) {
+    public ServerDevOpsAuditingSettingsInner createOrUpdate(String resourceGroupName, String serverName,
+        String devOpsAuditingSettingsName, ServerDevOpsAuditingSettingsInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, serverName, devOpsAuditingSettingsName, parameters, context)
             .block();
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of server DevOps audit settings along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ServerDevOpsAuditingSettingsInner>> listByServerNextSinglePageAsync(String nextLink) {
@@ -845,62 +683,42 @@ public final class ServerDevOpsAuditSettingsClientImpl implements ServerDevOpsAu
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByServerNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ServerDevOpsAuditingSettingsInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ServerDevOpsAuditingSettingsInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of server DevOps audit settings along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ServerDevOpsAuditingSettingsInner>> listByServerNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<ServerDevOpsAuditingSettingsInner>> listByServerNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByServerNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByServerNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

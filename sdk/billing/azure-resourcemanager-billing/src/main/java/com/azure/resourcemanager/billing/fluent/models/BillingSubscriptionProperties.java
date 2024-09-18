@@ -5,179 +5,356 @@
 package com.azure.resourcemanager.billing.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.billing.models.Amount;
-import com.azure.resourcemanager.billing.models.BillingSubscriptionStatusType;
+import com.azure.resourcemanager.billing.models.AutoRenew;
+import com.azure.resourcemanager.billing.models.Beneficiary;
+import com.azure.resourcemanager.billing.models.BillingSubscriptionOperationStatus;
+import com.azure.resourcemanager.billing.models.BillingSubscriptionStatus;
+import com.azure.resourcemanager.billing.models.BillingSubscriptionStatusDetails;
+import com.azure.resourcemanager.billing.models.NextBillingCycleDetails;
+import com.azure.resourcemanager.billing.models.ProvisioningState;
+import com.azure.resourcemanager.billing.models.RenewalTermDetails;
 import com.azure.resourcemanager.billing.models.Reseller;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.resourcemanager.billing.models.SubscriptionEnrollmentAccountStatus;
+import com.azure.resourcemanager.billing.models.SystemOverrides;
+import java.io.IOException;
+import java.time.OffsetDateTime;
 import java.util.List;
-import java.util.UUID;
+import java.util.Map;
 
-/** The billing properties of a subscription. */
+/**
+ * The billing properties of a subscription.
+ */
 @Fluent
-public final class BillingSubscriptionProperties {
+public class BillingSubscriptionProperties implements JsonSerializable<BillingSubscriptionProperties> {
     /*
-     * The name of the subscription.
+     * Indicates whether auto renewal is turned on or off for a product.
      */
-    @JsonProperty(value = "displayName", access = JsonProperty.Access.WRITE_ONLY)
+    private AutoRenew autoRenew;
+
+    /*
+     * The provisioning tenant of the subscription.
+     */
+    private String beneficiaryTenantId;
+
+    /*
+     * The beneficiary of the billing subscription.
+     */
+    private Beneficiary beneficiary;
+
+    /*
+     * The billing frequency in ISO8601 format of product in the subscription. Example: P1M, P3M, P1Y
+     */
+    private String billingFrequency;
+
+    /*
+     * The fully qualified ID that uniquely identifies a billing profile.
+     */
+    private String billingProfileId;
+
+    /*
+     * Dictionary of billing policies associated with the subscription.
+     */
+    private Map<String, String> billingPolicies;
+
+    /*
+     * The name of the billing profile.
+     */
+    private String billingProfileDisplayName;
+
+    /*
+     * The ID that uniquely identifies a billing profile.
+     */
+    private String billingProfileName;
+
+    /*
+     * The cost center applied to the subscription. This field is only available for consumption subscriptions of
+     * Microsoft Customer Agreement or Enterprise Agreement Type billing accounts.
+     */
+    private String consumptionCostCenter;
+
+    /*
+     * The fully qualified ID that uniquely identifies a customer.
+     */
+    private String customerId;
+
+    /*
+     * The name of the customer.
+     */
+    private String customerDisplayName;
+
+    /*
+     * The ID that uniquely identifies a customer.
+     */
+    private String customerName;
+
+    /*
+     * The name of the billing subscription.
+     */
     private String displayName;
+
+    /*
+     * The enrollment Account ID associated with the subscription. This field is available only for the Enterprise
+     * Agreement Type billing accounts.
+     */
+    private String enrollmentAccountId;
+
+    /*
+     * The enrollment Account name associated with the subscription. This field is available only for the Enterprise
+     * Agreement Type billing accounts.
+     */
+    private String enrollmentAccountDisplayName;
+
+    /*
+     * Enrollment Account Subscription details. This field is available only for the Enterprise Agreement Type billing
+     * accounts.
+     */
+    private EnrollmentAccountSubscriptionDetails innerEnrollmentAccountSubscriptionDetails;
+
+    /*
+     * The fully qualified ID that uniquely identifies an invoice section.
+     */
+    private String invoiceSectionId;
+
+    /*
+     * The name of the invoice section.
+     */
+    private String invoiceSectionDisplayName;
+
+    /*
+     * The ID that uniquely identifies an invoice section.
+     */
+    private String invoiceSectionName;
+
+    /*
+     * The last month's charges. This field is only available for usage based subscriptions of Microsoft Customer
+     * Agreement billing accounts.
+     */
+    private Amount lastMonthCharges;
+
+    /*
+     * The current month to date charges. This field is only available for usage based subscriptions of Microsoft
+     * Customer Agreement billing accounts.
+     */
+    private Amount monthToDateCharges;
+
+    /*
+     * Next billing cycle details of the subscription.
+     */
+    private NextBillingCycleDetails nextBillingCycleDetails;
+
+    /*
+     * The offer ID for the subscription. This field is only available for the Microsoft Online Services Program billing
+     * accounts.
+     */
+    private String offerId;
+
+    /*
+     * The category of the product for which the subscription is purchased. Possible values include: AzureSupport,
+     * Hardware, ReservationOrder, SaaS, SavingsPlanOrder, Software, UsageBased, Other.
+     */
+    private String productCategory;
+
+    /*
+     * Type of the product for which the subscription is purchased.
+     */
+    private String productType;
+
+    /*
+     * Id of the product for which the subscription is purchased.
+     */
+    private String productTypeId;
+
+    /*
+     * Purchase date of the product in UTC time.
+     */
+    private OffsetDateTime purchaseDate;
+
+    /*
+     * The quantity of licenses or fulfillment units for the subscription.
+     */
+    private Long quantity;
+
+    /*
+     * Reseller for this subscription. The fields is not available for Microsoft Partner Agreement billing accounts.
+     */
+    private Reseller reseller;
+
+    /*
+     * Details for the next renewal term of a subscription.
+     */
+    private RenewalTermDetails renewalTermDetails;
+
+    /*
+     * The SKU ID of the product for which the subscription is purchased. This field is is only available for Microsoft
+     * Customer Agreement billing accounts.
+     */
+    private String skuId;
+
+    /*
+     * The SKU description of the product for which the subscription is purchased. This field is is only available for
+     * billing accounts with agreement type Microsoft Customer Agreement and Microsoft Partner Agreement.
+     */
+    private String skuDescription;
+
+    /*
+     * System imposed policies that regulate behavior of the subscription.
+     */
+    private SystemOverrides systemOverrides;
+
+    /*
+     * Unique identifier of the linked resource.
+     */
+    private String resourceUri;
+
+    /*
+     * The duration in ISO8601 format for which you can use the subscription. Example: P1M, P3M, P1Y
+     */
+    private String termDuration;
+
+    /*
+     * Start date of the term in UTC time.
+     */
+    private OffsetDateTime termStartDate;
+
+    /*
+     * End date of the term in UTC time.
+     */
+    private OffsetDateTime termEndDate;
+
+    /*
+     * The tenant in which the subscription is provisioned.
+     */
+    private String provisioningTenantId;
+
+    /*
+     * The status of the subscription. This field is not available for Enterprise Agreement billing accounts
+     */
+    private BillingSubscriptionStatus status;
+
+    /*
+     * The status of an operation on the subscription. When None, there is no ongoing operation. When LockedForUpdate,
+     * write operations will be blocked on the Billing Subscription. Other is the default value and you may need to
+     * refer to the latest API version for more details.
+     */
+    private BillingSubscriptionOperationStatus operationStatus;
+
+    /*
+     * The provisioning state of the resource during a long-running operation.
+     */
+    private ProvisioningState provisioningState;
 
     /*
      * The ID of the subscription.
      */
-    @JsonProperty(value = "subscriptionId", access = JsonProperty.Access.WRITE_ONLY)
-    private UUID subscriptionId;
+    private String subscriptionId;
 
     /*
-     * The current billing status of the subscription.
+     * The suspension reason for a subscription. This field is not available for Enterprise Agreement billing accounts.
      */
-    @JsonProperty(value = "subscriptionBillingStatus")
-    private BillingSubscriptionStatusType subscriptionBillingStatus;
-
-    /*
-     * The last month charges.
-     */
-    @JsonProperty(value = "lastMonthCharges", access = JsonProperty.Access.WRITE_ONLY)
-    private Amount lastMonthCharges;
-
-    /*
-     * The current month to date charges.
-     */
-    @JsonProperty(value = "monthToDateCharges", access = JsonProperty.Access.WRITE_ONLY)
-    private Amount monthToDateCharges;
-
-    /*
-     * The ID of the billing profile to which the subscription is billed.
-     */
-    @JsonProperty(value = "billingProfileId", access = JsonProperty.Access.WRITE_ONLY)
-    private String billingProfileId;
-
-    /*
-     * The name of the billing profile to which the subscription is billed.
-     */
-    @JsonProperty(value = "billingProfileDisplayName", access = JsonProperty.Access.WRITE_ONLY)
-    private String billingProfileDisplayName;
-
-    /*
-     * The cost center applied to the subscription.
-     */
-    @JsonProperty(value = "costCenter")
-    private String costCenter;
-
-    /*
-     * The ID of the customer for whom the subscription was created. The field is applicable only for Microsoft Partner
-     * Agreement billing account.
-     */
-    @JsonProperty(value = "customerId", access = JsonProperty.Access.WRITE_ONLY)
-    private String customerId;
-
-    /*
-     * The name of the customer for whom the subscription was created. The field is applicable only for Microsoft
-     * Partner Agreement billing account.
-     */
-    @JsonProperty(value = "customerDisplayName", access = JsonProperty.Access.WRITE_ONLY)
-    private String customerDisplayName;
-
-    /*
-     * The ID of the invoice section to which the subscription is billed.
-     */
-    @JsonProperty(value = "invoiceSectionId", access = JsonProperty.Access.WRITE_ONLY)
-    private String invoiceSectionId;
-
-    /*
-     * The name of the invoice section to which the subscription is billed.
-     */
-    @JsonProperty(value = "invoiceSectionDisplayName", access = JsonProperty.Access.WRITE_ONLY)
-    private String invoiceSectionDisplayName;
-
-    /*
-     * Reseller for this subscription.
-     */
-    @JsonProperty(value = "reseller", access = JsonProperty.Access.WRITE_ONLY)
-    private Reseller reseller;
-
-    /*
-     * The sku ID of the Azure plan for the subscription.
-     */
-    @JsonProperty(value = "skuId")
-    private String skuId;
-
-    /*
-     * The sku description of the Azure plan for the subscription.
-     */
-    @JsonProperty(value = "skuDescription", access = JsonProperty.Access.WRITE_ONLY)
-    private String skuDescription;
-
-    /*
-     * The suspension reason for a subscription. Applies only to subscriptions in Microsoft Online Services Program
-     * billing accounts.
-     */
-    @JsonProperty(value = "suspensionReasons", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> suspensionReasons;
 
-    /** Creates an instance of BillingSubscriptionProperties class. */
+    /*
+     * The suspension details for a subscription. This field is not available for Enterprise Agreement billing accounts.
+     */
+    private List<BillingSubscriptionStatusDetails> suspensionReasonDetails;
+
+    /**
+     * Creates an instance of BillingSubscriptionProperties class.
+     */
     public BillingSubscriptionProperties() {
     }
 
     /**
-     * Get the displayName property: The name of the subscription.
-     *
-     * @return the displayName value.
+     * Get the autoRenew property: Indicates whether auto renewal is turned on or off for a product.
+     * 
+     * @return the autoRenew value.
      */
-    public String displayName() {
-        return this.displayName;
+    public AutoRenew autoRenew() {
+        return this.autoRenew;
     }
 
     /**
-     * Get the subscriptionId property: The ID of the subscription.
-     *
-     * @return the subscriptionId value.
-     */
-    public UUID subscriptionId() {
-        return this.subscriptionId;
-    }
-
-    /**
-     * Get the subscriptionBillingStatus property: The current billing status of the subscription.
-     *
-     * @return the subscriptionBillingStatus value.
-     */
-    public BillingSubscriptionStatusType subscriptionBillingStatus() {
-        return this.subscriptionBillingStatus;
-    }
-
-    /**
-     * Set the subscriptionBillingStatus property: The current billing status of the subscription.
-     *
-     * @param subscriptionBillingStatus the subscriptionBillingStatus value to set.
+     * Set the autoRenew property: Indicates whether auto renewal is turned on or off for a product.
+     * 
+     * @param autoRenew the autoRenew value to set.
      * @return the BillingSubscriptionProperties object itself.
      */
-    public BillingSubscriptionProperties withSubscriptionBillingStatus(
-        BillingSubscriptionStatusType subscriptionBillingStatus) {
-        this.subscriptionBillingStatus = subscriptionBillingStatus;
+    public BillingSubscriptionProperties withAutoRenew(AutoRenew autoRenew) {
+        this.autoRenew = autoRenew;
         return this;
     }
 
     /**
-     * Get the lastMonthCharges property: The last month charges.
-     *
-     * @return the lastMonthCharges value.
+     * Get the beneficiaryTenantId property: The provisioning tenant of the subscription.
+     * 
+     * @return the beneficiaryTenantId value.
      */
-    public Amount lastMonthCharges() {
-        return this.lastMonthCharges;
+    public String beneficiaryTenantId() {
+        return this.beneficiaryTenantId;
     }
 
     /**
-     * Get the monthToDateCharges property: The current month to date charges.
-     *
-     * @return the monthToDateCharges value.
+     * Set the beneficiaryTenantId property: The provisioning tenant of the subscription.
+     * 
+     * @param beneficiaryTenantId the beneficiaryTenantId value to set.
+     * @return the BillingSubscriptionProperties object itself.
      */
-    public Amount monthToDateCharges() {
-        return this.monthToDateCharges;
+    public BillingSubscriptionProperties withBeneficiaryTenantId(String beneficiaryTenantId) {
+        this.beneficiaryTenantId = beneficiaryTenantId;
+        return this;
     }
 
     /**
-     * Get the billingProfileId property: The ID of the billing profile to which the subscription is billed.
-     *
+     * Get the beneficiary property: The beneficiary of the billing subscription.
+     * 
+     * @return the beneficiary value.
+     */
+    public Beneficiary beneficiary() {
+        return this.beneficiary;
+    }
+
+    /**
+     * Set the beneficiary property: The beneficiary of the billing subscription.
+     * 
+     * @param beneficiary the beneficiary value to set.
+     * @return the BillingSubscriptionProperties object itself.
+     */
+    public BillingSubscriptionProperties withBeneficiary(Beneficiary beneficiary) {
+        this.beneficiary = beneficiary;
+        return this;
+    }
+
+    /**
+     * Get the billingFrequency property: The billing frequency in ISO8601 format of product in the subscription.
+     * Example: P1M, P3M, P1Y.
+     * 
+     * @return the billingFrequency value.
+     */
+    public String billingFrequency() {
+        return this.billingFrequency;
+    }
+
+    /**
+     * Set the billingFrequency property: The billing frequency in ISO8601 format of product in the subscription.
+     * Example: P1M, P3M, P1Y.
+     * 
+     * @param billingFrequency the billingFrequency value to set.
+     * @return the BillingSubscriptionProperties object itself.
+     */
+    public BillingSubscriptionProperties withBillingFrequency(String billingFrequency) {
+        this.billingFrequency = billingFrequency;
+        return this;
+    }
+
+    /**
+     * Get the billingProfileId property: The fully qualified ID that uniquely identifies a billing profile.
+     * 
      * @return the billingProfileId value.
      */
     public String billingProfileId() {
@@ -185,8 +362,39 @@ public final class BillingSubscriptionProperties {
     }
 
     /**
-     * Get the billingProfileDisplayName property: The name of the billing profile to which the subscription is billed.
-     *
+     * Set the billingProfileId property: The fully qualified ID that uniquely identifies a billing profile.
+     * 
+     * @param billingProfileId the billingProfileId value to set.
+     * @return the BillingSubscriptionProperties object itself.
+     */
+    public BillingSubscriptionProperties withBillingProfileId(String billingProfileId) {
+        this.billingProfileId = billingProfileId;
+        return this;
+    }
+
+    /**
+     * Get the billingPolicies property: Dictionary of billing policies associated with the subscription.
+     * 
+     * @return the billingPolicies value.
+     */
+    public Map<String, String> billingPolicies() {
+        return this.billingPolicies;
+    }
+
+    /**
+     * Set the billingPolicies property: Dictionary of billing policies associated with the subscription.
+     * 
+     * @param billingPolicies the billingPolicies value to set.
+     * @return the BillingSubscriptionProperties object itself.
+     */
+    BillingSubscriptionProperties withBillingPolicies(Map<String, String> billingPolicies) {
+        this.billingPolicies = billingPolicies;
+        return this;
+    }
+
+    /**
+     * Get the billingProfileDisplayName property: The name of the billing profile.
+     * 
      * @return the billingProfileDisplayName value.
      */
     public String billingProfileDisplayName() {
@@ -194,29 +402,61 @@ public final class BillingSubscriptionProperties {
     }
 
     /**
-     * Get the costCenter property: The cost center applied to the subscription.
-     *
-     * @return the costCenter value.
-     */
-    public String costCenter() {
-        return this.costCenter;
-    }
-
-    /**
-     * Set the costCenter property: The cost center applied to the subscription.
-     *
-     * @param costCenter the costCenter value to set.
+     * Set the billingProfileDisplayName property: The name of the billing profile.
+     * 
+     * @param billingProfileDisplayName the billingProfileDisplayName value to set.
      * @return the BillingSubscriptionProperties object itself.
      */
-    public BillingSubscriptionProperties withCostCenter(String costCenter) {
-        this.costCenter = costCenter;
+    BillingSubscriptionProperties withBillingProfileDisplayName(String billingProfileDisplayName) {
+        this.billingProfileDisplayName = billingProfileDisplayName;
         return this;
     }
 
     /**
-     * Get the customerId property: The ID of the customer for whom the subscription was created. The field is
-     * applicable only for Microsoft Partner Agreement billing account.
-     *
+     * Get the billingProfileName property: The ID that uniquely identifies a billing profile.
+     * 
+     * @return the billingProfileName value.
+     */
+    public String billingProfileName() {
+        return this.billingProfileName;
+    }
+
+    /**
+     * Set the billingProfileName property: The ID that uniquely identifies a billing profile.
+     * 
+     * @param billingProfileName the billingProfileName value to set.
+     * @return the BillingSubscriptionProperties object itself.
+     */
+    BillingSubscriptionProperties withBillingProfileName(String billingProfileName) {
+        this.billingProfileName = billingProfileName;
+        return this;
+    }
+
+    /**
+     * Get the consumptionCostCenter property: The cost center applied to the subscription. This field is only available
+     * for consumption subscriptions of Microsoft Customer Agreement or Enterprise Agreement Type billing accounts.
+     * 
+     * @return the consumptionCostCenter value.
+     */
+    public String consumptionCostCenter() {
+        return this.consumptionCostCenter;
+    }
+
+    /**
+     * Set the consumptionCostCenter property: The cost center applied to the subscription. This field is only available
+     * for consumption subscriptions of Microsoft Customer Agreement or Enterprise Agreement Type billing accounts.
+     * 
+     * @param consumptionCostCenter the consumptionCostCenter value to set.
+     * @return the BillingSubscriptionProperties object itself.
+     */
+    public BillingSubscriptionProperties withConsumptionCostCenter(String consumptionCostCenter) {
+        this.consumptionCostCenter = consumptionCostCenter;
+        return this;
+    }
+
+    /**
+     * Get the customerId property: The fully qualified ID that uniquely identifies a customer.
+     * 
      * @return the customerId value.
      */
     public String customerId() {
@@ -224,9 +464,19 @@ public final class BillingSubscriptionProperties {
     }
 
     /**
-     * Get the customerDisplayName property: The name of the customer for whom the subscription was created. The field
-     * is applicable only for Microsoft Partner Agreement billing account.
-     *
+     * Set the customerId property: The fully qualified ID that uniquely identifies a customer.
+     * 
+     * @param customerId the customerId value to set.
+     * @return the BillingSubscriptionProperties object itself.
+     */
+    public BillingSubscriptionProperties withCustomerId(String customerId) {
+        this.customerId = customerId;
+        return this;
+    }
+
+    /**
+     * Get the customerDisplayName property: The name of the customer.
+     * 
      * @return the customerDisplayName value.
      */
     public String customerDisplayName() {
@@ -234,8 +484,126 @@ public final class BillingSubscriptionProperties {
     }
 
     /**
-     * Get the invoiceSectionId property: The ID of the invoice section to which the subscription is billed.
-     *
+     * Set the customerDisplayName property: The name of the customer.
+     * 
+     * @param customerDisplayName the customerDisplayName value to set.
+     * @return the BillingSubscriptionProperties object itself.
+     */
+    BillingSubscriptionProperties withCustomerDisplayName(String customerDisplayName) {
+        this.customerDisplayName = customerDisplayName;
+        return this;
+    }
+
+    /**
+     * Get the customerName property: The ID that uniquely identifies a customer.
+     * 
+     * @return the customerName value.
+     */
+    public String customerName() {
+        return this.customerName;
+    }
+
+    /**
+     * Set the customerName property: The ID that uniquely identifies a customer.
+     * 
+     * @param customerName the customerName value to set.
+     * @return the BillingSubscriptionProperties object itself.
+     */
+    BillingSubscriptionProperties withCustomerName(String customerName) {
+        this.customerName = customerName;
+        return this;
+    }
+
+    /**
+     * Get the displayName property: The name of the billing subscription.
+     * 
+     * @return the displayName value.
+     */
+    public String displayName() {
+        return this.displayName;
+    }
+
+    /**
+     * Set the displayName property: The name of the billing subscription.
+     * 
+     * @param displayName the displayName value to set.
+     * @return the BillingSubscriptionProperties object itself.
+     */
+    public BillingSubscriptionProperties withDisplayName(String displayName) {
+        this.displayName = displayName;
+        return this;
+    }
+
+    /**
+     * Get the enrollmentAccountId property: The enrollment Account ID associated with the subscription. This field is
+     * available only for the Enterprise Agreement Type billing accounts.
+     * 
+     * @return the enrollmentAccountId value.
+     */
+    public String enrollmentAccountId() {
+        return this.enrollmentAccountId;
+    }
+
+    /**
+     * Set the enrollmentAccountId property: The enrollment Account ID associated with the subscription. This field is
+     * available only for the Enterprise Agreement Type billing accounts.
+     * 
+     * @param enrollmentAccountId the enrollmentAccountId value to set.
+     * @return the BillingSubscriptionProperties object itself.
+     */
+    BillingSubscriptionProperties withEnrollmentAccountId(String enrollmentAccountId) {
+        this.enrollmentAccountId = enrollmentAccountId;
+        return this;
+    }
+
+    /**
+     * Get the enrollmentAccountDisplayName property: The enrollment Account name associated with the subscription. This
+     * field is available only for the Enterprise Agreement Type billing accounts.
+     * 
+     * @return the enrollmentAccountDisplayName value.
+     */
+    public String enrollmentAccountDisplayName() {
+        return this.enrollmentAccountDisplayName;
+    }
+
+    /**
+     * Set the enrollmentAccountDisplayName property: The enrollment Account name associated with the subscription. This
+     * field is available only for the Enterprise Agreement Type billing accounts.
+     * 
+     * @param enrollmentAccountDisplayName the enrollmentAccountDisplayName value to set.
+     * @return the BillingSubscriptionProperties object itself.
+     */
+    BillingSubscriptionProperties withEnrollmentAccountDisplayName(String enrollmentAccountDisplayName) {
+        this.enrollmentAccountDisplayName = enrollmentAccountDisplayName;
+        return this;
+    }
+
+    /**
+     * Get the innerEnrollmentAccountSubscriptionDetails property: Enrollment Account Subscription details. This field
+     * is available only for the Enterprise Agreement Type billing accounts.
+     * 
+     * @return the innerEnrollmentAccountSubscriptionDetails value.
+     */
+    private EnrollmentAccountSubscriptionDetails innerEnrollmentAccountSubscriptionDetails() {
+        return this.innerEnrollmentAccountSubscriptionDetails;
+    }
+
+    /**
+     * Set the innerEnrollmentAccountSubscriptionDetails property: Enrollment Account Subscription details. This field
+     * is available only for the Enterprise Agreement Type billing accounts.
+     * 
+     * @param innerEnrollmentAccountSubscriptionDetails the innerEnrollmentAccountSubscriptionDetails value to set.
+     * @return the BillingSubscriptionProperties object itself.
+     */
+    BillingSubscriptionProperties withInnerEnrollmentAccountSubscriptionDetails(
+        EnrollmentAccountSubscriptionDetails innerEnrollmentAccountSubscriptionDetails) {
+        this.innerEnrollmentAccountSubscriptionDetails = innerEnrollmentAccountSubscriptionDetails;
+        return this;
+    }
+
+    /**
+     * Get the invoiceSectionId property: The fully qualified ID that uniquely identifies an invoice section.
+     * 
      * @return the invoiceSectionId value.
      */
     public String invoiceSectionId() {
@@ -243,8 +611,19 @@ public final class BillingSubscriptionProperties {
     }
 
     /**
-     * Get the invoiceSectionDisplayName property: The name of the invoice section to which the subscription is billed.
-     *
+     * Set the invoiceSectionId property: The fully qualified ID that uniquely identifies an invoice section.
+     * 
+     * @param invoiceSectionId the invoiceSectionId value to set.
+     * @return the BillingSubscriptionProperties object itself.
+     */
+    public BillingSubscriptionProperties withInvoiceSectionId(String invoiceSectionId) {
+        this.invoiceSectionId = invoiceSectionId;
+        return this;
+    }
+
+    /**
+     * Get the invoiceSectionDisplayName property: The name of the invoice section.
+     * 
      * @return the invoiceSectionDisplayName value.
      */
     public String invoiceSectionDisplayName() {
@@ -252,8 +631,228 @@ public final class BillingSubscriptionProperties {
     }
 
     /**
-     * Get the reseller property: Reseller for this subscription.
-     *
+     * Set the invoiceSectionDisplayName property: The name of the invoice section.
+     * 
+     * @param invoiceSectionDisplayName the invoiceSectionDisplayName value to set.
+     * @return the BillingSubscriptionProperties object itself.
+     */
+    BillingSubscriptionProperties withInvoiceSectionDisplayName(String invoiceSectionDisplayName) {
+        this.invoiceSectionDisplayName = invoiceSectionDisplayName;
+        return this;
+    }
+
+    /**
+     * Get the invoiceSectionName property: The ID that uniquely identifies an invoice section.
+     * 
+     * @return the invoiceSectionName value.
+     */
+    public String invoiceSectionName() {
+        return this.invoiceSectionName;
+    }
+
+    /**
+     * Set the invoiceSectionName property: The ID that uniquely identifies an invoice section.
+     * 
+     * @param invoiceSectionName the invoiceSectionName value to set.
+     * @return the BillingSubscriptionProperties object itself.
+     */
+    BillingSubscriptionProperties withInvoiceSectionName(String invoiceSectionName) {
+        this.invoiceSectionName = invoiceSectionName;
+        return this;
+    }
+
+    /**
+     * Get the lastMonthCharges property: The last month's charges. This field is only available for usage based
+     * subscriptions of Microsoft Customer Agreement billing accounts.
+     * 
+     * @return the lastMonthCharges value.
+     */
+    public Amount lastMonthCharges() {
+        return this.lastMonthCharges;
+    }
+
+    /**
+     * Set the lastMonthCharges property: The last month's charges. This field is only available for usage based
+     * subscriptions of Microsoft Customer Agreement billing accounts.
+     * 
+     * @param lastMonthCharges the lastMonthCharges value to set.
+     * @return the BillingSubscriptionProperties object itself.
+     */
+    BillingSubscriptionProperties withLastMonthCharges(Amount lastMonthCharges) {
+        this.lastMonthCharges = lastMonthCharges;
+        return this;
+    }
+
+    /**
+     * Get the monthToDateCharges property: The current month to date charges. This field is only available for usage
+     * based subscriptions of Microsoft Customer Agreement billing accounts.
+     * 
+     * @return the monthToDateCharges value.
+     */
+    public Amount monthToDateCharges() {
+        return this.monthToDateCharges;
+    }
+
+    /**
+     * Set the monthToDateCharges property: The current month to date charges. This field is only available for usage
+     * based subscriptions of Microsoft Customer Agreement billing accounts.
+     * 
+     * @param monthToDateCharges the monthToDateCharges value to set.
+     * @return the BillingSubscriptionProperties object itself.
+     */
+    BillingSubscriptionProperties withMonthToDateCharges(Amount monthToDateCharges) {
+        this.monthToDateCharges = monthToDateCharges;
+        return this;
+    }
+
+    /**
+     * Get the nextBillingCycleDetails property: Next billing cycle details of the subscription.
+     * 
+     * @return the nextBillingCycleDetails value.
+     */
+    public NextBillingCycleDetails nextBillingCycleDetails() {
+        return this.nextBillingCycleDetails;
+    }
+
+    /**
+     * Set the nextBillingCycleDetails property: Next billing cycle details of the subscription.
+     * 
+     * @param nextBillingCycleDetails the nextBillingCycleDetails value to set.
+     * @return the BillingSubscriptionProperties object itself.
+     */
+    BillingSubscriptionProperties withNextBillingCycleDetails(NextBillingCycleDetails nextBillingCycleDetails) {
+        this.nextBillingCycleDetails = nextBillingCycleDetails;
+        return this;
+    }
+
+    /**
+     * Get the offerId property: The offer ID for the subscription. This field is only available for the Microsoft
+     * Online Services Program billing accounts.
+     * 
+     * @return the offerId value.
+     */
+    public String offerId() {
+        return this.offerId;
+    }
+
+    /**
+     * Set the offerId property: The offer ID for the subscription. This field is only available for the Microsoft
+     * Online Services Program billing accounts.
+     * 
+     * @param offerId the offerId value to set.
+     * @return the BillingSubscriptionProperties object itself.
+     */
+    BillingSubscriptionProperties withOfferId(String offerId) {
+        this.offerId = offerId;
+        return this;
+    }
+
+    /**
+     * Get the productCategory property: The category of the product for which the subscription is purchased. Possible
+     * values include: AzureSupport, Hardware, ReservationOrder, SaaS, SavingsPlanOrder, Software, UsageBased, Other.
+     * 
+     * @return the productCategory value.
+     */
+    public String productCategory() {
+        return this.productCategory;
+    }
+
+    /**
+     * Set the productCategory property: The category of the product for which the subscription is purchased. Possible
+     * values include: AzureSupport, Hardware, ReservationOrder, SaaS, SavingsPlanOrder, Software, UsageBased, Other.
+     * 
+     * @param productCategory the productCategory value to set.
+     * @return the BillingSubscriptionProperties object itself.
+     */
+    BillingSubscriptionProperties withProductCategory(String productCategory) {
+        this.productCategory = productCategory;
+        return this;
+    }
+
+    /**
+     * Get the productType property: Type of the product for which the subscription is purchased.
+     * 
+     * @return the productType value.
+     */
+    public String productType() {
+        return this.productType;
+    }
+
+    /**
+     * Set the productType property: Type of the product for which the subscription is purchased.
+     * 
+     * @param productType the productType value to set.
+     * @return the BillingSubscriptionProperties object itself.
+     */
+    BillingSubscriptionProperties withProductType(String productType) {
+        this.productType = productType;
+        return this;
+    }
+
+    /**
+     * Get the productTypeId property: Id of the product for which the subscription is purchased.
+     * 
+     * @return the productTypeId value.
+     */
+    public String productTypeId() {
+        return this.productTypeId;
+    }
+
+    /**
+     * Set the productTypeId property: Id of the product for which the subscription is purchased.
+     * 
+     * @param productTypeId the productTypeId value to set.
+     * @return the BillingSubscriptionProperties object itself.
+     */
+    public BillingSubscriptionProperties withProductTypeId(String productTypeId) {
+        this.productTypeId = productTypeId;
+        return this;
+    }
+
+    /**
+     * Get the purchaseDate property: Purchase date of the product in UTC time.
+     * 
+     * @return the purchaseDate value.
+     */
+    public OffsetDateTime purchaseDate() {
+        return this.purchaseDate;
+    }
+
+    /**
+     * Set the purchaseDate property: Purchase date of the product in UTC time.
+     * 
+     * @param purchaseDate the purchaseDate value to set.
+     * @return the BillingSubscriptionProperties object itself.
+     */
+    BillingSubscriptionProperties withPurchaseDate(OffsetDateTime purchaseDate) {
+        this.purchaseDate = purchaseDate;
+        return this;
+    }
+
+    /**
+     * Get the quantity property: The quantity of licenses or fulfillment units for the subscription.
+     * 
+     * @return the quantity value.
+     */
+    public Long quantity() {
+        return this.quantity;
+    }
+
+    /**
+     * Set the quantity property: The quantity of licenses or fulfillment units for the subscription.
+     * 
+     * @param quantity the quantity value to set.
+     * @return the BillingSubscriptionProperties object itself.
+     */
+    public BillingSubscriptionProperties withQuantity(Long quantity) {
+        this.quantity = quantity;
+        return this;
+    }
+
+    /**
+     * Get the reseller property: Reseller for this subscription. The fields is not available for Microsoft Partner
+     * Agreement billing accounts.
+     * 
      * @return the reseller value.
      */
     public Reseller reseller() {
@@ -261,8 +860,41 @@ public final class BillingSubscriptionProperties {
     }
 
     /**
-     * Get the skuId property: The sku ID of the Azure plan for the subscription.
-     *
+     * Set the reseller property: Reseller for this subscription. The fields is not available for Microsoft Partner
+     * Agreement billing accounts.
+     * 
+     * @param reseller the reseller value to set.
+     * @return the BillingSubscriptionProperties object itself.
+     */
+    BillingSubscriptionProperties withReseller(Reseller reseller) {
+        this.reseller = reseller;
+        return this;
+    }
+
+    /**
+     * Get the renewalTermDetails property: Details for the next renewal term of a subscription.
+     * 
+     * @return the renewalTermDetails value.
+     */
+    public RenewalTermDetails renewalTermDetails() {
+        return this.renewalTermDetails;
+    }
+
+    /**
+     * Set the renewalTermDetails property: Details for the next renewal term of a subscription.
+     * 
+     * @param renewalTermDetails the renewalTermDetails value to set.
+     * @return the BillingSubscriptionProperties object itself.
+     */
+    BillingSubscriptionProperties withRenewalTermDetails(RenewalTermDetails renewalTermDetails) {
+        this.renewalTermDetails = renewalTermDetails;
+        return this;
+    }
+
+    /**
+     * Get the skuId property: The SKU ID of the product for which the subscription is purchased. This field is is only
+     * available for Microsoft Customer Agreement billing accounts.
+     * 
      * @return the skuId value.
      */
     public String skuId() {
@@ -270,8 +902,9 @@ public final class BillingSubscriptionProperties {
     }
 
     /**
-     * Set the skuId property: The sku ID of the Azure plan for the subscription.
-     *
+     * Set the skuId property: The SKU ID of the product for which the subscription is purchased. This field is is only
+     * available for Microsoft Customer Agreement billing accounts.
+     * 
      * @param skuId the skuId value to set.
      * @return the BillingSubscriptionProperties object itself.
      */
@@ -281,8 +914,10 @@ public final class BillingSubscriptionProperties {
     }
 
     /**
-     * Get the skuDescription property: The sku description of the Azure plan for the subscription.
-     *
+     * Get the skuDescription property: The SKU description of the product for which the subscription is purchased. This
+     * field is is only available for billing accounts with agreement type Microsoft Customer Agreement and Microsoft
+     * Partner Agreement.
+     * 
      * @return the skuDescription value.
      */
     public String skuDescription() {
@@ -290,9 +925,230 @@ public final class BillingSubscriptionProperties {
     }
 
     /**
-     * Get the suspensionReasons property: The suspension reason for a subscription. Applies only to subscriptions in
-     * Microsoft Online Services Program billing accounts.
-     *
+     * Set the skuDescription property: The SKU description of the product for which the subscription is purchased. This
+     * field is is only available for billing accounts with agreement type Microsoft Customer Agreement and Microsoft
+     * Partner Agreement.
+     * 
+     * @param skuDescription the skuDescription value to set.
+     * @return the BillingSubscriptionProperties object itself.
+     */
+    BillingSubscriptionProperties withSkuDescription(String skuDescription) {
+        this.skuDescription = skuDescription;
+        return this;
+    }
+
+    /**
+     * Get the systemOverrides property: System imposed policies that regulate behavior of the subscription.
+     * 
+     * @return the systemOverrides value.
+     */
+    public SystemOverrides systemOverrides() {
+        return this.systemOverrides;
+    }
+
+    /**
+     * Set the systemOverrides property: System imposed policies that regulate behavior of the subscription.
+     * 
+     * @param systemOverrides the systemOverrides value to set.
+     * @return the BillingSubscriptionProperties object itself.
+     */
+    public BillingSubscriptionProperties withSystemOverrides(SystemOverrides systemOverrides) {
+        this.systemOverrides = systemOverrides;
+        return this;
+    }
+
+    /**
+     * Get the resourceUri property: Unique identifier of the linked resource.
+     * 
+     * @return the resourceUri value.
+     */
+    public String resourceUri() {
+        return this.resourceUri;
+    }
+
+    /**
+     * Set the resourceUri property: Unique identifier of the linked resource.
+     * 
+     * @param resourceUri the resourceUri value to set.
+     * @return the BillingSubscriptionProperties object itself.
+     */
+    BillingSubscriptionProperties withResourceUri(String resourceUri) {
+        this.resourceUri = resourceUri;
+        return this;
+    }
+
+    /**
+     * Get the termDuration property: The duration in ISO8601 format for which you can use the subscription. Example:
+     * P1M, P3M, P1Y.
+     * 
+     * @return the termDuration value.
+     */
+    public String termDuration() {
+        return this.termDuration;
+    }
+
+    /**
+     * Set the termDuration property: The duration in ISO8601 format for which you can use the subscription. Example:
+     * P1M, P3M, P1Y.
+     * 
+     * @param termDuration the termDuration value to set.
+     * @return the BillingSubscriptionProperties object itself.
+     */
+    public BillingSubscriptionProperties withTermDuration(String termDuration) {
+        this.termDuration = termDuration;
+        return this;
+    }
+
+    /**
+     * Get the termStartDate property: Start date of the term in UTC time.
+     * 
+     * @return the termStartDate value.
+     */
+    public OffsetDateTime termStartDate() {
+        return this.termStartDate;
+    }
+
+    /**
+     * Set the termStartDate property: Start date of the term in UTC time.
+     * 
+     * @param termStartDate the termStartDate value to set.
+     * @return the BillingSubscriptionProperties object itself.
+     */
+    BillingSubscriptionProperties withTermStartDate(OffsetDateTime termStartDate) {
+        this.termStartDate = termStartDate;
+        return this;
+    }
+
+    /**
+     * Get the termEndDate property: End date of the term in UTC time.
+     * 
+     * @return the termEndDate value.
+     */
+    public OffsetDateTime termEndDate() {
+        return this.termEndDate;
+    }
+
+    /**
+     * Set the termEndDate property: End date of the term in UTC time.
+     * 
+     * @param termEndDate the termEndDate value to set.
+     * @return the BillingSubscriptionProperties object itself.
+     */
+    BillingSubscriptionProperties withTermEndDate(OffsetDateTime termEndDate) {
+        this.termEndDate = termEndDate;
+        return this;
+    }
+
+    /**
+     * Get the provisioningTenantId property: The tenant in which the subscription is provisioned.
+     * 
+     * @return the provisioningTenantId value.
+     */
+    public String provisioningTenantId() {
+        return this.provisioningTenantId;
+    }
+
+    /**
+     * Set the provisioningTenantId property: The tenant in which the subscription is provisioned.
+     * 
+     * @param provisioningTenantId the provisioningTenantId value to set.
+     * @return the BillingSubscriptionProperties object itself.
+     */
+    public BillingSubscriptionProperties withProvisioningTenantId(String provisioningTenantId) {
+        this.provisioningTenantId = provisioningTenantId;
+        return this;
+    }
+
+    /**
+     * Get the status property: The status of the subscription. This field is not available for Enterprise Agreement
+     * billing accounts.
+     * 
+     * @return the status value.
+     */
+    public BillingSubscriptionStatus status() {
+        return this.status;
+    }
+
+    /**
+     * Set the status property: The status of the subscription. This field is not available for Enterprise Agreement
+     * billing accounts.
+     * 
+     * @param status the status value to set.
+     * @return the BillingSubscriptionProperties object itself.
+     */
+    BillingSubscriptionProperties withStatus(BillingSubscriptionStatus status) {
+        this.status = status;
+        return this;
+    }
+
+    /**
+     * Get the operationStatus property: The status of an operation on the subscription. When None, there is no ongoing
+     * operation. When LockedForUpdate, write operations will be blocked on the Billing Subscription. Other is the
+     * default value and you may need to refer to the latest API version for more details.
+     * 
+     * @return the operationStatus value.
+     */
+    public BillingSubscriptionOperationStatus operationStatus() {
+        return this.operationStatus;
+    }
+
+    /**
+     * Set the operationStatus property: The status of an operation on the subscription. When None, there is no ongoing
+     * operation. When LockedForUpdate, write operations will be blocked on the Billing Subscription. Other is the
+     * default value and you may need to refer to the latest API version for more details.
+     * 
+     * @param operationStatus the operationStatus value to set.
+     * @return the BillingSubscriptionProperties object itself.
+     */
+    BillingSubscriptionProperties withOperationStatus(BillingSubscriptionOperationStatus operationStatus) {
+        this.operationStatus = operationStatus;
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state of the resource during a long-running operation.
+     * 
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
+     * Set the provisioningState property: The provisioning state of the resource during a long-running operation.
+     * 
+     * @param provisioningState the provisioningState value to set.
+     * @return the BillingSubscriptionProperties object itself.
+     */
+    BillingSubscriptionProperties withProvisioningState(ProvisioningState provisioningState) {
+        this.provisioningState = provisioningState;
+        return this;
+    }
+
+    /**
+     * Get the subscriptionId property: The ID of the subscription.
+     * 
+     * @return the subscriptionId value.
+     */
+    public String subscriptionId() {
+        return this.subscriptionId;
+    }
+
+    /**
+     * Set the subscriptionId property: The ID of the subscription.
+     * 
+     * @param subscriptionId the subscriptionId value to set.
+     * @return the BillingSubscriptionProperties object itself.
+     */
+    BillingSubscriptionProperties withSubscriptionId(String subscriptionId) {
+        this.subscriptionId = subscriptionId;
+        return this;
+    }
+
+    /**
+     * Get the suspensionReasons property: The suspension reason for a subscription. This field is not available for
+     * Enterprise Agreement billing accounts.
+     * 
      * @return the suspensionReasons value.
      */
     public List<String> suspensionReasons() {
@@ -300,19 +1156,245 @@ public final class BillingSubscriptionProperties {
     }
 
     /**
+     * Set the suspensionReasons property: The suspension reason for a subscription. This field is not available for
+     * Enterprise Agreement billing accounts.
+     * 
+     * @param suspensionReasons the suspensionReasons value to set.
+     * @return the BillingSubscriptionProperties object itself.
+     */
+    BillingSubscriptionProperties withSuspensionReasons(List<String> suspensionReasons) {
+        this.suspensionReasons = suspensionReasons;
+        return this;
+    }
+
+    /**
+     * Get the suspensionReasonDetails property: The suspension details for a subscription. This field is not available
+     * for Enterprise Agreement billing accounts.
+     * 
+     * @return the suspensionReasonDetails value.
+     */
+    public List<BillingSubscriptionStatusDetails> suspensionReasonDetails() {
+        return this.suspensionReasonDetails;
+    }
+
+    /**
+     * Set the suspensionReasonDetails property: The suspension details for a subscription. This field is not available
+     * for Enterprise Agreement billing accounts.
+     * 
+     * @param suspensionReasonDetails the suspensionReasonDetails value to set.
+     * @return the BillingSubscriptionProperties object itself.
+     */
+    BillingSubscriptionProperties
+        withSuspensionReasonDetails(List<BillingSubscriptionStatusDetails> suspensionReasonDetails) {
+        this.suspensionReasonDetails = suspensionReasonDetails;
+        return this;
+    }
+
+    /**
+     * Get the enrollmentAccountStartDate property: The enrollment Account and the subscription association start date.
+     * This field is available only for the Enterprise Agreement Type.
+     * 
+     * @return the enrollmentAccountStartDate value.
+     */
+    public OffsetDateTime enrollmentAccountStartDate() {
+        return this.innerEnrollmentAccountSubscriptionDetails() == null
+            ? null
+            : this.innerEnrollmentAccountSubscriptionDetails().enrollmentAccountStartDate();
+    }
+
+    /**
+     * Get the subscriptionEnrollmentAccountStatus property: The current enrollment account status of the subscription.
+     * This field is available only for the Enterprise Agreement Type.
+     * 
+     * @return the subscriptionEnrollmentAccountStatus value.
+     */
+    public SubscriptionEnrollmentAccountStatus subscriptionEnrollmentAccountStatus() {
+        return this.innerEnrollmentAccountSubscriptionDetails() == null
+            ? null
+            : this.innerEnrollmentAccountSubscriptionDetails().subscriptionEnrollmentAccountStatus();
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (beneficiary() != null) {
+            beneficiary().validate();
+        }
+        if (innerEnrollmentAccountSubscriptionDetails() != null) {
+            innerEnrollmentAccountSubscriptionDetails().validate();
+        }
         if (lastMonthCharges() != null) {
             lastMonthCharges().validate();
         }
         if (monthToDateCharges() != null) {
             monthToDateCharges().validate();
         }
+        if (nextBillingCycleDetails() != null) {
+            nextBillingCycleDetails().validate();
+        }
         if (reseller() != null) {
             reseller().validate();
         }
+        if (renewalTermDetails() != null) {
+            renewalTermDetails().validate();
+        }
+        if (systemOverrides() != null) {
+            systemOverrides().validate();
+        }
+        if (suspensionReasonDetails() != null) {
+            suspensionReasonDetails().forEach(e -> e.validate());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("autoRenew", this.autoRenew == null ? null : this.autoRenew.toString());
+        jsonWriter.writeStringField("beneficiaryTenantId", this.beneficiaryTenantId);
+        jsonWriter.writeJsonField("beneficiary", this.beneficiary);
+        jsonWriter.writeStringField("billingFrequency", this.billingFrequency);
+        jsonWriter.writeStringField("billingProfileId", this.billingProfileId);
+        jsonWriter.writeStringField("consumptionCostCenter", this.consumptionCostCenter);
+        jsonWriter.writeStringField("customerId", this.customerId);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("invoiceSectionId", this.invoiceSectionId);
+        jsonWriter.writeStringField("productTypeId", this.productTypeId);
+        jsonWriter.writeNumberField("quantity", this.quantity);
+        jsonWriter.writeStringField("skuId", this.skuId);
+        jsonWriter.writeJsonField("systemOverrides", this.systemOverrides);
+        jsonWriter.writeStringField("termDuration", this.termDuration);
+        jsonWriter.writeStringField("provisioningTenantId", this.provisioningTenantId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BillingSubscriptionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BillingSubscriptionProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BillingSubscriptionProperties.
+     */
+    public static BillingSubscriptionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BillingSubscriptionProperties deserializedBillingSubscriptionProperties
+                = new BillingSubscriptionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("autoRenew".equals(fieldName)) {
+                    deserializedBillingSubscriptionProperties.autoRenew = AutoRenew.fromString(reader.getString());
+                } else if ("beneficiaryTenantId".equals(fieldName)) {
+                    deserializedBillingSubscriptionProperties.beneficiaryTenantId = reader.getString();
+                } else if ("beneficiary".equals(fieldName)) {
+                    deserializedBillingSubscriptionProperties.beneficiary = Beneficiary.fromJson(reader);
+                } else if ("billingFrequency".equals(fieldName)) {
+                    deserializedBillingSubscriptionProperties.billingFrequency = reader.getString();
+                } else if ("billingProfileId".equals(fieldName)) {
+                    deserializedBillingSubscriptionProperties.billingProfileId = reader.getString();
+                } else if ("billingPolicies".equals(fieldName)) {
+                    Map<String, String> billingPolicies = reader.readMap(reader1 -> reader1.getString());
+                    deserializedBillingSubscriptionProperties.billingPolicies = billingPolicies;
+                } else if ("billingProfileDisplayName".equals(fieldName)) {
+                    deserializedBillingSubscriptionProperties.billingProfileDisplayName = reader.getString();
+                } else if ("billingProfileName".equals(fieldName)) {
+                    deserializedBillingSubscriptionProperties.billingProfileName = reader.getString();
+                } else if ("consumptionCostCenter".equals(fieldName)) {
+                    deserializedBillingSubscriptionProperties.consumptionCostCenter = reader.getString();
+                } else if ("customerId".equals(fieldName)) {
+                    deserializedBillingSubscriptionProperties.customerId = reader.getString();
+                } else if ("customerDisplayName".equals(fieldName)) {
+                    deserializedBillingSubscriptionProperties.customerDisplayName = reader.getString();
+                } else if ("customerName".equals(fieldName)) {
+                    deserializedBillingSubscriptionProperties.customerName = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedBillingSubscriptionProperties.displayName = reader.getString();
+                } else if ("enrollmentAccountId".equals(fieldName)) {
+                    deserializedBillingSubscriptionProperties.enrollmentAccountId = reader.getString();
+                } else if ("enrollmentAccountDisplayName".equals(fieldName)) {
+                    deserializedBillingSubscriptionProperties.enrollmentAccountDisplayName = reader.getString();
+                } else if ("enrollmentAccountSubscriptionDetails".equals(fieldName)) {
+                    deserializedBillingSubscriptionProperties.innerEnrollmentAccountSubscriptionDetails
+                        = EnrollmentAccountSubscriptionDetails.fromJson(reader);
+                } else if ("invoiceSectionId".equals(fieldName)) {
+                    deserializedBillingSubscriptionProperties.invoiceSectionId = reader.getString();
+                } else if ("invoiceSectionDisplayName".equals(fieldName)) {
+                    deserializedBillingSubscriptionProperties.invoiceSectionDisplayName = reader.getString();
+                } else if ("invoiceSectionName".equals(fieldName)) {
+                    deserializedBillingSubscriptionProperties.invoiceSectionName = reader.getString();
+                } else if ("lastMonthCharges".equals(fieldName)) {
+                    deserializedBillingSubscriptionProperties.lastMonthCharges = Amount.fromJson(reader);
+                } else if ("monthToDateCharges".equals(fieldName)) {
+                    deserializedBillingSubscriptionProperties.monthToDateCharges = Amount.fromJson(reader);
+                } else if ("nextBillingCycleDetails".equals(fieldName)) {
+                    deserializedBillingSubscriptionProperties.nextBillingCycleDetails
+                        = NextBillingCycleDetails.fromJson(reader);
+                } else if ("offerId".equals(fieldName)) {
+                    deserializedBillingSubscriptionProperties.offerId = reader.getString();
+                } else if ("productCategory".equals(fieldName)) {
+                    deserializedBillingSubscriptionProperties.productCategory = reader.getString();
+                } else if ("productType".equals(fieldName)) {
+                    deserializedBillingSubscriptionProperties.productType = reader.getString();
+                } else if ("productTypeId".equals(fieldName)) {
+                    deserializedBillingSubscriptionProperties.productTypeId = reader.getString();
+                } else if ("purchaseDate".equals(fieldName)) {
+                    deserializedBillingSubscriptionProperties.purchaseDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("quantity".equals(fieldName)) {
+                    deserializedBillingSubscriptionProperties.quantity = reader.getNullable(JsonReader::getLong);
+                } else if ("reseller".equals(fieldName)) {
+                    deserializedBillingSubscriptionProperties.reseller = Reseller.fromJson(reader);
+                } else if ("renewalTermDetails".equals(fieldName)) {
+                    deserializedBillingSubscriptionProperties.renewalTermDetails = RenewalTermDetails.fromJson(reader);
+                } else if ("skuId".equals(fieldName)) {
+                    deserializedBillingSubscriptionProperties.skuId = reader.getString();
+                } else if ("skuDescription".equals(fieldName)) {
+                    deserializedBillingSubscriptionProperties.skuDescription = reader.getString();
+                } else if ("systemOverrides".equals(fieldName)) {
+                    deserializedBillingSubscriptionProperties.systemOverrides = SystemOverrides.fromJson(reader);
+                } else if ("resourceUri".equals(fieldName)) {
+                    deserializedBillingSubscriptionProperties.resourceUri = reader.getString();
+                } else if ("termDuration".equals(fieldName)) {
+                    deserializedBillingSubscriptionProperties.termDuration = reader.getString();
+                } else if ("termStartDate".equals(fieldName)) {
+                    deserializedBillingSubscriptionProperties.termStartDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("termEndDate".equals(fieldName)) {
+                    deserializedBillingSubscriptionProperties.termEndDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("provisioningTenantId".equals(fieldName)) {
+                    deserializedBillingSubscriptionProperties.provisioningTenantId = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedBillingSubscriptionProperties.status
+                        = BillingSubscriptionStatus.fromString(reader.getString());
+                } else if ("operationStatus".equals(fieldName)) {
+                    deserializedBillingSubscriptionProperties.operationStatus
+                        = BillingSubscriptionOperationStatus.fromString(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedBillingSubscriptionProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("subscriptionId".equals(fieldName)) {
+                    deserializedBillingSubscriptionProperties.subscriptionId = reader.getString();
+                } else if ("suspensionReasons".equals(fieldName)) {
+                    List<String> suspensionReasons = reader.readArray(reader1 -> reader1.getString());
+                    deserializedBillingSubscriptionProperties.suspensionReasons = suspensionReasons;
+                } else if ("suspensionReasonDetails".equals(fieldName)) {
+                    List<BillingSubscriptionStatusDetails> suspensionReasonDetails
+                        = reader.readArray(reader1 -> BillingSubscriptionStatusDetails.fromJson(reader1));
+                    deserializedBillingSubscriptionProperties.suspensionReasonDetails = suspensionReasonDetails;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBillingSubscriptionProperties;
+        });
     }
 }

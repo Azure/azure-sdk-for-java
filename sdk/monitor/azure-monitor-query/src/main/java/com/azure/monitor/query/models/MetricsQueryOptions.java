@@ -25,7 +25,8 @@ public final class MetricsQueryOptions {
     /**
      * Creates an instance of MetricsQueryOptions.
      */
-    public MetricsQueryOptions() { }
+    public MetricsQueryOptions() {
+    }
 
     /**
      * Returns the time span for which the metrics data is queried.

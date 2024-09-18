@@ -18,7 +18,10 @@ public final class ContainerRegistriesListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void containerRegistriesList(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getContainerRegistries().list("myResourceGroup", "my-service",
-            com.azure.core.util.Context.NONE);
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getContainerRegistries()
+            .list("myResourceGroup", "my-service", com.azure.core.util.Context.NONE);
     }
 }

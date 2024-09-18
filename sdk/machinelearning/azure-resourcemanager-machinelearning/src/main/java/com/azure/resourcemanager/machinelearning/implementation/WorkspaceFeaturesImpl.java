@@ -19,8 +19,7 @@ public final class WorkspaceFeaturesImpl implements WorkspaceFeatures {
 
     private final com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager;
 
-    public WorkspaceFeaturesImpl(
-        WorkspaceFeaturesClient innerClient,
+    public WorkspaceFeaturesImpl(WorkspaceFeaturesClient innerClient,
         com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -28,12 +27,12 @@ public final class WorkspaceFeaturesImpl implements WorkspaceFeatures {
 
     public PagedIterable<AmlUserFeature> list(String resourceGroupName, String workspaceName) {
         PagedIterable<AmlUserFeatureInner> inner = this.serviceClient().list(resourceGroupName, workspaceName);
-        return Utils.mapPage(inner, inner1 -> new AmlUserFeatureImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AmlUserFeatureImpl(inner1, this.manager()));
     }
 
     public PagedIterable<AmlUserFeature> list(String resourceGroupName, String workspaceName, Context context) {
         PagedIterable<AmlUserFeatureInner> inner = this.serviceClient().list(resourceGroupName, workspaceName, context);
-        return Utils.mapPage(inner, inner1 -> new AmlUserFeatureImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AmlUserFeatureImpl(inner1, this.manager()));
     }
 
     private WorkspaceFeaturesClient serviceClient() {

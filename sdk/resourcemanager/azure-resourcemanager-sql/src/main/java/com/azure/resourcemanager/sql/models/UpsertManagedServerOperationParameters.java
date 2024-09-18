@@ -5,42 +5,47 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The UpsertManagedServerOperationParameters model. */
+/**
+ * The UpsertManagedServerOperationParameters model.
+ */
 @Fluent
-public final class UpsertManagedServerOperationParameters {
+public final class UpsertManagedServerOperationParameters
+    implements JsonSerializable<UpsertManagedServerOperationParameters> {
     /*
      * The family property.
      */
-    @JsonProperty(value = "family")
     private String family;
 
     /*
      * The tier property.
      */
-    @JsonProperty(value = "tier")
     private String tier;
 
     /*
      * The vCores property.
      */
-    @JsonProperty(value = "vCores")
     private Integer vCores;
 
     /*
      * The storageSizeInGB property.
      */
-    @JsonProperty(value = "storageSizeInGB")
     private Integer storageSizeInGB;
 
-    /** Creates an instance of UpsertManagedServerOperationParameters class. */
+    /**
+     * Creates an instance of UpsertManagedServerOperationParameters class.
+     */
     public UpsertManagedServerOperationParameters() {
     }
 
     /**
      * Get the family property: The family property.
-     *
+     * 
      * @return the family value.
      */
     public String family() {
@@ -49,7 +54,7 @@ public final class UpsertManagedServerOperationParameters {
 
     /**
      * Set the family property: The family property.
-     *
+     * 
      * @param family the family value to set.
      * @return the UpsertManagedServerOperationParameters object itself.
      */
@@ -60,7 +65,7 @@ public final class UpsertManagedServerOperationParameters {
 
     /**
      * Get the tier property: The tier property.
-     *
+     * 
      * @return the tier value.
      */
     public String tier() {
@@ -69,7 +74,7 @@ public final class UpsertManagedServerOperationParameters {
 
     /**
      * Set the tier property: The tier property.
-     *
+     * 
      * @param tier the tier value to set.
      * @return the UpsertManagedServerOperationParameters object itself.
      */
@@ -80,7 +85,7 @@ public final class UpsertManagedServerOperationParameters {
 
     /**
      * Get the vCores property: The vCores property.
-     *
+     * 
      * @return the vCores value.
      */
     public Integer vCores() {
@@ -89,7 +94,7 @@ public final class UpsertManagedServerOperationParameters {
 
     /**
      * Set the vCores property: The vCores property.
-     *
+     * 
      * @param vCores the vCores value to set.
      * @return the UpsertManagedServerOperationParameters object itself.
      */
@@ -100,7 +105,7 @@ public final class UpsertManagedServerOperationParameters {
 
     /**
      * Get the storageSizeInGB property: The storageSizeInGB property.
-     *
+     * 
      * @return the storageSizeInGB value.
      */
     public Integer storageSizeInGB() {
@@ -109,7 +114,7 @@ public final class UpsertManagedServerOperationParameters {
 
     /**
      * Set the storageSizeInGB property: The storageSizeInGB property.
-     *
+     * 
      * @param storageSizeInGB the storageSizeInGB value to set.
      * @return the UpsertManagedServerOperationParameters object itself.
      */
@@ -120,9 +125,56 @@ public final class UpsertManagedServerOperationParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("family", this.family);
+        jsonWriter.writeStringField("tier", this.tier);
+        jsonWriter.writeNumberField("vCores", this.vCores);
+        jsonWriter.writeNumberField("storageSizeInGB", this.storageSizeInGB);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UpsertManagedServerOperationParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UpsertManagedServerOperationParameters if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UpsertManagedServerOperationParameters.
+     */
+    public static UpsertManagedServerOperationParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UpsertManagedServerOperationParameters deserializedUpsertManagedServerOperationParameters
+                = new UpsertManagedServerOperationParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("family".equals(fieldName)) {
+                    deserializedUpsertManagedServerOperationParameters.family = reader.getString();
+                } else if ("tier".equals(fieldName)) {
+                    deserializedUpsertManagedServerOperationParameters.tier = reader.getString();
+                } else if ("vCores".equals(fieldName)) {
+                    deserializedUpsertManagedServerOperationParameters.vCores = reader.getNullable(JsonReader::getInt);
+                } else if ("storageSizeInGB".equals(fieldName)) {
+                    deserializedUpsertManagedServerOperationParameters.storageSizeInGB
+                        = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUpsertManagedServerOperationParameters;
+        });
     }
 }
