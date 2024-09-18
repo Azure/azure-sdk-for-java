@@ -35,15 +35,16 @@ stages:
             displayName: 'Create release branch'
 
           # Push the release branch to the repo
-          - template: /eng/common/pipelines/templates/steps/git-push-changes.yml
-            parameters:
-              BaseRepoBranch: $(BaseBranchName)
-              BaseRepoOwner: azure-sdk
-              TargetRepoOwner: Azure
-              TargetRepoName: $(Build.Repository.Name)
-              WorkingDirectory: $(System.DefaultWorkingDirectory)
-              ScriptDirectory: eng/common/scripts
-              SkipCheckingForChanges: false
+          - task: PowerShell@2
+            displayName: 'Push release branch $(BaseBranchName) to the repo'
+            inputs:
+              pwsh: true
+              workingDirectory: $(System.DefaultWorkingDirectory)
+              filePath: eng/common/scripts/git-branch-push.ps1
+              arguments: >
+                -PRBranchName $(BaseBranchName)
+                -CommitMsg "none"
+                -GitUrl "https://$(azuresdk-github-pat)@github.com/azure-sdk/$(Build.Repository.Name).git"
 
           # Run the script to generate patches for automatic releases
           - task: PowerShell@2
@@ -54,6 +55,7 @@ stages:
               arguments: >
                 -SourcesDirectory .
                 -PackagesYmlPath eng/pipelines/patch-release.yml
+
           # Create a PR with the patches prepared
           - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
             parameters:
