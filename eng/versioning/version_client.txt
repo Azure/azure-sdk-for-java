@@ -42,6 +42,7 @@ com.azure:azure-ai-documentintelligence;1.0.0-beta.4;1.0.0-beta.5
 com.azure:azure-ai-documenttranslator;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-ai-formrecognizer;4.1.10;4.1.10
 com.azure:azure-ai-formrecognizer-perf;1.0.0-beta.1;1.0.0-beta.1
+com.azure:azure-ai-inference;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-ai-metricsadvisor;1.2.1;1.3.0-beta.1
 com.azure:azure-ai-metricsadvisor-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-ai-openai;1.0.0-beta.11;1.0.0-beta.12
@@ -70,7 +71,7 @@ com.azure:azure-code-customization-parent;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-communication-callautomation;1.2.4;1.3.0-beta.1
 com.azure:azure-communication-callingserver;1.0.0-beta.4;1.0.0-beta.5
 com.azure:azure-communication-chat;1.5.4;1.6.0-beta.1
-com.azure:azure-communication-common;1.3.6;1.3.7
+com.azure:azure-communication-common;1.3.7;1.4.0-beta.1
 com.azure:azure-communication-common-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-communication-email;1.0.16;1.1.0-beta.1
 com.azure:azure-communication-identity;1.5.8;1.6.0
@@ -273,7 +274,7 @@ com.azure.resourcemanager:azure-resourcemanager-compute;2.42.0;2.43.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-containerinstance;2.42.0;2.43.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-containerregistry;2.42.0;2.43.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-containerservice;2.42.0;2.43.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-cosmos;2.42.0;2.43.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-cosmos;2.42.0;2.43.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-dns;2.42.0;2.43.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-eventhubs;2.42.0;2.43.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-keyvault;2.42.0;2.43.0-beta.1

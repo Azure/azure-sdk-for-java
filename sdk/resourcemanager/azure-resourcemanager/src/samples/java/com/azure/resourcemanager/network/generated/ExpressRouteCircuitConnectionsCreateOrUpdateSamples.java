@@ -13,7 +13,7 @@ import com.azure.resourcemanager.network.models.Ipv6CircuitConnectionConfig;
  */
 public final class ExpressRouteCircuitConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * ExpressRouteCircuitConnectionCreate.json
      */
     /**

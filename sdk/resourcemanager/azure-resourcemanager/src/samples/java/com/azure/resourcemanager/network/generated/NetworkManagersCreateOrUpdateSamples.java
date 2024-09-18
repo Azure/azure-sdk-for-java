@@ -15,7 +15,7 @@ import java.util.Arrays;
 public final class NetworkManagersCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/NetworkManagerPut.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/NetworkManagerPut.json
      */
     /**
      * Sample code: Put Network Manager.

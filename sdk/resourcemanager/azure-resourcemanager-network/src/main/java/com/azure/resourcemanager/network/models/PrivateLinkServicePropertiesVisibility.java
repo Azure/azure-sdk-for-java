@@ -38,7 +38,6 @@ public final class PrivateLinkServicePropertiesVisibility extends ResourceSet {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**
