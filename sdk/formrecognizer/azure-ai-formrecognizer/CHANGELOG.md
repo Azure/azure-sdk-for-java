@@ -1,6 +1,8 @@
 # Release History
 
-## 4.1.11 (2024-09-17)
+## 4.1.11 (2024-09-18)
+
+### Other Changes
 
 #### Dependency Updates
 
