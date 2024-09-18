@@ -4,28 +4,35 @@
 
 package com.azure.containers.containerregistry;
 
+import com.azure.containers.containerregistry.models.ContainerRegistryAudience;
 import com.azure.containers.containerregistry.models.ManifestMediaType;
 import com.azure.containers.containerregistry.models.OciAnnotations;
 import com.azure.containers.containerregistry.models.OciDescriptor;
 import com.azure.containers.containerregistry.models.OciImageManifest;
+import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.http.HttpRequest;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.TestMode;
-import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.Context;
 import com.azure.identity.AzureAuthorityHosts;
-import com.azure.identity.AzurePowerShellCredentialBuilder;
+import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.containerregistry.ContainerRegistryManager;
 import com.azure.resourcemanager.containerregistry.models.ImportImageParameters;
 import com.azure.resourcemanager.containerregistry.models.ImportMode;
 import com.azure.resourcemanager.containerregistry.models.ImportSource;
+import reactor.core.publisher.Mono;
 
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.computeDigest;
@@ -55,17 +62,25 @@ public class TestUtils {
     public static final String RESOURCE_GROUP = CONFIGURATION.get("CONTAINERREGISTRY_RESOURCE_GROUP");
     public static final String SUBSCRIPTION_ID = CONFIGURATION.get("CONTAINERREGISTRY_SUBSCRIPTION_ID");
     public static final String TENANT_ID = CONFIGURATION.get("CONTAINERREGISTRY_TENANT_ID");
+    public static final String CLIENT_ID = CONFIGURATION.get("CONTAINERREGISTRY_CLIENT_ID");
     public static final String REGISTRY_URI = "registry.hub.docker.com";
     public static final String REGISTRY_ENDPOINT = CONFIGURATION.get("CONTAINERREGISTRY_ENDPOINT");
     public static final String ANONYMOUS_REGISTRY_ENDPOINT = CONFIGURATION.get("CONTAINERREGISTRY_ANONREGISTRY_ENDPOINT");
     public static final long SLEEP_TIME_IN_MILLISECONDS = 5000;
     public static final String ANONYMOUS_REGISTRY_NAME = CONFIGURATION.get("CONTAINERREGISTRY_ANONREGISTRY_NAME");
-    public static final String REGISTRY_ENDPOINT_PLAYBACK = "https://REDACTED";
-    public static final String REGISTRY_NAME_PLAYBACK = "REDACTED";
+    public static final String REGISTRY_ENDPOINT_PLAYBACK = "https://pallavitcontainerregistry.azurecr.io";
+    public static final String REGISTRY_NAME_PLAYBACK = "pallavitcontainerregistry";
     public static final int HTTP_STATUS_CODE_202 = 202;
-
+    public static final String CONTAINERREGISTRY_CLIENT_SECRET = CONFIGURATION.get("CONTAINERREGISTRY_CLIENT_SECRET");
+    public static final BiFunction<HttpRequest, Context, Boolean> SKIP_AUTH_TOKEN_REQUEST_FUNCTION = (request, context) -> request.getUrl().toString().contains("oauth2");
     public static final ManifestMediaType OCI_INDEX_MEDIA_TYPE = ManifestMediaType.fromString("application/vnd.oci.image.index.v1+json");
-    public static final ManifestMediaType DOCKER_MANIFEST_LIST_TYPE = ManifestMediaType.fromString("application/vnd.docker.distribution.manifest.list.v2+json");
+
+    static class FakeCredentials implements TokenCredential {
+        @Override
+        public Mono<AccessToken> getToken(TokenRequestContext tokenRequestContext) {
+            return Mono.just(new AccessToken("someFakeToken", OffsetDateTime.MAX));
+        }
+    }
 
     static <T extends Comparable<? super T>> boolean isSorted(Iterable<T> iterable) {
         Iterator<T> iter = iterable.iterator();
@@ -83,17 +98,41 @@ public class TestUtils {
         return true;
     }
 
+    static TokenCredential getCredentialsByEndpoint(TestMode testMode, String endpoint) {
+        if (testMode == TestMode.PLAYBACK) {
+            return new FakeCredentials();
+        }
+
+        String authority = getAuthority(endpoint);
+        return getCredentialByAuthority(testMode, authority);
+    }
+
     static TokenCredential getCredentialByAuthority(TestMode testMode, String authority) {
-        switch (testMode) {
-            case LIVE:
-                return new AzurePowerShellCredentialBuilder()
-                    .build();
-            case RECORD:
-                return new DefaultAzureCredentialBuilder()
-                    .authorityHost(authority)
-                    .build();
-            default:
-                return new MockTokenCredential();
+        if (testMode == TestMode.PLAYBACK) {
+            return new FakeCredentials();
+        }
+
+        if (AzureAuthorityHosts.AZURE_PUBLIC_CLOUD.equals(authority)) {
+            return new DefaultAzureCredentialBuilder().build();
+        } else {
+            return new ClientSecretCredentialBuilder()
+                .tenantId(TENANT_ID)
+                .clientId(CLIENT_ID)
+                .clientSecret(CONTAINERREGISTRY_CLIENT_SECRET)
+                .authorityHost(authority).build();
+        }
+    }
+
+    static void importImage(TestMode mode, String repository, List<String> tags) {
+        if (mode == TestMode.PLAYBACK) {
+            return;
+        }
+
+        try {
+            importImage(mode, REGISTRY_NAME, repository, tags, REGISTRY_ENDPOINT);
+            Thread.sleep(SLEEP_TIME_IN_MILLISECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
@@ -116,6 +155,23 @@ public class TestUtils {
 
         // by default we will assume that the authority is public
         return AzureAuthorityHosts.AZURE_PUBLIC_CLOUD;
+    }
+
+    public static ContainerRegistryAudience getAudience(String endpoint) {
+        String authority = getAuthority(endpoint);
+        switch (authority) {
+            case AzureAuthorityHosts.AZURE_PUBLIC_CLOUD:
+                return ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD;
+
+            case AzureAuthorityHosts.AZURE_CHINA:
+                return ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_CHINA;
+
+            case AzureAuthorityHosts.AZURE_GOVERNMENT:
+                return ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_GOVERNMENT;
+
+            default:
+                return null;
+        }
     }
 
     static AzureProfile getAzureProfile(String authority) {
@@ -156,8 +212,6 @@ public class TestUtils {
                 Thread.sleep(SLEEP_TIME_IN_MILLISECONDS);
             }
         } while (++index < 3);
-
-        Thread.sleep(SLEEP_TIME_IN_MILLISECONDS);
     }
 
     private static OciImageManifest createManifest() {
