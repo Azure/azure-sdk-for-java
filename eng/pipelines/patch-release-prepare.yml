@@ -46,7 +46,7 @@ stages:
               arguments: >
                 -PRBranchName $(BaseBranchName)
                 -CommitMsg "none"
-                -GitUrl "https://$(azuresdk-github-pat)@github.com/azure-sdk/azure-sdk-for-java.git"
+                -GitUrl "https://$(azuresdk-github-pat)@github.com/Azure/azure-sdk-for-java.git"
                 -SkipCommit $true
 
           # Run the script to generate patches for automatic releases
@@ -62,7 +62,7 @@ stages:
           # Create a PR with the patches prepared
           - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
             parameters:
-              BaseBranchName: $(Build.SourceBranch)
+              BaseBranchName: refs/heads/$(BaseBranchName)
               PRBranchName: prepare-patch-release-$(PatchDate)-$(Build.BuildId)
               CommitMsg: "Patch release preparation $(PatchDate)"
               PRTitle: "Prepare patch release $(PatchDate)"
