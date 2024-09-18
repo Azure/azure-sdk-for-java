@@ -44,7 +44,7 @@ stages:
               arguments: >
                 -PRBranchName $(BaseBranchName)
                 -CommitMsg "none"
-                -GitUrl "https://$(azuresdk-github-pat)@github.com/azure-sdk/$(Build.Repository.Name).git"
+                -GitUrl "https://$(azuresdk-github-pat)@github.com/azure-sdk/azure-sdk-for-java.git"
                 -SkipCommit $true
 
           # Run the script to generate patches for automatic releases
