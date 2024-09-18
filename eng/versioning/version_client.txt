@@ -76,7 +76,7 @@ com.azure:azure-communication-email;1.0.16;1.0.17
 com.azure:azure-communication-identity;1.5.8;1.6.0
 com.azure:azure-communication-jobrouter;1.1.7;1.1.8
 com.azure:azure-communication-messages;1.0.6;1.0.7
-com.azure:azure-communication-phonenumbers;1.1.16;1.2.0-beta.4
+com.azure:azure-communication-phonenumbers;1.1.16;1.1.17
 com.azure:azure-communication-rooms;1.1.5;1.1.6
 com.azure:azure-communication-sms;1.1.27;1.2.0-beta.1
 com.azure:azure-compute-batch;1.0.0-beta.2;1.0.0-beta.3
