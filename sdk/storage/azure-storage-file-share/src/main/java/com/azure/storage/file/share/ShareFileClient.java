@@ -1263,7 +1263,9 @@ public class ShareFileClient {
         Duration timeout, Context context) {
         Objects.requireNonNull(stream, "'stream' cannot be null.");
         options = options == null ? new ShareFileDownloadOptions() : options;
-        ShareFileRange range = options.getRange() == null ? new ShareFileRange(0) : options.getRange();
+        // using array as objects are captured by reference, allowing their contents to be modified
+        final long[] currentOffset = new long[] {options.getRange() == null ? 0 : options.getRange().getStart()};
+        Long fileLength = options.getRange() == null ? null : options.getRange().getEnd();
         ShareRequestConditions requestConditions = options.getRequestConditions() == null
             ? new ShareRequestConditions() : options.getRequestConditions();
         DownloadRetryOptions retryOptions = options.getRetryOptions() == null ? new DownloadRetryOptions()
@@ -1276,7 +1278,8 @@ public class ShareFileClient {
             int retryCount = 0;
             while (retryCount <= (retryOptions.getMaxRetryRequests())) {
                 try {
-                    ResponseBase<FilesDownloadHeaders, InputStream> response = downloadRange(range,
+                    ShareFileRange currentRange = new ShareFileRange(currentOffset[0], fileLength);
+                    ResponseBase<FilesDownloadHeaders, InputStream> response = downloadRange(currentRange,
                         getRangeContentMd5, requestConditions, context);
                     currentETag = ModelHelper.getETag(response.getHeaders());
                     if (initialETag != null && !initialETag.equals(currentETag)) {
@@ -1295,6 +1298,7 @@ public class ShareFileClient {
                             int bytesRead;
                             while ((bytesRead = responseStream.read(buffer)) != -1) {
                                 stream.write(buffer, 0, bytesRead);
+                                currentOffset[0] += bytesRead; // Update current offset based on bytes read
                             }
                         }
                     }
@@ -1305,13 +1309,13 @@ public class ShareFileClient {
                     if (t instanceof IOException) {
                         retryCount++;
                         if (retryCount > retryOptions.getMaxRetryRequests()) {
-                            throw LOGGER.logExceptionAsError(new RuntimeException("Failed to download file after retries: " + e.getMessage(), e));
+                            throw LOGGER.logExceptionAsError(new RuntimeException("Failed to download file after retries: " + t.getMessage(), t));
                         }
                         LOGGER.info("Retrying download due to IOException. Attempt: " + retryCount);
                     } else if (t instanceof ConcurrentModificationException) {
-                        throw LOGGER.logExceptionAsError(new ConcurrentModificationException("File has been modified concurrently. Expected eTag: " + initialETag + ", Received eTag: " + currentETag,  e));
+                        throw LOGGER.logExceptionAsError((ConcurrentModificationException) t);
                     } else { // General exception catch
-                        throw LOGGER.logExceptionAsError(new RuntimeException("An unexpected error occurred during file download", e));
+                        throw LOGGER.logExceptionAsError(new RuntimeException("An unexpected error occurred during file download", t));
                     }
                 }
             }
