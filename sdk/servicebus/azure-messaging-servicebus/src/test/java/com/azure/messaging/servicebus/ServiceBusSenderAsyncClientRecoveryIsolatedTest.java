@@ -853,7 +853,7 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
             // New tests only for ReactorConnectionCache introduced in v2.
             final boolean isV2 = true;
             return new ServiceBusReactorAmqpConnection(connectionId, connectionOptions,
-                reactorProvider, handlerProvider, linkProvider, tokenManagerProvider, messageSerializer,  false, isV2, false);
+                reactorProvider, handlerProvider, linkProvider, tokenManagerProvider, messageSerializer,  false, isV2);
         }
 
         AmqpSendLink getAmqpSendLink(int sessionIdx, int linkIdx) {
