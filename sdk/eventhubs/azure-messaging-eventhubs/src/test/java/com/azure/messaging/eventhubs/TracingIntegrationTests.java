@@ -435,10 +435,10 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .processError(e -> fail("unexpected error", e.getThrowable()))
             .buildEventProcessorClient();
 
-        toClose((Closeable) () -> processor.stop(10, TimeUnit.SECONDS));
+        toClose((Closeable) () -> processor.stop());
         processor.start();
         assertTrue(latch.await(30, TimeUnit.SECONDS));
-        assertTrue(processor.stop(10, TimeUnit.SECONDS));
+        processor.stop();
 
         assertTrue(currentInProcess.get().getSpanContext().isValid());
         List<ReadableSpan> spans = spanProcessor.getEndedSpans();
@@ -504,11 +504,11 @@ public class TracingIntegrationTests extends IntegrationTestBase {
                 .processError(e -> fail("unexpected error", e.getThrowable()))
                 .buildEventProcessorClient();
 
-            toClose((Closeable) () -> processor.stop(10, TimeUnit.SECONDS));
+            toClose((Closeable) () -> processor.stop());
             processor.start();
 
             assertTrue(latch.await(30, TimeUnit.SECONDS));
-            processor.stop(10, TimeUnit.SECONDS);
+            processor.stop();
         }
 
         List<ReadableSpan> spans = spanProcessor.getEndedSpans();
@@ -571,10 +571,10 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             }, 2)
             .processError(e -> fail("unexpected error", e.getThrowable()))
             .buildEventProcessorClient();
-        toClose((Closeable) () -> processor.stop(10, TimeUnit.SECONDS));
+        toClose((Closeable) () -> processor.stop());
         processor.start();
         assertTrue(latch.await(30, TimeUnit.SECONDS));
-        processor.stop(10, TimeUnit.SECONDS);
+        processor.stop();
 
         List<ReadableSpan> spans = spanProcessor.getEndedSpans();
 
@@ -630,10 +630,10 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .processError(e -> fail("unexpected error", e.getThrowable()))
             .buildEventProcessorClient();
 
-        toClose((Closeable) () -> processor.stop(10, TimeUnit.SECONDS));
+        toClose((Closeable) () -> processor.stop());
         processor.start();
         assertTrue(latch.await(30, TimeUnit.SECONDS));
-        processor.stop(10, TimeUnit.SECONDS);
+        processor.stop();
 
         List<ReadableSpan> spans = spanProcessor.getEndedSpans();
         List<ReadableSpan> processed = findSpans(spans, PROCESS)
