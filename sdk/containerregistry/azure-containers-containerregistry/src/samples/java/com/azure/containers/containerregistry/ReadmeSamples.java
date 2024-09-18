@@ -48,15 +48,6 @@ public class ReadmeSamples {
         // END: readme-sample-createContentClient
     }
 
-    public void createAnonymousContentClient() {
-        // BEGIN: readme-sample-createAnonymousContentClient
-        ContainerRegistryContentClient contentClient = new ContainerRegistryContentClientBuilder()
-            .endpoint(endpoint)
-            .repositoryName(repository)
-            .buildClient();
-        // END: readme-sample-createAnonymousContentClient
-    }
-
     public void createAsyncClient() {
         // BEGIN: readme-sample-createAsyncClient
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
@@ -67,15 +58,15 @@ public class ReadmeSamples {
         // END: readme-sample-createAsyncClient
     }
 
-    public void createContentAsyncClient() {
-        // BEGIN: readme-sample-createContentAsyncClient
+    public void createBlobAsyncClient() {
+        // BEGIN: readme-sample-createBlobAsyncClient
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
         ContainerRegistryContentAsyncClient contentClient = new ContainerRegistryContentClientBuilder()
             .endpoint(endpoint)
             .credential(credential)
             .repositoryName(repository)
             .buildAsyncClient();
-        // END: readme-sample-createContentAsyncClient
+        // END: readme-sample-createBlobAsyncClient
     }
 
 
