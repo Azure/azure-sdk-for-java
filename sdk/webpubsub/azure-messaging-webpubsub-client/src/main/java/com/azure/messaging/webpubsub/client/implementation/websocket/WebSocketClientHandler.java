@@ -33,8 +33,10 @@ final class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
     private final MessageDecoder messageDecoder;
     private final Consumer<Object> messageHandler;
 
-    WebSocketClientHandler(WebSocketClientHandshaker handshaker, AtomicReference<ClientLogger> loggerReference,
-        MessageDecoder messageDecoder, Consumer<Object> messageHandler) {
+    WebSocketClientHandler(WebSocketClientHandshaker handshaker,
+                           AtomicReference<ClientLogger> loggerReference,
+                           MessageDecoder messageDecoder,
+                           Consumer<Object> messageHandler) {
         this.handshaker = handshaker;
         this.loggerReference = loggerReference;
         this.messageDecoder = messageDecoder;
@@ -70,17 +72,16 @@ final class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
 
         if (msg instanceof FullHttpResponse) {
             FullHttpResponse response = (FullHttpResponse) msg;
-            throw loggerReference.get()
-                .logExceptionAsError(new IllegalStateException(
-                    "Unexpected FullHttpResponse (getStatus=" + response.status() + ", content=" + response.content()
-                        .toString(CharsetUtil.UTF_8) + ')'));
+            throw loggerReference.get().logExceptionAsError(new IllegalStateException("Unexpected FullHttpResponse (getStatus=" + response.status() + ", content=" + response.content().toString(CharsetUtil.UTF_8) + ')'));
         }
 
         WebSocketFrame frame = (WebSocketFrame) msg;
         if (frame instanceof TextWebSocketFrame) {
             // Text
             TextWebSocketFrame textFrame = (TextWebSocketFrame) frame;
-            loggerReference.get().atVerbose().addKeyValue("text", textFrame.text()).log("Received TextWebSocketFrame");
+            loggerReference.get().atVerbose()
+                .addKeyValue("text", textFrame.text())
+                .log("Received TextWebSocketFrame");
             Object wpsMessage = messageDecoder.decode(textFrame.text());
             messageHandler.accept(wpsMessage);
         } else if (frame instanceof PingWebSocketFrame) {
@@ -94,8 +95,7 @@ final class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
         } else if (frame instanceof CloseWebSocketFrame) {
             // Close
             CloseWebSocketFrame closeFrame = (CloseWebSocketFrame) frame;
-            loggerReference.get()
-                .atVerbose()
+            loggerReference.get().atVerbose()
                 .addKeyValue("statusCode", closeFrame.statusCode())
                 .addKeyValue("reasonText", closeFrame.reasonText())
                 .log("Received CloseWebSocketFrame");

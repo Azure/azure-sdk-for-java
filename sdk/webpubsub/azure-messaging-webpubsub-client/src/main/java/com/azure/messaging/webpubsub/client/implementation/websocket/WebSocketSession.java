@@ -15,6 +15,5 @@ public interface WebSocketSession {
 
     // following API is for testing
     void sendTextAsync(String text, Consumer<SendResult> handler);
-
     void closeSocket();
 }
