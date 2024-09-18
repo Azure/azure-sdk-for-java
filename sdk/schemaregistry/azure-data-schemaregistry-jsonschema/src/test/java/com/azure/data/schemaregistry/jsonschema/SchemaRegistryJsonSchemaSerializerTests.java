@@ -30,9 +30,11 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -81,22 +83,44 @@ public class SchemaRegistryJsonSchemaSerializerTests {
 
         Mockito.framework().clearInlineMock(this);
     }
-
     /**
-     * Tests that constructor throws exceptions we expect.
+     * Tests that calling an async method when {@link SchemaRegistryAsyncClient} is not set will throw an exception.
      */
     @Test
-    public void nullConstructorArgs() {
+    public void throwsWhenAsyncClientIsNull() {
         // Arrange
+        when(jsonSchemaGenerator.generateSchema(eq(TypeReference.createInstance(Address.class))))
+            .thenReturn(Address.JSON_SCHEMA);
+
         SerializerOptions options = new SerializerOptions("foo", false, 10, JSON_SERIALIZER);
+        SchemaRegistryJsonSchemaSerializer client = new SchemaRegistryJsonSchemaSerializer(null, schemaRegistryClient, jsonSchemaGenerator, options);
 
         // Act & Assert
-        assertThrows(NullPointerException.class,
-            () -> new SchemaRegistryJsonSchemaSerializer(null, schemaRegistryClient, jsonSchemaGenerator, options));
-        assertThrows(NullPointerException.class,
-            () -> new SchemaRegistryJsonSchemaSerializer(registryAsyncClient, schemaRegistryClient, null, options));
-        assertThrows(NullPointerException.class,
-            () -> new SchemaRegistryJsonSchemaSerializer(registryAsyncClient, schemaRegistryClient, jsonSchemaGenerator, null));
+        StepVerifier.create(client.serializeAsync(address, TypeReference.createInstance(NoArgMessage.class)))
+            .expectError(IllegalStateException.class)
+            .verify();
+    }
+
+    /**
+     * Tests that calling a synchronous method when {@link SchemaRegistryClient} is not set, will fallback to using
+     * {@link SchemaRegistryAsyncClient}.
+     */
+    @Test
+    public void syncFallbackToAsyncClient() {
+        // Arrange
+        when(registryAsyncClient.getSchemaProperties(anyString(), anyString(), anyString(), eq(SchemaFormat.JSON)))
+            .thenReturn(Mono.just(schemaProperties));
+
+        when(jsonSchemaGenerator.generateSchema(eq(TypeReference.createInstance(Address.class))))
+            .thenReturn(Address.JSON_SCHEMA);
+
+        SerializerOptions options = new SerializerOptions("foo", false, 10, JSON_SERIALIZER);
+        SchemaRegistryJsonSchemaSerializer client = new SchemaRegistryJsonSchemaSerializer(registryAsyncClient, null, jsonSchemaGenerator, options);
+
+        // Act & Assert
+        NoArgMessage message = client.serialize(address, TypeReference.createInstance(NoArgMessage.class));
+
+        assertNotNull(message);
     }
 
     /**
@@ -328,7 +352,6 @@ public class SchemaRegistryJsonSchemaSerializerTests {
         // Verify the IllegalArgumentException is actually due to the false return.
         verify(jsonSchemaGenerator).isValid(any(Address.class), eq(type), eq(schemaDefinition));
     }
-
 
     /**
      * Deserializes a message and user method throws an error. We expect user code to return normally.
