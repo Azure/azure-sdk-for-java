@@ -22,8 +22,7 @@ public final class MetricAvailability {
     /**
      * Creates an instance of MetricAvailability.
      */
-    public MetricAvailability() {
-    }
+    public MetricAvailability() { }
 
     private void setMetricAvailabilityProperties(Duration retention, Duration granularity) {
         this.retention = retention;
