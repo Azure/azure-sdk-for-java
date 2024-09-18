@@ -2,7 +2,7 @@
 
 variables:
   - name: LINUXPOOL
-    value: alzimmer-bebroder-test-pool-8core
+    value: alzimmer-bebroder-test-pool2-8core
   - name: LINUXNEXTPOOL
     value: azsdk-pool-mms-ubuntu-2204-general
   - name: WINDOWSPOOL
