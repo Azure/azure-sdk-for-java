@@ -5,60 +5,65 @@
 package com.azure.mixedreality.remoterendering.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Conversion input settings describe the origin of conversion input.
- */
+/** Conversion input settings describe the origin of conversion input. */
 @Fluent
-public final class ConversionInputSettings implements JsonSerializable<ConversionInputSettings> {
+public final class ConversionInputSettings {
     /*
      * The URI of the Azure blob storage container containing the input model.
      */
-    private final String storageContainerUri;
+    @JsonProperty(value = "storageContainerUri", required = true)
+    private String storageContainerUri;
 
     /*
-     * An Azure blob storage container shared access signature giving read and list access to the storage container.
-     * Optional. If not provided, the Azure Remote Rendering account needs to be linked with the storage account
-     * containing the blob container. See
-     * https://docs.microsoft.com/azure/remote-rendering/how-tos/create-an-account#link-storage-accounts for details.
-     * For security purposes this field will never be filled out in responses bodies.
+     * An Azure blob storage container shared access signature giving read and
+     * list access to the storage container. Optional. If not provided, the
+     * Azure Remote Rendering account needs to be linked with the storage
+     * account containing the blob container. See
+     * https://docs.microsoft.com/azure/remote-rendering/how-tos/create-an-account#link-storage-accounts
+     * for details. For security purposes this field will never be filled out
+     * in responses bodies.
      */
+    @JsonProperty(value = "storageContainerReadListSas")
     private String storageContainerReadListSas;
 
     /*
-     * Only Blobs starting with this prefix will be downloaded to perform the conversion. Optional. If not provided, all
-     * Blobs from the container will be downloaded.
+     * Only Blobs starting with this prefix will be downloaded to perform the
+     * conversion. Optional. If not provided, all Blobs from the container will
+     * be downloaded.
      */
+    @JsonProperty(value = "blobPrefix")
     private String blobPrefix;
 
     /*
-     * The relative path starting at blobPrefix (or at the container root if blobPrefix is not provided) to the input
-     * model. Must point to a file with a supported file format ending. See
-     * https://docs.microsoft.com/azure/remote-rendering/how-tos/conversion/model-conversion for details.
+     * The relative path starting at blobPrefix (or at the container root if
+     * blobPrefix is not provided) to the input model. Must point to a file
+     * with a supported file format ending. See
+     * https://docs.microsoft.com/azure/remote-rendering/how-tos/conversion/model-conversion
+     * for details.
      */
-    private final String relativeInputAssetPath;
+    @JsonProperty(value = "relativeInputAssetPath", required = true)
+    private String relativeInputAssetPath;
 
     /**
      * Creates an instance of ConversionInputSettings class.
-     * 
+     *
      * @param storageContainerUri the storageContainerUri value to set.
      * @param relativeInputAssetPath the relativeInputAssetPath value to set.
      */
-    public ConversionInputSettings(String storageContainerUri, String relativeInputAssetPath) {
+    @JsonCreator
+    public ConversionInputSettings(
+            @JsonProperty(value = "storageContainerUri", required = true) String storageContainerUri,
+            @JsonProperty(value = "relativeInputAssetPath", required = true) String relativeInputAssetPath) {
         this.storageContainerUri = storageContainerUri;
         this.relativeInputAssetPath = relativeInputAssetPath;
     }
 
     /**
      * Get the storageContainerUri property: The URI of the Azure blob storage container containing the input model.
-     * 
+     *
      * @return the storageContainerUri value.
      */
     public String getStorageContainerUri() {
@@ -71,7 +76,7 @@ public final class ConversionInputSettings implements JsonSerializable<Conversio
      * be linked with the storage account containing the blob container. See
      * https://docs.microsoft.com/azure/remote-rendering/how-tos/create-an-account#link-storage-accounts for details.
      * For security purposes this field will never be filled out in responses bodies.
-     * 
+     *
      * @return the storageContainerReadListSas value.
      */
     public String getStorageContainerReadListSas() {
@@ -84,7 +89,7 @@ public final class ConversionInputSettings implements JsonSerializable<Conversio
      * be linked with the storage account containing the blob container. See
      * https://docs.microsoft.com/azure/remote-rendering/how-tos/create-an-account#link-storage-accounts for details.
      * For security purposes this field will never be filled out in responses bodies.
-     * 
+     *
      * @param storageContainerReadListSas the storageContainerReadListSas value to set.
      * @return the ConversionInputSettings object itself.
      */
@@ -96,7 +101,7 @@ public final class ConversionInputSettings implements JsonSerializable<Conversio
     /**
      * Get the blobPrefix property: Only Blobs starting with this prefix will be downloaded to perform the conversion.
      * Optional. If not provided, all Blobs from the container will be downloaded.
-     * 
+     *
      * @return the blobPrefix value.
      */
     public String getBlobPrefix() {
@@ -106,7 +111,7 @@ public final class ConversionInputSettings implements JsonSerializable<Conversio
     /**
      * Set the blobPrefix property: Only Blobs starting with this prefix will be downloaded to perform the conversion.
      * Optional. If not provided, all Blobs from the container will be downloaded.
-     * 
+     *
      * @param blobPrefix the blobPrefix value to set.
      * @return the ConversionInputSettings object itself.
      */
@@ -119,79 +124,10 @@ public final class ConversionInputSettings implements JsonSerializable<Conversio
      * Get the relativeInputAssetPath property: The relative path starting at blobPrefix (or at the container root if
      * blobPrefix is not provided) to the input model. Must point to a file with a supported file format ending. See
      * https://docs.microsoft.com/azure/remote-rendering/how-tos/conversion/model-conversion for details.
-     * 
+     *
      * @return the relativeInputAssetPath value.
      */
     public String getRelativeInputAssetPath() {
         return this.relativeInputAssetPath;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("storageContainerUri", this.storageContainerUri);
-        jsonWriter.writeStringField("relativeInputAssetPath", this.relativeInputAssetPath);
-        jsonWriter.writeStringField("storageContainerReadListSas", this.storageContainerReadListSas);
-        jsonWriter.writeStringField("blobPrefix", this.blobPrefix);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of ConversionInputSettings from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of ConversionInputSettings if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ConversionInputSettings.
-     */
-    public static ConversionInputSettings fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean storageContainerUriFound = false;
-            String storageContainerUri = null;
-            boolean relativeInputAssetPathFound = false;
-            String relativeInputAssetPath = null;
-            String storageContainerReadListSas = null;
-            String blobPrefix = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("storageContainerUri".equals(fieldName)) {
-                    storageContainerUri = reader.getString();
-                    storageContainerUriFound = true;
-                } else if ("relativeInputAssetPath".equals(fieldName)) {
-                    relativeInputAssetPath = reader.getString();
-                    relativeInputAssetPathFound = true;
-                } else if ("storageContainerReadListSas".equals(fieldName)) {
-                    storageContainerReadListSas = reader.getString();
-                } else if ("blobPrefix".equals(fieldName)) {
-                    blobPrefix = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (storageContainerUriFound && relativeInputAssetPathFound) {
-                ConversionInputSettings deserializedConversionInputSettings
-                    = new ConversionInputSettings(storageContainerUri, relativeInputAssetPath);
-                deserializedConversionInputSettings.storageContainerReadListSas = storageContainerReadListSas;
-                deserializedConversionInputSettings.blobPrefix = blobPrefix;
-
-                return deserializedConversionInputSettings;
-            }
-            List<String> missingProperties = new ArrayList<>();
-            if (!storageContainerUriFound) {
-                missingProperties.add("storageContainerUri");
-            }
-            if (!relativeInputAssetPathFound) {
-                missingProperties.add("relativeInputAssetPath");
-            }
-
-            throw new IllegalStateException(
-                "Missing required property/properties: " + String.join(", ", missingProperties));
-        });
     }
 }

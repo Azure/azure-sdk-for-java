@@ -15,13 +15,6 @@ public final class BeginSessionOptions {
     private RenderingSessionSize size = RenderingSessionSize.STANDARD;
 
     /**
-     * Creates options for a session to be created.
-     */
-    public BeginSessionOptions() {
-
-    }
-
-    /**
      * Set the maxLeaseTime property: The time the session will run after reaching the 'Ready' state.
      *
      * @param maxLeaseTime the maxLeaseTime value
