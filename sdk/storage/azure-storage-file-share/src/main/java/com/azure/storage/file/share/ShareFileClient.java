@@ -1274,14 +1274,13 @@ public class ShareFileClient {
 
         Callable<ShareFileDownloadResponse> operation = () -> {
             String initialETag = null;
-            String currentETag = null;
             int retryCount = 0;
             while (retryCount <= (retryOptions.getMaxRetryRequests())) {
                 try {
                     ShareFileRange currentRange = new ShareFileRange(currentOffset[0], fileLength);
                     ResponseBase<FilesDownloadHeaders, InputStream> response = downloadRange(currentRange,
                         getRangeContentMd5, requestConditions, context);
-                    currentETag = ModelHelper.getETag(response.getHeaders());
+                    String currentETag = ModelHelper.getETag(response.getHeaders());
                     if (initialETag != null && !initialETag.equals(currentETag)) {
                         throw LOGGER.logExceptionAsError(new ConcurrentModificationException(
                             "File has been modified concurrently. Expected eTag: " + initialETag + ", Received eTag: "
