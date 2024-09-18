@@ -148,7 +148,7 @@ com.azure:azure-maps-render;1.0.0-beta.2;1.0.0-beta.3
 com.azure:azure-maps-route;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-maps-search;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-media-videoanalyzer-edge;1.0.0-beta.6;1.0.0-beta.7
-com.azure:azure-messaging-eventgrid;4.24.0;4.25.0-beta.1
+com.azure:azure-messaging-eventgrid;4.24.0;4.24.1
 com.azure:azure-messaging-eventgrid-namespaces;1.0.1;1.1.0-beta.1
 com.azure:azure-messaging-eventgrid-cloudnative-cloudevents;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-messaging-eventhubs;5.18.7;5.19.0-beta.3
