@@ -315,7 +315,7 @@ public class EventHubConsumerClient implements Closeable {
         }
 
         if (consumer.isV2()) {
-            // Sync receiver instrumentation is implemented in the SynchronousReceiver class
+            // Sync receiver instrumentation is implemented in the SynchronousPartitionReceiver class
             return syncReceiver.receive(partitionId, startingPosition, receiveOptions, maximumMessageCount,
                 maximumWaitTime);
         }
