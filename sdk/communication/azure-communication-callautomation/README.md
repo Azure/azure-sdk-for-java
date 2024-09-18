@@ -17,15 +17,13 @@ This package contains a Java SDK for Azure Communication Call Automation Service
 ### Include the package
 
 [//]: # ({x-version-update-start;com.azure:azure-communication-callautomation;current})
-
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-communication-callautomation</artifactId>
-    <version>1.1.0</version>
+    <version>1.2.4</version>
 </dependency>
 ```
-
 [//]: # ({x-version-update-end})
 
 ## Key concepts
@@ -44,10 +42,8 @@ This is the restart of Call Automation Service. It is renamed to Call Automation
 ## Examples
 
 ### Handle Mid-Connection events with CallAutomation's EventProcessor
-
 To easily handle mid-connection events, Call Automation's SDK provides easier way to handle these events.
 Take a look at `CallAutomationEventProcessor`. This will ensure correlation between call and events more easily.
-
 ```Java
 @RestController
 public class ActionController {
@@ -66,7 +62,6 @@ public class ActionController {
     }
 }
 ```
-
 `processEvents` is required for EventProcessor to work.
 After event is being consumed by EventProcessor, you can start using its feature.
 
@@ -93,7 +88,6 @@ public class commandClass {
     }
 }
 ```
-
 If timeout was not set when calling "waitForEventProcessorAsync", the default timeout is 4 minutes.
 
 ## Troubleshooting

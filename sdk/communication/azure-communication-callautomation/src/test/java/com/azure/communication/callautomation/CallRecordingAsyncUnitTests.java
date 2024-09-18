@@ -3,6 +3,7 @@
 
 package com.azure.communication.callautomation;
 
+import com.azure.communication.callautomation.models.AzureBlobContainerRecordingStorage;
 import com.azure.communication.callautomation.models.RecordingState;
 import com.azure.communication.callautomation.models.RecordingStateResult;
 import com.azure.communication.callautomation.models.ServerCallLocator;
@@ -37,6 +38,32 @@ public class CallRecordingAsyncUnitTests extends CallRecordingUnitTestBase {
         validateRecordingState(
             callRecording.start(new StartRecordingOptions(new ServerCallLocator(SERVER_CALL_ID))
                     .setRecordingStateCallbackUrl("https://localhost/")),
+            RecordingState.ACTIVE
+        );
+
+        validateOperationWithRecordingState(callRecording.pause(RECORDING_ID),
+            RecordingState.INACTIVE
+        );
+
+        validateOperationWithRecordingState(callRecording.resume(RECORDING_ID),
+            RecordingState.ACTIVE);
+
+        validateOperation(callRecording.stop(RECORDING_ID));
+        assertThrows(HttpResponseException.class, () -> callRecording.getState(RECORDING_ID).block());
+    }
+
+    @Test
+    public void recordingOperationsTestBYOS() {
+        CallAutomationAsyncClient callingServerClient = CallAutomationUnitTestBase.getCallAutomationAsyncClient(
+            recordingOperationsResponses
+        );
+        callRecording = callingServerClient.getCallRecordingAsync();
+
+        validateRecordingState(
+            callRecording.start(new StartRecordingOptions(new ServerCallLocator(SERVER_CALL_ID))
+                    .setRecordingStateCallbackUrl("https://localhost/")
+                    .setRecordingStorage(new AzureBlobContainerRecordingStorage("https://dummyurl/"))
+                    ),
             RecordingState.ACTIVE
         );
 

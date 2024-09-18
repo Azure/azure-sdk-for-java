@@ -19,24 +19,6 @@ public final class CallParticipant {
      */
     private final Boolean isMuted;
 
-    /*
-     * Is participant on hold.
-     */
-    private final Boolean isOnHold;
-
-     /**
-     * Constructor of the class
-     *
-     * @param identifier The communication identifier
-     * @param isMuted The value of isMuted
-     * @param isOnHold The value of isOnHold
-     */
-    public CallParticipant(CommunicationIdentifier identifier, Boolean isMuted, Boolean isOnHold) {
-        this.identifier = identifier;
-        this.isMuted = isMuted;
-        this.isOnHold = isOnHold;
-    }
-
     /**
      * Constructor of the class
      *
@@ -46,8 +28,6 @@ public final class CallParticipant {
     public CallParticipant(CommunicationIdentifier identifier, Boolean isMuted) {
         this.identifier = identifier;
         this.isMuted = isMuted;
-        this.isOnHold = null;
-
     }
 
     /**
@@ -66,14 +46,5 @@ public final class CallParticipant {
      */
     public Boolean isMuted() {
         return this.isMuted;
-    }
-
-    /**
-     * Get the isOnHold property: Is participant on hold.
-     *
-     * @return the isOnHold value.
-     */
-    public Boolean isOnHold() {
-        return this.isOnHold;
     }
 }

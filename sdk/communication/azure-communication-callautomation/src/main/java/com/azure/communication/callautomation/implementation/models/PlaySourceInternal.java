@@ -5,40 +5,41 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The PlaySourceInternal model.
  */
 @Fluent
-public final class PlaySourceInternal implements JsonSerializable<PlaySourceInternal> {
+public final class PlaySourceInternal {
     /*
      * Defines the type of the play source
      */
+    @JsonProperty(value = "kind", required = true)
     private PlaySourceTypeInternal kind;
 
     /*
      * Defines the identifier to be used for caching related media
      */
+    @JsonProperty(value = "playSourceCacheId")
     private String playSourceCacheId;
 
     /*
      * Defines the file source info to be used for play
      */
+    @JsonProperty(value = "file")
     private FileSourceInternal file;
 
     /*
      * Defines the text source info to be used for play
      */
+    @JsonProperty(value = "text")
     private TextSourceInternal text;
 
     /*
      * Defines the ssml(Speech Synthesis Markup Language) source info to be used for play
      */
+    @JsonProperty(value = "ssml")
     private SsmlSourceInternal ssml;
 
     /**
@@ -145,54 +146,5 @@ public final class PlaySourceInternal implements JsonSerializable<PlaySourceInte
     public PlaySourceInternal setSsml(SsmlSourceInternal ssml) {
         this.ssml = ssml;
         return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
-        jsonWriter.writeStringField("playSourceCacheId", this.playSourceCacheId);
-        jsonWriter.writeJsonField("file", this.file);
-        jsonWriter.writeJsonField("text", this.text);
-        jsonWriter.writeJsonField("ssml", this.ssml);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of PlaySourceInternal from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of PlaySourceInternal if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the PlaySourceInternal.
-     */
-    public static PlaySourceInternal fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            PlaySourceInternal deserializedPlaySourceInternal = new PlaySourceInternal();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("kind".equals(fieldName)) {
-                    deserializedPlaySourceInternal.kind = PlaySourceTypeInternal.fromString(reader.getString());
-                } else if ("playSourceCacheId".equals(fieldName)) {
-                    deserializedPlaySourceInternal.playSourceCacheId = reader.getString();
-                } else if ("file".equals(fieldName)) {
-                    deserializedPlaySourceInternal.file = FileSourceInternal.fromJson(reader);
-                } else if ("text".equals(fieldName)) {
-                    deserializedPlaySourceInternal.text = TextSourceInternal.fromJson(reader);
-                } else if ("ssml".equals(fieldName)) {
-                    deserializedPlaySourceInternal.ssml = SsmlSourceInternal.fromJson(reader);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedPlaySourceInternal;
-        });
     }
 }

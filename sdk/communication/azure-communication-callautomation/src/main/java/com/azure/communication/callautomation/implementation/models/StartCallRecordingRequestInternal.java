@@ -5,68 +5,74 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
  * The request payload start for call recording operation with call locator.
  */
 @Fluent
-public final class StartCallRecordingRequestInternal implements JsonSerializable<StartCallRecordingRequestInternal> {
+public final class StartCallRecordingRequestInternal {
     /*
      * The call locator.
      */
+    @JsonProperty(value = "callLocator", required = true)
     private CallLocatorInternal callLocator;
 
     /*
      * The uri to send notifications to.
      */
+    @JsonProperty(value = "recordingStateCallbackUri")
     private String recordingStateCallbackUri;
 
     /*
      * The content type of call recording.
      */
+    @JsonProperty(value = "recordingContentType")
     private RecordingContentInternal recordingContentType;
 
     /*
      * The channel type of call recording.
      */
+    @JsonProperty(value = "recordingChannelType")
     private RecordingChannelInternal recordingChannelType;
 
     /*
      * The format type of call recording.
      */
+    @JsonProperty(value = "recordingFormatType")
     private RecordingFormatInternal recordingFormatType;
 
     /*
      * The sequential order in which audio channels are assigned to participants in the unmixed recording.
      * When 'recordingChannelType' is set to 'unmixed' and `audioChannelParticipantOrdering is not specified,
      * the audio channel to participant mapping will be automatically assigned based on the order in which participant
-     * first audio was detected.  Channel to participant mapping details can be found in the metadata of the recording.
+     * first audio was detected. Channel to participant mapping details can be found in the metadata of the recording.
      */
+    @JsonProperty(value = "audioChannelParticipantOrdering")
     private List<CommunicationIdentifierModel> audioChannelParticipantOrdering;
 
     /*
      * The channel affinity of call recording
-     * When 'recordingChannelType' is set to 'unmixed', if channelAffinity is not specified, 'channel' will be automatically assigned.
+     * When 'recordingChannelType' is set to 'unmixed', if channelAffinity is not specified, 'channel' will be
+     * automatically assigned.
      * Channel-Participant mapping details can be found in the metadata of the recording.
      * ///
      */
+    @JsonProperty(value = "channelAffinity")
     private List<ChannelAffinityInternal> channelAffinity;
-
-    /*
-     * Optional property to specify location where recording will be stored
-     */
-    private RecordingStorageInternal externalStorage;
 
     /*
      * When set to true will start recording in Pause mode, which can be resumed.
      */
+    @JsonProperty(value = "pauseOnStart")
     private Boolean pauseOnStart;
+
+    /*
+     * The externalStorage property.
+     */
+    @JsonProperty(value = "externalStorage")
+    private RecordingStorageInternal externalStorage;
 
     /**
      * Creates an instance of StartCallRecordingRequestInternal class.
@@ -232,26 +238,6 @@ public final class StartCallRecordingRequestInternal implements JsonSerializable
     }
 
     /**
-     * Get the externalStorage property: Optional property to specify location where recording will be stored.
-     * 
-     * @return the externalStorage value.
-     */
-    public RecordingStorageInternal getExternalStorage() {
-        return this.externalStorage;
-    }
-
-    /**
-     * Set the externalStorage property: Optional property to specify location where recording will be stored.
-     * 
-     * @param externalStorage the externalStorage value to set.
-     * @return the StartCallRecordingRequestInternal object itself.
-     */
-    public StartCallRecordingRequestInternal setExternalStorage(RecordingStorageInternal externalStorage) {
-        this.externalStorage = externalStorage;
-        return this;
-    }
-
-    /**
      * Get the pauseOnStart property: When set to true will start recording in Pause mode, which can be resumed.
      * 
      * @return the pauseOnStart value.
@@ -272,79 +258,22 @@ public final class StartCallRecordingRequestInternal implements JsonSerializable
     }
 
     /**
-     * {@inheritDoc}
+     * Get the externalStorage property: The externalStorage property.
+     * 
+     * @return the externalStorage value.
      */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("callLocator", this.callLocator);
-        jsonWriter.writeStringField("recordingStateCallbackUri", this.recordingStateCallbackUri);
-        jsonWriter.writeStringField("recordingContentType",
-            this.recordingContentType == null ? null : this.recordingContentType.toString());
-        jsonWriter.writeStringField("recordingChannelType",
-            this.recordingChannelType == null ? null : this.recordingChannelType.toString());
-        jsonWriter.writeStringField("recordingFormatType",
-            this.recordingFormatType == null ? null : this.recordingFormatType.toString());
-        jsonWriter.writeArrayField("audioChannelParticipantOrdering", this.audioChannelParticipantOrdering,
-            (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("channelAffinity", this.channelAffinity,
-            (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeJsonField("externalStorage", this.externalStorage);
-        jsonWriter.writeBooleanField("pauseOnStart", this.pauseOnStart);
-        return jsonWriter.writeEndObject();
+    public RecordingStorageInternal getExternalStorage() {
+        return this.externalStorage;
     }
 
     /**
-     * Reads an instance of StartCallRecordingRequestInternal from the JsonReader.
+     * Set the externalStorage property: The externalStorage property.
      * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of StartCallRecordingRequestInternal if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the StartCallRecordingRequestInternal.
+     * @param externalStorage the externalStorage value to set.
+     * @return the StartCallRecordingRequestInternal object itself.
      */
-    public static StartCallRecordingRequestInternal fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            StartCallRecordingRequestInternal deserializedStartCallRecordingRequestInternal
-                = new StartCallRecordingRequestInternal();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("callLocator".equals(fieldName)) {
-                    deserializedStartCallRecordingRequestInternal.callLocator = CallLocatorInternal.fromJson(reader);
-                } else if ("recordingStateCallbackUri".equals(fieldName)) {
-                    deserializedStartCallRecordingRequestInternal.recordingStateCallbackUri = reader.getString();
-                } else if ("recordingContentType".equals(fieldName)) {
-                    deserializedStartCallRecordingRequestInternal.recordingContentType
-                        = RecordingContentInternal.fromString(reader.getString());
-                } else if ("recordingChannelType".equals(fieldName)) {
-                    deserializedStartCallRecordingRequestInternal.recordingChannelType
-                        = RecordingChannelInternal.fromString(reader.getString());
-                } else if ("recordingFormatType".equals(fieldName)) {
-                    deserializedStartCallRecordingRequestInternal.recordingFormatType
-                        = RecordingFormatInternal.fromString(reader.getString());
-                } else if ("audioChannelParticipantOrdering".equals(fieldName)) {
-                    List<CommunicationIdentifierModel> audioChannelParticipantOrdering
-                        = reader.readArray(reader1 -> CommunicationIdentifierModel.fromJson(reader1));
-                    deserializedStartCallRecordingRequestInternal.audioChannelParticipantOrdering
-                        = audioChannelParticipantOrdering;
-                } else if ("channelAffinity".equals(fieldName)) {
-                    List<ChannelAffinityInternal> channelAffinity
-                        = reader.readArray(reader1 -> ChannelAffinityInternal.fromJson(reader1));
-                    deserializedStartCallRecordingRequestInternal.channelAffinity = channelAffinity;
-                } else if ("externalStorage".equals(fieldName)) {
-                    deserializedStartCallRecordingRequestInternal.externalStorage
-                        = RecordingStorageInternal.fromJson(reader);
-                } else if ("pauseOnStart".equals(fieldName)) {
-                    deserializedStartCallRecordingRequestInternal.pauseOnStart
-                        = reader.getNullable(JsonReader::getBoolean);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedStartCallRecordingRequestInternal;
-        });
+    public StartCallRecordingRequestInternal setExternalStorage(RecordingStorageInternal externalStorage) {
+        this.externalStorage = externalStorage;
+        return this;
     }
 }

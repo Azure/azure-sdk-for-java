@@ -5,6 +5,7 @@ package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.models.ChannelAffinity;
 import com.azure.communication.callautomation.models.RecordingState;
+import com.azure.communication.callautomation.models.RecordingKind;
 import com.azure.communication.callautomation.models.RecordingStateResult;
 import com.azure.communication.callautomation.models.ServerCallLocator;
 import com.azure.communication.callautomation.models.StartRecordingOptions;
@@ -49,31 +50,35 @@ public class CallRecordingUnitTests extends CallRecordingUnitTestBase {
 
         validateRecording(
             callRecording.start(startRecordingOptions),
-            RecordingState.ACTIVE
+            RecordingState.ACTIVE,
+            RecordingKind.TEAMS
         );
 
         verifyOperationWithRecordingState(
             () -> callRecording.pause(RECORDING_ID),
-            RecordingState.INACTIVE
+            RecordingState.INACTIVE,
+            RecordingKind.TEAMS
         );
 
         verifyOperationWithRecordingState(
             () -> callRecording.resume(RECORDING_ID),
-            RecordingState.ACTIVE
+            RecordingState.ACTIVE,
+            RecordingKind.TEAMS
         );
 
         callRecording.stop(RECORDING_ID);
         assertThrows(HttpResponseException.class, () -> callRecording.getState(RECORDING_ID));
     }
 
-    private void verifyOperationWithRecordingState(Runnable operation, RecordingState expectedStatus) {
+    private void verifyOperationWithRecordingState(Runnable operation, RecordingState expectedRecordingState, RecordingKind expectedRecordingKind) {
         operation.run();
         RecordingStateResult recordingState = callRecording.getState(RECORDING_ID);
-        validateRecording(recordingState, expectedStatus);
+        validateRecording(recordingState, expectedRecordingState, expectedRecordingKind);
     }
 
-    private void validateRecording(RecordingStateResult recordingState, RecordingState expectedStatus) {
-        assertEquals(RECORDING_ID, recordingState.getRecordingId());
-        assertEquals(expectedStatus, recordingState.getRecordingState());
+    private void validateRecording(RecordingStateResult recording, RecordingState expectedRecordingState, RecordingKind expectedRecordingKind) {
+        assertEquals(RECORDING_ID, recording.getRecordingId());
+        assertEquals(expectedRecordingState, recording.getRecordingState());
+        assertEquals(expectedRecordingKind, recording.getRecordingKind());
     }
 }
