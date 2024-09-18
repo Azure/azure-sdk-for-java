@@ -36,7 +36,7 @@ stages:
 
           # Push the release branch to the repo
           - task: PowerShell@2
-            displayName: 'Push release branch $(BaseBranchName) to the repo'
+            displayName: 'Push release branch to the repo'
             inputs:
               pwsh: true
               workingDirectory: $(System.DefaultWorkingDirectory)
@@ -60,7 +60,6 @@ stages:
           # Create a PR with the patches prepared
           - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
             parameters:
-              BaseBranchName: $(BaseBranchName)
               PRBranchName: prepare-patch-release-$(PatchDate)-$(Build.BuildId)
               CommitMsg: "Patch release preparation $(PatchDate)"
               PRTitle: "Prepare patch release $(PatchDate)"
