@@ -154,6 +154,20 @@ public class ShareAsyncApiTests extends FileShareTestBase {
             Arguments.of(Collections.singletonMap("metadata!", "value"), 1, 400, ShareErrorCode.INVALID_METADATA));
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2019-12-12")
+    @Test
+    public void createShareAccessTierPremium() {
+        ShareAsyncClient client = premiumFileServiceAsyncClient.getShareAsyncClient(generateShareName());
+        ShareCreateOptions options = new ShareCreateOptions().setAccessTier(ShareAccessTier.PREMIUM);
+
+        StepVerifier.create(client.createWithResponse(options).then(client.getProperties()))
+            .assertNext(r -> assertEquals(ShareAccessTier.PREMIUM.toString(), r.getAccessTier()))
+            .verifyComplete();
+
+        //cleanup
+        client.delete().block();
+    }
+
     @Test
     public void createSnapshot() {
         primaryShareAsyncClient.create().block();
@@ -213,6 +227,9 @@ public class ShareAsyncApiTests extends FileShareTestBase {
         assertNotNull(secondResponse);
         FileShareTestHelper.assertResponseStatusCode(initialResponse, 201);
         FileShareTestHelper.assertResponseStatusCode(secondResponse, 409);
+
+        //cleanup
+        client.delete().block();
     }
 
     @ParameterizedTest
@@ -337,6 +354,9 @@ public class ShareAsyncApiTests extends FileShareTestBase {
             assertEquals(enabledProtocol.toString(), it.getValue().getProtocols().toString());
             assertEquals(rootSquash, it.getValue().getRootSquash());
         }).verifyComplete();
+
+        //cleanup
+        premiumShare.delete().block();
     }
 
     @PlaybackOnly
@@ -355,6 +375,9 @@ public class ShareAsyncApiTests extends FileShareTestBase {
             premiumShareClient.setProperties(new ShareSetPropertiesOptions().setRootSquash(rootSquash)).block();
             StepVerifier.create(premiumShareClient.getProperties()).assertNext(it ->
                 assertEquals(rootSquash, it.getRootSquash())).verifyComplete();
+
+            //cleanup
+            premiumShareClient.delete().block();
         }
     }
 
@@ -370,6 +393,20 @@ public class ShareAsyncApiTests extends FileShareTestBase {
             .then(shareClient.setPropertiesWithResponse(new ShareSetPropertiesOptions().setAccessTier(ShareAccessTier.COOL))))
             .assertNext(r -> assertEquals(200, r.getStatusCode()))
             .verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2019-12-12")
+    @Test
+    public void setPropertiesAccessTierPremium() {
+        ShareAsyncClient client = premiumFileServiceAsyncClient.getShareAsyncClient(generateShareName());
+        ShareSetPropertiesOptions options = new ShareSetPropertiesOptions().setAccessTier(ShareAccessTier.PREMIUM);
+
+        StepVerifier.create(client.create().then(client.setProperties(options)).then(client.getProperties()))
+            .assertNext(r -> assertEquals(ShareAccessTier.PREMIUM.toString(), r.getAccessTier()))
+            .verifyComplete();
+
+        //cleanup
+        client.delete().block();
     }
 
     @Test
@@ -517,6 +554,9 @@ public class ShareAsyncApiTests extends FileShareTestBase {
         FileShareTestHelper.assertResponseStatusCode(initialResponse, 201);
         assertNotNull(secondResponse);
         FileShareTestHelper.assertResponseStatusCode(secondResponse, 409);
+
+        //cleanup
+        client.delete().block();
     }
 
     @Test
@@ -919,6 +959,9 @@ public class ShareAsyncApiTests extends FileShareTestBase {
                 }
             })
             .verifyComplete();
+
+        //cleanup
+        premiumFileServiceAsyncClient.getShareAsyncClient(shareName).delete().block();
     }
 
     private static Stream<Arguments> createEnableSnapshotVirtualDirectoryAccessSupplier() {
@@ -953,6 +996,9 @@ public class ShareAsyncApiTests extends FileShareTestBase {
                 }
             })
             .verifyComplete();
+
+        //cleanup
+        premiumFileServiceAsyncClient.getShareAsyncClient(shareName).delete().block();
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
@@ -973,6 +1019,9 @@ public class ShareAsyncApiTests extends FileShareTestBase {
                 assertEquals(1000L, r.getPaidBurstingMaxBandwidthMibps());
             })
             .verifyComplete();
+
+        //cleanup
+        premiumFileServiceAsyncClient.getShareAsyncClient(shareName).delete().block();
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
@@ -1007,6 +1056,9 @@ public class ShareAsyncApiTests extends FileShareTestBase {
                 assertEquals(1000L, r.getPaidBurstingMaxBandwidthMibps());
             })
             .verifyComplete();
+
+        //cleanup
+        premiumFileServiceAsyncClient.getShareAsyncClient(shareName).delete().block();
     }
 
 }

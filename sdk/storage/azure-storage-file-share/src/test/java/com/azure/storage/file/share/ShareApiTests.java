@@ -209,6 +209,9 @@ public class ShareApiTests extends FileShareTestBase {
 
         ShareProperties response = client.getProperties();
         assertEquals(ShareAccessTier.PREMIUM.toString(), response.getAccessTier());
+
+        //cleanup
+        client.delete();
     }
 
     @ParameterizedTest
@@ -304,6 +307,9 @@ public class ShareApiTests extends FileShareTestBase {
         Response<ShareInfo> secondResponse = client.createIfNotExistsWithResponse(new ShareCreateOptions(), null, null);
         assertEquals(initialResponse.getStatusCode(), 201);
         assertEquals(secondResponse.getStatusCode(), 409);
+
+        //cleanup
+        client.delete();
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2019-12-12")
@@ -576,6 +582,9 @@ public class ShareApiTests extends FileShareTestBase {
         assertNotNull(shareProperties.getNextAllowedQuotaDowngradeTime());
         assertEquals(shareProperties.getProtocols().toString(), enabledProtocol.toString());
         assertEquals(shareProperties.getRootSquash(), rootSquash);
+
+        //cleanup
+        premiumShareClient.delete();
     }
 
     @PlaybackOnly
@@ -591,7 +600,10 @@ public class ShareApiTests extends FileShareTestBase {
                 new ShareCreateOptions().setProtocols(new ShareProtocols().setNfsEnabled(true)), null, null).getValue();
             premiumShareClient.setProperties(new ShareSetPropertiesOptions().setRootSquash(rootSquash));
             assertEquals(premiumShareClient.getProperties().getRootSquash(), rootSquash);
+            //cleanup
+            premiumShareClient.delete();
         }
+
 
     }
 
@@ -798,6 +810,22 @@ public class ShareApiTests extends FileShareTestBase {
             || getAccessTierAfterResponse.getAccessTierChangeTime().isAfter(time.minusSeconds(1)));
         assertTrue(getAccessTierAfterResponse.getAccessTierChangeTime().isBefore(time.plusMinutes(1)));
         assertEquals(getAccessTierAfterResponse.getAccessTierTransitionState(), "pending-from-hot");
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2019-12-12")
+    @Test
+    public void setPropertiesAccessTierPremium() {
+        ShareClient client = premiumFileServiceClient.getShareClient(generateShareName());
+        ShareSetPropertiesOptions options = new ShareSetPropertiesOptions().setAccessTier(ShareAccessTier.PREMIUM);
+
+        client.create();
+        client.setPropertiesWithResponse(options, null, null);
+
+        ShareProperties response = client.getProperties();
+        assertEquals(ShareAccessTier.PREMIUM.toString(), response.getAccessTier());
+
+        //cleanup
+        client.delete();
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2020-02-10")
@@ -1058,6 +1086,9 @@ public class ShareApiTests extends FileShareTestBase {
 
         FileShareTestHelper.assertResponseStatusCode(initialResponse, 201);
         FileShareTestHelper.assertResponseStatusCode(secondResponse, 409);
+
+        //cleanup
+        client.delete();
     }
 
     @Test
@@ -1399,6 +1430,9 @@ public class ShareApiTests extends FileShareTestBase {
         } else {
             assertFalse(response.isSnapshotVirtualDirectoryAccessEnabled());
         }
+
+        //cleanup
+        premiumFileServiceClient.getShareClient(shareName).delete();
     }
 
     private static Stream<Arguments> createEnableSnapshotVirtualDirectoryAccessSupplier() {
@@ -1430,6 +1464,9 @@ public class ShareApiTests extends FileShareTestBase {
         } else {
             assertFalse(response.isSnapshotVirtualDirectoryAccessEnabled());
         }
+
+        //cleanup
+        premiumFileServiceClient.getShareClient(shareName).delete();
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
@@ -1447,6 +1484,9 @@ public class ShareApiTests extends FileShareTestBase {
         assertTrue(response.isPaidBurstingEnabled());
         assertEquals(5000L, response.getPaidBurstingMaxIops());
         assertEquals(1000L, response.getPaidBurstingMaxBandwidthMibps());
+
+        //cleanup
+        premiumFileServiceClient.getShareClient(shareName).delete();
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
@@ -1480,5 +1520,8 @@ public class ShareApiTests extends FileShareTestBase {
         assertTrue(response.isPaidBurstingEnabled());
         assertEquals(5000L, response.getPaidBurstingMaxIops());
         assertEquals(1000L, response.getPaidBurstingMaxBandwidthMibps());
+
+        //cleanup
+        premiumFileServiceClient.getShareClient(shareName).delete();
     }
 }
