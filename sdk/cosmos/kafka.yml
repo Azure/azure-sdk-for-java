@@ -16,6 +16,7 @@ extends:
             COSMOS_ACR_NAME: $(kafka-mcr-name)
           CloudConfig:
             Public:
+              ServiceConnection: azure-sdk-tests
               SubscriptionConfigurations:
                 - $(sub-config-azure-cloud-test-resources)
                 - $(sub-config-cosmos-azure-cloud-test-resources)
