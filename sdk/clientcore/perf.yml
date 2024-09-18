@@ -32,7 +32,7 @@ extends:
   parameters:
     TimeoutInMinutes: 720
     LanguageVersion: ${{ parameters.LanguageVersion }}
-    ServiceDirectory: core
+    ServiceDirectory: clientcore
     PackageVersions: ${{ parameters.PackageVersions }}
     Tests: ${{ parameters.Tests }}
     Arguments: ${{ parameters.Arguments }}

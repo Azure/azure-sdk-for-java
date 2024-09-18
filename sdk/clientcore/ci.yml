@@ -1,5 +1,5 @@
 # NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
-#TODO
+
 trigger:
   branches:
     include:
@@ -60,5 +60,11 @@ extends:
         groupId: io.clientcore
         safeName: corejson
         releaseInBatch: ${{ parameters.release_corejson }}
+    AdditionalModules:
+      - name: http-stress
+        groupId: io.clientcore
+        # required by the above perf library
+      - name: perf-test-core
+        groupId: com.azure
     MatrixReplace:
       - TestGoals=(surefire:test)/$1 failsafe:integration-test failsafe:verify

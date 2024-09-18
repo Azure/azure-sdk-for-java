@@ -1,4 +1,4 @@
-Service: core
+Service: clientcore
 
 Project: sdk/clientcore/http-stress
 
