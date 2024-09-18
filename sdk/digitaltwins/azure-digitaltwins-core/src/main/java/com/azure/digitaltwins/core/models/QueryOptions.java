@@ -4,21 +4,17 @@
 package com.azure.digitaltwins.core.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Parameter group. */
 @Fluent
 public final class QueryOptions {
     /*
-     * The maximum number of items to retrieve per request. The server may choose to return less than the requested
-     * number.
+     * The maximum number of items to retrieve per request. The server may
+     * choose to return less than the requested number.
      */
+    @JsonProperty(value = "MaxItemsPerPage")
     private Integer maxItemsPerPage;
-
-    /**
-     * Creates a new instance of {@link QueryOptions}.
-     */
-    public QueryOptions() {
-    }
 
     /**
      * Get the maxItemsPerPage property: The maximum number of items to retrieve per request. The server may choose to

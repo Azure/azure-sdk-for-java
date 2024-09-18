@@ -74,7 +74,7 @@ public class SamplesArguments {
         String inputLogLevel = cmd.getOptionValue(LOG_DETAIL_LEVEL);
 
         // If log level has been specified we will parse it and return the correct enum value.
-        if (inputLogLevel != null && !inputLogLevel.trim().isEmpty()) {
+        if (inputLogLevel != null && inputLogLevel.trim().length() > 0) {
             try {
                 int providedLogDetailLevel = Integer.parseInt(inputLogLevel);
 

@@ -8,6 +8,5 @@ import org.junit.jupiter.api.Test;
 
 public abstract class PublishTelemetryTestBase extends DigitalTwinsTestBase {
     @Test
-    public abstract void publishTelemetryLifecycleTest(HttpClient httpClient,
-        DigitalTwinsServiceVersion serviceVersion);
+    public abstract void publishTelemetryLifecycleTest(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion);
 }
