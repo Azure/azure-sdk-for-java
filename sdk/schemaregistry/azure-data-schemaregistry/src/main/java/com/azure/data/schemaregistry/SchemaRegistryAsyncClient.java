@@ -8,7 +8,6 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
@@ -18,6 +17,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.schemaregistry.implementation.AzureSchemaRegistryImpl;
 import com.azure.data.schemaregistry.implementation.SchemaRegistryHelper;
 import com.azure.data.schemaregistry.implementation.models.ErrorException;
+import com.azure.data.schemaregistry.implementation.models.SchemaFormatImpl;
 import com.azure.data.schemaregistry.models.SchemaFormat;
 import com.azure.data.schemaregistry.models.SchemaProperties;
 import com.azure.data.schemaregistry.models.SchemaRegistrySchema;
@@ -33,19 +33,19 @@ import static com.azure.core.util.FluxUtil.monoError;
 
 /**
  * {@link SchemaRegistryAsyncClient} is an HTTP-based client that interacts with Azure Schema Registry service to store
- * and retrieve schemas on demand. Azure Schema Registry supports multiple schema formats such as Avro, JSON, and
+ * and retrieve schemas on demand.  Azure Schema Registry supports multiple schema formats such as Avro, JSON, and
  * custom formats.
  *
  * <p><strong>Sample: Construct a {@link SchemaRegistryAsyncClient}</strong></p>
  *
- * <p>The following code sample demonstrates the creation of the asynchronous client {@link SchemaRegistryAsyncClient}.
- * The {@code fullyQualifiedNamespace} is the Event Hubs Namespace's host name.  It is listed under the "Essentials"
- * panel after navigating to the Event Hubs Namespace via Azure Portal. The credential used is
- * {@code DefaultAzureCredential} for authentication, which is appropriate for most scenarios, including local
- * development and production environments. Additionally, we recommend using
+ * <p>The following code sample demonstrates the creation of the asynchronous client
+ * {@link com.azure.data.schemaregistry.SchemaRegistryAsyncClient}.  The {@code fullyQualifiedNamespace} is the Event
+ * Hubs Namespace's host name.  It is listed under the "Essentials" panel after navigating to the Event Hubs Namespace
+ * via Azure Portal.  The credential used is {@code DefaultAzureCredential} for authentication, which is appropriate
+ * for most scenarios, including local development and production environments. Additionally, we recommend using
  * <a href="https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/">managed identity</a>
- * for authentication in production environments. You can find more information on different ways of authenticating and
- * their corresponding credential types in the
+ * for authentication in production environments.
+ * You can find more information on different ways of authenticating and their corresponding credential types in the
  * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme">Azure Identity documentation"</a>.
  * </p>
  *
@@ -85,11 +85,11 @@ import static com.azure.core.util.FluxUtil.monoError;
  *
  * <p><strong>Sample: Get a schema using a schema id</strong></p>
  *
- * <p>The following code sample demonstrates how to fetch a schema using its schema id. The schema id can be found in
- * {@link SchemaProperties#getId()} when a schema is registered or using
- * {@link #getSchemaProperties(String, String, String, SchemaFormat)}. Reactive operations must be subscribed to; this
- * kicks off the operation. {@link #getSchema(String)} is a non-blocking call, the program will move onto the next line
- * of code after setting up the async operation.</p>
+ * <p>The following code sample demonstrates how to fetch a schema using its schema id.  The schema id can be found in
+ * {@link com.azure.data.schemaregistry.models.SchemaProperties#getId()} when a schema is registered or using
+ * {@link com.azure.data.schemaregistry.SchemaRegistryAsyncClient#getSchemaProperties(java.lang.String, java.lang.String, java.lang.String, com.azure.data.schemaregistry.models.SchemaFormat)}.
+ * Reactive operations must be subscribed to; this kicks off the operation.  {@link #getSchema(String)} is a
+ * non-blocking call, the program will move onto the next line of code after setting up the async operation.</p>
  *
  * <!-- src_embed com.azure.data.schemaregistry.schemaregistryasyncclient.getschema -->
  * <pre>
@@ -134,12 +134,13 @@ import static com.azure.core.util.FluxUtil.monoError;
  * <p>The following code sample demonstrates how to get a schema using its group name, schema name, and version number.
  * In addition, it gets the underlying HTTP response that backs this service call.  This is useful in cases where
  * customers want more insight into the HTTP request/response.
-{@link #getSchemaWithResponse(String, String, int, Context)} is a non-blocking call, the program will move onto the
+ * {@link #getSchemaWithResponse(String, String, int, Context)} is a non-blocking call, the program will move onto the
  * next line of code after setting up the async operation.</p>
  *
  * <!-- src_embed com.azure.data.schemaregistry.schemaregistryasyncclient.getschemawithresponse -->
  * <pre>
- * client.getSchemaWithResponse&#40;&quot;&#123;group-name&#125;&quot;, &quot;&#123;schema-name&#125;&quot;, 1&#41;
+ * client.getSchemaWithResponse&#40;&quot;&#123;group-name&#125;&quot;,
+ *         &quot;&#123;schema-name&#125;&quot;, 1, Context.NONE&#41;
  *     .subscribe&#40;response -&gt; &#123;
  *         System.out.println&#40;&quot;Headers in HTTP response: &quot;&#41;;
  *
@@ -185,19 +186,13 @@ public final class SchemaRegistryAsyncClient {
     }
 
     /**
-     * Registers a new schema in the specified schema group with the given schema name.  If a schema:
-     * 
-     * <ul>
-     * <li><b>does not exist</b> with the same {@code groupName}, {@code name}, {@code format}, and
-     * {@code schemaDefinition}, it is added to the Schema Registry Instance and assigned a new schema id.</li>
-     * 
-     * <li>exists with the same {@code groupName}, {@code name}, {@code format}, and {@code schemaDefinition},
-     * the id of that existing schema is returned.</li>
-     * 
-     * <li>exists with the same {@code groupName}, {@code name}, and {@code format} but the <u>{@code schemaDefinition}
-     * is different</u>, it is considered a new version. A new schema id is assigned to the schema and its schema id is
-     * returned.</li>
-     * </ul>
+     * Registers a new schema in the specified schema group with the given schema name. If a schema
+     * <b>does not exist</b>does not exist with the same {@code groupName}, {@code name}, {@code format}, and
+     * {@code schemaDefinition}, it is added to the Schema Registry Instance and assigned a schema id. If a schema
+     * exists with a matching {@code groupName}, {@code name}, {@code format}, and {@code schemaDefinition}, the id of
+     * that schema is returned. If the Schema Registry instance contains an existing {@code groupName}, {@code name},
+     * and {@code format} but the {@code schemaDefinition} is different, it is considered a new version, and schema id
+     * is assigned to it.
      *
      * @param groupName The schema group.
      * @param name The schema name.
@@ -218,19 +213,13 @@ public final class SchemaRegistryAsyncClient {
     }
 
     /**
-     * Registers a new schema in the specified schema group with the given schema name.  If a schema:
-     * 
-     * <ul>
-     * <li><b>does not exist</b> with the same {@code groupName}, {@code name}, {@code format}, and
-     * {@code schemaDefinition}, it is added to the Schema Registry Instance and assigned a new schema id.</li>
-     * 
-     * <li>exists with the same {@code groupName}, {@code name}, {@code format}, and {@code schemaDefinition},
-     * the id of that existing schema is returned.</li>
-     * 
-     * <li>exists with the same {@code groupName}, {@code name}, and {@code format} but the <u>{@code schemaDefinition}
-     * is different</u>, it is considered a new version. A new schema id is assigned to the schema and its schema id is
-     * returned.</li>
-     * </ul>
+     * Registers a new schema in the specified schema group with the given schema name. If a schema
+     * <b>does not exist</b>does not exist with the same {@code groupName}, {@code name}, {@code format}, and
+     * {@code schemaDefinition}, it is added to the Schema Registry Instance and assigned a schema id. If a schema
+     * exists with a matching {@code groupName}, {@code name}, {@code format}, and {@code schemaDefinition}, the id of
+     * that schema is returned. If the Schema Registry instance contains an existing {@code groupName}, {@code name},
+     * and {@code format} but the {@code schemaDefinition} is different, it is considered a new version, and schema id
+     * is assigned to it.
      *
      * @param groupName The schema group.
      * @param name The schema name.
@@ -266,15 +255,15 @@ public final class SchemaRegistryAsyncClient {
             groupName, name, format, schemaDefinition);
 
         final BinaryData binaryData = BinaryData.fromString(schemaDefinition);
-        final com.azure.data.schemaregistry.implementation.models.SchemaFormat contentType
-            = SchemaRegistryHelper.getContentType(format);
+        final SchemaFormatImpl contentType = SchemaRegistryHelper.getContentType(format);
 
         return restService.getSchemas().registerWithResponseAsync(groupName, name, contentType.toString(), binaryData,
                 binaryData.getLength(), context)
             .map(response -> {
-                final SchemaProperties registered = SchemaRegistryHelper.getSchemaProperties(
-                    response.getDeserializedHeaders(), response.getHeaders(), format);
-                return new SimpleResponse<>(response, registered);
+                final SchemaProperties registered = SchemaRegistryHelper.getSchemaProperties(response.getDeserializedHeaders(), response.getHeaders(), format);
+                return new SimpleResponse<>(
+                    response.getRequest(), response.getStatusCode(),
+                    response.getHeaders(), registered);
             });
     }
 
@@ -362,10 +351,11 @@ public final class SchemaRegistryAsyncClient {
         return this.restService.getSchemas().getByIdWithResponseAsync(schemaId, context)
             .onErrorMap(ErrorException.class, SchemaRegistryAsyncClient::remapError)
             .flatMap(response -> {
-                SchemaProperties schemaObject = SchemaRegistryHelper.getSchemaProperties(
-                    response.getDeserializedHeaders(), response.getHeaders());
-                return convertToString(response.getValue(), response.getHeaders())
-                    .map(schema -> new SimpleResponse<>(response, new SchemaRegistrySchema(schemaObject, schema)));
+                final SchemaProperties schemaObject = SchemaRegistryHelper.getSchemaProperties(response.getDeserializedHeaders(), response.getHeaders());
+                return convertToString(response.getValue())
+                    .map(schema -> new SimpleResponse<>(
+                    response.getRequest(), response.getStatusCode(),
+                    response.getHeaders(), new SchemaRegistrySchema(schemaObject, schema)));
             });
     }
 
@@ -381,15 +371,14 @@ public final class SchemaRegistryAsyncClient {
             .onErrorMap(ErrorException.class, SchemaRegistryAsyncClient::remapError)
             .flatMap(response -> {
                 final Flux<ByteBuffer> schemaFlux = response.getValue();
-                SchemaProperties schemaObject = SchemaRegistryHelper.getSchemaProperties(
-                    response.getDeserializedHeaders(), response.getHeaders());
+                final SchemaProperties schemaObject = SchemaRegistryHelper.getSchemaProperties(response.getDeserializedHeaders(), response.getHeaders());
 
                 if (schemaFlux == null) {
                     return Mono.error(new IllegalArgumentException(String.format(
                         "Schema definition should not be null. Group Name: %s. Schema Name: %s. Version: %d",
                         groupName, schemaName, schemaVersion)));
                 }
-                return convertToString(schemaFlux, response.getHeaders())
+                return convertToString(schemaFlux)
                     .map(schema -> new SimpleResponse<>(
                         response.getRequest(), response.getStatusCode(),
                         response.getHeaders(), new SchemaRegistrySchema(schemaObject, schema)));
@@ -477,18 +466,19 @@ public final class SchemaRegistryAsyncClient {
         }
 
         final BinaryData binaryData = BinaryData.fromString(schemaDefinition);
-        final com.azure.data.schemaregistry.implementation.models.SchemaFormat contentType
-            = SchemaRegistryHelper.getContentType(format);
+        final SchemaFormatImpl contentType = SchemaRegistryHelper.getContentType(format);
 
         return restService.getSchemas()
-            .queryIdByContentWithResponseAsync(groupName, name, contentType, binaryData, binaryData.getLength(),
+            .queryIdByContentWithResponseAsync(groupName, name, com.azure.data.schemaregistry.implementation.models.SchemaFormat.fromString(contentType.toString()),
+                binaryData, binaryData.getLength(),
                 context)
             .onErrorMap(ErrorException.class, SchemaRegistryAsyncClient::remapError)
             .map(response -> {
-                final SchemaProperties properties = SchemaRegistryHelper.getSchemaProperties(
-                    response.getDeserializedHeaders(), response.getHeaders(), format);
+                final SchemaProperties properties = SchemaRegistryHelper.getSchemaProperties(response.getDeserializedHeaders(), response.getHeaders(), format);
 
-                return new SimpleResponse<>(response, properties);
+                return new SimpleResponse<>(
+                    response.getRequest(), response.getStatusCode(),
+                    response.getHeaders(), properties);
             });
     }
 
@@ -517,11 +507,16 @@ public final class SchemaRegistryAsyncClient {
      * Converts a Flux of Byte Buffer into its string representation.
      *
      * @param byteBufferFlux the Byte Buffer Flux input.
-     * @param headers the HTTP headers.
+     *
      * @return A string representation.
+     *
      */
-    static Mono<String> convertToString(Flux<ByteBuffer> byteBufferFlux, HttpHeaders headers) {
-        return FluxUtil.collectBytesFromNetworkResponse(byteBufferFlux, headers)
-            .map(bytes -> new String(bytes, StandardCharsets.UTF_8));
+    static Mono<String> convertToString(Flux<ByteBuffer> byteBufferFlux) {
+        final StringBuilder builder = new StringBuilder();
+        return byteBufferFlux
+            .map(byteBuffer -> {
+                builder.append(new String(byteBuffer.array(), StandardCharsets.UTF_8));
+                return Mono.empty();
+            }).then(Mono.defer(() -> Mono.just(builder.toString())));
     }
 }
