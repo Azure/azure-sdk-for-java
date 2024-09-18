@@ -5,6 +5,7 @@
 #
 # What this script does:
 #   - Checks out a new release branch, 'release/patch/$currentDate'
+#   - Pushes the release branch to the repo
 #   - Runs the script to generate patches for automatic releases
 #   - Create a PR with the patches prepared
 
@@ -60,7 +61,6 @@ stages:
           # Create a PR with the patches prepared
           - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
             parameters:
-              BaseBranchName: "refs/heads/$(BaseBranchName)"
               PRBranchName: prepare-patch-release-$(PatchDate)-$(Build.BuildId)
               CommitMsg: "Patch release preparation $(PatchDate)"
               PRTitle: "Prepare patch release $(PatchDate)"
