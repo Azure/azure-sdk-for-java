@@ -35,13 +35,10 @@ public final class EventRouteConverter {
             return null;
         }
 
-        com.azure.digitaltwins.core.implementation.models.EventRoute mappedEventRoute
-            = new com.azure.digitaltwins.core.implementation.models.EventRoute(input.getEndpointName(),
-            input.getFilter());
+        com.azure.digitaltwins.core.implementation.models.EventRoute mappedEventRoute = new com.azure.digitaltwins.core.implementation.models.EventRoute(input.getEndpointName(), input.getFilter());
         // Note that eventRoute's Id is only set by the service, so there is no need to map it here since the input is a user-created instance.
         return mappedEventRoute;
     }
 
-    private EventRouteConverter() {
-    }
+    private EventRouteConverter() { }
 }

@@ -5,36 +5,27 @@
 package com.azure.digitaltwins.core.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * A more specific error description than was provided by the containing error.
- */
+/** A more specific error description than was provided by the containing error. */
 @Fluent
-public final class InnerError implements JsonSerializable<InnerError> {
+public final class InnerError {
     /*
      * A more specific error code than was provided by the containing error.
      */
+    @JsonProperty(value = "code")
     private String code;
 
     /*
-     * An object containing more specific information than the current object about the error.
+     * An object containing more specific information than the current object
+     * about the error.
      */
+    @JsonProperty(value = "innererror")
     private InnerError innererror;
 
     /**
-     * Creates an instance of InnerError class.
-     */
-    public InnerError() {
-    }
-
-    /**
      * Get the code property: A more specific error code than was provided by the containing error.
-     * 
+     *
      * @return the code value.
      */
     public String getCode() {
@@ -43,7 +34,7 @@ public final class InnerError implements JsonSerializable<InnerError> {
 
     /**
      * Set the code property: A more specific error code than was provided by the containing error.
-     * 
+     *
      * @param code the code value to set.
      * @return the InnerError object itself.
      */
@@ -55,7 +46,7 @@ public final class InnerError implements JsonSerializable<InnerError> {
     /**
      * Get the innererror property: An object containing more specific information than the current object about the
      * error.
-     * 
+     *
      * @return the innererror value.
      */
     public InnerError getInnererror() {
@@ -65,7 +56,7 @@ public final class InnerError implements JsonSerializable<InnerError> {
     /**
      * Set the innererror property: An object containing more specific information than the current object about the
      * error.
-     * 
+     *
      * @param innererror the innererror value to set.
      * @return the InnerError object itself.
      */
@@ -75,41 +66,13 @@ public final class InnerError implements JsonSerializable<InnerError> {
     }
 
     /**
-     * {@inheritDoc}
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("code", this.code);
-        jsonWriter.writeJsonField("innererror", this.innererror);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of InnerError from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of InnerError if the JsonReader was pointing to an instance of it, or null if it was pointing
-     * to JSON null.
-     * @throws IOException If an error occurs while reading the InnerError.
-     */
-    public static InnerError fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            InnerError deserializedInnerError = new InnerError();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("code".equals(fieldName)) {
-                    deserializedInnerError.code = reader.getString();
-                } else if ("innererror".equals(fieldName)) {
-                    deserializedInnerError.innererror = InnerError.fromJson(reader);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedInnerError;
-        });
+    public void validate() {
+        if (getInnererror() != null) {
+            getInnererror().validate();
+        }
     }
 }
