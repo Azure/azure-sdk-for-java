@@ -32,6 +32,7 @@ stages:
               Write-Host "git checkout -b $branchName"
               git checkout -b $branchName
               Write-Host "##vso[task.setvariable variable=BaseBranchName]$branchName"
+              Write-Host "Build.SourceBranch: $(Build.SourceBranch)"
             workingDirectory: $(Build.SourcesDirectory)
             displayName: 'Create release branch'
 
@@ -61,6 +62,7 @@ stages:
           # Create a PR with the patches prepared
           - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
             parameters:
+              BaseBranchName: $(Build.SourceBranch)
               PRBranchName: prepare-patch-release-$(PatchDate)-$(Build.BuildId)
               CommitMsg: "Patch release preparation $(PatchDate)"
               PRTitle: "Prepare patch release $(PatchDate)"

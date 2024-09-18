@@ -79,7 +79,6 @@ param(
 . (Join-Path $PSScriptRoot common.ps1)
 
 try {
-  Write-Host "=== BaseBranch: $BaseBranch"
   $resp = Get-GitHubPullRequests -RepoOwner $RepoOwner -RepoName $RepoName `
   -Head "${PROwner}:${PRBranch}" -Base $BaseBranch -AuthToken $AuthToken
 }
