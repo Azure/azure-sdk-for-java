@@ -124,4 +124,15 @@ public final class ChatRequestToolMessage extends ChatRequestMessage {
         this.content = content;
         this.toolCallId = toolCallId;
     }
+
+    /**
+     * Creates an instance of ChatRequestToolMessage class.
+     *
+     * @param content the String content value to set.
+     * @param toolCallId the toolCallId value to set.
+     */
+    public ChatRequestToolMessage(String content, String toolCallId) {
+        this.content = BinaryData.fromString(content);
+        this.toolCallId = toolCallId;
+    }
 }

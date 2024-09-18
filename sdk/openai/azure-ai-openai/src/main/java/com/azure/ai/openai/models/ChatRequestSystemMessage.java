@@ -136,4 +136,13 @@ public final class ChatRequestSystemMessage extends ChatRequestMessage {
     public ChatRequestSystemMessage(BinaryData content) {
         this.content = content;
     }
+
+    /**
+     * Creates an instance of ChatRequestSystemMessage class.
+     *
+     * @param content the String content value to set.
+     */
+    public ChatRequestSystemMessage(String content) {
+        this.content = BinaryData.fromString(content);
+    }
 }

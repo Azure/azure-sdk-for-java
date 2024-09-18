@@ -13,10 +13,10 @@
   New classes `ChatCompletionsJsonSchemaResponseFormat` and `ChatCompletionsJsonSchemaResponseFormatJsonSchema` are added to support JSON schema response format.
 - Added `username_and_password` in `OnYourDataAuthenticationOptions` class and an input option class`OnYourDataUsernameAndPasswordAuthenticationOptions`  to support username and password authentication.
 - Added `intergrated` property in `OnYourDataVectorizationSource` class and `OnYourDataVectorizationSourceType` to support integrated vectorization source.
+- Added a new constructor to take `BinaryData` as input type for `content` in `ChatRequestAssistantMessage`, `ChatRequestSystemMessage`, `ChatRequestToolMessage` classes.
 
 ### Breaking Changes
 
-- The `content` type in `ChatRequestAssistantsMessage`, `ChatRequestSystemMessage`, `ChatRequestToolMessage` classes is now of type `BinaryData` instead of `String`.
 - Removed `azure_ml_index` from `AzureChatExtensionConfiguration` class, and its response models `AzureMachineLearningIndexConfiguration` and `AzureMachineLearningIndexChatExtensionParameters`.
 - Removed `role_information` from `AzureSearchChatExtensionParameters`, `ElasticsearchChatExtensionParameters` and `PineconeChatExtensionParameters` classes.
 

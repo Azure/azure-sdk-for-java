@@ -213,4 +213,13 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
     public ChatRequestAssistantMessage(BinaryData content) {
         this.content = content;
     }
+
+    /**
+     * Creates an instance of ChatRequestAssistantMessage class.
+     *
+     * @param content the String content value to set.
+     */
+    public ChatRequestAssistantMessage(String content) {
+        this.content = BinaryData.fromString(content);
+    }
 }
