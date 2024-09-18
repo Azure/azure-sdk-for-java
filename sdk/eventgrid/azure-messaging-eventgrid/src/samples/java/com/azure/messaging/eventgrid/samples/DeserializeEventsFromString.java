@@ -62,7 +62,6 @@ public class DeserializeEventsFromString {
         System.out.println();
 
         System.out.println("Deserialize data to a Map:");
-
         Map<String, Object> dataMap = eventData.toObject(new TypeReference<Map<String, Object>>() {
         });
         System.out.println(dataMap);

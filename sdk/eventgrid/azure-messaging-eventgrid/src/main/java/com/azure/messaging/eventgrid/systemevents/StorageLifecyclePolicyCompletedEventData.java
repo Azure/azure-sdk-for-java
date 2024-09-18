@@ -35,11 +35,6 @@ public final class StorageLifecyclePolicyCompletedEventData
     /*
      * Execution statistics of a specific policy action in a Blob Management cycle.
      */
-    private StorageLifecyclePolicyActionSummaryDetail tierToColdSummary;
-
-    /*
-     * Execution statistics of a specific policy action in a Blob Management cycle.
-     */
     private StorageLifecyclePolicyActionSummaryDetail tierToArchiveSummary;
 
     /**
@@ -111,27 +106,6 @@ public final class StorageLifecyclePolicyCompletedEventData
     }
 
     /**
-     * Get the tierToColdSummary property: Execution statistics of a specific policy action in a Blob Management cycle.
-     * 
-     * @return the tierToColdSummary value.
-     */
-    public StorageLifecyclePolicyActionSummaryDetail getTierToColdSummary() {
-        return this.tierToColdSummary;
-    }
-
-    /**
-     * Set the tierToColdSummary property: Execution statistics of a specific policy action in a Blob Management cycle.
-     * 
-     * @param tierToColdSummary the tierToColdSummary value to set.
-     * @return the StorageLifecyclePolicyCompletedEventData object itself.
-     */
-    public StorageLifecyclePolicyCompletedEventData
-        setTierToColdSummary(StorageLifecyclePolicyActionSummaryDetail tierToColdSummary) {
-        this.tierToColdSummary = tierToColdSummary;
-        return this;
-    }
-
-    /**
      * Get the tierToArchiveSummary property: Execution statistics of a specific policy action in a Blob Management
      * cycle.
      * 
@@ -160,7 +134,6 @@ public final class StorageLifecyclePolicyCompletedEventData
         jsonWriter.writeStringField("scheduleTime", this.scheduleTime);
         jsonWriter.writeJsonField("deleteSummary", this.deleteSummary);
         jsonWriter.writeJsonField("tierToCoolSummary", this.tierToCoolSummary);
-        jsonWriter.writeJsonField("tierToColdSummary", this.tierToColdSummary);
         jsonWriter.writeJsonField("tierToArchiveSummary", this.tierToArchiveSummary);
         return jsonWriter.writeEndObject();
     }
@@ -188,9 +161,6 @@ public final class StorageLifecyclePolicyCompletedEventData
                         = StorageLifecyclePolicyActionSummaryDetail.fromJson(reader);
                 } else if ("tierToCoolSummary".equals(fieldName)) {
                     deserializedStorageLifecyclePolicyCompletedEventData.tierToCoolSummary
-                        = StorageLifecyclePolicyActionSummaryDetail.fromJson(reader);
-                } else if ("tierToColdSummary".equals(fieldName)) {
-                    deserializedStorageLifecyclePolicyCompletedEventData.tierToColdSummary
                         = StorageLifecyclePolicyActionSummaryDetail.fromJson(reader);
                 } else if ("tierToArchiveSummary".equals(fieldName)) {
                     deserializedStorageLifecyclePolicyCompletedEventData.tierToArchiveSummary

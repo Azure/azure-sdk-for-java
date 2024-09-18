@@ -7,6 +7,6 @@ module com.azure.messaging.eventgrid {
     exports com.azure.messaging.eventgrid;
     exports com.azure.messaging.eventgrid.systemevents;
 
-    opens com.azure.messaging.eventgrid.implementation.models to com.azure.core;
-    opens com.azure.messaging.eventgrid.systemevents to com.azure.core;
+    opens com.azure.messaging.eventgrid.implementation.models to com.fasterxml.jackson.databind, com.azure.core;
+    opens com.azure.messaging.eventgrid.systemevents to com.fasterxml.jackson.databind, com.azure.core;
 }
