@@ -78,7 +78,6 @@
   <suppress checks="IllegalImport" files=".*[/\\]com[/\\]azure[/\\]monitor[/\\]opentelemetry[/\\]exporter[/\\]*"/>
   <suppress checks="IllegalImport" files=".*[/\\]com[/\\]azure[/\\]spring[/\\]cloud[/\\]autoconfigure[/\\]monitor[/\\]*"/>
   <suppress checks="IllegalImport" files=".*[/\\]com[/\\]azure[/\\]identity[/\\]*"/>
-
   <suppress checks="IllegalImport" files="com.azure.messaging.servicebus.IntegrationTestBase.java"/>
   <suppress checks="IllegalImport" files="com.azure.messaging.servicebus.TracingIntegrationTests.java"/>
   <suppress checks="IllegalImport" files="com.azure.messaging.servicebus.LoggingSpanProcessor.java"/>
