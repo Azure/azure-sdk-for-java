@@ -5,6 +5,7 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -41,6 +42,7 @@ public final class CallRejectReasonInternal extends ExpandableStringEnum<CallRej
      * @param name a name to look for.
      * @return the corresponding CallRejectReasonInternal.
      */
+    @JsonCreator
     public static CallRejectReasonInternal fromString(String name) {
         return fromString(name, CallRejectReasonInternal.class);
     }
