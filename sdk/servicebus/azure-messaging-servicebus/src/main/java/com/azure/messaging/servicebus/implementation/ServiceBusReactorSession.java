@@ -11,13 +11,14 @@ import com.azure.core.amqp.ClaimsBasedSecurityNode;
 import com.azure.core.amqp.implementation.AmqpConstants;
 import com.azure.core.amqp.implementation.ConsumerFactory;
 import com.azure.core.amqp.implementation.MessageSerializer;
-import com.azure.core.amqp.implementation.ProtonSessionWrapper;
 import com.azure.core.amqp.implementation.ReactorHandlerProvider;
+import com.azure.core.amqp.implementation.ReactorProvider;
 import com.azure.core.amqp.implementation.ReactorSession;
 import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.amqp.implementation.TokenManager;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.amqp.implementation.handler.DeliverySettleMode;
+import com.azure.core.amqp.implementation.handler.SessionHandler;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
@@ -25,6 +26,7 @@ import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.UnsignedInteger;
 import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
 import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
+import org.apache.qpid.proton.engine.Session;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -64,6 +66,9 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
      * Creates a new AMQP session using proton-j.
      *
      * @param session Proton-j session for this AMQP session.
+     * @param sessionHandler Handler for events that occur in the session.
+     * @param sessionName Name of the session.
+     * @param provider Provides reactor instances for messages to sent with.
      * @param handlerProvider Providers reactor handlers for listening to proton-j reactor events.
      * @param linkProvider Provides amqp links for send and receive.
      * @param cbsNodeSupplier Mono that returns a reference to the {@link ClaimsBasedSecurityNode}.
@@ -73,13 +78,13 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
      * @param createOptions  the options to create {@link ServiceBusReactorSession}.
      * @param isV2 (temporary) flag indicating which receiver, v1 or v2, to create.
      */
-    ServiceBusReactorSession(AmqpConnection amqpConnection, ProtonSessionWrapper session,
-        ReactorHandlerProvider handlerProvider, ServiceBusAmqpLinkProvider linkProvider,
-        Mono<ClaimsBasedSecurityNode> cbsNodeSupplier, TokenManagerProvider tokenManagerProvider,
+    ServiceBusReactorSession(AmqpConnection amqpConnection, Session session, SessionHandler sessionHandler,
+        String sessionName, ReactorProvider provider, ReactorHandlerProvider handlerProvider,
+        ServiceBusAmqpLinkProvider linkProvider, Mono<ClaimsBasedSecurityNode> cbsNodeSupplier, TokenManagerProvider tokenManagerProvider,
         MessageSerializer messageSerializer, AmqpRetryOptions retryOptions,
         ServiceBusCreateSessionOptions createOptions, boolean isV2) {
-        super(amqpConnection, session, handlerProvider, linkProvider, cbsNodeSupplier, tokenManagerProvider,
-            messageSerializer, retryOptions);
+        super(amqpConnection, session, sessionHandler, sessionName, provider, handlerProvider, linkProvider, cbsNodeSupplier,
+            tokenManagerProvider, messageSerializer, retryOptions);
         this.amqpConnection = amqpConnection;
         this.retryOptions = retryOptions;
         this.linkProvider = linkProvider;

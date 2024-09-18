@@ -6,6 +6,7 @@ package com.azure.messaging.servicebus;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
+import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.util.Configuration;
@@ -20,6 +21,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import reactor.test.StepVerifier;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
@@ -31,6 +33,8 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 class ServiceBusClientBuilderTest extends IntegrationTestBase {
     private static final String NAMESPACE_NAME = "dummyNamespaceName";
@@ -260,6 +264,55 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
         assertThrows(IllegalArgumentException.class,
             () -> new ServiceBusClientBuilder()
                 .connectionString("Endpoint=sb://sb-name" + TestUtils.getEndpoint() + "/;EntityPath=sb-name"));
+    }
+
+    @Test
+    public void testBatchSendEventByAzureNameKeyCredential() {
+        ConnectionStringProperties properties = getConnectionStringProperties();
+        String fullyQualifiedNamespace = getFullyQualifiedDomainName();
+        String sharedAccessKeyName = properties.getSharedAccessKeyName();
+        String sharedAccessKey = properties.getSharedAccessKey();
+        String queueName = getQueueName(TestUtils.USE_CASE_DEFAULT);
+
+        final ServiceBusMessage testData = new ServiceBusMessage(TEST_MESSAGE.getBytes(UTF_8));
+
+        ServiceBusSenderAsyncClient senderAsyncClient = toClose(new ServiceBusClientBuilder()
+            .credential(fullyQualifiedNamespace, new AzureNamedKeyCredential(sharedAccessKeyName, sharedAccessKey))
+            .sender()
+            .queueName(queueName)
+            .buildAsyncClient());
+        StepVerifier.create(
+            senderAsyncClient.createMessageBatch().flatMap(batch -> {
+                assertTrue(batch.tryAddMessage(testData));
+                return senderAsyncClient.sendMessages(batch);
+            }))
+            .expectComplete()
+            .verify(TIMEOUT);
+    }
+
+    @Test
+    public void testBatchSendEventByAzureSasCredential() {
+        ConnectionStringProperties properties = getConnectionStringProperties(true);
+        String fullyQualifiedNamespace = getFullyQualifiedDomainName();
+        String sharedAccessSignature = properties.getSharedAccessSignature();
+        String queueName = getQueueName(TestUtils.USE_CASE_DEFAULT);
+
+        final ServiceBusMessage testData = new ServiceBusMessage(TEST_MESSAGE.getBytes(UTF_8));
+
+        ServiceBusSenderAsyncClient senderAsyncClient = toClose(new ServiceBusClientBuilder()
+            .credential(fullyQualifiedNamespace,
+                new AzureSasCredential(sharedAccessSignature))
+            .sender()
+            .queueName(queueName)
+            .buildAsyncClient());
+
+        StepVerifier.create(
+            senderAsyncClient.createMessageBatch().flatMap(batch -> {
+                assertTrue(batch.tryAddMessage(testData));
+                return senderAsyncClient.sendMessages(batch);
+            }))
+            .expectComplete()
+            .verify(TIMEOUT);
     }
 
     @Test
