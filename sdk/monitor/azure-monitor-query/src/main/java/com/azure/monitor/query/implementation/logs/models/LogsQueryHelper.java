@@ -119,47 +119,49 @@ public final class LogsQueryHelper {
                 T t = type.newInstance();
 
                 Map<String, Field> declaredFieldMapping = Arrays.stream(type.getDeclaredFields())
-                    .collect(Collectors.toMap(field -> field.getName().toLowerCase(Locale.ROOT), field -> field));
+                        .collect(Collectors.toMap(field -> field.getName().toLowerCase(Locale.ROOT), field -> field));
 
-                tableRow.getRow().stream().forEach(tableCell -> {
-                    String columnName = tableCell.getColumnName();
-                    try {
-                        Field field = declaredFieldMapping.get(columnName.toLowerCase(Locale.ROOT));
-                        if (field == null) {
-                            return;
-                        }
-                        field.setAccessible(true);
-                        if (tableCell.getColumnType() == LogsColumnType.BOOL) {
-                            field.set(t, tableCell.getValueAsBoolean());
-                        } else if (tableCell.getColumnType() == LogsColumnType.DATETIME) {
-                            field.set(t, tableCell.getValueAsDateTime());
-                        } else if (tableCell.getColumnType() == LogsColumnType.DYNAMIC) {
-                            if (tableCell.getValueAsDynamic() != null) {
-                                field.set(t, tableCell.getValueAsDynamic()
-                                    .toObject(TypeReference.createInstance(field.getType())));
+                tableRow.getRow().stream()
+                        .forEach(tableCell -> {
+                            String columnName = tableCell.getColumnName();
+                            try {
+                                Field field = declaredFieldMapping.get(columnName.toLowerCase(Locale.ROOT));
+                                if (field == null) {
+                                    return;
+                                }
+                                field.setAccessible(true);
+                                if (tableCell.getColumnType() == LogsColumnType.BOOL) {
+                                    field.set(t, tableCell.getValueAsBoolean());
+                                } else if (tableCell.getColumnType() == LogsColumnType.DATETIME) {
+                                    field.set(t, tableCell.getValueAsDateTime());
+                                } else if (tableCell.getColumnType() == LogsColumnType.DYNAMIC) {
+                                    if (tableCell.getValueAsDynamic() != null) {
+                                        field.set(t,
+                                                tableCell.getValueAsDynamic()
+                                                        .toObject(TypeReference.createInstance(field.getType())));
+                                    }
+                                } else if (tableCell.getColumnType() == LogsColumnType.INT) {
+                                    field.set(t, tableCell.getValueAsInteger());
+                                } else if (tableCell.getColumnType() == LogsColumnType.LONG) {
+                                    field.set(t, tableCell.getValueAsLong());
+                                } else if (tableCell.getColumnType() == LogsColumnType.REAL
+                                        || tableCell.getColumnType() == LogsColumnType.DECIMAL) {
+                                    field.set(t, tableCell.getValueAsDouble());
+                                } else if (tableCell.getColumnType() == LogsColumnType.STRING
+                                        || tableCell.getColumnType() == LogsColumnType.GUID
+                                        || tableCell.getColumnType() == LogsColumnType.TIMESPAN) {
+                                    field.set(t, tableCell.getValueAsString());
+                                }
+                                field.setAccessible(false);
+                            } catch (IllegalAccessException ex) {
+                                throw LOGGER.logExceptionAsError(
+                                        new IllegalArgumentException("Failed to set column value for " + columnName, ex));
                             }
-                        } else if (tableCell.getColumnType() == LogsColumnType.INT) {
-                            field.set(t, tableCell.getValueAsInteger());
-                        } else if (tableCell.getColumnType() == LogsColumnType.LONG) {
-                            field.set(t, tableCell.getValueAsLong());
-                        } else if (tableCell.getColumnType() == LogsColumnType.REAL
-                            || tableCell.getColumnType() == LogsColumnType.DECIMAL) {
-                            field.set(t, tableCell.getValueAsDouble());
-                        } else if (tableCell.getColumnType() == LogsColumnType.STRING
-                            || tableCell.getColumnType() == LogsColumnType.GUID
-                            || tableCell.getColumnType() == LogsColumnType.TIMESPAN) {
-                            field.set(t, tableCell.getValueAsString());
-                        }
-                        field.setAccessible(false);
-                    } catch (IllegalAccessException ex) {
-                        throw LOGGER.logExceptionAsError(
-                            new IllegalArgumentException("Failed to set column value for " + columnName, ex));
-                    }
-                });
+                        });
                 result.add(t);
             } catch (InstantiationException | IllegalAccessException ex) {
                 throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Cannot create an instance of class " + type.getName(), ex));
+                        new IllegalArgumentException("Cannot create an instance of class " + type.getName(), ex));
             }
         }
         return result;
@@ -179,12 +181,13 @@ public final class LogsQueryHelper {
             return timeInterval.getStartTime() + "/" + timeInterval.getDuration();
         }
 
-        if (timeInterval.getDuration() != null && timeInterval.getEndTime() != null) {
+        if (timeInterval.getDuration()!= null && timeInterval.getEndTime() != null) {
             return timeInterval.getDuration() + "/" + timeInterval.getEndTime();
         }
 
         return timeInterval.getDuration() == null ? null : timeInterval.getDuration().toString();
     }
+
 
     public static Context updateContext(Duration serverTimeout, Context context) {
         if (serverTimeout != null) {
@@ -200,16 +203,17 @@ public final class LogsQueryHelper {
         return null;
     }
 
+
     public static Response<LogsQueryResult> convertToLogQueryResult(Response<QueryResults> response) {
         QueryResults queryResults = response.getValue();
         LogsQueryResult logsQueryResult = getLogsQueryResult(queryResults.getTables(), queryResults.getStatistics(),
             queryResults.getRender(), queryResults.getError());
-        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-            logsQueryResult);
+        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+            response.getHeaders(), logsQueryResult);
     }
 
     public static LogsQueryResult getLogsQueryResult(List<Table> innerTables, Object innerStats,
-        Object innerVisualization, ErrorInfo innerError) {
+                                               Object innerVisualization, ErrorInfo innerError) {
         List<LogsTable> tables = null;
 
         if (innerTables != null) {
@@ -230,8 +234,9 @@ public final class LogsQueryHelper {
                         LogsColumnType columnType = table.getColumns().get(j).getType() == null
                             ? null
                             : LogsColumnType.fromString(table.getColumns().get(j).getType().toString());
-                        LogsTableCell cell
-                            = new LogsTableCell(table.getColumns().get(j).getName(), columnType, j, i, row.get(j));
+                        LogsTableCell cell = new LogsTableCell(table.getColumns().get(j).getName(),
+                            columnType, j, i,
+                            row.get(j));
                         tableCells.add(cell);
                         tableRow.getRow().add(cell);
                     }
@@ -250,8 +255,8 @@ public final class LogsQueryHelper {
             queryVisualization = BinaryData.fromObject(innerVisualization);
         }
 
-        LogsQueryResult logsQueryResult
-            = new LogsQueryResult(tables, queryStatistics, queryVisualization, mapLogsQueryError(innerError));
+        LogsQueryResult logsQueryResult = new LogsQueryResult(tables, queryStatistics, queryVisualization,
+            mapLogsQueryError(innerError));
         return logsQueryResult;
     }
 
@@ -273,26 +278,23 @@ public final class LogsQueryHelper {
         return null;
     }
 
-    public static Response<LogsBatchQueryResultCollection>
-        convertToLogQueryBatchResult(Response<BatchResponse> response) {
+    public static Response<LogsBatchQueryResultCollection> convertToLogQueryBatchResult(Response<BatchResponse> response) {
         List<LogsBatchQueryResult> batchResults = new ArrayList<>();
-        LogsBatchQueryResultCollection logsBatchQueryResultCollection
-            = new LogsBatchQueryResultCollection(batchResults);
+        LogsBatchQueryResultCollection logsBatchQueryResultCollection = new LogsBatchQueryResultCollection(batchResults);
 
         BatchResponse batchResponse = response.getValue();
 
         for (BatchQueryResponse singleQueryResponse : batchResponse.getResponses()) {
 
             BatchQueryResults queryResults = singleQueryResponse.getBody();
-            LogsQueryResult logsQueryResult = getLogsQueryResult(queryResults.getTables(), queryResults.getStatistics(),
-                queryResults.getRender(), queryResults.getError());
+            LogsQueryResult logsQueryResult = getLogsQueryResult(queryResults.getTables(),
+                queryResults.getStatistics(), queryResults.getRender(), queryResults.getError());
             LogsBatchQueryResult logsBatchQueryResult = new LogsBatchQueryResult(singleQueryResponse.getId(),
                 singleQueryResponse.getStatus(), logsQueryResult.getAllTables(), logsQueryResult.getStatistics(),
                 logsQueryResult.getVisualization(), logsQueryResult.getError());
             batchResults.add(logsBatchQueryResult);
         }
         batchResults.sort(Comparator.comparingInt(o -> Integer.parseInt(o.getId())));
-        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-            logsBatchQueryResultCollection);
+        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), logsBatchQueryResultCollection);
     }
 }

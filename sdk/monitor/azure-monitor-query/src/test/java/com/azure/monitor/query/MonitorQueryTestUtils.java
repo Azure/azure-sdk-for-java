@@ -12,18 +12,18 @@ public final class MonitorQueryTestUtils {
     private MonitorQueryTestUtils() {
 
     }
+    private static final String LOG_WORKSPACE_ID = Configuration.getGlobalConfiguration()
+        .get("AZURE_MONITOR_LOGS_WORKSPACE_ID");
 
-    private static final String LOG_WORKSPACE_ID
-        = Configuration.getGlobalConfiguration().get("AZURE_MONITOR_LOGS_WORKSPACE_ID");
+    private static final String ADDITIONAL_LOG_WORKSPACE_ID = Configuration.getGlobalConfiguration()
+        .get("AZURE_MONITOR_LOGS_ADDITIONAL_WORKSPACE_ID");
 
-    private static final String ADDITIONAL_LOG_WORKSPACE_ID
-        = Configuration.getGlobalConfiguration().get("AZURE_MONITOR_LOGS_ADDITIONAL_WORKSPACE_ID");
+    private static final String LOG_RESOURCE_ID = Configuration.getGlobalConfiguration()
+        .get("AZURE_MONITOR_LOGS_RESOURCE_ID");
 
-    private static final String LOG_RESOURCE_ID
-        = Configuration.getGlobalConfiguration().get("AZURE_MONITOR_LOGS_RESOURCE_ID");
+    private static final String METRIC_RESOURCE_URI = Configuration.getGlobalConfiguration()
+        .get("AZURE_MONITOR_METRICS_RESOURCE_URI_1");
 
-    private static final String METRIC_RESOURCE_URI
-        = Configuration.getGlobalConfiguration().get("AZURE_MONITOR_METRICS_RESOURCE_URI_1");
 
     public static final String QUERY_STRING = "let dt = datatable (DateTime: datetime, Bool:bool, Guid: guid, Int: "
         + "int, Long:long, Double: double, String: string, Timespan: timespan, Decimal: decimal, Dynamic: dynamic)\n"

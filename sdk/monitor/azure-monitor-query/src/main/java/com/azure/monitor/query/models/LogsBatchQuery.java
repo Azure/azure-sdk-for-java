@@ -44,8 +44,7 @@ public final class LogsBatchQuery {
     /**
      * Creates an instance of LogsBatchQuery.
      */
-    public LogsBatchQuery() {
-    }
+    public LogsBatchQuery() { }
 
     /**
      * Adds a new logs query to the batch.
@@ -68,13 +67,13 @@ public final class LogsBatchQuery {
      * @return The index of the query in the batch.
      */
     public String addWorkspaceQuery(String workspaceId, String query, QueryTimeInterval timeInterval,
-        LogsQueryOptions logsQueryOptions) {
+                                    LogsQueryOptions logsQueryOptions) {
         Objects.requireNonNull(query, "'query' cannot be null.");
         Objects.requireNonNull(workspaceId, "'workspaceId' cannot be null.");
         index++;
         QueryBody queryBody = new QueryBody(query)
-            .setWorkspaces(logsQueryOptions == null ? null : logsQueryOptions.getAdditionalWorkspaces())
-            .setTimespan(timeInterval == null ? null : LogsQueryHelper.toIso8601Format(timeInterval));
+                .setWorkspaces(logsQueryOptions == null ? null : logsQueryOptions.getAdditionalWorkspaces())
+                .setTimespan(timeInterval == null ? null : LogsQueryHelper.toIso8601Format(timeInterval));
 
         String preferHeader = buildPreferHeaderString(logsQueryOptions);
         if (logsQueryOptions != null && logsQueryOptions.getServerTimeout() != null) {
@@ -87,8 +86,8 @@ public final class LogsBatchQuery {
         if (!CoreUtils.isNullOrEmpty(preferHeader)) {
             headers.put("Prefer", preferHeader);
         }
-        BatchQueryRequest batchQueryRequest
-            = new BatchQueryRequest(String.valueOf(index), queryBody, workspaceId).setHeaders(headers)
+        BatchQueryRequest batchQueryRequest = new BatchQueryRequest(String.valueOf(index), queryBody, workspaceId)
+                .setHeaders(headers)
                 .setPath("/query")
                 .setMethod("POST");
 
