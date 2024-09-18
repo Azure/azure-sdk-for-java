@@ -5,44 +5,43 @@
 package com.azure.communication.email.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Content of the email.
- */
+/** Content of the email. */
 @Fluent
-public final class EmailContent implements JsonSerializable<EmailContent> {
+public final class EmailContent {
     /*
      * Subject of the email message
      */
-    private final String subject;
+    @JsonProperty(value = "subject", required = true)
+    private String subject;
 
     /*
      * Plain text version of the email message.
      */
+    @JsonProperty(value = "plainText")
     private String plainText;
 
     /*
      * Html version of the email message.
      */
+    @JsonProperty(value = "html")
     private String html;
 
     /**
      * Creates an instance of EmailContent class.
-     * 
+     *
      * @param subject the subject value to set.
      */
-    public EmailContent(String subject) {
+    @JsonCreator
+    public EmailContent(@JsonProperty(value = "subject", required = true) String subject) {
         this.subject = subject;
     }
 
     /**
      * Get the subject property: Subject of the email message.
-     * 
+     *
      * @return the subject value.
      */
     public String getSubject() {
@@ -51,7 +50,7 @@ public final class EmailContent implements JsonSerializable<EmailContent> {
 
     /**
      * Get the plainText property: Plain text version of the email message.
-     * 
+     *
      * @return the plainText value.
      */
     public String getPlainText() {
@@ -60,7 +59,7 @@ public final class EmailContent implements JsonSerializable<EmailContent> {
 
     /**
      * Set the plainText property: Plain text version of the email message.
-     * 
+     *
      * @param plainText the plainText value to set.
      * @return the EmailContent object itself.
      */
@@ -71,7 +70,7 @@ public final class EmailContent implements JsonSerializable<EmailContent> {
 
     /**
      * Get the html property: Html version of the email message.
-     * 
+     *
      * @return the html value.
      */
     public String getHtml() {
@@ -80,65 +79,12 @@ public final class EmailContent implements JsonSerializable<EmailContent> {
 
     /**
      * Set the html property: Html version of the email message.
-     * 
+     *
      * @param html the html value to set.
      * @return the EmailContent object itself.
      */
     public EmailContent setHtml(String html) {
         this.html = html;
         return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("subject", this.subject);
-        jsonWriter.writeStringField("plainText", this.plainText);
-        jsonWriter.writeStringField("html", this.html);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of EmailContent from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of EmailContent if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the EmailContent.
-     */
-    public static EmailContent fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean subjectFound = false;
-            String subject = null;
-            String plainText = null;
-            String html = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("subject".equals(fieldName)) {
-                    subject = reader.getString();
-                    subjectFound = true;
-                } else if ("plainText".equals(fieldName)) {
-                    plainText = reader.getString();
-                } else if ("html".equals(fieldName)) {
-                    html = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (subjectFound) {
-                EmailContent deserializedEmailContent = new EmailContent(subject);
-                deserializedEmailContent.plainText = plainText;
-                deserializedEmailContent.html = html;
-
-                return deserializedEmailContent;
-            }
-            throw new IllegalStateException("Missing required property: subject");
-        });
     }
 }
