@@ -31,6 +31,11 @@ public final class PrivateLinkServiceProperties implements JsonSerializable<Priv
     private List<PrivateLinkServiceIpConfigurationInner> ipConfigurations;
 
     /*
+     * The destination IP address of the private link service.
+     */
+    private String destinationIpAddress;
+
+    /*
      * An array of references to the network interfaces created for this private link service.
      */
     private List<NetworkInterfaceInner> networkInterfaces;
@@ -117,6 +122,26 @@ public final class PrivateLinkServiceProperties implements JsonSerializable<Priv
     public PrivateLinkServiceProperties
         withIpConfigurations(List<PrivateLinkServiceIpConfigurationInner> ipConfigurations) {
         this.ipConfigurations = ipConfigurations;
+        return this;
+    }
+
+    /**
+     * Get the destinationIpAddress property: The destination IP address of the private link service.
+     * 
+     * @return the destinationIpAddress value.
+     */
+    public String destinationIpAddress() {
+        return this.destinationIpAddress;
+    }
+
+    /**
+     * Set the destinationIpAddress property: The destination IP address of the private link service.
+     * 
+     * @param destinationIpAddress the destinationIpAddress value to set.
+     * @return the PrivateLinkServiceProperties object itself.
+     */
+    public PrivateLinkServiceProperties withDestinationIpAddress(String destinationIpAddress) {
+        this.destinationIpAddress = destinationIpAddress;
         return this;
     }
 
@@ -273,6 +298,7 @@ public final class PrivateLinkServiceProperties implements JsonSerializable<Priv
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("ipConfigurations", this.ipConfigurations,
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("destinationIPAddress", this.destinationIpAddress);
         jsonWriter.writeJsonField("visibility", this.visibility);
         jsonWriter.writeJsonField("autoApproval", this.autoApproval);
         jsonWriter.writeArrayField("fqdns", this.fqdns, (writer, element) -> writer.writeString(element));
@@ -304,6 +330,8 @@ public final class PrivateLinkServiceProperties implements JsonSerializable<Priv
                     List<PrivateLinkServiceIpConfigurationInner> ipConfigurations
                         = reader.readArray(reader1 -> PrivateLinkServiceIpConfigurationInner.fromJson(reader1));
                     deserializedPrivateLinkServiceProperties.ipConfigurations = ipConfigurations;
+                } else if ("destinationIPAddress".equals(fieldName)) {
+                    deserializedPrivateLinkServiceProperties.destinationIpAddress = reader.getString();
                 } else if ("networkInterfaces".equals(fieldName)) {
                     List<NetworkInterfaceInner> networkInterfaces
                         = reader.readArray(reader1 -> NetworkInterfaceInner.fromJson(reader1));

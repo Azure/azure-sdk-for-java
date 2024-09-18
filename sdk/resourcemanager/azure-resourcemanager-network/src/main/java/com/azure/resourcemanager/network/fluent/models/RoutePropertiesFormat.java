@@ -133,18 +133,6 @@ public final class RoutePropertiesFormat implements JsonSerializable<RouteProper
     }
 
     /**
-     * Set the hasBgpOverride property: A value indicating whether this route overrides overlapping BGP routes
-     * regardless of LPM.
-     * 
-     * @param hasBgpOverride the hasBgpOverride value to set.
-     * @return the RoutePropertiesFormat object itself.
-     */
-    public RoutePropertiesFormat withHasBgpOverride(Boolean hasBgpOverride) {
-        this.hasBgpOverride = hasBgpOverride;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -168,7 +156,6 @@ public final class RoutePropertiesFormat implements JsonSerializable<RouteProper
         jsonWriter.writeStringField("nextHopType", this.nextHopType == null ? null : this.nextHopType.toString());
         jsonWriter.writeStringField("addressPrefix", this.addressPrefix);
         jsonWriter.writeStringField("nextHopIpAddress", this.nextHopIpAddress);
-        jsonWriter.writeBooleanField("hasBgpOverride", this.hasBgpOverride);
         return jsonWriter.writeEndObject();
     }
 
