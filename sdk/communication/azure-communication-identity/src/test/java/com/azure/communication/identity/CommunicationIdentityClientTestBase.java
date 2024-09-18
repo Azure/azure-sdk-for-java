@@ -8,7 +8,6 @@ import com.azure.communication.common.implementation.CommunicationConnectionStri
 import com.azure.communication.identity.models.CommunicationTokenScope;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
@@ -20,10 +19,7 @@ import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.logging.LogLevel;
-import com.azure.identity.*;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
@@ -37,7 +33,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class CommunicationIdentityClientTestBase extends TestProxyTestBase {
-    private static final ClientLogger LOGGER = new ClientLogger(CommunicationIdentityClientTestBase.class);
 
     private static final String REDACTED = "REDACTED";
     private static final String URI_IDENTITY_REPLACER_REGEX = "/identities/([^/?]+)";
@@ -99,10 +94,15 @@ public class CommunicationIdentityClientTestBase extends TestProxyTestBase {
             .endpoint(communicationEndpoint)
             .httpClient(httpClient);
 
-        builder.credential(getIdentityTestCredential(interceptorManager));
-        if (interceptorManager.isRecordMode()) {
-            builder.addPolicy(interceptorManager.getRecordPolicy());
+        if (interceptorManager.isPlaybackMode()) {
+            builder.credential(new MockTokenCredential());
+        } else {
+            builder.credential(new DefaultAzureCredentialBuilder().build());
+            if (interceptorManager.isRecordMode()) {
+                builder.addPolicy(interceptorManager.getRecordPolicy());
+            }
         }
+
         addTestProxyTestSanitizersAndMatchers(interceptorManager);
         return builder;
     }
@@ -159,7 +159,7 @@ public class CommunicationIdentityClientTestBase extends TestProxyTestBase {
                     final HttpResponse bufferedResponse = httpResponse.buffer();
 
                     // Should sanitize printed reponse url
-                    LOGGER.log(LogLevel.VERBOSE, () -> "MS-CV header for " + testName + " request "
+                    System.out.println("MS-CV header for " + testName + " request "
                             + bufferedResponse.getRequest().getUrl() + ": " + bufferedResponse.getHeaderValue("MS-CV"));
                     return Mono.just(bufferedResponse);
                 });
@@ -177,41 +177,6 @@ public class CommunicationIdentityClientTestBase extends TestProxyTestBase {
         assertNotNull(userIdentifier);
         assertNotNull(userIdentifier.getId());
         assertFalse(userIdentifier.getId().isEmpty());
-    }
-
-    public static TokenCredential getIdentityTestCredential(InterceptorManager interceptorManager) {
-        if (interceptorManager.isPlaybackMode()) {
-            return  new MockTokenCredential();
-        }
-
-        Configuration config = Configuration.getGlobalConfiguration();
-
-        ChainedTokenCredentialBuilder builder = new ChainedTokenCredentialBuilder()
-            .addLast(new EnvironmentCredentialBuilder().build())
-            .addLast(new AzureCliCredentialBuilder().build())
-            .addLast(new AzureDeveloperCliCredentialBuilder().build());
-
-
-        String serviceConnectionId = config.get("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
-        String clientId = config.get("AZURESUBSCRIPTION_CLIENT_ID");
-        String tenantId = config.get("AZURESUBSCRIPTION_TENANT_ID");
-        String systemAccessToken = config.get("SYSTEM_ACCESSTOKEN");
-
-        if (!CoreUtils.isNullOrEmpty(serviceConnectionId)
-            && !CoreUtils.isNullOrEmpty(clientId)
-            && !CoreUtils.isNullOrEmpty(tenantId)
-            && !CoreUtils.isNullOrEmpty(systemAccessToken)) {
-
-            builder.addLast(new AzurePipelinesCredentialBuilder()
-                .systemAccessToken(systemAccessToken)
-                .clientId(clientId)
-                .tenantId(tenantId)
-                .serviceConnectionId(serviceConnectionId)
-                .build());
-        }
-
-        builder.addLast(new AzurePowerShellCredentialBuilder().build());
-        return builder.build();
     }
 
 }
