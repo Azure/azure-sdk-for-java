@@ -5,29 +5,37 @@ package com.azure.communication.messages.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * The class describes a parameter of a template.
  */
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "kind",
+    defaultImpl = MessageTemplateValue.class)
+@JsonTypeName("MessageTemplateValue")
+@JsonSubTypes({
+    @JsonSubTypes.Type(name = "text", value = MessageTemplateText.class),
+    @JsonSubTypes.Type(name = "image", value = MessageTemplateImage.class),
+    @JsonSubTypes.Type(name = "document", value = MessageTemplateDocument.class),
+    @JsonSubTypes.Type(name = "video", value = MessageTemplateVideo.class),
+    @JsonSubTypes.Type(name = "location", value = MessageTemplateLocation.class),
+    @JsonSubTypes.Type(name = "quickAction", value = MessageTemplateQuickAction.class) })
 @Immutable
-public class MessageTemplateValue implements JsonSerializable<MessageTemplateValue> {
-
-    /*
-     * The type discriminator describing a template parameter type.
-     */
-    @Generated
-    private MessageTemplateValueKind kind = MessageTemplateValueKind.fromString("MessageTemplateValue");
+public abstract class MessageTemplateValue {
 
     /*
      * Template binding reference name
      */
     @Generated
-    private final String refValue;
+    @JsonProperty(value = "name")
+    private String refValue;
 
     /**
      * Creates an instance of MessageTemplateValue class.
@@ -35,18 +43,9 @@ public class MessageTemplateValue implements JsonSerializable<MessageTemplateVal
      * @param refValue the refValue value to set.
      */
     @Generated
-    public MessageTemplateValue(String refValue) {
+    @JsonCreator
+    protected MessageTemplateValue(@JsonProperty(value = "name") String refValue) {
         this.refValue = refValue;
-    }
-
-    /**
-     * Get the kind property: The type discriminator describing a template parameter type.
-     *
-     * @return the kind value.
-     */
-    @Generated
-    public MessageTemplateValueKind getKind() {
-        return this.kind;
     }
 
     /**
@@ -57,85 +56,5 @@ public class MessageTemplateValue implements JsonSerializable<MessageTemplateVal
     @Generated
     public String getRefValue() {
         return this.refValue;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("name", this.refValue);
-        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of MessageTemplateValue from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of MessageTemplateValue if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the MessageTemplateValue.
-     */
-    @Generated
-    public static MessageTemplateValue fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            String discriminatorValue = null;
-            try (JsonReader readerToUse = reader.bufferObject()) {
-                // Prepare for reading
-                readerToUse.nextToken();
-                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
-                    String fieldName = readerToUse.getFieldName();
-                    readerToUse.nextToken();
-                    if ("kind".equals(fieldName)) {
-                        discriminatorValue = readerToUse.getString();
-                        break;
-                    } else {
-                        readerToUse.skipChildren();
-                    }
-                }
-                // Use the discriminator value to determine which subtype should be deserialized.
-                if ("text".equals(discriminatorValue)) {
-                    return MessageTemplateText.fromJson(readerToUse.reset());
-                } else if ("image".equals(discriminatorValue)) {
-                    return MessageTemplateImage.fromJson(readerToUse.reset());
-                } else if ("document".equals(discriminatorValue)) {
-                    return MessageTemplateDocument.fromJson(readerToUse.reset());
-                } else if ("video".equals(discriminatorValue)) {
-                    return MessageTemplateVideo.fromJson(readerToUse.reset());
-                } else if ("location".equals(discriminatorValue)) {
-                    return MessageTemplateLocation.fromJson(readerToUse.reset());
-                } else if ("quickAction".equals(discriminatorValue)) {
-                    return MessageTemplateQuickAction.fromJson(readerToUse.reset());
-                } else {
-                    return fromJsonKnownDiscriminator(readerToUse.reset());
-                }
-            }
-        });
-    }
-
-    @Generated
-    static MessageTemplateValue fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            String refValue = null;
-            MessageTemplateValueKind kind = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("name".equals(fieldName)) {
-                    refValue = reader.getString();
-                } else if ("kind".equals(fieldName)) {
-                    kind = MessageTemplateValueKind.fromString(reader.getString());
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            MessageTemplateValue deserializedMessageTemplateValue = new MessageTemplateValue(refValue);
-            deserializedMessageTemplateValue.kind = kind;
-            return deserializedMessageTemplateValue;
-        });
     }
 }
