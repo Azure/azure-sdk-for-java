@@ -24,6 +24,11 @@ public final class QueryDebugMode extends ExpandableStringEnum<QueryDebugMode> {
     public static final QueryDebugMode SEMANTIC = fromString("semantic");
 
     /**
+     * Allows the user to further explore their hybrid and vector query results.
+     */
+    public static final QueryDebugMode VECTOR = fromString("vector");
+
+    /**
      * Creates a new instance of QueryDebugMode value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
