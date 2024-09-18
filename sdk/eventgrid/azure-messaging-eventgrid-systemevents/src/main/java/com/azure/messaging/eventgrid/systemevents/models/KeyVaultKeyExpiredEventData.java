@@ -51,13 +51,13 @@ public final class KeyVaultKeyExpiredEventData implements JsonSerializable<KeyVa
      * Not before date of the object that triggered this event
      */
     @Generated
-    private Double nbf;
+    private Double nBF;
 
     /*
      * The expiration date of the object that triggered this event
      */
     @Generated
-    private Double exp;
+    private Double eXP;
 
     /**
      * Creates an instance of KeyVaultKeyExpiredEventData class.
@@ -117,25 +117,28 @@ public final class KeyVaultKeyExpiredEventData implements JsonSerializable<KeyVa
     }
 
     /**
-     * Get the nbf property: Not before date of the object that triggered this event.
+     * Get the nBF property: Not before date of the object that triggered this event.
      * 
-     * @return the nbf value.
+     * @return the nBF value.
      */
     @Generated
-    public Double getNbf() {
-        return this.nbf;
+    public Double getNBF() {
+        return this.nBF;
     }
 
     /**
-     * Get the exp property: The expiration date of the object that triggered this event.
+     * Get the eXP property: The expiration date of the object that triggered this event.
      * 
-     * @return the exp value.
+     * @return the eXP value.
      */
     @Generated
-    public Double getExp() {
-        return this.exp;
+    public Double getEXP() {
+        return this.eXP;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
@@ -145,8 +148,8 @@ public final class KeyVaultKeyExpiredEventData implements JsonSerializable<KeyVa
         jsonWriter.writeStringField("ObjectType", this.objectType);
         jsonWriter.writeStringField("ObjectName", this.objectName);
         jsonWriter.writeStringField("Version", this.version);
-        jsonWriter.writeNumberField("NBF", this.nbf);
-        jsonWriter.writeNumberField("EXP", this.exp);
+        jsonWriter.writeNumberField("NBF", this.nBF);
+        jsonWriter.writeNumberField("EXP", this.eXP);
         return jsonWriter.writeEndObject();
     }
 
@@ -177,9 +180,9 @@ public final class KeyVaultKeyExpiredEventData implements JsonSerializable<KeyVa
                 } else if ("Version".equals(fieldName)) {
                     deserializedKeyVaultKeyExpiredEventData.version = reader.getString();
                 } else if ("NBF".equals(fieldName)) {
-                    deserializedKeyVaultKeyExpiredEventData.nbf = reader.getNullable(JsonReader::getDouble);
+                    deserializedKeyVaultKeyExpiredEventData.nBF = reader.getNullable(JsonReader::getDouble);
                 } else if ("EXP".equals(fieldName)) {
-                    deserializedKeyVaultKeyExpiredEventData.exp = reader.getNullable(JsonReader::getDouble);
+                    deserializedKeyVaultKeyExpiredEventData.eXP = reader.getNullable(JsonReader::getDouble);
                 } else {
                     reader.skipChildren();
                 }

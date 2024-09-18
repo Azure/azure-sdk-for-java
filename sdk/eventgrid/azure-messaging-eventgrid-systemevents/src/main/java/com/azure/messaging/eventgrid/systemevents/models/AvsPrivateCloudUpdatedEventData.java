@@ -16,6 +16,12 @@ import java.io.IOException;
  */
 @Immutable
 public final class AvsPrivateCloudUpdatedEventData extends AvsPrivateCloudEventData {
+    /*
+     * Id of the operation that caused this event.
+     */
+    @Generated
+    private String operationId;
+
     /**
      * Creates an instance of AvsPrivateCloudUpdatedEventData class.
      */
@@ -23,6 +29,20 @@ public final class AvsPrivateCloudUpdatedEventData extends AvsPrivateCloudEventD
     private AvsPrivateCloudUpdatedEventData() {
     }
 
+    /**
+     * Get the operationId property: Id of the operation that caused this event.
+     * 
+     * @return the operationId value.
+     */
+    @Generated
+    @Override
+    public String getOperationId() {
+        return this.operationId;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
@@ -49,7 +69,7 @@ public final class AvsPrivateCloudUpdatedEventData extends AvsPrivateCloudEventD
                 reader.nextToken();
 
                 if ("operationId".equals(fieldName)) {
-                    deserializedAvsPrivateCloudUpdatedEventData.setOperationId(reader.getString());
+                    deserializedAvsPrivateCloudUpdatedEventData.operationId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

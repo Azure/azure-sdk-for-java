@@ -138,10 +138,20 @@ public final class MediaLiveEventTrackDiscontinuityDetectedEventData
         return this.discontinuityGap;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("trackType", this.trackType);
+        jsonWriter.writeStringField("trackName", this.trackName);
+        jsonWriter.writeNumberField("bitrate", this.bitrate);
+        jsonWriter.writeStringField("previousTimestamp", this.previousTimestamp);
+        jsonWriter.writeStringField("newTimestamp", this.newTimestamp);
+        jsonWriter.writeStringField("timescale", this.timescale);
+        jsonWriter.writeStringField("discontinuityGap", this.discontinuityGap);
         return jsonWriter.writeEndObject();
     }
 

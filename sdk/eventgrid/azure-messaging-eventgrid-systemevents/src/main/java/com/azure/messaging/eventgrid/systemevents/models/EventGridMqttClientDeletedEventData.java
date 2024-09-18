@@ -7,24 +7,20 @@ package com.azure.messaging.eventgrid.systemevents.models;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Event data for Microsoft.EventGrid.SystemEvents.MQTTClientDeleted event.
+ * Event data for Microsoft.EventGrid.MQTTClientDeleted event.
  */
 @Immutable
-public final class EventGridMqttClientDeletedEventData
-    implements JsonSerializable<EventGridMqttClientDeletedEventData> {
+public final class EventGridMQTTClientDeletedEventData extends EventGridMQTTClientEventData {
     /*
-     * Unique identifier for the MQTT client that the client presents to the service
-     * for authentication. This case-sensitive string can be up to 128 characters
-     * long, and supports UTF-8 characters.
+     * Name of the Event Grid namespace where the MQTT client was created or updated.
      */
     @Generated
-    private String clientAuthenticationName;
+    private String namespaceName;
 
     /*
      * Name of the client resource in the Event Grid namespace.
@@ -33,16 +29,40 @@ public final class EventGridMqttClientDeletedEventData
     private String clientName;
 
     /*
-     * Name of the Event Grid namespace where the MQTT client was created or updated.
+     * Unique identifier for the MQTT client that the client presents to the service
+     * for authentication. This case-sensitive string can be up to 128 characters
+     * long, and supports UTF-8 characters.
      */
     @Generated
-    private String namespaceName;
+    private String clientAuthenticationName;
 
     /**
-     * Creates an instance of EventGridMqttClientDeletedEventData class.
+     * Creates an instance of EventGridMQTTClientDeletedEventData class.
      */
     @Generated
-    private EventGridMqttClientDeletedEventData() {
+    private EventGridMQTTClientDeletedEventData() {
+    }
+
+    /**
+     * Get the namespaceName property: Name of the Event Grid namespace where the MQTT client was created or updated.
+     * 
+     * @return the namespaceName value.
+     */
+    @Generated
+    @Override
+    public String getNamespaceName() {
+        return this.namespaceName;
+    }
+
+    /**
+     * Get the clientName property: Name of the client resource in the Event Grid namespace.
+     * 
+     * @return the clientName value.
+     */
+    @Generated
+    @Override
+    public String getClientName() {
+        return this.clientName;
     }
 
     /**
@@ -54,69 +74,53 @@ public final class EventGridMqttClientDeletedEventData
      * @return the clientAuthenticationName value.
      */
     @Generated
+    @Override
     public String getClientAuthenticationName() {
         return this.clientAuthenticationName;
     }
 
     /**
-     * Get the clientName property: Name of the client resource in the Event Grid namespace.
-     * 
-     * @return the clientName value.
+     * {@inheritDoc}
      */
-    @Generated
-    public String getClientName() {
-        return this.clientName;
-    }
-
-    /**
-     * Get the namespaceName property: Name of the Event Grid namespace where the MQTT client was created or updated.
-     * 
-     * @return the namespaceName value.
-     */
-    @Generated
-    public String getNamespaceName() {
-        return this.namespaceName;
-    }
-
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("clientAuthenticationName", this.clientAuthenticationName);
-        jsonWriter.writeStringField("clientName", this.clientName);
-        jsonWriter.writeStringField("namespaceName", this.namespaceName);
+        jsonWriter.writeStringField("clientAuthenticationName", getClientAuthenticationName());
+        jsonWriter.writeStringField("clientName", getClientName());
+        jsonWriter.writeStringField("namespaceName", getNamespaceName());
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of EventGridMqttClientDeletedEventData from the JsonReader.
+     * Reads an instance of EventGridMQTTClientDeletedEventData from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of EventGridMqttClientDeletedEventData if the JsonReader was pointing to an instance of it,
+     * @return An instance of EventGridMQTTClientDeletedEventData if the JsonReader was pointing to an instance of it,
      * or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the EventGridMqttClientDeletedEventData.
+     * @throws IOException If an error occurs while reading the EventGridMQTTClientDeletedEventData.
      */
     @Generated
-    public static EventGridMqttClientDeletedEventData fromJson(JsonReader jsonReader) throws IOException {
+    public static EventGridMQTTClientDeletedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            EventGridMqttClientDeletedEventData deserializedEventGridMqttClientDeletedEventData
-                = new EventGridMqttClientDeletedEventData();
+            EventGridMQTTClientDeletedEventData deserializedEventGridMQTTClientDeletedEventData
+                = new EventGridMQTTClientDeletedEventData();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("clientAuthenticationName".equals(fieldName)) {
-                    deserializedEventGridMqttClientDeletedEventData.clientAuthenticationName = reader.getString();
+                    deserializedEventGridMQTTClientDeletedEventData.clientAuthenticationName = reader.getString();
                 } else if ("clientName".equals(fieldName)) {
-                    deserializedEventGridMqttClientDeletedEventData.clientName = reader.getString();
+                    deserializedEventGridMQTTClientDeletedEventData.clientName = reader.getString();
                 } else if ("namespaceName".equals(fieldName)) {
-                    deserializedEventGridMqttClientDeletedEventData.namespaceName = reader.getString();
+                    deserializedEventGridMQTTClientDeletedEventData.namespaceName = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedEventGridMqttClientDeletedEventData;
+            return deserializedEventGridMQTTClientDeletedEventData;
         });
     }
 }

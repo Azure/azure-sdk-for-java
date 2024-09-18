@@ -22,25 +22,33 @@ public class DeviceTelemetryEventProperties implements JsonSerializable<DeviceTe
      * The content of the message from the device.
      */
     @Generated
-    private Object body;
+    private final Map<String, Object> body;
 
     /*
      * Application properties are user-defined strings that can be added to the message. These fields are optional.
      */
     @Generated
-    private Map<String, String> properties;
+    private final Map<String, String> properties;
 
     /*
      * System properties help identify contents and source of the messages.
      */
     @Generated
-    private Map<String, String> systemProperties;
+    private final Map<String, String> systemProperties;
 
     /**
      * Creates an instance of DeviceTelemetryEventProperties class.
+     * 
+     * @param body the body value to set.
+     * @param properties the properties value to set.
+     * @param systemProperties the systemProperties value to set.
      */
     @Generated
-    protected DeviceTelemetryEventProperties() {
+    protected DeviceTelemetryEventProperties(Map<String, Object> body, Map<String, String> properties,
+        Map<String, String> systemProperties) {
+        this.body = body;
+        this.properties = properties;
+        this.systemProperties = systemProperties;
     }
 
     /**
@@ -49,19 +57,8 @@ public class DeviceTelemetryEventProperties implements JsonSerializable<DeviceTe
      * @return the body value.
      */
     @Generated
-    public Object getBody() {
+    public Map<String, Object> getBody() {
         return this.body;
-    }
-
-    /**
-     * Set the body property: The content of the message from the device.
-     * 
-     * @param body the body value to set.
-     * @return the DeviceTelemetryEventProperties object itself.
-     */
-    DeviceTelemetryEventProperties setBody(Object body) {
-        this.body = body;
-        return this;
     }
 
     /**
@@ -76,18 +73,6 @@ public class DeviceTelemetryEventProperties implements JsonSerializable<DeviceTe
     }
 
     /**
-     * Set the properties property: Application properties are user-defined strings that can be added to the message.
-     * These fields are optional.
-     * 
-     * @param properties the properties value to set.
-     * @return the DeviceTelemetryEventProperties object itself.
-     */
-    DeviceTelemetryEventProperties setProperties(Map<String, String> properties) {
-        this.properties = properties;
-        return this;
-    }
-
-    /**
      * Get the systemProperties property: System properties help identify contents and source of the messages.
      * 
      * @return the systemProperties value.
@@ -98,21 +83,13 @@ public class DeviceTelemetryEventProperties implements JsonSerializable<DeviceTe
     }
 
     /**
-     * Set the systemProperties property: System properties help identify contents and source of the messages.
-     * 
-     * @param systemProperties the systemProperties value to set.
-     * @return the DeviceTelemetryEventProperties object itself.
+     * {@inheritDoc}
      */
-    DeviceTelemetryEventProperties setSystemProperties(Map<String, String> systemProperties) {
-        this.systemProperties = systemProperties;
-        return this;
-    }
-
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("body", this.body);
+        jsonWriter.writeMapField("body", this.body, (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeMapField("properties", this.properties, (writer, element) -> writer.writeString(element));
         jsonWriter.writeMapField("systemProperties", this.systemProperties,
             (writer, element) -> writer.writeString(element));
@@ -125,31 +102,30 @@ public class DeviceTelemetryEventProperties implements JsonSerializable<DeviceTe
      * @param jsonReader The JsonReader being read.
      * @return An instance of DeviceTelemetryEventProperties if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DeviceTelemetryEventProperties.
      */
     @Generated
     public static DeviceTelemetryEventProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            DeviceTelemetryEventProperties deserializedDeviceTelemetryEventProperties
-                = new DeviceTelemetryEventProperties();
+            Map<String, Object> body = null;
+            Map<String, String> properties = null;
+            Map<String, String> systemProperties = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("body".equals(fieldName)) {
-                    deserializedDeviceTelemetryEventProperties.body = reader.readUntyped();
+                    body = reader.readMap(reader1 -> reader1.readUntyped());
                 } else if ("properties".equals(fieldName)) {
-                    Map<String, String> properties = reader.readMap(reader1 -> reader1.getString());
-                    deserializedDeviceTelemetryEventProperties.properties = properties;
+                    properties = reader.readMap(reader1 -> reader1.getString());
                 } else if ("systemProperties".equals(fieldName)) {
-                    Map<String, String> systemProperties = reader.readMap(reader1 -> reader1.getString());
-                    deserializedDeviceTelemetryEventProperties.systemProperties = systemProperties;
+                    systemProperties = reader.readMap(reader1 -> reader1.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-
-            return deserializedDeviceTelemetryEventProperties;
+            return new DeviceTelemetryEventProperties(body, properties, systemProperties);
         });
     }
 }

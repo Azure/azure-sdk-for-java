@@ -6,6 +6,7 @@ package com.azure.messaging.eventgrid.systemevents.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -23,7 +24,7 @@ public final class RedisPatchingCompletedEventData implements JsonSerializable<R
      * The time at which the event occurred.
      */
     @Generated
-    private OffsetDateTime timestamp;
+    private final OffsetDateTime timestamp;
 
     /*
      * The name of this event.
@@ -39,9 +40,12 @@ public final class RedisPatchingCompletedEventData implements JsonSerializable<R
 
     /**
      * Creates an instance of RedisPatchingCompletedEventData class.
+     * 
+     * @param timestamp the timestamp value to set.
      */
     @Generated
-    private RedisPatchingCompletedEventData() {
+    private RedisPatchingCompletedEventData(OffsetDateTime timestamp) {
+        this.timestamp = timestamp;
     }
 
     /**
@@ -74,6 +78,9 @@ public final class RedisPatchingCompletedEventData implements JsonSerializable<R
         return this.status;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
@@ -91,28 +98,34 @@ public final class RedisPatchingCompletedEventData implements JsonSerializable<R
      * @param jsonReader The JsonReader being read.
      * @return An instance of RedisPatchingCompletedEventData if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the RedisPatchingCompletedEventData.
      */
     @Generated
     public static RedisPatchingCompletedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            RedisPatchingCompletedEventData deserializedRedisPatchingCompletedEventData
-                = new RedisPatchingCompletedEventData();
+            OffsetDateTime timestamp = null;
+            String name = null;
+            String status = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("timestamp".equals(fieldName)) {
-                    deserializedRedisPatchingCompletedEventData.timestamp
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    timestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("name".equals(fieldName)) {
-                    deserializedRedisPatchingCompletedEventData.name = reader.getString();
+                    name = reader.getString();
                 } else if ("status".equals(fieldName)) {
-                    deserializedRedisPatchingCompletedEventData.status = reader.getString();
+                    status = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
+            RedisPatchingCompletedEventData deserializedRedisPatchingCompletedEventData
+                = new RedisPatchingCompletedEventData(timestamp);
+            deserializedRedisPatchingCompletedEventData.name = name;
+            deserializedRedisPatchingCompletedEventData.status = status;
 
             return deserializedRedisPatchingCompletedEventData;
         });

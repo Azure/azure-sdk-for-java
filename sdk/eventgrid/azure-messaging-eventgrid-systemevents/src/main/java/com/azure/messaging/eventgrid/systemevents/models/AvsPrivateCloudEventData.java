@@ -46,11 +46,15 @@ public class AvsPrivateCloudEventData implements JsonSerializable<AvsPrivateClou
      * @param operationId the operationId value to set.
      * @return the AvsPrivateCloudEventData object itself.
      */
+    @Generated
     AvsPrivateCloudEventData setOperationId(String operationId) {
         this.operationId = operationId;
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {

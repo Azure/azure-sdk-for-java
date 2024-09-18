@@ -23,25 +23,33 @@ public class MediaJobOutputStateChangeEventData implements JsonSerializable<Medi
      * The previous state of the Job.
      */
     @Generated
-    private MediaJobState previousState;
+    private final MediaJobState previousState;
 
     /*
      * Gets the output.
      */
     @Generated
-    private MediaJobOutput output;
+    private final MediaJobOutput output;
 
     /*
      * Gets the Job correlation data.
      */
     @Generated
-    private Map<String, String> jobCorrelationData;
+    private final Map<String, String> jobCorrelationData;
 
     /**
      * Creates an instance of MediaJobOutputStateChangeEventData class.
+     * 
+     * @param previousState the previousState value to set.
+     * @param output the output value to set.
+     * @param jobCorrelationData the jobCorrelationData value to set.
      */
     @Generated
-    protected MediaJobOutputStateChangeEventData() {
+    protected MediaJobOutputStateChangeEventData(MediaJobState previousState, MediaJobOutput output,
+        Map<String, String> jobCorrelationData) {
+        this.previousState = previousState;
+        this.output = output;
+        this.jobCorrelationData = jobCorrelationData;
     }
 
     /**
@@ -55,17 +63,6 @@ public class MediaJobOutputStateChangeEventData implements JsonSerializable<Medi
     }
 
     /**
-     * Set the previousState property: The previous state of the Job.
-     * 
-     * @param previousState the previousState value to set.
-     * @return the MediaJobOutputStateChangeEventData object itself.
-     */
-    MediaJobOutputStateChangeEventData setPreviousState(MediaJobState previousState) {
-        this.previousState = previousState;
-        return this;
-    }
-
-    /**
      * Get the output property: Gets the output.
      * 
      * @return the output value.
@@ -73,17 +70,6 @@ public class MediaJobOutputStateChangeEventData implements JsonSerializable<Medi
     @Generated
     public MediaJobOutput getOutput() {
         return this.output;
-    }
-
-    /**
-     * Set the output property: Gets the output.
-     * 
-     * @param output the output value to set.
-     * @return the MediaJobOutputStateChangeEventData object itself.
-     */
-    MediaJobOutputStateChangeEventData setOutput(MediaJobOutput output) {
-        this.output = output;
-        return this;
     }
 
     /**
@@ -97,20 +83,13 @@ public class MediaJobOutputStateChangeEventData implements JsonSerializable<Medi
     }
 
     /**
-     * Set the jobCorrelationData property: Gets the Job correlation data.
-     * 
-     * @param jobCorrelationData the jobCorrelationData value to set.
-     * @return the MediaJobOutputStateChangeEventData object itself.
+     * {@inheritDoc}
      */
-    MediaJobOutputStateChangeEventData setJobCorrelationData(Map<String, String> jobCorrelationData) {
-        this.jobCorrelationData = jobCorrelationData;
-        return this;
-    }
-
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("previousState", this.previousState == null ? null : this.previousState.toString());
         jsonWriter.writeJsonField("output", this.output);
         jsonWriter.writeMapField("jobCorrelationData", this.jobCorrelationData,
             (writer, element) -> writer.writeString(element));
@@ -123,31 +102,30 @@ public class MediaJobOutputStateChangeEventData implements JsonSerializable<Medi
      * @param jsonReader The JsonReader being read.
      * @return An instance of MediaJobOutputStateChangeEventData if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MediaJobOutputStateChangeEventData.
      */
     @Generated
     public static MediaJobOutputStateChangeEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            MediaJobOutputStateChangeEventData deserializedMediaJobOutputStateChangeEventData
-                = new MediaJobOutputStateChangeEventData();
+            MediaJobState previousState = null;
+            MediaJobOutput output = null;
+            Map<String, String> jobCorrelationData = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("previousState".equals(fieldName)) {
-                    deserializedMediaJobOutputStateChangeEventData.previousState
-                        = MediaJobState.fromString(reader.getString());
+                    previousState = MediaJobState.fromString(reader.getString());
                 } else if ("output".equals(fieldName)) {
-                    deserializedMediaJobOutputStateChangeEventData.output = MediaJobOutput.fromJson(reader);
+                    output = MediaJobOutput.fromJson(reader);
                 } else if ("jobCorrelationData".equals(fieldName)) {
-                    Map<String, String> jobCorrelationData = reader.readMap(reader1 -> reader1.getString());
-                    deserializedMediaJobOutputStateChangeEventData.jobCorrelationData = jobCorrelationData;
+                    jobCorrelationData = reader.readMap(reader1 -> reader1.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-
-            return deserializedMediaJobOutputStateChangeEventData;
+            return new MediaJobOutputStateChangeEventData(previousState, output, jobCorrelationData);
         });
     }
 }

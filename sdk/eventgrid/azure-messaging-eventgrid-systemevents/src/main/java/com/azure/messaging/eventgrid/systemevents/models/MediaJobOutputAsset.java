@@ -17,21 +17,44 @@ import java.io.IOException;
 @Immutable
 public final class MediaJobOutputAsset extends MediaJobOutput {
     /*
+     * The discriminator for derived types.
+     */
+    @Generated
+    private String odataType = "#Microsoft.Media.JobOutputAsset";
+
+    /*
      * Gets the Job output asset name.
      */
     @Generated
     private String assetName;
 
+    /*
+     * Gets the Job output label.
+     */
+    @Generated
+    private String label;
+
     /**
      * Creates an instance of MediaJobOutputAsset class.
      * 
+     * @param error the error value to set.
      * @param progress the progress value to set.
      * @param state the state value to set.
      */
     @Generated
-    private MediaJobOutputAsset(long progress, MediaJobState state) {
-        super(progress, state);
-        setODataType("#Microsoft.Media.JobOutputAsset");
+    private MediaJobOutputAsset(MediaJobError error, long progress, MediaJobState state) {
+        super(error, progress, state);
+    }
+
+    /**
+     * Get the odataType property: The discriminator for derived types.
+     * 
+     * @return the odataType value.
+     */
+    @Generated
+    @Override
+    public String getOdataType() {
+        return this.odataType;
     }
 
     /**
@@ -44,15 +67,29 @@ public final class MediaJobOutputAsset extends MediaJobOutput {
         return this.assetName;
     }
 
+    /**
+     * Get the label property: Gets the Job output label.
+     * 
+     * @return the label value.
+     */
+    @Generated
+    @Override
+    public String getLabel() {
+        return this.label;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("error", getError());
         jsonWriter.writeLongField("progress", getProgress());
         jsonWriter.writeStringField("state", getState() == null ? null : getState().toString());
-        jsonWriter.writeStringField("oDataType", getODataType());
-        jsonWriter.writeJsonField("error", getError());
         jsonWriter.writeStringField("label", getLabel());
+        jsonWriter.writeStringField("@odata.type", this.odataType);
         jsonWriter.writeStringField("assetName", this.assetName);
         return jsonWriter.writeEndObject();
     }
@@ -69,36 +106,35 @@ public final class MediaJobOutputAsset extends MediaJobOutput {
     @Generated
     public static MediaJobOutputAsset fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
+            MediaJobError error = null;
             long progress = 0L;
             MediaJobState state = null;
-            String oDataType = "#Microsoft.Media.JobOutputAsset";
-            MediaJobError error = null;
             String label = null;
+            String odataType = "#Microsoft.Media.JobOutputAsset";
             String assetName = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("progress".equals(fieldName)) {
+                if ("error".equals(fieldName)) {
+                    error = MediaJobError.fromJson(reader);
+                } else if ("progress".equals(fieldName)) {
                     progress = reader.getLong();
                 } else if ("state".equals(fieldName)) {
                     state = MediaJobState.fromString(reader.getString());
-                } else if ("oDataType".equals(fieldName)) {
-                    oDataType = reader.getString();
-                } else if ("error".equals(fieldName)) {
-                    error = MediaJobError.fromJson(reader);
                 } else if ("label".equals(fieldName)) {
                     label = reader.getString();
+                } else if ("@odata.type".equals(fieldName)) {
+                    odataType = reader.getString();
                 } else if ("assetName".equals(fieldName)) {
                     assetName = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            MediaJobOutputAsset deserializedMediaJobOutputAsset = new MediaJobOutputAsset(progress, state);
-            deserializedMediaJobOutputAsset.setODataType(oDataType);
-            deserializedMediaJobOutputAsset.setError(error);
-            deserializedMediaJobOutputAsset.setLabel(label);
+            MediaJobOutputAsset deserializedMediaJobOutputAsset = new MediaJobOutputAsset(error, progress, state);
+            deserializedMediaJobOutputAsset.label = label;
+            deserializedMediaJobOutputAsset.odataType = odataType;
             deserializedMediaJobOutputAsset.assetName = assetName;
 
             return deserializedMediaJobOutputAsset;

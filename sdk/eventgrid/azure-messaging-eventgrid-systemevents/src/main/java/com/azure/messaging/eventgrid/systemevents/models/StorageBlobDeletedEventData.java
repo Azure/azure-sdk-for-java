@@ -11,18 +11,13 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * Schema of the Data property of an EventGridEvent for a Microsoft.Storage.BlobDeleted event.
  */
 @Immutable
 public final class StorageBlobDeletedEventData implements JsonSerializable<StorageBlobDeletedEventData> {
-    /*
-     * The path to the blob.
-     */
-    @Generated
-    private String url;
-
     /*
      * The name of the API/operation that triggered this event.
      */
@@ -42,26 +37,6 @@ public final class StorageBlobDeletedEventData implements JsonSerializable<Stora
     private String requestId;
 
     /*
-     * The identity of the requester that triggered this event.
-     */
-    @Generated
-    private String identity;
-
-    /*
-     * For service use only. Diagnostic data occasionally included by the Azure Storage service. This property should
-     * be ignored by event consumers.
-     */
-    @Generated
-    private Object storageDiagnostics;
-
-    /*
-     * An opaque string value representing the logical sequence of events for any particular blob name. Users can use
-     * standard string comparison to understand the relative sequence of two events on the same blob name.
-     */
-    @Generated
-    private String sequencer;
-
-    /*
      * The content type of the blob. This is the same as what would be returned in the Content-Type header from the
      * blob.
      */
@@ -74,21 +49,40 @@ public final class StorageBlobDeletedEventData implements JsonSerializable<Stora
     @Generated
     private String blobType;
 
-    /**
-     * Creates an instance of StorageBlobDeletedEventData class.
+    /*
+     * The path to the blob.
      */
     @Generated
-    private StorageBlobDeletedEventData() {
-    }
+    private String url;
+
+    /*
+     * An opaque string value representing the logical sequence of events for any particular blob name. Users can use
+     * standard string comparison to understand the relative sequence of two events on the same blob name.
+     */
+    @Generated
+    private String sequencer;
+
+    /*
+     * The identity of the requester that triggered this event.
+     */
+    @Generated
+    private String identity;
+
+    /*
+     * For service use only. Diagnostic data occasionally included by the Azure Storage service. This property should be
+     * ignored by event consumers.
+     */
+    @Generated
+    private final Map<String, Object> storageDiagnostics;
 
     /**
-     * Get the url property: The path to the blob.
+     * Creates an instance of StorageBlobDeletedEventData class.
      * 
-     * @return the url value.
+     * @param storageDiagnostics the storageDiagnostics value to set.
      */
     @Generated
-    public String getUrl() {
-        return this.url;
+    private StorageBlobDeletedEventData(Map<String, Object> storageDiagnostics) {
+        this.storageDiagnostics = storageDiagnostics;
     }
 
     /**
@@ -102,8 +96,8 @@ public final class StorageBlobDeletedEventData implements JsonSerializable<Stora
     }
 
     /**
-     * Get the clientRequestId property: A request id provided by the client of the storage API operation that
-     * triggered this event.
+     * Get the clientRequestId property: A request id provided by the client of the storage API operation that triggered
+     * this event.
      * 
      * @return the clientRequestId value.
      */
@@ -121,39 +115,6 @@ public final class StorageBlobDeletedEventData implements JsonSerializable<Stora
     @Generated
     public String getRequestId() {
         return this.requestId;
-    }
-
-    /**
-     * Get the identity property: The identity of the requester that triggered this event.
-     * 
-     * @return the identity value.
-     */
-    @Generated
-    public String getIdentity() {
-        return this.identity;
-    }
-
-    /**
-     * Get the storageDiagnostics property: For service use only. Diagnostic data occasionally included by the Azure
-     * Storage service. This property should be ignored by event consumers.
-     * 
-     * @return the storageDiagnostics value.
-     */
-    @Generated
-    public Object getStorageDiagnostics() {
-        return this.storageDiagnostics;
-    }
-
-    /**
-     * Get the sequencer property: An opaque string value representing the logical sequence of events for any
-     * particular blob name. Users can use standard string comparison to understand the relative sequence of two events
-     * on the same blob name.
-     * 
-     * @return the sequencer value.
-     */
-    @Generated
-    public String getSequencer() {
-        return this.sequencer;
     }
 
     /**
@@ -177,19 +138,66 @@ public final class StorageBlobDeletedEventData implements JsonSerializable<Stora
         return this.blobType;
     }
 
+    /**
+     * Get the url property: The path to the blob.
+     * 
+     * @return the url value.
+     */
+    @Generated
+    public String getUrl() {
+        return this.url;
+    }
+
+    /**
+     * Get the sequencer property: An opaque string value representing the logical sequence of events for any particular
+     * blob name. Users can use standard string comparison to understand the relative sequence of two events on the same
+     * blob name.
+     * 
+     * @return the sequencer value.
+     */
+    @Generated
+    public String getSequencer() {
+        return this.sequencer;
+    }
+
+    /**
+     * Get the identity property: The identity of the requester that triggered this event.
+     * 
+     * @return the identity value.
+     */
+    @Generated
+    public String getIdentity() {
+        return this.identity;
+    }
+
+    /**
+     * Get the storageDiagnostics property: For service use only. Diagnostic data occasionally included by the Azure
+     * Storage service. This property should be ignored by event consumers.
+     * 
+     * @return the storageDiagnostics value.
+     */
+    @Generated
+    public Map<String, Object> getStorageDiagnostics() {
+        return this.storageDiagnostics;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("url", this.url);
+        jsonWriter.writeMapField("storageDiagnostics", this.storageDiagnostics,
+            (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeStringField("api", this.api);
         jsonWriter.writeStringField("clientRequestId", this.clientRequestId);
         jsonWriter.writeStringField("requestId", this.requestId);
-        jsonWriter.writeStringField("identity", this.identity);
-        jsonWriter.writeUntypedField("storageDiagnostics", this.storageDiagnostics);
-        jsonWriter.writeStringField("sequencer", this.sequencer);
         jsonWriter.writeStringField("contentType", this.contentType);
         jsonWriter.writeStringField("blobType", this.blobType);
+        jsonWriter.writeStringField("url", this.url);
+        jsonWriter.writeStringField("sequencer", this.sequencer);
+        jsonWriter.writeStringField("identity", this.identity);
         return jsonWriter.writeEndObject();
     }
 
@@ -199,38 +207,57 @@ public final class StorageBlobDeletedEventData implements JsonSerializable<Stora
      * @param jsonReader The JsonReader being read.
      * @return An instance of StorageBlobDeletedEventData if the JsonReader was pointing to an instance of it, or null
      * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the StorageBlobDeletedEventData.
      */
     @Generated
     public static StorageBlobDeletedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            StorageBlobDeletedEventData deserializedStorageBlobDeletedEventData = new StorageBlobDeletedEventData();
+            Map<String, Object> storageDiagnostics = null;
+            String api = null;
+            String clientRequestId = null;
+            String requestId = null;
+            String contentType = null;
+            String blobType = null;
+            String url = null;
+            String sequencer = null;
+            String identity = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("url".equals(fieldName)) {
-                    deserializedStorageBlobDeletedEventData.url = reader.getString();
+                if ("storageDiagnostics".equals(fieldName)) {
+                    storageDiagnostics = reader.readMap(reader1 -> reader1.readUntyped());
                 } else if ("api".equals(fieldName)) {
-                    deserializedStorageBlobDeletedEventData.api = reader.getString();
+                    api = reader.getString();
                 } else if ("clientRequestId".equals(fieldName)) {
-                    deserializedStorageBlobDeletedEventData.clientRequestId = reader.getString();
+                    clientRequestId = reader.getString();
                 } else if ("requestId".equals(fieldName)) {
-                    deserializedStorageBlobDeletedEventData.requestId = reader.getString();
-                } else if ("identity".equals(fieldName)) {
-                    deserializedStorageBlobDeletedEventData.identity = reader.getString();
-                } else if ("storageDiagnostics".equals(fieldName)) {
-                    deserializedStorageBlobDeletedEventData.storageDiagnostics = reader.readUntyped();
-                } else if ("sequencer".equals(fieldName)) {
-                    deserializedStorageBlobDeletedEventData.sequencer = reader.getString();
+                    requestId = reader.getString();
                 } else if ("contentType".equals(fieldName)) {
-                    deserializedStorageBlobDeletedEventData.contentType = reader.getString();
+                    contentType = reader.getString();
                 } else if ("blobType".equals(fieldName)) {
-                    deserializedStorageBlobDeletedEventData.blobType = reader.getString();
+                    blobType = reader.getString();
+                } else if ("url".equals(fieldName)) {
+                    url = reader.getString();
+                } else if ("sequencer".equals(fieldName)) {
+                    sequencer = reader.getString();
+                } else if ("identity".equals(fieldName)) {
+                    identity = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
+            StorageBlobDeletedEventData deserializedStorageBlobDeletedEventData
+                = new StorageBlobDeletedEventData(storageDiagnostics);
+            deserializedStorageBlobDeletedEventData.api = api;
+            deserializedStorageBlobDeletedEventData.clientRequestId = clientRequestId;
+            deserializedStorageBlobDeletedEventData.requestId = requestId;
+            deserializedStorageBlobDeletedEventData.contentType = contentType;
+            deserializedStorageBlobDeletedEventData.blobType = blobType;
+            deserializedStorageBlobDeletedEventData.url = url;
+            deserializedStorageBlobDeletedEventData.sequencer = sequencer;
+            deserializedStorageBlobDeletedEventData.identity = identity;
 
             return deserializedStorageBlobDeletedEventData;
         });

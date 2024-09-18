@@ -6,6 +6,7 @@ package com.azure.messaging.eventgrid.systemevents.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -24,7 +25,7 @@ public final class SignalRServiceClientConnectionConnectedEventData
      * The time at which the event occurred.
      */
     @Generated
-    private OffsetDateTime timestamp;
+    private final OffsetDateTime timestamp;
 
     /*
      * The hub of connected client connection.
@@ -46,9 +47,12 @@ public final class SignalRServiceClientConnectionConnectedEventData
 
     /**
      * Creates an instance of SignalRServiceClientConnectionConnectedEventData class.
+     * 
+     * @param timestamp the timestamp value to set.
      */
     @Generated
-    private SignalRServiceClientConnectionConnectedEventData() {
+    private SignalRServiceClientConnectionConnectedEventData(OffsetDateTime timestamp) {
+        this.timestamp = timestamp;
     }
 
     /**
@@ -91,6 +95,9 @@ public final class SignalRServiceClientConnectionConnectedEventData
         return this.userId;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
@@ -109,30 +116,38 @@ public final class SignalRServiceClientConnectionConnectedEventData
      * @param jsonReader The JsonReader being read.
      * @return An instance of SignalRServiceClientConnectionConnectedEventData if the JsonReader was pointing to an
      * instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SignalRServiceClientConnectionConnectedEventData.
      */
     @Generated
     public static SignalRServiceClientConnectionConnectedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            SignalRServiceClientConnectionConnectedEventData deserializedSignalRServiceClientConnectionConnectedEventData
-                = new SignalRServiceClientConnectionConnectedEventData();
+            OffsetDateTime timestamp = null;
+            String hubName = null;
+            String connectionId = null;
+            String userId = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("timestamp".equals(fieldName)) {
-                    deserializedSignalRServiceClientConnectionConnectedEventData.timestamp
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    timestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("hubName".equals(fieldName)) {
-                    deserializedSignalRServiceClientConnectionConnectedEventData.hubName = reader.getString();
+                    hubName = reader.getString();
                 } else if ("connectionId".equals(fieldName)) {
-                    deserializedSignalRServiceClientConnectionConnectedEventData.connectionId = reader.getString();
+                    connectionId = reader.getString();
                 } else if ("userId".equals(fieldName)) {
-                    deserializedSignalRServiceClientConnectionConnectedEventData.userId = reader.getString();
+                    userId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
+            SignalRServiceClientConnectionConnectedEventData deserializedSignalRServiceClientConnectionConnectedEventData
+                = new SignalRServiceClientConnectionConnectedEventData(timestamp);
+            deserializedSignalRServiceClientConnectionConnectedEventData.hubName = hubName;
+            deserializedSignalRServiceClientConnectionConnectedEventData.connectionId = connectionId;
+            deserializedSignalRServiceClientConnectionConnectedEventData.userId = userId;
 
             return deserializedSignalRServiceClientConnectionConnectedEventData;
         });

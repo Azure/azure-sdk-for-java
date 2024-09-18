@@ -4,74 +4,79 @@
 
 package com.azure.messaging.eventgrid.systemevents.models;
 
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
  * The status of the email. Any value other than Delivered is considered failed.
  */
-public enum AcsEmailDeliveryReportStatus {
+public final class AcsEmailDeliveryReportStatus extends ExpandableStringEnum<AcsEmailDeliveryReportStatus> {
     /**
      * Hard bounce detected while sending the email.
      */
-    BOUNCED("Bounced"),
+    @Generated
+    public static final AcsEmailDeliveryReportStatus BOUNCED = fromString("Bounced");
 
     /**
      * The email was delivered.
      */
-    DELIVERED("Delivered"),
+    @Generated
+    public static final AcsEmailDeliveryReportStatus DELIVERED = fromString("Delivered");
 
     /**
      * The email failed to be delivered.
      */
-    FAILED("Failed"),
+    @Generated
+    public static final AcsEmailDeliveryReportStatus FAILED = fromString("Failed");
 
     /**
      * The message was identified as spam and was rejected or blocked (not quarantined).
      */
-    FILTERED_SPAM("FilteredSpam"),
+    @Generated
+    public static final AcsEmailDeliveryReportStatus FILTERED_SPAM = fromString("FilteredSpam");
 
     /**
      * The message was quarantined (as spam, bulk mail, or phishing). For more information, see Quarantined email
      * messages in EOP (EXCHANGE ONLINE PROTECTION).
      */
-    QUARANTINED("Quarantined"),
+    @Generated
+    public static final AcsEmailDeliveryReportStatus QUARANTINED = fromString("Quarantined");
 
     /**
      * The email was suppressed.
      */
-    SUPPRESSED("Suppressed");
+    @Generated
+    public static final AcsEmailDeliveryReportStatus SUPPRESSED = fromString("Suppressed");
 
     /**
-     * The actual serialized value for a AcsEmailDeliveryReportStatus instance.
-     */
-    private final String value;
-
-    AcsEmailDeliveryReportStatus(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a AcsEmailDeliveryReportStatus instance.
+     * Creates a new instance of AcsEmailDeliveryReportStatus value.
      * 
-     * @param value the serialized value to parse.
-     * @return the parsed AcsEmailDeliveryReportStatus object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static AcsEmailDeliveryReportStatus fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        AcsEmailDeliveryReportStatus[] items = AcsEmailDeliveryReportStatus.values();
-        for (AcsEmailDeliveryReportStatus item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Generated
+    @Deprecated
+    public AcsEmailDeliveryReportStatus() {
     }
 
     /**
-     * {@inheritDoc}
+     * Creates or finds a AcsEmailDeliveryReportStatus from its string representation.
+     * 
+     * @param name a name to look for.
+     * @return the corresponding AcsEmailDeliveryReportStatus.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    @Generated
+    public static AcsEmailDeliveryReportStatus fromString(String name) {
+        return fromString(name, AcsEmailDeliveryReportStatus.class);
+    }
+
+    /**
+     * Gets known AcsEmailDeliveryReportStatus values.
+     * 
+     * @return known AcsEmailDeliveryReportStatus values.
+     */
+    @Generated
+    public static Collection<AcsEmailDeliveryReportStatus> values() {
+        return values(AcsEmailDeliveryReportStatus.class);
     }
 }

@@ -23,6 +23,24 @@ public final class AvsScriptExecutionFailedEventData extends AvsScriptExecutionE
     @Generated
     private String failureMessage;
 
+    /*
+     * Stdout outputs from the execution, if any.
+     */
+    @Generated
+    private List<String> output;
+
+    /*
+     * Cmdlet referenced in the execution that caused this event.
+     */
+    @Generated
+    private String cmdletId;
+
+    /*
+     * Id of the operation that caused this event.
+     */
+    @Generated
+    private String operationId;
+
     /**
      * Creates an instance of AvsScriptExecutionFailedEventData class.
      */
@@ -40,6 +58,42 @@ public final class AvsScriptExecutionFailedEventData extends AvsScriptExecutionE
         return this.failureMessage;
     }
 
+    /**
+     * Get the output property: Stdout outputs from the execution, if any.
+     * 
+     * @return the output value.
+     */
+    @Generated
+    @Override
+    public List<String> getOutput() {
+        return this.output;
+    }
+
+    /**
+     * Get the cmdletId property: Cmdlet referenced in the execution that caused this event.
+     * 
+     * @return the cmdletId value.
+     */
+    @Generated
+    @Override
+    public String getCmdletId() {
+        return this.cmdletId;
+    }
+
+    /**
+     * Get the operationId property: Id of the operation that caused this event.
+     * 
+     * @return the operationId value.
+     */
+    @Generated
+    @Override
+    public String getOperationId() {
+        return this.operationId;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
@@ -69,12 +123,12 @@ public final class AvsScriptExecutionFailedEventData extends AvsScriptExecutionE
                 reader.nextToken();
 
                 if ("operationId".equals(fieldName)) {
-                    deserializedAvsScriptExecutionFailedEventData.setOperationId(reader.getString());
+                    deserializedAvsScriptExecutionFailedEventData.operationId = reader.getString();
                 } else if ("cmdletId".equals(fieldName)) {
-                    deserializedAvsScriptExecutionFailedEventData.setCmdletId(reader.getString());
+                    deserializedAvsScriptExecutionFailedEventData.cmdletId = reader.getString();
                 } else if ("output".equals(fieldName)) {
                     List<String> output = reader.readArray(reader1 -> reader1.getString());
-                    deserializedAvsScriptExecutionFailedEventData.setOutput(output);
+                    deserializedAvsScriptExecutionFailedEventData.output = output;
                 } else if ("failureMessage".equals(fieldName)) {
                     deserializedAvsScriptExecutionFailedEventData.failureMessage = reader.getString();
                 } else {

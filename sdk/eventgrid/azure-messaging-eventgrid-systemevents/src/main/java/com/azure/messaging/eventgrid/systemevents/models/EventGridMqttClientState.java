@@ -4,53 +4,54 @@
 
 package com.azure.messaging.eventgrid.systemevents.models;
 
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
  * EventGrid MQTT Client State.
  */
-public enum EventGridMqttClientState {
+public final class EventGridMQTTClientState extends ExpandableStringEnum<EventGridMQTTClientState> {
     /**
      * Enabled.
      */
-    ENABLED("Enabled"),
+    @Generated
+    public static final EventGridMQTTClientState ENABLED = fromString("Enabled");
 
     /**
      * Disabled.
      */
-    DISABLED("Disabled");
+    @Generated
+    public static final EventGridMQTTClientState DISABLED = fromString("Disabled");
 
     /**
-     * The actual serialized value for a EventGridMqttClientState instance.
-     */
-    private final String value;
-
-    EventGridMqttClientState(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a EventGridMqttClientState instance.
+     * Creates a new instance of EventGridMQTTClientState value.
      * 
-     * @param value the serialized value to parse.
-     * @return the parsed EventGridMqttClientState object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static EventGridMqttClientState fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        EventGridMqttClientState[] items = EventGridMqttClientState.values();
-        for (EventGridMqttClientState item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Generated
+    @Deprecated
+    public EventGridMQTTClientState() {
     }
 
     /**
-     * {@inheritDoc}
+     * Creates or finds a EventGridMQTTClientState from its string representation.
+     * 
+     * @param name a name to look for.
+     * @return the corresponding EventGridMQTTClientState.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    @Generated
+    public static EventGridMQTTClientState fromString(String name) {
+        return fromString(name, EventGridMQTTClientState.class);
+    }
+
+    /**
+     * Gets known EventGridMQTTClientState values.
+     * 
+     * @return known EventGridMQTTClientState values.
+     */
+    @Generated
+    public static Collection<EventGridMQTTClientState> values() {
+        return values(EventGridMQTTClientState.class);
     }
 }

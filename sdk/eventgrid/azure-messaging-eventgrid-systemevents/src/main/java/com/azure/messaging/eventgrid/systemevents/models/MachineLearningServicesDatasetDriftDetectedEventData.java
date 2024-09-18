@@ -6,6 +6,7 @@ package com.azure.messaging.eventgrid.systemevents.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -60,19 +61,24 @@ public final class MachineLearningServicesDatasetDriftDetectedEventData
      * The start time of the target dataset time series that resulted in drift detection.
      */
     @Generated
-    private OffsetDateTime startTime;
+    private final OffsetDateTime startTime;
 
     /*
      * The end time of the target dataset time series that resulted in drift detection.
      */
     @Generated
-    private OffsetDateTime endTime;
+    private final OffsetDateTime endTime;
 
     /**
      * Creates an instance of MachineLearningServicesDatasetDriftDetectedEventData class.
+     * 
+     * @param startTime the startTime value to set.
+     * @param endTime the endTime value to set.
      */
     @Generated
-    private MachineLearningServicesDatasetDriftDetectedEventData() {
+    private MachineLearningServicesDatasetDriftDetectedEventData(OffsetDateTime startTime, OffsetDateTime endTime) {
+        this.startTime = startTime;
+        this.endTime = endTime;
     }
 
     /**
@@ -155,20 +161,23 @@ public final class MachineLearningServicesDatasetDriftDetectedEventData
         return this.endTime;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("endTime",
+            this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
         jsonWriter.writeStringField("dataDriftId", this.dataDriftId);
         jsonWriter.writeStringField("dataDriftName", this.dataDriftName);
         jsonWriter.writeStringField("runId", this.runId);
         jsonWriter.writeStringField("baseDatasetId", this.baseDatasetId);
         jsonWriter.writeStringField("targetDatasetId", this.targetDatasetId);
         jsonWriter.writeNumberField("driftCoefficient", this.driftCoefficient);
-        jsonWriter.writeStringField("startTime",
-            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
-        jsonWriter.writeStringField("endTime",
-            this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
         return jsonWriter.writeEndObject();
     }
 
@@ -178,42 +187,55 @@ public final class MachineLearningServicesDatasetDriftDetectedEventData
      * @param jsonReader The JsonReader being read.
      * @return An instance of MachineLearningServicesDatasetDriftDetectedEventData if the JsonReader was pointing to an
      * instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MachineLearningServicesDatasetDriftDetectedEventData.
      */
     @Generated
     public static MachineLearningServicesDatasetDriftDetectedEventData fromJson(JsonReader jsonReader)
         throws IOException {
         return jsonReader.readObject(reader -> {
-            MachineLearningServicesDatasetDriftDetectedEventData deserializedMachineLearningServicesDatasetDriftDetectedEventData
-                = new MachineLearningServicesDatasetDriftDetectedEventData();
+            OffsetDateTime startTime = null;
+            OffsetDateTime endTime = null;
+            String dataDriftId = null;
+            String dataDriftName = null;
+            String runId = null;
+            String baseDatasetId = null;
+            String targetDatasetId = null;
+            Double driftCoefficient = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("dataDriftId".equals(fieldName)) {
-                    deserializedMachineLearningServicesDatasetDriftDetectedEventData.dataDriftId = reader.getString();
-                } else if ("dataDriftName".equals(fieldName)) {
-                    deserializedMachineLearningServicesDatasetDriftDetectedEventData.dataDriftName = reader.getString();
-                } else if ("runId".equals(fieldName)) {
-                    deserializedMachineLearningServicesDatasetDriftDetectedEventData.runId = reader.getString();
-                } else if ("baseDatasetId".equals(fieldName)) {
-                    deserializedMachineLearningServicesDatasetDriftDetectedEventData.baseDatasetId = reader.getString();
-                } else if ("targetDatasetId".equals(fieldName)) {
-                    deserializedMachineLearningServicesDatasetDriftDetectedEventData.targetDatasetId
-                        = reader.getString();
-                } else if ("driftCoefficient".equals(fieldName)) {
-                    deserializedMachineLearningServicesDatasetDriftDetectedEventData.driftCoefficient
-                        = reader.getNullable(JsonReader::getDouble);
-                } else if ("startTime".equals(fieldName)) {
-                    deserializedMachineLearningServicesDatasetDriftDetectedEventData.startTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                if ("startTime".equals(fieldName)) {
+                    startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("endTime".equals(fieldName)) {
-                    deserializedMachineLearningServicesDatasetDriftDetectedEventData.endTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("dataDriftId".equals(fieldName)) {
+                    dataDriftId = reader.getString();
+                } else if ("dataDriftName".equals(fieldName)) {
+                    dataDriftName = reader.getString();
+                } else if ("runId".equals(fieldName)) {
+                    runId = reader.getString();
+                } else if ("baseDatasetId".equals(fieldName)) {
+                    baseDatasetId = reader.getString();
+                } else if ("targetDatasetId".equals(fieldName)) {
+                    targetDatasetId = reader.getString();
+                } else if ("driftCoefficient".equals(fieldName)) {
+                    driftCoefficient = reader.getNullable(JsonReader::getDouble);
                 } else {
                     reader.skipChildren();
                 }
             }
+            MachineLearningServicesDatasetDriftDetectedEventData deserializedMachineLearningServicesDatasetDriftDetectedEventData
+                = new MachineLearningServicesDatasetDriftDetectedEventData(startTime, endTime);
+            deserializedMachineLearningServicesDatasetDriftDetectedEventData.dataDriftId = dataDriftId;
+            deserializedMachineLearningServicesDatasetDriftDetectedEventData.dataDriftName = dataDriftName;
+            deserializedMachineLearningServicesDatasetDriftDetectedEventData.runId = runId;
+            deserializedMachineLearningServicesDatasetDriftDetectedEventData.baseDatasetId = baseDatasetId;
+            deserializedMachineLearningServicesDatasetDriftDetectedEventData.targetDatasetId = targetDatasetId;
+            deserializedMachineLearningServicesDatasetDriftDetectedEventData.driftCoefficient = driftCoefficient;
 
             return deserializedMachineLearningServicesDatasetDriftDetectedEventData;
         });

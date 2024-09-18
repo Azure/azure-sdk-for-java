@@ -4,53 +4,54 @@
 
 package com.azure.messaging.eventgrid.systemevents.models;
 
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
  * The type of engagement user have with email.
  */
-public enum AcsUserEngagement {
+public final class AcsUserEngagement extends ExpandableStringEnum<AcsUserEngagement> {
     /**
      * View.
      */
-    VIEW("view"),
+    @Generated
+    public static final AcsUserEngagement VIEW = fromString("view");
 
     /**
      * Click.
      */
-    CLICK("click");
+    @Generated
+    public static final AcsUserEngagement CLICK = fromString("click");
 
     /**
-     * The actual serialized value for a AcsUserEngagement instance.
-     */
-    private final String value;
-
-    AcsUserEngagement(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a AcsUserEngagement instance.
+     * Creates a new instance of AcsUserEngagement value.
      * 
-     * @param value the serialized value to parse.
-     * @return the parsed AcsUserEngagement object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static AcsUserEngagement fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        AcsUserEngagement[] items = AcsUserEngagement.values();
-        for (AcsUserEngagement item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Generated
+    @Deprecated
+    public AcsUserEngagement() {
     }
 
     /**
-     * {@inheritDoc}
+     * Creates or finds a AcsUserEngagement from its string representation.
+     * 
+     * @param name a name to look for.
+     * @return the corresponding AcsUserEngagement.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    @Generated
+    public static AcsUserEngagement fromString(String name) {
+        return fromString(name, AcsUserEngagement.class);
+    }
+
+    /**
+     * Gets known AcsUserEngagement values.
+     * 
+     * @return known AcsUserEngagement values.
+     */
+    @Generated
+    public static Collection<AcsUserEngagement> values() {
+        return values(AcsUserEngagement.class);
     }
 }

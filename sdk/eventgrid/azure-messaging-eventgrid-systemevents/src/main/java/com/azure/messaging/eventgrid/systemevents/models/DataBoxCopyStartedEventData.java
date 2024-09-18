@@ -6,6 +6,7 @@ package com.azure.messaging.eventgrid.systemevents.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,8 +21,8 @@ import java.time.format.DateTimeFormatter;
 @Immutable
 public final class DataBoxCopyStartedEventData implements JsonSerializable<DataBoxCopyStartedEventData> {
     /*
-     * Serial Number of the device associated with the event. The list is comma separated if more than one serial
-     * number is associated.
+     * Serial Number of the device associated with the event. The list is comma separated if more than one serial number
+     * is associated.
      */
     @Generated
     private String serialNumber;
@@ -30,24 +31,29 @@ public final class DataBoxCopyStartedEventData implements JsonSerializable<DataB
      * Name of the current Stage
      */
     @Generated
-    private DataBoxStageName stageName;
+    private final DataBoxStageName stageName;
 
     /*
      * The time at which the stage happened.
      */
     @Generated
-    private OffsetDateTime stageTime;
+    private final OffsetDateTime stageTime;
 
     /**
      * Creates an instance of DataBoxCopyStartedEventData class.
+     * 
+     * @param stageName the stageName value to set.
+     * @param stageTime the stageTime value to set.
      */
     @Generated
-    private DataBoxCopyStartedEventData() {
+    private DataBoxCopyStartedEventData(DataBoxStageName stageName, OffsetDateTime stageTime) {
+        this.stageName = stageName;
+        this.stageTime = stageTime;
     }
 
     /**
-     * Get the serialNumber property: Serial Number of the device associated with the event. The list is comma
-     * separated if more than one serial number is associated.
+     * Get the serialNumber property: Serial Number of the device associated with the event. The list is comma separated
+     * if more than one serial number is associated.
      * 
      * @return the serialNumber value.
      */
@@ -76,14 +82,17 @@ public final class DataBoxCopyStartedEventData implements JsonSerializable<DataB
         return this.stageTime;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("serialNumber", this.serialNumber);
         jsonWriter.writeStringField("stageName", this.stageName == null ? null : this.stageName.toString());
         jsonWriter.writeStringField("stageTime",
             this.stageTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.stageTime));
+        jsonWriter.writeStringField("serialNumber", this.serialNumber);
         return jsonWriter.writeEndObject();
     }
 
@@ -93,27 +102,33 @@ public final class DataBoxCopyStartedEventData implements JsonSerializable<DataB
      * @param jsonReader The JsonReader being read.
      * @return An instance of DataBoxCopyStartedEventData if the JsonReader was pointing to an instance of it, or null
      * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DataBoxCopyStartedEventData.
      */
     @Generated
     public static DataBoxCopyStartedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            DataBoxCopyStartedEventData deserializedDataBoxCopyStartedEventData = new DataBoxCopyStartedEventData();
+            DataBoxStageName stageName = null;
+            OffsetDateTime stageTime = null;
+            String serialNumber = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("serialNumber".equals(fieldName)) {
-                    deserializedDataBoxCopyStartedEventData.serialNumber = reader.getString();
-                } else if ("stageName".equals(fieldName)) {
-                    deserializedDataBoxCopyStartedEventData.stageName = DataBoxStageName.fromString(reader.getString());
+                if ("stageName".equals(fieldName)) {
+                    stageName = DataBoxStageName.fromString(reader.getString());
                 } else if ("stageTime".equals(fieldName)) {
-                    deserializedDataBoxCopyStartedEventData.stageTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    stageTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("serialNumber".equals(fieldName)) {
+                    serialNumber = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
+            DataBoxCopyStartedEventData deserializedDataBoxCopyStartedEventData
+                = new DataBoxCopyStartedEventData(stageName, stageTime);
+            deserializedDataBoxCopyStartedEventData.serialNumber = serialNumber;
 
             return deserializedDataBoxCopyStartedEventData;
         });

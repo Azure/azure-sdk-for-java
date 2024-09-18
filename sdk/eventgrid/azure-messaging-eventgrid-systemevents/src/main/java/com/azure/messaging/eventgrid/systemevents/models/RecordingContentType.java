@@ -4,53 +4,54 @@
 
 package com.azure.messaging.eventgrid.systemevents.models;
 
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
  * Recording content type.
  */
-public enum RecordingContentType {
+public final class RecordingContentType extends ExpandableStringEnum<RecordingContentType> {
     /**
      * AudioVideo content type.
      */
-    AUDIO_VIDEO("AudioVideo"),
+    @Generated
+    public static final RecordingContentType AUDIO_VIDEO = fromString("AudioVideo");
 
     /**
      * Audio content type.
      */
-    AUDIO("Audio");
+    @Generated
+    public static final RecordingContentType AUDIO = fromString("Audio");
 
     /**
-     * The actual serialized value for a RecordingContentType instance.
-     */
-    private final String value;
-
-    RecordingContentType(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a RecordingContentType instance.
+     * Creates a new instance of RecordingContentType value.
      * 
-     * @param value the serialized value to parse.
-     * @return the parsed RecordingContentType object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static RecordingContentType fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        RecordingContentType[] items = RecordingContentType.values();
-        for (RecordingContentType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Generated
+    @Deprecated
+    public RecordingContentType() {
     }
 
     /**
-     * {@inheritDoc}
+     * Creates or finds a RecordingContentType from its string representation.
+     * 
+     * @param name a name to look for.
+     * @return the corresponding RecordingContentType.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    @Generated
+    public static RecordingContentType fromString(String name) {
+        return fromString(name, RecordingContentType.class);
+    }
+
+    /**
+     * Gets known RecordingContentType values.
+     * 
+     * @return known RecordingContentType values.
+     */
+    @Generated
+    public static Collection<RecordingContentType> values() {
+        return values(RecordingContentType.class);
     }
 }

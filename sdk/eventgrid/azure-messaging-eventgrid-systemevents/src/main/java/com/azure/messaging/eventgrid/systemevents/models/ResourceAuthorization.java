@@ -34,13 +34,16 @@ public final class ResourceAuthorization implements JsonSerializable<ResourceAut
      * The evidence for the authorization.
      */
     @Generated
-    private Map<String, String> evidence;
+    private final Map<String, String> evidence;
 
     /**
      * Creates an instance of ResourceAuthorization class.
+     * 
+     * @param evidence the evidence value to set.
      */
     @Generated
-    private ResourceAuthorization() {
+    private ResourceAuthorization(Map<String, String> evidence) {
+        this.evidence = evidence;
     }
 
     /**
@@ -73,13 +76,16 @@ public final class ResourceAuthorization implements JsonSerializable<ResourceAut
         return this.evidence;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("evidence", this.evidence, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("scope", this.scope);
         jsonWriter.writeStringField("action", this.action);
-        jsonWriter.writeMapField("evidence", this.evidence, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -89,27 +95,32 @@ public final class ResourceAuthorization implements JsonSerializable<ResourceAut
      * @param jsonReader The JsonReader being read.
      * @return An instance of ResourceAuthorization if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ResourceAuthorization.
      */
     @Generated
     public static ResourceAuthorization fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ResourceAuthorization deserializedResourceAuthorization = new ResourceAuthorization();
+            Map<String, String> evidence = null;
+            String scope = null;
+            String action = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("scope".equals(fieldName)) {
-                    deserializedResourceAuthorization.scope = reader.getString();
+                if ("evidence".equals(fieldName)) {
+                    evidence = reader.readMap(reader1 -> reader1.getString());
+                } else if ("scope".equals(fieldName)) {
+                    scope = reader.getString();
                 } else if ("action".equals(fieldName)) {
-                    deserializedResourceAuthorization.action = reader.getString();
-                } else if ("evidence".equals(fieldName)) {
-                    Map<String, String> evidence = reader.readMap(reader1 -> reader1.getString());
-                    deserializedResourceAuthorization.evidence = evidence;
+                    action = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
+            ResourceAuthorization deserializedResourceAuthorization = new ResourceAuthorization(evidence);
+            deserializedResourceAuthorization.scope = scope;
+            deserializedResourceAuthorization.action = action;
 
             return deserializedResourceAuthorization;
         });

@@ -4,58 +4,60 @@
 
 package com.azure.messaging.eventgrid.systemevents.models;
 
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
  * Asynchronous operation status of the operation on the app service plan.
  */
-public enum AsyncStatus {
+public final class AsyncStatus extends ExpandableStringEnum<AsyncStatus> {
     /**
      * Async operation has started.
      */
-    STARTED("Started"),
+    @Generated
+    public static final AsyncStatus STARTED = fromString("Started");
 
     /**
      * Async operation has completed.
      */
-    COMPLETED("Completed"),
+    @Generated
+    public static final AsyncStatus COMPLETED = fromString("Completed");
 
     /**
      * Async operation failed to complete.
      */
-    FAILED("Failed");
+    @Generated
+    public static final AsyncStatus FAILED = fromString("Failed");
 
     /**
-     * The actual serialized value for a AsyncStatus instance.
-     */
-    private final String value;
-
-    AsyncStatus(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a AsyncStatus instance.
+     * Creates a new instance of AsyncStatus value.
      * 
-     * @param value the serialized value to parse.
-     * @return the parsed AsyncStatus object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static AsyncStatus fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        AsyncStatus[] items = AsyncStatus.values();
-        for (AsyncStatus item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Generated
+    @Deprecated
+    public AsyncStatus() {
     }
 
     /**
-     * {@inheritDoc}
+     * Creates or finds a AsyncStatus from its string representation.
+     * 
+     * @param name a name to look for.
+     * @return the corresponding AsyncStatus.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    @Generated
+    public static AsyncStatus fromString(String name) {
+        return fromString(name, AsyncStatus.class);
+    }
+
+    /**
+     * Gets known AsyncStatus values.
+     * 
+     * @return known AsyncStatus values.
+     */
+    @Generated
+    public static Collection<AsyncStatus> values() {
+        return values(AsyncStatus.class);
     }
 }

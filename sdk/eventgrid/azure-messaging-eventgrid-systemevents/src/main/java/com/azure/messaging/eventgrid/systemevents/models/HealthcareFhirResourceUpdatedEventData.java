@@ -19,86 +19,91 @@ import java.io.IOException;
 public final class HealthcareFhirResourceUpdatedEventData
     implements JsonSerializable<HealthcareFhirResourceUpdatedEventData> {
     /*
+     * Type of HL7 FHIR resource.
+     */
+    @Generated
+    private final HealthcareFhirResourceType resourceType;
+
+    /*
      * Domain name of FHIR account for this resource.
      */
     @Generated
-    private String fhirServiceHostName;
+    private String resourceFhirAccount;
 
     /*
      * Id of HL7 FHIR resource.
      */
     @Generated
-    private String fhirResourceId;
+    private String resourceFhirId;
 
     /*
      * VersionId of HL7 FHIR resource. It changes when the resource is created, updated, or deleted(soft-deletion).
      */
     @Generated
-    private Long fhirResourceVersionId;
-
-    /*
-     * Type of HL7 FHIR resource.
-     */
-    @Generated
-    private HealthcareFhirResourceType fhirResourceType;
+    private Long resourceVersionId;
 
     /**
      * Creates an instance of HealthcareFhirResourceUpdatedEventData class.
-     */
-    @Generated
-    private HealthcareFhirResourceUpdatedEventData() {
-    }
-
-    /**
-     * Get the fhirServiceHostName property: Domain name of FHIR account for this resource.
      * 
-     * @return the fhirServiceHostName value.
+     * @param resourceType the resourceType value to set.
      */
     @Generated
-    public String getFhirServiceHostName() {
-        return this.fhirServiceHostName;
+    private HealthcareFhirResourceUpdatedEventData(HealthcareFhirResourceType resourceType) {
+        this.resourceType = resourceType;
     }
 
     /**
-     * Get the fhirResourceId property: Id of HL7 FHIR resource.
+     * Get the resourceType property: Type of HL7 FHIR resource.
      * 
-     * @return the fhirResourceId value.
+     * @return the resourceType value.
      */
     @Generated
-    public String getFhirResourceId() {
-        return this.fhirResourceId;
+    public HealthcareFhirResourceType getResourceType() {
+        return this.resourceType;
     }
 
     /**
-     * Get the fhirResourceVersionId property: VersionId of HL7 FHIR resource. It changes when the resource is created,
+     * Get the resourceFhirAccount property: Domain name of FHIR account for this resource.
+     * 
+     * @return the resourceFhirAccount value.
+     */
+    @Generated
+    public String getResourceFhirAccount() {
+        return this.resourceFhirAccount;
+    }
+
+    /**
+     * Get the resourceFhirId property: Id of HL7 FHIR resource.
+     * 
+     * @return the resourceFhirId value.
+     */
+    @Generated
+    public String getResourceFhirId() {
+        return this.resourceFhirId;
+    }
+
+    /**
+     * Get the resourceVersionId property: VersionId of HL7 FHIR resource. It changes when the resource is created,
      * updated, or deleted(soft-deletion).
      * 
-     * @return the fhirResourceVersionId value.
+     * @return the resourceVersionId value.
      */
     @Generated
-    public Long getFhirResourceVersionId() {
-        return this.fhirResourceVersionId;
+    public Long getResourceVersionId() {
+        return this.resourceVersionId;
     }
 
     /**
-     * Get the fhirResourceType property: Type of HL7 FHIR resource.
-     * 
-     * @return the fhirResourceType value.
+     * {@inheritDoc}
      */
-    @Generated
-    public HealthcareFhirResourceType getFhirResourceType() {
-        return this.fhirResourceType;
-    }
-
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("resourceFhirAccount", this.fhirServiceHostName);
-        jsonWriter.writeStringField("resourceFhirId", this.fhirResourceId);
-        jsonWriter.writeNumberField("resourceVersionId", this.fhirResourceVersionId);
-        jsonWriter.writeStringField("resourceType",
-            this.fhirResourceType == null ? null : this.fhirResourceType.toString());
+        jsonWriter.writeStringField("resourceType", this.resourceType == null ? null : this.resourceType.toString());
+        jsonWriter.writeStringField("resourceFhirAccount", this.resourceFhirAccount);
+        jsonWriter.writeStringField("resourceFhirId", this.resourceFhirId);
+        jsonWriter.writeNumberField("resourceVersionId", this.resourceVersionId);
         return jsonWriter.writeEndObject();
     }
 
@@ -108,31 +113,37 @@ public final class HealthcareFhirResourceUpdatedEventData
      * @param jsonReader The JsonReader being read.
      * @return An instance of HealthcareFhirResourceUpdatedEventData if the JsonReader was pointing to an instance of
      * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the HealthcareFhirResourceUpdatedEventData.
      */
     @Generated
     public static HealthcareFhirResourceUpdatedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            HealthcareFhirResourceUpdatedEventData deserializedHealthcareFhirResourceUpdatedEventData
-                = new HealthcareFhirResourceUpdatedEventData();
+            HealthcareFhirResourceType resourceType = null;
+            String resourceFhirAccount = null;
+            String resourceFhirId = null;
+            Long resourceVersionId = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("resourceFhirAccount".equals(fieldName)) {
-                    deserializedHealthcareFhirResourceUpdatedEventData.fhirServiceHostName = reader.getString();
+                if ("resourceType".equals(fieldName)) {
+                    resourceType = HealthcareFhirResourceType.fromString(reader.getString());
+                } else if ("resourceFhirAccount".equals(fieldName)) {
+                    resourceFhirAccount = reader.getString();
                 } else if ("resourceFhirId".equals(fieldName)) {
-                    deserializedHealthcareFhirResourceUpdatedEventData.fhirResourceId = reader.getString();
+                    resourceFhirId = reader.getString();
                 } else if ("resourceVersionId".equals(fieldName)) {
-                    deserializedHealthcareFhirResourceUpdatedEventData.fhirResourceVersionId
-                        = reader.getNullable(JsonReader::getLong);
-                } else if ("resourceType".equals(fieldName)) {
-                    deserializedHealthcareFhirResourceUpdatedEventData.fhirResourceType
-                        = HealthcareFhirResourceType.fromString(reader.getString());
+                    resourceVersionId = reader.getNullable(JsonReader::getLong);
                 } else {
                     reader.skipChildren();
                 }
             }
+            HealthcareFhirResourceUpdatedEventData deserializedHealthcareFhirResourceUpdatedEventData
+                = new HealthcareFhirResourceUpdatedEventData(resourceType);
+            deserializedHealthcareFhirResourceUpdatedEventData.resourceFhirAccount = resourceFhirAccount;
+            deserializedHealthcareFhirResourceUpdatedEventData.resourceFhirId = resourceFhirId;
+            deserializedHealthcareFhirResourceUpdatedEventData.resourceVersionId = resourceVersionId;
 
             return deserializedHealthcareFhirResourceUpdatedEventData;
         });

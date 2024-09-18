@@ -44,19 +44,22 @@ public class DeviceConnectionStateEventProperties implements JsonSerializable<De
      * Information about the device connection state event.
      */
     @Generated
-    private DeviceConnectionStateEventInfo deviceConnectionStateEventInfo;
+    private final DeviceConnectionStateEventInfo deviceConnectionStateEventInfo;
 
     /**
      * Creates an instance of DeviceConnectionStateEventProperties class.
+     * 
+     * @param deviceConnectionStateEventInfo the deviceConnectionStateEventInfo value to set.
      */
     @Generated
-    protected DeviceConnectionStateEventProperties() {
+    protected DeviceConnectionStateEventProperties(DeviceConnectionStateEventInfo deviceConnectionStateEventInfo) {
+        this.deviceConnectionStateEventInfo = deviceConnectionStateEventInfo;
     }
 
     /**
      * Get the deviceId property: The unique identifier of the device. This case-sensitive string can be up to 128
      * characters long, and supports ASCII 7-bit alphanumeric characters plus the following special characters: - : . +
-     * % _ &amp;#35; * ? ! ( ) , = `@` ; $ '.
+     * % _ &amp;#35; * ? ! ( ) , = `&#064;` ; $ '.
      * 
      * @return the deviceId value.
      */
@@ -68,11 +71,12 @@ public class DeviceConnectionStateEventProperties implements JsonSerializable<De
     /**
      * Set the deviceId property: The unique identifier of the device. This case-sensitive string can be up to 128
      * characters long, and supports ASCII 7-bit alphanumeric characters plus the following special characters: - : . +
-     * % _ &amp;#35; * ? ! ( ) , = `@` ; $ '.
+     * % _ &amp;#35; * ? ! ( ) , = `&#064;` ; $ '.
      * 
      * @param deviceId the deviceId value to set.
      * @return the DeviceConnectionStateEventProperties object itself.
      */
+    @Generated
     DeviceConnectionStateEventProperties setDeviceId(String deviceId) {
         this.deviceId = deviceId;
         return this;
@@ -81,7 +85,7 @@ public class DeviceConnectionStateEventProperties implements JsonSerializable<De
     /**
      * Get the moduleId property: The unique identifier of the module. This case-sensitive string can be up to 128
      * characters long, and supports ASCII 7-bit alphanumeric characters plus the following special characters: - : . +
-     * % _ &amp;#35; * ? ! ( ) , = `@` ; $ '.
+     * % _ &amp;#35; * ? ! ( ) , = `&#064;` ; $ '.
      * 
      * @return the moduleId value.
      */
@@ -93,11 +97,12 @@ public class DeviceConnectionStateEventProperties implements JsonSerializable<De
     /**
      * Set the moduleId property: The unique identifier of the module. This case-sensitive string can be up to 128
      * characters long, and supports ASCII 7-bit alphanumeric characters plus the following special characters: - : . +
-     * % _ &amp;#35; * ? ! ( ) , = `@` ; $ '.
+     * % _ &amp;#35; * ? ! ( ) , = `&#064;` ; $ '.
      * 
      * @param moduleId the moduleId value to set.
      * @return the DeviceConnectionStateEventProperties object itself.
      */
+    @Generated
     DeviceConnectionStateEventProperties setModuleId(String moduleId) {
         this.moduleId = moduleId;
         return this;
@@ -119,6 +124,7 @@ public class DeviceConnectionStateEventProperties implements JsonSerializable<De
      * @param hubName the hubName value to set.
      * @return the DeviceConnectionStateEventProperties object itself.
      */
+    @Generated
     DeviceConnectionStateEventProperties setHubName(String hubName) {
         this.hubName = hubName;
         return this;
@@ -135,25 +141,16 @@ public class DeviceConnectionStateEventProperties implements JsonSerializable<De
     }
 
     /**
-     * Set the deviceConnectionStateEventInfo property: Information about the device connection state event.
-     * 
-     * @param deviceConnectionStateEventInfo the deviceConnectionStateEventInfo value to set.
-     * @return the DeviceConnectionStateEventProperties object itself.
+     * {@inheritDoc}
      */
-    DeviceConnectionStateEventProperties
-        setDeviceConnectionStateEventInfo(DeviceConnectionStateEventInfo deviceConnectionStateEventInfo) {
-        this.deviceConnectionStateEventInfo = deviceConnectionStateEventInfo;
-        return this;
-    }
-
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("deviceConnectionStateEventInfo", this.deviceConnectionStateEventInfo);
         jsonWriter.writeStringField("deviceId", this.deviceId);
         jsonWriter.writeStringField("moduleId", this.moduleId);
         jsonWriter.writeStringField("hubName", this.hubName);
-        jsonWriter.writeJsonField("deviceConnectionStateEventInfo", this.deviceConnectionStateEventInfo);
         return jsonWriter.writeEndObject();
     }
 
@@ -163,30 +160,37 @@ public class DeviceConnectionStateEventProperties implements JsonSerializable<De
      * @param jsonReader The JsonReader being read.
      * @return An instance of DeviceConnectionStateEventProperties if the JsonReader was pointing to an instance of it,
      * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DeviceConnectionStateEventProperties.
      */
     @Generated
     public static DeviceConnectionStateEventProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            DeviceConnectionStateEventProperties deserializedDeviceConnectionStateEventProperties
-                = new DeviceConnectionStateEventProperties();
+            DeviceConnectionStateEventInfo deviceConnectionStateEventInfo = null;
+            String deviceId = null;
+            String moduleId = null;
+            String hubName = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("deviceId".equals(fieldName)) {
-                    deserializedDeviceConnectionStateEventProperties.deviceId = reader.getString();
+                if ("deviceConnectionStateEventInfo".equals(fieldName)) {
+                    deviceConnectionStateEventInfo = DeviceConnectionStateEventInfo.fromJson(reader);
+                } else if ("deviceId".equals(fieldName)) {
+                    deviceId = reader.getString();
                 } else if ("moduleId".equals(fieldName)) {
-                    deserializedDeviceConnectionStateEventProperties.moduleId = reader.getString();
+                    moduleId = reader.getString();
                 } else if ("hubName".equals(fieldName)) {
-                    deserializedDeviceConnectionStateEventProperties.hubName = reader.getString();
-                } else if ("deviceConnectionStateEventInfo".equals(fieldName)) {
-                    deserializedDeviceConnectionStateEventProperties.deviceConnectionStateEventInfo
-                        = DeviceConnectionStateEventInfo.fromJson(reader);
+                    hubName = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
+            DeviceConnectionStateEventProperties deserializedDeviceConnectionStateEventProperties
+                = new DeviceConnectionStateEventProperties(deviceConnectionStateEventInfo);
+            deserializedDeviceConnectionStateEventProperties.deviceId = deviceId;
+            deserializedDeviceConnectionStateEventProperties.moduleId = moduleId;
+            deserializedDeviceConnectionStateEventProperties.hubName = hubName;
 
             return deserializedDeviceConnectionStateEventProperties;
         });

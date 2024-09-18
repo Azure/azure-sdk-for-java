@@ -59,6 +59,7 @@ public class AvsScriptExecutionEventData implements JsonSerializable<AvsScriptEx
      * @param operationId the operationId value to set.
      * @return the AvsScriptExecutionEventData object itself.
      */
+    @Generated
     AvsScriptExecutionEventData setOperationId(String operationId) {
         this.operationId = operationId;
         return this;
@@ -80,6 +81,7 @@ public class AvsScriptExecutionEventData implements JsonSerializable<AvsScriptEx
      * @param cmdletId the cmdletId value to set.
      * @return the AvsScriptExecutionEventData object itself.
      */
+    @Generated
     AvsScriptExecutionEventData setCmdletId(String cmdletId) {
         this.cmdletId = cmdletId;
         return this;
@@ -101,11 +103,15 @@ public class AvsScriptExecutionEventData implements JsonSerializable<AvsScriptEx
      * @param output the output value to set.
      * @return the AvsScriptExecutionEventData object itself.
      */
+    @Generated
     AvsScriptExecutionEventData setOutput(List<String> output) {
         this.output = output;
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {

@@ -33,16 +33,18 @@ public final class MicrosoftTeamsUserIdentifierModel implements JsonSerializable
      * The cloud that the Microsoft Teams user belongs to. By default 'public' if missing.
      */
     @Generated
-    private CommunicationCloudEnvironmentModel cloud;
+    private final CommunicationCloudEnvironmentModel cloud;
 
     /**
      * Creates an instance of MicrosoftTeamsUserIdentifierModel class.
      * 
      * @param userId the userId value to set.
+     * @param cloud the cloud value to set.
      */
     @Generated
-    private MicrosoftTeamsUserIdentifierModel(String userId) {
+    private MicrosoftTeamsUserIdentifierModel(String userId, CommunicationCloudEnvironmentModel cloud) {
         this.userId = userId;
+        this.cloud = cloud;
     }
 
     /**
@@ -76,13 +78,16 @@ public final class MicrosoftTeamsUserIdentifierModel implements JsonSerializable
         return this.cloud;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("userId", this.userId);
-        jsonWriter.writeBooleanField("isAnonymous", this.isAnonymous);
         jsonWriter.writeStringField("cloud", this.cloud == null ? null : this.cloud.toString());
+        jsonWriter.writeBooleanField("isAnonymous", this.isAnonymous);
         return jsonWriter.writeEndObject();
     }
 
@@ -99,26 +104,25 @@ public final class MicrosoftTeamsUserIdentifierModel implements JsonSerializable
     public static MicrosoftTeamsUserIdentifierModel fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String userId = null;
-            Boolean isAnonymous = null;
             CommunicationCloudEnvironmentModel cloud = null;
+            Boolean isAnonymous = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("userId".equals(fieldName)) {
                     userId = reader.getString();
-                } else if ("isAnonymous".equals(fieldName)) {
-                    isAnonymous = reader.getNullable(JsonReader::getBoolean);
                 } else if ("cloud".equals(fieldName)) {
                     cloud = CommunicationCloudEnvironmentModel.fromString(reader.getString());
+                } else if ("isAnonymous".equals(fieldName)) {
+                    isAnonymous = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }
             }
             MicrosoftTeamsUserIdentifierModel deserializedMicrosoftTeamsUserIdentifierModel
-                = new MicrosoftTeamsUserIdentifierModel(userId);
+                = new MicrosoftTeamsUserIdentifierModel(userId, cloud);
             deserializedMicrosoftTeamsUserIdentifierModel.isAnonymous = isAnonymous;
-            deserializedMicrosoftTeamsUserIdentifierModel.cloud = cloud;
 
             return deserializedMicrosoftTeamsUserIdentifierModel;
         });

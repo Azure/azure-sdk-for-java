@@ -78,8 +78,8 @@ public final class ContainerRegistryEventRequest implements JsonSerializable<Con
     }
 
     /**
-     * Get the host property: The externally accessible hostname of the registry instance, as specified by the http
-     * host header on incoming requests.
+     * Get the host property: The externally accessible hostname of the registry instance, as specified by the http host
+     * header on incoming requests.
      * 
      * @return the host value.
      */
@@ -108,6 +108,9 @@ public final class ContainerRegistryEventRequest implements JsonSerializable<Con
         return this.useragent;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {

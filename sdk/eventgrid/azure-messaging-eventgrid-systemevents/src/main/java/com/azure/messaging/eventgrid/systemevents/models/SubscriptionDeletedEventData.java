@@ -14,7 +14,7 @@ import java.io.IOException;
 
 /**
  * Schema of the Data property of an EventGridEvent for a
- * Microsoft.EventGrid.SystemEvents.SubscriptionDeletedEvent event.
+ * Microsoft.EventGrid.SubscriptionDeletedEvent event.
  */
 @Immutable
 public final class SubscriptionDeletedEventData implements JsonSerializable<SubscriptionDeletedEventData> {
@@ -41,10 +41,14 @@ public final class SubscriptionDeletedEventData implements JsonSerializable<Subs
         return this.eventSubscriptionId;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("eventSubscriptionId", this.eventSubscriptionId);
         return jsonWriter.writeEndObject();
     }
 

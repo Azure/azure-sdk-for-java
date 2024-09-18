@@ -45,6 +45,9 @@ public final class SubscriptionValidationResponse implements JsonSerializable<Su
         return this.validationResponse;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {

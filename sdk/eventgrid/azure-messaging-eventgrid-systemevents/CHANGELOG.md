@@ -2,7 +2,7 @@
 
 ## 1.0.0-beta.1 (Unreleased)
 
-- Azure Azure EventGrid System Events client library for Java. This package contains Microsoft Azure Azure EventGrid System Events client library.
+- Azure SystemEvents client library for Java. This package contains Microsoft Azure SystemEvents client library.
 
 ### Features Added
 

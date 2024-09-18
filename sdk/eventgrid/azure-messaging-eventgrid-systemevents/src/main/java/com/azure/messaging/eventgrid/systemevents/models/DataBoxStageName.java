@@ -4,58 +4,60 @@
 
 package com.azure.messaging.eventgrid.systemevents.models;
 
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
  * Schema of DataBox Stage Name enumeration.
  */
-public enum DataBoxStageName {
+public final class DataBoxStageName extends ExpandableStringEnum<DataBoxStageName> {
     /**
      * Copy has started.
      */
-    COPY_STARTED("CopyStarted"),
+    @Generated
+    public static final DataBoxStageName COPY_STARTED = fromString("CopyStarted");
 
     /**
      * Copy has completed.
      */
-    COPY_COMPLETED("CopyCompleted"),
+    @Generated
+    public static final DataBoxStageName COPY_COMPLETED = fromString("CopyCompleted");
 
     /**
      * Order has been completed.
      */
-    ORDER_COMPLETED("OrderCompleted");
+    @Generated
+    public static final DataBoxStageName ORDER_COMPLETED = fromString("OrderCompleted");
 
     /**
-     * The actual serialized value for a DataBoxStageName instance.
-     */
-    private final String value;
-
-    DataBoxStageName(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a DataBoxStageName instance.
+     * Creates a new instance of DataBoxStageName value.
      * 
-     * @param value the serialized value to parse.
-     * @return the parsed DataBoxStageName object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static DataBoxStageName fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        DataBoxStageName[] items = DataBoxStageName.values();
-        for (DataBoxStageName item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Generated
+    @Deprecated
+    public DataBoxStageName() {
     }
 
     /**
-     * {@inheritDoc}
+     * Creates or finds a DataBoxStageName from its string representation.
+     * 
+     * @param name a name to look for.
+     * @return the corresponding DataBoxStageName.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    @Generated
+    public static DataBoxStageName fromString(String name) {
+        return fromString(name, DataBoxStageName.class);
+    }
+
+    /**
+     * Gets known DataBoxStageName values.
+     * 
+     * @return known DataBoxStageName values.
+     */
+    @Generated
+    public static Collection<DataBoxStageName> values() {
+        return values(DataBoxStageName.class);
     }
 }

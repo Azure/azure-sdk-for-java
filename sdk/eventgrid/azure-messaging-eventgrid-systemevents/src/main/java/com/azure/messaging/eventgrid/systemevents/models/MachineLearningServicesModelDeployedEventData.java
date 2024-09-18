@@ -11,6 +11,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * Schema of the Data property of an EventGridEvent for a Microsoft.MachineLearningServices.ModelDeployed event.
@@ -40,19 +41,25 @@ public final class MachineLearningServicesModelDeployedEventData
      * The tags of the deployed service.
      */
     @Generated
-    private Object serviceTags;
+    private final Map<String, Object> serviceTags;
 
     /*
      * The properties of the deployed service.
      */
     @Generated
-    private Object serviceProperties;
+    private final Map<String, Object> serviceProperties;
 
     /**
      * Creates an instance of MachineLearningServicesModelDeployedEventData class.
+     * 
+     * @param serviceTags the serviceTags value to set.
+     * @param serviceProperties the serviceProperties value to set.
      */
     @Generated
-    private MachineLearningServicesModelDeployedEventData() {
+    private MachineLearningServicesModelDeployedEventData(Map<String, Object> serviceTags,
+        Map<String, Object> serviceProperties) {
+        this.serviceTags = serviceTags;
+        this.serviceProperties = serviceProperties;
     }
 
     /**
@@ -91,7 +98,7 @@ public final class MachineLearningServicesModelDeployedEventData
      * @return the serviceTags value.
      */
     @Generated
-    public Object getServiceTags() {
+    public Map<String, Object> getServiceTags() {
         return this.serviceTags;
     }
 
@@ -101,19 +108,23 @@ public final class MachineLearningServicesModelDeployedEventData
      * @return the serviceProperties value.
      */
     @Generated
-    public Object getServiceProperties() {
+    public Map<String, Object> getServiceProperties() {
         return this.serviceProperties;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("serviceTags", this.serviceTags, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeMapField("serviceProperties", this.serviceProperties,
+            (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeStringField("serviceName", this.serviceName);
         jsonWriter.writeStringField("serviceComputeType", this.serviceComputeType);
         jsonWriter.writeStringField("modelIds", this.modelIds);
-        jsonWriter.writeUntypedField("serviceTags", this.serviceTags);
-        jsonWriter.writeUntypedField("serviceProperties", this.serviceProperties);
         return jsonWriter.writeEndObject();
     }
 
@@ -123,31 +134,40 @@ public final class MachineLearningServicesModelDeployedEventData
      * @param jsonReader The JsonReader being read.
      * @return An instance of MachineLearningServicesModelDeployedEventData if the JsonReader was pointing to an
      * instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MachineLearningServicesModelDeployedEventData.
      */
     @Generated
     public static MachineLearningServicesModelDeployedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            MachineLearningServicesModelDeployedEventData deserializedMachineLearningServicesModelDeployedEventData
-                = new MachineLearningServicesModelDeployedEventData();
+            Map<String, Object> serviceTags = null;
+            Map<String, Object> serviceProperties = null;
+            String serviceName = null;
+            String serviceComputeType = null;
+            String modelIds = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("serviceName".equals(fieldName)) {
-                    deserializedMachineLearningServicesModelDeployedEventData.serviceName = reader.getString();
-                } else if ("serviceComputeType".equals(fieldName)) {
-                    deserializedMachineLearningServicesModelDeployedEventData.serviceComputeType = reader.getString();
-                } else if ("modelIds".equals(fieldName)) {
-                    deserializedMachineLearningServicesModelDeployedEventData.modelIds = reader.getString();
-                } else if ("serviceTags".equals(fieldName)) {
-                    deserializedMachineLearningServicesModelDeployedEventData.serviceTags = reader.readUntyped();
+                if ("serviceTags".equals(fieldName)) {
+                    serviceTags = reader.readMap(reader1 -> reader1.readUntyped());
                 } else if ("serviceProperties".equals(fieldName)) {
-                    deserializedMachineLearningServicesModelDeployedEventData.serviceProperties = reader.readUntyped();
+                    serviceProperties = reader.readMap(reader1 -> reader1.readUntyped());
+                } else if ("serviceName".equals(fieldName)) {
+                    serviceName = reader.getString();
+                } else if ("serviceComputeType".equals(fieldName)) {
+                    serviceComputeType = reader.getString();
+                } else if ("modelIds".equals(fieldName)) {
+                    modelIds = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
+            MachineLearningServicesModelDeployedEventData deserializedMachineLearningServicesModelDeployedEventData
+                = new MachineLearningServicesModelDeployedEventData(serviceTags, serviceProperties);
+            deserializedMachineLearningServicesModelDeployedEventData.serviceName = serviceName;
+            deserializedMachineLearningServicesModelDeployedEventData.serviceComputeType = serviceComputeType;
+            deserializedMachineLearningServicesModelDeployedEventData.modelIds = modelIds;
 
             return deserializedMachineLearningServicesModelDeployedEventData;
         });

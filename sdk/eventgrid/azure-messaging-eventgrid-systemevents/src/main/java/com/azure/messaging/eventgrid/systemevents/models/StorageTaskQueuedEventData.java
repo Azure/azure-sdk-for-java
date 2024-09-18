@@ -6,6 +6,7 @@ package com.azure.messaging.eventgrid.systemevents.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -23,7 +24,7 @@ public final class StorageTaskQueuedEventData implements JsonSerializable<Storag
      * The time at which a storage task was queued.
      */
     @Generated
-    private OffsetDateTime queuedDateTime;
+    private final OffsetDateTime queuedDateTime;
 
     /*
      * The execution id for a storage task.
@@ -33,9 +34,12 @@ public final class StorageTaskQueuedEventData implements JsonSerializable<Storag
 
     /**
      * Creates an instance of StorageTaskQueuedEventData class.
+     * 
+     * @param queuedDateTime the queuedDateTime value to set.
      */
     @Generated
-    private StorageTaskQueuedEventData() {
+    private StorageTaskQueuedEventData(OffsetDateTime queuedDateTime) {
+        this.queuedDateTime = queuedDateTime;
     }
 
     /**
@@ -58,6 +62,9 @@ public final class StorageTaskQueuedEventData implements JsonSerializable<Storag
         return this.taskExecutionId;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
@@ -74,25 +81,30 @@ public final class StorageTaskQueuedEventData implements JsonSerializable<Storag
      * @param jsonReader The JsonReader being read.
      * @return An instance of StorageTaskQueuedEventData if the JsonReader was pointing to an instance of it, or null if
      * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the StorageTaskQueuedEventData.
      */
     @Generated
     public static StorageTaskQueuedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            StorageTaskQueuedEventData deserializedStorageTaskQueuedEventData = new StorageTaskQueuedEventData();
+            OffsetDateTime queuedDateTime = null;
+            String taskExecutionId = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("queuedDateTime".equals(fieldName)) {
-                    deserializedStorageTaskQueuedEventData.queuedDateTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    queuedDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("taskExecutionId".equals(fieldName)) {
-                    deserializedStorageTaskQueuedEventData.taskExecutionId = reader.getString();
+                    taskExecutionId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
+            StorageTaskQueuedEventData deserializedStorageTaskQueuedEventData
+                = new StorageTaskQueuedEventData(queuedDateTime);
+            deserializedStorageTaskQueuedEventData.taskExecutionId = taskExecutionId;
 
             return deserializedStorageTaskQueuedEventData;
         });

@@ -4,53 +4,54 @@
 
 package com.azure.messaging.eventgrid.systemevents.models;
 
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
  * Router Worker Selector State.
  */
-public enum AcsRouterWorkerSelectorState {
+public final class AcsRouterWorkerSelectorState extends ExpandableStringEnum<AcsRouterWorkerSelectorState> {
     /**
      * Router Worker Selector State Active.
      */
-    ACTIVE("active"),
+    @Generated
+    public static final AcsRouterWorkerSelectorState ACTIVE = fromString("active");
 
     /**
      * Router Worker Selector State Expired.
      */
-    EXPIRED("expired");
+    @Generated
+    public static final AcsRouterWorkerSelectorState EXPIRED = fromString("expired");
 
     /**
-     * The actual serialized value for a AcsRouterWorkerSelectorState instance.
-     */
-    private final String value;
-
-    AcsRouterWorkerSelectorState(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a AcsRouterWorkerSelectorState instance.
+     * Creates a new instance of AcsRouterWorkerSelectorState value.
      * 
-     * @param value the serialized value to parse.
-     * @return the parsed AcsRouterWorkerSelectorState object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static AcsRouterWorkerSelectorState fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        AcsRouterWorkerSelectorState[] items = AcsRouterWorkerSelectorState.values();
-        for (AcsRouterWorkerSelectorState item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Generated
+    @Deprecated
+    public AcsRouterWorkerSelectorState() {
     }
 
     /**
-     * {@inheritDoc}
+     * Creates or finds a AcsRouterWorkerSelectorState from its string representation.
+     * 
+     * @param name a name to look for.
+     * @return the corresponding AcsRouterWorkerSelectorState.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    @Generated
+    public static AcsRouterWorkerSelectorState fromString(String name) {
+        return fromString(name, AcsRouterWorkerSelectorState.class);
+    }
+
+    /**
+     * Gets known AcsRouterWorkerSelectorState values.
+     * 
+     * @return known AcsRouterWorkerSelectorState values.
+     */
+    @Generated
+    public static Collection<AcsRouterWorkerSelectorState> values() {
+        return values(AcsRouterWorkerSelectorState.class);
     }
 }

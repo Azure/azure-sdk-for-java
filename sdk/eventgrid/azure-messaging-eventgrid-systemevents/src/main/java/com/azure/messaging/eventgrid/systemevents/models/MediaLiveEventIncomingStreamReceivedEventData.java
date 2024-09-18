@@ -170,10 +170,22 @@ public final class MediaLiveEventIncomingStreamReceivedEventData
         return this.timescale;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("ingestUrl", this.ingestUrl);
+        jsonWriter.writeStringField("trackType", this.trackType);
+        jsonWriter.writeStringField("trackName", this.trackName);
+        jsonWriter.writeNumberField("bitrate", this.bitrate);
+        jsonWriter.writeStringField("encoderIp", this.encoderIp);
+        jsonWriter.writeStringField("encoderPort", this.encoderPort);
+        jsonWriter.writeStringField("timestamp", this.timestamp);
+        jsonWriter.writeStringField("duration", this.duration);
+        jsonWriter.writeStringField("timescale", this.timescale);
         return jsonWriter.writeEndObject();
     }
 

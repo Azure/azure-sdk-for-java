@@ -6,6 +6,7 @@ package com.azure.messaging.eventgrid.systemevents.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -25,7 +26,7 @@ public final class PolicyInsightsPolicyStateCreatedEventData
      * yyyy-MM-ddTHH:mm:ss.fffffffZ.
      */
     @Generated
-    private OffsetDateTime timestamp;
+    private final OffsetDateTime timestamp;
 
     /*
      * The resource ID of the policy assignment.
@@ -66,9 +67,12 @@ public final class PolicyInsightsPolicyStateCreatedEventData
 
     /**
      * Creates an instance of PolicyInsightsPolicyStateCreatedEventData class.
+     * 
+     * @param timestamp the timestamp value to set.
      */
     @Generated
-    private PolicyInsightsPolicyStateCreatedEventData() {
+    private PolicyInsightsPolicyStateCreatedEventData(OffsetDateTime timestamp) {
+        this.timestamp = timestamp;
     }
 
     /**
@@ -143,6 +147,9 @@ public final class PolicyInsightsPolicyStateCreatedEventData
         return this.complianceReasonCode;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
@@ -164,37 +171,51 @@ public final class PolicyInsightsPolicyStateCreatedEventData
      * @param jsonReader The JsonReader being read.
      * @return An instance of PolicyInsightsPolicyStateCreatedEventData if the JsonReader was pointing to an instance of
      * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the PolicyInsightsPolicyStateCreatedEventData.
      */
     @Generated
     public static PolicyInsightsPolicyStateCreatedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            PolicyInsightsPolicyStateCreatedEventData deserializedPolicyInsightsPolicyStateCreatedEventData
-                = new PolicyInsightsPolicyStateCreatedEventData();
+            OffsetDateTime timestamp = null;
+            String policyAssignmentId = null;
+            String policyDefinitionId = null;
+            String policyDefinitionReferenceId = null;
+            String complianceState = null;
+            String subscriptionId = null;
+            String complianceReasonCode = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("timestamp".equals(fieldName)) {
-                    deserializedPolicyInsightsPolicyStateCreatedEventData.timestamp
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    timestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("policyAssignmentId".equals(fieldName)) {
-                    deserializedPolicyInsightsPolicyStateCreatedEventData.policyAssignmentId = reader.getString();
+                    policyAssignmentId = reader.getString();
                 } else if ("policyDefinitionId".equals(fieldName)) {
-                    deserializedPolicyInsightsPolicyStateCreatedEventData.policyDefinitionId = reader.getString();
+                    policyDefinitionId = reader.getString();
                 } else if ("policyDefinitionReferenceId".equals(fieldName)) {
-                    deserializedPolicyInsightsPolicyStateCreatedEventData.policyDefinitionReferenceId
-                        = reader.getString();
+                    policyDefinitionReferenceId = reader.getString();
                 } else if ("complianceState".equals(fieldName)) {
-                    deserializedPolicyInsightsPolicyStateCreatedEventData.complianceState = reader.getString();
+                    complianceState = reader.getString();
                 } else if ("subscriptionId".equals(fieldName)) {
-                    deserializedPolicyInsightsPolicyStateCreatedEventData.subscriptionId = reader.getString();
+                    subscriptionId = reader.getString();
                 } else if ("complianceReasonCode".equals(fieldName)) {
-                    deserializedPolicyInsightsPolicyStateCreatedEventData.complianceReasonCode = reader.getString();
+                    complianceReasonCode = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
+            PolicyInsightsPolicyStateCreatedEventData deserializedPolicyInsightsPolicyStateCreatedEventData
+                = new PolicyInsightsPolicyStateCreatedEventData(timestamp);
+            deserializedPolicyInsightsPolicyStateCreatedEventData.policyAssignmentId = policyAssignmentId;
+            deserializedPolicyInsightsPolicyStateCreatedEventData.policyDefinitionId = policyDefinitionId;
+            deserializedPolicyInsightsPolicyStateCreatedEventData.policyDefinitionReferenceId
+                = policyDefinitionReferenceId;
+            deserializedPolicyInsightsPolicyStateCreatedEventData.complianceState = complianceState;
+            deserializedPolicyInsightsPolicyStateCreatedEventData.subscriptionId = subscriptionId;
+            deserializedPolicyInsightsPolicyStateCreatedEventData.complianceReasonCode = complianceReasonCode;
 
             return deserializedPolicyInsightsPolicyStateCreatedEventData;
         });

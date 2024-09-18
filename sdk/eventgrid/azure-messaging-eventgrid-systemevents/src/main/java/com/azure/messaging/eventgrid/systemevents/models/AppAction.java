@@ -4,73 +4,78 @@
 
 package com.azure.messaging.eventgrid.systemevents.models;
 
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
- * App Action Type.
+ * Type of action of the operation.
  */
-public enum AppAction {
+public final class AppAction extends ExpandableStringEnum<AppAction> {
     /**
      * Web app was restarted.
      */
-    RESTARTED("Restarted"),
+    @Generated
+    public static final AppAction RESTARTED = fromString("Restarted");
 
     /**
      * Web app was stopped.
      */
-    STOPPED("Stopped"),
+    @Generated
+    public static final AppAction STOPPED = fromString("Stopped");
 
     /**
      * There was an operation to change app setting on the web app.
      */
-    CHANGED_APP_SETTINGS("ChangedAppSettings"),
+    @Generated
+    public static final AppAction CHANGED_APP_SETTINGS = fromString("ChangedAppSettings");
 
     /**
      * The job has started.
      */
-    STARTED("Started"),
+    @Generated
+    public static final AppAction STARTED = fromString("Started");
 
     /**
      * The job has completed.
      */
-    COMPLETED("Completed"),
+    @Generated
+    public static final AppAction COMPLETED = fromString("Completed");
 
     /**
      * The job has failed to complete.
      */
-    FAILED("Failed");
+    @Generated
+    public static final AppAction FAILED = fromString("Failed");
 
     /**
-     * The actual serialized value for a AppAction instance.
-     */
-    private final String value;
-
-    AppAction(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a AppAction instance.
+     * Creates a new instance of AppAction value.
      * 
-     * @param value the serialized value to parse.
-     * @return the parsed AppAction object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static AppAction fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        AppAction[] items = AppAction.values();
-        for (AppAction item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Generated
+    @Deprecated
+    public AppAction() {
     }
 
     /**
-     * {@inheritDoc}
+     * Creates or finds a AppAction from its string representation.
+     * 
+     * @param name a name to look for.
+     * @return the corresponding AppAction.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    @Generated
+    public static AppAction fromString(String name) {
+        return fromString(name, AppAction.class);
+    }
+
+    /**
+     * Gets known AppAction values.
+     * 
+     * @return known AppAction values.
+     */
+    @Generated
+    public static Collection<AppAction> values() {
+        return values(AppAction.class);
     }
 }

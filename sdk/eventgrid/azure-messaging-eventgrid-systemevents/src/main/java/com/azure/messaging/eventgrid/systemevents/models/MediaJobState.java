@@ -4,79 +4,85 @@
 
 package com.azure.messaging.eventgrid.systemevents.models;
 
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
  * State of a Media Job.
  */
-public enum MediaJobState {
+public final class MediaJobState extends ExpandableStringEnum<MediaJobState> {
     /**
      * The job was canceled. This is a final state for the job.
      */
-    CANCELED("Canceled"),
+    @Generated
+    public static final MediaJobState CANCELED = fromString("Canceled");
 
     /**
      * The job is in the process of being canceled. This is a transient state for the job.
      */
-    CANCELING("Canceling"),
+    @Generated
+    public static final MediaJobState CANCELING = fromString("Canceling");
 
     /**
      * The job has encountered an error. This is a final state for the job.
      */
-    ERROR("Error"),
+    @Generated
+    public static final MediaJobState ERROR = fromString("Error");
 
     /**
      * The job is finished. This is a final state for the job.
      */
-    FINISHED("Finished"),
+    @Generated
+    public static final MediaJobState FINISHED = fromString("Finished");
 
     /**
      * The job is processing. This is a transient state for the job.
      */
-    PROCESSING("Processing"),
+    @Generated
+    public static final MediaJobState PROCESSING = fromString("Processing");
 
     /**
      * The job is in a queued state, waiting for resources to become available. This is a transient state.
      */
-    QUEUED("Queued"),
+    @Generated
+    public static final MediaJobState QUEUED = fromString("Queued");
 
     /**
      * The job is being scheduled to run on an available resource. This is a transient state, between queued and
      * processing states.
      */
-    SCHEDULED("Scheduled");
+    @Generated
+    public static final MediaJobState SCHEDULED = fromString("Scheduled");
 
     /**
-     * The actual serialized value for a MediaJobState instance.
-     */
-    private final String value;
-
-    MediaJobState(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a MediaJobState instance.
+     * Creates a new instance of MediaJobState value.
      * 
-     * @param value the serialized value to parse.
-     * @return the parsed MediaJobState object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static MediaJobState fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        MediaJobState[] items = MediaJobState.values();
-        for (MediaJobState item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Generated
+    @Deprecated
+    public MediaJobState() {
     }
 
     /**
-     * {@inheritDoc}
+     * Creates or finds a MediaJobState from its string representation.
+     * 
+     * @param name a name to look for.
+     * @return the corresponding MediaJobState.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    @Generated
+    public static MediaJobState fromString(String name) {
+        return fromString(name, MediaJobState.class);
+    }
+
+    /**
+     * Gets known MediaJobState values.
+     * 
+     * @return known MediaJobState values.
+     */
+    @Generated
+    public static Collection<MediaJobState> values() {
+        return values(MediaJobState.class);
     }
 }

@@ -21,13 +21,13 @@ public class MediaJobOutput implements JsonSerializable<MediaJobOutput> {
      * The discriminator for derived types.
      */
     @Generated
-    private String oDataType;
+    private String odataType = "MediaJobOutput";
 
     /*
      * Gets the Job output error.
      */
     @Generated
-    private MediaJobError error;
+    private final MediaJobError error;
 
     /*
      * Gets the Job output label.
@@ -50,35 +50,25 @@ public class MediaJobOutput implements JsonSerializable<MediaJobOutput> {
     /**
      * Creates an instance of MediaJobOutput class.
      * 
+     * @param error the error value to set.
      * @param progress the progress value to set.
      * @param state the state value to set.
      */
     @Generated
-    protected MediaJobOutput(long progress, MediaJobState state) {
-        this.oDataType = "MediaJobOutput";
+    protected MediaJobOutput(MediaJobError error, long progress, MediaJobState state) {
+        this.error = error;
         this.progress = progress;
         this.state = state;
     }
 
     /**
-     * Get the oDataType property: The discriminator for derived types.
+     * Get the odataType property: The discriminator for derived types.
      * 
-     * @return the oDataType value.
+     * @return the odataType value.
      */
     @Generated
-    public String getODataType() {
-        return this.oDataType;
-    }
-
-    /**
-     * Set the oDataType property: The discriminator for derived types.
-     * 
-     * @param oDataType the oDataType value to set.
-     * @return the MediaJobOutput object itself.
-     */
-    MediaJobOutput setODataType(String oDataType) {
-        this.oDataType = oDataType;
-        return this;
+    public String getOdataType() {
+        return this.odataType;
     }
 
     /**
@@ -89,17 +79,6 @@ public class MediaJobOutput implements JsonSerializable<MediaJobOutput> {
     @Generated
     public MediaJobError getError() {
         return this.error;
-    }
-
-    /**
-     * Set the error property: Gets the Job output error.
-     * 
-     * @param error the error value to set.
-     * @return the MediaJobOutput object itself.
-     */
-    MediaJobOutput setError(MediaJobError error) {
-        this.error = error;
-        return this;
     }
 
     /**
@@ -118,6 +97,7 @@ public class MediaJobOutput implements JsonSerializable<MediaJobOutput> {
      * @param label the label value to set.
      * @return the MediaJobOutput object itself.
      */
+    @Generated
     MediaJobOutput setLabel(String label) {
         this.label = label;
         return this;
@@ -143,14 +123,17 @@ public class MediaJobOutput implements JsonSerializable<MediaJobOutput> {
         return this.state;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("error", this.error);
         jsonWriter.writeLongField("progress", this.progress);
         jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
-        jsonWriter.writeStringField("oDataType", this.oDataType);
-        jsonWriter.writeJsonField("error", this.error);
+        jsonWriter.writeStringField("@odata.type", this.odataType);
         jsonWriter.writeStringField("label", this.label);
         return jsonWriter.writeEndObject();
     }
@@ -173,7 +156,7 @@ public class MediaJobOutput implements JsonSerializable<MediaJobOutput> {
                 while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
                     String fieldName = readerToUse.getFieldName();
                     readerToUse.nextToken();
-                    if ("oDataType".equals(fieldName)) {
+                    if ("@odata.type".equals(fieldName)) {
                         discriminatorValue = readerToUse.getString();
                         break;
                     } else {
@@ -193,32 +176,31 @@ public class MediaJobOutput implements JsonSerializable<MediaJobOutput> {
     @Generated
     static MediaJobOutput fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
+            MediaJobError error = null;
             long progress = 0L;
             MediaJobState state = null;
-            String oDataType = null;
-            MediaJobError error = null;
+            String odataType = null;
             String label = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("progress".equals(fieldName)) {
+                if ("error".equals(fieldName)) {
+                    error = MediaJobError.fromJson(reader);
+                } else if ("progress".equals(fieldName)) {
                     progress = reader.getLong();
                 } else if ("state".equals(fieldName)) {
                     state = MediaJobState.fromString(reader.getString());
-                } else if ("oDataType".equals(fieldName)) {
-                    oDataType = reader.getString();
-                } else if ("error".equals(fieldName)) {
-                    error = MediaJobError.fromJson(reader);
+                } else if ("@odata.type".equals(fieldName)) {
+                    odataType = reader.getString();
                 } else if ("label".equals(fieldName)) {
                     label = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            MediaJobOutput deserializedMediaJobOutput = new MediaJobOutput(progress, state);
-            deserializedMediaJobOutput.oDataType = oDataType;
-            deserializedMediaJobOutput.error = error;
+            MediaJobOutput deserializedMediaJobOutput = new MediaJobOutput(error, progress, state);
+            deserializedMediaJobOutput.odataType = odataType;
             deserializedMediaJobOutput.label = label;
 
             return deserializedMediaJobOutput;

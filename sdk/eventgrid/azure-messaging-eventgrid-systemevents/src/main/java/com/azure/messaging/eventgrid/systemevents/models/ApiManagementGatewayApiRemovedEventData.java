@@ -46,6 +46,9 @@ public final class ApiManagementGatewayApiRemovedEventData
         return this.resourceUri;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {

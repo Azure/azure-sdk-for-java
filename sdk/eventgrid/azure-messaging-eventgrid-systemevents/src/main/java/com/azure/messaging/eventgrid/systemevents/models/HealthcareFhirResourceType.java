@@ -4,848 +4,1022 @@
 
 package com.azure.messaging.eventgrid.systemevents.models;
 
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
  * Schema of FHIR resource type enumeration.
  */
-public enum HealthcareFhirResourceType {
+public final class HealthcareFhirResourceType extends ExpandableStringEnum<HealthcareFhirResourceType> {
     /**
      * The FHIR resource type defined in STU3 and R4.
      */
-    ACCOUNT("Account"),
+    @Generated
+    public static final HealthcareFhirResourceType ACCOUNT = fromString("Account");
 
     /**
      * The FHIR resource type defined in STU3 and R4.
      */
-    ACTIVITY_DEFINITION("ActivityDefinition"),
+    @Generated
+    public static final HealthcareFhirResourceType ACTIVITY_DEFINITION = fromString("ActivityDefinition");
 
     /**
      * The FHIR resource type defined in STU3 and R4.
      */
-    ADVERSE_EVENT("AdverseEvent"),
+    @Generated
+    public static final HealthcareFhirResourceType ADVERSE_EVENT = fromString("AdverseEvent");
 
     /**
      * The FHIR resource type defined in STU3 and R4.
      */
-    ALLERGY_INTOLERANCE("AllergyIntolerance"),
+    @Generated
+    public static final HealthcareFhirResourceType ALLERGY_INTOLERANCE = fromString("AllergyIntolerance");
 
     /**
      * The FHIR resource type defined in STU3 and R4.
      */
-    APPOINTMENT("Appointment"),
+    @Generated
+    public static final HealthcareFhirResourceType APPOINTMENT = fromString("Appointment");
 
     /**
      * The FHIR resource type defined in STU3 and R4.
      */
-    APPOINTMENT_RESPONSE("AppointmentResponse"),
+    @Generated
+    public static final HealthcareFhirResourceType APPOINTMENT_RESPONSE = fromString("AppointmentResponse");
 
     /**
      * The FHIR resource type defined in STU3 and R4.
      */
-    AUDIT_EVENT("AuditEvent"),
+    @Generated
+    public static final HealthcareFhirResourceType AUDIT_EVENT = fromString("AuditEvent");
 
     /**
      * The FHIR resource type defined in STU3 and R4.
      */
-    BASIC("Basic"),
+    @Generated
+    public static final HealthcareFhirResourceType BASIC = fromString("Basic");
 
     /**
      * The FHIR resource type defined in STU3 and R4.
      */
-    BINARY("Binary"),
+    @Generated
+    public static final HealthcareFhirResourceType BINARY = fromString("Binary");
 
     /**
      * The FHIR resource type defined in R4.
      */
-    BIOLOGICALLY_DERIVED_PRODUCT("BiologicallyDerivedProduct"),
+    @Generated
+    public static final HealthcareFhirResourceType BIOLOGICALLY_DERIVED_PRODUCT
+        = fromString("BiologicallyDerivedProduct");
 
     /**
      * The FHIR resource type defined in STU3.
      */
-    BODY_SITE("BodySite"),
+    @Generated
+    public static final HealthcareFhirResourceType BODY_SITE = fromString("BodySite");
 
     /**
      * The FHIR resource type defined in R4.
      */
-    BODY_STRUCTURE("BodyStructure"),
+    @Generated
+    public static final HealthcareFhirResourceType BODY_STRUCTURE = fromString("BodyStructure");
 
     /**
      * The FHIR resource type defined in STU3 and R4.
      */
-    BUNDLE("Bundle"),
+    @Generated
+    public static final HealthcareFhirResourceType BUNDLE = fromString("Bundle");
 
     /**
      * The FHIR resource type defined in STU3 and R4.
      */
-    CAPABILITY_STATEMENT("CapabilityStatement"),
+    @Generated
+    public static final HealthcareFhirResourceType CAPABILITY_STATEMENT = fromString("CapabilityStatement");
 
     /**
      * The FHIR resource type defined in STU3 and R4.
      */
-    CARE_PLAN("CarePlan"),
+    @Generated
+    public static final HealthcareFhirResourceType CARE_PLAN = fromString("CarePlan");
 
     /**
      * The FHIR resource type defined in STU3 and R4.
      */
-    CARE_TEAM("CareTeam"),
+    @Generated
+    public static final HealthcareFhirResourceType CARE_TEAM = fromString("CareTeam");
 
     /**
      * The FHIR resource type defined in R4.
      */
-    CATALOG_ENTRY("CatalogEntry"),
+    @Generated
+    public static final HealthcareFhirResourceType CATALOG_ENTRY = fromString("CatalogEntry");
 
     /**
      * The FHIR resource type defined in STU3 and R4.
      */
-    CHARGE_ITEM("ChargeItem"),
+    @Generated
+    public static final HealthcareFhirResourceType CHARGE_ITEM = fromString("ChargeItem");
 
     /**
      * The FHIR resource type defined in R4.
      */
-    CHARGE_ITEM_DEFINITION("ChargeItemDefinition"),
+    @Generated
+    public static final HealthcareFhirResourceType CHARGE_ITEM_DEFINITION = fromString("ChargeItemDefinition");
 
     /**
      * The FHIR resource type defined in STU3 and R4.
      */
-    CLAIM("Claim"),
+    @Generated
+    public static final HealthcareFhirResourceType CLAIM = fromString("Claim");
 
     /**
      * The FHIR resource type defined in STU3 and R4.
      */
-    CLAIM_RESPONSE("ClaimResponse"),
+    @Generated
+    public static final HealthcareFhirResourceType CLAIM_RESPONSE = fromString("ClaimResponse");
 
     /**
      * The FHIR resource type defined in STU3 and R4.
      */
-    CLINICAL_IMPRESSION("ClinicalImpression"),
+    @Generated
+    public static final HealthcareFhirResourceType CLINICAL_IMPRESSION = fromString("ClinicalImpression");
 
     /**
      * The FHIR resource type defined in STU3 and R4.
      */
-    CODE_SYSTEM("CodeSystem"),
+    @Generated
+    public static final HealthcareFhirResourceType CODE_SYSTEM = fromString("CodeSystem");
 
     /**
      * The FHIR resource type defined in STU3 and R4.
      */
-    COMMUNICATION("Communication"),
+    @Generated
+    public static final HealthcareFhirResourceType COMMUNICATION = fromString("Communication");
 
     /**
      * The FHIR resource type defined in STU3 and R4.
      */
-    COMMUNICATION_REQUEST("CommunicationRequest"),
+    @Generated
+    public static final HealthcareFhirResourceType COMMUNICATION_REQUEST = fromString("CommunicationRequest");
 
     /**
      * The FHIR resource type defined in STU3 and R4.
      */
-    COMPARTMENT_DEFINITION("CompartmentDefinition"),
+    @Generated
+    public static final HealthcareFhirResourceType COMPARTMENT_DEFINITION = fromString("CompartmentDefinition");
 
     /**
      * The FHIR resource type defined in STU3 and R4.
      */
-    COMPOSITION("Composition"),
+    @Generated
+    public static final HealthcareFhirResourceType COMPOSITION = fromString("Composition");
 
     /**
      * The FHIR resource type defined in STU3 and R4.
      */
-    CONCEPT_MAP("ConceptMap"),
+    @Generated
+    public static final HealthcareFhirResourceType CONCEPT_MAP = fromString("ConceptMap");
 
     /**
      * The FHIR resource type defined in STU3 and R4.
      */
-    CONDITION("Condition"),
+    @Generated
+    public static final HealthcareFhirResourceType CONDITION = fromString("Condition");
 
     /**
      * The FHIR resource type defined in STU3 and R4.
      */
-    CONSENT("Consent"),
+    @Generated
+    public static final HealthcareFhirResourceType CONSENT = fromString("Consent");
 
     /**
      * The FHIR resource type defined in STU3 and R4.
      */
-    CONTRACT("Contract"),
+    @Generated
+    public static final HealthcareFhirResourceType CONTRACT = fromString("Contract");
 
     /**
      * The FHIR resource type defined in STU3 and R4.
      */
-    COVERAGE("Coverage"),
+    @Generated
+    public static final HealthcareFhirResourceType COVERAGE = fromString("Coverage");
 
     /**
      * The FHIR resource type defined in R4.
      */
-    COVERAGE_ELIGIBILITY_REQUEST("CoverageEligibilityRequest"),
+    @Generated
+    public static final HealthcareFhirResourceType COVERAGE_ELIGIBILITY_REQUEST
+        = fromString("CoverageEligibilityRequest");
 
     /**
      * The FHIR resource type defined in R4.
      */
-    COVERAGE_ELIGIBILITY_RESPONSE("CoverageEligibilityResponse"),
+    @Generated
+    public static final HealthcareFhirResourceType COVERAGE_ELIGIBILITY_RESPONSE
+        = fromString("CoverageEligibilityResponse");
 
     /**
      * The FHIR resource type defined in STU3.
      */
-    DATA_ELEMENT("DataElement"),
+    @Generated
+    public static final HealthcareFhirResourceType DATA_ELEMENT = fromString("DataElement");
 
     /**
      * The FHIR resource type defined in STU3 and R4.
      */
-    DETECTED_ISSUE("DetectedIssue"),
+    @Generated
+    public static final HealthcareFhirResourceType DETECTED_ISSUE = fromString("DetectedIssue");
 
     /**
      * The FHIR resource type defined in STU3 and R4.
      */
-    DEVICE("Device"),
-
-    /**
-     * The FHIR resource type defined in STU3.
-     */
-    DEVICE_COMPONENT("DeviceComponent"),
-
-    /**
-     * The FHIR resource type defined in R4.
-     */
-    DEVICE_DEFINITION("DeviceDefinition"),
-
-    /**
-     * The FHIR resource type defined in STU3 and R4.
-     */
-    DEVICE_METRIC("DeviceMetric"),
-
-    /**
-     * The FHIR resource type defined in STU3 and R4.
-     */
-    DEVICE_REQUEST("DeviceRequest"),
-
-    /**
-     * The FHIR resource type defined in STU3 and R4.
-     */
-    DEVICE_USE_STATEMENT("DeviceUseStatement"),
-
-    /**
-     * The FHIR resource type defined in STU3 and R4.
-     */
-    DIAGNOSTIC_REPORT("DiagnosticReport"),
-
-    /**
-     * The FHIR resource type defined in STU3 and R4.
-     */
-    DOCUMENT_MANIFEST("DocumentManifest"),
-
-    /**
-     * The FHIR resource type defined in STU3 and R4.
-     */
-    DOCUMENT_REFERENCE("DocumentReference"),
-
-    /**
-     * The FHIR resource type defined in STU3 and R4.
-     */
-    DOMAIN_RESOURCE("DomainResource"),
-
-    /**
-     * The FHIR resource type defined in R4.
-     */
-    EFFECT_EVIDENCE_SYNTHESIS("EffectEvidenceSynthesis"),
+    @Generated
+    public static final HealthcareFhirResourceType DEVICE = fromString("Device");
 
     /**
      * The FHIR resource type defined in STU3.
      */
-    ELIGIBILITY_REQUEST("EligibilityRequest"),
+    @Generated
+    public static final HealthcareFhirResourceType DEVICE_COMPONENT = fromString("DeviceComponent");
+
+    /**
+     * The FHIR resource type defined in R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType DEVICE_DEFINITION = fromString("DeviceDefinition");
+
+    /**
+     * The FHIR resource type defined in STU3 and R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType DEVICE_METRIC = fromString("DeviceMetric");
+
+    /**
+     * The FHIR resource type defined in STU3 and R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType DEVICE_REQUEST = fromString("DeviceRequest");
+
+    /**
+     * The FHIR resource type defined in STU3 and R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType DEVICE_USE_STATEMENT = fromString("DeviceUseStatement");
+
+    /**
+     * The FHIR resource type defined in STU3 and R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType DIAGNOSTIC_REPORT = fromString("DiagnosticReport");
+
+    /**
+     * The FHIR resource type defined in STU3 and R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType DOCUMENT_MANIFEST = fromString("DocumentManifest");
+
+    /**
+     * The FHIR resource type defined in STU3 and R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType DOCUMENT_REFERENCE = fromString("DocumentReference");
+
+    /**
+     * The FHIR resource type defined in STU3 and R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType DOMAIN_RESOURCE = fromString("DomainResource");
+
+    /**
+     * The FHIR resource type defined in R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType EFFECT_EVIDENCE_SYNTHESIS = fromString("EffectEvidenceSynthesis");
 
     /**
      * The FHIR resource type defined in STU3.
      */
-    ELIGIBILITY_RESPONSE("EligibilityResponse"),
-
-    /**
-     * The FHIR resource type defined in STU3 and R4.
-     */
-    ENCOUNTER("Encounter"),
-
-    /**
-     * The FHIR resource type defined in STU3 and R4.
-     */
-    ENDPOINT("Endpoint"),
-
-    /**
-     * The FHIR resource type defined in STU3 and R4.
-     */
-    ENROLLMENT_REQUEST("EnrollmentRequest"),
-
-    /**
-     * The FHIR resource type defined in STU3 and R4.
-     */
-    ENROLLMENT_RESPONSE("EnrollmentResponse"),
-
-    /**
-     * The FHIR resource type defined in STU3 and R4.
-     */
-    EPISODE_OF_CARE("EpisodeOfCare"),
-
-    /**
-     * The FHIR resource type defined in R4.
-     */
-    EVENT_DEFINITION("EventDefinition"),
-
-    /**
-     * The FHIR resource type defined in R4.
-     */
-    EVIDENCE("Evidence"),
-
-    /**
-     * The FHIR resource type defined in R4.
-     */
-    EVIDENCE_VARIABLE("EvidenceVariable"),
-
-    /**
-     * The FHIR resource type defined in R4.
-     */
-    EXAMPLE_SCENARIO("ExampleScenario"),
+    @Generated
+    public static final HealthcareFhirResourceType ELIGIBILITY_REQUEST = fromString("EligibilityRequest");
 
     /**
      * The FHIR resource type defined in STU3.
      */
-    EXPANSION_PROFILE("ExpansionProfile"),
+    @Generated
+    public static final HealthcareFhirResourceType ELIGIBILITY_RESPONSE = fromString("EligibilityResponse");
 
     /**
      * The FHIR resource type defined in STU3 and R4.
      */
-    EXPLANATION_OF_BENEFIT("ExplanationOfBenefit"),
+    @Generated
+    public static final HealthcareFhirResourceType ENCOUNTER = fromString("Encounter");
 
     /**
      * The FHIR resource type defined in STU3 and R4.
      */
-    FAMILY_MEMBER_HISTORY("FamilyMemberHistory"),
+    @Generated
+    public static final HealthcareFhirResourceType ENDPOINT = fromString("Endpoint");
 
     /**
      * The FHIR resource type defined in STU3 and R4.
      */
-    FLAG("Flag"),
+    @Generated
+    public static final HealthcareFhirResourceType ENROLLMENT_REQUEST = fromString("EnrollmentRequest");
 
     /**
      * The FHIR resource type defined in STU3 and R4.
      */
-    GOAL("Goal"),
+    @Generated
+    public static final HealthcareFhirResourceType ENROLLMENT_RESPONSE = fromString("EnrollmentResponse");
 
     /**
      * The FHIR resource type defined in STU3 and R4.
      */
-    GRAPH_DEFINITION("GraphDefinition"),
+    @Generated
+    public static final HealthcareFhirResourceType EPISODE_OF_CARE = fromString("EpisodeOfCare");
 
     /**
-     * The FHIR resource type defined in STU3 and R4.
+     * The FHIR resource type defined in R4.
      */
-    GROUP("Group"),
+    @Generated
+    public static final HealthcareFhirResourceType EVENT_DEFINITION = fromString("EventDefinition");
 
     /**
-     * The FHIR resource type defined in STU3 and R4.
+     * The FHIR resource type defined in R4.
      */
-    GUIDANCE_RESPONSE("GuidanceResponse"),
+    @Generated
+    public static final HealthcareFhirResourceType EVIDENCE = fromString("Evidence");
 
     /**
-     * The FHIR resource type defined in STU3 and R4.
+     * The FHIR resource type defined in R4.
      */
-    HEALTHCARE_SERVICE("HealthcareService"),
+    @Generated
+    public static final HealthcareFhirResourceType EVIDENCE_VARIABLE = fromString("EvidenceVariable");
+
+    /**
+     * The FHIR resource type defined in R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType EXAMPLE_SCENARIO = fromString("ExampleScenario");
 
     /**
      * The FHIR resource type defined in STU3.
      */
-    IMAGING_MANIFEST("ImagingManifest"),
+    @Generated
+    public static final HealthcareFhirResourceType EXPANSION_PROFILE = fromString("ExpansionProfile");
 
     /**
      * The FHIR resource type defined in STU3 and R4.
      */
-    IMAGING_STUDY("ImagingStudy"),
+    @Generated
+    public static final HealthcareFhirResourceType EXPLANATION_OF_BENEFIT = fromString("ExplanationOfBenefit");
 
     /**
      * The FHIR resource type defined in STU3 and R4.
      */
-    IMMUNIZATION("Immunization"),
-
-    /**
-     * The FHIR resource type defined in R4.
-     */
-    IMMUNIZATION_EVALUATION("ImmunizationEvaluation"),
+    @Generated
+    public static final HealthcareFhirResourceType FAMILY_MEMBER_HISTORY = fromString("FamilyMemberHistory");
 
     /**
      * The FHIR resource type defined in STU3 and R4.
      */
-    IMMUNIZATION_RECOMMENDATION("ImmunizationRecommendation"),
+    @Generated
+    public static final HealthcareFhirResourceType FLAG = fromString("Flag");
 
     /**
      * The FHIR resource type defined in STU3 and R4.
      */
-    IMPLEMENTATION_GUIDE("ImplementationGuide"),
-
-    /**
-     * The FHIR resource type defined in R4.
-     */
-    INSURANCE_PLAN("InsurancePlan"),
-
-    /**
-     * The FHIR resource type defined in R4.
-     */
-    INVOICE("Invoice"),
+    @Generated
+    public static final HealthcareFhirResourceType GOAL = fromString("Goal");
 
     /**
      * The FHIR resource type defined in STU3 and R4.
      */
-    LIBRARY("Library"),
+    @Generated
+    public static final HealthcareFhirResourceType GRAPH_DEFINITION = fromString("GraphDefinition");
 
     /**
      * The FHIR resource type defined in STU3 and R4.
      */
-    LINKAGE("Linkage"),
+    @Generated
+    public static final HealthcareFhirResourceType GROUP = fromString("Group");
 
     /**
      * The FHIR resource type defined in STU3 and R4.
      */
-    LIST("List"),
+    @Generated
+    public static final HealthcareFhirResourceType GUIDANCE_RESPONSE = fromString("GuidanceResponse");
 
     /**
      * The FHIR resource type defined in STU3 and R4.
      */
-    LOCATION("Location"),
-
-    /**
-     * The FHIR resource type defined in STU3 and R4.
-     */
-    MEASURE("Measure"),
-
-    /**
-     * The FHIR resource type defined in STU3 and R4.
-     */
-    MEASURE_REPORT("MeasureReport"),
-
-    /**
-     * The FHIR resource type defined in STU3 and R4.
-     */
-    MEDIA("Media"),
-
-    /**
-     * The FHIR resource type defined in STU3 and R4.
-     */
-    MEDICATION("Medication"),
-
-    /**
-     * The FHIR resource type defined in STU3 and R4.
-     */
-    MEDICATION_ADMINISTRATION("MedicationAdministration"),
-
-    /**
-     * The FHIR resource type defined in STU3 and R4.
-     */
-    MEDICATION_DISPENSE("MedicationDispense"),
-
-    /**
-     * The FHIR resource type defined in R4.
-     */
-    MEDICATION_KNOWLEDGE("MedicationKnowledge"),
-
-    /**
-     * The FHIR resource type defined in STU3 and R4.
-     */
-    MEDICATION_REQUEST("MedicationRequest"),
-
-    /**
-     * The FHIR resource type defined in STU3 and R4.
-     */
-    MEDICATION_STATEMENT("MedicationStatement"),
-
-    /**
-     * The FHIR resource type defined in R4.
-     */
-    MEDICINAL_PRODUCT("MedicinalProduct"),
-
-    /**
-     * The FHIR resource type defined in R4.
-     */
-    MEDICINAL_PRODUCT_AUTHORIZATION("MedicinalProductAuthorization"),
-
-    /**
-     * The FHIR resource type defined in R4.
-     */
-    MEDICINAL_PRODUCT_CONTRAINDICATION("MedicinalProductContraindication"),
-
-    /**
-     * The FHIR resource type defined in R4.
-     */
-    MEDICINAL_PRODUCT_INDICATION("MedicinalProductIndication"),
-
-    /**
-     * The FHIR resource type defined in R4.
-     */
-    MEDICINAL_PRODUCT_INGREDIENT("MedicinalProductIngredient"),
-
-    /**
-     * The FHIR resource type defined in R4.
-     */
-    MEDICINAL_PRODUCT_INTERACTION("MedicinalProductInteraction"),
-
-    /**
-     * The FHIR resource type defined in R4.
-     */
-    MEDICINAL_PRODUCT_MANUFACTURED("MedicinalProductManufactured"),
-
-    /**
-     * The FHIR resource type defined in R4.
-     */
-    MEDICINAL_PRODUCT_PACKAGED("MedicinalProductPackaged"),
-
-    /**
-     * The FHIR resource type defined in R4.
-     */
-    MEDICINAL_PRODUCT_PHARMACEUTICAL("MedicinalProductPharmaceutical"),
-
-    /**
-     * The FHIR resource type defined in R4.
-     */
-    MEDICINAL_PRODUCT_UNDESIRABLE_EFFECT("MedicinalProductUndesirableEffect"),
-
-    /**
-     * The FHIR resource type defined in STU3 and R4.
-     */
-    MESSAGE_DEFINITION("MessageDefinition"),
-
-    /**
-     * The FHIR resource type defined in STU3 and R4.
-     */
-    MESSAGE_HEADER("MessageHeader"),
-
-    /**
-     * The FHIR resource type defined in R4.
-     */
-    MOLECULAR_SEQUENCE("MolecularSequence"),
-
-    /**
-     * The FHIR resource type defined in STU3 and R4.
-     */
-    NAMING_SYSTEM("NamingSystem"),
-
-    /**
-     * The FHIR resource type defined in STU3 and R4.
-     */
-    NUTRITION_ORDER("NutritionOrder"),
-
-    /**
-     * The FHIR resource type defined in STU3 and R4.
-     */
-    OBSERVATION("Observation"),
-
-    /**
-     * The FHIR resource type defined in R4.
-     */
-    OBSERVATION_DEFINITION("ObservationDefinition"),
-
-    /**
-     * The FHIR resource type defined in STU3 and R4.
-     */
-    OPERATION_DEFINITION("OperationDefinition"),
-
-    /**
-     * The FHIR resource type defined in STU3 and R4.
-     */
-    OPERATION_OUTCOME("OperationOutcome"),
-
-    /**
-     * The FHIR resource type defined in STU3 and R4.
-     */
-    ORGANIZATION("Organization"),
-
-    /**
-     * The FHIR resource type defined in R4.
-     */
-    ORGANIZATION_AFFILIATION("OrganizationAffiliation"),
-
-    /**
-     * The FHIR resource type defined in STU3 and R4.
-     */
-    PARAMETERS("Parameters"),
-
-    /**
-     * The FHIR resource type defined in STU3 and R4.
-     */
-    PATIENT("Patient"),
-
-    /**
-     * The FHIR resource type defined in STU3 and R4.
-     */
-    PAYMENT_NOTICE("PaymentNotice"),
-
-    /**
-     * The FHIR resource type defined in STU3 and R4.
-     */
-    PAYMENT_RECONCILIATION("PaymentReconciliation"),
-
-    /**
-     * The FHIR resource type defined in STU3 and R4.
-     */
-    PERSON("Person"),
-
-    /**
-     * The FHIR resource type defined in STU3 and R4.
-     */
-    PLAN_DEFINITION("PlanDefinition"),
-
-    /**
-     * The FHIR resource type defined in STU3 and R4.
-     */
-    PRACTITIONER("Practitioner"),
-
-    /**
-     * The FHIR resource type defined in STU3 and R4.
-     */
-    PRACTITIONER_ROLE("PractitionerRole"),
-
-    /**
-     * The FHIR resource type defined in STU3 and R4.
-     */
-    PROCEDURE("Procedure"),
+    @Generated
+    public static final HealthcareFhirResourceType HEALTHCARE_SERVICE = fromString("HealthcareService");
 
     /**
      * The FHIR resource type defined in STU3.
      */
-    PROCEDURE_REQUEST("ProcedureRequest"),
+    @Generated
+    public static final HealthcareFhirResourceType IMAGING_MANIFEST = fromString("ImagingManifest");
+
+    /**
+     * The FHIR resource type defined in STU3 and R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType IMAGING_STUDY = fromString("ImagingStudy");
+
+    /**
+     * The FHIR resource type defined in STU3 and R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType IMMUNIZATION = fromString("Immunization");
+
+    /**
+     * The FHIR resource type defined in R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType IMMUNIZATION_EVALUATION = fromString("ImmunizationEvaluation");
+
+    /**
+     * The FHIR resource type defined in STU3 and R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType IMMUNIZATION_RECOMMENDATION
+        = fromString("ImmunizationRecommendation");
+
+    /**
+     * The FHIR resource type defined in STU3 and R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType IMPLEMENTATION_GUIDE = fromString("ImplementationGuide");
+
+    /**
+     * The FHIR resource type defined in R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType INSURANCE_PLAN = fromString("InsurancePlan");
+
+    /**
+     * The FHIR resource type defined in R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType INVOICE = fromString("Invoice");
+
+    /**
+     * The FHIR resource type defined in STU3 and R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType LIBRARY = fromString("Library");
+
+    /**
+     * The FHIR resource type defined in STU3 and R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType LINKAGE = fromString("Linkage");
+
+    /**
+     * The FHIR resource type defined in STU3 and R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType LIST = fromString("List");
+
+    /**
+     * The FHIR resource type defined in STU3 and R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType LOCATION = fromString("Location");
+
+    /**
+     * The FHIR resource type defined in STU3 and R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType MEASURE = fromString("Measure");
+
+    /**
+     * The FHIR resource type defined in STU3 and R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType MEASURE_REPORT = fromString("MeasureReport");
+
+    /**
+     * The FHIR resource type defined in STU3 and R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType MEDIA = fromString("Media");
+
+    /**
+     * The FHIR resource type defined in STU3 and R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType MEDICATION = fromString("Medication");
+
+    /**
+     * The FHIR resource type defined in STU3 and R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType MEDICATION_ADMINISTRATION = fromString("MedicationAdministration");
+
+    /**
+     * The FHIR resource type defined in STU3 and R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType MEDICATION_DISPENSE = fromString("MedicationDispense");
+
+    /**
+     * The FHIR resource type defined in R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType MEDICATION_KNOWLEDGE = fromString("MedicationKnowledge");
+
+    /**
+     * The FHIR resource type defined in STU3 and R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType MEDICATION_REQUEST = fromString("MedicationRequest");
+
+    /**
+     * The FHIR resource type defined in STU3 and R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType MEDICATION_STATEMENT = fromString("MedicationStatement");
+
+    /**
+     * The FHIR resource type defined in R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType MEDICINAL_PRODUCT = fromString("MedicinalProduct");
+
+    /**
+     * The FHIR resource type defined in R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType MEDICINAL_PRODUCT_AUTHORIZATION
+        = fromString("MedicinalProductAuthorization");
+
+    /**
+     * The FHIR resource type defined in R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType MEDICINAL_PRODUCT_CONTRAINDICATION
+        = fromString("MedicinalProductContraindication");
+
+    /**
+     * The FHIR resource type defined in R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType MEDICINAL_PRODUCT_INDICATION
+        = fromString("MedicinalProductIndication");
+
+    /**
+     * The FHIR resource type defined in R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType MEDICINAL_PRODUCT_INGREDIENT
+        = fromString("MedicinalProductIngredient");
+
+    /**
+     * The FHIR resource type defined in R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType MEDICINAL_PRODUCT_INTERACTION
+        = fromString("MedicinalProductInteraction");
+
+    /**
+     * The FHIR resource type defined in R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType MEDICINAL_PRODUCT_MANUFACTURED
+        = fromString("MedicinalProductManufactured");
+
+    /**
+     * The FHIR resource type defined in R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType MEDICINAL_PRODUCT_PACKAGED = fromString("MedicinalProductPackaged");
+
+    /**
+     * The FHIR resource type defined in R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType MEDICINAL_PRODUCT_PHARMACEUTICAL
+        = fromString("MedicinalProductPharmaceutical");
+
+    /**
+     * The FHIR resource type defined in R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType MEDICINAL_PRODUCT_UNDESIRABLE_EFFECT
+        = fromString("MedicinalProductUndesirableEffect");
+
+    /**
+     * The FHIR resource type defined in STU3 and R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType MESSAGE_DEFINITION = fromString("MessageDefinition");
+
+    /**
+     * The FHIR resource type defined in STU3 and R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType MESSAGE_HEADER = fromString("MessageHeader");
+
+    /**
+     * The FHIR resource type defined in R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType MOLECULAR_SEQUENCE = fromString("MolecularSequence");
+
+    /**
+     * The FHIR resource type defined in STU3 and R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType NAMING_SYSTEM = fromString("NamingSystem");
+
+    /**
+     * The FHIR resource type defined in STU3 and R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType NUTRITION_ORDER = fromString("NutritionOrder");
+
+    /**
+     * The FHIR resource type defined in STU3 and R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType OBSERVATION = fromString("Observation");
+
+    /**
+     * The FHIR resource type defined in R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType OBSERVATION_DEFINITION = fromString("ObservationDefinition");
+
+    /**
+     * The FHIR resource type defined in STU3 and R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType OPERATION_DEFINITION = fromString("OperationDefinition");
+
+    /**
+     * The FHIR resource type defined in STU3 and R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType OPERATION_OUTCOME = fromString("OperationOutcome");
+
+    /**
+     * The FHIR resource type defined in STU3 and R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType ORGANIZATION = fromString("Organization");
+
+    /**
+     * The FHIR resource type defined in R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType ORGANIZATION_AFFILIATION = fromString("OrganizationAffiliation");
+
+    /**
+     * The FHIR resource type defined in STU3 and R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType PARAMETERS = fromString("Parameters");
+
+    /**
+     * The FHIR resource type defined in STU3 and R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType PATIENT = fromString("Patient");
+
+    /**
+     * The FHIR resource type defined in STU3 and R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType PAYMENT_NOTICE = fromString("PaymentNotice");
+
+    /**
+     * The FHIR resource type defined in STU3 and R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType PAYMENT_RECONCILIATION = fromString("PaymentReconciliation");
+
+    /**
+     * The FHIR resource type defined in STU3 and R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType PERSON = fromString("Person");
+
+    /**
+     * The FHIR resource type defined in STU3 and R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType PLAN_DEFINITION = fromString("PlanDefinition");
+
+    /**
+     * The FHIR resource type defined in STU3 and R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType PRACTITIONER = fromString("Practitioner");
+
+    /**
+     * The FHIR resource type defined in STU3 and R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType PRACTITIONER_ROLE = fromString("PractitionerRole");
+
+    /**
+     * The FHIR resource type defined in STU3 and R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType PROCEDURE = fromString("Procedure");
 
     /**
      * The FHIR resource type defined in STU3.
      */
-    PROCESS_REQUEST("ProcessRequest"),
+    @Generated
+    public static final HealthcareFhirResourceType PROCEDURE_REQUEST = fromString("ProcedureRequest");
 
     /**
      * The FHIR resource type defined in STU3.
      */
-    PROCESS_RESPONSE("ProcessResponse"),
-
-    /**
-     * The FHIR resource type defined in STU3 and R4.
-     */
-    PROVENANCE("Provenance"),
-
-    /**
-     * The FHIR resource type defined in STU3 and R4.
-     */
-    QUESTIONNAIRE("Questionnaire"),
-
-    /**
-     * The FHIR resource type defined in STU3 and R4.
-     */
-    QUESTIONNAIRE_RESPONSE("QuestionnaireResponse"),
+    @Generated
+    public static final HealthcareFhirResourceType PROCESS_REQUEST = fromString("ProcessRequest");
 
     /**
      * The FHIR resource type defined in STU3.
      */
-    REFERRAL_REQUEST("ReferralRequest"),
+    @Generated
+    public static final HealthcareFhirResourceType PROCESS_RESPONSE = fromString("ProcessResponse");
 
     /**
      * The FHIR resource type defined in STU3 and R4.
      */
-    RELATED_PERSON("RelatedPerson"),
+    @Generated
+    public static final HealthcareFhirResourceType PROVENANCE = fromString("Provenance");
 
     /**
      * The FHIR resource type defined in STU3 and R4.
      */
-    REQUEST_GROUP("RequestGroup"),
-
-    /**
-     * The FHIR resource type defined in R4.
-     */
-    RESEARCH_DEFINITION("ResearchDefinition"),
-
-    /**
-     * The FHIR resource type defined in R4.
-     */
-    RESEARCH_ELEMENT_DEFINITION("ResearchElementDefinition"),
+    @Generated
+    public static final HealthcareFhirResourceType QUESTIONNAIRE = fromString("Questionnaire");
 
     /**
      * The FHIR resource type defined in STU3 and R4.
      */
-    RESEARCH_STUDY("ResearchStudy"),
-
-    /**
-     * The FHIR resource type defined in STU3 and R4.
-     */
-    RESEARCH_SUBJECT("ResearchSubject"),
-
-    /**
-     * The FHIR resource type defined in STU3 and R4.
-     */
-    RESOURCE("Resource"),
-
-    /**
-     * The FHIR resource type defined in STU3 and R4.
-     */
-    RISK_ASSESSMENT("RiskAssessment"),
-
-    /**
-     * The FHIR resource type defined in R4.
-     */
-    RISK_EVIDENCE_SYNTHESIS("RiskEvidenceSynthesis"),
-
-    /**
-     * The FHIR resource type defined in STU3 and R4.
-     */
-    SCHEDULE("Schedule"),
-
-    /**
-     * The FHIR resource type defined in STU3 and R4.
-     */
-    SEARCH_PARAMETER("SearchParameter"),
+    @Generated
+    public static final HealthcareFhirResourceType QUESTIONNAIRE_RESPONSE = fromString("QuestionnaireResponse");
 
     /**
      * The FHIR resource type defined in STU3.
      */
-    SEQUENCE("Sequence"),
+    @Generated
+    public static final HealthcareFhirResourceType REFERRAL_REQUEST = fromString("ReferralRequest");
+
+    /**
+     * The FHIR resource type defined in STU3 and R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType RELATED_PERSON = fromString("RelatedPerson");
+
+    /**
+     * The FHIR resource type defined in STU3 and R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType REQUEST_GROUP = fromString("RequestGroup");
+
+    /**
+     * The FHIR resource type defined in R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType RESEARCH_DEFINITION = fromString("ResearchDefinition");
+
+    /**
+     * The FHIR resource type defined in R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType RESEARCH_ELEMENT_DEFINITION
+        = fromString("ResearchElementDefinition");
+
+    /**
+     * The FHIR resource type defined in STU3 and R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType RESEARCH_STUDY = fromString("ResearchStudy");
+
+    /**
+     * The FHIR resource type defined in STU3 and R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType RESEARCH_SUBJECT = fromString("ResearchSubject");
+
+    /**
+     * The FHIR resource type defined in STU3 and R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType RESOURCE = fromString("Resource");
+
+    /**
+     * The FHIR resource type defined in STU3 and R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType RISK_ASSESSMENT = fromString("RiskAssessment");
+
+    /**
+     * The FHIR resource type defined in R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType RISK_EVIDENCE_SYNTHESIS = fromString("RiskEvidenceSynthesis");
+
+    /**
+     * The FHIR resource type defined in STU3 and R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType SCHEDULE = fromString("Schedule");
+
+    /**
+     * The FHIR resource type defined in STU3 and R4.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType SEARCH_PARAMETER = fromString("SearchParameter");
 
     /**
      * The FHIR resource type defined in STU3.
      */
-    SERVICE_DEFINITION("ServiceDefinition"),
+    @Generated
+    public static final HealthcareFhirResourceType SEQUENCE = fromString("Sequence");
+
+    /**
+     * The FHIR resource type defined in STU3.
+     */
+    @Generated
+    public static final HealthcareFhirResourceType SERVICE_DEFINITION = fromString("ServiceDefinition");
 
     /**
      * The FHIR resource type defined in R4.
      */
-    SERVICE_REQUEST("ServiceRequest"),
+    @Generated
+    public static final HealthcareFhirResourceType SERVICE_REQUEST = fromString("ServiceRequest");
 
     /**
      * The FHIR resource type defined in STU3 and R4.
      */
-    SLOT("Slot"),
+    @Generated
+    public static final HealthcareFhirResourceType SLOT = fromString("Slot");
 
     /**
      * The FHIR resource type defined in STU3 and R4.
      */
-    SPECIMEN("Specimen"),
+    @Generated
+    public static final HealthcareFhirResourceType SPECIMEN = fromString("Specimen");
 
     /**
      * The FHIR resource type defined in R4.
      */
-    SPECIMEN_DEFINITION("SpecimenDefinition"),
+    @Generated
+    public static final HealthcareFhirResourceType SPECIMEN_DEFINITION = fromString("SpecimenDefinition");
 
     /**
      * The FHIR resource type defined in STU3 and R4.
      */
-    STRUCTURE_DEFINITION("StructureDefinition"),
+    @Generated
+    public static final HealthcareFhirResourceType STRUCTURE_DEFINITION = fromString("StructureDefinition");
 
     /**
      * The FHIR resource type defined in STU3 and R4.
      */
-    STRUCTURE_MAP("StructureMap"),
+    @Generated
+    public static final HealthcareFhirResourceType STRUCTURE_MAP = fromString("StructureMap");
 
     /**
      * The FHIR resource type defined in STU3 and R4.
      */
-    SUBSCRIPTION("Subscription"),
+    @Generated
+    public static final HealthcareFhirResourceType SUBSCRIPTION = fromString("Subscription");
 
     /**
      * The FHIR resource type defined in STU3 and R4.
      */
-    SUBSTANCE("Substance"),
+    @Generated
+    public static final HealthcareFhirResourceType SUBSTANCE = fromString("Substance");
 
     /**
      * The FHIR resource type defined in R4.
      */
-    SUBSTANCE_NUCLEIC_ACID("SubstanceNucleicAcid"),
+    @Generated
+    public static final HealthcareFhirResourceType SUBSTANCE_NUCLEIC_ACID = fromString("SubstanceNucleicAcid");
 
     /**
      * The FHIR resource type defined in R4.
      */
-    SUBSTANCE_POLYMER("SubstancePolymer"),
+    @Generated
+    public static final HealthcareFhirResourceType SUBSTANCE_POLYMER = fromString("SubstancePolymer");
 
     /**
      * The FHIR resource type defined in R4.
      */
-    SUBSTANCE_PROTEIN("SubstanceProtein"),
+    @Generated
+    public static final HealthcareFhirResourceType SUBSTANCE_PROTEIN = fromString("SubstanceProtein");
 
     /**
      * The FHIR resource type defined in R4.
      */
-    SUBSTANCE_REFERENCE_INFORMATION("SubstanceReferenceInformation"),
+    @Generated
+    public static final HealthcareFhirResourceType SUBSTANCE_REFERENCE_INFORMATION
+        = fromString("SubstanceReferenceInformation");
 
     /**
      * The FHIR resource type defined in R4.
      */
-    SUBSTANCE_SOURCE_MATERIAL("SubstanceSourceMaterial"),
+    @Generated
+    public static final HealthcareFhirResourceType SUBSTANCE_SOURCE_MATERIAL = fromString("SubstanceSourceMaterial");
 
     /**
      * The FHIR resource type defined in R4.
      */
-    SUBSTANCE_SPECIFICATION("SubstanceSpecification"),
+    @Generated
+    public static final HealthcareFhirResourceType SUBSTANCE_SPECIFICATION = fromString("SubstanceSpecification");
 
     /**
      * The FHIR resource type defined in STU3 and R4.
      */
-    SUPPLY_DELIVERY("SupplyDelivery"),
+    @Generated
+    public static final HealthcareFhirResourceType SUPPLY_DELIVERY = fromString("SupplyDelivery");
 
     /**
      * The FHIR resource type defined in STU3 and R4.
      */
-    SUPPLY_REQUEST("SupplyRequest"),
+    @Generated
+    public static final HealthcareFhirResourceType SUPPLY_REQUEST = fromString("SupplyRequest");
 
     /**
      * The FHIR resource type defined in STU3 and R4.
      */
-    TASK("Task"),
+    @Generated
+    public static final HealthcareFhirResourceType TASK = fromString("Task");
 
     /**
      * The FHIR resource type defined in R4.
      */
-    TERMINOLOGY_CAPABILITIES("TerminologyCapabilities"),
+    @Generated
+    public static final HealthcareFhirResourceType TERMINOLOGY_CAPABILITIES = fromString("TerminologyCapabilities");
 
     /**
      * The FHIR resource type defined in STU3 and R4.
      */
-    TEST_REPORT("TestReport"),
+    @Generated
+    public static final HealthcareFhirResourceType TEST_REPORT = fromString("TestReport");
 
     /**
      * The FHIR resource type defined in STU3 and R4.
      */
-    TEST_SCRIPT("TestScript"),
+    @Generated
+    public static final HealthcareFhirResourceType TEST_SCRIPT = fromString("TestScript");
 
     /**
      * The FHIR resource type defined in STU3 and R4.
      */
-    VALUE_SET("ValueSet"),
+    @Generated
+    public static final HealthcareFhirResourceType VALUE_SET = fromString("ValueSet");
 
     /**
      * The FHIR resource type defined in R4.
      */
-    VERIFICATION_RESULT("VerificationResult"),
+    @Generated
+    public static final HealthcareFhirResourceType VERIFICATION_RESULT = fromString("VerificationResult");
 
     /**
      * The FHIR resource type defined in STU3 and R4.
      */
-    VISION_PRESCRIPTION("VisionPrescription");
+    @Generated
+    public static final HealthcareFhirResourceType VISION_PRESCRIPTION = fromString("VisionPrescription");
 
     /**
-     * The actual serialized value for a HealthcareFhirResourceType instance.
-     */
-    private final String value;
-
-    HealthcareFhirResourceType(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a HealthcareFhirResourceType instance.
+     * Creates a new instance of HealthcareFhirResourceType value.
      * 
-     * @param value the serialized value to parse.
-     * @return the parsed HealthcareFhirResourceType object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static HealthcareFhirResourceType fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        HealthcareFhirResourceType[] items = HealthcareFhirResourceType.values();
-        for (HealthcareFhirResourceType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Generated
+    @Deprecated
+    public HealthcareFhirResourceType() {
     }
 
     /**
-     * {@inheritDoc}
+     * Creates or finds a HealthcareFhirResourceType from its string representation.
+     * 
+     * @param name a name to look for.
+     * @return the corresponding HealthcareFhirResourceType.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    @Generated
+    public static HealthcareFhirResourceType fromString(String name) {
+        return fromString(name, HealthcareFhirResourceType.class);
+    }
+
+    /**
+     * Gets known HealthcareFhirResourceType values.
+     * 
+     * @return known HealthcareFhirResourceType values.
+     */
+    @Generated
+    public static Collection<HealthcareFhirResourceType> values() {
+        return values(HealthcareFhirResourceType.class);
     }
 }

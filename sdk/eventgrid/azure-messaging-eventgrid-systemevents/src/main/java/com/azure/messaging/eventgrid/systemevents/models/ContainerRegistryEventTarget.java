@@ -36,28 +36,28 @@ public final class ContainerRegistryEventTarget implements JsonSerializable<Cont
     private String digest;
 
     /*
-     * The repository name.
-     */
-    @Generated
-    private String repository;
-
-    /*
-     * The tag name.
-     */
-    @Generated
-    private String tag;
-
-    /*
      * The number of bytes of the content. Same as Size field.
      */
     @Generated
     private Long length;
 
     /*
+     * The repository name.
+     */
+    @Generated
+    private String repository;
+
+    /*
      * The direct URL to the content.
      */
     @Generated
     private String url;
+
+    /*
+     * The tag name.
+     */
+    @Generated
+    private String tag;
 
     /**
      * Creates an instance of ContainerRegistryEventTarget class.
@@ -97,6 +97,16 @@ public final class ContainerRegistryEventTarget implements JsonSerializable<Cont
     }
 
     /**
+     * Get the length property: The number of bytes of the content. Same as Size field.
+     * 
+     * @return the length value.
+     */
+    @Generated
+    public Long getLength() {
+        return this.length;
+    }
+
+    /**
      * Get the repository property: The repository name.
      * 
      * @return the repository value.
@@ -104,6 +114,16 @@ public final class ContainerRegistryEventTarget implements JsonSerializable<Cont
     @Generated
     public String getRepository() {
         return this.repository;
+    }
+
+    /**
+     * Get the url property: The direct URL to the content.
+     * 
+     * @return the url value.
+     */
+    @Generated
+    public String getUrl() {
+        return this.url;
     }
 
     /**
@@ -117,25 +137,8 @@ public final class ContainerRegistryEventTarget implements JsonSerializable<Cont
     }
 
     /**
-     * Get the length property: The number of bytes of the content. Same as Size field.
-     * 
-     * @return the length value.
+     * {@inheritDoc}
      */
-    @Generated
-    public Long getLength() {
-        return this.length;
-    }
-
-    /**
-     * Get the url property: The direct URL to the content.
-     * 
-     * @return the url value.
-     */
-    @Generated
-    public String getUrl() {
-        return this.url;
-    }
-
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
@@ -143,10 +146,10 @@ public final class ContainerRegistryEventTarget implements JsonSerializable<Cont
         jsonWriter.writeStringField("mediaType", this.mediaType);
         jsonWriter.writeNumberField("size", this.size);
         jsonWriter.writeStringField("digest", this.digest);
-        jsonWriter.writeStringField("repository", this.repository);
-        jsonWriter.writeStringField("tag", this.tag);
         jsonWriter.writeNumberField("length", this.length);
+        jsonWriter.writeStringField("repository", this.repository);
         jsonWriter.writeStringField("url", this.url);
+        jsonWriter.writeStringField("tag", this.tag);
         return jsonWriter.writeEndObject();
     }
 
@@ -172,14 +175,14 @@ public final class ContainerRegistryEventTarget implements JsonSerializable<Cont
                     deserializedContainerRegistryEventTarget.size = reader.getNullable(JsonReader::getLong);
                 } else if ("digest".equals(fieldName)) {
                     deserializedContainerRegistryEventTarget.digest = reader.getString();
-                } else if ("repository".equals(fieldName)) {
-                    deserializedContainerRegistryEventTarget.repository = reader.getString();
-                } else if ("tag".equals(fieldName)) {
-                    deserializedContainerRegistryEventTarget.tag = reader.getString();
                 } else if ("length".equals(fieldName)) {
                     deserializedContainerRegistryEventTarget.length = reader.getNullable(JsonReader::getLong);
+                } else if ("repository".equals(fieldName)) {
+                    deserializedContainerRegistryEventTarget.repository = reader.getString();
                 } else if ("url".equals(fieldName)) {
                     deserializedContainerRegistryEventTarget.url = reader.getString();
+                } else if ("tag".equals(fieldName)) {
+                    deserializedContainerRegistryEventTarget.tag = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

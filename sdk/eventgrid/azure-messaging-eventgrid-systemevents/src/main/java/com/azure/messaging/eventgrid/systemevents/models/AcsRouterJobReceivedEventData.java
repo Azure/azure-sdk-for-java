@@ -6,6 +6,7 @@ package com.azure.messaging.eventgrid.systemevents.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -24,7 +25,7 @@ public final class AcsRouterJobReceivedEventData extends AcsRouterJobEventData {
      * Router Job Received Job Status
      */
     @Generated
-    private AcsRouterJobStatus jobStatus;
+    private final AcsRouterJobStatus jobStatus;
 
     /*
      * Router Job Classification Policy Id
@@ -42,13 +43,13 @@ public final class AcsRouterJobReceivedEventData extends AcsRouterJobEventData {
      * Router Job Received Requested Worker Selectors
      */
     @Generated
-    private List<AcsRouterWorkerSelector> requestedWorkerSelectors;
+    private final List<AcsRouterWorkerSelector> requestedWorkerSelectors;
 
     /*
      * Router Job Received Scheduled Time in UTC
      */
     @Generated
-    private OffsetDateTime scheduledOn;
+    private final OffsetDateTime scheduledOn;
 
     /*
      * Unavailable For Matching for Router Job Received
@@ -56,13 +57,48 @@ public final class AcsRouterJobReceivedEventData extends AcsRouterJobEventData {
     @Generated
     private final boolean unavailableForMatching;
 
+    /*
+     * Router Job events Queue Id
+     */
+    @Generated
+    private String queueId;
+
+    /*
+     * Router Event Channel ID
+     */
+    @Generated
+    private String channelId;
+
+    /*
+     * Router Event Channel Reference
+     */
+    @Generated
+    private String channelReference;
+
+    /*
+     * Router Event Job ID
+     */
+    @Generated
+    private String jobId;
+
     /**
      * Creates an instance of AcsRouterJobReceivedEventData class.
      * 
+     * @param labels the labels value to set.
+     * @param tags the tags value to set.
+     * @param jobStatus the jobStatus value to set.
+     * @param requestedWorkerSelectors the requestedWorkerSelectors value to set.
+     * @param scheduledOn the scheduledOn value to set.
      * @param unavailableForMatching the unavailableForMatching value to set.
      */
     @Generated
-    private AcsRouterJobReceivedEventData(boolean unavailableForMatching) {
+    private AcsRouterJobReceivedEventData(Map<String, String> labels, Map<String, String> tags,
+        AcsRouterJobStatus jobStatus, List<AcsRouterWorkerSelector> requestedWorkerSelectors,
+        OffsetDateTime scheduledOn, boolean unavailableForMatching) {
+        super(labels, tags);
+        this.jobStatus = jobStatus;
+        this.requestedWorkerSelectors = requestedWorkerSelectors;
+        this.scheduledOn = scheduledOn;
         this.unavailableForMatching = unavailableForMatching;
     }
 
@@ -126,24 +162,71 @@ public final class AcsRouterJobReceivedEventData extends AcsRouterJobEventData {
         return this.unavailableForMatching;
     }
 
+    /**
+     * Get the queueId property: Router Job events Queue Id.
+     * 
+     * @return the queueId value.
+     */
+    @Generated
+    @Override
+    public String getQueueId() {
+        return this.queueId;
+    }
+
+    /**
+     * Get the channelId property: Router Event Channel ID.
+     * 
+     * @return the channelId value.
+     */
+    @Generated
+    @Override
+    public String getChannelId() {
+        return this.channelId;
+    }
+
+    /**
+     * Get the channelReference property: Router Event Channel Reference.
+     * 
+     * @return the channelReference value.
+     */
+    @Generated
+    @Override
+    public String getChannelReference() {
+        return this.channelReference;
+    }
+
+    /**
+     * Get the jobId property: Router Event Job ID.
+     * 
+     * @return the jobId value.
+     */
+    @Generated
+    @Override
+    public String getJobId() {
+        return this.jobId;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("labels", getLabels(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("tags", getTags(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("jobId", getJobId());
         jsonWriter.writeStringField("channelReference", getChannelReference());
         jsonWriter.writeStringField("channelId", getChannelId());
         jsonWriter.writeStringField("queueId", getQueueId());
-        jsonWriter.writeMapField("labels", getLabels(), (writer, element) -> writer.writeString(element));
-        jsonWriter.writeMapField("tags", getTags(), (writer, element) -> writer.writeString(element));
-        jsonWriter.writeBooleanField("unavailableForMatching", this.unavailableForMatching);
         jsonWriter.writeStringField("jobStatus", this.jobStatus == null ? null : this.jobStatus.toString());
-        jsonWriter.writeStringField("classificationPolicyId", this.classificationPolicyId);
-        jsonWriter.writeNumberField("priority", this.priority);
         jsonWriter.writeArrayField("requestedWorkerSelectors", this.requestedWorkerSelectors,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("scheduledOn",
             this.scheduledOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.scheduledOn));
+        jsonWriter.writeBooleanField("unavailableForMatching", this.unavailableForMatching);
+        jsonWriter.writeStringField("classificationPolicyId", this.classificationPolicyId);
+        jsonWriter.writeNumberField("priority", this.priority);
         return jsonWriter.writeEndObject();
     }
 
@@ -159,23 +242,27 @@ public final class AcsRouterJobReceivedEventData extends AcsRouterJobEventData {
     @Generated
     public static AcsRouterJobReceivedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
+            Map<String, String> labels = null;
+            Map<String, String> tags = null;
             String jobId = null;
             String channelReference = null;
             String channelId = null;
             String queueId = null;
-            Map<String, String> labels = null;
-            Map<String, String> tags = null;
-            boolean unavailableForMatching = false;
             AcsRouterJobStatus jobStatus = null;
-            String classificationPolicyId = null;
-            Integer priority = null;
             List<AcsRouterWorkerSelector> requestedWorkerSelectors = null;
             OffsetDateTime scheduledOn = null;
+            boolean unavailableForMatching = false;
+            String classificationPolicyId = null;
+            Integer priority = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("jobId".equals(fieldName)) {
+                if ("labels".equals(fieldName)) {
+                    labels = reader.readMap(reader1 -> reader1.getString());
+                } else if ("tags".equals(fieldName)) {
+                    tags = reader.readMap(reader1 -> reader1.getString());
+                } else if ("jobId".equals(fieldName)) {
                     jobId = reader.getString();
                 } else if ("channelReference".equals(fieldName)) {
                     channelReference = reader.getString();
@@ -183,39 +270,31 @@ public final class AcsRouterJobReceivedEventData extends AcsRouterJobEventData {
                     channelId = reader.getString();
                 } else if ("queueId".equals(fieldName)) {
                     queueId = reader.getString();
-                } else if ("labels".equals(fieldName)) {
-                    labels = reader.readMap(reader1 -> reader1.getString());
-                } else if ("tags".equals(fieldName)) {
-                    tags = reader.readMap(reader1 -> reader1.getString());
-                } else if ("unavailableForMatching".equals(fieldName)) {
-                    unavailableForMatching = reader.getBoolean();
                 } else if ("jobStatus".equals(fieldName)) {
                     jobStatus = AcsRouterJobStatus.fromString(reader.getString());
+                } else if ("requestedWorkerSelectors".equals(fieldName)) {
+                    requestedWorkerSelectors = reader.readArray(reader1 -> AcsRouterWorkerSelector.fromJson(reader1));
+                } else if ("scheduledOn".equals(fieldName)) {
+                    scheduledOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("unavailableForMatching".equals(fieldName)) {
+                    unavailableForMatching = reader.getBoolean();
                 } else if ("classificationPolicyId".equals(fieldName)) {
                     classificationPolicyId = reader.getString();
                 } else if ("priority".equals(fieldName)) {
                     priority = reader.getNullable(JsonReader::getInt);
-                } else if ("requestedWorkerSelectors".equals(fieldName)) {
-                    requestedWorkerSelectors = reader.readArray(reader1 -> AcsRouterWorkerSelector.fromJson(reader1));
-                } else if ("scheduledOn".equals(fieldName)) {
-                    scheduledOn = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }
             }
-            AcsRouterJobReceivedEventData deserializedAcsRouterJobReceivedEventData
-                = new AcsRouterJobReceivedEventData(unavailableForMatching);
-            deserializedAcsRouterJobReceivedEventData.setJobId(jobId);
-            deserializedAcsRouterJobReceivedEventData.setChannelReference(channelReference);
-            deserializedAcsRouterJobReceivedEventData.setChannelId(channelId);
-            deserializedAcsRouterJobReceivedEventData.setQueueId(queueId);
-            deserializedAcsRouterJobReceivedEventData.setLabels(labels);
-            deserializedAcsRouterJobReceivedEventData.setTags(tags);
-            deserializedAcsRouterJobReceivedEventData.jobStatus = jobStatus;
+            AcsRouterJobReceivedEventData deserializedAcsRouterJobReceivedEventData = new AcsRouterJobReceivedEventData(
+                labels, tags, jobStatus, requestedWorkerSelectors, scheduledOn, unavailableForMatching);
+            deserializedAcsRouterJobReceivedEventData.jobId = jobId;
+            deserializedAcsRouterJobReceivedEventData.channelReference = channelReference;
+            deserializedAcsRouterJobReceivedEventData.channelId = channelId;
+            deserializedAcsRouterJobReceivedEventData.queueId = queueId;
             deserializedAcsRouterJobReceivedEventData.classificationPolicyId = classificationPolicyId;
             deserializedAcsRouterJobReceivedEventData.priority = priority;
-            deserializedAcsRouterJobReceivedEventData.requestedWorkerSelectors = requestedWorkerSelectors;
-            deserializedAcsRouterJobReceivedEventData.scheduledOn = scheduledOn;
 
             return deserializedAcsRouterJobReceivedEventData;
         });

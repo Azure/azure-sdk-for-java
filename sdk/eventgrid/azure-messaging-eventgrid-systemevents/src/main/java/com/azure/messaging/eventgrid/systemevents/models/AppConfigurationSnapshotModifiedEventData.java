@@ -16,6 +16,24 @@ import java.io.IOException;
  */
 @Immutable
 public final class AppConfigurationSnapshotModifiedEventData extends AppConfigurationSnapshotEventData {
+    /*
+     * The sync token representing the server state after the event.
+     */
+    @Generated
+    private String syncToken;
+
+    /*
+     * The etag representing the new state of the snapshot.
+     */
+    @Generated
+    private String etag;
+
+    /*
+     * The name of the snapshot.
+     */
+    @Generated
+    private String name;
+
     /**
      * Creates an instance of AppConfigurationSnapshotModifiedEventData class.
      */
@@ -23,6 +41,42 @@ public final class AppConfigurationSnapshotModifiedEventData extends AppConfigur
     private AppConfigurationSnapshotModifiedEventData() {
     }
 
+    /**
+     * Get the syncToken property: The sync token representing the server state after the event.
+     * 
+     * @return the syncToken value.
+     */
+    @Generated
+    @Override
+    public String getSyncToken() {
+        return this.syncToken;
+    }
+
+    /**
+     * Get the etag property: The etag representing the new state of the snapshot.
+     * 
+     * @return the etag value.
+     */
+    @Generated
+    @Override
+    public String getEtag() {
+        return this.etag;
+    }
+
+    /**
+     * Get the name property: The name of the snapshot.
+     * 
+     * @return the name value.
+     */
+    @Generated
+    @Override
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
@@ -51,11 +105,11 @@ public final class AppConfigurationSnapshotModifiedEventData extends AppConfigur
                 reader.nextToken();
 
                 if ("name".equals(fieldName)) {
-                    deserializedAppConfigurationSnapshotModifiedEventData.setName(reader.getString());
+                    deserializedAppConfigurationSnapshotModifiedEventData.name = reader.getString();
                 } else if ("etag".equals(fieldName)) {
-                    deserializedAppConfigurationSnapshotModifiedEventData.setEtag(reader.getString());
+                    deserializedAppConfigurationSnapshotModifiedEventData.etag = reader.getString();
                 } else if ("syncToken".equals(fieldName)) {
-                    deserializedAppConfigurationSnapshotModifiedEventData.setSyncToken(reader.getString());
+                    deserializedAppConfigurationSnapshotModifiedEventData.syncToken = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

@@ -4,73 +4,78 @@
 
 package com.azure.messaging.eventgrid.systemevents.models;
 
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
  * Error categories for Media Job Errors.
  */
-public enum MediaJobErrorCategory {
+public final class MediaJobErrorCategory extends ExpandableStringEnum<MediaJobErrorCategory> {
     /**
      * The error is service related.
      */
-    SERVICE("Service"),
+    @Generated
+    public static final MediaJobErrorCategory SERVICE = fromString("Service");
 
     /**
      * The error is download related.
      */
-    DOWNLOAD("Download"),
+    @Generated
+    public static final MediaJobErrorCategory DOWNLOAD = fromString("Download");
 
     /**
      * The error is upload related.
      */
-    UPLOAD("Upload"),
+    @Generated
+    public static final MediaJobErrorCategory UPLOAD = fromString("Upload");
 
     /**
      * The error is configuration related.
      */
-    CONFIGURATION("Configuration"),
+    @Generated
+    public static final MediaJobErrorCategory CONFIGURATION = fromString("Configuration");
 
     /**
      * The error is related to data in the input files.
      */
-    CONTENT("Content"),
+    @Generated
+    public static final MediaJobErrorCategory CONTENT = fromString("Content");
 
     /**
      * The error is related to account information.
      */
-    ACCOUNT("Account");
+    @Generated
+    public static final MediaJobErrorCategory ACCOUNT = fromString("Account");
 
     /**
-     * The actual serialized value for a MediaJobErrorCategory instance.
-     */
-    private final String value;
-
-    MediaJobErrorCategory(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a MediaJobErrorCategory instance.
+     * Creates a new instance of MediaJobErrorCategory value.
      * 
-     * @param value the serialized value to parse.
-     * @return the parsed MediaJobErrorCategory object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static MediaJobErrorCategory fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        MediaJobErrorCategory[] items = MediaJobErrorCategory.values();
-        for (MediaJobErrorCategory item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Generated
+    @Deprecated
+    public MediaJobErrorCategory() {
     }
 
     /**
-     * {@inheritDoc}
+     * Creates or finds a MediaJobErrorCategory from its string representation.
+     * 
+     * @param name a name to look for.
+     * @return the corresponding MediaJobErrorCategory.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    @Generated
+    public static MediaJobErrorCategory fromString(String name) {
+        return fromString(name, MediaJobErrorCategory.class);
+    }
+
+    /**
+     * Gets known MediaJobErrorCategory values.
+     * 
+     * @return known MediaJobErrorCategory values.
+     */
+    @Generated
+    public static Collection<MediaJobErrorCategory> values() {
+        return values(MediaJobErrorCategory.class);
     }
 }

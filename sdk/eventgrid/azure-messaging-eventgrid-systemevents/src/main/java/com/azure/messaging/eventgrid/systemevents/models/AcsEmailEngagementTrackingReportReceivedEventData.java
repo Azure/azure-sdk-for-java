@@ -6,6 +6,7 @@ package com.azure.messaging.eventgrid.systemevents.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -43,7 +44,7 @@ public final class AcsEmailEngagementTrackingReportReceivedEventData
      * The time at which the user interacted with the email
      */
     @Generated
-    private OffsetDateTime userActionTimestamp;
+    private final OffsetDateTime userActionTimestamp;
 
     /*
      * The context of the type of engagement user had with email
@@ -61,13 +62,19 @@ public final class AcsEmailEngagementTrackingReportReceivedEventData
      * The type of engagement user have with email
      */
     @Generated
-    private AcsUserEngagement engagement;
+    private final AcsUserEngagement engagementType;
 
     /**
      * Creates an instance of AcsEmailEngagementTrackingReportReceivedEventData class.
+     * 
+     * @param userActionTimestamp the userActionTimestamp value to set.
+     * @param engagementType the engagementType value to set.
      */
     @Generated
-    private AcsEmailEngagementTrackingReportReceivedEventData() {
+    private AcsEmailEngagementTrackingReportReceivedEventData(OffsetDateTime userActionTimestamp,
+        AcsUserEngagement engagementType) {
+        this.userActionTimestamp = userActionTimestamp;
+        this.engagementType = engagementType;
     }
 
     /**
@@ -131,27 +138,33 @@ public final class AcsEmailEngagementTrackingReportReceivedEventData
     }
 
     /**
-     * Get the engagement property: The type of engagement user have with email.
+     * Get the engagementType property: The type of engagement user have with email.
      * 
-     * @return the engagement value.
+     * @return the engagementType value.
      */
     @Generated
-    public AcsUserEngagement getEngagement() {
-        return this.engagement;
+    public AcsUserEngagement getEngagementType() {
+        return this.engagementType;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("userActionTimestamp",
+            this.userActionTimestamp == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.userActionTimestamp));
+        jsonWriter.writeStringField("engagementType",
+            this.engagementType == null ? null : this.engagementType.toString());
         jsonWriter.writeStringField("sender", this.sender);
         jsonWriter.writeStringField("recipient", this.recipient);
         jsonWriter.writeStringField("messageId", this.messageId);
-        jsonWriter.writeStringField("userActionTimeStamp", this.userActionTimestamp == null ? null
-            : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.userActionTimestamp));
         jsonWriter.writeStringField("engagementContext", this.engagementContext);
         jsonWriter.writeStringField("userAgent", this.userAgent);
-        jsonWriter.writeStringField("engagementType", this.engagement == null ? null : this.engagement.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -161,38 +174,49 @@ public final class AcsEmailEngagementTrackingReportReceivedEventData
      * @param jsonReader The JsonReader being read.
      * @return An instance of AcsEmailEngagementTrackingReportReceivedEventData if the JsonReader was pointing to an
      * instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AcsEmailEngagementTrackingReportReceivedEventData.
      */
     @Generated
     public static AcsEmailEngagementTrackingReportReceivedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AcsEmailEngagementTrackingReportReceivedEventData deserializedAcsEmailEngagementTrackingReportReceivedEventData
-                = new AcsEmailEngagementTrackingReportReceivedEventData();
+            OffsetDateTime userActionTimestamp = null;
+            AcsUserEngagement engagementType = null;
+            String sender = null;
+            String recipient = null;
+            String messageId = null;
+            String engagementContext = null;
+            String userAgent = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("sender".equals(fieldName)) {
-                    deserializedAcsEmailEngagementTrackingReportReceivedEventData.sender = reader.getString();
-                } else if ("recipient".equals(fieldName)) {
-                    deserializedAcsEmailEngagementTrackingReportReceivedEventData.recipient = reader.getString();
-                } else if ("messageId".equals(fieldName)) {
-                    deserializedAcsEmailEngagementTrackingReportReceivedEventData.messageId = reader.getString();
-                } else if ("userActionTimeStamp".equals(fieldName)) {
-                    deserializedAcsEmailEngagementTrackingReportReceivedEventData.userActionTimestamp
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
-                } else if ("engagementContext".equals(fieldName)) {
-                    deserializedAcsEmailEngagementTrackingReportReceivedEventData.engagementContext
-                        = reader.getString();
-                } else if ("userAgent".equals(fieldName)) {
-                    deserializedAcsEmailEngagementTrackingReportReceivedEventData.userAgent = reader.getString();
+                if ("userActionTimestamp".equals(fieldName)) {
+                    userActionTimestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("engagementType".equals(fieldName)) {
-                    deserializedAcsEmailEngagementTrackingReportReceivedEventData.engagement
-                        = AcsUserEngagement.fromString(reader.getString());
+                    engagementType = AcsUserEngagement.fromString(reader.getString());
+                } else if ("sender".equals(fieldName)) {
+                    sender = reader.getString();
+                } else if ("recipient".equals(fieldName)) {
+                    recipient = reader.getString();
+                } else if ("messageId".equals(fieldName)) {
+                    messageId = reader.getString();
+                } else if ("engagementContext".equals(fieldName)) {
+                    engagementContext = reader.getString();
+                } else if ("userAgent".equals(fieldName)) {
+                    userAgent = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
+            AcsEmailEngagementTrackingReportReceivedEventData deserializedAcsEmailEngagementTrackingReportReceivedEventData
+                = new AcsEmailEngagementTrackingReportReceivedEventData(userActionTimestamp, engagementType);
+            deserializedAcsEmailEngagementTrackingReportReceivedEventData.sender = sender;
+            deserializedAcsEmailEngagementTrackingReportReceivedEventData.recipient = recipient;
+            deserializedAcsEmailEngagementTrackingReportReceivedEventData.messageId = messageId;
+            deserializedAcsEmailEngagementTrackingReportReceivedEventData.engagementContext = engagementContext;
+            deserializedAcsEmailEngagementTrackingReportReceivedEventData.userAgent = userAgent;
 
             return deserializedAcsEmailEngagementTrackingReportReceivedEventData;
         });

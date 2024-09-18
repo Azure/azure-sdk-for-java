@@ -106,10 +106,17 @@ public final class MediaLiveEventConnectionRejectedEventData
         return this.resultCode;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("ingestUrl", this.ingestUrl);
+        jsonWriter.writeStringField("streamId", this.streamId);
+        jsonWriter.writeStringField("encoderIp", this.encoderIp);
+        jsonWriter.writeStringField("encoderPort", this.encoderPort);
         jsonWriter.writeStringField("resultCode", this.resultCode);
         return jsonWriter.writeEndObject();
     }

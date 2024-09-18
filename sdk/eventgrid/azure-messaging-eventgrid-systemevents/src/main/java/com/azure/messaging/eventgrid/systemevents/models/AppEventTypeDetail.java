@@ -21,13 +21,16 @@ public final class AppEventTypeDetail implements JsonSerializable<AppEventTypeDe
      * Type of action of the operation.
      */
     @Generated
-    private AppAction action;
+    private final AppAction action;
 
     /**
      * Creates an instance of AppEventTypeDetail class.
+     * 
+     * @param action the action value to set.
      */
     @Generated
-    private AppEventTypeDetail() {
+    private AppEventTypeDetail(AppAction action) {
+        this.action = action;
     }
 
     /**
@@ -40,6 +43,9 @@ public final class AppEventTypeDetail implements JsonSerializable<AppEventTypeDe
         return this.action;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
@@ -54,24 +60,24 @@ public final class AppEventTypeDetail implements JsonSerializable<AppEventTypeDe
      * @param jsonReader The JsonReader being read.
      * @return An instance of AppEventTypeDetail if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AppEventTypeDetail.
      */
     @Generated
     public static AppEventTypeDetail fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AppEventTypeDetail deserializedAppEventTypeDetail = new AppEventTypeDetail();
+            AppAction action = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("action".equals(fieldName)) {
-                    deserializedAppEventTypeDetail.action = AppAction.fromString(reader.getString());
+                    action = AppAction.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-
-            return deserializedAppEventTypeDetail;
+            return new AppEventTypeDetail(action);
         });
     }
 }

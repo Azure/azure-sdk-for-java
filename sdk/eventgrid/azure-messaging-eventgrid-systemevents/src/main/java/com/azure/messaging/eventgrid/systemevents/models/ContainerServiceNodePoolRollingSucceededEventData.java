@@ -16,6 +16,12 @@ import java.io.IOException;
  */
 @Immutable
 public final class ContainerServiceNodePoolRollingSucceededEventData extends ContainerServiceNodePoolRollingEventData {
+    /*
+     * The name of the node pool in the ManagedCluster resource
+     */
+    @Generated
+    private String nodePoolName;
+
     /**
      * Creates an instance of ContainerServiceNodePoolRollingSucceededEventData class.
      */
@@ -23,6 +29,20 @@ public final class ContainerServiceNodePoolRollingSucceededEventData extends Con
     private ContainerServiceNodePoolRollingSucceededEventData() {
     }
 
+    /**
+     * Get the nodePoolName property: The name of the node pool in the ManagedCluster resource.
+     * 
+     * @return the nodePoolName value.
+     */
+    @Generated
+    @Override
+    public String getNodePoolName() {
+        return this.nodePoolName;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
@@ -49,7 +69,7 @@ public final class ContainerServiceNodePoolRollingSucceededEventData extends Con
                 reader.nextToken();
 
                 if ("nodePoolName".equals(fieldName)) {
-                    deserializedContainerServiceNodePoolRollingSucceededEventData.setNodePoolName(reader.getString());
+                    deserializedContainerServiceNodePoolRollingSucceededEventData.nodePoolName = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

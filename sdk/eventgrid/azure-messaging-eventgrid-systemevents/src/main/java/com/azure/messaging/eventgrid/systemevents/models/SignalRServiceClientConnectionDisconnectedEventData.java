@@ -6,6 +6,7 @@ package com.azure.messaging.eventgrid.systemevents.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -24,7 +25,7 @@ public final class SignalRServiceClientConnectionDisconnectedEventData
      * The time at which the event occurred.
      */
     @Generated
-    private OffsetDateTime timestamp;
+    private final OffsetDateTime timestamp;
 
     /*
      * The hub of connected client connection.
@@ -52,9 +53,12 @@ public final class SignalRServiceClientConnectionDisconnectedEventData
 
     /**
      * Creates an instance of SignalRServiceClientConnectionDisconnectedEventData class.
+     * 
+     * @param timestamp the timestamp value to set.
      */
     @Generated
-    private SignalRServiceClientConnectionDisconnectedEventData() {
+    private SignalRServiceClientConnectionDisconnectedEventData(OffsetDateTime timestamp) {
+        this.timestamp = timestamp;
     }
 
     /**
@@ -107,6 +111,9 @@ public final class SignalRServiceClientConnectionDisconnectedEventData
         return this.errorMessage;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
@@ -126,33 +133,43 @@ public final class SignalRServiceClientConnectionDisconnectedEventData
      * @param jsonReader The JsonReader being read.
      * @return An instance of SignalRServiceClientConnectionDisconnectedEventData if the JsonReader was pointing to an
      * instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SignalRServiceClientConnectionDisconnectedEventData.
      */
     @Generated
     public static SignalRServiceClientConnectionDisconnectedEventData fromJson(JsonReader jsonReader)
         throws IOException {
         return jsonReader.readObject(reader -> {
-            SignalRServiceClientConnectionDisconnectedEventData deserializedSignalRServiceClientConnectionDisconnectedEventData
-                = new SignalRServiceClientConnectionDisconnectedEventData();
+            OffsetDateTime timestamp = null;
+            String hubName = null;
+            String connectionId = null;
+            String userId = null;
+            String errorMessage = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("timestamp".equals(fieldName)) {
-                    deserializedSignalRServiceClientConnectionDisconnectedEventData.timestamp
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    timestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("hubName".equals(fieldName)) {
-                    deserializedSignalRServiceClientConnectionDisconnectedEventData.hubName = reader.getString();
+                    hubName = reader.getString();
                 } else if ("connectionId".equals(fieldName)) {
-                    deserializedSignalRServiceClientConnectionDisconnectedEventData.connectionId = reader.getString();
+                    connectionId = reader.getString();
                 } else if ("userId".equals(fieldName)) {
-                    deserializedSignalRServiceClientConnectionDisconnectedEventData.userId = reader.getString();
+                    userId = reader.getString();
                 } else if ("errorMessage".equals(fieldName)) {
-                    deserializedSignalRServiceClientConnectionDisconnectedEventData.errorMessage = reader.getString();
+                    errorMessage = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
+            SignalRServiceClientConnectionDisconnectedEventData deserializedSignalRServiceClientConnectionDisconnectedEventData
+                = new SignalRServiceClientConnectionDisconnectedEventData(timestamp);
+            deserializedSignalRServiceClientConnectionDisconnectedEventData.hubName = hubName;
+            deserializedSignalRServiceClientConnectionDisconnectedEventData.connectionId = connectionId;
+            deserializedSignalRServiceClientConnectionDisconnectedEventData.userId = userId;
+            deserializedSignalRServiceClientConnectionDisconnectedEventData.errorMessage = errorMessage;
 
             return deserializedSignalRServiceClientConnectionDisconnectedEventData;
         });

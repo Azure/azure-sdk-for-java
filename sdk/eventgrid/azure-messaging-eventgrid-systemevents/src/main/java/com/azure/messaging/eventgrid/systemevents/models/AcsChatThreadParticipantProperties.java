@@ -11,6 +11,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * Schema of the chat thread participant.
@@ -27,13 +28,25 @@ public final class AcsChatThreadParticipantProperties implements JsonSerializabl
      * The communication identifier of the user
      */
     @Generated
-    private CommunicationIdentifierModel participantCommunicationIdentifier;
+    private final CommunicationIdentifierModel participantCommunicationIdentifier;
+
+    /*
+     * The metadata of the user
+     */
+    @Generated
+    private final Map<String, String> metadata;
 
     /**
      * Creates an instance of AcsChatThreadParticipantProperties class.
+     * 
+     * @param participantCommunicationIdentifier the participantCommunicationIdentifier value to set.
+     * @param metadata the metadata value to set.
      */
     @Generated
-    private AcsChatThreadParticipantProperties() {
+    private AcsChatThreadParticipantProperties(CommunicationIdentifierModel participantCommunicationIdentifier,
+        Map<String, String> metadata) {
+        this.participantCommunicationIdentifier = participantCommunicationIdentifier;
+        this.metadata = metadata;
     }
 
     /**
@@ -56,12 +69,26 @@ public final class AcsChatThreadParticipantProperties implements JsonSerializabl
         return this.participantCommunicationIdentifier;
     }
 
+    /**
+     * Get the metadata property: The metadata of the user.
+     * 
+     * @return the metadata value.
+     */
+    @Generated
+    public Map<String, String> getMetadata() {
+        return this.metadata;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("displayName", this.displayName);
         jsonWriter.writeJsonField("participantCommunicationIdentifier", this.participantCommunicationIdentifier);
+        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("displayName", this.displayName);
         return jsonWriter.writeEndObject();
     }
 
@@ -71,26 +98,32 @@ public final class AcsChatThreadParticipantProperties implements JsonSerializabl
      * @param jsonReader The JsonReader being read.
      * @return An instance of AcsChatThreadParticipantProperties if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AcsChatThreadParticipantProperties.
      */
     @Generated
     public static AcsChatThreadParticipantProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AcsChatThreadParticipantProperties deserializedAcsChatThreadParticipantProperties
-                = new AcsChatThreadParticipantProperties();
+            CommunicationIdentifierModel participantCommunicationIdentifier = null;
+            Map<String, String> metadata = null;
+            String displayName = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("displayName".equals(fieldName)) {
-                    deserializedAcsChatThreadParticipantProperties.displayName = reader.getString();
-                } else if ("participantCommunicationIdentifier".equals(fieldName)) {
-                    deserializedAcsChatThreadParticipantProperties.participantCommunicationIdentifier
-                        = CommunicationIdentifierModel.fromJson(reader);
+                if ("participantCommunicationIdentifier".equals(fieldName)) {
+                    participantCommunicationIdentifier = CommunicationIdentifierModel.fromJson(reader);
+                } else if ("metadata".equals(fieldName)) {
+                    metadata = reader.readMap(reader1 -> reader1.getString());
+                } else if ("displayName".equals(fieldName)) {
+                    displayName = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
+            AcsChatThreadParticipantProperties deserializedAcsChatThreadParticipantProperties
+                = new AcsChatThreadParticipantProperties(participantCommunicationIdentifier, metadata);
+            deserializedAcsChatThreadParticipantProperties.displayName = displayName;
 
             return deserializedAcsChatThreadParticipantProperties;
         });

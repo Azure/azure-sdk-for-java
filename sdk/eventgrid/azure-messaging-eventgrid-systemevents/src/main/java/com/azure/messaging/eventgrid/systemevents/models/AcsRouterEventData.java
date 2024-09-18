@@ -58,6 +58,7 @@ public class AcsRouterEventData implements JsonSerializable<AcsRouterEventData> 
      * @param jobId the jobId value to set.
      * @return the AcsRouterEventData object itself.
      */
+    @Generated
     AcsRouterEventData setJobId(String jobId) {
         this.jobId = jobId;
         return this;
@@ -79,6 +80,7 @@ public class AcsRouterEventData implements JsonSerializable<AcsRouterEventData> 
      * @param channelReference the channelReference value to set.
      * @return the AcsRouterEventData object itself.
      */
+    @Generated
     AcsRouterEventData setChannelReference(String channelReference) {
         this.channelReference = channelReference;
         return this;
@@ -100,11 +102,15 @@ public class AcsRouterEventData implements JsonSerializable<AcsRouterEventData> 
      * @param channelId the channelId value to set.
      * @return the AcsRouterEventData object itself.
      */
+    @Generated
     AcsRouterEventData setChannelId(String channelId) {
         this.channelId = channelId;
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {

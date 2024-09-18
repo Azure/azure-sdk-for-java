@@ -23,19 +23,24 @@ public final class MediaLiveEventChannelArchiveHeartbeatEventData
      * Gets the channel latency in ms.
      */
     @Generated
-    private String channelLatencyMs;
+    private final String channelLatencyMs;
 
     /*
      * Gets the latency result code.
      */
     @Generated
-    private String latencyResultCode;
+    private final String latencyResultCode;
 
     /**
      * Creates an instance of MediaLiveEventChannelArchiveHeartbeatEventData class.
+     * 
+     * @param channelLatencyMs the channelLatencyMs value to set.
+     * @param latencyResultCode the latencyResultCode value to set.
      */
     @Generated
-    private MediaLiveEventChannelArchiveHeartbeatEventData() {
+    private MediaLiveEventChannelArchiveHeartbeatEventData(String channelLatencyMs, String latencyResultCode) {
+        this.channelLatencyMs = channelLatencyMs;
+        this.latencyResultCode = latencyResultCode;
     }
 
     /**
@@ -58,10 +63,15 @@ public final class MediaLiveEventChannelArchiveHeartbeatEventData
         return this.latencyResultCode;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("channelLatencyMs", this.channelLatencyMs);
+        jsonWriter.writeStringField("latencyResultCode", this.latencyResultCode);
         return jsonWriter.writeEndObject();
     }
 
@@ -91,12 +101,7 @@ public final class MediaLiveEventChannelArchiveHeartbeatEventData
                     reader.skipChildren();
                 }
             }
-            MediaLiveEventChannelArchiveHeartbeatEventData deserializedMediaLiveEventChannelArchiveHeartbeatEventData
-                = new MediaLiveEventChannelArchiveHeartbeatEventData();
-            deserializedMediaLiveEventChannelArchiveHeartbeatEventData.channelLatencyMs = channelLatencyMs;
-            deserializedMediaLiveEventChannelArchiveHeartbeatEventData.latencyResultCode = latencyResultCode;
-
-            return deserializedMediaLiveEventChannelArchiveHeartbeatEventData;
+            return new MediaLiveEventChannelArchiveHeartbeatEventData(channelLatencyMs, latencyResultCode);
         });
     }
 }

@@ -47,11 +47,15 @@ public class ContainerServiceNodePoolRollingEventData
      * @param nodePoolName the nodePoolName value to set.
      * @return the ContainerServiceNodePoolRollingEventData object itself.
      */
+    @Generated
     ContainerServiceNodePoolRollingEventData setNodePoolName(String nodePoolName) {
         this.nodePoolName = nodePoolName;
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {

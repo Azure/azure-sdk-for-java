@@ -16,6 +16,12 @@ import java.io.IOException;
  */
 @Immutable
 public final class ContainerServiceClusterSupportEndingEventData extends ContainerServiceClusterSupportEventData {
+    /*
+     * The Kubernetes version of the ManagedCluster resource
+     */
+    @Generated
+    private String kubernetesVersion;
+
     /**
      * Creates an instance of ContainerServiceClusterSupportEndingEventData class.
      */
@@ -23,6 +29,20 @@ public final class ContainerServiceClusterSupportEndingEventData extends Contain
     private ContainerServiceClusterSupportEndingEventData() {
     }
 
+    /**
+     * Get the kubernetesVersion property: The Kubernetes version of the ManagedCluster resource.
+     * 
+     * @return the kubernetesVersion value.
+     */
+    @Generated
+    @Override
+    public String getKubernetesVersion() {
+        return this.kubernetesVersion;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
@@ -49,7 +69,7 @@ public final class ContainerServiceClusterSupportEndingEventData extends Contain
                 reader.nextToken();
 
                 if ("kubernetesVersion".equals(fieldName)) {
-                    deserializedContainerServiceClusterSupportEndingEventData.setKubernetesVersion(reader.getString());
+                    deserializedContainerServiceClusterSupportEndingEventData.kubernetesVersion = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

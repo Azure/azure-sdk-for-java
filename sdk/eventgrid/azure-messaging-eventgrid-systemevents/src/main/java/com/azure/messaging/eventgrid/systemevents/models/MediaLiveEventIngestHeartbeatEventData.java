@@ -282,10 +282,29 @@ public final class MediaLiveEventIngestHeartbeatEventData
         return this.healthy;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("trackType", this.trackType);
+        jsonWriter.writeStringField("trackName", this.trackName);
+        jsonWriter.writeStringField("transcriptionLanguage", this.transcriptionLanguage);
+        jsonWriter.writeStringField("transcriptionState", this.transcriptionState);
+        jsonWriter.writeNumberField("bitrate", this.bitrate);
+        jsonWriter.writeNumberField("incomingBitrate", this.incomingBitrate);
+        jsonWriter.writeStringField("ingestDriftValue", this.ingestDriftValue);
+        jsonWriter.writeStringField("lastFragmentArrivalTime", this.lastFragmentArrivalTime);
+        jsonWriter.writeStringField("lastTimestamp", this.lastTimestamp);
+        jsonWriter.writeStringField("timescale", this.timescale);
+        jsonWriter.writeNumberField("overlapCount", this.overlapCount);
+        jsonWriter.writeNumberField("discontinuityCount", this.discontinuityCount);
+        jsonWriter.writeNumberField("nonincreasingCount", this.nonincreasingCount);
+        jsonWriter.writeBooleanField("unexpectedBitrate", this.unexpectedBitrate);
+        jsonWriter.writeStringField("state", this.state);
+        jsonWriter.writeBooleanField("healthy", this.healthy);
         return jsonWriter.writeEndObject();
     }
 

@@ -106,10 +106,18 @@ public final class MediaLiveEventIncomingVideoStreamsOutOfSyncEventData
         return this.timescale;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("firstTimestamp", this.firstTimestamp);
+        jsonWriter.writeStringField("firstDuration", this.firstDuration);
+        jsonWriter.writeStringField("secondTimestamp", this.secondTimestamp);
+        jsonWriter.writeStringField("secondDuration", this.secondDuration);
+        jsonWriter.writeStringField("timescale", this.timescale);
         return jsonWriter.writeEndObject();
     }
 

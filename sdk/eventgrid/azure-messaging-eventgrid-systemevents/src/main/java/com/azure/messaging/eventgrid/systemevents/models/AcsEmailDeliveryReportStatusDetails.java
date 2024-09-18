@@ -41,6 +41,9 @@ public final class AcsEmailDeliveryReportStatusDetails
         return this.statusMessage;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {

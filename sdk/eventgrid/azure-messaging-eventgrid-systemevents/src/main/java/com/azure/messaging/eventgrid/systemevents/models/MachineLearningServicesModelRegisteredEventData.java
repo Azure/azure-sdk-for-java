@@ -35,19 +35,25 @@ public final class MachineLearningServicesModelRegisteredEventData
      * The tags of the model that was registered.
      */
     @Generated
-    private Map<String, String> modelTags;
+    private final Map<String, Object> modelTags;
 
     /*
      * The properties of the model that was registered.
      */
     @Generated
-    private Map<String, String> modelProperties;
+    private final Map<String, Object> modelProperties;
 
     /**
      * Creates an instance of MachineLearningServicesModelRegisteredEventData class.
+     * 
+     * @param modelTags the modelTags value to set.
+     * @param modelProperties the modelProperties value to set.
      */
     @Generated
-    private MachineLearningServicesModelRegisteredEventData() {
+    private MachineLearningServicesModelRegisteredEventData(Map<String, Object> modelTags,
+        Map<String, Object> modelProperties) {
+        this.modelTags = modelTags;
+        this.modelProperties = modelProperties;
     }
 
     /**
@@ -76,7 +82,7 @@ public final class MachineLearningServicesModelRegisteredEventData
      * @return the modelTags value.
      */
     @Generated
-    public Map<String, String> getModelTags() {
+    public Map<String, Object> getModelTags() {
         return this.modelTags;
     }
 
@@ -86,19 +92,22 @@ public final class MachineLearningServicesModelRegisteredEventData
      * @return the modelProperties value.
      */
     @Generated
-    public Map<String, String> getModelProperties() {
+    public Map<String, Object> getModelProperties() {
         return this.modelProperties;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("modelTags", this.modelTags, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeMapField("modelProperties", this.modelProperties,
+            (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeStringField("modelName", this.modelName);
         jsonWriter.writeStringField("modelVersion", this.modelVersion);
-        jsonWriter.writeMapField("modelTags", this.modelTags, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeMapField("modelProperties", this.modelProperties,
-            (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -108,31 +117,36 @@ public final class MachineLearningServicesModelRegisteredEventData
      * @param jsonReader The JsonReader being read.
      * @return An instance of MachineLearningServicesModelRegisteredEventData if the JsonReader was pointing to an
      * instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MachineLearningServicesModelRegisteredEventData.
      */
     @Generated
     public static MachineLearningServicesModelRegisteredEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            MachineLearningServicesModelRegisteredEventData deserializedMachineLearningServicesModelRegisteredEventData
-                = new MachineLearningServicesModelRegisteredEventData();
+            Map<String, Object> modelTags = null;
+            Map<String, Object> modelProperties = null;
+            String modelName = null;
+            String modelVersion = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("modelName".equals(fieldName)) {
-                    deserializedMachineLearningServicesModelRegisteredEventData.modelName = reader.getString();
-                } else if ("modelVersion".equals(fieldName)) {
-                    deserializedMachineLearningServicesModelRegisteredEventData.modelVersion = reader.getString();
-                } else if ("modelTags".equals(fieldName)) {
-                    Map<String, String> modelTags = reader.readMap(reader1 -> reader1.getString());
-                    deserializedMachineLearningServicesModelRegisteredEventData.modelTags = modelTags;
+                if ("modelTags".equals(fieldName)) {
+                    modelTags = reader.readMap(reader1 -> reader1.readUntyped());
                 } else if ("modelProperties".equals(fieldName)) {
-                    Map<String, String> modelProperties = reader.readMap(reader1 -> reader1.getString());
-                    deserializedMachineLearningServicesModelRegisteredEventData.modelProperties = modelProperties;
+                    modelProperties = reader.readMap(reader1 -> reader1.readUntyped());
+                } else if ("modelName".equals(fieldName)) {
+                    modelName = reader.getString();
+                } else if ("modelVersion".equals(fieldName)) {
+                    modelVersion = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
+            MachineLearningServicesModelRegisteredEventData deserializedMachineLearningServicesModelRegisteredEventData
+                = new MachineLearningServicesModelRegisteredEventData(modelTags, modelProperties);
+            deserializedMachineLearningServicesModelRegisteredEventData.modelName = modelName;
+            deserializedMachineLearningServicesModelRegisteredEventData.modelVersion = modelVersion;
 
             return deserializedMachineLearningServicesModelRegisteredEventData;
         });

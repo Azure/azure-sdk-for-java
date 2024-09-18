@@ -20,15 +20,25 @@ import java.util.Map;
 public final class MediaJobOutputCancelingEventData extends MediaJobOutputStateChangeEventData {
     /**
      * Creates an instance of MediaJobOutputCancelingEventData class.
+     * 
+     * @param previousState the previousState value to set.
+     * @param output the output value to set.
+     * @param jobCorrelationData the jobCorrelationData value to set.
      */
     @Generated
-    private MediaJobOutputCancelingEventData() {
+    private MediaJobOutputCancelingEventData(MediaJobState previousState, MediaJobOutput output,
+        Map<String, String> jobCorrelationData) {
+        super(previousState, output, jobCorrelationData);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("previousState", getPreviousState() == null ? null : getPreviousState().toString());
         jsonWriter.writeJsonField("output", getOutput());
         jsonWriter.writeMapField("jobCorrelationData", getJobCorrelationData(),
             (writer, element) -> writer.writeString(element));
@@ -41,31 +51,30 @@ public final class MediaJobOutputCancelingEventData extends MediaJobOutputStateC
      * @param jsonReader The JsonReader being read.
      * @return An instance of MediaJobOutputCancelingEventData if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MediaJobOutputCancelingEventData.
      */
     @Generated
     public static MediaJobOutputCancelingEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            MediaJobOutputCancelingEventData deserializedMediaJobOutputCancelingEventData
-                = new MediaJobOutputCancelingEventData();
+            MediaJobState previousState = null;
+            MediaJobOutput output = null;
+            Map<String, String> jobCorrelationData = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("previousState".equals(fieldName)) {
-                    deserializedMediaJobOutputCancelingEventData
-                        .setPreviousState(MediaJobState.fromString(reader.getString()));
+                    previousState = MediaJobState.fromString(reader.getString());
                 } else if ("output".equals(fieldName)) {
-                    deserializedMediaJobOutputCancelingEventData.setOutput(MediaJobOutput.fromJson(reader));
+                    output = MediaJobOutput.fromJson(reader);
                 } else if ("jobCorrelationData".equals(fieldName)) {
-                    Map<String, String> jobCorrelationData = reader.readMap(reader1 -> reader1.getString());
-                    deserializedMediaJobOutputCancelingEventData.setJobCorrelationData(jobCorrelationData);
+                    jobCorrelationData = reader.readMap(reader1 -> reader1.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-
-            return deserializedMediaJobOutputCancelingEventData;
+            return new MediaJobOutputCancelingEventData(previousState, output, jobCorrelationData);
         });
     }
 }

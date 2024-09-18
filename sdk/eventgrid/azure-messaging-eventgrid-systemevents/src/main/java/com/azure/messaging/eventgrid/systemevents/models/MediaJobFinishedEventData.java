@@ -23,13 +23,21 @@ public final class MediaJobFinishedEventData extends MediaJobStateChangeEventDat
      * Gets the Job outputs.
      */
     @Generated
-    private List<MediaJobOutput> outputs;
+    private final List<MediaJobOutput> outputs;
 
     /**
      * Creates an instance of MediaJobFinishedEventData class.
+     * 
+     * @param previousState the previousState value to set.
+     * @param state the state value to set.
+     * @param correlationData the correlationData value to set.
+     * @param outputs the outputs value to set.
      */
     @Generated
-    private MediaJobFinishedEventData() {
+    private MediaJobFinishedEventData(MediaJobState previousState, MediaJobState state,
+        Map<String, String> correlationData, List<MediaJobOutput> outputs) {
+        super(previousState, state, correlationData);
+        this.outputs = outputs;
     }
 
     /**
@@ -42,10 +50,15 @@ public final class MediaJobFinishedEventData extends MediaJobStateChangeEventDat
         return this.outputs;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("previousState", getPreviousState() == null ? null : getPreviousState().toString());
+        jsonWriter.writeStringField("state", getState() == null ? null : getState().toString());
         jsonWriter.writeMapField("correlationData", getCorrelationData(),
             (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("outputs", this.outputs, (writer, element) -> writer.writeJson(element));
@@ -58,33 +71,33 @@ public final class MediaJobFinishedEventData extends MediaJobStateChangeEventDat
      * @param jsonReader The JsonReader being read.
      * @return An instance of MediaJobFinishedEventData if the JsonReader was pointing to an instance of it, or null if
      * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MediaJobFinishedEventData.
      */
     @Generated
     public static MediaJobFinishedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            MediaJobFinishedEventData deserializedMediaJobFinishedEventData = new MediaJobFinishedEventData();
+            MediaJobState previousState = null;
+            MediaJobState state = null;
+            Map<String, String> correlationData = null;
+            List<MediaJobOutput> outputs = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("previousState".equals(fieldName)) {
-                    deserializedMediaJobFinishedEventData
-                        .setPreviousState(MediaJobState.fromString(reader.getString()));
+                    previousState = MediaJobState.fromString(reader.getString());
                 } else if ("state".equals(fieldName)) {
-                    deserializedMediaJobFinishedEventData.setState(MediaJobState.fromString(reader.getString()));
+                    state = MediaJobState.fromString(reader.getString());
                 } else if ("correlationData".equals(fieldName)) {
-                    Map<String, String> correlationData = reader.readMap(reader1 -> reader1.getString());
-                    deserializedMediaJobFinishedEventData.setCorrelationData(correlationData);
+                    correlationData = reader.readMap(reader1 -> reader1.getString());
                 } else if ("outputs".equals(fieldName)) {
-                    List<MediaJobOutput> outputs = reader.readArray(reader1 -> MediaJobOutput.fromJson(reader1));
-                    deserializedMediaJobFinishedEventData.outputs = outputs;
+                    outputs = reader.readArray(reader1 -> MediaJobOutput.fromJson(reader1));
                 } else {
                     reader.skipChildren();
                 }
             }
-
-            return deserializedMediaJobFinishedEventData;
+            return new MediaJobFinishedEventData(previousState, state, correlationData, outputs);
         });
     }
 }

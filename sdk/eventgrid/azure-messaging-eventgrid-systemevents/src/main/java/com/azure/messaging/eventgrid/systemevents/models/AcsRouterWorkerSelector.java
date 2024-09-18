@@ -6,13 +6,12 @@ package com.azure.messaging.eventgrid.systemevents.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.messaging.eventgrid.systemevents.implementation.CoreToCodegenBridgeUtils;
 import java.io.IOException;
-import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -31,37 +30,49 @@ public final class AcsRouterWorkerSelector implements JsonSerializable<AcsRouter
      * Router Job Worker Selector Label Operator
      */
     @Generated
-    private AcsRouterLabelOperator operator;
+    private final AcsRouterLabelOperator labelOperator;
 
     /*
      * Router Job Worker Selector Value
      */
     @Generated
-    private Object labelValue;
+    private final Object value;
 
     /*
      * Router Job Worker Selector Time to Live in Seconds
      */
     @Generated
-    private Duration timeToLive;
+    private final double ttlSeconds;
 
     /*
      * Router Job Worker Selector State
      */
     @Generated
-    private AcsRouterWorkerSelectorState selectorState;
+    private final AcsRouterWorkerSelectorState state;
 
     /*
      * Router Job Worker Selector Expiration Time
      */
     @Generated
-    private OffsetDateTime expirationTime;
+    private final OffsetDateTime expirationTime;
 
     /**
      * Creates an instance of AcsRouterWorkerSelector class.
+     * 
+     * @param labelOperator the labelOperator value to set.
+     * @param value the value value to set.
+     * @param ttlSeconds the ttlSeconds value to set.
+     * @param state the state value to set.
+     * @param expirationTime the expirationTime value to set.
      */
     @Generated
-    private AcsRouterWorkerSelector() {
+    private AcsRouterWorkerSelector(AcsRouterLabelOperator labelOperator, Object value, double ttlSeconds,
+        AcsRouterWorkerSelectorState state, OffsetDateTime expirationTime) {
+        this.labelOperator = labelOperator;
+        this.value = value;
+        this.ttlSeconds = ttlSeconds;
+        this.state = state;
+        this.expirationTime = expirationTime;
     }
 
     /**
@@ -75,43 +86,43 @@ public final class AcsRouterWorkerSelector implements JsonSerializable<AcsRouter
     }
 
     /**
-     * Get the operator property: Router Job Worker Selector Label Operator.
+     * Get the labelOperator property: Router Job Worker Selector Label Operator.
      * 
-     * @return the operator value.
+     * @return the labelOperator value.
      */
     @Generated
-    public AcsRouterLabelOperator getOperator() {
-        return this.operator;
+    public AcsRouterLabelOperator getLabelOperator() {
+        return this.labelOperator;
     }
 
     /**
-     * Get the labelValue property: Router Job Worker Selector Value.
+     * Get the value property: Router Job Worker Selector Value.
      * 
-     * @return the labelValue value.
+     * @return the value value.
      */
     @Generated
-    public Object getLabelValue() {
-        return this.labelValue;
+    public Object getValue() {
+        return this.value;
     }
 
     /**
-     * Get the timeToLive property: Router Job Worker Selector Time to Live in Seconds.
+     * Get the ttlSeconds property: Router Job Worker Selector Time to Live in Seconds.
      * 
-     * @return the timeToLive value.
+     * @return the ttlSeconds value.
      */
     @Generated
-    public Duration getTimeToLive() {
-        return this.timeToLive;
+    public double getTtlSeconds() {
+        return this.ttlSeconds;
     }
 
     /**
-     * Get the selectorState property: Router Job Worker Selector State.
+     * Get the state property: Router Job Worker Selector State.
      * 
-     * @return the selectorState value.
+     * @return the state value.
      */
     @Generated
-    public AcsRouterWorkerSelectorState getSelectorState() {
-        return this.selectorState;
+    public AcsRouterWorkerSelectorState getState() {
+        return this.state;
     }
 
     /**
@@ -124,17 +135,20 @@ public final class AcsRouterWorkerSelector implements JsonSerializable<AcsRouter
         return this.expirationTime;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("key", this.key);
-        jsonWriter.writeStringField("operator", this.operator == null ? null : this.operator.toString());
-        jsonWriter.writeUntypedField("labelValue", this.labelValue);
-        jsonWriter.writeStringField("timeToLive", CoreToCodegenBridgeUtils.durationToStringWithDays(this.timeToLive));
-        jsonWriter.writeStringField("selectorState", this.selectorState == null ? null : this.selectorState.toString());
+        jsonWriter.writeStringField("labelOperator", this.labelOperator == null ? null : this.labelOperator.toString());
+        jsonWriter.writeUntypedField("value", this.value);
+        jsonWriter.writeDoubleField("ttlSeconds", this.ttlSeconds);
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
         jsonWriter.writeStringField("expirationTime",
             this.expirationTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expirationTime));
+        jsonWriter.writeStringField("key", this.key);
         return jsonWriter.writeEndObject();
     }
 
@@ -144,36 +158,42 @@ public final class AcsRouterWorkerSelector implements JsonSerializable<AcsRouter
      * @param jsonReader The JsonReader being read.
      * @return An instance of AcsRouterWorkerSelector if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AcsRouterWorkerSelector.
      */
     @Generated
     public static AcsRouterWorkerSelector fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AcsRouterWorkerSelector deserializedAcsRouterWorkerSelector = new AcsRouterWorkerSelector();
+            AcsRouterLabelOperator labelOperator = null;
+            Object value = null;
+            double ttlSeconds = 0.0;
+            AcsRouterWorkerSelectorState state = null;
+            OffsetDateTime expirationTime = null;
+            String key = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("key".equals(fieldName)) {
-                    deserializedAcsRouterWorkerSelector.key = reader.getString();
-                } else if ("operator".equals(fieldName)) {
-                    deserializedAcsRouterWorkerSelector.operator
-                        = AcsRouterLabelOperator.fromString(reader.getString());
-                } else if ("labelValue".equals(fieldName)) {
-                    deserializedAcsRouterWorkerSelector.labelValue = reader.readUntyped();
-                } else if ("timeToLive".equals(fieldName)) {
-                    deserializedAcsRouterWorkerSelector.timeToLive
-                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
-                } else if ("selectorState".equals(fieldName)) {
-                    deserializedAcsRouterWorkerSelector.selectorState
-                        = AcsRouterWorkerSelectorState.fromString(reader.getString());
+                if ("labelOperator".equals(fieldName)) {
+                    labelOperator = AcsRouterLabelOperator.fromString(reader.getString());
+                } else if ("value".equals(fieldName)) {
+                    value = reader.readUntyped();
+                } else if ("ttlSeconds".equals(fieldName)) {
+                    ttlSeconds = reader.getDouble();
+                } else if ("state".equals(fieldName)) {
+                    state = AcsRouterWorkerSelectorState.fromString(reader.getString());
                 } else if ("expirationTime".equals(fieldName)) {
-                    deserializedAcsRouterWorkerSelector.expirationTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    expirationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("key".equals(fieldName)) {
+                    key = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
+            AcsRouterWorkerSelector deserializedAcsRouterWorkerSelector
+                = new AcsRouterWorkerSelector(labelOperator, value, ttlSeconds, state, expirationTime);
+            deserializedAcsRouterWorkerSelector.key = key;
 
             return deserializedAcsRouterWorkerSelector;
         });

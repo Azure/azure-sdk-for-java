@@ -21,19 +21,24 @@ public final class DeviceTwinInfoProperties implements JsonSerializable<DeviceTw
      * A portion of the properties that can be written only by the application back-end, and read by the device.
      */
     @Generated
-    private DeviceTwinProperties desired;
+    private final DeviceTwinProperties desired;
 
     /*
      * A portion of the properties that can be written only by the device, and read by the application back-end.
      */
     @Generated
-    private DeviceTwinProperties reported;
+    private final DeviceTwinProperties reported;
 
     /**
      * Creates an instance of DeviceTwinInfoProperties class.
+     * 
+     * @param desired the desired value to set.
+     * @param reported the reported value to set.
      */
     @Generated
-    private DeviceTwinInfoProperties() {
+    private DeviceTwinInfoProperties(DeviceTwinProperties desired, DeviceTwinProperties reported) {
+        this.desired = desired;
+        this.reported = reported;
     }
 
     /**
@@ -58,6 +63,9 @@ public final class DeviceTwinInfoProperties implements JsonSerializable<DeviceTw
         return this.reported;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
@@ -73,26 +81,27 @@ public final class DeviceTwinInfoProperties implements JsonSerializable<DeviceTw
      * @param jsonReader The JsonReader being read.
      * @return An instance of DeviceTwinInfoProperties if the JsonReader was pointing to an instance of it, or null if
      * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DeviceTwinInfoProperties.
      */
     @Generated
     public static DeviceTwinInfoProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            DeviceTwinInfoProperties deserializedDeviceTwinInfoProperties = new DeviceTwinInfoProperties();
+            DeviceTwinProperties desired = null;
+            DeviceTwinProperties reported = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("desired".equals(fieldName)) {
-                    deserializedDeviceTwinInfoProperties.desired = DeviceTwinProperties.fromJson(reader);
+                    desired = DeviceTwinProperties.fromJson(reader);
                 } else if ("reported".equals(fieldName)) {
-                    deserializedDeviceTwinInfoProperties.reported = DeviceTwinProperties.fromJson(reader);
+                    reported = DeviceTwinProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
-
-            return deserializedDeviceTwinInfoProperties;
+            return new DeviceTwinInfoProperties(desired, reported);
         });
     }
 }

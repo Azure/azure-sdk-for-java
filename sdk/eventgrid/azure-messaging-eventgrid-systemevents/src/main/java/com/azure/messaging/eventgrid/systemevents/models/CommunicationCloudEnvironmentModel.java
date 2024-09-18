@@ -4,58 +4,60 @@
 
 package com.azure.messaging.eventgrid.systemevents.models;
 
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
  * Communication cloud environment model.
  */
-public enum CommunicationCloudEnvironmentModel {
+public final class CommunicationCloudEnvironmentModel extends ExpandableStringEnum<CommunicationCloudEnvironmentModel> {
     /**
      * Public.
      */
-    PUBLIC("public"),
+    @Generated
+    public static final CommunicationCloudEnvironmentModel PUBLIC = fromString("public");
 
     /**
      * Dod.
      */
-    DOD("dod"),
+    @Generated
+    public static final CommunicationCloudEnvironmentModel DOD = fromString("dod");
 
     /**
      * Gcch.
      */
-    GCCH("gcch");
+    @Generated
+    public static final CommunicationCloudEnvironmentModel GCCH = fromString("gcch");
 
     /**
-     * The actual serialized value for a CommunicationCloudEnvironmentModel instance.
-     */
-    private final String value;
-
-    CommunicationCloudEnvironmentModel(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a CommunicationCloudEnvironmentModel instance.
+     * Creates a new instance of CommunicationCloudEnvironmentModel value.
      * 
-     * @param value the serialized value to parse.
-     * @return the parsed CommunicationCloudEnvironmentModel object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static CommunicationCloudEnvironmentModel fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        CommunicationCloudEnvironmentModel[] items = CommunicationCloudEnvironmentModel.values();
-        for (CommunicationCloudEnvironmentModel item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Generated
+    @Deprecated
+    public CommunicationCloudEnvironmentModel() {
     }
 
     /**
-     * {@inheritDoc}
+     * Creates or finds a CommunicationCloudEnvironmentModel from its string representation.
+     * 
+     * @param name a name to look for.
+     * @return the corresponding CommunicationCloudEnvironmentModel.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    @Generated
+    public static CommunicationCloudEnvironmentModel fromString(String name) {
+        return fromString(name, CommunicationCloudEnvironmentModel.class);
+    }
+
+    /**
+     * Gets known CommunicationCloudEnvironmentModel values.
+     * 
+     * @return known CommunicationCloudEnvironmentModel values.
+     */
+    @Generated
+    public static Collection<CommunicationCloudEnvironmentModel> values() {
+        return values(CommunicationCloudEnvironmentModel.class);
     }
 }

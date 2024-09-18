@@ -4,53 +4,54 @@
 
 package com.azure.messaging.eventgrid.systemevents.models;
 
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
  * Recording channel type.
  */
-public enum RecordingChannelType {
+public final class RecordingChannelType extends ExpandableStringEnum<RecordingChannelType> {
     /**
      * Mixed channel type.
      */
-    MIXED("Mixed"),
+    @Generated
+    public static final RecordingChannelType MIXED = fromString("Mixed");
 
     /**
      * Unmixed channel type.
      */
-    UNMIXED("Unmixed");
+    @Generated
+    public static final RecordingChannelType UNMIXED = fromString("Unmixed");
 
     /**
-     * The actual serialized value for a RecordingChannelType instance.
-     */
-    private final String value;
-
-    RecordingChannelType(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a RecordingChannelType instance.
+     * Creates a new instance of RecordingChannelType value.
      * 
-     * @param value the serialized value to parse.
-     * @return the parsed RecordingChannelType object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static RecordingChannelType fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        RecordingChannelType[] items = RecordingChannelType.values();
-        for (RecordingChannelType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Generated
+    @Deprecated
+    public RecordingChannelType() {
     }
 
     /**
-     * {@inheritDoc}
+     * Creates or finds a RecordingChannelType from its string representation.
+     * 
+     * @param name a name to look for.
+     * @return the corresponding RecordingChannelType.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    @Generated
+    public static RecordingChannelType fromString(String name) {
+        return fromString(name, RecordingChannelType.class);
+    }
+
+    /**
+     * Gets known RecordingChannelType values.
+     * 
+     * @return known RecordingChannelType values.
+     */
+    @Generated
+    public static Collection<RecordingChannelType> values() {
+        return values(RecordingChannelType.class);
     }
 }

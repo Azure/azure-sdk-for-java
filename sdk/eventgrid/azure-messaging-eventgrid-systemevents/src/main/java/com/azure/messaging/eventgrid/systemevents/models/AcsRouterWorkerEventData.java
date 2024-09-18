@@ -22,6 +22,24 @@ public class AcsRouterWorkerEventData extends AcsRouterEventData {
     @Generated
     private String workerId;
 
+    /*
+     * Router Event Channel ID
+     */
+    @Generated
+    private String channelId;
+
+    /*
+     * Router Event Channel Reference
+     */
+    @Generated
+    private String channelReference;
+
+    /*
+     * Router Event Job ID
+     */
+    @Generated
+    private String jobId;
+
     /**
      * Creates an instance of AcsRouterWorkerEventData class.
      */
@@ -45,11 +63,48 @@ public class AcsRouterWorkerEventData extends AcsRouterEventData {
      * @param workerId the workerId value to set.
      * @return the AcsRouterWorkerEventData object itself.
      */
+    @Generated
     AcsRouterWorkerEventData setWorkerId(String workerId) {
         this.workerId = workerId;
         return this;
     }
 
+    /**
+     * Get the channelId property: Router Event Channel ID.
+     * 
+     * @return the channelId value.
+     */
+    @Generated
+    @Override
+    public String getChannelId() {
+        return this.channelId;
+    }
+
+    /**
+     * Get the channelReference property: Router Event Channel Reference.
+     * 
+     * @return the channelReference value.
+     */
+    @Generated
+    @Override
+    public String getChannelReference() {
+        return this.channelReference;
+    }
+
+    /**
+     * Get the jobId property: Router Event Job ID.
+     * 
+     * @return the jobId value.
+     */
+    @Generated
+    @Override
+    public String getJobId() {
+        return this.jobId;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
@@ -78,11 +133,11 @@ public class AcsRouterWorkerEventData extends AcsRouterEventData {
                 reader.nextToken();
 
                 if ("jobId".equals(fieldName)) {
-                    deserializedAcsRouterWorkerEventData.setJobId(reader.getString());
+                    deserializedAcsRouterWorkerEventData.jobId = reader.getString();
                 } else if ("channelReference".equals(fieldName)) {
-                    deserializedAcsRouterWorkerEventData.setChannelReference(reader.getString());
+                    deserializedAcsRouterWorkerEventData.channelReference = reader.getString();
                 } else if ("channelId".equals(fieldName)) {
-                    deserializedAcsRouterWorkerEventData.setChannelId(reader.getString());
+                    deserializedAcsRouterWorkerEventData.channelId = reader.getString();
                 } else if ("workerId".equals(fieldName)) {
                     deserializedAcsRouterWorkerEventData.workerId = reader.getString();
                 } else {

@@ -4,105 +4,120 @@
 
 package com.azure.messaging.eventgrid.systemevents.models;
 
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
  * EventGrid MQTT Client Disconnection Reason.
  */
-public enum EventGridMqttClientDisconnectionReason {
+public final class EventGridMQTTClientDisconnectionReason
+    extends ExpandableStringEnum<EventGridMQTTClientDisconnectionReason> {
     /**
      * The client got disconnected for any authentication reasons (for example, certificate expired, client got
      * disabled, or client configuration changed).
      */
-    CLIENT_AUTHENTICATION_ERROR("ClientAuthenticationError"),
+    @Generated
+    public static final EventGridMQTTClientDisconnectionReason CLIENT_AUTHENTICATION_ERROR
+        = fromString("ClientAuthenticationError");
 
     /**
      * The client got disconnected for any authorization reasons (for example, because of a change in the configuration
      * of topic spaces, permission bindings, or client groups).
      */
-    CLIENT_AUTHORIZATION_ERROR("ClientAuthorizationError"),
+    @Generated
+    public static final EventGridMQTTClientDisconnectionReason CLIENT_AUTHORIZATION_ERROR
+        = fromString("ClientAuthorizationError");
 
     /**
      * The client sent a bad request or used one of the unsupported features that resulted in a connection termination
      * by the service.
      */
-    CLIENT_ERROR("ClientError"),
+    @Generated
+    public static final EventGridMQTTClientDisconnectionReason CLIENT_ERROR = fromString("ClientError");
 
     /**
      * The client initiated a graceful disconnect through a DISCONNECT packet for MQTT or a close frame for MQTT over
      * WebSocket.
      */
-    CLIENT_INITIATED_DISCONNECT("ClientInitiatedDisconnect"),
+    @Generated
+    public static final EventGridMQTTClientDisconnectionReason CLIENT_INITIATED_DISCONNECT
+        = fromString("ClientInitiatedDisconnect");
 
     /**
      * The client-server connection is lost. (EXCHANGE ONLINE PROTECTION).
      */
-    CONNECTION_LOST("ConnectionLost"),
+    @Generated
+    public static final EventGridMQTTClientDisconnectionReason CONNECTION_LOST = fromString("ConnectionLost");
 
     /**
      * The client's IP address is blocked by IP filter or Private links configuration.
      */
-    IP_FORBIDDEN("IpForbidden"),
+    @Generated
+    public static final EventGridMQTTClientDisconnectionReason IP_FORBIDDEN = fromString("IpForbidden");
 
     /**
      * The client exceeded one or more of the throttling limits that resulted in a connection termination by the
      * service.
      */
-    QUOTA_EXCEEDED("QuotaExceeded"),
+    @Generated
+    public static final EventGridMQTTClientDisconnectionReason QUOTA_EXCEEDED = fromString("QuotaExceeded");
 
     /**
      * The connection got terminated due to an unexpected server error.
      */
-    SERVER_ERROR("ServerError"),
+    @Generated
+    public static final EventGridMQTTClientDisconnectionReason SERVER_ERROR = fromString("ServerError");
 
     /**
      * The server initiates a graceful disconnect for any operational reason.
      */
-    SERVER_INITIATED_DISCONNECT("ServerInitiatedDisconnect"),
+    @Generated
+    public static final EventGridMQTTClientDisconnectionReason SERVER_INITIATED_DISCONNECT
+        = fromString("ServerInitiatedDisconnect");
 
     /**
      * The client's queue for unacknowledged QoS1 messages reached its limit, which resulted in a connection termination
      * by the server.
      */
-    SESSION_OVERFLOW("SessionOverflow"),
+    @Generated
+    public static final EventGridMQTTClientDisconnectionReason SESSION_OVERFLOW = fromString("SessionOverflow");
 
     /**
      * The client reconnected with the same authentication name, which resulted in the termination of the previous
      * connection.
      */
-    SESSION_TAKEN_OVER("SessionTakenOver");
+    @Generated
+    public static final EventGridMQTTClientDisconnectionReason SESSION_TAKEN_OVER = fromString("SessionTakenOver");
 
     /**
-     * The actual serialized value for a EventGridMqttClientDisconnectionReason instance.
-     */
-    private final String value;
-
-    EventGridMqttClientDisconnectionReason(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a EventGridMqttClientDisconnectionReason instance.
+     * Creates a new instance of EventGridMQTTClientDisconnectionReason value.
      * 
-     * @param value the serialized value to parse.
-     * @return the parsed EventGridMqttClientDisconnectionReason object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static EventGridMqttClientDisconnectionReason fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        EventGridMqttClientDisconnectionReason[] items = EventGridMqttClientDisconnectionReason.values();
-        for (EventGridMqttClientDisconnectionReason item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Generated
+    @Deprecated
+    public EventGridMQTTClientDisconnectionReason() {
     }
 
     /**
-     * {@inheritDoc}
+     * Creates or finds a EventGridMQTTClientDisconnectionReason from its string representation.
+     * 
+     * @param name a name to look for.
+     * @return the corresponding EventGridMQTTClientDisconnectionReason.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    @Generated
+    public static EventGridMQTTClientDisconnectionReason fromString(String name) {
+        return fromString(name, EventGridMQTTClientDisconnectionReason.class);
+    }
+
+    /**
+     * Gets known EventGridMQTTClientDisconnectionReason values.
+     * 
+     * @return known EventGridMQTTClientDisconnectionReason values.
+     */
+    @Generated
+    public static Collection<EventGridMQTTClientDisconnectionReason> values() {
+        return values(EventGridMQTTClientDisconnectionReason.class);
     }
 }

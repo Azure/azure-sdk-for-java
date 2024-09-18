@@ -6,8 +6,8 @@ package com.azure.messaging.eventgrid.systemevents.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
@@ -16,24 +16,35 @@ import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
 /**
- * Event data for Microsoft.EventGrid.SystemEvents.MQTTClientCreatedOrUpdated event.
+ * Event data for Microsoft.EventGrid.MQTTClientCreatedOrUpdated event.
  */
 @Immutable
-public final class EventGridMqttClientCreatedOrUpdatedEventData
-    implements JsonSerializable<EventGridMqttClientCreatedOrUpdatedEventData> {
+public final class EventGridMQTTClientCreatedOrUpdatedEventData extends EventGridMQTTClientEventData {
     /*
-     * Unique identifier for the MQTT client that the client presents to the service
-     * for authentication. This case-sensitive string can be up to 128 characters
-     * long, and supports UTF-8 characters.
+     * Configured state of the client. The value could be Enabled or Disabled
      */
     @Generated
-    private String clientAuthenticationName;
+    private final EventGridMQTTClientState state;
 
     /*
-     * Name of the client resource in the Event Grid namespace.
+     * Time the client resource is created based on the provider's UTC time.
      */
     @Generated
-    private String clientName;
+    private final OffsetDateTime createdOn;
+
+    /*
+     * Time the client resource is last updated based on the provider's UTC time. If
+     * the client resource was never updated, this value is identical to the value of
+     * the 'createdOn' property.
+     */
+    @Generated
+    private final OffsetDateTime updatedOn;
+
+    /*
+     * The key-value attributes that are assigned to the client resource.
+     */
+    @Generated
+    private final Map<String, String> attributes;
 
     /*
      * Name of the Event Grid namespace where the MQTT client was created or updated.
@@ -42,69 +53,34 @@ public final class EventGridMqttClientCreatedOrUpdatedEventData
     private String namespaceName;
 
     /*
-     * Configured state of the client. The value could be Enabled or Disabled
+     * Name of the client resource in the Event Grid namespace.
      */
     @Generated
-    private EventGridMqttClientState state;
+    private String clientName;
 
     /*
-     * Time the client resource is created based on the provider's UTC time.
-     */
-    @Generated
-    private OffsetDateTime createdOn;
-
-    /*
-     * Time the client resource is last updated based on the provider's UTC time. If
-     * the client resource was never updated, this value is identical to the value of
-     * the 'createdOn' property.
-     */
-    @Generated
-    private OffsetDateTime updatedOn;
-
-    /*
-     * The key-value attributes that are assigned to the client resource.
-     */
-    @Generated
-    private Map<String, String> attributes;
-
-    /**
-     * Creates an instance of EventGridMqttClientCreatedOrUpdatedEventData class.
-     */
-    @Generated
-    private EventGridMqttClientCreatedOrUpdatedEventData() {
-    }
-
-    /**
-     * Get the clientAuthenticationName property: Unique identifier for the MQTT client that the client presents to the
-     * service
+     * Unique identifier for the MQTT client that the client presents to the service
      * for authentication. This case-sensitive string can be up to 128 characters
      * long, and supports UTF-8 characters.
-     * 
-     * @return the clientAuthenticationName value.
      */
     @Generated
-    public String getClientAuthenticationName() {
-        return this.clientAuthenticationName;
-    }
+    private String clientAuthenticationName;
 
     /**
-     * Get the clientName property: Name of the client resource in the Event Grid namespace.
+     * Creates an instance of EventGridMQTTClientCreatedOrUpdatedEventData class.
      * 
-     * @return the clientName value.
+     * @param state the state value to set.
+     * @param createdOn the createdOn value to set.
+     * @param updatedOn the updatedOn value to set.
+     * @param attributes the attributes value to set.
      */
     @Generated
-    public String getClientName() {
-        return this.clientName;
-    }
-
-    /**
-     * Get the namespaceName property: Name of the Event Grid namespace where the MQTT client was created or updated.
-     * 
-     * @return the namespaceName value.
-     */
-    @Generated
-    public String getNamespaceName() {
-        return this.namespaceName;
+    private EventGridMQTTClientCreatedOrUpdatedEventData(EventGridMQTTClientState state, OffsetDateTime createdOn,
+        OffsetDateTime updatedOn, Map<String, String> attributes) {
+        this.state = state;
+        this.createdOn = createdOn;
+        this.updatedOn = updatedOn;
+        this.attributes = attributes;
     }
 
     /**
@@ -113,7 +89,7 @@ public final class EventGridMqttClientCreatedOrUpdatedEventData
      * @return the state value.
      */
     @Generated
-    public EventGridMqttClientState getState() {
+    public EventGridMQTTClientState getState() {
         return this.state;
     }
 
@@ -149,13 +125,52 @@ public final class EventGridMqttClientCreatedOrUpdatedEventData
         return this.attributes;
     }
 
+    /**
+     * Get the namespaceName property: Name of the Event Grid namespace where the MQTT client was created or updated.
+     * 
+     * @return the namespaceName value.
+     */
+    @Generated
+    @Override
+    public String getNamespaceName() {
+        return this.namespaceName;
+    }
+
+    /**
+     * Get the clientName property: Name of the client resource in the Event Grid namespace.
+     * 
+     * @return the clientName value.
+     */
+    @Generated
+    @Override
+    public String getClientName() {
+        return this.clientName;
+    }
+
+    /**
+     * Get the clientAuthenticationName property: Unique identifier for the MQTT client that the client presents to the
+     * service
+     * for authentication. This case-sensitive string can be up to 128 characters
+     * long, and supports UTF-8 characters.
+     * 
+     * @return the clientAuthenticationName value.
+     */
+    @Generated
+    @Override
+    public String getClientAuthenticationName() {
+        return this.clientAuthenticationName;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("clientAuthenticationName", this.clientAuthenticationName);
-        jsonWriter.writeStringField("clientName", this.clientName);
-        jsonWriter.writeStringField("namespaceName", this.namespaceName);
+        jsonWriter.writeStringField("clientAuthenticationName", getClientAuthenticationName());
+        jsonWriter.writeStringField("clientName", getClientName());
+        jsonWriter.writeStringField("namespaceName", getNamespaceName());
         jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
         jsonWriter.writeStringField("createdOn",
             this.createdOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdOn));
@@ -166,47 +181,56 @@ public final class EventGridMqttClientCreatedOrUpdatedEventData
     }
 
     /**
-     * Reads an instance of EventGridMqttClientCreatedOrUpdatedEventData from the JsonReader.
+     * Reads an instance of EventGridMQTTClientCreatedOrUpdatedEventData from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of EventGridMqttClientCreatedOrUpdatedEventData if the JsonReader was pointing to an instance
+     * @return An instance of EventGridMQTTClientCreatedOrUpdatedEventData if the JsonReader was pointing to an instance
      * of it, or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the EventGridMqttClientCreatedOrUpdatedEventData.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EventGridMQTTClientCreatedOrUpdatedEventData.
      */
     @Generated
-    public static EventGridMqttClientCreatedOrUpdatedEventData fromJson(JsonReader jsonReader) throws IOException {
+    public static EventGridMQTTClientCreatedOrUpdatedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            EventGridMqttClientCreatedOrUpdatedEventData deserializedEventGridMqttClientCreatedOrUpdatedEventData
-                = new EventGridMqttClientCreatedOrUpdatedEventData();
+            String clientAuthenticationName = null;
+            String clientName = null;
+            String namespaceName = null;
+            EventGridMQTTClientState state = null;
+            OffsetDateTime createdOn = null;
+            OffsetDateTime updatedOn = null;
+            Map<String, String> attributes = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("clientAuthenticationName".equals(fieldName)) {
-                    deserializedEventGridMqttClientCreatedOrUpdatedEventData.clientAuthenticationName
-                        = reader.getString();
+                    clientAuthenticationName = reader.getString();
                 } else if ("clientName".equals(fieldName)) {
-                    deserializedEventGridMqttClientCreatedOrUpdatedEventData.clientName = reader.getString();
+                    clientName = reader.getString();
                 } else if ("namespaceName".equals(fieldName)) {
-                    deserializedEventGridMqttClientCreatedOrUpdatedEventData.namespaceName = reader.getString();
+                    namespaceName = reader.getString();
                 } else if ("state".equals(fieldName)) {
-                    deserializedEventGridMqttClientCreatedOrUpdatedEventData.state
-                        = EventGridMqttClientState.fromString(reader.getString());
+                    state = EventGridMQTTClientState.fromString(reader.getString());
                 } else if ("createdOn".equals(fieldName)) {
-                    deserializedEventGridMqttClientCreatedOrUpdatedEventData.createdOn
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    createdOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("updatedOn".equals(fieldName)) {
-                    deserializedEventGridMqttClientCreatedOrUpdatedEventData.updatedOn
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    updatedOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("attributes".equals(fieldName)) {
-                    Map<String, String> attributes = reader.readMap(reader1 -> reader1.getString());
-                    deserializedEventGridMqttClientCreatedOrUpdatedEventData.attributes = attributes;
+                    attributes = reader.readMap(reader1 -> reader1.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
+            EventGridMQTTClientCreatedOrUpdatedEventData deserializedEventGridMQTTClientCreatedOrUpdatedEventData
+                = new EventGridMQTTClientCreatedOrUpdatedEventData(state, createdOn, updatedOn, attributes);
+            deserializedEventGridMQTTClientCreatedOrUpdatedEventData.clientAuthenticationName
+                = clientAuthenticationName;
+            deserializedEventGridMQTTClientCreatedOrUpdatedEventData.clientName = clientName;
+            deserializedEventGridMQTTClientCreatedOrUpdatedEventData.namespaceName = namespaceName;
 
-            return deserializedEventGridMqttClientCreatedOrUpdatedEventData;
+            return deserializedEventGridMQTTClientCreatedOrUpdatedEventData;
         });
     }
 }

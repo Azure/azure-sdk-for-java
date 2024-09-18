@@ -4,54 +4,55 @@
 
 package com.azure.messaging.eventgrid.systemevents.models;
 
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
  * Media Job Retry Options.
  */
-public enum MediaJobRetry {
+public final class MediaJobRetry extends ExpandableStringEnum<MediaJobRetry> {
     /**
      * Issue needs to be investigated and then the job resubmitted with corrections or retried once the underlying issue
      * has been corrected.
      */
-    DO_NOT_RETRY("DoNotRetry"),
+    @Generated
+    public static final MediaJobRetry DO_NOT_RETRY = fromString("DoNotRetry");
 
     /**
      * Issue may be resolved after waiting for a period of time and resubmitting the same Job.
      */
-    MAY_RETRY("MayRetry");
+    @Generated
+    public static final MediaJobRetry MAY_RETRY = fromString("MayRetry");
 
     /**
-     * The actual serialized value for a MediaJobRetry instance.
-     */
-    private final String value;
-
-    MediaJobRetry(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a MediaJobRetry instance.
+     * Creates a new instance of MediaJobRetry value.
      * 
-     * @param value the serialized value to parse.
-     * @return the parsed MediaJobRetry object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static MediaJobRetry fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        MediaJobRetry[] items = MediaJobRetry.values();
-        for (MediaJobRetry item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Generated
+    @Deprecated
+    public MediaJobRetry() {
     }
 
     /**
-     * {@inheritDoc}
+     * Creates or finds a MediaJobRetry from its string representation.
+     * 
+     * @param name a name to look for.
+     * @return the corresponding MediaJobRetry.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    @Generated
+    public static MediaJobRetry fromString(String name) {
+        return fromString(name, MediaJobRetry.class);
+    }
+
+    /**
+     * Gets known MediaJobRetry values.
+     * 
+     * @return known MediaJobRetry values.
+     */
+    @Generated
+    public static Collection<MediaJobRetry> values() {
+        return values(MediaJobRetry.class);
     }
 }

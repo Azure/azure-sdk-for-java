@@ -47,11 +47,15 @@ public class ContainerServiceClusterSupportEventData
      * @param kubernetesVersion the kubernetesVersion value to set.
      * @return the ContainerServiceClusterSupportEventData object itself.
      */
+    @Generated
     ContainerServiceClusterSupportEventData setKubernetesVersion(String kubernetesVersion) {
         this.kubernetesVersion = kubernetesVersion;
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {

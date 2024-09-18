@@ -14,8 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterJobWorkerSelectorsExpired
- * event.
+ * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterJobWorkerSelectorsExpired event.
  */
 @Immutable
 public final class AcsRouterJobWorkerSelectorsExpiredEventData extends AcsRouterJobEventData {
@@ -23,24 +22,57 @@ public final class AcsRouterJobWorkerSelectorsExpiredEventData extends AcsRouter
      * Router Job Worker Selectors Expired Requested Worker Selectors
      */
     @Generated
-    private List<AcsRouterWorkerSelector> expiredRequestedWorkerSelectors;
+    private final List<AcsRouterWorkerSelector> expiredRequestedWorkerSelectors;
 
     /*
      * Router Job Worker Selectors Expired Attached Worker Selectors
      */
     @Generated
-    private List<AcsRouterWorkerSelector> expiredAttachedWorkerSelectors;
+    private final List<AcsRouterWorkerSelector> expiredAttachedWorkerSelectors;
+
+    /*
+     * Router Job events Queue Id
+     */
+    @Generated
+    private String queueId;
+
+    /*
+     * Router Event Channel ID
+     */
+    @Generated
+    private String channelId;
+
+    /*
+     * Router Event Channel Reference
+     */
+    @Generated
+    private String channelReference;
+
+    /*
+     * Router Event Job ID
+     */
+    @Generated
+    private String jobId;
 
     /**
      * Creates an instance of AcsRouterJobWorkerSelectorsExpiredEventData class.
+     * 
+     * @param labels the labels value to set.
+     * @param tags the tags value to set.
+     * @param expiredRequestedWorkerSelectors the expiredRequestedWorkerSelectors value to set.
+     * @param expiredAttachedWorkerSelectors the expiredAttachedWorkerSelectors value to set.
      */
     @Generated
-    private AcsRouterJobWorkerSelectorsExpiredEventData() {
+    private AcsRouterJobWorkerSelectorsExpiredEventData(Map<String, String> labels, Map<String, String> tags,
+        List<AcsRouterWorkerSelector> expiredRequestedWorkerSelectors,
+        List<AcsRouterWorkerSelector> expiredAttachedWorkerSelectors) {
+        super(labels, tags);
+        this.expiredRequestedWorkerSelectors = expiredRequestedWorkerSelectors;
+        this.expiredAttachedWorkerSelectors = expiredAttachedWorkerSelectors;
     }
 
     /**
-     * Get the expiredRequestedWorkerSelectors property: Router Job Worker Selectors Expired Requested Worker
-     * Selectors.
+     * Get the expiredRequestedWorkerSelectors property: Router Job Worker Selectors Expired Requested Worker Selectors.
      * 
      * @return the expiredRequestedWorkerSelectors value.
      */
@@ -59,16 +91,63 @@ public final class AcsRouterJobWorkerSelectorsExpiredEventData extends AcsRouter
         return this.expiredAttachedWorkerSelectors;
     }
 
+    /**
+     * Get the queueId property: Router Job events Queue Id.
+     * 
+     * @return the queueId value.
+     */
+    @Generated
+    @Override
+    public String getQueueId() {
+        return this.queueId;
+    }
+
+    /**
+     * Get the channelId property: Router Event Channel ID.
+     * 
+     * @return the channelId value.
+     */
+    @Generated
+    @Override
+    public String getChannelId() {
+        return this.channelId;
+    }
+
+    /**
+     * Get the channelReference property: Router Event Channel Reference.
+     * 
+     * @return the channelReference value.
+     */
+    @Generated
+    @Override
+    public String getChannelReference() {
+        return this.channelReference;
+    }
+
+    /**
+     * Get the jobId property: Router Event Job ID.
+     * 
+     * @return the jobId value.
+     */
+    @Generated
+    @Override
+    public String getJobId() {
+        return this.jobId;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("labels", getLabels(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("tags", getTags(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("jobId", getJobId());
         jsonWriter.writeStringField("channelReference", getChannelReference());
         jsonWriter.writeStringField("channelId", getChannelId());
         jsonWriter.writeStringField("queueId", getQueueId());
-        jsonWriter.writeMapField("labels", getLabels(), (writer, element) -> writer.writeString(element));
-        jsonWriter.writeMapField("tags", getTags(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("expiredRequestedWorkerSelectors", this.expiredRequestedWorkerSelectors,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("expiredAttachedWorkerSelectors", this.expiredAttachedWorkerSelectors,
@@ -82,45 +161,53 @@ public final class AcsRouterJobWorkerSelectorsExpiredEventData extends AcsRouter
      * @param jsonReader The JsonReader being read.
      * @return An instance of AcsRouterJobWorkerSelectorsExpiredEventData if the JsonReader was pointing to an instance
      * of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AcsRouterJobWorkerSelectorsExpiredEventData.
      */
     @Generated
     public static AcsRouterJobWorkerSelectorsExpiredEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AcsRouterJobWorkerSelectorsExpiredEventData deserializedAcsRouterJobWorkerSelectorsExpiredEventData
-                = new AcsRouterJobWorkerSelectorsExpiredEventData();
+            Map<String, String> labels = null;
+            Map<String, String> tags = null;
+            String jobId = null;
+            String channelReference = null;
+            String channelId = null;
+            String queueId = null;
+            List<AcsRouterWorkerSelector> expiredRequestedWorkerSelectors = null;
+            List<AcsRouterWorkerSelector> expiredAttachedWorkerSelectors = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("jobId".equals(fieldName)) {
-                    deserializedAcsRouterJobWorkerSelectorsExpiredEventData.setJobId(reader.getString());
-                } else if ("channelReference".equals(fieldName)) {
-                    deserializedAcsRouterJobWorkerSelectorsExpiredEventData.setChannelReference(reader.getString());
-                } else if ("channelId".equals(fieldName)) {
-                    deserializedAcsRouterJobWorkerSelectorsExpiredEventData.setChannelId(reader.getString());
-                } else if ("queueId".equals(fieldName)) {
-                    deserializedAcsRouterJobWorkerSelectorsExpiredEventData.setQueueId(reader.getString());
-                } else if ("labels".equals(fieldName)) {
-                    Map<String, String> labels = reader.readMap(reader1 -> reader1.getString());
-                    deserializedAcsRouterJobWorkerSelectorsExpiredEventData.setLabels(labels);
+                if ("labels".equals(fieldName)) {
+                    labels = reader.readMap(reader1 -> reader1.getString());
                 } else if ("tags".equals(fieldName)) {
-                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                    deserializedAcsRouterJobWorkerSelectorsExpiredEventData.setTags(tags);
+                    tags = reader.readMap(reader1 -> reader1.getString());
+                } else if ("jobId".equals(fieldName)) {
+                    jobId = reader.getString();
+                } else if ("channelReference".equals(fieldName)) {
+                    channelReference = reader.getString();
+                } else if ("channelId".equals(fieldName)) {
+                    channelId = reader.getString();
+                } else if ("queueId".equals(fieldName)) {
+                    queueId = reader.getString();
                 } else if ("expiredRequestedWorkerSelectors".equals(fieldName)) {
-                    List<AcsRouterWorkerSelector> expiredRequestedWorkerSelectors
+                    expiredRequestedWorkerSelectors
                         = reader.readArray(reader1 -> AcsRouterWorkerSelector.fromJson(reader1));
-                    deserializedAcsRouterJobWorkerSelectorsExpiredEventData.expiredRequestedWorkerSelectors
-                        = expiredRequestedWorkerSelectors;
                 } else if ("expiredAttachedWorkerSelectors".equals(fieldName)) {
-                    List<AcsRouterWorkerSelector> expiredAttachedWorkerSelectors
+                    expiredAttachedWorkerSelectors
                         = reader.readArray(reader1 -> AcsRouterWorkerSelector.fromJson(reader1));
-                    deserializedAcsRouterJobWorkerSelectorsExpiredEventData.expiredAttachedWorkerSelectors
-                        = expiredAttachedWorkerSelectors;
                 } else {
                     reader.skipChildren();
                 }
             }
+            AcsRouterJobWorkerSelectorsExpiredEventData deserializedAcsRouterJobWorkerSelectorsExpiredEventData
+                = new AcsRouterJobWorkerSelectorsExpiredEventData(labels, tags, expiredRequestedWorkerSelectors,
+                    expiredAttachedWorkerSelectors);
+            deserializedAcsRouterJobWorkerSelectorsExpiredEventData.jobId = jobId;
+            deserializedAcsRouterJobWorkerSelectorsExpiredEventData.channelReference = channelReference;
+            deserializedAcsRouterJobWorkerSelectorsExpiredEventData.channelId = channelId;
+            deserializedAcsRouterJobWorkerSelectorsExpiredEventData.queueId = queueId;
 
             return deserializedAcsRouterJobWorkerSelectorsExpiredEventData;
         });

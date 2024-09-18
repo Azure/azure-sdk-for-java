@@ -6,6 +6,7 @@ package com.azure.messaging.eventgrid.systemevents.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -22,19 +23,19 @@ public final class AcsChatParticipantAddedToThreadEventData extends AcsChatEvent
      * The time at which the user was added to the thread
      */
     @Generated
-    private OffsetDateTime time;
+    private final OffsetDateTime time;
 
     /*
      * The communication identifier of the user who added the user
      */
     @Generated
-    private CommunicationIdentifierModel addedByCommunicationIdentifier;
+    private final CommunicationIdentifierModel addedByCommunicationIdentifier;
 
     /*
      * The details of the user who was added
      */
     @Generated
-    private AcsChatThreadParticipantProperties participantAdded;
+    private final AcsChatThreadParticipantProperties participantAdded;
 
     /*
      * The version of the thread
@@ -42,11 +43,32 @@ public final class AcsChatParticipantAddedToThreadEventData extends AcsChatEvent
     @Generated
     private Long version;
 
-    /**
-     * Creates an instance of AcsChatParticipantAddedToThreadEventData class.
+    /*
+     * The chat thread id
      */
     @Generated
-    private AcsChatParticipantAddedToThreadEventData() {
+    private String threadId;
+
+    /*
+     * The transaction id will be used as co-relation vector
+     */
+    @Generated
+    private String transactionId;
+
+    /**
+     * Creates an instance of AcsChatParticipantAddedToThreadEventData class.
+     * 
+     * @param time the time value to set.
+     * @param addedByCommunicationIdentifier the addedByCommunicationIdentifier value to set.
+     * @param participantAdded the participantAdded value to set.
+     */
+    @Generated
+    private AcsChatParticipantAddedToThreadEventData(OffsetDateTime time,
+        CommunicationIdentifierModel addedByCommunicationIdentifier,
+        AcsChatThreadParticipantProperties participantAdded) {
+        this.time = time;
+        this.addedByCommunicationIdentifier = addedByCommunicationIdentifier;
+        this.participantAdded = participantAdded;
     }
 
     /**
@@ -89,6 +111,31 @@ public final class AcsChatParticipantAddedToThreadEventData extends AcsChatEvent
         return this.version;
     }
 
+    /**
+     * Get the threadId property: The chat thread id.
+     * 
+     * @return the threadId value.
+     */
+    @Generated
+    @Override
+    public String getThreadId() {
+        return this.threadId;
+    }
+
+    /**
+     * Get the transactionId property: The transaction id will be used as co-relation vector.
+     * 
+     * @return the transactionId value.
+     */
+    @Generated
+    @Override
+    public String getTransactionId() {
+        return this.transactionId;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
@@ -109,37 +156,44 @@ public final class AcsChatParticipantAddedToThreadEventData extends AcsChatEvent
      * @param jsonReader The JsonReader being read.
      * @return An instance of AcsChatParticipantAddedToThreadEventData if the JsonReader was pointing to an instance of
      * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AcsChatParticipantAddedToThreadEventData.
      */
     @Generated
     public static AcsChatParticipantAddedToThreadEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AcsChatParticipantAddedToThreadEventData deserializedAcsChatParticipantAddedToThreadEventData
-                = new AcsChatParticipantAddedToThreadEventData();
+            String transactionId = null;
+            String threadId = null;
+            OffsetDateTime time = null;
+            CommunicationIdentifierModel addedByCommunicationIdentifier = null;
+            AcsChatThreadParticipantProperties participantAdded = null;
+            Long version = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("transactionId".equals(fieldName)) {
-                    deserializedAcsChatParticipantAddedToThreadEventData.setTransactionId(reader.getString());
+                    transactionId = reader.getString();
                 } else if ("threadId".equals(fieldName)) {
-                    deserializedAcsChatParticipantAddedToThreadEventData.setThreadId(reader.getString());
+                    threadId = reader.getString();
                 } else if ("time".equals(fieldName)) {
-                    deserializedAcsChatParticipantAddedToThreadEventData.time
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    time = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("addedByCommunicationIdentifier".equals(fieldName)) {
-                    deserializedAcsChatParticipantAddedToThreadEventData.addedByCommunicationIdentifier
-                        = CommunicationIdentifierModel.fromJson(reader);
+                    addedByCommunicationIdentifier = CommunicationIdentifierModel.fromJson(reader);
                 } else if ("participantAdded".equals(fieldName)) {
-                    deserializedAcsChatParticipantAddedToThreadEventData.participantAdded
-                        = AcsChatThreadParticipantProperties.fromJson(reader);
+                    participantAdded = AcsChatThreadParticipantProperties.fromJson(reader);
                 } else if ("version".equals(fieldName)) {
-                    deserializedAcsChatParticipantAddedToThreadEventData.version
-                        = reader.getNullable(JsonReader::getLong);
+                    version = reader.getNullable(JsonReader::getLong);
                 } else {
                     reader.skipChildren();
                 }
             }
+            AcsChatParticipantAddedToThreadEventData deserializedAcsChatParticipantAddedToThreadEventData
+                = new AcsChatParticipantAddedToThreadEventData(time, addedByCommunicationIdentifier, participantAdded);
+            deserializedAcsChatParticipantAddedToThreadEventData.transactionId = transactionId;
+            deserializedAcsChatParticipantAddedToThreadEventData.threadId = threadId;
+            deserializedAcsChatParticipantAddedToThreadEventData.version = version;
 
             return deserializedAcsChatParticipantAddedToThreadEventData;
         });

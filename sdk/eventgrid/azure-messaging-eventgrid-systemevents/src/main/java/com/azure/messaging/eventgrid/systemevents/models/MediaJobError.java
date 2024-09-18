@@ -22,7 +22,7 @@ public final class MediaJobError implements JsonSerializable<MediaJobError> {
      * Error code describing the error.
      */
     @Generated
-    private MediaJobErrorCode code;
+    private final MediaJobErrorCode code;
 
     /*
      * A human-readable language-dependent representation of the error.
@@ -34,26 +34,36 @@ public final class MediaJobError implements JsonSerializable<MediaJobError> {
      * Helps with categorization of errors.
      */
     @Generated
-    private MediaJobErrorCategory category;
+    private final MediaJobErrorCategory category;
 
     /*
      * Indicates that it may be possible to retry the Job. If retry is unsuccessful, please contact Azure support via
      * Azure Portal.
      */
     @Generated
-    private MediaJobRetry retry;
+    private final MediaJobRetry retry;
 
     /*
      * An array of details about specific errors that led to this reported error.
      */
     @Generated
-    private List<MediaJobErrorDetail> details;
+    private final List<MediaJobErrorDetail> details;
 
     /**
      * Creates an instance of MediaJobError class.
+     * 
+     * @param code the code value to set.
+     * @param category the category value to set.
+     * @param retry the retry value to set.
+     * @param details the details value to set.
      */
     @Generated
-    private MediaJobError() {
+    private MediaJobError(MediaJobErrorCode code, MediaJobErrorCategory category, MediaJobRetry retry,
+        List<MediaJobErrorDetail> details) {
+        this.code = code;
+        this.category = category;
+        this.retry = retry;
+        this.details = details;
     }
 
     /**
@@ -107,10 +117,18 @@ public final class MediaJobError implements JsonSerializable<MediaJobError> {
         return this.details;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("code", this.code == null ? null : this.code.toString());
+        jsonWriter.writeStringField("category", this.category == null ? null : this.category.toString());
+        jsonWriter.writeStringField("retry", this.retry == null ? null : this.retry.toString());
+        jsonWriter.writeArrayField("details", this.details, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("message", this.message);
         return jsonWriter.writeEndObject();
     }
 
@@ -120,32 +138,37 @@ public final class MediaJobError implements JsonSerializable<MediaJobError> {
      * @param jsonReader The JsonReader being read.
      * @return An instance of MediaJobError if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MediaJobError.
      */
     @Generated
     public static MediaJobError fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            MediaJobError deserializedMediaJobError = new MediaJobError();
+            MediaJobErrorCode code = null;
+            MediaJobErrorCategory category = null;
+            MediaJobRetry retry = null;
+            List<MediaJobErrorDetail> details = null;
+            String message = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("code".equals(fieldName)) {
-                    deserializedMediaJobError.code = MediaJobErrorCode.fromString(reader.getString());
-                } else if ("message".equals(fieldName)) {
-                    deserializedMediaJobError.message = reader.getString();
+                    code = MediaJobErrorCode.fromString(reader.getString());
                 } else if ("category".equals(fieldName)) {
-                    deserializedMediaJobError.category = MediaJobErrorCategory.fromString(reader.getString());
+                    category = MediaJobErrorCategory.fromString(reader.getString());
                 } else if ("retry".equals(fieldName)) {
-                    deserializedMediaJobError.retry = MediaJobRetry.fromString(reader.getString());
+                    retry = MediaJobRetry.fromString(reader.getString());
                 } else if ("details".equals(fieldName)) {
-                    List<MediaJobErrorDetail> details
-                        = reader.readArray(reader1 -> MediaJobErrorDetail.fromJson(reader1));
-                    deserializedMediaJobError.details = details;
+                    details = reader.readArray(reader1 -> MediaJobErrorDetail.fromJson(reader1));
+                } else if ("message".equals(fieldName)) {
+                    message = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
+            MediaJobError deserializedMediaJobError = new MediaJobError(code, category, retry, details);
+            deserializedMediaJobError.message = message;
 
             return deserializedMediaJobError;
         });

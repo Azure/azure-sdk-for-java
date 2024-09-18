@@ -28,25 +28,43 @@ public final class StorageLifecyclePolicyCompletedEventData
      * Execution statistics of a specific policy action in a Blob Management cycle.
      */
     @Generated
-    private StorageLifecyclePolicyActionSummaryDetail deleteSummary;
+    private final StorageLifecyclePolicyActionSummaryDetail deleteSummary;
 
     /*
      * Execution statistics of a specific policy action in a Blob Management cycle.
      */
     @Generated
-    private StorageLifecyclePolicyActionSummaryDetail tierToCoolSummary;
+    private final StorageLifecyclePolicyActionSummaryDetail tierToCoolSummary;
 
     /*
      * Execution statistics of a specific policy action in a Blob Management cycle.
      */
     @Generated
-    private StorageLifecyclePolicyActionSummaryDetail tierToArchiveSummary;
+    private final StorageLifecyclePolicyActionSummaryDetail tierToArchiveSummary;
+
+    /*
+     * Execution statistics of a specific policy action in a Blob Management cycle.
+     */
+    @Generated
+    private final StorageLifecyclePolicyActionSummaryDetail tierToColdSummary;
 
     /**
      * Creates an instance of StorageLifecyclePolicyCompletedEventData class.
+     * 
+     * @param deleteSummary the deleteSummary value to set.
+     * @param tierToCoolSummary the tierToCoolSummary value to set.
+     * @param tierToArchiveSummary the tierToArchiveSummary value to set.
+     * @param tierToColdSummary the tierToColdSummary value to set.
      */
     @Generated
-    private StorageLifecyclePolicyCompletedEventData() {
+    private StorageLifecyclePolicyCompletedEventData(StorageLifecyclePolicyActionSummaryDetail deleteSummary,
+        StorageLifecyclePolicyActionSummaryDetail tierToCoolSummary,
+        StorageLifecyclePolicyActionSummaryDetail tierToArchiveSummary,
+        StorageLifecyclePolicyActionSummaryDetail tierToColdSummary) {
+        this.deleteSummary = deleteSummary;
+        this.tierToCoolSummary = tierToCoolSummary;
+        this.tierToArchiveSummary = tierToArchiveSummary;
+        this.tierToColdSummary = tierToColdSummary;
     }
 
     /**
@@ -90,14 +108,28 @@ public final class StorageLifecyclePolicyCompletedEventData
         return this.tierToArchiveSummary;
     }
 
+    /**
+     * Get the tierToColdSummary property: Execution statistics of a specific policy action in a Blob Management cycle.
+     * 
+     * @return the tierToColdSummary value.
+     */
+    @Generated
+    public StorageLifecyclePolicyActionSummaryDetail getTierToColdSummary() {
+        return this.tierToColdSummary;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("scheduleTime", this.scheduleTime);
         jsonWriter.writeJsonField("deleteSummary", this.deleteSummary);
         jsonWriter.writeJsonField("tierToCoolSummary", this.tierToCoolSummary);
         jsonWriter.writeJsonField("tierToArchiveSummary", this.tierToArchiveSummary);
+        jsonWriter.writeJsonField("tierToColdSummary", this.tierToColdSummary);
+        jsonWriter.writeStringField("scheduleTime", this.scheduleTime);
         return jsonWriter.writeEndObject();
     }
 
@@ -107,32 +139,39 @@ public final class StorageLifecyclePolicyCompletedEventData
      * @param jsonReader The JsonReader being read.
      * @return An instance of StorageLifecyclePolicyCompletedEventData if the JsonReader was pointing to an instance of
      * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the StorageLifecyclePolicyCompletedEventData.
      */
     @Generated
     public static StorageLifecyclePolicyCompletedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            StorageLifecyclePolicyCompletedEventData deserializedStorageLifecyclePolicyCompletedEventData
-                = new StorageLifecyclePolicyCompletedEventData();
+            StorageLifecyclePolicyActionSummaryDetail deleteSummary = null;
+            StorageLifecyclePolicyActionSummaryDetail tierToCoolSummary = null;
+            StorageLifecyclePolicyActionSummaryDetail tierToArchiveSummary = null;
+            StorageLifecyclePolicyActionSummaryDetail tierToColdSummary = null;
+            String scheduleTime = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("scheduleTime".equals(fieldName)) {
-                    deserializedStorageLifecyclePolicyCompletedEventData.scheduleTime = reader.getString();
-                } else if ("deleteSummary".equals(fieldName)) {
-                    deserializedStorageLifecyclePolicyCompletedEventData.deleteSummary
-                        = StorageLifecyclePolicyActionSummaryDetail.fromJson(reader);
+                if ("deleteSummary".equals(fieldName)) {
+                    deleteSummary = StorageLifecyclePolicyActionSummaryDetail.fromJson(reader);
                 } else if ("tierToCoolSummary".equals(fieldName)) {
-                    deserializedStorageLifecyclePolicyCompletedEventData.tierToCoolSummary
-                        = StorageLifecyclePolicyActionSummaryDetail.fromJson(reader);
+                    tierToCoolSummary = StorageLifecyclePolicyActionSummaryDetail.fromJson(reader);
                 } else if ("tierToArchiveSummary".equals(fieldName)) {
-                    deserializedStorageLifecyclePolicyCompletedEventData.tierToArchiveSummary
-                        = StorageLifecyclePolicyActionSummaryDetail.fromJson(reader);
+                    tierToArchiveSummary = StorageLifecyclePolicyActionSummaryDetail.fromJson(reader);
+                } else if ("tierToColdSummary".equals(fieldName)) {
+                    tierToColdSummary = StorageLifecyclePolicyActionSummaryDetail.fromJson(reader);
+                } else if ("scheduleTime".equals(fieldName)) {
+                    scheduleTime = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
+            StorageLifecyclePolicyCompletedEventData deserializedStorageLifecyclePolicyCompletedEventData
+                = new StorageLifecyclePolicyCompletedEventData(deleteSummary, tierToCoolSummary, tierToArchiveSummary,
+                    tierToColdSummary);
+            deserializedStorageLifecyclePolicyCompletedEventData.scheduleTime = scheduleTime;
 
             return deserializedStorageLifecyclePolicyCompletedEventData;
         });

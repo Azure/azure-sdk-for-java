@@ -22,7 +22,7 @@ public final class AcsRouterJobClassifiedEventData extends AcsRouterJobEventData
      * Router Job Queue Info
      */
     @Generated
-    private AcsRouterQueueDetails queueDetails;
+    private final AcsRouterQueueDetails queueDetails;
 
     /*
      * Router Job Classification Policy Id
@@ -40,13 +40,46 @@ public final class AcsRouterJobClassifiedEventData extends AcsRouterJobEventData
      * Router Job Attached Worker Selector
      */
     @Generated
-    private List<AcsRouterWorkerSelector> attachedWorkerSelectors;
+    private final List<AcsRouterWorkerSelector> attachedWorkerSelectors;
+
+    /*
+     * Router Job events Queue Id
+     */
+    @Generated
+    private String queueId;
+
+    /*
+     * Router Event Channel ID
+     */
+    @Generated
+    private String channelId;
+
+    /*
+     * Router Event Channel Reference
+     */
+    @Generated
+    private String channelReference;
+
+    /*
+     * Router Event Job ID
+     */
+    @Generated
+    private String jobId;
 
     /**
      * Creates an instance of AcsRouterJobClassifiedEventData class.
+     * 
+     * @param labels the labels value to set.
+     * @param tags the tags value to set.
+     * @param queueDetails the queueDetails value to set.
+     * @param attachedWorkerSelectors the attachedWorkerSelectors value to set.
      */
     @Generated
-    private AcsRouterJobClassifiedEventData() {
+    private AcsRouterJobClassifiedEventData(Map<String, String> labels, Map<String, String> tags,
+        AcsRouterQueueDetails queueDetails, List<AcsRouterWorkerSelector> attachedWorkerSelectors) {
+        super(labels, tags);
+        this.queueDetails = queueDetails;
+        this.attachedWorkerSelectors = attachedWorkerSelectors;
     }
 
     /**
@@ -89,21 +122,68 @@ public final class AcsRouterJobClassifiedEventData extends AcsRouterJobEventData
         return this.attachedWorkerSelectors;
     }
 
+    /**
+     * Get the queueId property: Router Job events Queue Id.
+     * 
+     * @return the queueId value.
+     */
+    @Generated
+    @Override
+    public String getQueueId() {
+        return this.queueId;
+    }
+
+    /**
+     * Get the channelId property: Router Event Channel ID.
+     * 
+     * @return the channelId value.
+     */
+    @Generated
+    @Override
+    public String getChannelId() {
+        return this.channelId;
+    }
+
+    /**
+     * Get the channelReference property: Router Event Channel Reference.
+     * 
+     * @return the channelReference value.
+     */
+    @Generated
+    @Override
+    public String getChannelReference() {
+        return this.channelReference;
+    }
+
+    /**
+     * Get the jobId property: Router Event Job ID.
+     * 
+     * @return the jobId value.
+     */
+    @Generated
+    @Override
+    public String getJobId() {
+        return this.jobId;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("labels", getLabels(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("tags", getTags(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("jobId", getJobId());
         jsonWriter.writeStringField("channelReference", getChannelReference());
         jsonWriter.writeStringField("channelId", getChannelId());
         jsonWriter.writeStringField("queueId", getQueueId());
-        jsonWriter.writeMapField("labels", getLabels(), (writer, element) -> writer.writeString(element));
-        jsonWriter.writeMapField("tags", getTags(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("queueDetails", this.queueDetails);
-        jsonWriter.writeStringField("classificationPolicyId", this.classificationPolicyId);
-        jsonWriter.writeNumberField("priority", this.priority);
         jsonWriter.writeArrayField("attachedWorkerSelectors", this.attachedWorkerSelectors,
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("classificationPolicyId", this.classificationPolicyId);
+        jsonWriter.writeNumberField("priority", this.priority);
         return jsonWriter.writeEndObject();
     }
 
@@ -113,45 +193,58 @@ public final class AcsRouterJobClassifiedEventData extends AcsRouterJobEventData
      * @param jsonReader The JsonReader being read.
      * @return An instance of AcsRouterJobClassifiedEventData if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AcsRouterJobClassifiedEventData.
      */
     @Generated
     public static AcsRouterJobClassifiedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AcsRouterJobClassifiedEventData deserializedAcsRouterJobClassifiedEventData
-                = new AcsRouterJobClassifiedEventData();
+            Map<String, String> labels = null;
+            Map<String, String> tags = null;
+            String jobId = null;
+            String channelReference = null;
+            String channelId = null;
+            String queueId = null;
+            AcsRouterQueueDetails queueDetails = null;
+            List<AcsRouterWorkerSelector> attachedWorkerSelectors = null;
+            String classificationPolicyId = null;
+            Integer priority = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("jobId".equals(fieldName)) {
-                    deserializedAcsRouterJobClassifiedEventData.setJobId(reader.getString());
-                } else if ("channelReference".equals(fieldName)) {
-                    deserializedAcsRouterJobClassifiedEventData.setChannelReference(reader.getString());
-                } else if ("channelId".equals(fieldName)) {
-                    deserializedAcsRouterJobClassifiedEventData.setChannelId(reader.getString());
-                } else if ("queueId".equals(fieldName)) {
-                    deserializedAcsRouterJobClassifiedEventData.setQueueId(reader.getString());
-                } else if ("labels".equals(fieldName)) {
-                    Map<String, String> labels = reader.readMap(reader1 -> reader1.getString());
-                    deserializedAcsRouterJobClassifiedEventData.setLabels(labels);
+                if ("labels".equals(fieldName)) {
+                    labels = reader.readMap(reader1 -> reader1.getString());
                 } else if ("tags".equals(fieldName)) {
-                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                    deserializedAcsRouterJobClassifiedEventData.setTags(tags);
+                    tags = reader.readMap(reader1 -> reader1.getString());
+                } else if ("jobId".equals(fieldName)) {
+                    jobId = reader.getString();
+                } else if ("channelReference".equals(fieldName)) {
+                    channelReference = reader.getString();
+                } else if ("channelId".equals(fieldName)) {
+                    channelId = reader.getString();
+                } else if ("queueId".equals(fieldName)) {
+                    queueId = reader.getString();
                 } else if ("queueDetails".equals(fieldName)) {
-                    deserializedAcsRouterJobClassifiedEventData.queueDetails = AcsRouterQueueDetails.fromJson(reader);
-                } else if ("classificationPolicyId".equals(fieldName)) {
-                    deserializedAcsRouterJobClassifiedEventData.classificationPolicyId = reader.getString();
-                } else if ("priority".equals(fieldName)) {
-                    deserializedAcsRouterJobClassifiedEventData.priority = reader.getNullable(JsonReader::getInt);
+                    queueDetails = AcsRouterQueueDetails.fromJson(reader);
                 } else if ("attachedWorkerSelectors".equals(fieldName)) {
-                    List<AcsRouterWorkerSelector> attachedWorkerSelectors
-                        = reader.readArray(reader1 -> AcsRouterWorkerSelector.fromJson(reader1));
-                    deserializedAcsRouterJobClassifiedEventData.attachedWorkerSelectors = attachedWorkerSelectors;
+                    attachedWorkerSelectors = reader.readArray(reader1 -> AcsRouterWorkerSelector.fromJson(reader1));
+                } else if ("classificationPolicyId".equals(fieldName)) {
+                    classificationPolicyId = reader.getString();
+                } else if ("priority".equals(fieldName)) {
+                    priority = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }
             }
+            AcsRouterJobClassifiedEventData deserializedAcsRouterJobClassifiedEventData
+                = new AcsRouterJobClassifiedEventData(labels, tags, queueDetails, attachedWorkerSelectors);
+            deserializedAcsRouterJobClassifiedEventData.jobId = jobId;
+            deserializedAcsRouterJobClassifiedEventData.channelReference = channelReference;
+            deserializedAcsRouterJobClassifiedEventData.channelId = channelId;
+            deserializedAcsRouterJobClassifiedEventData.queueId = queueId;
+            deserializedAcsRouterJobClassifiedEventData.classificationPolicyId = classificationPolicyId;
+            deserializedAcsRouterJobClassifiedEventData.priority = priority;
 
             return deserializedAcsRouterJobClassifiedEventData;
         });

@@ -6,6 +6,7 @@ package com.azure.messaging.eventgrid.systemevents.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -24,30 +25,69 @@ public final class AcsChatThreadPropertiesUpdatedPerUserEventData extends AcsCha
      * The communication identifier of the user who updated the thread properties
      */
     @Generated
-    private CommunicationIdentifierModel editedByCommunicationIdentifier;
+    private final CommunicationIdentifierModel editedByCommunicationIdentifier;
 
     /*
      * The time at which the properties of the thread were updated
      */
     @Generated
-    private OffsetDateTime editTime;
+    private final OffsetDateTime editTime;
+
+    /*
+     * The thread metadata
+     */
+    @Generated
+    private final Map<String, String> metadata;
 
     /*
      * The updated thread properties
      */
     @Generated
-    private Map<String, String> properties;
+    private final Map<String, Object> properties;
+
+    /*
+     * The version of the thread
+     */
+    @Generated
+    private Long version;
+
+    /*
+     * The chat thread id
+     */
+    @Generated
+    private String threadId;
+
+    /*
+     * The transaction id will be used as co-relation vector
+     */
+    @Generated
+    private String transactionId;
 
     /**
      * Creates an instance of AcsChatThreadPropertiesUpdatedPerUserEventData class.
+     * 
+     * @param recipientCommunicationIdentifier the recipientCommunicationIdentifier value to set.
+     * @param createTime the createTime value to set.
+     * @param editedByCommunicationIdentifier the editedByCommunicationIdentifier value to set.
+     * @param editTime the editTime value to set.
+     * @param metadata the metadata value to set.
+     * @param properties the properties value to set.
      */
     @Generated
-    private AcsChatThreadPropertiesUpdatedPerUserEventData() {
+    private AcsChatThreadPropertiesUpdatedPerUserEventData(
+        CommunicationIdentifierModel recipientCommunicationIdentifier, OffsetDateTime createTime,
+        CommunicationIdentifierModel editedByCommunicationIdentifier, OffsetDateTime editTime,
+        Map<String, String> metadata, Map<String, Object> properties) {
+        super(recipientCommunicationIdentifier, createTime);
+        this.editedByCommunicationIdentifier = editedByCommunicationIdentifier;
+        this.editTime = editTime;
+        this.metadata = metadata;
+        this.properties = properties;
     }
 
     /**
-     * Get the editedByCommunicationIdentifier property: The communication identifier of the user who updated the
-     * thread properties.
+     * Get the editedByCommunicationIdentifier property: The communication identifier of the user who updated the thread
+     * properties.
      * 
      * @return the editedByCommunicationIdentifier value.
      */
@@ -67,29 +107,76 @@ public final class AcsChatThreadPropertiesUpdatedPerUserEventData extends AcsCha
     }
 
     /**
+     * Get the metadata property: The thread metadata.
+     * 
+     * @return the metadata value.
+     */
+    @Generated
+    public Map<String, String> getMetadata() {
+        return this.metadata;
+    }
+
+    /**
      * Get the properties property: The updated thread properties.
      * 
      * @return the properties value.
      */
     @Generated
-    public Map<String, String> getProperties() {
+    public Map<String, Object> getProperties() {
         return this.properties;
     }
 
+    /**
+     * Get the version property: The version of the thread.
+     * 
+     * @return the version value.
+     */
+    @Generated
+    @Override
+    public Long getVersion() {
+        return this.version;
+    }
+
+    /**
+     * Get the threadId property: The chat thread id.
+     * 
+     * @return the threadId value.
+     */
+    @Generated
+    @Override
+    public String getThreadId() {
+        return this.threadId;
+    }
+
+    /**
+     * Get the transactionId property: The transaction id will be used as co-relation vector.
+     * 
+     * @return the transactionId value.
+     */
+    @Generated
+    @Override
+    public String getTransactionId() {
+        return this.transactionId;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("recipientCommunicationIdentifier", getRecipientCommunicationIdentifier());
-        jsonWriter.writeStringField("transactionId", getTransactionId());
-        jsonWriter.writeStringField("threadId", getThreadId());
         jsonWriter.writeStringField("createTime",
             getCreateTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getCreateTime()));
+        jsonWriter.writeStringField("transactionId", getTransactionId());
+        jsonWriter.writeStringField("threadId", getThreadId());
         jsonWriter.writeNumberField("version", getVersion());
         jsonWriter.writeJsonField("editedByCommunicationIdentifier", this.editedByCommunicationIdentifier);
         jsonWriter.writeStringField("editTime",
             this.editTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.editTime));
-        jsonWriter.writeMapField("properties", this.properties, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("properties", this.properties, (writer, element) -> writer.writeUntyped(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -99,43 +186,55 @@ public final class AcsChatThreadPropertiesUpdatedPerUserEventData extends AcsCha
      * @param jsonReader The JsonReader being read.
      * @return An instance of AcsChatThreadPropertiesUpdatedPerUserEventData if the JsonReader was pointing to an
      * instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AcsChatThreadPropertiesUpdatedPerUserEventData.
      */
     @Generated
     public static AcsChatThreadPropertiesUpdatedPerUserEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AcsChatThreadPropertiesUpdatedPerUserEventData deserializedAcsChatThreadPropertiesUpdatedPerUserEventData
-                = new AcsChatThreadPropertiesUpdatedPerUserEventData();
+            CommunicationIdentifierModel recipientCommunicationIdentifier = null;
+            OffsetDateTime createTime = null;
+            String transactionId = null;
+            String threadId = null;
+            Long version = null;
+            CommunicationIdentifierModel editedByCommunicationIdentifier = null;
+            OffsetDateTime editTime = null;
+            Map<String, String> metadata = null;
+            Map<String, Object> properties = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("recipientCommunicationIdentifier".equals(fieldName)) {
-                    deserializedAcsChatThreadPropertiesUpdatedPerUserEventData
-                        .setRecipientCommunicationIdentifier(CommunicationIdentifierModel.fromJson(reader));
-                } else if ("transactionId".equals(fieldName)) {
-                    deserializedAcsChatThreadPropertiesUpdatedPerUserEventData.setTransactionId(reader.getString());
-                } else if ("threadId".equals(fieldName)) {
-                    deserializedAcsChatThreadPropertiesUpdatedPerUserEventData.setThreadId(reader.getString());
+                    recipientCommunicationIdentifier = CommunicationIdentifierModel.fromJson(reader);
                 } else if ("createTime".equals(fieldName)) {
-                    deserializedAcsChatThreadPropertiesUpdatedPerUserEventData.setCreateTime(
-                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
+                    createTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("transactionId".equals(fieldName)) {
+                    transactionId = reader.getString();
+                } else if ("threadId".equals(fieldName)) {
+                    threadId = reader.getString();
                 } else if ("version".equals(fieldName)) {
-                    deserializedAcsChatThreadPropertiesUpdatedPerUserEventData
-                        .setVersion(reader.getNullable(JsonReader::getLong));
+                    version = reader.getNullable(JsonReader::getLong);
                 } else if ("editedByCommunicationIdentifier".equals(fieldName)) {
-                    deserializedAcsChatThreadPropertiesUpdatedPerUserEventData.editedByCommunicationIdentifier
-                        = CommunicationIdentifierModel.fromJson(reader);
+                    editedByCommunicationIdentifier = CommunicationIdentifierModel.fromJson(reader);
                 } else if ("editTime".equals(fieldName)) {
-                    deserializedAcsChatThreadPropertiesUpdatedPerUserEventData.editTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    editTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("metadata".equals(fieldName)) {
+                    metadata = reader.readMap(reader1 -> reader1.getString());
                 } else if ("properties".equals(fieldName)) {
-                    Map<String, String> properties = reader.readMap(reader1 -> reader1.getString());
-                    deserializedAcsChatThreadPropertiesUpdatedPerUserEventData.properties = properties;
+                    properties = reader.readMap(reader1 -> reader1.readUntyped());
                 } else {
                     reader.skipChildren();
                 }
             }
+            AcsChatThreadPropertiesUpdatedPerUserEventData deserializedAcsChatThreadPropertiesUpdatedPerUserEventData
+                = new AcsChatThreadPropertiesUpdatedPerUserEventData(recipientCommunicationIdentifier, createTime,
+                    editedByCommunicationIdentifier, editTime, metadata, properties);
+            deserializedAcsChatThreadPropertiesUpdatedPerUserEventData.transactionId = transactionId;
+            deserializedAcsChatThreadPropertiesUpdatedPerUserEventData.threadId = threadId;
+            deserializedAcsChatThreadPropertiesUpdatedPerUserEventData.version = version;
 
             return deserializedAcsChatThreadPropertiesUpdatedPerUserEventData;
         });

@@ -6,6 +6,7 @@ package com.azure.messaging.eventgrid.systemevents.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -42,25 +43,33 @@ public final class AcsEmailDeliveryReportReceivedEventData
      * The status of the email. Any value other than Delivered is considered failed.
      */
     @Generated
-    private AcsEmailDeliveryReportStatus status;
+    private final AcsEmailDeliveryReportStatus status;
 
     /*
      * Detailed information about the status if any
      */
     @Generated
-    private AcsEmailDeliveryReportStatusDetails deliveryStatusDetails;
+    private final AcsEmailDeliveryReportStatusDetails deliveryStatusDetails;
 
     /*
      * The time at which the email delivery report received timestamp
      */
     @Generated
-    private OffsetDateTime deliveryAttemptTimestamp;
+    private final OffsetDateTime deliveryAttemptTimestamp;
 
     /**
      * Creates an instance of AcsEmailDeliveryReportReceivedEventData class.
+     * 
+     * @param status the status value to set.
+     * @param deliveryStatusDetails the deliveryStatusDetails value to set.
+     * @param deliveryAttemptTimestamp the deliveryAttemptTimestamp value to set.
      */
     @Generated
-    private AcsEmailDeliveryReportReceivedEventData() {
+    private AcsEmailDeliveryReportReceivedEventData(AcsEmailDeliveryReportStatus status,
+        AcsEmailDeliveryReportStatusDetails deliveryStatusDetails, OffsetDateTime deliveryAttemptTimestamp) {
+        this.status = status;
+        this.deliveryStatusDetails = deliveryStatusDetails;
+        this.deliveryAttemptTimestamp = deliveryAttemptTimestamp;
     }
 
     /**
@@ -123,17 +132,22 @@ public final class AcsEmailDeliveryReportReceivedEventData
         return this.deliveryAttemptTimestamp;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeJsonField("deliveryStatusDetails", this.deliveryStatusDetails);
+        jsonWriter.writeStringField("deliveryAttemptTimestamp",
+            this.deliveryAttemptTimestamp == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.deliveryAttemptTimestamp));
         jsonWriter.writeStringField("sender", this.sender);
         jsonWriter.writeStringField("recipient", this.recipient);
         jsonWriter.writeStringField("messageId", this.messageId);
-        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
-        jsonWriter.writeJsonField("deliveryStatusDetails", this.deliveryStatusDetails);
-        jsonWriter.writeStringField("deliveryAttemptTimeStamp", this.deliveryAttemptTimestamp == null ? null
-            : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.deliveryAttemptTimestamp));
         return jsonWriter.writeEndObject();
     }
 
@@ -143,36 +157,44 @@ public final class AcsEmailDeliveryReportReceivedEventData
      * @param jsonReader The JsonReader being read.
      * @return An instance of AcsEmailDeliveryReportReceivedEventData if the JsonReader was pointing to an instance of
      * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AcsEmailDeliveryReportReceivedEventData.
      */
     @Generated
     public static AcsEmailDeliveryReportReceivedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AcsEmailDeliveryReportReceivedEventData deserializedAcsEmailDeliveryReportReceivedEventData
-                = new AcsEmailDeliveryReportReceivedEventData();
+            AcsEmailDeliveryReportStatus status = null;
+            AcsEmailDeliveryReportStatusDetails deliveryStatusDetails = null;
+            OffsetDateTime deliveryAttemptTimestamp = null;
+            String sender = null;
+            String recipient = null;
+            String messageId = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("sender".equals(fieldName)) {
-                    deserializedAcsEmailDeliveryReportReceivedEventData.sender = reader.getString();
-                } else if ("recipient".equals(fieldName)) {
-                    deserializedAcsEmailDeliveryReportReceivedEventData.recipient = reader.getString();
-                } else if ("messageId".equals(fieldName)) {
-                    deserializedAcsEmailDeliveryReportReceivedEventData.messageId = reader.getString();
-                } else if ("status".equals(fieldName)) {
-                    deserializedAcsEmailDeliveryReportReceivedEventData.status
-                        = AcsEmailDeliveryReportStatus.fromString(reader.getString());
+                if ("status".equals(fieldName)) {
+                    status = AcsEmailDeliveryReportStatus.fromString(reader.getString());
                 } else if ("deliveryStatusDetails".equals(fieldName)) {
-                    deserializedAcsEmailDeliveryReportReceivedEventData.deliveryStatusDetails
-                        = AcsEmailDeliveryReportStatusDetails.fromJson(reader);
-                } else if ("deliveryAttemptTimeStamp".equals(fieldName)) {
-                    deserializedAcsEmailDeliveryReportReceivedEventData.deliveryAttemptTimestamp
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deliveryStatusDetails = AcsEmailDeliveryReportStatusDetails.fromJson(reader);
+                } else if ("deliveryAttemptTimestamp".equals(fieldName)) {
+                    deliveryAttemptTimestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("sender".equals(fieldName)) {
+                    sender = reader.getString();
+                } else if ("recipient".equals(fieldName)) {
+                    recipient = reader.getString();
+                } else if ("messageId".equals(fieldName)) {
+                    messageId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
+            AcsEmailDeliveryReportReceivedEventData deserializedAcsEmailDeliveryReportReceivedEventData
+                = new AcsEmailDeliveryReportReceivedEventData(status, deliveryStatusDetails, deliveryAttemptTimestamp);
+            deserializedAcsEmailDeliveryReportReceivedEventData.sender = sender;
+            deserializedAcsEmailDeliveryReportReceivedEventData.recipient = recipient;
+            deserializedAcsEmailDeliveryReportReceivedEventData.messageId = messageId;
 
             return deserializedAcsEmailDeliveryReportReceivedEventData;
         });

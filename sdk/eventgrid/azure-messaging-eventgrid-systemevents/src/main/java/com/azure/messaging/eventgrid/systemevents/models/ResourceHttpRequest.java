@@ -88,6 +88,9 @@ public final class ResourceHttpRequest implements JsonSerializable<ResourceHttpR
         return this.url;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {

@@ -52,6 +52,7 @@ public class AcsChatEventInThreadBaseProperties implements JsonSerializable<AcsC
      * @param transactionId the transactionId value to set.
      * @return the AcsChatEventInThreadBaseProperties object itself.
      */
+    @Generated
     AcsChatEventInThreadBaseProperties setTransactionId(String transactionId) {
         this.transactionId = transactionId;
         return this;
@@ -73,11 +74,15 @@ public class AcsChatEventInThreadBaseProperties implements JsonSerializable<AcsC
      * @param threadId the threadId value to set.
      * @return the AcsChatEventInThreadBaseProperties object itself.
      */
+    @Generated
     AcsChatEventInThreadBaseProperties setThreadId(String threadId) {
         this.threadId = threadId;
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {

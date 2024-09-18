@@ -6,6 +6,7 @@ package com.azure.messaging.eventgrid.systemevents.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -24,7 +25,7 @@ public final class StorageBlobInventoryPolicyCompletedEventData
      * The time at which inventory policy was scheduled.
      */
     @Generated
-    private OffsetDateTime scheduleDateTime;
+    private final OffsetDateTime scheduleDateTime;
 
     /*
      * The account name for which inventory policy is registered.
@@ -64,9 +65,12 @@ public final class StorageBlobInventoryPolicyCompletedEventData
 
     /**
      * Creates an instance of StorageBlobInventoryPolicyCompletedEventData class.
+     * 
+     * @param scheduleDateTime the scheduleDateTime value to set.
      */
     @Generated
-    private StorageBlobInventoryPolicyCompletedEventData() {
+    private StorageBlobInventoryPolicyCompletedEventData(OffsetDateTime scheduleDateTime) {
+        this.scheduleDateTime = scheduleDateTime;
     }
 
     /**
@@ -139,12 +143,17 @@ public final class StorageBlobInventoryPolicyCompletedEventData
         return this.manifestBlobUrl;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("scheduleDateTime", this.scheduleDateTime == null ? null
-            : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.scheduleDateTime));
+        jsonWriter.writeStringField("scheduleDateTime",
+            this.scheduleDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.scheduleDateTime));
         jsonWriter.writeStringField("accountName", this.accountName);
         jsonWriter.writeStringField("ruleName", this.ruleName);
         jsonWriter.writeStringField("policyRunStatus", this.policyRunStatus);
@@ -160,37 +169,50 @@ public final class StorageBlobInventoryPolicyCompletedEventData
      * @param jsonReader The JsonReader being read.
      * @return An instance of StorageBlobInventoryPolicyCompletedEventData if the JsonReader was pointing to an instance
      * of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the StorageBlobInventoryPolicyCompletedEventData.
      */
     @Generated
     public static StorageBlobInventoryPolicyCompletedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            StorageBlobInventoryPolicyCompletedEventData deserializedStorageBlobInventoryPolicyCompletedEventData
-                = new StorageBlobInventoryPolicyCompletedEventData();
+            OffsetDateTime scheduleDateTime = null;
+            String accountName = null;
+            String ruleName = null;
+            String policyRunStatus = null;
+            String policyRunStatusMessage = null;
+            String policyRunId = null;
+            String manifestBlobUrl = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("scheduleDateTime".equals(fieldName)) {
-                    deserializedStorageBlobInventoryPolicyCompletedEventData.scheduleDateTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    scheduleDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("accountName".equals(fieldName)) {
-                    deserializedStorageBlobInventoryPolicyCompletedEventData.accountName = reader.getString();
+                    accountName = reader.getString();
                 } else if ("ruleName".equals(fieldName)) {
-                    deserializedStorageBlobInventoryPolicyCompletedEventData.ruleName = reader.getString();
+                    ruleName = reader.getString();
                 } else if ("policyRunStatus".equals(fieldName)) {
-                    deserializedStorageBlobInventoryPolicyCompletedEventData.policyRunStatus = reader.getString();
+                    policyRunStatus = reader.getString();
                 } else if ("policyRunStatusMessage".equals(fieldName)) {
-                    deserializedStorageBlobInventoryPolicyCompletedEventData.policyRunStatusMessage
-                        = reader.getString();
+                    policyRunStatusMessage = reader.getString();
                 } else if ("policyRunId".equals(fieldName)) {
-                    deserializedStorageBlobInventoryPolicyCompletedEventData.policyRunId = reader.getString();
+                    policyRunId = reader.getString();
                 } else if ("manifestBlobUrl".equals(fieldName)) {
-                    deserializedStorageBlobInventoryPolicyCompletedEventData.manifestBlobUrl = reader.getString();
+                    manifestBlobUrl = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
+            StorageBlobInventoryPolicyCompletedEventData deserializedStorageBlobInventoryPolicyCompletedEventData
+                = new StorageBlobInventoryPolicyCompletedEventData(scheduleDateTime);
+            deserializedStorageBlobInventoryPolicyCompletedEventData.accountName = accountName;
+            deserializedStorageBlobInventoryPolicyCompletedEventData.ruleName = ruleName;
+            deserializedStorageBlobInventoryPolicyCompletedEventData.policyRunStatus = policyRunStatus;
+            deserializedStorageBlobInventoryPolicyCompletedEventData.policyRunStatusMessage = policyRunStatusMessage;
+            deserializedStorageBlobInventoryPolicyCompletedEventData.policyRunId = policyRunId;
+            deserializedStorageBlobInventoryPolicyCompletedEventData.manifestBlobUrl = manifestBlobUrl;
 
             return deserializedStorageBlobInventoryPolicyCompletedEventData;
         });

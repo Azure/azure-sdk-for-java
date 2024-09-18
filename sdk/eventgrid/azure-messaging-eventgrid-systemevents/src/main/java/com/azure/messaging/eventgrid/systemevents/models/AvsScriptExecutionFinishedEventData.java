@@ -24,6 +24,24 @@ public final class AvsScriptExecutionFinishedEventData extends AvsScriptExecutio
     @Generated
     private final Map<String, String> namedOutputs;
 
+    /*
+     * Stdout outputs from the execution, if any.
+     */
+    @Generated
+    private List<String> output;
+
+    /*
+     * Cmdlet referenced in the execution that caused this event.
+     */
+    @Generated
+    private String cmdletId;
+
+    /*
+     * Id of the operation that caused this event.
+     */
+    @Generated
+    private String operationId;
+
     /**
      * Creates an instance of AvsScriptExecutionFinishedEventData class.
      * 
@@ -44,6 +62,42 @@ public final class AvsScriptExecutionFinishedEventData extends AvsScriptExecutio
         return this.namedOutputs;
     }
 
+    /**
+     * Get the output property: Stdout outputs from the execution, if any.
+     * 
+     * @return the output value.
+     */
+    @Generated
+    @Override
+    public List<String> getOutput() {
+        return this.output;
+    }
+
+    /**
+     * Get the cmdletId property: Cmdlet referenced in the execution that caused this event.
+     * 
+     * @return the cmdletId value.
+     */
+    @Generated
+    @Override
+    public String getCmdletId() {
+        return this.cmdletId;
+    }
+
+    /**
+     * Get the operationId property: Id of the operation that caused this event.
+     * 
+     * @return the operationId value.
+     */
+    @Generated
+    @Override
+    public String getOperationId() {
+        return this.operationId;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
@@ -89,9 +143,9 @@ public final class AvsScriptExecutionFinishedEventData extends AvsScriptExecutio
             }
             AvsScriptExecutionFinishedEventData deserializedAvsScriptExecutionFinishedEventData
                 = new AvsScriptExecutionFinishedEventData(namedOutputs);
-            deserializedAvsScriptExecutionFinishedEventData.setOperationId(operationId);
-            deserializedAvsScriptExecutionFinishedEventData.setCmdletId(cmdletId);
-            deserializedAvsScriptExecutionFinishedEventData.setOutput(output);
+            deserializedAvsScriptExecutionFinishedEventData.operationId = operationId;
+            deserializedAvsScriptExecutionFinishedEventData.cmdletId = cmdletId;
+            deserializedAvsScriptExecutionFinishedEventData.output = output;
 
             return deserializedAvsScriptExecutionFinishedEventData;
         });

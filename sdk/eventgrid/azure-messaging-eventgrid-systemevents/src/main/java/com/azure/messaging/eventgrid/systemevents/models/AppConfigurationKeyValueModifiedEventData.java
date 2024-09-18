@@ -89,6 +89,9 @@ public final class AppConfigurationKeyValueModifiedEventData
         return this.syncToken;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {

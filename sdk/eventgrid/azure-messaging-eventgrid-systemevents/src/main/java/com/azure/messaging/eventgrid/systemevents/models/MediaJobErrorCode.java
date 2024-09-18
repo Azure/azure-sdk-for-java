@@ -4,101 +4,110 @@
 
 package com.azure.messaging.eventgrid.systemevents.models;
 
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
  * Media Job Error Codes.
  */
-public enum MediaJobErrorCode {
+public final class MediaJobErrorCode extends ExpandableStringEnum<MediaJobErrorCode> {
     /**
      * Fatal service error, please contact support.
      */
-    SERVICE_ERROR("ServiceError"),
+    @Generated
+    public static final MediaJobErrorCode SERVICE_ERROR = fromString("ServiceError");
 
     /**
      * Transient error, please retry, if retry is unsuccessful, please contact support.
      */
-    SERVICE_TRANSIENT_ERROR("ServiceTransientError"),
+    @Generated
+    public static final MediaJobErrorCode SERVICE_TRANSIENT_ERROR = fromString("ServiceTransientError");
 
     /**
      * While trying to download the input files, the files were not accessible, please check the availability of the
      * source.
      */
-    DOWNLOAD_NOT_ACCESSIBLE("DownloadNotAccessible"),
+    @Generated
+    public static final MediaJobErrorCode DOWNLOAD_NOT_ACCESSIBLE = fromString("DownloadNotAccessible");
 
     /**
      * While trying to download the input files, there was an issue during transfer (storage service, network errors),
      * see details and check your source.
      */
-    DOWNLOAD_TRANSIENT_ERROR("DownloadTransientError"),
+    @Generated
+    public static final MediaJobErrorCode DOWNLOAD_TRANSIENT_ERROR = fromString("DownloadTransientError");
 
     /**
      * While trying to upload the output files, the destination was not reachable, please check the availability of the
      * destination.
      */
-    UPLOAD_NOT_ACCESSIBLE("UploadNotAccessible"),
+    @Generated
+    public static final MediaJobErrorCode UPLOAD_NOT_ACCESSIBLE = fromString("UploadNotAccessible");
 
     /**
      * While trying to upload the output files, there was an issue during transfer (storage service, network errors),
      * see details and check your destination.
      */
-    UPLOAD_TRANSIENT_ERROR("UploadTransientError"),
+    @Generated
+    public static final MediaJobErrorCode UPLOAD_TRANSIENT_ERROR = fromString("UploadTransientError");
 
     /**
      * There was a problem with the combination of input files and the configuration settings applied, fix the
      * configuration settings and retry with the same input, or change input to match the configuration.
      */
-    CONFIGURATION_UNSUPPORTED("ConfigurationUnsupported"),
+    @Generated
+    public static final MediaJobErrorCode CONFIGURATION_UNSUPPORTED = fromString("ConfigurationUnsupported");
 
     /**
      * There was a problem with the input content (for example: zero byte files, or corrupt/non-decodable files), check
      * the input files.
      */
-    CONTENT_MALFORMED("ContentMalformed"),
+    @Generated
+    public static final MediaJobErrorCode CONTENT_MALFORMED = fromString("ContentMalformed");
 
     /**
      * There was a problem with the format of the input (not valid media file, or an unsupported file/codec), check the
      * validity of the input files.
      */
-    CONTENT_UNSUPPORTED("ContentUnsupported"),
+    @Generated
+    public static final MediaJobErrorCode CONTENT_UNSUPPORTED = fromString("ContentUnsupported");
 
     /**
      * There is an error verifying to the account identity. Check and fix the identity configurations and retry. If
      * unsuccessful, please contact support.
      */
-    IDENTITY_UNSUPPORTED("IdentityUnsupported");
+    @Generated
+    public static final MediaJobErrorCode IDENTITY_UNSUPPORTED = fromString("IdentityUnsupported");
 
     /**
-     * The actual serialized value for a MediaJobErrorCode instance.
-     */
-    private final String value;
-
-    MediaJobErrorCode(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a MediaJobErrorCode instance.
+     * Creates a new instance of MediaJobErrorCode value.
      * 
-     * @param value the serialized value to parse.
-     * @return the parsed MediaJobErrorCode object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static MediaJobErrorCode fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        MediaJobErrorCode[] items = MediaJobErrorCode.values();
-        for (MediaJobErrorCode item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Generated
+    @Deprecated
+    public MediaJobErrorCode() {
     }
 
     /**
-     * {@inheritDoc}
+     * Creates or finds a MediaJobErrorCode from its string representation.
+     * 
+     * @param name a name to look for.
+     * @return the corresponding MediaJobErrorCode.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    @Generated
+    public static MediaJobErrorCode fromString(String name) {
+        return fromString(name, MediaJobErrorCode.class);
+    }
+
+    /**
+     * Gets known MediaJobErrorCode values.
+     * 
+     * @return known MediaJobErrorCode values.
+     */
+    @Generated
+    public static Collection<MediaJobErrorCode> values() {
+        return values(MediaJobErrorCode.class);
     }
 }

@@ -21,13 +21,13 @@ public final class AcsIncomingCallEventData implements JsonSerializable<AcsIncom
      * The communication identifier of the target user.
      */
     @Generated
-    private CommunicationIdentifierModel toCommunicationIdentifier;
+    private final CommunicationIdentifierModel to;
 
     /*
      * The communication identifier of the user who initiated the call.
      */
     @Generated
-    private CommunicationIdentifierModel fromCommunicationIdentifier;
+    private final CommunicationIdentifierModel from;
 
     /*
      * The Id of the server call
@@ -45,7 +45,7 @@ public final class AcsIncomingCallEventData implements JsonSerializable<AcsIncom
      * Custom Context of Incoming Call
      */
     @Generated
-    private AcsIncomingCallCustomContext customContext;
+    private final AcsIncomingCallCustomContext customContext;
 
     /*
      * Signed incoming call context.
@@ -61,29 +61,37 @@ public final class AcsIncomingCallEventData implements JsonSerializable<AcsIncom
 
     /**
      * Creates an instance of AcsIncomingCallEventData class.
+     * 
+     * @param to the to value to set.
+     * @param from the from value to set.
+     * @param customContext the customContext value to set.
      */
     @Generated
-    private AcsIncomingCallEventData() {
+    private AcsIncomingCallEventData(CommunicationIdentifierModel to, CommunicationIdentifierModel from,
+        AcsIncomingCallCustomContext customContext) {
+        this.to = to;
+        this.from = from;
+        this.customContext = customContext;
     }
 
     /**
-     * Get the toCommunicationIdentifier property: The communication identifier of the target user.
+     * Get the to property: The communication identifier of the target user.
      * 
-     * @return the toCommunicationIdentifier value.
+     * @return the to value.
      */
     @Generated
-    public CommunicationIdentifierModel getToCommunicationIdentifier() {
-        return this.toCommunicationIdentifier;
+    public CommunicationIdentifierModel getTo() {
+        return this.to;
     }
 
     /**
-     * Get the fromCommunicationIdentifier property: The communication identifier of the user who initiated the call.
+     * Get the from property: The communication identifier of the user who initiated the call.
      * 
-     * @return the fromCommunicationIdentifier value.
+     * @return the from value.
      */
     @Generated
-    public CommunicationIdentifierModel getFromCommunicationIdentifier() {
-        return this.fromCommunicationIdentifier;
+    public CommunicationIdentifierModel getFrom() {
+        return this.from;
     }
 
     /**
@@ -136,15 +144,18 @@ public final class AcsIncomingCallEventData implements JsonSerializable<AcsIncom
         return this.correlationId;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("to", this.toCommunicationIdentifier);
-        jsonWriter.writeJsonField("from", this.fromCommunicationIdentifier);
+        jsonWriter.writeJsonField("to", this.to);
+        jsonWriter.writeJsonField("from", this.from);
+        jsonWriter.writeJsonField("customContext", this.customContext);
         jsonWriter.writeStringField("serverCallId", this.serverCallId);
         jsonWriter.writeStringField("callerDisplayName", this.callerDisplayName);
-        jsonWriter.writeJsonField("customContext", this.customContext);
         jsonWriter.writeStringField("incomingCallContext", this.incomingCallContext);
         jsonWriter.writeStringField("correlationId", this.correlationId);
         return jsonWriter.writeEndObject();
@@ -156,36 +167,47 @@ public final class AcsIncomingCallEventData implements JsonSerializable<AcsIncom
      * @param jsonReader The JsonReader being read.
      * @return An instance of AcsIncomingCallEventData if the JsonReader was pointing to an instance of it, or null if
      * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AcsIncomingCallEventData.
      */
     @Generated
     public static AcsIncomingCallEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AcsIncomingCallEventData deserializedAcsIncomingCallEventData = new AcsIncomingCallEventData();
+            CommunicationIdentifierModel to = null;
+            CommunicationIdentifierModel from = null;
+            AcsIncomingCallCustomContext customContext = null;
+            String serverCallId = null;
+            String callerDisplayName = null;
+            String incomingCallContext = null;
+            String correlationId = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("to".equals(fieldName)) {
-                    deserializedAcsIncomingCallEventData.toCommunicationIdentifier
-                        = CommunicationIdentifierModel.fromJson(reader);
+                    to = CommunicationIdentifierModel.fromJson(reader);
                 } else if ("from".equals(fieldName)) {
-                    deserializedAcsIncomingCallEventData.fromCommunicationIdentifier
-                        = CommunicationIdentifierModel.fromJson(reader);
-                } else if ("serverCallId".equals(fieldName)) {
-                    deserializedAcsIncomingCallEventData.serverCallId = reader.getString();
-                } else if ("callerDisplayName".equals(fieldName)) {
-                    deserializedAcsIncomingCallEventData.callerDisplayName = reader.getString();
+                    from = CommunicationIdentifierModel.fromJson(reader);
                 } else if ("customContext".equals(fieldName)) {
-                    deserializedAcsIncomingCallEventData.customContext = AcsIncomingCallCustomContext.fromJson(reader);
+                    customContext = AcsIncomingCallCustomContext.fromJson(reader);
+                } else if ("serverCallId".equals(fieldName)) {
+                    serverCallId = reader.getString();
+                } else if ("callerDisplayName".equals(fieldName)) {
+                    callerDisplayName = reader.getString();
                 } else if ("incomingCallContext".equals(fieldName)) {
-                    deserializedAcsIncomingCallEventData.incomingCallContext = reader.getString();
+                    incomingCallContext = reader.getString();
                 } else if ("correlationId".equals(fieldName)) {
-                    deserializedAcsIncomingCallEventData.correlationId = reader.getString();
+                    correlationId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
+            AcsIncomingCallEventData deserializedAcsIncomingCallEventData
+                = new AcsIncomingCallEventData(to, from, customContext);
+            deserializedAcsIncomingCallEventData.serverCallId = serverCallId;
+            deserializedAcsIncomingCallEventData.callerDisplayName = callerDisplayName;
+            deserializedAcsIncomingCallEventData.incomingCallContext = incomingCallContext;
+            deserializedAcsIncomingCallEventData.correlationId = correlationId;
 
             return deserializedAcsIncomingCallEventData;
         });

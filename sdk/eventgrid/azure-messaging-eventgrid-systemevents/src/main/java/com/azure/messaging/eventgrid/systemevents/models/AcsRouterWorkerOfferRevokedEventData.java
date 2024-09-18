@@ -28,6 +28,30 @@ public final class AcsRouterWorkerOfferRevokedEventData extends AcsRouterWorkerE
     @Generated
     private String offerId;
 
+    /*
+     * Router Worker events Worker Id
+     */
+    @Generated
+    private String workerId;
+
+    /*
+     * Router Event Channel ID
+     */
+    @Generated
+    private String channelId;
+
+    /*
+     * Router Event Channel Reference
+     */
+    @Generated
+    private String channelReference;
+
+    /*
+     * Router Event Job ID
+     */
+    @Generated
+    private String jobId;
+
     /**
      * Creates an instance of AcsRouterWorkerOfferRevokedEventData class.
      */
@@ -55,6 +79,53 @@ public final class AcsRouterWorkerOfferRevokedEventData extends AcsRouterWorkerE
         return this.offerId;
     }
 
+    /**
+     * Get the workerId property: Router Worker events Worker Id.
+     * 
+     * @return the workerId value.
+     */
+    @Generated
+    @Override
+    public String getWorkerId() {
+        return this.workerId;
+    }
+
+    /**
+     * Get the channelId property: Router Event Channel ID.
+     * 
+     * @return the channelId value.
+     */
+    @Generated
+    @Override
+    public String getChannelId() {
+        return this.channelId;
+    }
+
+    /**
+     * Get the channelReference property: Router Event Channel Reference.
+     * 
+     * @return the channelReference value.
+     */
+    @Generated
+    @Override
+    public String getChannelReference() {
+        return this.channelReference;
+    }
+
+    /**
+     * Get the jobId property: Router Event Job ID.
+     * 
+     * @return the jobId value.
+     */
+    @Generated
+    @Override
+    public String getJobId() {
+        return this.jobId;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
@@ -86,13 +157,13 @@ public final class AcsRouterWorkerOfferRevokedEventData extends AcsRouterWorkerE
                 reader.nextToken();
 
                 if ("jobId".equals(fieldName)) {
-                    deserializedAcsRouterWorkerOfferRevokedEventData.setJobId(reader.getString());
+                    deserializedAcsRouterWorkerOfferRevokedEventData.jobId = reader.getString();
                 } else if ("channelReference".equals(fieldName)) {
-                    deserializedAcsRouterWorkerOfferRevokedEventData.setChannelReference(reader.getString());
+                    deserializedAcsRouterWorkerOfferRevokedEventData.channelReference = reader.getString();
                 } else if ("channelId".equals(fieldName)) {
-                    deserializedAcsRouterWorkerOfferRevokedEventData.setChannelId(reader.getString());
+                    deserializedAcsRouterWorkerOfferRevokedEventData.channelId = reader.getString();
                 } else if ("workerId".equals(fieldName)) {
-                    deserializedAcsRouterWorkerOfferRevokedEventData.setWorkerId(reader.getString());
+                    deserializedAcsRouterWorkerOfferRevokedEventData.workerId = reader.getString();
                 } else if ("queueId".equals(fieldName)) {
                     deserializedAcsRouterWorkerOfferRevokedEventData.queueId = reader.getString();
                 } else if ("offerId".equals(fieldName)) {

@@ -22,6 +22,12 @@ public final class AvsPrivateCloudFailedEventData extends AvsPrivateCloudEventDa
     @Generated
     private String failureMessage;
 
+    /*
+     * Id of the operation that caused this event.
+     */
+    @Generated
+    private String operationId;
+
     /**
      * Creates an instance of AvsPrivateCloudFailedEventData class.
      */
@@ -39,6 +45,20 @@ public final class AvsPrivateCloudFailedEventData extends AvsPrivateCloudEventDa
         return this.failureMessage;
     }
 
+    /**
+     * Get the operationId property: Id of the operation that caused this event.
+     * 
+     * @return the operationId value.
+     */
+    @Generated
+    @Override
+    public String getOperationId() {
+        return this.operationId;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
@@ -66,7 +86,7 @@ public final class AvsPrivateCloudFailedEventData extends AvsPrivateCloudEventDa
                 reader.nextToken();
 
                 if ("operationId".equals(fieldName)) {
-                    deserializedAvsPrivateCloudFailedEventData.setOperationId(reader.getString());
+                    deserializedAvsPrivateCloudFailedEventData.operationId = reader.getString();
                 } else if ("failureMessage".equals(fieldName)) {
                     deserializedAvsPrivateCloudFailedEventData.failureMessage = reader.getString();
                 } else {

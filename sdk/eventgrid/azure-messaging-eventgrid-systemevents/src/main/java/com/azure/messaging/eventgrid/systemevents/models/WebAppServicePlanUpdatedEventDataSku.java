@@ -105,6 +105,9 @@ public final class WebAppServicePlanUpdatedEventDataSku
         return this.capacity;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {

@@ -4,58 +4,60 @@
 
 package com.azure.messaging.eventgrid.systemevents.models;
 
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
  * Kind of environment where app service plan is.
  */
-public enum StampKind {
+public final class StampKind extends ExpandableStringEnum<StampKind> {
     /**
      * App Service Plan is running on a public stamp.
      */
-    PUBLIC("Public"),
+    @Generated
+    public static final StampKind PUBLIC = fromString("Public");
 
     /**
      * App Service Plan is running on an App Service Environment V1.
      */
-    ASE_V1("AseV1"),
+    @Generated
+    public static final StampKind ASE_V1 = fromString("AseV1");
 
     /**
      * App Service Plan is running on an App Service Environment V2.
      */
-    ASE_V2("AseV2");
+    @Generated
+    public static final StampKind ASE_V2 = fromString("AseV2");
 
     /**
-     * The actual serialized value for a StampKind instance.
-     */
-    private final String value;
-
-    StampKind(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a StampKind instance.
+     * Creates a new instance of StampKind value.
      * 
-     * @param value the serialized value to parse.
-     * @return the parsed StampKind object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static StampKind fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        StampKind[] items = StampKind.values();
-        for (StampKind item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Generated
+    @Deprecated
+    public StampKind() {
     }
 
     /**
-     * {@inheritDoc}
+     * Creates or finds a StampKind from its string representation.
+     * 
+     * @param name a name to look for.
+     * @return the corresponding StampKind.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    @Generated
+    public static StampKind fromString(String name) {
+        return fromString(name, StampKind.class);
+    }
+
+    /**
+     * Gets known StampKind values.
+     * 
+     * @return known StampKind values.
+     */
+    @Generated
+    public static Collection<StampKind> values() {
+        return values(StampKind.class);
     }
 }

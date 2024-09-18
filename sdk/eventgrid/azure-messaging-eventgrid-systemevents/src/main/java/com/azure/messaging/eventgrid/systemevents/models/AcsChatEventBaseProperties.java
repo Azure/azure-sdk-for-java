@@ -21,7 +21,7 @@ public class AcsChatEventBaseProperties implements JsonSerializable<AcsChatEvent
      * The communication identifier of the target user
      */
     @Generated
-    private CommunicationIdentifierModel recipientCommunicationIdentifier;
+    private final CommunicationIdentifierModel recipientCommunicationIdentifier;
 
     /*
      * The transaction id will be used as co-relation vector
@@ -37,9 +37,12 @@ public class AcsChatEventBaseProperties implements JsonSerializable<AcsChatEvent
 
     /**
      * Creates an instance of AcsChatEventBaseProperties class.
+     * 
+     * @param recipientCommunicationIdentifier the recipientCommunicationIdentifier value to set.
      */
     @Generated
-    protected AcsChatEventBaseProperties() {
+    protected AcsChatEventBaseProperties(CommunicationIdentifierModel recipientCommunicationIdentifier) {
+        this.recipientCommunicationIdentifier = recipientCommunicationIdentifier;
     }
 
     /**
@@ -50,18 +53,6 @@ public class AcsChatEventBaseProperties implements JsonSerializable<AcsChatEvent
     @Generated
     public CommunicationIdentifierModel getRecipientCommunicationIdentifier() {
         return this.recipientCommunicationIdentifier;
-    }
-
-    /**
-     * Set the recipientCommunicationIdentifier property: The communication identifier of the target user.
-     * 
-     * @param recipientCommunicationIdentifier the recipientCommunicationIdentifier value to set.
-     * @return the AcsChatEventBaseProperties object itself.
-     */
-    AcsChatEventBaseProperties
-        setRecipientCommunicationIdentifier(CommunicationIdentifierModel recipientCommunicationIdentifier) {
-        this.recipientCommunicationIdentifier = recipientCommunicationIdentifier;
-        return this;
     }
 
     /**
@@ -80,6 +71,7 @@ public class AcsChatEventBaseProperties implements JsonSerializable<AcsChatEvent
      * @param transactionId the transactionId value to set.
      * @return the AcsChatEventBaseProperties object itself.
      */
+    @Generated
     AcsChatEventBaseProperties setTransactionId(String transactionId) {
         this.transactionId = transactionId;
         return this;
@@ -101,11 +93,15 @@ public class AcsChatEventBaseProperties implements JsonSerializable<AcsChatEvent
      * @param threadId the threadId value to set.
      * @return the AcsChatEventBaseProperties object itself.
      */
+    @Generated
     AcsChatEventBaseProperties setThreadId(String threadId) {
         this.threadId = threadId;
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
@@ -122,27 +118,33 @@ public class AcsChatEventBaseProperties implements JsonSerializable<AcsChatEvent
      * @param jsonReader The JsonReader being read.
      * @return An instance of AcsChatEventBaseProperties if the JsonReader was pointing to an instance of it, or null if
      * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AcsChatEventBaseProperties.
      */
     @Generated
     public static AcsChatEventBaseProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AcsChatEventBaseProperties deserializedAcsChatEventBaseProperties = new AcsChatEventBaseProperties();
+            CommunicationIdentifierModel recipientCommunicationIdentifier = null;
+            String transactionId = null;
+            String threadId = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("recipientCommunicationIdentifier".equals(fieldName)) {
-                    deserializedAcsChatEventBaseProperties.recipientCommunicationIdentifier
-                        = CommunicationIdentifierModel.fromJson(reader);
+                    recipientCommunicationIdentifier = CommunicationIdentifierModel.fromJson(reader);
                 } else if ("transactionId".equals(fieldName)) {
-                    deserializedAcsChatEventBaseProperties.transactionId = reader.getString();
+                    transactionId = reader.getString();
                 } else if ("threadId".equals(fieldName)) {
-                    deserializedAcsChatEventBaseProperties.threadId = reader.getString();
+                    threadId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
+            AcsChatEventBaseProperties deserializedAcsChatEventBaseProperties
+                = new AcsChatEventBaseProperties(recipientCommunicationIdentifier);
+            deserializedAcsChatEventBaseProperties.transactionId = transactionId;
+            deserializedAcsChatEventBaseProperties.threadId = threadId;
 
             return deserializedAcsChatEventBaseProperties;
         });

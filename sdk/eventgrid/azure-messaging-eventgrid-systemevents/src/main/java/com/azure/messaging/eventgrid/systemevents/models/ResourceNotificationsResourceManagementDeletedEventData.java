@@ -20,17 +20,26 @@ public final class ResourceNotificationsResourceManagementDeletedEventData
     extends ResourceNotificationsResourceDeletedEventData {
     /**
      * Creates an instance of ResourceNotificationsResourceManagementDeletedEventData class.
+     * 
+     * @param resourceInfo the resourceInfo value to set.
+     * @param operationalInfo the operationalInfo value to set.
      */
     @Generated
-    private ResourceNotificationsResourceManagementDeletedEventData() {
+    private ResourceNotificationsResourceManagementDeletedEventData(
+        ResourceNotificationsResourceDeletedDetails resourceInfo,
+        ResourceNotificationsOperationalDetails operationalInfo) {
+        super(resourceInfo, operationalInfo);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("resourceInfo", getResourceDetails());
-        jsonWriter.writeJsonField("operationalInfo", getOperationalDetails());
+        jsonWriter.writeJsonField("resourceInfo", getResourceInfo());
+        jsonWriter.writeJsonField("operationalInfo", getOperationalInfo());
         return jsonWriter.writeEndObject();
     }
 
@@ -40,30 +49,28 @@ public final class ResourceNotificationsResourceManagementDeletedEventData
      * @param jsonReader The JsonReader being read.
      * @return An instance of ResourceNotificationsResourceManagementDeletedEventData if the JsonReader was pointing to
      * an instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ResourceNotificationsResourceManagementDeletedEventData.
      */
     @Generated
     public static ResourceNotificationsResourceManagementDeletedEventData fromJson(JsonReader jsonReader)
         throws IOException {
         return jsonReader.readObject(reader -> {
-            ResourceNotificationsResourceManagementDeletedEventData deserializedResourceNotificationsResourceManagementDeletedEventData
-                = new ResourceNotificationsResourceManagementDeletedEventData();
+            ResourceNotificationsResourceDeletedDetails resourceInfo = null;
+            ResourceNotificationsOperationalDetails operationalInfo = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("resourceInfo".equals(fieldName)) {
-                    deserializedResourceNotificationsResourceManagementDeletedEventData
-                        .setResourceDetails(ResourceNotificationsResourceDeletedDetails.fromJson(reader));
+                    resourceInfo = ResourceNotificationsResourceDeletedDetails.fromJson(reader);
                 } else if ("operationalInfo".equals(fieldName)) {
-                    deserializedResourceNotificationsResourceManagementDeletedEventData
-                        .setOperationalDetails(ResourceNotificationsOperationalDetails.fromJson(reader));
+                    operationalInfo = ResourceNotificationsOperationalDetails.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
-
-            return deserializedResourceNotificationsResourceManagementDeletedEventData;
+            return new ResourceNotificationsResourceManagementDeletedEventData(resourceInfo, operationalInfo);
         });
     }
 }

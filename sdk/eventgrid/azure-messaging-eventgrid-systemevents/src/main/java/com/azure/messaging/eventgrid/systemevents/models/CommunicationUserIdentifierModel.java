@@ -43,6 +43,9 @@ public final class CommunicationUserIdentifierModel implements JsonSerializable<
         return this.id;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {

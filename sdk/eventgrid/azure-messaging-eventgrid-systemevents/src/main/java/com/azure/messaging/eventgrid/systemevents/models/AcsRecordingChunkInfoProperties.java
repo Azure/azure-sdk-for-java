@@ -120,6 +120,9 @@ public final class AcsRecordingChunkInfoProperties implements JsonSerializable<A
         return this.deleteLocation;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {

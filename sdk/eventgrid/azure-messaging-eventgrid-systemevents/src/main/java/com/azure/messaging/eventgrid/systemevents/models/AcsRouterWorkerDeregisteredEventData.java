@@ -41,6 +41,9 @@ public final class AcsRouterWorkerDeregisteredEventData
         return this.workerId;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {

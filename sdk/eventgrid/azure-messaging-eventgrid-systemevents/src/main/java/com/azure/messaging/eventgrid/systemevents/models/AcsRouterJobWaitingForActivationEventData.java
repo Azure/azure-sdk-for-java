@@ -6,6 +6,7 @@ package com.azure.messaging.eventgrid.systemevents.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -30,19 +31,19 @@ public final class AcsRouterJobWaitingForActivationEventData extends AcsRouterJo
      * Router Job Waiting For Activation Worker Selector Expired
      */
     @Generated
-    private List<AcsRouterWorkerSelector> expiredAttachedWorkerSelectors;
+    private final List<AcsRouterWorkerSelector> expiredAttachedWorkerSelectors;
 
     /*
      * Router Job Waiting For Activation Requested Worker Selector Expired
      */
     @Generated
-    private List<AcsRouterWorkerSelector> expiredRequestedWorkerSelectors;
+    private final List<AcsRouterWorkerSelector> expiredRequestedWorkerSelectors;
 
     /*
      * Router Job Waiting For Activation Scheduled Time in UTC
      */
     @Generated
-    private OffsetDateTime scheduledOn;
+    private final OffsetDateTime scheduledOn;
 
     /*
      * Router Job Waiting For Activation Unavailable For Matching
@@ -50,13 +51,49 @@ public final class AcsRouterJobWaitingForActivationEventData extends AcsRouterJo
     @Generated
     private final boolean unavailableForMatching;
 
+    /*
+     * Router Job events Queue Id
+     */
+    @Generated
+    private String queueId;
+
+    /*
+     * Router Event Channel ID
+     */
+    @Generated
+    private String channelId;
+
+    /*
+     * Router Event Channel Reference
+     */
+    @Generated
+    private String channelReference;
+
+    /*
+     * Router Event Job ID
+     */
+    @Generated
+    private String jobId;
+
     /**
      * Creates an instance of AcsRouterJobWaitingForActivationEventData class.
      * 
+     * @param labels the labels value to set.
+     * @param tags the tags value to set.
+     * @param expiredAttachedWorkerSelectors the expiredAttachedWorkerSelectors value to set.
+     * @param expiredRequestedWorkerSelectors the expiredRequestedWorkerSelectors value to set.
+     * @param scheduledOn the scheduledOn value to set.
      * @param unavailableForMatching the unavailableForMatching value to set.
      */
     @Generated
-    private AcsRouterJobWaitingForActivationEventData(boolean unavailableForMatching) {
+    private AcsRouterJobWaitingForActivationEventData(Map<String, String> labels, Map<String, String> tags,
+        List<AcsRouterWorkerSelector> expiredAttachedWorkerSelectors,
+        List<AcsRouterWorkerSelector> expiredRequestedWorkerSelectors, OffsetDateTime scheduledOn,
+        boolean unavailableForMatching) {
+        super(labels, tags);
+        this.expiredAttachedWorkerSelectors = expiredAttachedWorkerSelectors;
+        this.expiredRequestedWorkerSelectors = expiredRequestedWorkerSelectors;
+        this.scheduledOn = scheduledOn;
         this.unavailableForMatching = unavailableForMatching;
     }
 
@@ -111,24 +148,71 @@ public final class AcsRouterJobWaitingForActivationEventData extends AcsRouterJo
         return this.unavailableForMatching;
     }
 
+    /**
+     * Get the queueId property: Router Job events Queue Id.
+     * 
+     * @return the queueId value.
+     */
+    @Generated
+    @Override
+    public String getQueueId() {
+        return this.queueId;
+    }
+
+    /**
+     * Get the channelId property: Router Event Channel ID.
+     * 
+     * @return the channelId value.
+     */
+    @Generated
+    @Override
+    public String getChannelId() {
+        return this.channelId;
+    }
+
+    /**
+     * Get the channelReference property: Router Event Channel Reference.
+     * 
+     * @return the channelReference value.
+     */
+    @Generated
+    @Override
+    public String getChannelReference() {
+        return this.channelReference;
+    }
+
+    /**
+     * Get the jobId property: Router Event Job ID.
+     * 
+     * @return the jobId value.
+     */
+    @Generated
+    @Override
+    public String getJobId() {
+        return this.jobId;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("labels", getLabels(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("tags", getTags(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("jobId", getJobId());
         jsonWriter.writeStringField("channelReference", getChannelReference());
         jsonWriter.writeStringField("channelId", getChannelId());
         jsonWriter.writeStringField("queueId", getQueueId());
-        jsonWriter.writeMapField("labels", getLabels(), (writer, element) -> writer.writeString(element));
-        jsonWriter.writeMapField("tags", getTags(), (writer, element) -> writer.writeString(element));
-        jsonWriter.writeBooleanField("unavailableForMatching", this.unavailableForMatching);
-        jsonWriter.writeNumberField("priority", this.priority);
         jsonWriter.writeArrayField("expiredAttachedWorkerSelectors", this.expiredAttachedWorkerSelectors,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("expiredRequestedWorkerSelectors", this.expiredRequestedWorkerSelectors,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("scheduledOn",
             this.scheduledOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.scheduledOn));
+        jsonWriter.writeBooleanField("unavailableForMatching", this.unavailableForMatching);
+        jsonWriter.writeNumberField("priority", this.priority);
         return jsonWriter.writeEndObject();
     }
 
@@ -144,22 +228,26 @@ public final class AcsRouterJobWaitingForActivationEventData extends AcsRouterJo
     @Generated
     public static AcsRouterJobWaitingForActivationEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
+            Map<String, String> labels = null;
+            Map<String, String> tags = null;
             String jobId = null;
             String channelReference = null;
             String channelId = null;
             String queueId = null;
-            Map<String, String> labels = null;
-            Map<String, String> tags = null;
-            boolean unavailableForMatching = false;
-            Integer priority = null;
             List<AcsRouterWorkerSelector> expiredAttachedWorkerSelectors = null;
             List<AcsRouterWorkerSelector> expiredRequestedWorkerSelectors = null;
             OffsetDateTime scheduledOn = null;
+            boolean unavailableForMatching = false;
+            Integer priority = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("jobId".equals(fieldName)) {
+                if ("labels".equals(fieldName)) {
+                    labels = reader.readMap(reader1 -> reader1.getString());
+                } else if ("tags".equals(fieldName)) {
+                    tags = reader.readMap(reader1 -> reader1.getString());
+                } else if ("jobId".equals(fieldName)) {
                     jobId = reader.getString();
                 } else if ("channelReference".equals(fieldName)) {
                     channelReference = reader.getString();
@@ -167,14 +255,6 @@ public final class AcsRouterJobWaitingForActivationEventData extends AcsRouterJo
                     channelId = reader.getString();
                 } else if ("queueId".equals(fieldName)) {
                     queueId = reader.getString();
-                } else if ("labels".equals(fieldName)) {
-                    labels = reader.readMap(reader1 -> reader1.getString());
-                } else if ("tags".equals(fieldName)) {
-                    tags = reader.readMap(reader1 -> reader1.getString());
-                } else if ("unavailableForMatching".equals(fieldName)) {
-                    unavailableForMatching = reader.getBoolean();
-                } else if ("priority".equals(fieldName)) {
-                    priority = reader.getNullable(JsonReader::getInt);
                 } else if ("expiredAttachedWorkerSelectors".equals(fieldName)) {
                     expiredAttachedWorkerSelectors
                         = reader.readArray(reader1 -> AcsRouterWorkerSelector.fromJson(reader1));
@@ -182,25 +262,24 @@ public final class AcsRouterJobWaitingForActivationEventData extends AcsRouterJo
                     expiredRequestedWorkerSelectors
                         = reader.readArray(reader1 -> AcsRouterWorkerSelector.fromJson(reader1));
                 } else if ("scheduledOn".equals(fieldName)) {
-                    scheduledOn = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    scheduledOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("unavailableForMatching".equals(fieldName)) {
+                    unavailableForMatching = reader.getBoolean();
+                } else if ("priority".equals(fieldName)) {
+                    priority = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }
             }
             AcsRouterJobWaitingForActivationEventData deserializedAcsRouterJobWaitingForActivationEventData
-                = new AcsRouterJobWaitingForActivationEventData(unavailableForMatching);
-            deserializedAcsRouterJobWaitingForActivationEventData.setJobId(jobId);
-            deserializedAcsRouterJobWaitingForActivationEventData.setChannelReference(channelReference);
-            deserializedAcsRouterJobWaitingForActivationEventData.setChannelId(channelId);
-            deserializedAcsRouterJobWaitingForActivationEventData.setQueueId(queueId);
-            deserializedAcsRouterJobWaitingForActivationEventData.setLabels(labels);
-            deserializedAcsRouterJobWaitingForActivationEventData.setTags(tags);
+                = new AcsRouterJobWaitingForActivationEventData(labels, tags, expiredAttachedWorkerSelectors,
+                    expiredRequestedWorkerSelectors, scheduledOn, unavailableForMatching);
+            deserializedAcsRouterJobWaitingForActivationEventData.jobId = jobId;
+            deserializedAcsRouterJobWaitingForActivationEventData.channelReference = channelReference;
+            deserializedAcsRouterJobWaitingForActivationEventData.channelId = channelId;
+            deserializedAcsRouterJobWaitingForActivationEventData.queueId = queueId;
             deserializedAcsRouterJobWaitingForActivationEventData.priority = priority;
-            deserializedAcsRouterJobWaitingForActivationEventData.expiredAttachedWorkerSelectors
-                = expiredAttachedWorkerSelectors;
-            deserializedAcsRouterJobWaitingForActivationEventData.expiredRequestedWorkerSelectors
-                = expiredRequestedWorkerSelectors;
-            deserializedAcsRouterJobWaitingForActivationEventData.scheduledOn = scheduledOn;
 
             return deserializedAcsRouterJobWaitingForActivationEventData;
         });

@@ -47,13 +47,13 @@ public final class MachineLearningServicesRunStatusChangedEventData
      * The tags of the Machine Learning Run.
      */
     @Generated
-    private Map<String, String> runTags;
+    private final Map<String, Object> runTags;
 
     /*
      * The properties of the Machine Learning Run.
      */
     @Generated
-    private Map<String, String> runProperties;
+    private final Map<String, Object> runProperties;
 
     /*
      * The status of the Machine Learning Run.
@@ -63,9 +63,15 @@ public final class MachineLearningServicesRunStatusChangedEventData
 
     /**
      * Creates an instance of MachineLearningServicesRunStatusChangedEventData class.
+     * 
+     * @param runTags the runTags value to set.
+     * @param runProperties the runProperties value to set.
      */
     @Generated
-    private MachineLearningServicesRunStatusChangedEventData() {
+    private MachineLearningServicesRunStatusChangedEventData(Map<String, Object> runTags,
+        Map<String, Object> runProperties) {
+        this.runTags = runTags;
+        this.runProperties = runProperties;
     }
 
     /**
@@ -114,7 +120,7 @@ public final class MachineLearningServicesRunStatusChangedEventData
      * @return the runTags value.
      */
     @Generated
-    public Map<String, String> getRunTags() {
+    public Map<String, Object> getRunTags() {
         return this.runTags;
     }
 
@@ -124,7 +130,7 @@ public final class MachineLearningServicesRunStatusChangedEventData
      * @return the runProperties value.
      */
     @Generated
-    public Map<String, String> getRunProperties() {
+    public Map<String, Object> getRunProperties() {
         return this.runProperties;
     }
 
@@ -138,16 +144,20 @@ public final class MachineLearningServicesRunStatusChangedEventData
         return this.runStatus;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("runTags", this.runTags, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeMapField("runProperties", this.runProperties,
+            (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeStringField("experimentId", this.experimentId);
         jsonWriter.writeStringField("experimentName", this.experimentName);
         jsonWriter.writeStringField("runId", this.runId);
         jsonWriter.writeStringField("runType", this.runType);
-        jsonWriter.writeMapField("runTags", this.runTags, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeMapField("runProperties", this.runProperties, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("runStatus", this.runStatus);
         return jsonWriter.writeEndObject();
     }
@@ -158,37 +168,48 @@ public final class MachineLearningServicesRunStatusChangedEventData
      * @param jsonReader The JsonReader being read.
      * @return An instance of MachineLearningServicesRunStatusChangedEventData if the JsonReader was pointing to an
      * instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MachineLearningServicesRunStatusChangedEventData.
      */
     @Generated
     public static MachineLearningServicesRunStatusChangedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            MachineLearningServicesRunStatusChangedEventData deserializedMachineLearningServicesRunStatusChangedEventData
-                = new MachineLearningServicesRunStatusChangedEventData();
+            Map<String, Object> runTags = null;
+            Map<String, Object> runProperties = null;
+            String experimentId = null;
+            String experimentName = null;
+            String runId = null;
+            String runType = null;
+            String runStatus = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("experimentId".equals(fieldName)) {
-                    deserializedMachineLearningServicesRunStatusChangedEventData.experimentId = reader.getString();
-                } else if ("experimentName".equals(fieldName)) {
-                    deserializedMachineLearningServicesRunStatusChangedEventData.experimentName = reader.getString();
-                } else if ("runId".equals(fieldName)) {
-                    deserializedMachineLearningServicesRunStatusChangedEventData.runId = reader.getString();
-                } else if ("runType".equals(fieldName)) {
-                    deserializedMachineLearningServicesRunStatusChangedEventData.runType = reader.getString();
-                } else if ("runTags".equals(fieldName)) {
-                    Map<String, String> runTags = reader.readMap(reader1 -> reader1.getString());
-                    deserializedMachineLearningServicesRunStatusChangedEventData.runTags = runTags;
+                if ("runTags".equals(fieldName)) {
+                    runTags = reader.readMap(reader1 -> reader1.readUntyped());
                 } else if ("runProperties".equals(fieldName)) {
-                    Map<String, String> runProperties = reader.readMap(reader1 -> reader1.getString());
-                    deserializedMachineLearningServicesRunStatusChangedEventData.runProperties = runProperties;
+                    runProperties = reader.readMap(reader1 -> reader1.readUntyped());
+                } else if ("experimentId".equals(fieldName)) {
+                    experimentId = reader.getString();
+                } else if ("experimentName".equals(fieldName)) {
+                    experimentName = reader.getString();
+                } else if ("runId".equals(fieldName)) {
+                    runId = reader.getString();
+                } else if ("runType".equals(fieldName)) {
+                    runType = reader.getString();
                 } else if ("runStatus".equals(fieldName)) {
-                    deserializedMachineLearningServicesRunStatusChangedEventData.runStatus = reader.getString();
+                    runStatus = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
+            MachineLearningServicesRunStatusChangedEventData deserializedMachineLearningServicesRunStatusChangedEventData
+                = new MachineLearningServicesRunStatusChangedEventData(runTags, runProperties);
+            deserializedMachineLearningServicesRunStatusChangedEventData.experimentId = experimentId;
+            deserializedMachineLearningServicesRunStatusChangedEventData.experimentName = experimentName;
+            deserializedMachineLearningServicesRunStatusChangedEventData.runId = runId;
+            deserializedMachineLearningServicesRunStatusChangedEventData.runType = runType;
+            deserializedMachineLearningServicesRunStatusChangedEventData.runStatus = runStatus;
 
             return deserializedMachineLearningServicesRunStatusChangedEventData;
         });

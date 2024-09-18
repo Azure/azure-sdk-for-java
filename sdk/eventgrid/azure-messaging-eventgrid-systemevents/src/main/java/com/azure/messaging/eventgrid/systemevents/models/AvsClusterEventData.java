@@ -28,33 +28,25 @@ public class AvsClusterEventData implements JsonSerializable<AvsClusterEventData
      * Hosts added to the cluster in this event, if any.
      */
     @Generated
-    private final List<String> addedHostNames;
+    private List<String> addedHostNames;
 
     /*
      * Hosts removed from the cluster in this event, if any.
      */
     @Generated
-    private final List<String> removedHostNames;
+    private List<String> removedHostNames;
 
     /*
      * Hosts in Maintenance mode in the cluster, if any.
      */
     @Generated
-    private final List<String> inMaintenanceHostNames;
+    private List<String> inMaintenanceHostNames;
 
     /**
      * Creates an instance of AvsClusterEventData class.
-     * 
-     * @param addedHostNames the addedHostNames value to set.
-     * @param removedHostNames the removedHostNames value to set.
-     * @param inMaintenanceHostNames the inMaintenanceHostNames value to set.
      */
     @Generated
-    protected AvsClusterEventData(List<String> addedHostNames, List<String> removedHostNames,
-        List<String> inMaintenanceHostNames) {
-        this.addedHostNames = addedHostNames;
-        this.removedHostNames = removedHostNames;
-        this.inMaintenanceHostNames = inMaintenanceHostNames;
+    protected AvsClusterEventData() {
     }
 
     /**
@@ -73,6 +65,7 @@ public class AvsClusterEventData implements JsonSerializable<AvsClusterEventData
      * @param operationId the operationId value to set.
      * @return the AvsClusterEventData object itself.
      */
+    @Generated
     AvsClusterEventData setOperationId(String operationId) {
         this.operationId = operationId;
         return this;
@@ -89,6 +82,18 @@ public class AvsClusterEventData implements JsonSerializable<AvsClusterEventData
     }
 
     /**
+     * Set the addedHostNames property: Hosts added to the cluster in this event, if any.
+     * 
+     * @param addedHostNames the addedHostNames value to set.
+     * @return the AvsClusterEventData object itself.
+     */
+    @Generated
+    AvsClusterEventData setAddedHostNames(List<String> addedHostNames) {
+        this.addedHostNames = addedHostNames;
+        return this;
+    }
+
+    /**
      * Get the removedHostNames property: Hosts removed from the cluster in this event, if any.
      * 
      * @return the removedHostNames value.
@@ -96,6 +101,18 @@ public class AvsClusterEventData implements JsonSerializable<AvsClusterEventData
     @Generated
     public List<String> getRemovedHostNames() {
         return this.removedHostNames;
+    }
+
+    /**
+     * Set the removedHostNames property: Hosts removed from the cluster in this event, if any.
+     * 
+     * @param removedHostNames the removedHostNames value to set.
+     * @return the AvsClusterEventData object itself.
+     */
+    @Generated
+    AvsClusterEventData setRemovedHostNames(List<String> removedHostNames) {
+        this.removedHostNames = removedHostNames;
+        return this;
     }
 
     /**
@@ -108,17 +125,32 @@ public class AvsClusterEventData implements JsonSerializable<AvsClusterEventData
         return this.inMaintenanceHostNames;
     }
 
+    /**
+     * Set the inMaintenanceHostNames property: Hosts in Maintenance mode in the cluster, if any.
+     * 
+     * @param inMaintenanceHostNames the inMaintenanceHostNames value to set.
+     * @return the AvsClusterEventData object itself.
+     */
+    @Generated
+    AvsClusterEventData setInMaintenanceHostNames(List<String> inMaintenanceHostNames) {
+        this.inMaintenanceHostNames = inMaintenanceHostNames;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("operationId", this.operationId);
         jsonWriter.writeArrayField("addedHostNames", this.addedHostNames,
             (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("removedHostNames", this.removedHostNames,
             (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("inMaintenanceHostNames", this.inMaintenanceHostNames,
             (writer, element) -> writer.writeString(element));
-        jsonWriter.writeStringField("operationId", this.operationId);
         return jsonWriter.writeEndObject();
     }
 
@@ -128,35 +160,31 @@ public class AvsClusterEventData implements JsonSerializable<AvsClusterEventData
      * @param jsonReader The JsonReader being read.
      * @return An instance of AvsClusterEventData if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AvsClusterEventData.
      */
     @Generated
     public static AvsClusterEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            List<String> addedHostNames = null;
-            List<String> removedHostNames = null;
-            List<String> inMaintenanceHostNames = null;
-            String operationId = null;
+            AvsClusterEventData deserializedAvsClusterEventData = new AvsClusterEventData();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("addedHostNames".equals(fieldName)) {
-                    addedHostNames = reader.readArray(reader1 -> reader1.getString());
+                if ("operationId".equals(fieldName)) {
+                    deserializedAvsClusterEventData.operationId = reader.getString();
+                } else if ("addedHostNames".equals(fieldName)) {
+                    List<String> addedHostNames = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAvsClusterEventData.addedHostNames = addedHostNames;
                 } else if ("removedHostNames".equals(fieldName)) {
-                    removedHostNames = reader.readArray(reader1 -> reader1.getString());
+                    List<String> removedHostNames = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAvsClusterEventData.removedHostNames = removedHostNames;
                 } else if ("inMaintenanceHostNames".equals(fieldName)) {
-                    inMaintenanceHostNames = reader.readArray(reader1 -> reader1.getString());
-                } else if ("operationId".equals(fieldName)) {
-                    operationId = reader.getString();
+                    List<String> inMaintenanceHostNames = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAvsClusterEventData.inMaintenanceHostNames = inMaintenanceHostNames;
                 } else {
                     reader.skipChildren();
                 }
             }
-            AvsClusterEventData deserializedAvsClusterEventData
-                = new AvsClusterEventData(addedHostNames, removedHostNames, inMaintenanceHostNames);
-            deserializedAvsClusterEventData.operationId = operationId;
 
             return deserializedAvsClusterEventData;
         });

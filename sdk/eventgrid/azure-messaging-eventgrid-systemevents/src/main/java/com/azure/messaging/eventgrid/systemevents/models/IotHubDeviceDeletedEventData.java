@@ -16,20 +16,64 @@ import java.io.IOException;
  */
 @Immutable
 public final class IotHubDeviceDeletedEventData extends DeviceLifeCycleEventProperties {
-    /**
-     * Creates an instance of IotHubDeviceDeletedEventData class.
+    /*
+     * Name of the IoT Hub where the device was created or deleted.
      */
     @Generated
-    private IotHubDeviceDeletedEventData() {
+    private String hubName;
+
+    /*
+     * The unique identifier of the device. This case-sensitive string can be up to 128 characters long, and supports
+     * ASCII 7-bit alphanumeric characters plus the following special characters: - : . + % _ &#35; * ? ! ( ) , = `@` ;
+     * $ '.
+     */
+    @Generated
+    private String deviceId;
+
+    /**
+     * Creates an instance of IotHubDeviceDeletedEventData class.
+     * 
+     * @param twin the twin value to set.
+     */
+    @Generated
+    private IotHubDeviceDeletedEventData(DeviceTwinInfo twin) {
+        super(twin);
     }
 
+    /**
+     * Get the hubName property: Name of the IoT Hub where the device was created or deleted.
+     * 
+     * @return the hubName value.
+     */
+    @Generated
+    @Override
+    public String getHubName() {
+        return this.hubName;
+    }
+
+    /**
+     * Get the deviceId property: The unique identifier of the device. This case-sensitive string can be up to 128
+     * characters long, and supports ASCII 7-bit alphanumeric characters plus the following special characters: - : . +
+     * % _ &amp;#35; * ? ! ( ) , = `&#064;` ; $ '.
+     * 
+     * @return the deviceId value.
+     */
+    @Generated
+    @Override
+    public String getDeviceId() {
+        return this.deviceId;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("twin", getTwin());
         jsonWriter.writeStringField("deviceId", getDeviceId());
         jsonWriter.writeStringField("hubName", getHubName());
-        jsonWriter.writeJsonField("twin", getTwin());
         return jsonWriter.writeEndObject();
     }
 
@@ -39,26 +83,33 @@ public final class IotHubDeviceDeletedEventData extends DeviceLifeCycleEventProp
      * @param jsonReader The JsonReader being read.
      * @return An instance of IotHubDeviceDeletedEventData if the JsonReader was pointing to an instance of it, or null
      * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the IotHubDeviceDeletedEventData.
      */
     @Generated
     public static IotHubDeviceDeletedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            IotHubDeviceDeletedEventData deserializedIotHubDeviceDeletedEventData = new IotHubDeviceDeletedEventData();
+            DeviceTwinInfo twin = null;
+            String deviceId = null;
+            String hubName = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("deviceId".equals(fieldName)) {
-                    deserializedIotHubDeviceDeletedEventData.setDeviceId(reader.getString());
+                if ("twin".equals(fieldName)) {
+                    twin = DeviceTwinInfo.fromJson(reader);
+                } else if ("deviceId".equals(fieldName)) {
+                    deviceId = reader.getString();
                 } else if ("hubName".equals(fieldName)) {
-                    deserializedIotHubDeviceDeletedEventData.setHubName(reader.getString());
-                } else if ("twin".equals(fieldName)) {
-                    deserializedIotHubDeviceDeletedEventData.setTwin(DeviceTwinInfo.fromJson(reader));
+                    hubName = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
+            IotHubDeviceDeletedEventData deserializedIotHubDeviceDeletedEventData
+                = new IotHubDeviceDeletedEventData(twin);
+            deserializedIotHubDeviceDeletedEventData.deviceId = deviceId;
+            deserializedIotHubDeviceDeletedEventData.hubName = hubName;
 
             return deserializedIotHubDeviceDeletedEventData;
         });

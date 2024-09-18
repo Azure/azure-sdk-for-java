@@ -137,6 +137,9 @@ public final class ContainerRegistryArtifactEventTarget
         return this.version;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {

@@ -56,10 +56,15 @@ public final class MediaJobErrorDetail implements JsonSerializable<MediaJobError
         return this.message;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("code", this.code);
+        jsonWriter.writeStringField("message", this.message);
         return jsonWriter.writeEndObject();
     }
 

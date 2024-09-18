@@ -17,30 +17,95 @@ import java.util.List;
  */
 @Immutable
 public final class AvsClusterUpdatingEventData extends AvsClusterEventData {
-    /**
-     * Creates an instance of AvsClusterUpdatingEventData class.
-     * 
-     * @param addedHostNames the addedHostNames value to set.
-     * @param removedHostNames the removedHostNames value to set.
-     * @param inMaintenanceHostNames the inMaintenanceHostNames value to set.
+    /*
+     * Hosts in Maintenance mode in the cluster, if any.
      */
     @Generated
-    private AvsClusterUpdatingEventData(List<String> addedHostNames, List<String> removedHostNames,
-        List<String> inMaintenanceHostNames) {
-        super(addedHostNames, removedHostNames, inMaintenanceHostNames);
+    private List<String> inMaintenanceHostNames;
+
+    /*
+     * Hosts removed from the cluster in this event, if any.
+     */
+    @Generated
+    private List<String> removedHostNames;
+
+    /*
+     * Hosts added to the cluster in this event, if any.
+     */
+    @Generated
+    private List<String> addedHostNames;
+
+    /*
+     * Id of the operation that caused this event.
+     */
+    @Generated
+    private String operationId;
+
+    /**
+     * Creates an instance of AvsClusterUpdatingEventData class.
+     */
+    @Generated
+    private AvsClusterUpdatingEventData() {
     }
 
+    /**
+     * Get the inMaintenanceHostNames property: Hosts in Maintenance mode in the cluster, if any.
+     * 
+     * @return the inMaintenanceHostNames value.
+     */
+    @Generated
+    @Override
+    public List<String> getInMaintenanceHostNames() {
+        return this.inMaintenanceHostNames;
+    }
+
+    /**
+     * Get the removedHostNames property: Hosts removed from the cluster in this event, if any.
+     * 
+     * @return the removedHostNames value.
+     */
+    @Generated
+    @Override
+    public List<String> getRemovedHostNames() {
+        return this.removedHostNames;
+    }
+
+    /**
+     * Get the addedHostNames property: Hosts added to the cluster in this event, if any.
+     * 
+     * @return the addedHostNames value.
+     */
+    @Generated
+    @Override
+    public List<String> getAddedHostNames() {
+        return this.addedHostNames;
+    }
+
+    /**
+     * Get the operationId property: Id of the operation that caused this event.
+     * 
+     * @return the operationId value.
+     */
+    @Generated
+    @Override
+    public String getOperationId() {
+        return this.operationId;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("operationId", getOperationId());
         jsonWriter.writeArrayField("addedHostNames", getAddedHostNames(),
             (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("removedHostNames", getRemovedHostNames(),
             (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("inMaintenanceHostNames", getInMaintenanceHostNames(),
             (writer, element) -> writer.writeString(element));
-        jsonWriter.writeStringField("operationId", getOperationId());
         return jsonWriter.writeEndObject();
     }
 
@@ -50,35 +115,31 @@ public final class AvsClusterUpdatingEventData extends AvsClusterEventData {
      * @param jsonReader The JsonReader being read.
      * @return An instance of AvsClusterUpdatingEventData if the JsonReader was pointing to an instance of it, or null
      * if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AvsClusterUpdatingEventData.
      */
     @Generated
     public static AvsClusterUpdatingEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            List<String> addedHostNames = null;
-            List<String> removedHostNames = null;
-            List<String> inMaintenanceHostNames = null;
-            String operationId = null;
+            AvsClusterUpdatingEventData deserializedAvsClusterUpdatingEventData = new AvsClusterUpdatingEventData();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("addedHostNames".equals(fieldName)) {
-                    addedHostNames = reader.readArray(reader1 -> reader1.getString());
+                if ("operationId".equals(fieldName)) {
+                    deserializedAvsClusterUpdatingEventData.operationId = reader.getString();
+                } else if ("addedHostNames".equals(fieldName)) {
+                    List<String> addedHostNames = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAvsClusterUpdatingEventData.addedHostNames = addedHostNames;
                 } else if ("removedHostNames".equals(fieldName)) {
-                    removedHostNames = reader.readArray(reader1 -> reader1.getString());
+                    List<String> removedHostNames = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAvsClusterUpdatingEventData.removedHostNames = removedHostNames;
                 } else if ("inMaintenanceHostNames".equals(fieldName)) {
-                    inMaintenanceHostNames = reader.readArray(reader1 -> reader1.getString());
-                } else if ("operationId".equals(fieldName)) {
-                    operationId = reader.getString();
+                    List<String> inMaintenanceHostNames = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAvsClusterUpdatingEventData.inMaintenanceHostNames = inMaintenanceHostNames;
                 } else {
                     reader.skipChildren();
                 }
             }
-            AvsClusterUpdatingEventData deserializedAvsClusterUpdatingEventData
-                = new AvsClusterUpdatingEventData(addedHostNames, removedHostNames, inMaintenanceHostNames);
-            deserializedAvsClusterUpdatingEventData.setOperationId(operationId);
 
             return deserializedAvsClusterUpdatingEventData;
         });

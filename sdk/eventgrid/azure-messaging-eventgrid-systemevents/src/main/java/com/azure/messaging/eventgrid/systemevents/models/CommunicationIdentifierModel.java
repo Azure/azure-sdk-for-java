@@ -20,6 +20,12 @@ import java.io.IOException;
 @Immutable
 public final class CommunicationIdentifierModel implements JsonSerializable<CommunicationIdentifierModel> {
     /*
+     * The identifier kind. Only required in responses.
+     */
+    @Generated
+    private final CommunicationIdentifierModelKind kind;
+
+    /*
      * Raw Id of the identifier. Optional in requests, required in responses.
      */
     @Generated
@@ -29,25 +35,54 @@ public final class CommunicationIdentifierModel implements JsonSerializable<Comm
      * The communication user.
      */
     @Generated
-    private CommunicationUserIdentifierModel communicationUser;
+    private final CommunicationUserIdentifierModel communicationUser;
 
     /*
      * The phone number.
      */
     @Generated
-    private PhoneNumberIdentifierModel phoneNumber;
+    private final PhoneNumberIdentifierModel phoneNumber;
 
     /*
      * The Microsoft Teams user.
      */
     @Generated
-    private MicrosoftTeamsUserIdentifierModel microsoftTeamsUser;
+    private final MicrosoftTeamsUserIdentifierModel microsoftTeamsUser;
+
+    /*
+     * The Microsoft Teams application.
+     */
+    @Generated
+    private final MicrosoftTeamsAppIdentifierModel microsoftTeamsApp;
 
     /**
      * Creates an instance of CommunicationIdentifierModel class.
+     * 
+     * @param kind the kind value to set.
+     * @param communicationUser the communicationUser value to set.
+     * @param phoneNumber the phoneNumber value to set.
+     * @param microsoftTeamsUser the microsoftTeamsUser value to set.
+     * @param microsoftTeamsApp the microsoftTeamsApp value to set.
      */
     @Generated
-    private CommunicationIdentifierModel() {
+    private CommunicationIdentifierModel(CommunicationIdentifierModelKind kind,
+        CommunicationUserIdentifierModel communicationUser, PhoneNumberIdentifierModel phoneNumber,
+        MicrosoftTeamsUserIdentifierModel microsoftTeamsUser, MicrosoftTeamsAppIdentifierModel microsoftTeamsApp) {
+        this.kind = kind;
+        this.communicationUser = communicationUser;
+        this.phoneNumber = phoneNumber;
+        this.microsoftTeamsUser = microsoftTeamsUser;
+        this.microsoftTeamsApp = microsoftTeamsApp;
+    }
+
+    /**
+     * Get the kind property: The identifier kind. Only required in responses.
+     * 
+     * @return the kind value.
+     */
+    @Generated
+    public CommunicationIdentifierModelKind getKind() {
+        return this.kind;
     }
 
     /**
@@ -90,14 +125,29 @@ public final class CommunicationIdentifierModel implements JsonSerializable<Comm
         return this.microsoftTeamsUser;
     }
 
+    /**
+     * Get the microsoftTeamsApp property: The Microsoft Teams application.
+     * 
+     * @return the microsoftTeamsApp value.
+     */
+    @Generated
+    public MicrosoftTeamsAppIdentifierModel getMicrosoftTeamsApp() {
+        return this.microsoftTeamsApp;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("rawId", this.rawId);
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         jsonWriter.writeJsonField("communicationUser", this.communicationUser);
         jsonWriter.writeJsonField("phoneNumber", this.phoneNumber);
         jsonWriter.writeJsonField("microsoftTeamsUser", this.microsoftTeamsUser);
+        jsonWriter.writeJsonField("microsoftTeamsApp", this.microsoftTeamsApp);
+        jsonWriter.writeStringField("rawId", this.rawId);
         return jsonWriter.writeEndObject();
     }
 
@@ -107,30 +157,41 @@ public final class CommunicationIdentifierModel implements JsonSerializable<Comm
      * @param jsonReader The JsonReader being read.
      * @return An instance of CommunicationIdentifierModel if the JsonReader was pointing to an instance of it, or null
      * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the CommunicationIdentifierModel.
      */
     @Generated
     public static CommunicationIdentifierModel fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            CommunicationIdentifierModel deserializedCommunicationIdentifierModel = new CommunicationIdentifierModel();
+            CommunicationIdentifierModelKind kind = null;
+            CommunicationUserIdentifierModel communicationUser = null;
+            PhoneNumberIdentifierModel phoneNumber = null;
+            MicrosoftTeamsUserIdentifierModel microsoftTeamsUser = null;
+            MicrosoftTeamsAppIdentifierModel microsoftTeamsApp = null;
+            String rawId = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("rawId".equals(fieldName)) {
-                    deserializedCommunicationIdentifierModel.rawId = reader.getString();
+                if ("kind".equals(fieldName)) {
+                    kind = CommunicationIdentifierModelKind.fromString(reader.getString());
                 } else if ("communicationUser".equals(fieldName)) {
-                    deserializedCommunicationIdentifierModel.communicationUser
-                        = CommunicationUserIdentifierModel.fromJson(reader);
+                    communicationUser = CommunicationUserIdentifierModel.fromJson(reader);
                 } else if ("phoneNumber".equals(fieldName)) {
-                    deserializedCommunicationIdentifierModel.phoneNumber = PhoneNumberIdentifierModel.fromJson(reader);
+                    phoneNumber = PhoneNumberIdentifierModel.fromJson(reader);
                 } else if ("microsoftTeamsUser".equals(fieldName)) {
-                    deserializedCommunicationIdentifierModel.microsoftTeamsUser
-                        = MicrosoftTeamsUserIdentifierModel.fromJson(reader);
+                    microsoftTeamsUser = MicrosoftTeamsUserIdentifierModel.fromJson(reader);
+                } else if ("microsoftTeamsApp".equals(fieldName)) {
+                    microsoftTeamsApp = MicrosoftTeamsAppIdentifierModel.fromJson(reader);
+                } else if ("rawId".equals(fieldName)) {
+                    rawId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
+            CommunicationIdentifierModel deserializedCommunicationIdentifierModel = new CommunicationIdentifierModel(
+                kind, communicationUser, phoneNumber, microsoftTeamsUser, microsoftTeamsApp);
+            deserializedCommunicationIdentifierModel.rawId = rawId;
 
             return deserializedCommunicationIdentifierModel;
         });

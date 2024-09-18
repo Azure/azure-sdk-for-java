@@ -4,103 +4,114 @@
 
 package com.azure.messaging.eventgrid.systemevents.models;
 
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
  * Acs Router Job Status.
  */
-public enum AcsRouterJobStatus {
+public final class AcsRouterJobStatus extends ExpandableStringEnum<AcsRouterJobStatus> {
     /**
      * Router Job Status Pending Classification.
      */
-    PENDING_CLASSIFICATION("PendingClassification"),
+    @Generated
+    public static final AcsRouterJobStatus PENDING_CLASSIFICATION = fromString("PendingClassification");
 
     /**
      * Router Job Status Queued.
      */
-    QUEUED("Queued"),
+    @Generated
+    public static final AcsRouterJobStatus QUEUED = fromString("Queued");
 
     /**
      * Router Job Status Assigned.
      */
-    ASSIGNED("Assigned"),
+    @Generated
+    public static final AcsRouterJobStatus ASSIGNED = fromString("Assigned");
 
     /**
      * Router Job Status Completed.
      */
-    COMPLETED("Completed"),
+    @Generated
+    public static final AcsRouterJobStatus COMPLETED = fromString("Completed");
 
     /**
      * Router Job Status Closed.
      */
-    CLOSED("Closed"),
+    @Generated
+    public static final AcsRouterJobStatus CLOSED = fromString("Closed");
 
     /**
      * Router Job Status Cancelled.
      */
-    CANCELLED("Cancelled"),
+    @Generated
+    public static final AcsRouterJobStatus CANCELLED = fromString("Cancelled");
 
     /**
      * Router Job Status Classification Failed.
      */
-    CLASSIFICATION_FAILED("ClassificationFailed"),
+    @Generated
+    public static final AcsRouterJobStatus CLASSIFICATION_FAILED = fromString("ClassificationFailed");
 
     /**
      * Router Job Status Created.
      */
-    CREATED("Created"),
+    @Generated
+    public static final AcsRouterJobStatus CREATED = fromString("Created");
 
     /**
      * Router Job Status Pending Schedule.
      */
-    PENDING_SCHEDULE("PendingSchedule"),
+    @Generated
+    public static final AcsRouterJobStatus PENDING_SCHEDULE = fromString("PendingSchedule");
 
     /**
      * Router Job Status Scheduled.
      */
-    SCHEDULED("Scheduled"),
+    @Generated
+    public static final AcsRouterJobStatus SCHEDULED = fromString("Scheduled");
 
     /**
      * Router Job Status Schedule Failed.
      */
-    SCHEDULE_FAILED("ScheduleFailed"),
+    @Generated
+    public static final AcsRouterJobStatus SCHEDULE_FAILED = fromString("ScheduleFailed");
 
     /**
      * Router Job Status Waiting For Activation.
      */
-    WAITING_FOR_ACTIVATION("WaitingForActivation");
+    @Generated
+    public static final AcsRouterJobStatus WAITING_FOR_ACTIVATION = fromString("WaitingForActivation");
 
     /**
-     * The actual serialized value for a AcsRouterJobStatus instance.
-     */
-    private final String value;
-
-    AcsRouterJobStatus(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a AcsRouterJobStatus instance.
+     * Creates a new instance of AcsRouterJobStatus value.
      * 
-     * @param value the serialized value to parse.
-     * @return the parsed AcsRouterJobStatus object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static AcsRouterJobStatus fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        AcsRouterJobStatus[] items = AcsRouterJobStatus.values();
-        for (AcsRouterJobStatus item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Generated
+    @Deprecated
+    public AcsRouterJobStatus() {
     }
 
     /**
-     * {@inheritDoc}
+     * Creates or finds a AcsRouterJobStatus from its string representation.
+     * 
+     * @param name a name to look for.
+     * @return the corresponding AcsRouterJobStatus.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    @Generated
+    public static AcsRouterJobStatus fromString(String name) {
+        return fromString(name, AcsRouterJobStatus.class);
+    }
+
+    /**
+     * Gets known AcsRouterJobStatus values.
+     * 
+     * @return known AcsRouterJobStatus values.
+     */
+    @Generated
+    public static Collection<AcsRouterJobStatus> values() {
+        return values(AcsRouterJobStatus.class);
     }
 }

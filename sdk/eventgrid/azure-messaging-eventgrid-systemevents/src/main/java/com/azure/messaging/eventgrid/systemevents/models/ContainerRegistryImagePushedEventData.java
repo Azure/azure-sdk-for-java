@@ -6,6 +6,7 @@ package com.azure.messaging.eventgrid.systemevents.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -18,27 +19,91 @@ import java.time.format.DateTimeFormatter;
  */
 @Immutable
 public final class ContainerRegistryImagePushedEventData extends ContainerRegistryEventData {
-    /**
-     * Creates an instance of ContainerRegistryImagePushedEventData class.
+    /*
+     * The location of the event.
      */
     @Generated
-    private ContainerRegistryImagePushedEventData() {
+    private String location;
+
+    /*
+     * The action that encompasses the provided event.
+     */
+    @Generated
+    private String action;
+
+    /*
+     * The event ID.
+     */
+    @Generated
+    private String id;
+
+    /**
+     * Creates an instance of ContainerRegistryImagePushedEventData class.
+     * 
+     * @param timestamp the timestamp value to set.
+     * @param target the target value to set.
+     * @param request the request value to set.
+     * @param actor the actor value to set.
+     * @param source the source value to set.
+     * @param connectedRegistry the connectedRegistry value to set.
+     */
+    @Generated
+    private ContainerRegistryImagePushedEventData(OffsetDateTime timestamp, ContainerRegistryEventTarget target,
+        ContainerRegistryEventRequest request, ContainerRegistryEventActor actor, ContainerRegistryEventSource source,
+        ContainerRegistryEventConnectedRegistry connectedRegistry) {
+        super(timestamp, target, request, actor, source, connectedRegistry);
     }
 
+    /**
+     * Get the location property: The location of the event.
+     * 
+     * @return the location value.
+     */
+    @Generated
+    @Override
+    public String getLocation() {
+        return this.location;
+    }
+
+    /**
+     * Get the action property: The action that encompasses the provided event.
+     * 
+     * @return the action value.
+     */
+    @Generated
+    @Override
+    public String getAction() {
+        return this.action;
+    }
+
+    /**
+     * Get the id property: The event ID.
+     * 
+     * @return the id value.
+     */
+    @Generated
+    @Override
+    public String getId() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("id", getId());
         jsonWriter.writeStringField("timestamp",
             getTimestamp() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getTimestamp()));
-        jsonWriter.writeStringField("action", getAction());
-        jsonWriter.writeStringField("location", getLocation());
         jsonWriter.writeJsonField("target", getTarget());
         jsonWriter.writeJsonField("request", getRequest());
         jsonWriter.writeJsonField("actor", getActor());
         jsonWriter.writeJsonField("source", getSource());
         jsonWriter.writeJsonField("connectedRegistry", getConnectedRegistry());
+        jsonWriter.writeStringField("id", getId());
+        jsonWriter.writeStringField("action", getAction());
+        jsonWriter.writeStringField("location", getLocation());
         return jsonWriter.writeEndObject();
     }
 
@@ -48,45 +113,54 @@ public final class ContainerRegistryImagePushedEventData extends ContainerRegist
      * @param jsonReader The JsonReader being read.
      * @return An instance of ContainerRegistryImagePushedEventData if the JsonReader was pointing to an instance of it,
      * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ContainerRegistryImagePushedEventData.
      */
     @Generated
     public static ContainerRegistryImagePushedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ContainerRegistryImagePushedEventData deserializedContainerRegistryImagePushedEventData
-                = new ContainerRegistryImagePushedEventData();
+            OffsetDateTime timestamp = null;
+            ContainerRegistryEventTarget target = null;
+            ContainerRegistryEventRequest request = null;
+            ContainerRegistryEventActor actor = null;
+            ContainerRegistryEventSource source = null;
+            ContainerRegistryEventConnectedRegistry connectedRegistry = null;
+            String id = null;
+            String action = null;
+            String location = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("id".equals(fieldName)) {
-                    deserializedContainerRegistryImagePushedEventData.setId(reader.getString());
-                } else if ("timestamp".equals(fieldName)) {
-                    deserializedContainerRegistryImagePushedEventData.setTimestamp(
-                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
-                } else if ("action".equals(fieldName)) {
-                    deserializedContainerRegistryImagePushedEventData.setAction(reader.getString());
-                } else if ("location".equals(fieldName)) {
-                    deserializedContainerRegistryImagePushedEventData.setLocation(reader.getString());
+                if ("timestamp".equals(fieldName)) {
+                    timestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("target".equals(fieldName)) {
-                    deserializedContainerRegistryImagePushedEventData
-                        .setTarget(ContainerRegistryEventTarget.fromJson(reader));
+                    target = ContainerRegistryEventTarget.fromJson(reader);
                 } else if ("request".equals(fieldName)) {
-                    deserializedContainerRegistryImagePushedEventData
-                        .setRequest(ContainerRegistryEventRequest.fromJson(reader));
+                    request = ContainerRegistryEventRequest.fromJson(reader);
                 } else if ("actor".equals(fieldName)) {
-                    deserializedContainerRegistryImagePushedEventData
-                        .setActor(ContainerRegistryEventActor.fromJson(reader));
+                    actor = ContainerRegistryEventActor.fromJson(reader);
                 } else if ("source".equals(fieldName)) {
-                    deserializedContainerRegistryImagePushedEventData
-                        .setSource(ContainerRegistryEventSource.fromJson(reader));
+                    source = ContainerRegistryEventSource.fromJson(reader);
                 } else if ("connectedRegistry".equals(fieldName)) {
-                    deserializedContainerRegistryImagePushedEventData
-                        .setConnectedRegistry(ContainerRegistryEventConnectedRegistry.fromJson(reader));
+                    connectedRegistry = ContainerRegistryEventConnectedRegistry.fromJson(reader);
+                } else if ("id".equals(fieldName)) {
+                    id = reader.getString();
+                } else if ("action".equals(fieldName)) {
+                    action = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    location = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
+            ContainerRegistryImagePushedEventData deserializedContainerRegistryImagePushedEventData
+                = new ContainerRegistryImagePushedEventData(timestamp, target, request, actor, source,
+                    connectedRegistry);
+            deserializedContainerRegistryImagePushedEventData.id = id;
+            deserializedContainerRegistryImagePushedEventData.action = action;
+            deserializedContainerRegistryImagePushedEventData.location = location;
 
             return deserializedContainerRegistryImagePushedEventData;
         });

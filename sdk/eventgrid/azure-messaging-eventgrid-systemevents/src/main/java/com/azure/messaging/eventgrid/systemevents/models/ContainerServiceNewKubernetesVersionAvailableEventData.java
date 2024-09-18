@@ -96,6 +96,9 @@ public final class ContainerServiceNewKubernetesVersionAvailableEventData
         return this.latestPreviewKubernetesVersion;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {

@@ -40,6 +40,9 @@ public final class DeviceTwinMetadata implements JsonSerializable<DeviceTwinMeta
         return this.lastUpdated;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {

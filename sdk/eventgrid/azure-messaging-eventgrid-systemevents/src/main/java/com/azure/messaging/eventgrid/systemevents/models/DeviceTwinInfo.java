@@ -58,7 +58,7 @@ public final class DeviceTwinInfo implements JsonSerializable<DeviceTwinInfo> {
      * Properties JSON element.
      */
     @Generated
-    private DeviceTwinInfoProperties properties;
+    private final DeviceTwinInfoProperties properties;
 
     /*
      * Whether the device twin is enabled or disabled.
@@ -84,13 +84,18 @@ public final class DeviceTwinInfo implements JsonSerializable<DeviceTwinInfo> {
      * exist in the certificate.
      */
     @Generated
-    private DeviceTwinInfoX509Thumbprint x509Thumbprint;
+    private final DeviceTwinInfoX509Thumbprint x509Thumbprint;
 
     /**
      * Creates an instance of DeviceTwinInfo class.
+     * 
+     * @param properties the properties value to set.
+     * @param x509Thumbprint the x509Thumbprint value to set.
      */
     @Generated
-    private DeviceTwinInfo() {
+    private DeviceTwinInfo(DeviceTwinInfoProperties properties, DeviceTwinInfoX509Thumbprint x509Thumbprint) {
+        this.properties = properties;
+        this.x509Thumbprint = x509Thumbprint;
     }
 
     /**
@@ -196,8 +201,8 @@ public final class DeviceTwinInfo implements JsonSerializable<DeviceTwinInfo> {
     }
 
     /**
-     * Get the x509Thumbprint property: The thumbprint is a unique value for the x509 certificate, commonly used to
-     * find a particular certificate in a certificate store. The thumbprint is dynamically generated using the SHA1
+     * Get the x509Thumbprint property: The thumbprint is a unique value for the x509 certificate, commonly used to find
+     * a particular certificate in a certificate store. The thumbprint is dynamically generated using the SHA1
      * algorithm, and does not physically exist in the certificate.
      * 
      * @return the x509Thumbprint value.
@@ -207,21 +212,24 @@ public final class DeviceTwinInfo implements JsonSerializable<DeviceTwinInfo> {
         return this.x509Thumbprint;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeJsonField("x509Thumbprint", this.x509Thumbprint);
         jsonWriter.writeStringField("authenticationType", this.authenticationType);
         jsonWriter.writeNumberField("cloudToDeviceMessageCount", this.cloudToDeviceMessageCount);
         jsonWriter.writeStringField("connectionState", this.connectionState);
         jsonWriter.writeStringField("deviceId", this.deviceId);
         jsonWriter.writeStringField("etag", this.etag);
         jsonWriter.writeStringField("lastActivityTime", this.lastActivityTime);
-        jsonWriter.writeJsonField("properties", this.properties);
         jsonWriter.writeStringField("status", this.status);
         jsonWriter.writeStringField("statusUpdateTime", this.statusUpdateTime);
         jsonWriter.writeNumberField("version", this.version);
-        jsonWriter.writeJsonField("x509Thumbprint", this.x509Thumbprint);
         return jsonWriter.writeEndObject();
     }
 
@@ -231,42 +239,63 @@ public final class DeviceTwinInfo implements JsonSerializable<DeviceTwinInfo> {
      * @param jsonReader The JsonReader being read.
      * @return An instance of DeviceTwinInfo if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DeviceTwinInfo.
      */
     @Generated
     public static DeviceTwinInfo fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            DeviceTwinInfo deserializedDeviceTwinInfo = new DeviceTwinInfo();
+            DeviceTwinInfoProperties properties = null;
+            DeviceTwinInfoX509Thumbprint x509Thumbprint = null;
+            String authenticationType = null;
+            Double cloudToDeviceMessageCount = null;
+            String connectionState = null;
+            String deviceId = null;
+            String etag = null;
+            String lastActivityTime = null;
+            String status = null;
+            String statusUpdateTime = null;
+            Double version = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("authenticationType".equals(fieldName)) {
-                    deserializedDeviceTwinInfo.authenticationType = reader.getString();
-                } else if ("cloudToDeviceMessageCount".equals(fieldName)) {
-                    deserializedDeviceTwinInfo.cloudToDeviceMessageCount = reader.getNullable(JsonReader::getDouble);
-                } else if ("connectionState".equals(fieldName)) {
-                    deserializedDeviceTwinInfo.connectionState = reader.getString();
-                } else if ("deviceId".equals(fieldName)) {
-                    deserializedDeviceTwinInfo.deviceId = reader.getString();
-                } else if ("etag".equals(fieldName)) {
-                    deserializedDeviceTwinInfo.etag = reader.getString();
-                } else if ("lastActivityTime".equals(fieldName)) {
-                    deserializedDeviceTwinInfo.lastActivityTime = reader.getString();
-                } else if ("properties".equals(fieldName)) {
-                    deserializedDeviceTwinInfo.properties = DeviceTwinInfoProperties.fromJson(reader);
-                } else if ("status".equals(fieldName)) {
-                    deserializedDeviceTwinInfo.status = reader.getString();
-                } else if ("statusUpdateTime".equals(fieldName)) {
-                    deserializedDeviceTwinInfo.statusUpdateTime = reader.getString();
-                } else if ("version".equals(fieldName)) {
-                    deserializedDeviceTwinInfo.version = reader.getNullable(JsonReader::getDouble);
+                if ("properties".equals(fieldName)) {
+                    properties = DeviceTwinInfoProperties.fromJson(reader);
                 } else if ("x509Thumbprint".equals(fieldName)) {
-                    deserializedDeviceTwinInfo.x509Thumbprint = DeviceTwinInfoX509Thumbprint.fromJson(reader);
+                    x509Thumbprint = DeviceTwinInfoX509Thumbprint.fromJson(reader);
+                } else if ("authenticationType".equals(fieldName)) {
+                    authenticationType = reader.getString();
+                } else if ("cloudToDeviceMessageCount".equals(fieldName)) {
+                    cloudToDeviceMessageCount = reader.getNullable(JsonReader::getDouble);
+                } else if ("connectionState".equals(fieldName)) {
+                    connectionState = reader.getString();
+                } else if ("deviceId".equals(fieldName)) {
+                    deviceId = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    etag = reader.getString();
+                } else if ("lastActivityTime".equals(fieldName)) {
+                    lastActivityTime = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    status = reader.getString();
+                } else if ("statusUpdateTime".equals(fieldName)) {
+                    statusUpdateTime = reader.getString();
+                } else if ("version".equals(fieldName)) {
+                    version = reader.getNullable(JsonReader::getDouble);
                 } else {
                     reader.skipChildren();
                 }
             }
+            DeviceTwinInfo deserializedDeviceTwinInfo = new DeviceTwinInfo(properties, x509Thumbprint);
+            deserializedDeviceTwinInfo.authenticationType = authenticationType;
+            deserializedDeviceTwinInfo.cloudToDeviceMessageCount = cloudToDeviceMessageCount;
+            deserializedDeviceTwinInfo.connectionState = connectionState;
+            deserializedDeviceTwinInfo.deviceId = deviceId;
+            deserializedDeviceTwinInfo.etag = etag;
+            deserializedDeviceTwinInfo.lastActivityTime = lastActivityTime;
+            deserializedDeviceTwinInfo.status = status;
+            deserializedDeviceTwinInfo.statusUpdateTime = statusUpdateTime;
+            deserializedDeviceTwinInfo.version = version;
 
             return deserializedDeviceTwinInfo;
         });

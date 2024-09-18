@@ -4,53 +4,55 @@
 
 package com.azure.messaging.eventgrid.systemevents.models;
 
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
  * The status for a storage task.
  */
-public enum StorageTaskAssignmentCompletedStatus {
+public final class StorageTaskAssignmentCompletedStatus
+    extends ExpandableStringEnum<StorageTaskAssignmentCompletedStatus> {
     /**
      * Succeeded.
      */
-    SUCCEEDED("Succeeded"),
+    @Generated
+    public static final StorageTaskAssignmentCompletedStatus SUCCEEDED = fromString("Succeeded");
 
     /**
      * Failed.
      */
-    FAILED("Failed");
+    @Generated
+    public static final StorageTaskAssignmentCompletedStatus FAILED = fromString("Failed");
 
     /**
-     * The actual serialized value for a StorageTaskAssignmentCompletedStatus instance.
-     */
-    private final String value;
-
-    StorageTaskAssignmentCompletedStatus(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a StorageTaskAssignmentCompletedStatus instance.
+     * Creates a new instance of StorageTaskAssignmentCompletedStatus value.
      * 
-     * @param value the serialized value to parse.
-     * @return the parsed StorageTaskAssignmentCompletedStatus object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static StorageTaskAssignmentCompletedStatus fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        StorageTaskAssignmentCompletedStatus[] items = StorageTaskAssignmentCompletedStatus.values();
-        for (StorageTaskAssignmentCompletedStatus item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Generated
+    @Deprecated
+    public StorageTaskAssignmentCompletedStatus() {
     }
 
     /**
-     * {@inheritDoc}
+     * Creates or finds a StorageTaskAssignmentCompletedStatus from its string representation.
+     * 
+     * @param name a name to look for.
+     * @return the corresponding StorageTaskAssignmentCompletedStatus.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    @Generated
+    public static StorageTaskAssignmentCompletedStatus fromString(String name) {
+        return fromString(name, StorageTaskAssignmentCompletedStatus.class);
+    }
+
+    /**
+     * Gets known StorageTaskAssignmentCompletedStatus values.
+     * 
+     * @return known StorageTaskAssignmentCompletedStatus values.
+     */
+    @Generated
+    public static Collection<StorageTaskAssignmentCompletedStatus> values() {
+        return values(StorageTaskAssignmentCompletedStatus.class);
     }
 }

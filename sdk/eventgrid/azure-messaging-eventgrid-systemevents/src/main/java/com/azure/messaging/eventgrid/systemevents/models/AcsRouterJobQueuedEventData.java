@@ -28,19 +28,52 @@ public final class AcsRouterJobQueuedEventData extends AcsRouterJobEventData {
      * Router Job Queued Attached Worker Selector
      */
     @Generated
-    private List<AcsRouterWorkerSelector> attachedWorkerSelectors;
+    private final List<AcsRouterWorkerSelector> attachedWorkerSelectors;
 
     /*
      * Router Job Queued Requested Worker Selector
      */
     @Generated
-    private List<AcsRouterWorkerSelector> requestedWorkerSelectors;
+    private final List<AcsRouterWorkerSelector> requestedWorkerSelectors;
+
+    /*
+     * Router Job events Queue Id
+     */
+    @Generated
+    private String queueId;
+
+    /*
+     * Router Event Channel ID
+     */
+    @Generated
+    private String channelId;
+
+    /*
+     * Router Event Channel Reference
+     */
+    @Generated
+    private String channelReference;
+
+    /*
+     * Router Event Job ID
+     */
+    @Generated
+    private String jobId;
 
     /**
      * Creates an instance of AcsRouterJobQueuedEventData class.
+     * 
+     * @param labels the labels value to set.
+     * @param tags the tags value to set.
+     * @param attachedWorkerSelectors the attachedWorkerSelectors value to set.
+     * @param requestedWorkerSelectors the requestedWorkerSelectors value to set.
      */
     @Generated
-    private AcsRouterJobQueuedEventData() {
+    private AcsRouterJobQueuedEventData(Map<String, String> labels, Map<String, String> tags,
+        List<AcsRouterWorkerSelector> attachedWorkerSelectors, List<AcsRouterWorkerSelector> requestedWorkerSelectors) {
+        super(labels, tags);
+        this.attachedWorkerSelectors = attachedWorkerSelectors;
+        this.requestedWorkerSelectors = requestedWorkerSelectors;
     }
 
     /**
@@ -73,21 +106,68 @@ public final class AcsRouterJobQueuedEventData extends AcsRouterJobEventData {
         return this.requestedWorkerSelectors;
     }
 
+    /**
+     * Get the queueId property: Router Job events Queue Id.
+     * 
+     * @return the queueId value.
+     */
+    @Generated
+    @Override
+    public String getQueueId() {
+        return this.queueId;
+    }
+
+    /**
+     * Get the channelId property: Router Event Channel ID.
+     * 
+     * @return the channelId value.
+     */
+    @Generated
+    @Override
+    public String getChannelId() {
+        return this.channelId;
+    }
+
+    /**
+     * Get the channelReference property: Router Event Channel Reference.
+     * 
+     * @return the channelReference value.
+     */
+    @Generated
+    @Override
+    public String getChannelReference() {
+        return this.channelReference;
+    }
+
+    /**
+     * Get the jobId property: Router Event Job ID.
+     * 
+     * @return the jobId value.
+     */
+    @Generated
+    @Override
+    public String getJobId() {
+        return this.jobId;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("labels", getLabels(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("tags", getTags(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("jobId", getJobId());
         jsonWriter.writeStringField("channelReference", getChannelReference());
         jsonWriter.writeStringField("channelId", getChannelId());
         jsonWriter.writeStringField("queueId", getQueueId());
-        jsonWriter.writeMapField("labels", getLabels(), (writer, element) -> writer.writeString(element));
-        jsonWriter.writeMapField("tags", getTags(), (writer, element) -> writer.writeString(element));
-        jsonWriter.writeNumberField("priority", this.priority);
         jsonWriter.writeArrayField("attachedWorkerSelectors", this.attachedWorkerSelectors,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("requestedWorkerSelectors", this.requestedWorkerSelectors,
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeNumberField("priority", this.priority);
         return jsonWriter.writeEndObject();
     }
 
@@ -97,44 +177,54 @@ public final class AcsRouterJobQueuedEventData extends AcsRouterJobEventData {
      * @param jsonReader The JsonReader being read.
      * @return An instance of AcsRouterJobQueuedEventData if the JsonReader was pointing to an instance of it, or null
      * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AcsRouterJobQueuedEventData.
      */
     @Generated
     public static AcsRouterJobQueuedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AcsRouterJobQueuedEventData deserializedAcsRouterJobQueuedEventData = new AcsRouterJobQueuedEventData();
+            Map<String, String> labels = null;
+            Map<String, String> tags = null;
+            String jobId = null;
+            String channelReference = null;
+            String channelId = null;
+            String queueId = null;
+            List<AcsRouterWorkerSelector> attachedWorkerSelectors = null;
+            List<AcsRouterWorkerSelector> requestedWorkerSelectors = null;
+            Integer priority = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("jobId".equals(fieldName)) {
-                    deserializedAcsRouterJobQueuedEventData.setJobId(reader.getString());
-                } else if ("channelReference".equals(fieldName)) {
-                    deserializedAcsRouterJobQueuedEventData.setChannelReference(reader.getString());
-                } else if ("channelId".equals(fieldName)) {
-                    deserializedAcsRouterJobQueuedEventData.setChannelId(reader.getString());
-                } else if ("queueId".equals(fieldName)) {
-                    deserializedAcsRouterJobQueuedEventData.setQueueId(reader.getString());
-                } else if ("labels".equals(fieldName)) {
-                    Map<String, String> labels = reader.readMap(reader1 -> reader1.getString());
-                    deserializedAcsRouterJobQueuedEventData.setLabels(labels);
+                if ("labels".equals(fieldName)) {
+                    labels = reader.readMap(reader1 -> reader1.getString());
                 } else if ("tags".equals(fieldName)) {
-                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                    deserializedAcsRouterJobQueuedEventData.setTags(tags);
-                } else if ("priority".equals(fieldName)) {
-                    deserializedAcsRouterJobQueuedEventData.priority = reader.getNullable(JsonReader::getInt);
+                    tags = reader.readMap(reader1 -> reader1.getString());
+                } else if ("jobId".equals(fieldName)) {
+                    jobId = reader.getString();
+                } else if ("channelReference".equals(fieldName)) {
+                    channelReference = reader.getString();
+                } else if ("channelId".equals(fieldName)) {
+                    channelId = reader.getString();
+                } else if ("queueId".equals(fieldName)) {
+                    queueId = reader.getString();
                 } else if ("attachedWorkerSelectors".equals(fieldName)) {
-                    List<AcsRouterWorkerSelector> attachedWorkerSelectors
-                        = reader.readArray(reader1 -> AcsRouterWorkerSelector.fromJson(reader1));
-                    deserializedAcsRouterJobQueuedEventData.attachedWorkerSelectors = attachedWorkerSelectors;
+                    attachedWorkerSelectors = reader.readArray(reader1 -> AcsRouterWorkerSelector.fromJson(reader1));
                 } else if ("requestedWorkerSelectors".equals(fieldName)) {
-                    List<AcsRouterWorkerSelector> requestedWorkerSelectors
-                        = reader.readArray(reader1 -> AcsRouterWorkerSelector.fromJson(reader1));
-                    deserializedAcsRouterJobQueuedEventData.requestedWorkerSelectors = requestedWorkerSelectors;
+                    requestedWorkerSelectors = reader.readArray(reader1 -> AcsRouterWorkerSelector.fromJson(reader1));
+                } else if ("priority".equals(fieldName)) {
+                    priority = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }
             }
+            AcsRouterJobQueuedEventData deserializedAcsRouterJobQueuedEventData
+                = new AcsRouterJobQueuedEventData(labels, tags, attachedWorkerSelectors, requestedWorkerSelectors);
+            deserializedAcsRouterJobQueuedEventData.jobId = jobId;
+            deserializedAcsRouterJobQueuedEventData.channelReference = channelReference;
+            deserializedAcsRouterJobQueuedEventData.channelId = channelId;
+            deserializedAcsRouterJobQueuedEventData.queueId = queueId;
+            deserializedAcsRouterJobQueuedEventData.priority = priority;
 
             return deserializedAcsRouterJobQueuedEventData;
         });

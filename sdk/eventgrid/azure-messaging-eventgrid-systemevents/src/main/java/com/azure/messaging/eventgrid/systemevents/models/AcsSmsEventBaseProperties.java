@@ -58,6 +58,7 @@ public class AcsSmsEventBaseProperties implements JsonSerializable<AcsSmsEventBa
      * @param messageId the messageId value to set.
      * @return the AcsSmsEventBaseProperties object itself.
      */
+    @Generated
     AcsSmsEventBaseProperties setMessageId(String messageId) {
         this.messageId = messageId;
         return this;
@@ -79,6 +80,7 @@ public class AcsSmsEventBaseProperties implements JsonSerializable<AcsSmsEventBa
      * @param from the from value to set.
      * @return the AcsSmsEventBaseProperties object itself.
      */
+    @Generated
     AcsSmsEventBaseProperties setFrom(String from) {
         this.from = from;
         return this;
@@ -100,11 +102,15 @@ public class AcsSmsEventBaseProperties implements JsonSerializable<AcsSmsEventBa
      * @param to the to value to set.
      * @return the AcsSmsEventBaseProperties object itself.
      */
+    @Generated
     AcsSmsEventBaseProperties setTo(String to) {
         this.to = to;
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {

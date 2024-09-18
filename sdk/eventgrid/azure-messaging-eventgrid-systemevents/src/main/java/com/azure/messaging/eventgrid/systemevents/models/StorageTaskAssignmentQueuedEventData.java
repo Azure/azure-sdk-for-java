@@ -6,6 +6,7 @@ package com.azure.messaging.eventgrid.systemevents.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -24,7 +25,7 @@ public final class StorageTaskAssignmentQueuedEventData
      * The time at which a storage task was queued.
      */
     @Generated
-    private OffsetDateTime queuedOn;
+    private final OffsetDateTime queuedDateTime;
 
     /*
      * The execution id for a storage task.
@@ -34,19 +35,22 @@ public final class StorageTaskAssignmentQueuedEventData
 
     /**
      * Creates an instance of StorageTaskAssignmentQueuedEventData class.
+     * 
+     * @param queuedDateTime the queuedDateTime value to set.
      */
     @Generated
-    private StorageTaskAssignmentQueuedEventData() {
+    private StorageTaskAssignmentQueuedEventData(OffsetDateTime queuedDateTime) {
+        this.queuedDateTime = queuedDateTime;
     }
 
     /**
-     * Get the queuedOn property: The time at which a storage task was queued.
+     * Get the queuedDateTime property: The time at which a storage task was queued.
      * 
-     * @return the queuedOn value.
+     * @return the queuedDateTime value.
      */
     @Generated
-    public OffsetDateTime getQueuedOn() {
-        return this.queuedOn;
+    public OffsetDateTime getQueuedDateTime() {
+        return this.queuedDateTime;
     }
 
     /**
@@ -59,12 +63,15 @@ public final class StorageTaskAssignmentQueuedEventData
         return this.taskExecutionId;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("queuedDateTime",
-            this.queuedOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.queuedOn));
+            this.queuedDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.queuedDateTime));
         jsonWriter.writeStringField("taskExecutionId", this.taskExecutionId);
         return jsonWriter.writeEndObject();
     }
@@ -75,26 +82,30 @@ public final class StorageTaskAssignmentQueuedEventData
      * @param jsonReader The JsonReader being read.
      * @return An instance of StorageTaskAssignmentQueuedEventData if the JsonReader was pointing to an instance of it,
      * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the StorageTaskAssignmentQueuedEventData.
      */
     @Generated
     public static StorageTaskAssignmentQueuedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            StorageTaskAssignmentQueuedEventData deserializedStorageTaskAssignmentQueuedEventData
-                = new StorageTaskAssignmentQueuedEventData();
+            OffsetDateTime queuedDateTime = null;
+            String taskExecutionId = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("queuedDateTime".equals(fieldName)) {
-                    deserializedStorageTaskAssignmentQueuedEventData.queuedOn
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    queuedDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("taskExecutionId".equals(fieldName)) {
-                    deserializedStorageTaskAssignmentQueuedEventData.taskExecutionId = reader.getString();
+                    taskExecutionId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
+            StorageTaskAssignmentQueuedEventData deserializedStorageTaskAssignmentQueuedEventData
+                = new StorageTaskAssignmentQueuedEventData(queuedDateTime);
+            deserializedStorageTaskAssignmentQueuedEventData.taskExecutionId = taskExecutionId;
 
             return deserializedStorageTaskAssignmentQueuedEventData;
         });

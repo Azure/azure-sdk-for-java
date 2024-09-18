@@ -19,16 +19,25 @@ import java.util.Map;
 public final class IotHubDeviceTelemetryEventData extends DeviceTelemetryEventProperties {
     /**
      * Creates an instance of IotHubDeviceTelemetryEventData class.
+     * 
+     * @param body the body value to set.
+     * @param properties the properties value to set.
+     * @param systemProperties the systemProperties value to set.
      */
     @Generated
-    private IotHubDeviceTelemetryEventData() {
+    private IotHubDeviceTelemetryEventData(Map<String, Object> body, Map<String, String> properties,
+        Map<String, String> systemProperties) {
+        super(body, properties, systemProperties);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("body", getBody());
+        jsonWriter.writeMapField("body", getBody(), (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeMapField("properties", getProperties(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeMapField("systemProperties", getSystemProperties(),
             (writer, element) -> writer.writeString(element));
@@ -41,31 +50,30 @@ public final class IotHubDeviceTelemetryEventData extends DeviceTelemetryEventPr
      * @param jsonReader The JsonReader being read.
      * @return An instance of IotHubDeviceTelemetryEventData if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the IotHubDeviceTelemetryEventData.
      */
     @Generated
     public static IotHubDeviceTelemetryEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            IotHubDeviceTelemetryEventData deserializedIotHubDeviceTelemetryEventData
-                = new IotHubDeviceTelemetryEventData();
+            Map<String, Object> body = null;
+            Map<String, String> properties = null;
+            Map<String, String> systemProperties = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("body".equals(fieldName)) {
-                    deserializedIotHubDeviceTelemetryEventData.setBody(reader.readUntyped());
+                    body = reader.readMap(reader1 -> reader1.readUntyped());
                 } else if ("properties".equals(fieldName)) {
-                    Map<String, String> properties = reader.readMap(reader1 -> reader1.getString());
-                    deserializedIotHubDeviceTelemetryEventData.setProperties(properties);
+                    properties = reader.readMap(reader1 -> reader1.getString());
                 } else if ("systemProperties".equals(fieldName)) {
-                    Map<String, String> systemProperties = reader.readMap(reader1 -> reader1.getString());
-                    deserializedIotHubDeviceTelemetryEventData.setSystemProperties(systemProperties);
+                    systemProperties = reader.readMap(reader1 -> reader1.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-
-            return deserializedIotHubDeviceTelemetryEventData;
+            return new IotHubDeviceTelemetryEventData(body, properties, systemProperties);
         });
     }
 }

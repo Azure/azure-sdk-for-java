@@ -6,6 +6,7 @@ package com.azure.messaging.eventgrid.systemevents.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -28,13 +29,34 @@ public final class AcsSmsReceivedEventData extends AcsSmsEventBaseProperties {
      * The time at which the SMS was received
      */
     @Generated
-    private OffsetDateTime receivedTimestamp;
+    private final OffsetDateTime receivedTimestamp;
+
+    /*
+     * The identity of SMS message receiver
+     */
+    @Generated
+    private String to;
+
+    /*
+     * The identity of SMS message sender
+     */
+    @Generated
+    private String from;
+
+    /*
+     * The identity of the SMS message
+     */
+    @Generated
+    private String messageId;
 
     /**
      * Creates an instance of AcsSmsReceivedEventData class.
+     * 
+     * @param receivedTimestamp the receivedTimestamp value to set.
      */
     @Generated
-    private AcsSmsReceivedEventData() {
+    private AcsSmsReceivedEventData(OffsetDateTime receivedTimestamp) {
+        this.receivedTimestamp = receivedTimestamp;
     }
 
     /**
@@ -57,6 +79,42 @@ public final class AcsSmsReceivedEventData extends AcsSmsEventBaseProperties {
         return this.receivedTimestamp;
     }
 
+    /**
+     * Get the to property: The identity of SMS message receiver.
+     * 
+     * @return the to value.
+     */
+    @Generated
+    @Override
+    public String getTo() {
+        return this.to;
+    }
+
+    /**
+     * Get the from property: The identity of SMS message sender.
+     * 
+     * @return the from value.
+     */
+    @Generated
+    @Override
+    public String getFrom() {
+        return this.from;
+    }
+
+    /**
+     * Get the messageId property: The identity of the SMS message.
+     * 
+     * @return the messageId value.
+     */
+    @Generated
+    @Override
+    public String getMessageId() {
+        return this.messageId;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
@@ -64,9 +122,11 @@ public final class AcsSmsReceivedEventData extends AcsSmsEventBaseProperties {
         jsonWriter.writeStringField("messageId", getMessageId());
         jsonWriter.writeStringField("from", getFrom());
         jsonWriter.writeStringField("to", getTo());
+        jsonWriter.writeStringField("receivedTimestamp",
+            this.receivedTimestamp == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.receivedTimestamp));
         jsonWriter.writeStringField("message", this.message);
-        jsonWriter.writeStringField("receivedTimestamp", this.receivedTimestamp == null ? null
-            : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.receivedTimestamp));
         return jsonWriter.writeEndObject();
     }
 
@@ -76,31 +136,42 @@ public final class AcsSmsReceivedEventData extends AcsSmsEventBaseProperties {
      * @param jsonReader The JsonReader being read.
      * @return An instance of AcsSmsReceivedEventData if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AcsSmsReceivedEventData.
      */
     @Generated
     public static AcsSmsReceivedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AcsSmsReceivedEventData deserializedAcsSmsReceivedEventData = new AcsSmsReceivedEventData();
+            String messageId = null;
+            String from = null;
+            String to = null;
+            OffsetDateTime receivedTimestamp = null;
+            String message = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("messageId".equals(fieldName)) {
-                    deserializedAcsSmsReceivedEventData.setMessageId(reader.getString());
+                    messageId = reader.getString();
                 } else if ("from".equals(fieldName)) {
-                    deserializedAcsSmsReceivedEventData.setFrom(reader.getString());
+                    from = reader.getString();
                 } else if ("to".equals(fieldName)) {
-                    deserializedAcsSmsReceivedEventData.setTo(reader.getString());
-                } else if ("message".equals(fieldName)) {
-                    deserializedAcsSmsReceivedEventData.message = reader.getString();
+                    to = reader.getString();
                 } else if ("receivedTimestamp".equals(fieldName)) {
-                    deserializedAcsSmsReceivedEventData.receivedTimestamp
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    receivedTimestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("message".equals(fieldName)) {
+                    message = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
+            AcsSmsReceivedEventData deserializedAcsSmsReceivedEventData
+                = new AcsSmsReceivedEventData(receivedTimestamp);
+            deserializedAcsSmsReceivedEventData.messageId = messageId;
+            deserializedAcsSmsReceivedEventData.from = from;
+            deserializedAcsSmsReceivedEventData.to = to;
+            deserializedAcsSmsReceivedEventData.message = message;
 
             return deserializedAcsSmsReceivedEventData;
         });

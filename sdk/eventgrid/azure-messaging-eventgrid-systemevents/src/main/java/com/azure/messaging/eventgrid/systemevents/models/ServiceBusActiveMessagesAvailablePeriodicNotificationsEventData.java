@@ -51,8 +51,8 @@ public final class ServiceBusActiveMessagesAvailablePeriodicNotificationsEventDa
     private String topicName;
 
     /*
-     * The name of the Microsoft.ServiceBus topic's subscription. If the entity type is of type 'queue', then this
-     * value will be null.
+     * The name of the Microsoft.ServiceBus topic's subscription. If the entity type is of type 'queue', then this value
+     * will be null.
      */
     @Generated
     private String subscriptionName;
@@ -128,6 +128,9 @@ public final class ServiceBusActiveMessagesAvailablePeriodicNotificationsEventDa
         return this.subscriptionName;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {

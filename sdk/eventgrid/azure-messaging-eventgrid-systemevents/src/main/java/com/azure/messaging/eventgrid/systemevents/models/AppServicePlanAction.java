@@ -4,48 +4,48 @@
 
 package com.azure.messaging.eventgrid.systemevents.models;
 
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
- * Defines values for AppServicePlanAction.
+ * Type of action on the app service plan.
  */
-public enum AppServicePlanAction {
+public final class AppServicePlanAction extends ExpandableStringEnum<AppServicePlanAction> {
     /**
-     * Enum value Updated.
+     * App Service plan is being updated.
      */
-    UPDATED("Updated");
+    @Generated
+    public static final AppServicePlanAction UPDATED = fromString("Updated");
 
     /**
-     * The actual serialized value for a AppServicePlanAction instance.
-     */
-    private final String value;
-
-    AppServicePlanAction(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a AppServicePlanAction instance.
+     * Creates a new instance of AppServicePlanAction value.
      * 
-     * @param value the serialized value to parse.
-     * @return the parsed AppServicePlanAction object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static AppServicePlanAction fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        AppServicePlanAction[] items = AppServicePlanAction.values();
-        for (AppServicePlanAction item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Generated
+    @Deprecated
+    public AppServicePlanAction() {
     }
 
     /**
-     * {@inheritDoc}
+     * Creates or finds a AppServicePlanAction from its string representation.
+     * 
+     * @param name a name to look for.
+     * @return the corresponding AppServicePlanAction.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    @Generated
+    public static AppServicePlanAction fromString(String name) {
+        return fromString(name, AppServicePlanAction.class);
+    }
+
+    /**
+     * Gets known AppServicePlanAction values.
+     * 
+     * @return known AppServicePlanAction values.
+     */
+    @Generated
+    public static Collection<AppServicePlanAction> values() {
+        return values(AppServicePlanAction.class);
     }
 }

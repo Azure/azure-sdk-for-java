@@ -6,6 +6,7 @@ package com.azure.messaging.eventgrid.systemevents.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -18,24 +19,84 @@ import java.time.format.DateTimeFormatter;
  */
 @Immutable
 public final class ContainerRegistryChartPushedEventData extends ContainerRegistryArtifactEventData {
-    /**
-     * Creates an instance of ContainerRegistryChartPushedEventData class.
+    /*
+     * The location of the event.
      */
     @Generated
-    private ContainerRegistryChartPushedEventData() {
+    private String location;
+
+    /*
+     * The action that encompasses the provided event.
+     */
+    @Generated
+    private String action;
+
+    /*
+     * The event ID.
+     */
+    @Generated
+    private String id;
+
+    /**
+     * Creates an instance of ContainerRegistryChartPushedEventData class.
+     * 
+     * @param timestamp the timestamp value to set.
+     * @param target the target value to set.
+     * @param connectedRegistry the connectedRegistry value to set.
+     */
+    @Generated
+    private ContainerRegistryChartPushedEventData(OffsetDateTime timestamp, ContainerRegistryArtifactEventTarget target,
+        ContainerRegistryEventConnectedRegistry connectedRegistry) {
+        super(timestamp, target, connectedRegistry);
     }
 
+    /**
+     * Get the location property: The location of the event.
+     * 
+     * @return the location value.
+     */
+    @Generated
+    @Override
+    public String getLocation() {
+        return this.location;
+    }
+
+    /**
+     * Get the action property: The action that encompasses the provided event.
+     * 
+     * @return the action value.
+     */
+    @Generated
+    @Override
+    public String getAction() {
+        return this.action;
+    }
+
+    /**
+     * Get the id property: The event ID.
+     * 
+     * @return the id value.
+     */
+    @Generated
+    @Override
+    public String getId() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("id", getId());
         jsonWriter.writeStringField("timestamp",
             getTimestamp() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getTimestamp()));
-        jsonWriter.writeStringField("action", getAction());
-        jsonWriter.writeStringField("location", getLocation());
         jsonWriter.writeJsonField("target", getTarget());
         jsonWriter.writeJsonField("connectedRegistry", getConnectedRegistry());
+        jsonWriter.writeStringField("id", getId());
+        jsonWriter.writeStringField("action", getAction());
+        jsonWriter.writeStringField("location", getLocation());
         return jsonWriter.writeEndObject();
     }
 
@@ -45,36 +106,44 @@ public final class ContainerRegistryChartPushedEventData extends ContainerRegist
      * @param jsonReader The JsonReader being read.
      * @return An instance of ContainerRegistryChartPushedEventData if the JsonReader was pointing to an instance of it,
      * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ContainerRegistryChartPushedEventData.
      */
     @Generated
     public static ContainerRegistryChartPushedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ContainerRegistryChartPushedEventData deserializedContainerRegistryChartPushedEventData
-                = new ContainerRegistryChartPushedEventData();
+            OffsetDateTime timestamp = null;
+            ContainerRegistryArtifactEventTarget target = null;
+            ContainerRegistryEventConnectedRegistry connectedRegistry = null;
+            String id = null;
+            String action = null;
+            String location = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("id".equals(fieldName)) {
-                    deserializedContainerRegistryChartPushedEventData.setId(reader.getString());
-                } else if ("timestamp".equals(fieldName)) {
-                    deserializedContainerRegistryChartPushedEventData.setTimestamp(
-                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
-                } else if ("action".equals(fieldName)) {
-                    deserializedContainerRegistryChartPushedEventData.setAction(reader.getString());
-                } else if ("location".equals(fieldName)) {
-                    deserializedContainerRegistryChartPushedEventData.setLocation(reader.getString());
+                if ("timestamp".equals(fieldName)) {
+                    timestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("target".equals(fieldName)) {
-                    deserializedContainerRegistryChartPushedEventData
-                        .setTarget(ContainerRegistryArtifactEventTarget.fromJson(reader));
+                    target = ContainerRegistryArtifactEventTarget.fromJson(reader);
                 } else if ("connectedRegistry".equals(fieldName)) {
-                    deserializedContainerRegistryChartPushedEventData
-                        .setConnectedRegistry(ContainerRegistryEventConnectedRegistry.fromJson(reader));
+                    connectedRegistry = ContainerRegistryEventConnectedRegistry.fromJson(reader);
+                } else if ("id".equals(fieldName)) {
+                    id = reader.getString();
+                } else if ("action".equals(fieldName)) {
+                    action = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    location = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
+            ContainerRegistryChartPushedEventData deserializedContainerRegistryChartPushedEventData
+                = new ContainerRegistryChartPushedEventData(timestamp, target, connectedRegistry);
+            deserializedContainerRegistryChartPushedEventData.id = id;
+            deserializedContainerRegistryChartPushedEventData.action = action;
+            deserializedContainerRegistryChartPushedEventData.location = location;
 
             return deserializedContainerRegistryChartPushedEventData;
         });

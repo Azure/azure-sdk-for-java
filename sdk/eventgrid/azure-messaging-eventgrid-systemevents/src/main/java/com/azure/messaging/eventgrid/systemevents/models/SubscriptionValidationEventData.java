@@ -13,15 +13,14 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Schema of the Data property of an EventGridEvent for a Microsoft.EventGrid.SystemEvents.SubscriptionValidationEvent
- * event.
+ * Schema of the Data property of an EventGridEvent for a Microsoft.EventGrid.SubscriptionValidationEvent event.
  */
 @Immutable
 public final class SubscriptionValidationEventData implements JsonSerializable<SubscriptionValidationEventData> {
     /*
      * The validation code sent by Azure Event Grid to validate an event subscription.
-     * To complete the validation handshake, the subscriber must either respond with this validation code as part of
-     * the validation response,
+     * To complete the validation handshake, the subscriber must either respond with this validation code as part of the
+     * validation response,
      * or perform a GET request on the validationUrl (available starting version 2018-05-01-preview).
      */
     @Generated
@@ -45,8 +44,8 @@ public final class SubscriptionValidationEventData implements JsonSerializable<S
 
     /**
      * Get the validationCode property: The validation code sent by Azure Event Grid to validate an event subscription.
-     * To complete the validation handshake, the subscriber must either respond with this validation code as part of
-     * the validation response,
+     * To complete the validation handshake, the subscriber must either respond with this validation code as part of the
+     * validation response,
      * or perform a GET request on the validationUrl (available starting version 2018-05-01-preview).
      * 
      * @return the validationCode value.
@@ -70,10 +69,15 @@ public final class SubscriptionValidationEventData implements JsonSerializable<S
         return this.validationUrl;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("validationCode", this.validationCode);
+        jsonWriter.writeStringField("validationUrl", this.validationUrl);
         return jsonWriter.writeEndObject();
     }
 

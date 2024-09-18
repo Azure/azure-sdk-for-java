@@ -6,6 +6,7 @@ package com.azure.messaging.eventgrid.systemevents.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -18,12 +19,12 @@ import java.time.format.DateTimeFormatter;
  * Schema of the Data property of an EventGridEvent for a Microsoft.Cache.ImportRDBCompleted event.
  */
 @Immutable
-public final class RedisImportRdbCompletedEventData implements JsonSerializable<RedisImportRdbCompletedEventData> {
+public final class RedisImportRDBCompletedEventData implements JsonSerializable<RedisImportRDBCompletedEventData> {
     /*
      * The time at which the event occurred.
      */
     @Generated
-    private OffsetDateTime timestamp;
+    private final OffsetDateTime timestamp;
 
     /*
      * The name of this event.
@@ -38,10 +39,13 @@ public final class RedisImportRdbCompletedEventData implements JsonSerializable<
     private String status;
 
     /**
-     * Creates an instance of RedisImportRdbCompletedEventData class.
+     * Creates an instance of RedisImportRDBCompletedEventData class.
+     * 
+     * @param timestamp the timestamp value to set.
      */
     @Generated
-    private RedisImportRdbCompletedEventData() {
+    private RedisImportRDBCompletedEventData(OffsetDateTime timestamp) {
+        this.timestamp = timestamp;
     }
 
     /**
@@ -74,6 +78,9 @@ public final class RedisImportRdbCompletedEventData implements JsonSerializable<
         return this.status;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
@@ -86,35 +93,41 @@ public final class RedisImportRdbCompletedEventData implements JsonSerializable<
     }
 
     /**
-     * Reads an instance of RedisImportRdbCompletedEventData from the JsonReader.
+     * Reads an instance of RedisImportRDBCompletedEventData from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of RedisImportRdbCompletedEventData if the JsonReader was pointing to an instance of it, or
+     * @return An instance of RedisImportRDBCompletedEventData if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the RedisImportRdbCompletedEventData.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RedisImportRDBCompletedEventData.
      */
     @Generated
-    public static RedisImportRdbCompletedEventData fromJson(JsonReader jsonReader) throws IOException {
+    public static RedisImportRDBCompletedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            RedisImportRdbCompletedEventData deserializedRedisImportRdbCompletedEventData
-                = new RedisImportRdbCompletedEventData();
+            OffsetDateTime timestamp = null;
+            String name = null;
+            String status = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("timestamp".equals(fieldName)) {
-                    deserializedRedisImportRdbCompletedEventData.timestamp
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    timestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("name".equals(fieldName)) {
-                    deserializedRedisImportRdbCompletedEventData.name = reader.getString();
+                    name = reader.getString();
                 } else if ("status".equals(fieldName)) {
-                    deserializedRedisImportRdbCompletedEventData.status = reader.getString();
+                    status = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
+            RedisImportRDBCompletedEventData deserializedRedisImportRDBCompletedEventData
+                = new RedisImportRDBCompletedEventData(timestamp);
+            deserializedRedisImportRDBCompletedEventData.name = name;
+            deserializedRedisImportRDBCompletedEventData.status = status;
 
-            return deserializedRedisImportRdbCompletedEventData;
+            return deserializedRedisImportRDBCompletedEventData;
         });
     }
 }

@@ -48,19 +48,24 @@ public final class ResourceNotificationsResourceUpdatedDetails
      * the tags on the resource for which the event is being emitted
      */
     @Generated
-    private String tags;
+    private final Map<String, String> tags;
 
     /*
      * properties in the payload of the resource for which the event is being emitted
      */
     @Generated
-    private Map<String, Object> properties;
+    private final Map<String, Object> properties;
 
     /**
      * Creates an instance of ResourceNotificationsResourceUpdatedDetails class.
+     * 
+     * @param tags the tags value to set.
+     * @param properties the properties value to set.
      */
     @Generated
-    private ResourceNotificationsResourceUpdatedDetails() {
+    private ResourceNotificationsResourceUpdatedDetails(Map<String, String> tags, Map<String, Object> properties) {
+        this.tags = tags;
+        this.properties = properties;
     }
 
     /**
@@ -109,7 +114,7 @@ public final class ResourceNotificationsResourceUpdatedDetails
      * @return the tags value.
      */
     @Generated
-    public String getTags() {
+    public Map<String, String> getTags() {
         return this.tags;
     }
 
@@ -123,16 +128,19 @@ public final class ResourceNotificationsResourceUpdatedDetails
         return this.properties;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("properties", this.properties, (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeStringField("id", this.id);
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("type", this.type);
         jsonWriter.writeStringField("location", this.location);
-        jsonWriter.writeStringField("tags", this.tags);
-        jsonWriter.writeMapField("properties", this.properties, (writer, element) -> writer.writeUntyped(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -142,34 +150,44 @@ public final class ResourceNotificationsResourceUpdatedDetails
      * @param jsonReader The JsonReader being read.
      * @return An instance of ResourceNotificationsResourceUpdatedDetails if the JsonReader was pointing to an instance
      * of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ResourceNotificationsResourceUpdatedDetails.
      */
     @Generated
     public static ResourceNotificationsResourceUpdatedDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ResourceNotificationsResourceUpdatedDetails deserializedResourceNotificationsResourceUpdatedDetails
-                = new ResourceNotificationsResourceUpdatedDetails();
+            Map<String, String> tags = null;
+            Map<String, Object> properties = null;
+            String id = null;
+            String name = null;
+            String type = null;
+            String location = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("id".equals(fieldName)) {
-                    deserializedResourceNotificationsResourceUpdatedDetails.id = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    deserializedResourceNotificationsResourceUpdatedDetails.name = reader.getString();
-                } else if ("type".equals(fieldName)) {
-                    deserializedResourceNotificationsResourceUpdatedDetails.type = reader.getString();
-                } else if ("location".equals(fieldName)) {
-                    deserializedResourceNotificationsResourceUpdatedDetails.location = reader.getString();
-                } else if ("tags".equals(fieldName)) {
-                    deserializedResourceNotificationsResourceUpdatedDetails.tags = reader.getString();
+                if ("tags".equals(fieldName)) {
+                    tags = reader.readMap(reader1 -> reader1.getString());
                 } else if ("properties".equals(fieldName)) {
-                    Map<String, Object> properties = reader.readMap(reader1 -> reader1.readUntyped());
-                    deserializedResourceNotificationsResourceUpdatedDetails.properties = properties;
+                    properties = reader.readMap(reader1 -> reader1.readUntyped());
+                } else if ("id".equals(fieldName)) {
+                    id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    location = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
+            ResourceNotificationsResourceUpdatedDetails deserializedResourceNotificationsResourceUpdatedDetails
+                = new ResourceNotificationsResourceUpdatedDetails(tags, properties);
+            deserializedResourceNotificationsResourceUpdatedDetails.id = id;
+            deserializedResourceNotificationsResourceUpdatedDetails.name = name;
+            deserializedResourceNotificationsResourceUpdatedDetails.type = type;
+            deserializedResourceNotificationsResourceUpdatedDetails.location = location;
 
             return deserializedResourceNotificationsResourceUpdatedDetails;
         });

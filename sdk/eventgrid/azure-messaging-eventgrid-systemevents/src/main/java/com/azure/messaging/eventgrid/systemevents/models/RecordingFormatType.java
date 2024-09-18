@@ -4,58 +4,60 @@
 
 package com.azure.messaging.eventgrid.systemevents.models;
 
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
  * Recording format type.
  */
-public enum RecordingFormatType {
+public final class RecordingFormatType extends ExpandableStringEnum<RecordingFormatType> {
     /**
      * WAV format.
      */
-    WAV("Wav"),
+    @Generated
+    public static final RecordingFormatType WAV = fromString("Wav");
 
     /**
      * MP3 format.
      */
-    MP3("Mp3"),
+    @Generated
+    public static final RecordingFormatType MP3 = fromString("Mp3");
 
     /**
      * MP4 format.
      */
-    MP4("Mp4");
+    @Generated
+    public static final RecordingFormatType MP4 = fromString("Mp4");
 
     /**
-     * The actual serialized value for a RecordingFormatType instance.
-     */
-    private final String value;
-
-    RecordingFormatType(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a RecordingFormatType instance.
+     * Creates a new instance of RecordingFormatType value.
      * 
-     * @param value the serialized value to parse.
-     * @return the parsed RecordingFormatType object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static RecordingFormatType fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        RecordingFormatType[] items = RecordingFormatType.values();
-        for (RecordingFormatType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Generated
+    @Deprecated
+    public RecordingFormatType() {
     }
 
     /**
-     * {@inheritDoc}
+     * Creates or finds a RecordingFormatType from its string representation.
+     * 
+     * @param name a name to look for.
+     * @return the corresponding RecordingFormatType.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    @Generated
+    public static RecordingFormatType fromString(String name) {
+        return fromString(name, RecordingFormatType.class);
+    }
+
+    /**
+     * Gets known RecordingFormatType values.
+     * 
+     * @return known RecordingFormatType values.
+     */
+    @Generated
+    public static Collection<RecordingFormatType> values() {
+        return values(RecordingFormatType.class);
     }
 }

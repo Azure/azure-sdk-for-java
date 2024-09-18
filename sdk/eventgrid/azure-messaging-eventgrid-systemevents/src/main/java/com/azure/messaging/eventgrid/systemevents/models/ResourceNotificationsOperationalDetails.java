@@ -6,6 +6,7 @@ package com.azure.messaging.eventgrid.systemevents.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -24,13 +25,16 @@ public final class ResourceNotificationsOperationalDetails
      * Date and Time when resource was updated
      */
     @Generated
-    private OffsetDateTime resourceEventTime;
+    private final OffsetDateTime resourceEventTime;
 
     /**
      * Creates an instance of ResourceNotificationsOperationalDetails class.
+     * 
+     * @param resourceEventTime the resourceEventTime value to set.
      */
     @Generated
-    private ResourceNotificationsOperationalDetails() {
+    private ResourceNotificationsOperationalDetails(OffsetDateTime resourceEventTime) {
+        this.resourceEventTime = resourceEventTime;
     }
 
     /**
@@ -43,12 +47,17 @@ public final class ResourceNotificationsOperationalDetails
         return this.resourceEventTime;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("resourceEventTime", this.resourceEventTime == null ? null
-            : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.resourceEventTime));
+        jsonWriter.writeStringField("resourceEventTime",
+            this.resourceEventTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.resourceEventTime));
         return jsonWriter.writeEndObject();
     }
 
@@ -58,26 +67,25 @@ public final class ResourceNotificationsOperationalDetails
      * @param jsonReader The JsonReader being read.
      * @return An instance of ResourceNotificationsOperationalDetails if the JsonReader was pointing to an instance of
      * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ResourceNotificationsOperationalDetails.
      */
     @Generated
     public static ResourceNotificationsOperationalDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ResourceNotificationsOperationalDetails deserializedResourceNotificationsOperationalDetails
-                = new ResourceNotificationsOperationalDetails();
+            OffsetDateTime resourceEventTime = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("resourceEventTime".equals(fieldName)) {
-                    deserializedResourceNotificationsOperationalDetails.resourceEventTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    resourceEventTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }
             }
-
-            return deserializedResourceNotificationsOperationalDetails;
+            return new ResourceNotificationsOperationalDetails(resourceEventTime);
         });
     }
 }

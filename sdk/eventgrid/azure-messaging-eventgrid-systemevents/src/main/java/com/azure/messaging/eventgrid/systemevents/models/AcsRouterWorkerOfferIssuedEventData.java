@@ -6,6 +6,7 @@ package com.azure.messaging.eventgrid.systemevents.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -41,43 +42,82 @@ public final class AcsRouterWorkerOfferIssuedEventData extends AcsRouterWorkerEv
      * Router Worker Offer Issued Worker Labels
      */
     @Generated
-    private Map<String, String> workerLabels;
+    private final Map<String, String> workerLabels;
 
     /*
      * Router Worker Offer Issued Time in UTC
      */
     @Generated
-    private OffsetDateTime offeredOn;
+    private final OffsetDateTime offeredOn;
 
     /*
      * Router Worker Offer Issued Expiration Time in UTC
      */
     @Generated
-    private OffsetDateTime expiresOn;
+    private final OffsetDateTime expiresOn;
 
     /*
      * Router Worker Offer Issued Worker Tags
      */
     @Generated
-    private Map<String, String> workerTags;
+    private final Map<String, String> workerTags;
 
     /*
      * Router Worker Offer Issued Job Labels
      */
     @Generated
-    private Map<String, String> jobLabels;
+    private final Map<String, String> jobLabels;
 
     /*
      * Router Worker Offer Issued Job Tags
      */
     @Generated
-    private Map<String, String> jobTags;
+    private final Map<String, String> jobTags;
+
+    /*
+     * Router Worker events Worker Id
+     */
+    @Generated
+    private String workerId;
+
+    /*
+     * Router Event Channel ID
+     */
+    @Generated
+    private String channelId;
+
+    /*
+     * Router Event Channel Reference
+     */
+    @Generated
+    private String channelReference;
+
+    /*
+     * Router Event Job ID
+     */
+    @Generated
+    private String jobId;
 
     /**
      * Creates an instance of AcsRouterWorkerOfferIssuedEventData class.
+     * 
+     * @param workerLabels the workerLabels value to set.
+     * @param offeredOn the offeredOn value to set.
+     * @param expiresOn the expiresOn value to set.
+     * @param workerTags the workerTags value to set.
+     * @param jobLabels the jobLabels value to set.
+     * @param jobTags the jobTags value to set.
      */
     @Generated
-    private AcsRouterWorkerOfferIssuedEventData() {
+    private AcsRouterWorkerOfferIssuedEventData(Map<String, String> workerLabels, OffsetDateTime offeredOn,
+        OffsetDateTime expiresOn, Map<String, String> workerTags, Map<String, String> jobLabels,
+        Map<String, String> jobTags) {
+        this.workerLabels = workerLabels;
+        this.offeredOn = offeredOn;
+        this.expiresOn = expiresOn;
+        this.workerTags = workerTags;
+        this.jobLabels = jobLabels;
+        this.jobTags = jobTags;
     }
 
     /**
@@ -170,6 +210,53 @@ public final class AcsRouterWorkerOfferIssuedEventData extends AcsRouterWorkerEv
         return this.jobTags;
     }
 
+    /**
+     * Get the workerId property: Router Worker events Worker Id.
+     * 
+     * @return the workerId value.
+     */
+    @Generated
+    @Override
+    public String getWorkerId() {
+        return this.workerId;
+    }
+
+    /**
+     * Get the channelId property: Router Event Channel ID.
+     * 
+     * @return the channelId value.
+     */
+    @Generated
+    @Override
+    public String getChannelId() {
+        return this.channelId;
+    }
+
+    /**
+     * Get the channelReference property: Router Event Channel Reference.
+     * 
+     * @return the channelReference value.
+     */
+    @Generated
+    @Override
+    public String getChannelReference() {
+        return this.channelReference;
+    }
+
+    /**
+     * Get the jobId property: Router Event Job ID.
+     * 
+     * @return the jobId value.
+     */
+    @Generated
+    @Override
+    public String getJobId() {
+        return this.jobId;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
@@ -178,9 +265,6 @@ public final class AcsRouterWorkerOfferIssuedEventData extends AcsRouterWorkerEv
         jsonWriter.writeStringField("channelReference", getChannelReference());
         jsonWriter.writeStringField("channelId", getChannelId());
         jsonWriter.writeStringField("workerId", getWorkerId());
-        jsonWriter.writeStringField("queueId", this.queueId);
-        jsonWriter.writeStringField("offerId", this.offerId);
-        jsonWriter.writeNumberField("jobPriority", this.jobPriority);
         jsonWriter.writeMapField("workerLabels", this.workerLabels, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("offeredOn",
             this.offeredOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.offeredOn));
@@ -189,6 +273,9 @@ public final class AcsRouterWorkerOfferIssuedEventData extends AcsRouterWorkerEv
         jsonWriter.writeMapField("workerTags", this.workerTags, (writer, element) -> writer.writeString(element));
         jsonWriter.writeMapField("jobLabels", this.jobLabels, (writer, element) -> writer.writeString(element));
         jsonWriter.writeMapField("jobTags", this.jobTags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("queueId", this.queueId);
+        jsonWriter.writeStringField("offerId", this.offerId);
+        jsonWriter.writeNumberField("jobPriority", this.jobPriority);
         return jsonWriter.writeEndObject();
     }
 
@@ -198,54 +285,71 @@ public final class AcsRouterWorkerOfferIssuedEventData extends AcsRouterWorkerEv
      * @param jsonReader The JsonReader being read.
      * @return An instance of AcsRouterWorkerOfferIssuedEventData if the JsonReader was pointing to an instance of it,
      * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AcsRouterWorkerOfferIssuedEventData.
      */
     @Generated
     public static AcsRouterWorkerOfferIssuedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AcsRouterWorkerOfferIssuedEventData deserializedAcsRouterWorkerOfferIssuedEventData
-                = new AcsRouterWorkerOfferIssuedEventData();
+            String jobId = null;
+            String channelReference = null;
+            String channelId = null;
+            String workerId = null;
+            Map<String, String> workerLabels = null;
+            OffsetDateTime offeredOn = null;
+            OffsetDateTime expiresOn = null;
+            Map<String, String> workerTags = null;
+            Map<String, String> jobLabels = null;
+            Map<String, String> jobTags = null;
+            String queueId = null;
+            String offerId = null;
+            Integer jobPriority = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("jobId".equals(fieldName)) {
-                    deserializedAcsRouterWorkerOfferIssuedEventData.setJobId(reader.getString());
+                    jobId = reader.getString();
                 } else if ("channelReference".equals(fieldName)) {
-                    deserializedAcsRouterWorkerOfferIssuedEventData.setChannelReference(reader.getString());
+                    channelReference = reader.getString();
                 } else if ("channelId".equals(fieldName)) {
-                    deserializedAcsRouterWorkerOfferIssuedEventData.setChannelId(reader.getString());
+                    channelId = reader.getString();
                 } else if ("workerId".equals(fieldName)) {
-                    deserializedAcsRouterWorkerOfferIssuedEventData.setWorkerId(reader.getString());
-                } else if ("queueId".equals(fieldName)) {
-                    deserializedAcsRouterWorkerOfferIssuedEventData.queueId = reader.getString();
-                } else if ("offerId".equals(fieldName)) {
-                    deserializedAcsRouterWorkerOfferIssuedEventData.offerId = reader.getString();
-                } else if ("jobPriority".equals(fieldName)) {
-                    deserializedAcsRouterWorkerOfferIssuedEventData.jobPriority
-                        = reader.getNullable(JsonReader::getInt);
+                    workerId = reader.getString();
                 } else if ("workerLabels".equals(fieldName)) {
-                    Map<String, String> workerLabels = reader.readMap(reader1 -> reader1.getString());
-                    deserializedAcsRouterWorkerOfferIssuedEventData.workerLabels = workerLabels;
+                    workerLabels = reader.readMap(reader1 -> reader1.getString());
                 } else if ("offeredOn".equals(fieldName)) {
-                    deserializedAcsRouterWorkerOfferIssuedEventData.offeredOn
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    offeredOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("expiresOn".equals(fieldName)) {
-                    deserializedAcsRouterWorkerOfferIssuedEventData.expiresOn
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    expiresOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("workerTags".equals(fieldName)) {
-                    Map<String, String> workerTags = reader.readMap(reader1 -> reader1.getString());
-                    deserializedAcsRouterWorkerOfferIssuedEventData.workerTags = workerTags;
+                    workerTags = reader.readMap(reader1 -> reader1.getString());
                 } else if ("jobLabels".equals(fieldName)) {
-                    Map<String, String> jobLabels = reader.readMap(reader1 -> reader1.getString());
-                    deserializedAcsRouterWorkerOfferIssuedEventData.jobLabels = jobLabels;
+                    jobLabels = reader.readMap(reader1 -> reader1.getString());
                 } else if ("jobTags".equals(fieldName)) {
-                    Map<String, String> jobTags = reader.readMap(reader1 -> reader1.getString());
-                    deserializedAcsRouterWorkerOfferIssuedEventData.jobTags = jobTags;
+                    jobTags = reader.readMap(reader1 -> reader1.getString());
+                } else if ("queueId".equals(fieldName)) {
+                    queueId = reader.getString();
+                } else if ("offerId".equals(fieldName)) {
+                    offerId = reader.getString();
+                } else if ("jobPriority".equals(fieldName)) {
+                    jobPriority = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }
             }
+            AcsRouterWorkerOfferIssuedEventData deserializedAcsRouterWorkerOfferIssuedEventData
+                = new AcsRouterWorkerOfferIssuedEventData(workerLabels, offeredOn, expiresOn, workerTags, jobLabels,
+                    jobTags);
+            deserializedAcsRouterWorkerOfferIssuedEventData.jobId = jobId;
+            deserializedAcsRouterWorkerOfferIssuedEventData.channelReference = channelReference;
+            deserializedAcsRouterWorkerOfferIssuedEventData.channelId = channelId;
+            deserializedAcsRouterWorkerOfferIssuedEventData.workerId = workerId;
+            deserializedAcsRouterWorkerOfferIssuedEventData.queueId = queueId;
+            deserializedAcsRouterWorkerOfferIssuedEventData.offerId = offerId;
+            deserializedAcsRouterWorkerOfferIssuedEventData.jobPriority = jobPriority;
 
             return deserializedAcsRouterWorkerOfferIssuedEventData;
         });

@@ -4,73 +4,78 @@
 
 package com.azure.messaging.eventgrid.systemevents.models;
 
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
  * Router Job Worker Selector Label Operator.
  */
-public enum AcsRouterLabelOperator {
+public final class AcsRouterLabelOperator extends ExpandableStringEnum<AcsRouterLabelOperator> {
     /**
      * Router Label Operator Equal.
      */
-    EQUAL("Equal"),
+    @Generated
+    public static final AcsRouterLabelOperator EQUAL = fromString("Equal");
 
     /**
      * Router Label Operator Not Equal.
      */
-    NOT_EQUAL("NotEqual"),
+    @Generated
+    public static final AcsRouterLabelOperator NOT_EQUAL = fromString("NotEqual");
 
     /**
      * Router Label Operator Greater.
      */
-    GREATER("Greater"),
+    @Generated
+    public static final AcsRouterLabelOperator GREATER = fromString("Greater");
 
     /**
      * Router Label Operator Less.
      */
-    LESS("Less"),
+    @Generated
+    public static final AcsRouterLabelOperator LESS = fromString("Less");
 
     /**
      * Router Label Operator Greater than or equal.
      */
-    GREATER_THAN_OR_EQUAL("GreaterThanOrEqual"),
+    @Generated
+    public static final AcsRouterLabelOperator GREATER_THAN_OR_EQUAL = fromString("GreaterThanOrEqual");
 
     /**
      * Router Label Operator Less than or equal.
      */
-    LESS_THAN_OR_EQUAL("LessThanOrEqual");
+    @Generated
+    public static final AcsRouterLabelOperator LESS_THAN_OR_EQUAL = fromString("LessThanOrEqual");
 
     /**
-     * The actual serialized value for a AcsRouterLabelOperator instance.
-     */
-    private final String value;
-
-    AcsRouterLabelOperator(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a AcsRouterLabelOperator instance.
+     * Creates a new instance of AcsRouterLabelOperator value.
      * 
-     * @param value the serialized value to parse.
-     * @return the parsed AcsRouterLabelOperator object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static AcsRouterLabelOperator fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        AcsRouterLabelOperator[] items = AcsRouterLabelOperator.values();
-        for (AcsRouterLabelOperator item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Generated
+    @Deprecated
+    public AcsRouterLabelOperator() {
     }
 
     /**
-     * {@inheritDoc}
+     * Creates or finds a AcsRouterLabelOperator from its string representation.
+     * 
+     * @param name a name to look for.
+     * @return the corresponding AcsRouterLabelOperator.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    @Generated
+    public static AcsRouterLabelOperator fromString(String name) {
+        return fromString(name, AcsRouterLabelOperator.class);
+    }
+
+    /**
+     * Gets known AcsRouterLabelOperator values.
+     * 
+     * @return known AcsRouterLabelOperator values.
+     */
+    @Generated
+    public static Collection<AcsRouterLabelOperator> values() {
+        return values(AcsRouterLabelOperator.class);
     }
 }

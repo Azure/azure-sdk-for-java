@@ -34,13 +34,16 @@ public final class AcsRouterQueueDetails implements JsonSerializable<AcsRouterQu
      * Router Queue Labels
      */
     @Generated
-    private Map<String, String> labels;
+    private final Map<String, String> labels;
 
     /**
      * Creates an instance of AcsRouterQueueDetails class.
+     * 
+     * @param labels the labels value to set.
      */
     @Generated
-    private AcsRouterQueueDetails() {
+    private AcsRouterQueueDetails(Map<String, String> labels) {
+        this.labels = labels;
     }
 
     /**
@@ -73,13 +76,16 @@ public final class AcsRouterQueueDetails implements JsonSerializable<AcsRouterQu
         return this.labels;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("labels", this.labels, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("id", this.id);
         jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeMapField("labels", this.labels, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -89,27 +95,32 @@ public final class AcsRouterQueueDetails implements JsonSerializable<AcsRouterQu
      * @param jsonReader The JsonReader being read.
      * @return An instance of AcsRouterQueueDetails if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AcsRouterQueueDetails.
      */
     @Generated
     public static AcsRouterQueueDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AcsRouterQueueDetails deserializedAcsRouterQueueDetails = new AcsRouterQueueDetails();
+            Map<String, String> labels = null;
+            String id = null;
+            String name = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("id".equals(fieldName)) {
-                    deserializedAcsRouterQueueDetails.id = reader.getString();
+                if ("labels".equals(fieldName)) {
+                    labels = reader.readMap(reader1 -> reader1.getString());
+                } else if ("id".equals(fieldName)) {
+                    id = reader.getString();
                 } else if ("name".equals(fieldName)) {
-                    deserializedAcsRouterQueueDetails.name = reader.getString();
-                } else if ("labels".equals(fieldName)) {
-                    Map<String, String> labels = reader.readMap(reader1 -> reader1.getString());
-                    deserializedAcsRouterQueueDetails.labels = labels;
+                    name = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
+            AcsRouterQueueDetails deserializedAcsRouterQueueDetails = new AcsRouterQueueDetails(labels);
+            deserializedAcsRouterQueueDetails.id = id;
+            deserializedAcsRouterQueueDetails.name = name;
 
             return deserializedAcsRouterQueueDetails;
         });

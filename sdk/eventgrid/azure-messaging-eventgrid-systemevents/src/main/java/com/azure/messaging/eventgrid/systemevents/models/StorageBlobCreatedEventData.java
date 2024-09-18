@@ -11,24 +11,13 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * Schema of the Data property of an EventGridEvent for a Microsoft.Storage.BlobCreated event.
  */
 @Immutable
 public final class StorageBlobCreatedEventData implements JsonSerializable<StorageBlobCreatedEventData> {
-    /*
-     * The etag of the blob at the time this event was triggered.
-     */
-    @Generated
-    private String eTag;
-
-    /*
-     * The offset of the blob in bytes.
-     */
-    @Generated
-    private Long contentOffset;
-
     /*
      * The name of the API/operation that triggered this event.
      */
@@ -48,37 +37,10 @@ public final class StorageBlobCreatedEventData implements JsonSerializable<Stora
     private String requestId;
 
     /*
-     * The identity of the requester that triggered this event.
+     * The etag of the blob at the time this event was triggered.
      */
     @Generated
-    private String identity;
-
-    /*
-     * For service use only. Diagnostic data occasionally included by the Azure Storage service. This property should
-     * be ignored by event consumers.
-     */
-    @Generated
-    private Object storageDiagnostics;
-
-    /*
-     * An opaque string value representing the logical sequence of events for any particular blob name. Users can use
-     * standard string comparison to understand the relative sequence of two events on the same blob name.
-     */
-    @Generated
-    private String sequencer;
-
-    /*
-     * The size of the blob in bytes. This is the same as what would be returned in the Content-Length header from the
-     * blob.
-     */
-    @Generated
-    private Long contentLength;
-
-    /*
-     * The path to the blob.
-     */
-    @Generated
-    private String url;
+    private String eTag;
 
     /*
      * The content type of the blob. This is the same as what would be returned in the Content-Type header from the
@@ -88,36 +50,66 @@ public final class StorageBlobCreatedEventData implements JsonSerializable<Stora
     private String contentType;
 
     /*
+     * The size of the blob in bytes. This is the same as what would be returned in the Content-Length header from the
+     * blob.
+     */
+    @Generated
+    private Long contentLength;
+
+    /*
+     * The offset of the blob in bytes.
+     */
+    @Generated
+    private Long contentOffset;
+
+    /*
      * The type of blob.
      */
     @Generated
     private String blobType;
 
+    /*
+     * The current tier of the blob.
+     */
+    @Generated
+    private final StorageBlobAccessTier accessTier;
+
+    /*
+     * The path to the blob.
+     */
+    @Generated
+    private String url;
+
+    /*
+     * An opaque string value representing the logical sequence of events for any particular blob name. Users can use
+     * standard string comparison to understand the relative sequence of two events on the same blob name.
+     */
+    @Generated
+    private String sequencer;
+
+    /*
+     * The identity of the requester that triggered this event.
+     */
+    @Generated
+    private String identity;
+
+    /*
+     * For service use only. Diagnostic data occasionally included by the Azure Storage service. This property should be
+     * ignored by event consumers.
+     */
+    @Generated
+    private final Map<String, Object> storageDiagnostics;
+
     /**
      * Creates an instance of StorageBlobCreatedEventData class.
-     */
-    @Generated
-    private StorageBlobCreatedEventData() {
-    }
-
-    /**
-     * Get the eTag property: The etag of the blob at the time this event was triggered.
      * 
-     * @return the eTag value.
+     * @param accessTier the accessTier value to set.
+     * @param storageDiagnostics the storageDiagnostics value to set.
      */
     @Generated
-    public String getETag() {
-        return this.eTag;
-    }
-
-    /**
-     * Get the contentOffset property: The offset of the blob in bytes.
-     * 
-     * @return the contentOffset value.
-     */
-    @Generated
-    public Long getContentOffset() {
-        return this.contentOffset;
+    private StorageBlobCreatedEventData(StorageBlobAccessTier accessTier, Map<String, Object> storageDiagnostics) {
+        this.accessTier = accessTier;
+        this.storageDiagnostics = storageDiagnostics;
     }
 
     /**
@@ -131,8 +123,8 @@ public final class StorageBlobCreatedEventData implements JsonSerializable<Stora
     }
 
     /**
-     * Get the clientRequestId property: A request id provided by the client of the storage API operation that
-     * triggered this event.
+     * Get the clientRequestId property: A request id provided by the client of the storage API operation that triggered
+     * this event.
      * 
      * @return the clientRequestId value.
      */
@@ -153,6 +145,90 @@ public final class StorageBlobCreatedEventData implements JsonSerializable<Stora
     }
 
     /**
+     * Get the eTag property: The etag of the blob at the time this event was triggered.
+     * 
+     * @return the eTag value.
+     */
+    @Generated
+    public String getETag() {
+        return this.eTag;
+    }
+
+    /**
+     * Get the contentType property: The content type of the blob. This is the same as what would be returned in the
+     * Content-Type header from the blob.
+     * 
+     * @return the contentType value.
+     */
+    @Generated
+    public String getContentType() {
+        return this.contentType;
+    }
+
+    /**
+     * Get the contentLength property: The size of the blob in bytes. This is the same as what would be returned in the
+     * Content-Length header from the blob.
+     * 
+     * @return the contentLength value.
+     */
+    @Generated
+    public Long getContentLength() {
+        return this.contentLength;
+    }
+
+    /**
+     * Get the contentOffset property: The offset of the blob in bytes.
+     * 
+     * @return the contentOffset value.
+     */
+    @Generated
+    public Long getContentOffset() {
+        return this.contentOffset;
+    }
+
+    /**
+     * Get the blobType property: The type of blob.
+     * 
+     * @return the blobType value.
+     */
+    @Generated
+    public String getBlobType() {
+        return this.blobType;
+    }
+
+    /**
+     * Get the accessTier property: The current tier of the blob.
+     * 
+     * @return the accessTier value.
+     */
+    @Generated
+    public StorageBlobAccessTier getAccessTier() {
+        return this.accessTier;
+    }
+
+    /**
+     * Get the url property: The path to the blob.
+     * 
+     * @return the url value.
+     */
+    @Generated
+    public String getUrl() {
+        return this.url;
+    }
+
+    /**
+     * Get the sequencer property: An opaque string value representing the logical sequence of events for any particular
+     * blob name. Users can use standard string comparison to understand the relative sequence of two events on the same
+     * blob name.
+     * 
+     * @return the sequencer value.
+     */
+    @Generated
+    public String getSequencer() {
+        return this.sequencer;
+    }
+
+    /**
      * Get the identity property: The identity of the requester that triggered this event.
      * 
      * @return the identity value.
@@ -169,80 +245,31 @@ public final class StorageBlobCreatedEventData implements JsonSerializable<Stora
      * @return the storageDiagnostics value.
      */
     @Generated
-    public Object getStorageDiagnostics() {
+    public Map<String, Object> getStorageDiagnostics() {
         return this.storageDiagnostics;
     }
 
     /**
-     * Get the sequencer property: An opaque string value representing the logical sequence of events for any
-     * particular blob name. Users can use standard string comparison to understand the relative sequence of two events
-     * on the same blob name.
-     * 
-     * @return the sequencer value.
+     * {@inheritDoc}
      */
-    @Generated
-    public String getSequencer() {
-        return this.sequencer;
-    }
-
-    /**
-     * Get the contentLength property: The size of the blob in bytes. This is the same as what would be returned in the
-     * Content-Length header from the blob.
-     * 
-     * @return the contentLength value.
-     */
-    @Generated
-    public Long getContentLength() {
-        return this.contentLength;
-    }
-
-    /**
-     * Get the url property: The path to the blob.
-     * 
-     * @return the url value.
-     */
-    @Generated
-    public String getUrl() {
-        return this.url;
-    }
-
-    /**
-     * Get the contentType property: The content type of the blob. This is the same as what would be returned in the
-     * Content-Type header from the blob.
-     * 
-     * @return the contentType value.
-     */
-    @Generated
-    public String getContentType() {
-        return this.contentType;
-    }
-
-    /**
-     * Get the blobType property: The type of blob.
-     * 
-     * @return the blobType value.
-     */
-    @Generated
-    public String getBlobType() {
-        return this.blobType;
-    }
-
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("eTag", this.eTag);
-        jsonWriter.writeNumberField("contentOffset", this.contentOffset);
+        jsonWriter.writeStringField("accessTier", this.accessTier == null ? null : this.accessTier.toString());
+        jsonWriter.writeMapField("storageDiagnostics", this.storageDiagnostics,
+            (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeStringField("api", this.api);
         jsonWriter.writeStringField("clientRequestId", this.clientRequestId);
         jsonWriter.writeStringField("requestId", this.requestId);
-        jsonWriter.writeStringField("identity", this.identity);
-        jsonWriter.writeUntypedField("storageDiagnostics", this.storageDiagnostics);
-        jsonWriter.writeStringField("sequencer", this.sequencer);
-        jsonWriter.writeNumberField("contentLength", this.contentLength);
-        jsonWriter.writeStringField("url", this.url);
+        jsonWriter.writeStringField("eTag", this.eTag);
         jsonWriter.writeStringField("contentType", this.contentType);
+        jsonWriter.writeNumberField("contentLength", this.contentLength);
+        jsonWriter.writeNumberField("contentOffset", this.contentOffset);
         jsonWriter.writeStringField("blobType", this.blobType);
+        jsonWriter.writeStringField("url", this.url);
+        jsonWriter.writeStringField("sequencer", this.sequencer);
+        jsonWriter.writeStringField("identity", this.identity);
         return jsonWriter.writeEndObject();
     }
 
@@ -252,44 +279,72 @@ public final class StorageBlobCreatedEventData implements JsonSerializable<Stora
      * @param jsonReader The JsonReader being read.
      * @return An instance of StorageBlobCreatedEventData if the JsonReader was pointing to an instance of it, or null
      * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the StorageBlobCreatedEventData.
      */
     @Generated
     public static StorageBlobCreatedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            StorageBlobCreatedEventData deserializedStorageBlobCreatedEventData = new StorageBlobCreatedEventData();
+            StorageBlobAccessTier accessTier = null;
+            Map<String, Object> storageDiagnostics = null;
+            String api = null;
+            String clientRequestId = null;
+            String requestId = null;
+            String eTag = null;
+            String contentType = null;
+            Long contentLength = null;
+            Long contentOffset = null;
+            String blobType = null;
+            String url = null;
+            String sequencer = null;
+            String identity = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("eTag".equals(fieldName)) {
-                    deserializedStorageBlobCreatedEventData.eTag = reader.getString();
-                } else if ("contentOffset".equals(fieldName)) {
-                    deserializedStorageBlobCreatedEventData.contentOffset = reader.getNullable(JsonReader::getLong);
-                } else if ("api".equals(fieldName)) {
-                    deserializedStorageBlobCreatedEventData.api = reader.getString();
-                } else if ("clientRequestId".equals(fieldName)) {
-                    deserializedStorageBlobCreatedEventData.clientRequestId = reader.getString();
-                } else if ("requestId".equals(fieldName)) {
-                    deserializedStorageBlobCreatedEventData.requestId = reader.getString();
-                } else if ("identity".equals(fieldName)) {
-                    deserializedStorageBlobCreatedEventData.identity = reader.getString();
+                if ("accessTier".equals(fieldName)) {
+                    accessTier = StorageBlobAccessTier.fromString(reader.getString());
                 } else if ("storageDiagnostics".equals(fieldName)) {
-                    deserializedStorageBlobCreatedEventData.storageDiagnostics = reader.readUntyped();
-                } else if ("sequencer".equals(fieldName)) {
-                    deserializedStorageBlobCreatedEventData.sequencer = reader.getString();
-                } else if ("contentLength".equals(fieldName)) {
-                    deserializedStorageBlobCreatedEventData.contentLength = reader.getNullable(JsonReader::getLong);
-                } else if ("url".equals(fieldName)) {
-                    deserializedStorageBlobCreatedEventData.url = reader.getString();
+                    storageDiagnostics = reader.readMap(reader1 -> reader1.readUntyped());
+                } else if ("api".equals(fieldName)) {
+                    api = reader.getString();
+                } else if ("clientRequestId".equals(fieldName)) {
+                    clientRequestId = reader.getString();
+                } else if ("requestId".equals(fieldName)) {
+                    requestId = reader.getString();
+                } else if ("eTag".equals(fieldName)) {
+                    eTag = reader.getString();
                 } else if ("contentType".equals(fieldName)) {
-                    deserializedStorageBlobCreatedEventData.contentType = reader.getString();
+                    contentType = reader.getString();
+                } else if ("contentLength".equals(fieldName)) {
+                    contentLength = reader.getNullable(JsonReader::getLong);
+                } else if ("contentOffset".equals(fieldName)) {
+                    contentOffset = reader.getNullable(JsonReader::getLong);
                 } else if ("blobType".equals(fieldName)) {
-                    deserializedStorageBlobCreatedEventData.blobType = reader.getString();
+                    blobType = reader.getString();
+                } else if ("url".equals(fieldName)) {
+                    url = reader.getString();
+                } else if ("sequencer".equals(fieldName)) {
+                    sequencer = reader.getString();
+                } else if ("identity".equals(fieldName)) {
+                    identity = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
+            StorageBlobCreatedEventData deserializedStorageBlobCreatedEventData
+                = new StorageBlobCreatedEventData(accessTier, storageDiagnostics);
+            deserializedStorageBlobCreatedEventData.api = api;
+            deserializedStorageBlobCreatedEventData.clientRequestId = clientRequestId;
+            deserializedStorageBlobCreatedEventData.requestId = requestId;
+            deserializedStorageBlobCreatedEventData.eTag = eTag;
+            deserializedStorageBlobCreatedEventData.contentType = contentType;
+            deserializedStorageBlobCreatedEventData.contentLength = contentLength;
+            deserializedStorageBlobCreatedEventData.contentOffset = contentOffset;
+            deserializedStorageBlobCreatedEventData.blobType = blobType;
+            deserializedStorageBlobCreatedEventData.url = url;
+            deserializedStorageBlobCreatedEventData.sequencer = sequencer;
+            deserializedStorageBlobCreatedEventData.identity = identity;
 
             return deserializedStorageBlobCreatedEventData;
         });

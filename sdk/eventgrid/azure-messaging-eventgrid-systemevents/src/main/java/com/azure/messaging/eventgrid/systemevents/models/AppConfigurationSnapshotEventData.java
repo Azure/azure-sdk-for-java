@@ -58,6 +58,7 @@ public class AppConfigurationSnapshotEventData implements JsonSerializable<AppCo
      * @param name the name value to set.
      * @return the AppConfigurationSnapshotEventData object itself.
      */
+    @Generated
     AppConfigurationSnapshotEventData setName(String name) {
         this.name = name;
         return this;
@@ -79,6 +80,7 @@ public class AppConfigurationSnapshotEventData implements JsonSerializable<AppCo
      * @param etag the etag value to set.
      * @return the AppConfigurationSnapshotEventData object itself.
      */
+    @Generated
     AppConfigurationSnapshotEventData setEtag(String etag) {
         this.etag = etag;
         return this;
@@ -100,11 +102,15 @@ public class AppConfigurationSnapshotEventData implements JsonSerializable<AppCo
      * @param syncToken the syncToken value to set.
      * @return the AppConfigurationSnapshotEventData object itself.
      */
+    @Generated
     AppConfigurationSnapshotEventData setSyncToken(String syncToken) {
         this.syncToken = syncToken;
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {

@@ -74,6 +74,9 @@ public final class ResourceNotificationsResourceDeletedDetails
         return this.type;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
