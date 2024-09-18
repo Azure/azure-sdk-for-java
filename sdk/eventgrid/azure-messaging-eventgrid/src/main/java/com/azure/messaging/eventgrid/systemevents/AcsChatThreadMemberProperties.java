@@ -5,24 +5,21 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The AcsChatThreadMemberProperties model. */
 @Fluent
-public final class AcsChatThreadMemberProperties implements JsonSerializable<AcsChatThreadMemberProperties> {
+public final class AcsChatThreadMemberProperties {
     /*
      * The name of the user
      */
+    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * The MRI of the user
      */
+    @JsonProperty(value = "memberId")
     private String memberId;
 
     /**
@@ -70,40 +67,5 @@ public final class AcsChatThreadMemberProperties implements JsonSerializable<Acs
     public AcsChatThreadMemberProperties setMemberId(String memberId) {
         this.memberId = memberId;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("displayName", this.displayName);
-        jsonWriter.writeStringField("memberId", this.memberId);
-        jsonWriter.writeEndObject();
-        return jsonWriter;
-    }
-
-    /**
-     * Reads an instance of AcsChatThreadMemberProperties from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of AcsChatThreadMemberProperties if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the AcsChatThreadMemberProperties.
-     */
-    public static AcsChatThreadMemberProperties fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            AcsChatThreadMemberProperties acsChatThreadMemberProperties = new AcsChatThreadMemberProperties();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("displayName".equals(fieldName)) {
-                    acsChatThreadMemberProperties.setDisplayName(reader.getString());
-                } else if ("memberId".equals(fieldName)) {
-                    acsChatThreadMemberProperties.setMemberId(reader.getString());
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            return acsChatThreadMemberProperties;
-        });
     }
 }

@@ -18,6 +18,7 @@ import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventgrid.implementation.Constants;
 import com.azure.messaging.eventgrid.implementation.EventGridPublisherClientImpl;
 import com.azure.messaging.eventgrid.implementation.EventGridPublisherClientImplBuilder;
+import com.fasterxml.jackson.databind.util.RawValue;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -359,7 +360,7 @@ public final class EventGridPublisherAsyncClient<T> {
         }
         final Context finalContext = context != null ? context : Context.NONE;
         return Flux.fromIterable(events)
-            .map(event -> (Object) event)
+            .map(event -> (Object) new RawValue(event.toString()))
             .collectList()
             .flatMap(list -> this.impl.publishCustomEventEventsAsync(this.hostname, list, finalContext));
     }
@@ -392,7 +393,7 @@ public final class EventGridPublisherAsyncClient<T> {
         }
         final Context finalContext = context != null ? context : Context.NONE;
         return Flux.fromIterable(events)
-            .map(event -> (Object) event)
+            .map(event -> (Object) new RawValue(event.toString()))
             .collectList()
             .flatMap(list -> this.impl.publishCustomEventEventsWithResponseAsync(this.hostname, list, finalContext));
     }
