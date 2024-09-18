@@ -4,65 +4,70 @@
 
 package com.azure.mixedreality.remoterendering.implementation.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.CoreUtils;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
 
-/**
- * The properties of the conversion.
- */
-@Immutable
-public final class Conversion implements JsonSerializable<Conversion> {
+/** The properties of the conversion. */
+@Fluent
+public final class Conversion {
     /*
      * The ID of the conversion supplied when the conversion was created.
      */
-    private final String id;
+    @JsonProperty(value = "id", required = true)
+    private String id;
 
     /*
-     * Conversion settings describe the origin of input files and destination of output files.
+     * Conversion settings describe the origin of input files and destination
+     * of output files.
      */
-    private final ConversionSettings settings;
+    @JsonProperty(value = "settings", required = true)
+    private ConversionSettings settings;
 
     /*
-     * Information about the output of a successful conversion. Only present when the status of the conversion is
-     * 'Succeeded'.
+     * Information about the output of a successful conversion. Only present
+     * when the status of the conversion is 'Succeeded'.
      */
+    @JsonProperty(value = "output", access = JsonProperty.Access.WRITE_ONLY)
     private ConversionOutput output;
 
     /*
      * The error object containing details about the conversion failure.
      */
-    private final Error error;
+    @JsonProperty(value = "error", required = true)
+    private Error error;
 
     /*
-     * The status of the conversion. Terminal states are 'Cancelled', 'Failed', and 'Succeeded'.
+     * The status of the conversion. Terminal states are 'Cancelled', 'Failed',
+     * and 'Succeeded'.
      */
-    private final ConversionStatus status;
+    @JsonProperty(value = "status", required = true)
+    private ConversionStatus status;
 
     /*
-     * The time when the conversion was created. Date and time in ISO 8601 format.
+     * The time when the conversion was created. Date and time in ISO 8601
+     * format.
      */
-    private final OffsetDateTime creationTime;
+    @JsonProperty(value = "creationTime", required = true)
+    private OffsetDateTime creationTime;
 
     /**
      * Creates an instance of Conversion class.
-     * 
+     *
      * @param id the id value to set.
      * @param settings the settings value to set.
      * @param error the error value to set.
      * @param status the status value to set.
      * @param creationTime the creationTime value to set.
      */
-    public Conversion(String id, ConversionSettings settings, Error error, ConversionStatus status,
-        OffsetDateTime creationTime) {
+    @JsonCreator
+    public Conversion(
+            @JsonProperty(value = "id", required = true) String id,
+            @JsonProperty(value = "settings", required = true) ConversionSettings settings,
+            @JsonProperty(value = "error", required = true) Error error,
+            @JsonProperty(value = "status", required = true) ConversionStatus status,
+            @JsonProperty(value = "creationTime", required = true) OffsetDateTime creationTime) {
         this.id = id;
         this.settings = settings;
         this.error = error;
@@ -72,7 +77,7 @@ public final class Conversion implements JsonSerializable<Conversion> {
 
     /**
      * Get the id property: The ID of the conversion supplied when the conversion was created.
-     * 
+     *
      * @return the id value.
      */
     public String getId() {
@@ -82,7 +87,7 @@ public final class Conversion implements JsonSerializable<Conversion> {
     /**
      * Get the settings property: Conversion settings describe the origin of input files and destination of output
      * files.
-     * 
+     *
      * @return the settings value.
      */
     public ConversionSettings getSettings() {
@@ -92,7 +97,7 @@ public final class Conversion implements JsonSerializable<Conversion> {
     /**
      * Get the output property: Information about the output of a successful conversion. Only present when the status of
      * the conversion is 'Succeeded'.
-     * 
+     *
      * @return the output value.
      */
     public ConversionOutput getOutput() {
@@ -101,7 +106,7 @@ public final class Conversion implements JsonSerializable<Conversion> {
 
     /**
      * Get the error property: The error object containing details about the conversion failure.
-     * 
+     *
      * @return the error value.
      */
     public Error getError() {
@@ -111,7 +116,7 @@ public final class Conversion implements JsonSerializable<Conversion> {
     /**
      * Get the status property: The status of the conversion. Terminal states are 'Cancelled', 'Failed', and
      * 'Succeeded'.
-     * 
+     *
      * @return the status value.
      */
     public ConversionStatus getStatus() {
@@ -120,101 +125,10 @@ public final class Conversion implements JsonSerializable<Conversion> {
 
     /**
      * Get the creationTime property: The time when the conversion was created. Date and time in ISO 8601 format.
-     * 
+     *
      * @return the creationTime value.
      */
     public OffsetDateTime getCreationTime() {
         return this.creationTime;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("id", this.id);
-        jsonWriter.writeJsonField("settings", this.settings);
-        jsonWriter.writeJsonField("error", this.error);
-        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
-        jsonWriter.writeStringField("creationTime",
-            this.creationTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.creationTime));
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of Conversion from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of Conversion if the JsonReader was pointing to an instance of it, or null if it was pointing
-     * to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the Conversion.
-     */
-    public static Conversion fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean idFound = false;
-            String id = null;
-            boolean settingsFound = false;
-            ConversionSettings settings = null;
-            boolean errorFound = false;
-            Error error = null;
-            boolean statusFound = false;
-            ConversionStatus status = null;
-            boolean creationTimeFound = false;
-            OffsetDateTime creationTime = null;
-            ConversionOutput output = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("id".equals(fieldName)) {
-                    id = reader.getString();
-                    idFound = true;
-                } else if ("settings".equals(fieldName)) {
-                    settings = ConversionSettings.fromJson(reader);
-                    settingsFound = true;
-                } else if ("error".equals(fieldName)) {
-                    error = Error.fromJson(reader);
-                    errorFound = true;
-                } else if ("status".equals(fieldName)) {
-                    status = ConversionStatus.fromString(reader.getString());
-                    statusFound = true;
-                } else if ("creationTime".equals(fieldName)) {
-                    creationTime = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
-                    creationTimeFound = true;
-                } else if ("output".equals(fieldName)) {
-                    output = ConversionOutput.fromJson(reader);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (idFound && settingsFound && errorFound && statusFound && creationTimeFound) {
-                Conversion deserializedConversion = new Conversion(id, settings, error, status, creationTime);
-                deserializedConversion.output = output;
-
-                return deserializedConversion;
-            }
-            List<String> missingProperties = new ArrayList<>();
-            if (!idFound) {
-                missingProperties.add("id");
-            }
-            if (!settingsFound) {
-                missingProperties.add("settings");
-            }
-            if (!errorFound) {
-                missingProperties.add("error");
-            }
-            if (!statusFound) {
-                missingProperties.add("status");
-            }
-            if (!creationTimeFound) {
-                missingProperties.add("creationTime");
-            }
-
-            throw new IllegalStateException(
-                "Missing required property/properties: " + String.join(", ", missingProperties));
-        });
     }
 }
