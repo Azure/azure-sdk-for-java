@@ -273,7 +273,7 @@ com.azure.resourcemanager:azure-resourcemanager-compute;2.42.0;2.43.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-containerinstance;2.42.0;2.43.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-containerregistry;2.42.0;2.43.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-containerservice;2.42.0;2.43.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-cosmos;2.42.0;2.43.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-cosmos;2.42.0;2.43.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-dns;2.42.0;2.43.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-eventhubs;2.42.0;2.43.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-keyvault;2.42.0;2.43.0-beta.1
