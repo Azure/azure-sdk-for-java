@@ -1,5 +1,15 @@
 # Release History
 
+## 1.1.20 (2024-09-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-identity` from `1.13.2` to version `1.13.3`.
+- Upgraded `mysql-connector-j` from `8.0.33` to version `9.0.0`.
+
+
 ## 1.1.19 (2024-08-24)
 
 ### Other Changes
