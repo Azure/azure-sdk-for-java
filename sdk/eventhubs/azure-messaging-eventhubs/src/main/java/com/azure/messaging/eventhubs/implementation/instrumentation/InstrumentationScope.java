@@ -23,7 +23,7 @@ public final class InstrumentationScope implements AutoCloseable {
     private String errorType;
     private Context span = Context.NONE;
     private AutoCloseable spanScope;
-    private boolean closed = false;
+    private volatile boolean closed = false;
 
     public InstrumentationScope(EventHubsTracer tracer,
                                 EventHubsMetricsProvider meter,

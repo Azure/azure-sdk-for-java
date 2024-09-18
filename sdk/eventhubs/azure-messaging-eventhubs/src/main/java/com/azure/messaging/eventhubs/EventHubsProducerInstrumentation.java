@@ -13,9 +13,6 @@ import com.azure.messaging.eventhubs.implementation.instrumentation.Instrumentat
 import com.azure.messaging.eventhubs.implementation.instrumentation.OperationName;
 import reactor.core.publisher.Mono;
 
-
-import java.util.function.BiConsumer;
-
 import static com.azure.core.util.tracing.SpanKind.CLIENT;
 import static com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_BATCH_MESSAGE_COUNT;
@@ -35,12 +32,9 @@ class EventHubsProducerInstrumentation {
             return publisher;
         }
 
-        BiConsumer<EventHubsMetricsProvider, InstrumentationScope> reportMetricsCallback = (m, s) ->
-             m.reportBatchSend(batch.getCount(), batch.getPartitionId(), s);
-
-
         return Mono.using(
-                () -> new InstrumentationScope(tracer, meter, reportMetricsCallback)
+                () -> new InstrumentationScope(tracer, meter,
+                            (m, s) -> m.reportBatchSend(batch.getCount(), batch.getPartitionId(), s))
                         .setSpan(startPublishSpanWithLinks(batch)),
                 scope -> publisher
                     .doOnError(scope::setError)

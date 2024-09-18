@@ -37,7 +37,7 @@ import static com.azure.messaging.eventhubs.implementation.instrumentation.Opera
 import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.RECEIVE;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.SEND;
 
-public class EventHubsMetricsProvider {
+public final class EventHubsMetricsProvider {
     private final Meter meter;
     private final boolean isEnabled;
     private static final ClientLogger LOGGER = new ClientLogger(EventHubsMetricsProvider.class);
@@ -168,7 +168,7 @@ public class EventHubsMetricsProvider {
     }
 
     private Map<String, Object> getCommonAttributes(String namespace, String entityName, String consumerGroup) {
-        Map<String, Object> commonAttributesMap = new HashMap<>(3);
+        Map<String, Object> commonAttributesMap = new HashMap<>(4);
         commonAttributesMap.put(MESSAGING_SYSTEM, MESSAGING_SYSTEM_VALUE);
         commonAttributesMap.put(SERVER_ADDRESS, namespace);
         commonAttributesMap.put(MESSAGING_DESTINATION_NAME, entityName);

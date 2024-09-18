@@ -45,7 +45,7 @@ import static com.azure.messaging.eventhubs.implementation.instrumentation.Instr
 import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.EVENT;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.PROCESS;
 
-public class EventHubsTracer {
+public final class EventHubsTracer {
     private static final AutoCloseable NOOP_AUTOCLOSEABLE = () -> {
     };
 
