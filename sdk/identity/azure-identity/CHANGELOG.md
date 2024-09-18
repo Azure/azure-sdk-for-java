@@ -3,6 +3,7 @@
 ## 1.14.0-beta.2 (Unreleased)
 
 ### Features Added
+- Added object id support in `ManagedIdentityCredential`. It can be configured via `ManagedIdentityCredentialBuilder`.
 
 ### Breaking Changes
 - Removed support in `IntelliJCredential` for legacy Azure Toolkit for IntelliJ versions. Please upgrade to latest if you are using 3.52 or below.
