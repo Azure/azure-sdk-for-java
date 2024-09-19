@@ -41,6 +41,8 @@ import java.util.StringJoiner;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static com.azure.data.tables.implementation.TableUtils.createTracer;
+
 final class BuilderHelper {
     private static final Map<String, String> PROPERTIES =
         CoreUtils.getProperties("azure-data-tables.properties");
@@ -129,6 +131,7 @@ final class BuilderHelper {
         return new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
+            .tracer(createTracer(CLIENT_NAME, CLIENT_VERSION, clientOptions))
             .clientOptions(localClientOptions)
             .build();
     }
