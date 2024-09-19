@@ -94,7 +94,7 @@ Add an additional dependency on `azure-identity` in your `pom.xml`:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.13.2</version>
+    <version>1.13.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
