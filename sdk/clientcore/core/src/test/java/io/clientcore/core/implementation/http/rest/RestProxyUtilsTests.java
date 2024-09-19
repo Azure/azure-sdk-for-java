@@ -107,8 +107,8 @@ public class RestProxyUtilsTests {
         );
     }
 
-    private static HttpRequest createHttpRequest(String url, BinaryData body, int contentLength) {
-        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, url)
+    private static HttpRequest createHttpRequest(String uri, BinaryData body, int contentLength) {
+        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, uri)
             .setBody(body);
         httpRequest.getHeaders().set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(contentLength));
         return httpRequest;

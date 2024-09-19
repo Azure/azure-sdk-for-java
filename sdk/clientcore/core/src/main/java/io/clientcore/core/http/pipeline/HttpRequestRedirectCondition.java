@@ -13,7 +13,7 @@ import java.util.Set;
  */
 public final class HttpRequestRedirectCondition {
     private final Response<?> response;
-    private final Set<String> redirectedUrls;
+    private final Set<String> redirectedUris;
     private final int tryCount;
 
     /**
@@ -21,12 +21,12 @@ public final class HttpRequestRedirectCondition {
      *
      * @param response The HTTP response of the request that failed.
      * @param tryCount The number of tries that have been attempted.
-     * @param redirectedUrls The set of URLs that have been attempted redirect.
+     * @param redirectedUris The set of URIs that have been attempted redirect.
      */
-    HttpRequestRedirectCondition(Response<?> response, int tryCount, Set<String> redirectedUrls) {
+    HttpRequestRedirectCondition(Response<?> response, int tryCount, Set<String> redirectedUris) {
         this.response = response;
         this.tryCount = tryCount;
-        this.redirectedUrls = redirectedUrls == null ? Collections.emptySet() : redirectedUrls;
+        this.redirectedUris = redirectedUris == null ? Collections.emptySet() : redirectedUris;
     }
 
     /**
@@ -50,11 +50,11 @@ public final class HttpRequestRedirectCondition {
     }
 
     /**
-     * Gets the unmodifiable set of urls that have been attempted redirect.
+     * Gets the unmodifiable set of uris that have been attempted redirect.
      *
      * @return The unmodifiable list of exceptions that have been attempted redirect.
      */
-    public Set<String> getRedirectedUrls() {
-        return redirectedUrls;
+    public Set<String> getRedirectedUris() {
+        return redirectedUris;
     }
 }

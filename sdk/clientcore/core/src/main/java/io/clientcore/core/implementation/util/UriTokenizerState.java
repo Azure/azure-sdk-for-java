@@ -3,8 +3,10 @@
 
 package io.clientcore.core.implementation.util;
 
-enum UrlTokenType {
+enum UriTokenizerState {
     SCHEME,
+
+    SCHEME_OR_HOST,
 
     HOST,
 
@@ -13,4 +15,6 @@ enum UrlTokenType {
     PATH,
 
     QUERY,
+
+    DONE
 }

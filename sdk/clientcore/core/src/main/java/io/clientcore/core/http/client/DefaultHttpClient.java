@@ -16,7 +16,7 @@ import io.clientcore.core.http.models.ResponseBodyMode;
 import io.clientcore.core.http.models.ServerSentEventListener;
 import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
 import io.clientcore.core.implementation.http.HttpResponseAccessHelper;
-import io.clientcore.core.implementation.util.UrlBuilder;
+import io.clientcore.core.implementation.util.UriBuilder;
 import io.clientcore.core.models.SocketConnection;
 import io.clientcore.core.models.SocketConnectionCache;
 import io.clientcore.core.util.ClientLogger;
@@ -38,6 +38,8 @@ import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
 import java.net.ProtocolException;
 import java.net.Proxy;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.time.Duration;
 import java.util.Base64;
@@ -97,10 +99,10 @@ class DefaultHttpClient implements HttpClient {
     public Response<?> send(HttpRequest httpRequest) throws IOException {
         SocketConnection socketConnection;
         if (httpRequest.getHttpMethod() == HttpMethod.PATCH) {
-            final URL requestUrl = httpRequest.getUrl();
-            final String protocol = requestUrl.getProtocol();
-            final String host = requestUrl.getHost();
-            final int port = requestUrl.getPort();
+            final URI requestUri = httpRequest.getUri();
+            final String protocol = requestUri.getScheme();
+            final String host = requestUri.getHost();
+            final int port = requestUri.getPort();
 
             socketConnection = SOCKET_CONNECTION_CACHE.get(
                 new SocketConnection.SocketConnectionProperties(protocol, host, port, getSslSocketFactory(), (int) readTimeout));
@@ -135,7 +137,7 @@ class DefaultHttpClient implements HttpClient {
      */
     private HttpURLConnection connect(HttpRequest httpRequest) throws IOException {
         HttpURLConnection connection;
-        URL url = httpRequest.getUrl();
+        URL url = httpRequest.getUri().toURL();
 
         if (proxyOptions != null) {
             InetSocketAddress address = proxyOptions.getAddress();
@@ -419,7 +421,7 @@ class DefaultHttpClient implements HttpClient {
          */
         private static Response<?> sendPatchRequest(HttpRequest httpRequest, BufferedInputStream bufferedInputStream,
             OutputStream outputStream) throws IOException {
-            httpRequest.getHeaders().set(HttpHeaderName.HOST, httpRequest.getUrl().getHost());
+            httpRequest.getHeaders().set(HttpHeaderName.HOST, httpRequest.getUri().getHost());
             OutputStreamWriter out = new OutputStreamWriter(outputStream);
 
             buildAndSend(httpRequest, out);
@@ -429,11 +431,15 @@ class DefaultHttpClient implements HttpClient {
 
             if (redirectLocation != null) {
                 if (redirectLocation.startsWith("http")) {
-                    httpRequest.setUrl(redirectLocation);
+                    httpRequest.setUri(redirectLocation);
                 } else {
-                    UrlBuilder urlBuilder = UrlBuilder.parse(httpRequest.getUrl())
+                    UriBuilder uriBuilder = UriBuilder.parse(httpRequest.getUri())
                         .setPath(redirectLocation);
-                    httpRequest.setUrl(urlBuilder.toUrl());
+                    try {
+                        httpRequest.setUri(uriBuilder.toUri());
+                    } catch (URISyntaxException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
                 return sendPatchRequest(httpRequest, bufferedInputStream, outputStream);
             }
@@ -452,7 +458,7 @@ class DefaultHttpClient implements HttpClient {
         private static void buildAndSend(HttpRequest httpRequest, OutputStreamWriter out) throws IOException {
             final StringBuilder request = new StringBuilder();
 
-            request.append("PATCH ").append(httpRequest.getUrl().getPath()).append(HTTP_VERSION).append("\r\n");
+            request.append("PATCH ").append(httpRequest.getUri().getPath()).append(HTTP_VERSION).append("\r\n");
 
             if (httpRequest.getHeaders().getSize() > 0) {
                 for (HttpHeader header : httpRequest.getHeaders()) {

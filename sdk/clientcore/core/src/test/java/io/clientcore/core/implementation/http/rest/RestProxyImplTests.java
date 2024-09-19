@@ -33,13 +33,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class RestProxyImplTests {
     @ServiceInterface(name = "myService", host = "https://azure.com")
     interface TestInterface {
-        @HttpRequestInformation(method = HttpMethod.POST, path = "my/url/path", expectedStatusCodes = {200})
+        @HttpRequestInformation(method = HttpMethod.POST, path = "my/uri/path", expectedStatusCodes = {200})
         Response<Void> testMethod(@BodyParam("application/octet-stream") BinaryData data,
                                   @HeaderParam("Content-Type") String contentType,
                                   @HeaderParam("Content-Length") Long contentLength, Context context
         );
 
-        @HttpRequestInformation(method = HttpMethod.GET, path = "my/url/path", expectedStatusCodes = {200})
+        @HttpRequestInformation(method = HttpMethod.GET, path = "my/uri/path", expectedStatusCodes = {200})
         void testVoidMethod(Context context);
     }
 
@@ -75,7 +75,7 @@ public class RestProxyImplTests {
 
         @Override
         public Response<?> send(HttpRequest request) {
-            boolean success = request.getUrl().getPath().equals("/my/url/path");
+            boolean success = request.getUri().getPath().equals("/my/uri/path");
 
             if (request.getHttpMethod().equals(HttpMethod.POST)) {
                 success &= "application/json".equals(request.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE));

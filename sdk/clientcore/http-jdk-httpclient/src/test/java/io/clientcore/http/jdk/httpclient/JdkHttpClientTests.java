@@ -26,8 +26,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.http.HttpTimeoutException;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
@@ -77,7 +77,7 @@ public class JdkHttpClientTests {
     @Test
     public void testBufferedResponse() throws IOException {
         HttpClient client = new JdkHttpClientProvider().getSharedInstance();
-        HttpRequest request = new HttpRequest(HttpMethod.GET, url("/long"))
+        HttpRequest request = new HttpRequest(HttpMethod.GET, uri("/long"))
             .setRequestOptions(new RequestOptions().setResponseBodyMode(ResponseBodyMode.BUFFER));
 
         try (Response<?> response = client.send(request)) {
@@ -112,7 +112,7 @@ public class JdkHttpClientTests {
     //        HttpClient client = new JdkHttpClientProvider().getSharedInstance();
     //
     //        ConcurrentLinkedDeque<Long> progress = new ConcurrentLinkedDeque<>();
-    //        HttpRequest request = new HttpRequest(HttpMethod.POST, url("/shortPost"));
+    //        HttpRequest request = new HttpRequest(HttpMethod.POST, uri("/shortPost"));
     //        request.getHeaders().set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(SHORT_BODY.length + LONG_BODY.length));
     //        request.setBody(
     //            BinaryData.fromListByteBuffer(Arrays.asList(ByteBuffer.wrap(LONG_BODY), ByteBuffer.wrap(SHORT_BODY))));
@@ -135,7 +135,7 @@ public class JdkHttpClientTests {
         BinaryData body = BinaryData.fromFile(tempFile, 1L, 42L);
 
         HttpClient client = new JdkHttpClientProvider().getSharedInstance();
-        HttpRequest request = new HttpRequest(HttpMethod.POST, url("/shortPostWithBodyValidation")).setBody(body);
+        HttpRequest request = new HttpRequest(HttpMethod.POST, uri("/shortPostWithBodyValidation")).setBody(body);
 
         try (Response<?> response = client.send(request)) {
             assertEquals(200, response.getStatusCode());
@@ -145,7 +145,7 @@ public class JdkHttpClientTests {
     @Test
     public void testRequestBodyIsErrorShouldPropagateToResponse() {
         HttpClient client = new JdkHttpClientProvider().getSharedInstance();
-        HttpRequest request = new HttpRequest(HttpMethod.POST, url("/shortPost"));
+        HttpRequest request = new HttpRequest(HttpMethod.POST, uri("/shortPost"));
         request.getHeaders().set(HttpHeaderName.CONTENT_LENGTH, "132");
         request.setBody(BinaryData.fromStream(new InputStream() {
             @Override
@@ -163,7 +163,7 @@ public class JdkHttpClientTests {
         HttpClient client = new JdkHttpClientProvider().getSharedInstance();
         String contentChunk = "abcdefgh";
         int repetitions = 1000;
-        HttpRequest request = new HttpRequest(HttpMethod.POST, url("/shortPost"));
+        HttpRequest request = new HttpRequest(HttpMethod.POST, uri("/shortPost"));
         request.getHeaders()
             .set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(contentChunk.length() * (repetitions + 1)));
         request.setBody(BinaryData.fromStream(new InputStream() {
@@ -187,7 +187,7 @@ public class JdkHttpClientTests {
     public void testServerShutsDownSocketShouldPushErrorToContent() {
         HttpClient client = new JdkHttpClientProvider().getSharedInstance();
 
-        HttpRequest request = new HttpRequest(HttpMethod.GET, url("/connectionClose"));
+        HttpRequest request = new HttpRequest(HttpMethod.GET, uri("/connectionClose"));
         assertThrows(IOException.class, () -> client.send(request).close());
     }
 
@@ -274,25 +274,23 @@ public class JdkHttpClientTests {
 
         HttpClient httpClient = new JdkHttpClientBuilder().sslContext(sslContext).build();
 
-        try (Response<?> response = httpClient.send(new HttpRequest(HttpMethod.GET, httpsUrl("/short")))) {
+        try (Response<?> response = httpClient.send(new HttpRequest(HttpMethod.GET, httpsUri("/short")))) {
             TestUtils.assertArraysEqual(SHORT_BODY, response.getBody().toBytes());
         }
     }
 
-    @SuppressWarnings("deprecation")
-    private static URL url(String path) {
+    private static URI uri(String path) {
         try {
-            return new URL(SERVER_HTTP_URI + path);
-        } catch (MalformedURLException e) {
+            return new URI(SERVER_HTTP_URI + path);
+        } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
     }
 
-    @SuppressWarnings("deprecation")
-    private static URL httpsUrl(String path) {
+    private static URI httpsUri(String path) {
         try {
-            return new URL(SERVER_HTTPS_URI + path);
-        } catch (MalformedURLException e) {
+            return new URI(SERVER_HTTPS_URI + path);
+        } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
     }
@@ -312,7 +310,7 @@ public class JdkHttpClientTests {
     }
 
     private static Response<?> doRequest(HttpClient client, String path, ResponseBodyMode bodyMode) throws IOException {
-        HttpRequest request = new HttpRequest(HttpMethod.GET, url(path))
+        HttpRequest request = new HttpRequest(HttpMethod.GET, uri(path))
             .setRequestOptions(new RequestOptions().setResponseBodyMode(bodyMode));
         return client.send(request);
     }
