@@ -24,8 +24,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * Requires a username and client ID. If a username is not provided, then the
  * {@link Configuration#PROPERTY_AZURE_USERNAME AZURE_USERNAME} environment variable will be used.
  *
- * <p>This credential is a legacy mechanism for authenticating clients using credentials provided to Visual Studio Code.
- * This mechanism for Visual Studio authentication has been replaced by the {@link VisualStudioCodeCredential}/>.</p>
+ * <p>This credential is a legacy mechanism for authenticating clients using credentials provided to Visual Studio.</p>
  *
  * @see com.azure.identity
  * @see VisualStudioCodeCredential
