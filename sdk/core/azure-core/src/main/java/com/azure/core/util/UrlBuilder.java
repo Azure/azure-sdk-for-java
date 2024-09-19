@@ -34,6 +34,9 @@ public final class UrlBuilder {
 
     static {
         try {
+            // Instantiate two URLs, one with HTTP scheme and one with HTTPS scheme.
+            // These will be used when creating HTTP and HTTPS URLs respectively when calling 'toUrl' to improve
+            // performance in highly threaded situations.
             HTTP = new URL("http://azure.com");
             HTTPS = new URL("https://azure.com");
         } catch (MalformedURLException e) {
@@ -343,9 +346,15 @@ public final class UrlBuilder {
         // Continue using new URL constructor here as URI either cannot accept certain characters in the path or
         // escapes '/', depending on the API used to create the URI.
         if ("http".equals(scheme)) {
-            // Performance enhancement. Using "new URL(URL, String)" circumvents a lookup for the URLStreamHandler
-            // when creating the URL instance. In highly threaded environments this can cause slowdown as this lookup
-            // uses a HashTable which is synchronized, resulting in many threads waiting on the same lock.
+            // Performance enhancement. Using "new URL(URL context, String spec)" circumvents a lookup for the
+            // URLStreamHandler when creating the URL instance. In highly threaded environments this can cause slowdown
+            // as this lookup uses a HashTable which is synchronized, resulting in many threads waiting on the same
+            // lock.
+            // Select the URL constant that matches the scheme as it is possible that the URLStreamHandler may be needed
+            // in downstream scenarios.
+            // Using this performance enhancement should be safe as the "String spec" will override any URL pieces from
+            // "URL context" when it is parsed, and the "context" URL we're using here only has scheme and hostname
+            // which should always be configured in UrlBuilder.
             return new URL(HTTP, toString());
         } else if ("https".equals(scheme)) {
             return new URL(HTTPS, toString());
