@@ -18,6 +18,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -36,12 +37,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class SharedExecutorServiceTests {
     @BeforeAll
     public static void resetBeforeTesting() {
-        SharedExecutorService.reset();
+        SharedExecutorService.getInstance().reset();
     }
 
     @AfterAll
     public static void resetAfterTesting() {
-        SharedExecutorService.reset();
+        SharedExecutorService.getInstance().reset();
     }
 
     @Test
@@ -69,14 +70,16 @@ public class SharedExecutorServiceTests {
     public void settingCustomExecutorShutsDownDefault() throws ExecutionException, InterruptedException {
         ExecutorService defaultService = SharedExecutorService.getInstance().executor;
         AtomicInteger callCount = new AtomicInteger();
-        ExecutorService executorService = Executors.newCachedThreadPool(r -> {
+        ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1, r -> {
             callCount.getAndIncrement();
             return new Thread(r);
         });
 
         // Should return null as the ExecutorService set should have been instantiated by SharedExecutorService itself.
         // Which in that case null is returned here as the caller shouldn't interact with it.
-        assertNull(SharedExecutorService.setExecutorService(executorService));
+        assertInstanceOf(SharedExecutorService.InternalExecutorService.class,
+            SharedExecutorService.getInstance().getExecutorService());
+        SharedExecutorService.getInstance().setExecutorService(executorService);
         SharedExecutorService.getInstance().submit(() -> {
         }).get();
 

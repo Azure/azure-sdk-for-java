@@ -17,13 +17,14 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -702,18 +703,17 @@ public class UrlBuilderTests {
 
     @Test
     public void parallelParsing() throws InterruptedException {
-        ForkJoinPool pool = new ForkJoinPool(Runtime.getRuntime().availableProcessors(),
-            ForkJoinPool.defaultForkJoinWorkerThreadFactory, null, false);
-
         AtomicInteger callCount = new AtomicInteger();
         List<Callable<UrlBuilder>> tasks = IntStream.range(0, 20000).mapToObj(i -> (Callable<UrlBuilder>) () -> {
             callCount.incrementAndGet();
             return UrlBuilder.parse("https://example" + i + ".com");
         }).collect(Collectors.toCollection(() -> new ArrayList<>(20000)));
 
-        pool.invokeAll(tasks);
-        pool.shutdown();
-        assertTrue(pool.awaitTermination(10, TimeUnit.SECONDS));
+        List<Future<UrlBuilder>> futures = SharedExecutorService.getInstance().invokeAll(tasks, 10, TimeUnit.SECONDS);
+        for (Future<UrlBuilder> future : futures) {
+            assertTrue(future.isDone());
+            assertDoesNotThrow(() -> future.get());
+        }
         assertEquals(20000, callCount.get());
     }
 

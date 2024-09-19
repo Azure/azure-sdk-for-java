@@ -16,9 +16,10 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicLong;
@@ -28,8 +29,8 @@ import java.util.function.Function;
 /**
  * An {@link ExecutorService} that is shared by multiple consumers.
  * <p>
- * If {@link SharedExecutorService#setExecutorService(ExecutorService)} isn't called a default shared executor service
- * is created using the following configuration settings:
+ * If {@link SharedExecutorService#setExecutorService(ScheduledExecutorService)} isn't called a default shared executor
+ * service is created using the following configuration settings:
  * <ul>
  *     <li>{@code azure.sdk.shared.threadpool.maxpoolsize} system property or
  *     {@code AZURE_SDK_SHARED_THREADPOOL_MAXPOOLSIZE} environment variable - The maximum pool size of the shared
@@ -44,7 +45,7 @@ import java.util.function.Function;
  * </ul>
  */
 @SuppressWarnings({ "resource", "NullableProblems" })
-public final class SharedExecutorService implements ExecutorService {
+public final class SharedExecutorService implements ScheduledExecutorService {
     private static final ClientLogger LOGGER = new ClientLogger(SharedExecutorService.class);
 
     // Shared thread counter for all instances of SharedExecutorService created using the empty factory method.
@@ -144,9 +145,10 @@ public final class SharedExecutorService implements ExecutorService {
         CREATE_VIRTUAL_THREAD_FACTORY = createVirtualThreadFactory;
     }
 
-    volatile ExecutorService executor;
-    private static final AtomicReferenceFieldUpdater<SharedExecutorService, ExecutorService> EXECUTOR_UPDATER
-        = AtomicReferenceFieldUpdater.newUpdater(SharedExecutorService.class, ExecutorService.class, "executor");
+    volatile ScheduledExecutorService executor;
+    private static final AtomicReferenceFieldUpdater<SharedExecutorService, ScheduledExecutorService> EXECUTOR_UPDATER
+        = AtomicReferenceFieldUpdater.newUpdater(SharedExecutorService.class, ScheduledExecutorService.class,
+            "executor");
 
     private SharedExecutorService() {
     }
@@ -158,6 +160,21 @@ public final class SharedExecutorService implements ExecutorService {
      */
     public static SharedExecutorService getInstance() {
         return INSTANCE;
+    }
+
+    /**
+     * Gets the backing executor service for the shared instance.
+     * <p>
+     * This returns the executor service for all users of the {@link #getInstance() shared instance}. Meaning, if
+     * another area in code already had a reference to the shared instance.
+     * <p>
+     * This may return null if the shared instance has not been set yet.
+     *
+     * @return The executor service that is set as the shared instance, may be null if a shared instance hasn't been
+     * set.
+     */
+    public ScheduledExecutorService getExecutorService() {
+        return EXECUTOR_UPDATER.get(this);
     }
 
     /**
@@ -174,12 +191,10 @@ public final class SharedExecutorService implements ExecutorService {
      * service is shutdown or terminated, this will throw an {@link IllegalStateException}.
      *
      * @param executorService The executor service to set as the shared instance.
-     * @return The previously set {@link ExecutorService}, or null if one wasn't set or if the one set was the
-     * {@link ExecutorService} created by this class.
      * @throws NullPointerException If the passed executor service is null.
      * @throws IllegalStateException If the passed executor service is shutdown or terminated.
      */
-    public static ExecutorService setExecutorService(ExecutorService executorService) {
+    public void setExecutorService(ScheduledExecutorService executorService) {
         // We allow for the global executor service to be set from an external source to allow for consumers of the SDK
         // to use their own thread management to run Azure SDK tasks. This allows for the SDKs to perform deeper
         // integration into an environment, such as the consumer environment knowing details about capacity, allowing
@@ -188,38 +203,30 @@ public final class SharedExecutorService implements ExecutorService {
         // allowing Azure Core or Jackson to perform deep reflection on classes that are not normally allowed.
         Objects.requireNonNull(executorService, "'executorService' cannot be null.");
         if (executorService.isShutdown() || executorService.isTerminated()) {
-            throw new IllegalStateException("The passed executor service is shutdown or terminated.");
+            throw LOGGER.logExceptionAsError(
+                new IllegalStateException("The passed executor service is shutdown or terminated."));
         }
 
-        ExecutorService existing = EXECUTOR_UPDATER.getAndSet(INSTANCE, executorService);
+        ExecutorService existing = EXECUTOR_UPDATER.getAndSet(this, executorService);
 
         if (existing instanceof InternalExecutorService) {
             // Only the InternalExecutorService should be shut down when setting a new ExecutorService.
             existing.shutdown();
-            return null;
         }
-
-        return existing;
     }
 
     /**
      * Resets the state of the {@link #getInstance()} to an uninitialized state.
      * <p>
-     * This will shut down the executor service if it was created by this class. Otherwise, it will return the executor
-     * service that was set externally, without shutting it down.
-     *
-     * @return The executor service set as the shared instance if it wasn't set by this class, otherwise null.
+     * This will shut down the executor service if it was created by this class.
      */
-    public static ExecutorService reset() {
-        ExecutorService existing = EXECUTOR_UPDATER.getAndSet(INSTANCE, null);
+    public void reset() {
+        ScheduledExecutorService existing = EXECUTOR_UPDATER.getAndSet(this, null);
 
         if (existing instanceof InternalExecutorService) {
             // Only the InternalExecutorService should be shut down when resetting SharedExecutorService.
             existing.shutdown();
-            return null;
         }
-
-        return existing;
     }
 
     /**
@@ -332,12 +339,32 @@ public final class SharedExecutorService implements ExecutorService {
         return ensureNotShutdown().invokeAny(tasks, timeout, unit);
     }
 
-    private ExecutorService ensureNotShutdown() {
+    @Override
+    public ScheduledFuture<?> schedule(Runnable command, long delay, TimeUnit unit) {
+        return ensureNotShutdown().schedule(command, delay, unit);
+    }
+
+    @Override
+    public <V> ScheduledFuture<V> schedule(Callable<V> callable, long delay, TimeUnit unit) {
+        return ensureNotShutdown().schedule(callable, delay, unit);
+    }
+
+    @Override
+    public ScheduledFuture<?> scheduleAtFixedRate(Runnable command, long initialDelay, long period, TimeUnit unit) {
+        return ensureNotShutdown().scheduleAtFixedRate(command, initialDelay, period, unit);
+    }
+
+    @Override
+    public ScheduledFuture<?> scheduleWithFixedDelay(Runnable command, long initialDelay, long delay, TimeUnit unit) {
+        return ensureNotShutdown().scheduleWithFixedDelay(command, initialDelay, delay, unit);
+    }
+
+    private ScheduledExecutorService ensureNotShutdown() {
         return EXECUTOR_UPDATER.updateAndGet(INSTANCE,
             ex -> (ex == null || ex.isShutdown() || ex.isTerminated()) ? createSharedExecutor() : ex);
     }
 
-    private static ExecutorService createSharedExecutor() {
+    private static ScheduledExecutorService createSharedExecutor() {
         ThreadFactory threadFactory;
         if (VIRTUAL_THREAD_SUPPORTED && THREAD_POOL_VIRTUAL) {
             try {
@@ -352,8 +379,8 @@ public final class SharedExecutorService implements ExecutorService {
             threadFactory = createNonVirtualThreadFactory();
         }
 
-        ExecutorService executorService = new ThreadPoolExecutor(THREAD_POOL_SIZE, THREAD_POOL_SIZE,
-            THREAD_POOL_KEEP_ALIVE_MILLIS, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>(), threadFactory);
+        ScheduledThreadPoolExecutor executorService = new ScheduledThreadPoolExecutor(THREAD_POOL_SIZE, threadFactory);
+        executorService.setKeepAliveTime(THREAD_POOL_KEEP_ALIVE_MILLIS, TimeUnit.MILLISECONDS);
         Thread shutdownThread = CoreUtils.createExecutorServiceShutdownThread(executorService, Duration.ofSeconds(5));
         CoreUtils.addShutdownHookSafely(shutdownThread);
 
@@ -380,11 +407,11 @@ public final class SharedExecutorService implements ExecutorService {
         };
     }
 
-    static final class InternalExecutorService implements ExecutorService {
-        private final ExecutorService wrapped;
+    static final class InternalExecutorService implements ScheduledExecutorService {
+        private final ScheduledExecutorService wrapped;
         private final Thread shutdownThread;
 
-        private InternalExecutorService(ExecutorService wrapped, Thread shutdownThread) {
+        private InternalExecutorService(ScheduledExecutorService wrapped, Thread shutdownThread) {
             this.wrapped = wrapped;
             this.shutdownThread = shutdownThread;
         }
@@ -456,6 +483,27 @@ public final class SharedExecutorService implements ExecutorService {
         @Override
         public void execute(Runnable command) {
             wrapped.execute(command);
+        }
+
+        @Override
+        public ScheduledFuture<?> schedule(Runnable command, long delay, TimeUnit unit) {
+            return wrapped.schedule(command, delay, unit);
+        }
+
+        @Override
+        public <V> ScheduledFuture<V> schedule(Callable<V> callable, long delay, TimeUnit unit) {
+            return wrapped.schedule(callable, delay, unit);
+        }
+
+        @Override
+        public ScheduledFuture<?> scheduleAtFixedRate(Runnable command, long initialDelay, long period, TimeUnit unit) {
+            return wrapped.scheduleAtFixedRate(command, initialDelay, period, unit);
+        }
+
+        @Override
+        public ScheduledFuture<?> scheduleWithFixedDelay(Runnable command, long initialDelay, long delay,
+            TimeUnit unit) {
+            return wrapped.scheduleWithFixedDelay(command, initialDelay, delay, unit);
         }
     }
 }
