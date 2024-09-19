@@ -45,6 +45,7 @@
     </javaModulesSurefireArgLine>
     <graalvm.disable>false</graalvm.disable>
     <nativeImage.buildArgs>--initialize-at-build-time=com.azure.data.appconfiguration.TestHelper</nativeImage.buildArgs>
+    <spotless.skip>false</spotless.skip>
   </properties>
 
   <dependencies>

@@ -24,7 +24,8 @@ public final class SnapshotSelector {
     /**
      * Creates an instance of {@link SnapshotSelector}.
      */
-    public SnapshotSelector() { }
+    public SnapshotSelector() {
+    }
 
     /**
      * Gets the snapshot name filter
@@ -124,10 +125,12 @@ public final class SnapshotSelector {
             fields = "ALL_FIELDS";
         } else {
             // join a list of enum values into a comma-separated string
-            fields = this.fields == null ? null : IterableStream.of(this.fields)
-                .stream()
-                .map(fieldsEnumValue -> fieldsEnumValue.toString())
-                .collect(Collectors.joining(","));
+            fields = this.fields == null
+                ? null
+                : IterableStream.of(this.fields)
+                    .stream()
+                    .map(fieldsEnumValue -> fieldsEnumValue.toString())
+                    .collect(Collectors.joining(","));
         }
 
         String status;
@@ -135,10 +138,12 @@ public final class SnapshotSelector {
             status = "ALL_STATUS";
         } else {
             // join a list of enum values into a comma-separated string
-            status = this.status == null ? null : IterableStream.of(this.status)
-                .stream()
-                .map(statusEnumValue -> statusEnumValue.toString())
-                .collect(Collectors.joining(","));
+            status = this.status == null
+                ? null
+                : IterableStream.of(this.status)
+                    .stream()
+                    .map(statusEnumValue -> statusEnumValue.toString())
+                    .collect(Collectors.joining(","));
         }
         return "SnapshotSelector(name=" + nameFilter + ", status=" + status + ", fields=" + fields + ")";
     }

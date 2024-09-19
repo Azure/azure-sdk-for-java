@@ -21,6 +21,7 @@
   <properties>
     <perf.test.mainClass>com.azure.data.appconfiguration.perf.App</perf.test.mainClass>
     <perf.test.imageName>azure-data-appconfiguration-perf</perf.test.imageName>
+    <spotless.skip>false</spotless.skip>
   </properties>
 
   <dependencies>
