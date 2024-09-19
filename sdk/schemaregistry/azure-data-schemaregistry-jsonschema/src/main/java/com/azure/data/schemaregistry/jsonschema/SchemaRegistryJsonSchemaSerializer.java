@@ -65,7 +65,7 @@ public final class SchemaRegistryJsonSchemaSerializer {
      *     object does not match the existing schema definition, an exception is thrown.
      */
     public <T extends MessageContent> T serialize(Object object, TypeReference<T> typeReference) {
-        return serializeAsync(object, typeReference).block();
+        return serialize(object, typeReference, null);
     }
 
     /**
@@ -87,7 +87,18 @@ public final class SchemaRegistryJsonSchemaSerializer {
      */
     public <T extends MessageContent> T serialize(Object object, TypeReference<T> typeReference,
         Function<BinaryData, T> messageFactory) {
-        return serializeAsync(object, typeReference, messageFactory).block();
+
+        final String schemaFullName = object.getClass().getName();
+        final Function<BinaryData, T> resolvedMessageFactory = getMessageContentFactory(typeReference, messageFactory);
+        final String schemaDefinition = getSchemaDefinition(object);
+
+        final BinaryData serializedBytes = BinaryData.fromBytes(jsonSerializer.serializeToBytes(object));
+        final T serializedMessage = resolvedMessageFactory.apply(serializedBytes);
+
+        final String schemaId = schemaCache.getSchemaId(schemaFullName, schemaDefinition);
+        serializedMessage.setContentType(CONTENT_TYPE + "+" + schemaId);
+
+        return serializedMessage;
     }
 
     /**
@@ -129,39 +140,83 @@ public final class SchemaRegistryJsonSchemaSerializer {
         TypeReference<T> typeReference, Function<BinaryData, T> messageFactory) {
 
         final String schemaFullName = object.getClass().getName();
-        final T serializedMessage = getSerializedMessage(object, typeReference, messageFactory);
-        final String schemaDefinition = getSchemaDefinition(object);
+        final Function<BinaryData, T> resolvedMessageFactory = getMessageContentFactory(typeReference, messageFactory);
 
-        return this.schemaCache.getSchemaIdAsync(schemaFullName, schemaDefinition)
-            .handle((schemaId, sink) -> {
-                try {
-                    serializedMessage.setContentType(CONTENT_TYPE + "+" + schemaId);
+        final String schemaDefinition;
+        try {
+            schemaDefinition = getSchemaDefinition(object);
+        } catch (RuntimeException e) {
+            return monoError(LOGGER, e);
+        }
 
-                    sink.next(serializedMessage);
-                } catch (Exception e) {
-                    LOGGER.atError()
-                        .addKeyValue("schemaId", schemaId)
-                        .addKeyValue("type", schemaFullName)
-                        .log(() -> "Error encountered serializing object", e);
+        return jsonSerializer.serializeToBytesAsync(object)
+            .flatMap(messageBytes -> {
+                final T serializedMessage = resolvedMessageFactory.apply(BinaryData.fromBytes(messageBytes));
 
-                    sink.error(e);
-                }
+                return schemaCache.getSchemaIdAsync(schemaFullName, schemaDefinition)
+                    .handle((schemaId, sink) -> {
+                        try {
+                            serializedMessage.setContentType(CONTENT_TYPE + "+" + schemaId);
+
+                            sink.next(serializedMessage);
+                        } catch (Exception e) {
+                            LOGGER.atError()
+                                .addKeyValue("schemaId", schemaId)
+                                .addKeyValue("type", schemaFullName)
+                                .log(() -> "Error encountered serializing object", e);
+
+                            sink.error(e);
+                        }
+                    });
             });
     }
 
     /**
      * Deserializes a message into its object.  If there is a schema defined in {@link MessageContent#getContentType()},
-     * it will fetch  the schema and validate.
+     * it will fetch the schema and validate.
      *
      * @param message Message to deserialize.
      * @param typeReference Type reference of object.
      * @param <T> Type of object to deserialize.
      *
-     * @return The message deserialized into its object.  If the schema definition is defined but does not exist or the
-     *     object does not match the existing schema definition, an exception is thrown.
+     * @return The message deserialized into its object.  {@code null} if there is no contents in the message. If the
+     *     schema definition is defined but does not exist or the object does not match the existing schema definition,
+     *     an exception is thrown.
      */
     public <T> T deserialize(MessageContent message, TypeReference<T> typeReference) {
-        return deserializeAsync(message, typeReference).block();
+        if (message == null) {
+            throw LOGGER.logThrowableAsError(new NullPointerException("'message' cannot be null."));
+        } else if (typeReference == null) {
+            throw LOGGER.logExceptionAsError(new NullPointerException("'typeReference' cannot be null."));
+        }
+
+        final String schemaId = extractAndValidateSchemaId(message);
+
+        final BinaryData body = message.getBodyAsBinaryData();
+        if (Objects.isNull(body)) {
+            LOGGER.warning("Message provided does not have a BinaryBody, returning empty response.");
+            return null;
+        }
+
+        if (body.getLength() == null || body.getLength() == 0) {
+            LOGGER.warning("Message provided has an empty byte[], returning empty response.");
+            return null;
+        }
+
+        final T deserialized = jsonSerializer.deserialize(body.toStream(), typeReference);
+        if (deserialized == null) {
+            return null;
+        }
+
+        final String schemaDefinition = schemaCache.getSchemaDefinition(schemaId);
+
+        if (isValid(deserialized, typeReference, schemaDefinition)) {
+            return deserialized;
+        } else {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format("Deserialized JSON object"
+                    + "does not match schema. Type: %s%nActual: %s%nDefinition: %s.",
+                typeReference.getJavaClass(), deserialized, schemaDefinition)));
+        }
     }
 
     /**
@@ -185,41 +240,26 @@ public final class SchemaRegistryJsonSchemaSerializer {
             return monoError(LOGGER, new NullPointerException("'typeReference' cannot be null."));
         }
 
-        final BinaryData body = message.getBodyAsBinaryData();
+        final String schemaId;
+        try {
+            schemaId = extractAndValidateSchemaId(message);
+        } catch (RuntimeException e) {
+            return monoError(LOGGER, e);
+        }
 
+        final BinaryData body = message.getBodyAsBinaryData();
         if (Objects.isNull(body)) {
             LOGGER.warning("Message provided does not have a BinaryBody, returning empty response.");
             return Mono.empty();
         }
 
-        final byte[] contents = body.toBytes();
-
-        if (contents.length == 0) {
+        if (body.getLength() == null || body.getLength() == 0) {
             LOGGER.warning("Message provided has an empty byte[], returning empty response.");
             return Mono.empty();
         }
 
-        if (CoreUtils.isNullOrEmpty(message.getContentType())) {
-            return monoError(LOGGER, new IllegalArgumentException("Cannot deserialize message with no content-type."));
-        }
-
-        // It is the new format, so we parse the mime-type.
-        final String[] parts = message.getContentType().split("\\+");
-        if (parts.length != 2) {
-            return monoError(LOGGER, new IllegalArgumentException(
-                "Content type was not in the expected format of MIME type + schema ID. Actual: "
-                    + message.getContentType()));
-        }
-
-        if (!CONTENT_TYPE.equalsIgnoreCase(parts[0])) {
-            return monoError(LOGGER, new IllegalArgumentException(
-                "Json deserialization may only be used on content that is of '" + CONTENT_TYPE + "' type. Actual: "
-                    + message.getContentType()));
-        }
-
-        return jsonSerializer.deserializeFromBytesAsync(contents, typeReference)
+        return jsonSerializer.deserializeAsync(body.toStream(), typeReference)
             .flatMap(decoded -> {
-                final String schemaId = parts[1];
                 return this.schemaCache.getSchemaDefinitionAsync(schemaId)
                     .handle((schemaDefinition, sink) -> {
                         final String schemaFullName = typeReference.getJavaClass().getName();
@@ -248,43 +288,24 @@ public final class SchemaRegistryJsonSchemaSerializer {
             });
     }
 
-    /**
-     * Gets the object serialized to {@link MessageContent}.
-     *
-     * @param object Object to create message content from.
-     * @param typeReference Type reference of message to create.
-     * @param messageFactory If set, the factory used to create a new instance of {@link MessageContent}.
-     * @return The message containing serialized object.
-     * @param <T> Type of message to serialize.
-     */
-    private <T extends MessageContent> T getSerializedMessage(Object object, TypeReference<T> typeReference,
-        Function<BinaryData, T> messageFactory) {
-
-        final Optional<Constructor<?>> constructor =
-            Arrays.stream(typeReference.getJavaClass().getDeclaredConstructors())
-                .filter(c -> c.getParameterCount() == 0)
-                .findFirst();
-
-        if (!constructor.isPresent() && messageFactory == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(typeReference.getJavaClass()
-                + "does not have have a no-arg constructor to create a new instance of T with. Use the overload that"
-                + "accepts 'messageFactory'."));
+    private <T> boolean isValid(T deserialized, TypeReference<T> typeReference, String schemaDefinition) {
+        if (deserialized == null) {
+            return true;
         }
 
-        final Function<BinaryData, T> messageFactoryToUse = messageFactory != null ? messageFactory
-            : binaryData -> {
-            final T instance = createNoArgumentInstance(typeReference);
-            instance.setBodyAsBinaryData(binaryData);
+        try {
+            return schemaGenerator.isValid(deserialized, typeReference, schemaDefinition);
+        } catch (RuntimeException e) {
+            LOGGER.atError()
+                .addKeyValue("type", deserialized.getClass().getName())
+                .addKeyValue("schemaDefinition", schemaDefinition)
+                .log("Validating schema threw an error.", e);
 
-            return instance;
-        };
-
-        final byte[] encoded = jsonSerializer.serializeToBytes(object);
-
-        return messageFactoryToUse.apply(BinaryData.fromBytes(encoded));
+            throw LOGGER.logExceptionAsError(e);
+        }
     }
 
-    /**\
+    /**
      * Gets the schema definition for an object.
      *
      * @param object Object to get schema definition for.
@@ -306,14 +327,66 @@ public final class SchemaRegistryJsonSchemaSerializer {
         }
 
         if (schemaDefinition == null) {
-            LOGGER.atWarning()
-                .addKeyValue("type", schemaFullName)
-                .log("Schema returned from generator was null.");
             throw LOGGER.logThrowableAsError(new IllegalArgumentException("JSON schema cannot be null. Type: "
                 + schemaFullName));
         }
 
         return schemaDefinition;
+    }
+
+    private static String extractAndValidateSchemaId(MessageContent message) {
+        if (CoreUtils.isNullOrEmpty(message.getContentType())) {
+            throw new IllegalArgumentException("Cannot deserialize message with no content-type.");
+        }
+
+        // It is the new format, so we parse the mime-type.
+        final String[] parts = message.getContentType().split("\\+");
+        if (parts.length != 2) {
+            throw new IllegalArgumentException(
+                "Content type was not in the expected format of MIME type + schema ID. Actual: "
+                    + message.getContentType());
+        }
+
+        if (!CONTENT_TYPE.equalsIgnoreCase(parts[0])) {
+            throw new IllegalArgumentException(
+                "Json deserialization may only be used on content that is of '" + CONTENT_TYPE + "' type. Actual: "
+                    + message.getContentType());
+        }
+
+        return parts[1];
+    }
+
+    /**
+     * Resolves the function to use to instantiate the {@link MessageContent}.  It tries to find the no argument
+     * constructor to instantiate object.  If a constructor cannot be found, uses the {@code messageFactory}.
+     *
+     * @param typeReference Type of {@link MessageContent} to get constructor for.
+     * @param messageFactory Optional factory to use.
+     * @return A function to create the {@link MessageContent} given {@link BinaryData}.
+     * @param <T> Type of message content to return.
+     * @throws IllegalArgumentException If type does not have a no-arg constructor and messageFactory is null.
+     */
+    private static <T extends MessageContent> Function<BinaryData, T> getMessageContentFactory(
+        TypeReference<T> typeReference, Function<BinaryData, T> messageFactory) {
+
+        final Optional<Constructor<?>> constructor =
+            Arrays.stream(typeReference.getJavaClass().getDeclaredConstructors())
+                .filter(c -> c.getParameterCount() == 0)
+                .findFirst();
+
+        if (!constructor.isPresent() && messageFactory == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(typeReference.getJavaClass()
+                + "does not have have a no-arg constructor to create a new instance of T with. Use the overload that"
+                + "accepts 'messageFactory'."));
+        }
+
+        return messageFactory != null ? messageFactory
+            : binaryData -> {
+            final T instance = createNoArgumentInstance(typeReference);
+            instance.setBodyAsBinaryData(binaryData);
+
+            return instance;
+        };
     }
 
     /**

@@ -25,7 +25,6 @@ import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.io.IOException;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -49,7 +48,7 @@ public class SchemaRegistryJsonSchemaSerializerTests {
     private static final JsonSerializer JSON_SERIALIZER = JsonSerializerProviders.createInstance(true);
 
     @Mock
-    private SchemaRegistryAsyncClient registryAsyncClient;
+    private SchemaRegistryAsyncClient schemaRegistryAsyncClient;
     @Mock
     private SchemaRegistryClient schemaRegistryClient;
     @Mock
@@ -83,6 +82,7 @@ public class SchemaRegistryJsonSchemaSerializerTests {
 
         Mockito.framework().clearInlineMock(this);
     }
+
     /**
      * Tests that calling an async method when {@link SchemaRegistryAsyncClient} is not set will throw an exception.
      */
@@ -108,14 +108,14 @@ public class SchemaRegistryJsonSchemaSerializerTests {
     @Test
     public void syncFallbackToAsyncClient() {
         // Arrange
-        when(registryAsyncClient.getSchemaProperties(anyString(), anyString(), anyString(), eq(SchemaFormat.JSON)))
+        when(schemaRegistryAsyncClient.getSchemaProperties(anyString(), anyString(), anyString(), eq(SchemaFormat.JSON)))
             .thenReturn(Mono.just(schemaProperties));
 
         when(jsonSchemaGenerator.generateSchema(eq(TypeReference.createInstance(Address.class))))
             .thenReturn(Address.JSON_SCHEMA);
 
         SerializerOptions options = new SerializerOptions("foo", false, 10, JSON_SERIALIZER);
-        SchemaRegistryJsonSchemaSerializer client = new SchemaRegistryJsonSchemaSerializer(registryAsyncClient, null, jsonSchemaGenerator, options);
+        SchemaRegistryJsonSchemaSerializer client = new SchemaRegistryJsonSchemaSerializer(schemaRegistryAsyncClient, null, jsonSchemaGenerator, options);
 
         // Act & Assert
         NoArgMessage message = client.serialize(address, TypeReference.createInstance(NoArgMessage.class));
@@ -132,11 +132,11 @@ public class SchemaRegistryJsonSchemaSerializerTests {
         SerializerOptions serializerOptions = new SerializerOptions(SCHEMA_GROUP, true,
             100, JSON_SERIALIZER);
 
-        when(registryAsyncClient.registerSchema(eq(SCHEMA_GROUP), eq(Address.class.getName()), any(),
+        when(schemaRegistryAsyncClient.registerSchema(eq(SCHEMA_GROUP), eq(Address.class.getName()), any(),
             eq(SchemaFormat.JSON))).thenAnswer(invocation -> Mono.just(schemaProperties));
 
-        SchemaRegistryJsonSchemaSerializer serializer = new SchemaRegistryJsonSchemaSerializer(registryAsyncClient,
-                schemaRegistryClient, jsonSchemaGenerator, serializerOptions);
+        SchemaRegistryJsonSchemaSerializer serializer = new SchemaRegistryJsonSchemaSerializer(schemaRegistryAsyncClient,
+                null, jsonSchemaGenerator, serializerOptions);
 
         when(jsonSchemaGenerator.generateSchema(eq(TypeReference.createInstance(Address.class))))
             .thenReturn(Address.JSON_SCHEMA);
@@ -167,15 +167,16 @@ public class SchemaRegistryJsonSchemaSerializerTests {
         SerializerOptions serializerOptions = new SerializerOptions(SCHEMA_GROUP, true,
             100, JSON_SERIALIZER);
 
-        when(registryAsyncClient.registerSchema(eq(SCHEMA_GROUP), eq(Address.class.getName()), any(),
+        when(schemaRegistryAsyncClient.registerSchema(eq(SCHEMA_GROUP), eq(Address.class.getName()), any(),
             eq(SchemaFormat.JSON))).thenAnswer(invocation -> Mono.just(schemaProperties));
 
-        SchemaRegistryJsonSchemaSerializer serializer = new SchemaRegistryJsonSchemaSerializer(registryAsyncClient,
+        SchemaRegistryJsonSchemaSerializer serializer = new SchemaRegistryJsonSchemaSerializer(schemaRegistryAsyncClient,
                 schemaRegistryClient, jsonSchemaGenerator, serializerOptions);
 
         // Act & Assert
-        assertThrows(IllegalArgumentException.class,
-            () -> serializer.serialize(address, TypeReference.createInstance(MessageContent.class)));
+        StepVerifier.create(serializer.serializeAsync(address, TypeReference.createInstance(MessageContent.class)))
+                .expectError(IllegalArgumentException.class)
+                .verify();
     }
 
     /**
@@ -187,7 +188,7 @@ public class SchemaRegistryJsonSchemaSerializerTests {
         SerializerOptions serializerOptions = new SerializerOptions(null, false,
             100, JSON_SERIALIZER);
 
-        SchemaRegistryJsonSchemaSerializer serializer = new SchemaRegistryJsonSchemaSerializer(registryAsyncClient,
+        SchemaRegistryJsonSchemaSerializer serializer = new SchemaRegistryJsonSchemaSerializer(schemaRegistryAsyncClient,
                 schemaRegistryClient, jsonSchemaGenerator, serializerOptions);
 
         when(jsonSchemaGenerator.generateSchema(eq(TypeReference.createInstance(Address.class))))
@@ -207,7 +208,7 @@ public class SchemaRegistryJsonSchemaSerializerTests {
         SerializerOptions serializerOptions = new SerializerOptions(SCHEMA_GROUP, false,
             100, JSON_SERIALIZER);
 
-        SchemaRegistryJsonSchemaSerializer serializer = new SchemaRegistryJsonSchemaSerializer(registryAsyncClient,
+        SchemaRegistryJsonSchemaSerializer serializer = new SchemaRegistryJsonSchemaSerializer(schemaRegistryAsyncClient,
                 schemaRegistryClient, jsonSchemaGenerator, serializerOptions);
 
         MessageContent messageContent = new MessageContent()
@@ -229,7 +230,7 @@ public class SchemaRegistryJsonSchemaSerializerTests {
         SerializerOptions serializerOptions = new SerializerOptions(SCHEMA_GROUP, false,
             100, JSON_SERIALIZER);
 
-        SchemaRegistryJsonSchemaSerializer serializer = new SchemaRegistryJsonSchemaSerializer(registryAsyncClient,
+        SchemaRegistryJsonSchemaSerializer serializer = new SchemaRegistryJsonSchemaSerializer(schemaRegistryAsyncClient,
                 schemaRegistryClient, jsonSchemaGenerator, serializerOptions);
 
         MessageContent emptyBodyMessage = new MessageContent()
@@ -271,7 +272,7 @@ public class SchemaRegistryJsonSchemaSerializerTests {
         SerializerOptions serializerOptions = new SerializerOptions(SCHEMA_GROUP, false,
             100, JSON_SERIALIZER);
 
-        SchemaRegistryJsonSchemaSerializer serializer = new SchemaRegistryJsonSchemaSerializer(registryAsyncClient,
+        SchemaRegistryJsonSchemaSerializer serializer = new SchemaRegistryJsonSchemaSerializer(schemaRegistryAsyncClient,
                 schemaRegistryClient, jsonSchemaGenerator, serializerOptions);
 
         MessageContent incorrectFormat = new MessageContent()
@@ -294,12 +295,16 @@ public class SchemaRegistryJsonSchemaSerializerTests {
         SerializerOptions serializerOptions = new SerializerOptions(SCHEMA_GROUP, false,
             100, JSON_SERIALIZER);
 
-        SchemaRegistryJsonSchemaSerializer serializer = new SchemaRegistryJsonSchemaSerializer(registryAsyncClient,
+        SchemaRegistryJsonSchemaSerializer serializer = new SchemaRegistryJsonSchemaSerializer(schemaRegistryAsyncClient,
                 schemaRegistryClient, jsonSchemaGenerator, serializerOptions);
 
         String schemaDefinition = Address.JSON_SCHEMA;
         SchemaRegistrySchema theSchema = new SchemaRegistrySchema(schemaProperties, schemaDefinition);
-        when(registryAsyncClient.getSchema(ADDRESS_SCHEMA_ID)).thenReturn(Mono.just(theSchema));
+
+        when(schemaRegistryAsyncClient.getSchema(any())).thenAnswer(invocation -> {
+            throw new IllegalArgumentException("Did not expect async client to be called.");
+        });
+        when(schemaRegistryClient.getSchema(ADDRESS_SCHEMA_ID)).thenReturn(theSchema);
 
         TypeReference<Address> type = TypeReference.createInstance(Address.class);
         when(jsonSchemaGenerator.generateSchema(eq(type))).thenReturn(schemaDefinition);
@@ -320,6 +325,39 @@ public class SchemaRegistryJsonSchemaSerializerTests {
         assertEquals(address.getStreetType(), actual.getStreetType());
     }
 
+    @Test
+    public void deserializeAsync() {
+        // Arrange
+        SerializerOptions serializerOptions = new SerializerOptions(SCHEMA_GROUP, false,
+            100, JSON_SERIALIZER);
+
+        SchemaRegistryJsonSchemaSerializer serializer = new SchemaRegistryJsonSchemaSerializer(schemaRegistryAsyncClient,
+            schemaRegistryClient, jsonSchemaGenerator, serializerOptions);
+
+        String schemaDefinition = Address.JSON_SCHEMA;
+        SchemaRegistrySchema theSchema = new SchemaRegistrySchema(schemaProperties, schemaDefinition);
+        when(schemaRegistryAsyncClient.getSchema(ADDRESS_SCHEMA_ID)).thenReturn(Mono.just(theSchema));
+
+        TypeReference<Address> type = TypeReference.createInstance(Address.class);
+        when(jsonSchemaGenerator.generateSchema(eq(type))).thenReturn(schemaDefinition);
+        when(jsonSchemaGenerator.isValid(any(Address.class), eq(type), eq(schemaDefinition))).thenReturn(true);
+
+        byte[] serialized = JSON_SERIALIZER.serializeToBytes(address);
+
+        MessageContent message = new MessageContent()
+            .setContentType(CONTENT_TYPE_WITH_ID)
+            .setBodyAsBinaryData(BinaryData.fromBytes(serialized));
+
+        // Act
+        StepVerifier.create(serializer.deserializeAsync(message, type))
+            .assertNext(actual -> {
+                assertEquals(address.getNumber(), actual.getNumber());
+                assertEquals(address.getStreetName(), actual.getStreetName());
+                assertEquals(address.getStreetType(), actual.getStreetType());
+            })
+            .verifyComplete();
+    }
+
     /**
      * Deserializes a message and throws an error when the schema is not valid.
      */
@@ -329,12 +367,12 @@ public class SchemaRegistryJsonSchemaSerializerTests {
         SerializerOptions serializerOptions = new SerializerOptions(SCHEMA_GROUP, false,
             100, JSON_SERIALIZER);
 
-        SchemaRegistryJsonSchemaSerializer serializer = new SchemaRegistryJsonSchemaSerializer(registryAsyncClient,
-                schemaRegistryClient, jsonSchemaGenerator, serializerOptions);
+        SchemaRegistryJsonSchemaSerializer serializer = new SchemaRegistryJsonSchemaSerializer(schemaRegistryAsyncClient,
+                null, jsonSchemaGenerator, serializerOptions);
 
         String schemaDefinition = Address.JSON_SCHEMA;
         SchemaRegistrySchema theSchema = new SchemaRegistrySchema(schemaProperties, schemaDefinition);
-        when(registryAsyncClient.getSchema(ADDRESS_SCHEMA_ID)).thenReturn(Mono.just(theSchema));
+        when(schemaRegistryAsyncClient.getSchema(ADDRESS_SCHEMA_ID)).thenReturn(Mono.just(theSchema));
 
         TypeReference<Address> type = TypeReference.createInstance(Address.class);
         when(jsonSchemaGenerator.generateSchema(eq(type))).thenReturn(schemaDefinition);
@@ -362,12 +400,16 @@ public class SchemaRegistryJsonSchemaSerializerTests {
         SerializerOptions serializerOptions = new SerializerOptions(SCHEMA_GROUP, false,
             100, JSON_SERIALIZER);
 
-        SchemaRegistryJsonSchemaSerializer serializer = new SchemaRegistryJsonSchemaSerializer(registryAsyncClient,
+        SchemaRegistryJsonSchemaSerializer serializer = new SchemaRegistryJsonSchemaSerializer(schemaRegistryAsyncClient,
                 schemaRegistryClient, jsonSchemaGenerator, serializerOptions);
 
         String schemaDefinition = Address.JSON_SCHEMA;
         SchemaRegistrySchema theSchema = new SchemaRegistrySchema(schemaProperties, schemaDefinition);
-        when(registryAsyncClient.getSchema(ADDRESS_SCHEMA_ID)).thenReturn(Mono.just(theSchema));
+
+        when(schemaRegistryAsyncClient.getSchema(any())).thenAnswer(invocation -> {
+            throw new IllegalArgumentException("Did not expect async client to be called.");
+        });
+        when(schemaRegistryClient.getSchema(ADDRESS_SCHEMA_ID)).thenReturn(theSchema);
 
         TypeReference<Address> type = TypeReference.createInstance(Address.class);
         when(jsonSchemaGenerator.generateSchema(eq(type))).thenReturn(schemaDefinition);
