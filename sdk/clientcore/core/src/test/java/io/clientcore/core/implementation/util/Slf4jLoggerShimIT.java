@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package io.clientcore.core.implementation.util;
 
+import io.clientcore.core.models.SocketConnection;
 import io.clientcore.core.util.ClientLogger;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -34,7 +35,7 @@ public class Slf4jLoggerShimIT {
         assertTrue(shim.canLogAtLevel(ClientLogger.LogLevel.WARNING));
         assertTrue(shim.canLogAtLevel(ClientLogger.LogLevel.ERROR));
 
-        shim = new Slf4jLoggerShim(Object.class);
+        shim = new Slf4jLoggerShim(SocketConnection.class);
 
         // But the default log level should be INFO for everything else.
         assertFalse(shim.canLogAtLevel(ClientLogger.LogLevel.VERBOSE));

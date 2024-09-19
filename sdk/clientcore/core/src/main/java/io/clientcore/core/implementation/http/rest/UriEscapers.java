@@ -4,9 +4,9 @@
 package io.clientcore.core.implementation.http.rest;
 
 /**
- * Collection of useful URL escapers.
+ * Collection of useful URI escapers.
  */
-public final class UrlEscapers {
+public final class UriEscapers {
 
     private static final String UNRESERVED_SYMBOLS = "-._~";
     private static final String SUB_DELIMS = "!$&'()*+,;=";

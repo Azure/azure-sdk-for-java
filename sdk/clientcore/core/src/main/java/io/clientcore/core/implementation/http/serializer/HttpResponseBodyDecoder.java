@@ -8,7 +8,7 @@ import io.clientcore.core.http.exception.HttpResponseException;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.TypeUtil;
-import io.clientcore.core.implementation.util.Base64Url;
+import io.clientcore.core.implementation.util.Base64Uri;
 import io.clientcore.core.implementation.util.DateTimeRfc1123;
 import io.clientcore.core.util.ClientLogger;
 import io.clientcore.core.util.binarydata.BinaryData;
@@ -173,8 +173,8 @@ public final class HttpResponseBodyDecoder {
         Objects.requireNonNull(wireType);
 
         if (resultType == byte[].class) {
-            if (wireType == Base64Url.class) {
-                return Base64Url.class;
+            if (wireType == Base64Uri.class) {
+                return Base64Uri.class;
             }
         } else if (resultType == OffsetDateTime.class) {
             if (wireType == DateTimeRfc1123.class) {
@@ -210,8 +210,8 @@ public final class HttpResponseBodyDecoder {
      */
     private static Object convertToResultType(final Object wireResponse, final Type resultType, final Type wireType) {
         if (resultType == byte[].class) {
-            if (wireType == Base64Url.class) {
-                return (new Base64Url(wireResponse.toString())).decodedBytes();
+            if (wireType == Base64Uri.class) {
+                return (new Base64Uri(wireResponse.toString())).decodedBytes();
             }
         } else if (resultType == OffsetDateTime.class) {
             if (wireType == DateTimeRfc1123.class) {

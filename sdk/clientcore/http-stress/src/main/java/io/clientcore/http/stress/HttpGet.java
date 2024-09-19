@@ -19,16 +19,17 @@ import io.clientcore.core.util.ClientLogger;
 import io.clientcore.http.jdk.httpclient.JdkHttpClientProvider;
 import io.clientcore.http.okhttp3.OkHttpHttpClientProvider;
 import io.clientcore.http.stress.util.TelemetryHelper;
+import reactor.core.publisher.Mono;
+
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.time.Instant;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicLong;
-import reactor.core.publisher.Mono;
 
 /**
  * Performance test for simple HTTP GET against test server.
@@ -38,7 +39,7 @@ public class HttpGet extends ScenarioBase<StressOptions> {
     private static final TelemetryHelper TELEMETRY_HELPER = new TelemetryHelper(HttpGet.class);
     private static final ClientLogger LOGGER = new ClientLogger(HttpGet.class);
     private final HttpPipeline pipeline;
-    private final URL url;
+    private final URI uri;
     final ExecutorService executorService = Executors.newFixedThreadPool(options.getParallel());
 
     // This is almost-unique-id generator. We could use UUID, but it's a bit more expensive to use.
@@ -46,15 +47,16 @@ public class HttpGet extends ScenarioBase<StressOptions> {
 
     /**
      * Creates an instance of performance test.
+     *
      * @param options stress test options
      */
     public HttpGet(StressOptions options) {
         super(options, TELEMETRY_HELPER);
         pipeline = getPipelineBuilder().build();
         try {
-            url = new URL(options.getServiceEndpoint());
-        } catch (MalformedURLException ex) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'url' must be a valid URL.", ex));
+            uri = new URI(options.getServiceEndpoint());
+        } catch (URISyntaxException ex) {
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'uri' must be a valid URI.", ex));
         }
     }
 
@@ -94,18 +96,16 @@ public class HttpGet extends ScenarioBase<StressOptions> {
     }
 
     private Mono<Void> runInternalAsync() {
-        return Mono.usingWhen(Mono.fromCallable(() -> pipeline.send(createRequest())),
-            response -> {
-                ((HttpResponse<?>) response).getBody().toBytes();
-                return Mono.empty();
-            },
-            response -> Mono.fromRunnable(() -> {
-                try {
-                    response.close();
-                } catch (IOException e) {
-                    LOGGER.logThrowableAsError(new UncheckedIOException(e));
-                }
-            }));
+        return Mono.usingWhen(Mono.fromCallable(() -> pipeline.send(createRequest())), response -> {
+            ((HttpResponse<?>) response).getBody().toBytes();
+            return Mono.empty();
+        }, response -> Mono.fromRunnable(() -> {
+            try {
+                response.close();
+            } catch (IOException e) {
+                LOGGER.logThrowableAsError(new UncheckedIOException(e));
+            }
+        }));
     }
 
     // Method to run using CompletableFuture
@@ -148,18 +148,18 @@ public class HttpGet extends ScenarioBase<StressOptions> {
     }
 
     private HttpRequest createRequest() {
-        HttpRequest request = new HttpRequest(HttpMethod.GET, url);
+        HttpRequest request = new HttpRequest(HttpMethod.GET, uri);
         request.getHeaders().set(HttpHeaderName.USER_AGENT, "azsdk-java-clientcore-stress");
-        request.getHeaders().set(HttpHeaderName.fromString("x-client-id"), String.valueOf(clientRequestId.incrementAndGet()));
+        request.getHeaders()
+            .set(HttpHeaderName.fromString("x-client-id"), String.valueOf(clientRequestId.incrementAndGet()));
         return request;
     }
 
     private HttpPipelineBuilder getPipelineBuilder() {
-        HttpLogOptions logOptions = new HttpLogOptions()
-            .setLogLevel(HttpLogOptions.HttpLogDetailLevel.HEADERS);
+        HttpLogOptions logOptions = new HttpLogOptions().setLogLevel(HttpLogOptions.HttpLogDetailLevel.HEADERS);
 
-        HttpPipelineBuilder builder = new HttpPipelineBuilder()
-            .policies(new HttpRetryPolicy(), new HttpLoggingPolicy(logOptions));
+        HttpPipelineBuilder builder = new HttpPipelineBuilder().policies(new HttpRetryPolicy(),
+            new HttpLoggingPolicy(logOptions));
 
         if (options.getHttpClient() == PerfStressOptions.HttpClientType.OKHTTP) {
             builder.httpClient(new OkHttpHttpClientProvider().getSharedInstance());

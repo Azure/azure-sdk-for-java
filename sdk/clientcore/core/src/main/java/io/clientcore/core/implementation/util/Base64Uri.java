@@ -9,20 +9,20 @@ import java.util.Arrays;
 import static io.clientcore.core.implementation.util.ImplUtils.isNullOrEmpty;
 
 /**
- * Encodes and decodes using Base64 URL encoding.
+ * Encodes and decodes using Base64 URI encoding.
  */
-public final class Base64Url {
+public final class Base64Uri {
     /**
-     * The Base64Url encoded bytes.
+     * The Base64Uri encoded bytes.
      */
     private final byte[] bytes;
 
     /**
-     * Creates a new Base64Url object with the specified encoded string.
+     * Creates a new Base64Uri object with the specified encoded string.
      *
      * @param string The encoded string.
      */
-    public Base64Url(String string) {
+    public Base64Uri(String string) {
         if (string == null) {
             this.bytes = null;
         } else {
@@ -32,11 +32,11 @@ public final class Base64Url {
     }
 
     /**
-     * Creates a new Base64Url object with the specified encoded bytes.
+     * Creates a new Base64Uri object with the specified encoded bytes.
      *
      * @param bytes The encoded bytes.
      */
-    public Base64Url(byte[] bytes) {
+    public Base64Uri(byte[] bytes) {
         this.bytes = unquote(bytes);
     }
 
@@ -57,10 +57,10 @@ public final class Base64Url {
         if (!isNullOrEmpty(string)) {
             final char firstCharacter = string.charAt(0);
             if (firstCharacter == '\"' || firstCharacter == '\'') {
-                final int base64UrlStringLength = string.length();
-                final char lastCharacter = string.charAt(base64UrlStringLength - 1);
+                final int base64UriStringLength = string.length();
+                final char lastCharacter = string.charAt(base64UriStringLength - 1);
                 if (lastCharacter == firstCharacter) {
-                    return string.substring(1, base64UrlStringLength - 1);
+                    return string.substring(1, base64UriStringLength - 1);
                 }
             }
         }
@@ -68,16 +68,16 @@ public final class Base64Url {
     }
 
     /**
-     * Encodes a byte array into Base64Url encoded bytes.
+     * Encodes a byte array into Base64Uri encoded bytes.
      *
      * @param bytes The byte array to encode.
-     * @return A new Base64Url instance.
+     * @return A new Base64Uri instance.
      */
-    public static Base64Url encode(byte[] bytes) {
+    public static Base64Uri encode(byte[] bytes) {
         if (bytes == null) {
-            return new Base64Url((String) null);
+            return new Base64Uri((String) null);
         } else {
-            return new Base64Url(Base64Util.encodeURLWithoutPadding(bytes));
+            return new Base64Uri(Base64Util.encodeURIWithoutPadding(bytes));
         }
     }
 
@@ -108,7 +108,7 @@ public final class Base64Url {
             return null;
         }
 
-        return Base64Util.decodeURL(bytes);
+        return Base64Util.decodeURI(bytes);
     }
 
     @Override
@@ -127,10 +127,10 @@ public final class Base64Url {
             return true;
         }
 
-        if (!(obj instanceof Base64Url)) {
+        if (!(obj instanceof Base64Uri)) {
             return false;
         }
 
-        return Arrays.equals(this.bytes, ((Base64Url) obj).encodedBytes());
+        return Arrays.equals(this.bytes, ((Base64Uri) obj).encodedBytes());
     }
 }

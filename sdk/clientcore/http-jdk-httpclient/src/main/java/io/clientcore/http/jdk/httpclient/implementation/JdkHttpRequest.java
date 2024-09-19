@@ -6,7 +6,6 @@ import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.util.ClientLogger;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpHeaders;
 import java.net.http.HttpRequest;
@@ -49,12 +48,7 @@ public final class JdkHttpRequest extends HttpRequest {
         this.bodyPublisher = (method == HttpMethod.GET || method == HttpMethod.HEAD)
             ? noBody()
             : BodyPublisherUtils.toBodyPublisher(coreRequest, writeTimeout);
-
-        try {
-            uri = coreRequest.getUrl().toURI();
-        } catch (URISyntaxException e) {
-            throw logger.logThrowableAsError(new RuntimeException(e));
-        }
+        this.uri = coreRequest.getUri();
 
         this.headers = HttpHeaders.of(new HeaderFilteringMap(coreRequest.getHeaders(), restrictedHeaders, logger),
             (ignored1, ignored2) -> true);

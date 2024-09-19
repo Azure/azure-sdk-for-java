@@ -17,7 +17,7 @@ import io.clientcore.core.implementation.ReflectiveInvoker;
 import io.clientcore.core.implementation.TypeUtil;
 import io.clientcore.core.implementation.http.UnexpectedExceptionInformation;
 import io.clientcore.core.implementation.http.serializer.MalformedValueException;
-import io.clientcore.core.implementation.util.UrlBuilder;
+import io.clientcore.core.implementation.util.UriBuilder;
 import io.clientcore.core.json.JsonSerializable;
 import io.clientcore.core.util.ClientLogger;
 import io.clientcore.core.util.binarydata.BinaryData;
@@ -26,7 +26,8 @@ import io.clientcore.core.util.serializer.ObjectSerializer;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.lang.reflect.Type;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 
@@ -66,6 +67,8 @@ public abstract class RestProxyBase {
             return invoke(proxy, methodParser, request);
         } catch (IOException e) {
             throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
+        } catch (URISyntaxException e) {
+            throw LOGGER.logThrowableAsError(new RuntimeException(e));
         }
     }
 
@@ -107,43 +110,43 @@ public abstract class RestProxyBase {
      * @throws IOException If the body contents cannot be serialized.
      */
     HttpRequest createHttpRequest(SwaggerMethodParser methodParser, ObjectSerializer objectSerializer, Object[] args)
-        throws IOException {
+        throws IOException, URISyntaxException {
 
-        // Sometimes people pass in a full URL for the value of their PathParam annotated argument.
-        // This definitely happens in paging scenarios. In that case, just use the full URL and
+        // Sometimes people pass in a full URI for the value of their PathParam annotated argument.
+        // This definitely happens in paging scenarios. In that case, just use the full URI and
         // ignore the Host annotation.
         final String path = methodParser.setPath(args, serializer);
-        final UrlBuilder pathUrlBuilder = UrlBuilder.parse(path);
-        final UrlBuilder urlBuilder;
+        final UriBuilder pathUriBuilder = UriBuilder.parse(path);
+        final UriBuilder uriBuilder;
 
-        if (pathUrlBuilder.getScheme() != null) {
-            urlBuilder = pathUrlBuilder;
+        if (pathUriBuilder.getScheme() != null) {
+            uriBuilder = pathUriBuilder;
         } else {
-            urlBuilder = new UrlBuilder();
+            uriBuilder = new UriBuilder();
 
-            methodParser.setSchemeAndHost(args, urlBuilder, serializer);
+            methodParser.setSchemeAndHost(args, uriBuilder, serializer);
 
             // Set the path after host, concatenating the path segment in the host.
             if (path != null && !path.isEmpty() && !"/".equals(path)) {
-                String hostPath = urlBuilder.getPath();
+                String hostPath = uriBuilder.getPath();
 
                 if (hostPath == null || hostPath.isEmpty() || "/".equals(hostPath) || path.contains("://")) {
-                    urlBuilder.setPath(path);
+                    uriBuilder.setPath(path);
                 } else {
                     if (path.startsWith("/")) {
-                        urlBuilder.setPath(hostPath + path);
+                        uriBuilder.setPath(hostPath + path);
                     } else {
-                        urlBuilder.setPath(hostPath + "/" + path);
+                        uriBuilder.setPath(hostPath + "/" + path);
                     }
                 }
             }
         }
 
-        methodParser.setEncodedQueryParameters(args, urlBuilder, serializer);
+        methodParser.setEncodedQueryParameters(args, uriBuilder, serializer);
 
-        final URL url = urlBuilder.toUrl();
+        final URI uri = uriBuilder.toUri();
         final HttpRequest request =
-            configRequest(new HttpRequest(methodParser.getHttpMethod(), url), methodParser, objectSerializer, args);
+            configRequest(new HttpRequest(methodParser.getHttpMethod(), uri), methodParser, objectSerializer, args);
         // Headers from Swagger method arguments always take precedence over inferred headers from body types
         HttpHeaders httpHeaders = request.getHeaders();
 
