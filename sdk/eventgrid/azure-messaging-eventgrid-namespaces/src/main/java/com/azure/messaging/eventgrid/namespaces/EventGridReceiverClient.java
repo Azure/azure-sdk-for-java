@@ -71,7 +71,7 @@ public final class EventGridReceiverClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     value (Required): [
@@ -118,7 +118,7 @@ public final class EventGridReceiverClient {
      * along with other failed lock tokens with their corresponding error information. Successfully acknowledged events
      * will no longer be available to be received by any consumer.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     lockTokens (Required): [
@@ -126,9 +126,9 @@ public final class EventGridReceiverClient {
      *     ]
      * }
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     failedLockTokens (Required): [
@@ -185,7 +185,7 @@ public final class EventGridReceiverClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     lockTokens (Required): [
@@ -193,9 +193,9 @@ public final class EventGridReceiverClient {
      *     ]
      * }
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     failedLockTokens (Required): [
@@ -243,7 +243,7 @@ public final class EventGridReceiverClient {
      * with other failed lock tokens with their corresponding error information. Successfully rejected events will be
      * dead-lettered and can no longer be received by a consumer.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     lockTokens (Required): [
@@ -251,9 +251,9 @@ public final class EventGridReceiverClient {
      *     ]
      * }
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     failedLockTokens (Required): [
@@ -301,7 +301,7 @@ public final class EventGridReceiverClient {
      * along with other failed lock tokens with their corresponding error information. Successfully renewed locks will
      * ensure that the associated event is only available to the consumer that holds the renewed lock.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     lockTokens (Required): [
@@ -309,9 +309,9 @@ public final class EventGridReceiverClient {
      *     ]
      * }
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     failedLockTokens (Required): [
@@ -363,7 +363,7 @@ public final class EventGridReceiverClient {
      * @param maxWaitTime Max wait time value for receive operation in Seconds. It is the time in seconds that the
      * server approximately waits for the availability of an event and responds to the request. If an event is
      * available, the broker responds immediately to the client. Minimum value is 10 seconds, while maximum value is 120
-     * seconds. If not specified, the default value is 60 seconds.
+     * seconds. If not specified, the default value is 60 seconds. Fractional seconds are ignored and rounded down.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -393,7 +393,7 @@ public final class EventGridReceiverClient {
      * @param maxWaitTime Max wait time value for receive operation in Seconds. It is the time in seconds that the
      * server approximately waits for the availability of an event and responds to the request. If an event is
      * available, the broker responds immediately to the client. Minimum value is 10 seconds, while maximum value is 120
-     * seconds. If not specified, the default value is 60 seconds.
+     * seconds. If not specified, the default value is 60 seconds. Fractional seconds are ignored and rounded down.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -675,7 +675,7 @@ public final class EventGridReceiverClient {
 
     /**
      * Adds a timeout (maxWaitTime) to a context.
-     * 
+     *
      * @param requestOptions The request options to update.
      * @param timeout The timeout to add.
      * @return The updated context.
