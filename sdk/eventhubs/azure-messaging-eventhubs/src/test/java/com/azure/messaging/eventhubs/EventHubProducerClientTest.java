@@ -48,20 +48,28 @@ import reactor.core.scheduler.Schedulers;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
-import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
-import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
 import static com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
-import static com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsTracer.DIAGNOSTIC_ID_KEY;
-import static com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsTracer.TRACEPARENT_KEY;
+import static com.azure.messaging.eventhubs.TestUtils.getSpanName;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.DIAGNOSTIC_ID_KEY;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_DESTINATION_NAME;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_OPERATION_NAME;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_SYSTEM;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_SYSTEM_VALUE;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.SERVER_ADDRESS;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.TRACEPARENT_KEY;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.EVENT;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.SEND;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
@@ -185,14 +193,16 @@ public class EventHubProducerClientTest {
         when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), any(), eq(CLIENT_IDENTIFIER)))
             .thenReturn(Mono.just(sendLink));
 
-        when(tracer1.start(eq("EventHubs.message"), any(), any(Context.class))).thenAnswer(
+        final String expectedMessageSpanName = getSpanName(EVENT, EVENT_HUB_NAME);
+        when(tracer1.start(eq(expectedMessageSpanName), any(), any(Context.class))).thenAnswer(
             invocation -> {
                 assertStartOptions(invocation.getArgument(1, StartSpanOptions.class), SpanKind.PRODUCER, 0);
                 return invocation.getArgument(2, Context.class)
                     .addData(SPAN_CONTEXT_KEY, "span");
             });
 
-        when(tracer1.start(eq("EventHubs.send"), any(), any(Context.class))).thenAnswer(
+        final String expectedSendSpanName = getSpanName(SEND, EVENT_HUB_NAME);
+        when(tracer1.start(eq(expectedSendSpanName), any(), any(Context.class))).thenAnswer(
             invocation -> {
                 assertStartOptions(invocation.getArgument(1, StartSpanOptions.class), SpanKind.CLIENT, 1);
                 return invocation.getArgument(2, Context.class)
@@ -217,9 +227,9 @@ public class EventHubProducerClientTest {
 
         //Assert
         verify(tracer1, times(1))
-            .start(eq("EventHubs.send"), any(), any(Context.class));
+            .start(eq(expectedSendSpanName), any(), any(Context.class));
         verify(tracer1, times(1))
-            .start(eq("EventHubs.message"), any(), any(Context.class));
+            .start(eq(expectedMessageSpanName), any(), any(Context.class));
         verify(tracer1, times(2)).end(isNull(), isNull(), any());
         verify(tracer1, times(1)).injectContext(any(), any());
 
@@ -248,7 +258,9 @@ public class EventHubProducerClientTest {
         final EventData eventData = new EventData("hello-world".getBytes(UTF_8));
         eventData.getProperties().put("traceparent", "traceparent");
 
-        when(tracer1.start(eq("EventHubs.send"), any(), any(Context.class))).thenAnswer(
+        final String expectedSendSpanName = getSpanName(SEND, EVENT_HUB_NAME);
+        final String expectedMessageSpanName = getSpanName(EVENT, EVENT_HUB_NAME);
+        when(tracer1.start(eq(expectedSendSpanName), any(), any(Context.class))).thenAnswer(
             invocation -> {
                 assertStartOptions(invocation.getArgument(1, StartSpanOptions.class), SpanKind.CLIENT, 1);
                 return invocation.getArgument(2, Context.class)
@@ -273,10 +285,10 @@ public class EventHubProducerClientTest {
         }
 
         //Assert
-        verify(tracer1, times(1)).start(eq("EventHubs.send"), any(), any(Context.class));
+        verify(tracer1, times(1)).start(eq(expectedSendSpanName), any(), any(Context.class));
         verify(tracer1, times(1)).end(isNull(), isNull(), any());
         verify(tracer1, times(1)).extractContext(any());
-        verify(tracer1, never()).start(eq("EventHubs.message"), any(), any(Context.class));
+        verify(tracer1, never()).start(eq(expectedMessageSpanName), any(), any(Context.class));
         verify(tracer1, never()).injectContext(any(), any());
         verifyNoInteractions(onClientClosed);
     }
@@ -408,15 +420,16 @@ public class EventHubProducerClientTest {
             .thenReturn(Mono.just(sendLink));
 
         final AtomicReference<Integer> eventInd = new AtomicReference<>(0);
-
-        when(tracer1.start(eq("EventHubs.message"), any(), any(Context.class))).thenAnswer(
+        final String expectedMessageSpanName = getSpanName(EVENT, EVENT_HUB_NAME);
+        when(tracer1.start(eq(expectedMessageSpanName), any(), any(Context.class))).thenAnswer(
             invocation -> {
                 assertStartOptions(invocation.getArgument(1, StartSpanOptions.class), SpanKind.PRODUCER, 0);
                 return invocation.getArgument(2, Context.class)
                     .addData(SPAN_CONTEXT_KEY, "span");
             });
 
-        when(tracer1.start(eq("EventHubs.send"), any(), any(Context.class))).thenAnswer(
+        final String expectedSendSpanName = getSpanName(SEND, EVENT_HUB_NAME);
+        when(tracer1.start(eq(expectedSendSpanName), any(), any(Context.class))).thenAnswer(
             invocation -> {
                 assertStartOptions(invocation.getArgument(1, StartSpanOptions.class), SpanKind.CLIENT, 2);
                 return invocation.getArgument(2, Context.class)
@@ -447,9 +460,9 @@ public class EventHubProducerClientTest {
         }
 
         verify(tracer1, times(2))
-            .start(eq("EventHubs.message"), any(), any(Context.class));
-        verify(tracer1, times(1)).start(eq("EventHubs.send"), any(), any(Context.class));
-        verify(tracer1, times(2)).start(eq("EventHubs.message"), any(), any(Context.class));
+            .start(eq(expectedMessageSpanName), any(), any(Context.class));
+        verify(tracer1, times(1)).start(eq(expectedSendSpanName), any(), any(Context.class));
+        verify(tracer1, times(2)).start(eq(expectedMessageSpanName), any(), any(Context.class));
         verify(tracer1, times(3)).end(isNull(), isNull(), any());
         verify(tracer1, times(2)).injectContext(any(), any());
 
@@ -591,8 +604,12 @@ public class EventHubProducerClientTest {
 
     private void assertStartOptions(StartSpanOptions startOpts, SpanKind kind, int linkCount) {
         assertEquals(kind, startOpts.getSpanKind());
-        assertEquals(EVENT_HUB_NAME, startOpts.getAttributes().get(ENTITY_PATH_KEY));
-        assertEquals(HOSTNAME, startOpts.getAttributes().get(HOST_NAME_KEY));
+
+        Map<String, Object> attributes = startOpts.getAttributes();
+        assertEquals(EVENT_HUB_NAME, attributes.get(MESSAGING_DESTINATION_NAME));
+        assertEquals(HOSTNAME, attributes.get(SERVER_ADDRESS));
+        assertEquals(MESSAGING_SYSTEM_VALUE, attributes.get(MESSAGING_SYSTEM));
+        assertNotNull(attributes.get(MESSAGING_OPERATION_NAME));
 
         if (linkCount == 0) {
             assertNull(startOpts.getLinks());

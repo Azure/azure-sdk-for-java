@@ -11,6 +11,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.AzureFirewallApplicationRuleCollection;
+import com.azure.resourcemanager.network.models.AzureFirewallAutoscaleConfiguration;
 import com.azure.resourcemanager.network.models.AzureFirewallIpConfiguration;
 import com.azure.resourcemanager.network.models.AzureFirewallIpGroups;
 import com.azure.resourcemanager.network.models.AzureFirewallNatRuleCollection;
@@ -49,14 +50,14 @@ public final class AzureFirewallInner extends Resource {
     private String id;
 
     /*
-     * The name of the resource.
-     */
-    private String name;
-
-    /*
      * The type of the resource.
      */
     private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
 
     /**
      * Creates an instance of AzureFirewallInner class.
@@ -123,16 +124,6 @@ public final class AzureFirewallInner extends Resource {
     }
 
     /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
-    }
-
-    /**
      * Get the type property: The type of the resource.
      * 
      * @return the type value.
@@ -140,6 +131,16 @@ public final class AzureFirewallInner extends Resource {
     @Override
     public String type() {
         return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -430,6 +431,31 @@ public final class AzureFirewallInner extends Resource {
             this.innerProperties = new AzureFirewallPropertiesFormat();
         }
         this.innerProperties().withAdditionalProperties(additionalProperties);
+        return this;
+    }
+
+    /**
+     * Get the autoscaleConfiguration property: Properties to provide a custom autoscale configuration to this azure
+     * firewall.
+     * 
+     * @return the autoscaleConfiguration value.
+     */
+    public AzureFirewallAutoscaleConfiguration autoscaleConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().autoscaleConfiguration();
+    }
+
+    /**
+     * Set the autoscaleConfiguration property: Properties to provide a custom autoscale configuration to this azure
+     * firewall.
+     * 
+     * @param autoscaleConfiguration the autoscaleConfiguration value to set.
+     * @return the AzureFirewallInner object itself.
+     */
+    public AzureFirewallInner withAutoscaleConfiguration(AzureFirewallAutoscaleConfiguration autoscaleConfiguration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AzureFirewallPropertiesFormat();
+        }
+        this.innerProperties().withAutoscaleConfiguration(autoscaleConfiguration);
         return this;
     }
 

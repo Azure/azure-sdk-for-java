@@ -16,7 +16,7 @@ import java.util.Arrays;
  */
 public final class NetworkInterfacesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * NetworkInterfaceCreateGatewayLoadBalancerConsumer.json
      */
     /**
@@ -43,7 +43,7 @@ public final class NetworkInterfacesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/NetworkInterfaceCreate.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/NetworkInterfaceCreate.json
      */
     /**
      * Sample code: Create network interface.

@@ -49,10 +49,9 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.Sinks;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
@@ -146,8 +145,7 @@ class ServiceBusSenderAsyncClientTest {
         .setDelay(Duration.ofMillis(500))
         .setMode(AmqpRetryMode.FIXED)
         .setTryTimeout(Duration.ofSeconds(10));
-    private final DirectProcessor<AmqpEndpointState> endpointProcessor = DirectProcessor.create();
-    private final FluxSink<AmqpEndpointState> endpointSink = endpointProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
+    private final Sinks.Many<AmqpEndpointState> endpointStates = Sinks.many().multicast().onBackpressureBuffer();
     private ServiceBusSenderAsyncClient sender;
     private ServiceBusConnectionProcessor connectionProcessor;
     private ConnectionCacheWrapper connectionCacheWrapper;
@@ -162,8 +160,8 @@ class ServiceBusSenderAsyncClientTest {
             AmqpTransportType.AMQP, retryOptions, ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel(), CLIENT_OPTIONS,
             SslDomain.VerifyMode.VERIFY_PEER_NAME, "test-product", "test-version");
 
-        when(connection.getEndpointStates()).thenReturn(endpointProcessor);
-        endpointSink.next(AmqpEndpointState.ACTIVE);
+        when(connection.getEndpointStates()).thenReturn(endpointStates.asFlux());
+        endpointStates.emitNext(AmqpEndpointState.ACTIVE, Sinks.EmitFailureHandler.FAIL_FAST);
 
         connectionProcessor = Mono.fromCallable(() -> connection).repeat(10).subscribeWith(
             new ServiceBusConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),

@@ -63,7 +63,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.13.2</version>  <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.13.3</version>  <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <exclusions>
         <exclusion>
           <groupId>com.azure</groupId>

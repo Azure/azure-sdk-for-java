@@ -38,13 +38,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-experimental</artifactId>
-      <version>1.0.0-beta.53</version> <!-- {x-version-update;unreleased_com.azure:azure-core-experimental;dependency} -->
+      <version>1.0.0-beta.53</version> <!-- {x-version-update;com.azure:azure-core-experimental;dependency} -->
     </dependency>
 
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>msal4j</artifactId>
-      <version>1.16.2</version> <!-- {x-version-update;com.microsoft.azure:msal4j;external_dependency} -->
+      <version>1.17.1</version> <!-- {x-version-update;com.microsoft.azure:msal4j;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
@@ -69,7 +69,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.microsoft.azure:msal4j:[1.16.2]</include> <!-- {x-include-update;com.microsoft.azure:msal4j;external_dependency} -->
+                <include>com.microsoft.azure:msal4j:[1.17.1]</include> <!-- {x-include-update;com.microsoft.azure:msal4j;external_dependency} -->
                 <include>com.microsoft.azure:msal4j-brokers:[1.0.0]</include> <!-- {x-include-update;com.microsoft.azure:msal4j-brokers;external_dependency} -->
               </includes>
             </bannedDependencies>

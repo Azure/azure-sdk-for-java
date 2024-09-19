@@ -19,7 +19,6 @@ import com.azure.storage.blob.implementation.models.BlockBlobsCommitBlockListHea
 import com.azure.storage.blob.implementation.models.BlockBlobsPutBlobFromUrlHeaders;
 import com.azure.storage.blob.implementation.models.BlockBlobsUploadHeaders;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
-import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobImmutabilityPolicy;
@@ -435,7 +434,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
                 requestConditions.getLeaseId(), options.getTier(), requestConditions.getIfModifiedSince(),
                 requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
                 requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null,
-                    ModelHelper.tagsToString(options.getTags()), immutabilityPolicy.getExpiryTime(), immutabilityPolicy.getPolicyMode(),
+                tagsToString(options.getTags()), immutabilityPolicy.getExpiryTime(), immutabilityPolicy.getPolicyMode(),
                 options.isLegalHold(), null, options.getHeaders(), getCustomerProvidedKey(),
                 encryptionScope, finalContext)
                 .map(rb -> {
@@ -587,7 +586,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
             sourceRequestConditions.getIfModifiedSince(), sourceRequestConditions.getIfUnmodifiedSince(),
             sourceRequestConditions.getIfMatch(), sourceRequestConditions.getIfNoneMatch(),
             sourceRequestConditions.getTagsConditions(),
-            null, options.getContentMd5(), ModelHelper.tagsToString(options.getTags()),
+            null, options.getContentMd5(), tagsToString(options.getTags()),
             options.isCopySourceBlobProperties(), sourceAuth, options.getCopySourceTagsMode(), options.getHeaders(),
             getCustomerProvidedKey(), encryptionScope, context)
             .map(rb -> {
@@ -1151,7 +1150,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
             requestConditions.getLeaseId(), options.getTier(), requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
             requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null,
-            ModelHelper.tagsToString(options.getTags()), immutabilityPolicy.getExpiryTime(), immutabilityPolicy.getPolicyMode(),
+            tagsToString(options.getTags()), immutabilityPolicy.getExpiryTime(), immutabilityPolicy.getPolicyMode(),
             options.isLegalHold(), options.getHeaders(), getCustomerProvidedKey(), encryptionScope, context)
             .map(rb -> {
                 BlockBlobsCommitBlockListHeaders hd = rb.getDeserializedHeaders();

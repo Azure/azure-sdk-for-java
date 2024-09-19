@@ -103,7 +103,7 @@ class EncryptedFlux extends Flux<ByteBuffer> {
 
         EncryptedBlob encryptedBlob = new EncryptedBlobAsyncClient(null, "https://random.blob.core.windows.net",
             BlobServiceVersion.getLatest(), null, null, blobName, null, null, null, key, "keyWrapAlgorithm", null,
-            EncryptionVersion.V1, false)
+            EncryptionVersion.V1, false, new BlobClientSideEncryptionOptions())
             .encryptBlob(just(this.plainText)).block();
         this.cipherText = FluxUtil.collectBytesInByteBufferStream(encryptedBlob.getCiphertextFlux())
             .map(ByteBuffer::wrap).block();

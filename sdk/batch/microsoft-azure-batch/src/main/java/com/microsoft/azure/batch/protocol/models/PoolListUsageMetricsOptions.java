@@ -37,7 +37,7 @@ public class PoolListUsageMetricsOptions {
     /**
      * An OData $filter clause. For more information on constructing this
      * filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-account-usage-metrics.
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-account-usage-metrics.
      */
     @JsonProperty(value = "")
     private String filter;
@@ -120,7 +120,7 @@ public class PoolListUsageMetricsOptions {
     }
 
     /**
-     * Get an OData $filter clause. For more information on constructing this filter, see https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-account-usage-metrics.
+     * Get an OData $filter clause. For more information on constructing this filter, see https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-account-usage-metrics.
      *
      * @return the filter value
      */
@@ -129,7 +129,7 @@ public class PoolListUsageMetricsOptions {
     }
 
     /**
-     * Set an OData $filter clause. For more information on constructing this filter, see https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-account-usage-metrics.
+     * Set an OData $filter clause. For more information on constructing this filter, see https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-account-usage-metrics.
      *
      * @param filter the filter value to set
      * @return the PoolListUsageMetricsOptions object itself.

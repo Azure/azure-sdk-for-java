@@ -169,10 +169,6 @@ public final class AssetInner extends Resource {
         } else {
             extendedLocation().validate();
         }
-        if (location() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property location in model AssetInner"));
-        }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AssetInner.class);

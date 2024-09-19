@@ -5,9 +5,8 @@ package io.clientcore.http.stress;
 
 import com.azure.perf.test.core.PerfStressTest;
 import io.clientcore.http.stress.util.TelemetryHelper;
-import reactor.core.publisher.Mono;
-
 import java.time.Instant;
+import reactor.core.publisher.Mono;
 
 /**
  * Performance test for getting messages.

@@ -124,7 +124,7 @@ public final class ExpressRouteLinksClientImpl implements ExpressRouteLinksClien
         if (linkName == null) {
             return Mono.error(new IllegalArgumentException("Parameter linkName is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion,
@@ -166,7 +166,7 @@ public final class ExpressRouteLinksClientImpl implements ExpressRouteLinksClien
         if (linkName == null) {
             return Mono.error(new IllegalArgumentException("Parameter linkName is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, resourceGroupName,
@@ -254,7 +254,7 @@ public final class ExpressRouteLinksClientImpl implements ExpressRouteLinksClien
             return Mono
                 .error(new IllegalArgumentException("Parameter expressRoutePortName is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion,
@@ -294,7 +294,7 @@ public final class ExpressRouteLinksClientImpl implements ExpressRouteLinksClien
             return Mono
                 .error(new IllegalArgumentException("Parameter expressRoutePortName is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

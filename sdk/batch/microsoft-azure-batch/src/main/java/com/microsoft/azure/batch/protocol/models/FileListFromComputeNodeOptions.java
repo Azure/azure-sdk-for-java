@@ -20,7 +20,7 @@ public class FileListFromComputeNodeOptions {
     /**
      * An OData $filter clause. For more information on constructing this
      * filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-compute-node-files.
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-compute-node-files.
      */
     @JsonProperty(value = "")
     private String filter;
@@ -63,7 +63,7 @@ public class FileListFromComputeNodeOptions {
     private DateTimeRfc1123 ocpDate;
 
     /**
-     * Get an OData $filter clause. For more information on constructing this filter, see https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-compute-node-files.
+     * Get an OData $filter clause. For more information on constructing this filter, see https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-compute-node-files.
      *
      * @return the filter value
      */
@@ -72,7 +72,7 @@ public class FileListFromComputeNodeOptions {
     }
 
     /**
-     * Set an OData $filter clause. For more information on constructing this filter, see https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-compute-node-files.
+     * Set an OData $filter clause. For more information on constructing this filter, see https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-compute-node-files.
      *
      * @param filter the filter value to set
      * @return the FileListFromComputeNodeOptions object itself.

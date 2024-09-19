@@ -16,7 +16,7 @@ Azure Core Management library is a collection of classes common to the [Azure Re
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-management</artifactId>
-    <version>1.15.2</version>
+    <version>1.15.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

@@ -42,23 +42,24 @@ import com.microsoft.aad.msal4j.ClaimsRequest;
 import com.microsoft.aad.msal4j.ClientCredentialFactory;
 import com.microsoft.aad.msal4j.ConfidentialClientApplication;
 import com.microsoft.aad.msal4j.DeviceCodeFlowParameters;
+import com.microsoft.aad.msal4j.HttpMethod;
 import com.microsoft.aad.msal4j.IBroker;
 import com.microsoft.aad.msal4j.IClientCredential;
 import com.microsoft.aad.msal4j.InteractiveRequestParameters;
-import com.microsoft.aad.msal4j.ManagedIdentityId;
 import com.microsoft.aad.msal4j.ManagedIdentityApplication;
+import com.microsoft.aad.msal4j.ManagedIdentityId;
+import com.microsoft.aad.msal4j.ManagedIdentitySourceType;
 import com.microsoft.aad.msal4j.OnBehalfOfParameters;
 import com.microsoft.aad.msal4j.Prompt;
 import com.microsoft.aad.msal4j.PublicClientApplication;
 import com.microsoft.aad.msal4j.SystemBrowserOptions;
 import com.microsoft.aad.msal4j.TokenProviderResult;
 import com.microsoft.aad.msal4j.UserNamePasswordParameters;
-import com.microsoft.aad.msal4j.HttpMethod;
 import reactor.core.publisher.Mono;
 
 import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -134,6 +135,7 @@ public abstract class IdentityClientBase {
     final String tenantId;
     final String clientId;
     final String resourceId;
+    final String objectId;
     final String clientSecret;
     final String clientAssertionFilePath;
     final byte[] certificate;
@@ -168,6 +170,7 @@ public abstract class IdentityClientBase {
                        String certificatePath,
                        String clientAssertionFilePath,
                        String resourceId,
+                       String objectId,
                        Supplier<String> clientAssertionSupplier,
                        Function<HttpPipeline, String> clientAssertionSupplierWithHttpPipeline,
                        byte[] certificate,
@@ -184,6 +187,7 @@ public abstract class IdentityClientBase {
         }
         this.tenantId = tenantId;
         this.clientId = clientId;
+        this.objectId = objectId;
         this.resourceId = resourceId;
         this.clientSecret = clientSecret;
         this.clientAssertionFilePath = clientAssertionFilePath;
@@ -461,16 +465,25 @@ public abstract class IdentityClientBase {
 
     ManagedIdentityApplication getManagedIdentityMsalApplication() {
 
-        ManagedIdentityId managedIdentityId = CoreUtils.isNullOrEmpty(clientId)
-            ? (CoreUtils.isNullOrEmpty(resourceId)
-            ? ManagedIdentityId.systemAssigned() : ManagedIdentityId.userAssignedResourceId(resourceId))
-            : ManagedIdentityId.userAssignedClientId(clientId);
+        ManagedIdentityId managedIdentityId;
+
+        if (!CoreUtils.isNullOrEmpty(clientId)) {
+            managedIdentityId = ManagedIdentityId.userAssignedClientId(clientId);
+        } else if (!CoreUtils.isNullOrEmpty(resourceId)) {
+            managedIdentityId = ManagedIdentityId.userAssignedResourceId(resourceId);
+        } else if (!CoreUtils.isNullOrEmpty(objectId)) {
+            managedIdentityId = ManagedIdentityId.userAssignedObjectId(objectId);
+        } else {
+            managedIdentityId = ManagedIdentityId.systemAssigned();
+        }
 
         ManagedIdentityApplication.Builder miBuilder = ManagedIdentityApplication
             .builder(managedIdentityId)
             .logPii(options.isUnsafeSupportLoggingEnabled());
 
-        if ("DEFAULT_TO_IMDS".equals(String.valueOf(ManagedIdentityApplication.getManagedIdentitySource()))) {
+        ManagedIdentitySourceType managedIdentitySourceType = getManagedIdentitySourceType();
+
+        if (managedIdentitySourceType.compareTo(ManagedIdentitySourceType.DEFAULT_TO_IMDS) == 0) {
             options.setUseImdsRetryStrategy();
         }
 
@@ -486,6 +499,13 @@ public abstract class IdentityClientBase {
         }
 
         return miBuilder.build();
+    }
+
+
+    // temporary workaround until msal4j fixes a bug.
+    public static ManagedIdentitySourceType getManagedIdentitySourceType() {
+        return ManagedIdentityApplication.builder(ManagedIdentityId.systemAssigned())
+            .build().getManagedIdentitySource();
     }
 
     ConfidentialClientApplication getWorkloadIdentityConfidentialClient() {
@@ -869,12 +889,39 @@ public abstract class IdentityClientBase {
             connection.connect();
 
             return MSIToken.fromJson(JsonProviders.createReader(connection.getInputStream()));
+        } catch (IOException exception) {
+            if (connection == null) {
+                throw LOGGER.logExceptionAsError(new RuntimeException(
+                    "Could not connect to the authority host: " + url + ".", exception));
+            }
+            int responseCode;
+            try {
+                responseCode = connection.getResponseCode();
+            } catch (Exception e) {
+                throw LoggingUtil.logCredentialUnavailableException(LOGGER, options,
+                    new CredentialUnavailableException(
+                        "WorkloadIdentityCredential authentication unavailable. "
+                            + "Connection to the authority host cannot be established, "
+                            + e.getMessage() + ".", e));
+            }
+            if (responseCode == 400) {
+                throw LoggingUtil.logCredentialUnavailableException(LOGGER, options,
+                    new CredentialUnavailableException(
+                        "WorkloadIdentityCredential authentication unavailable. "
+                            + "The request to the authority host was invalid. "
+                            + "Additional details: " + exception.getMessage() + ".", exception));
+            }
+
+            throw LOGGER.logExceptionAsError(new RuntimeException(
+                "Couldn't acquire access token from Workload Identity.", exception));
         } finally {
             if (connection != null) {
                 connection.disconnect();
             }
         }
     }
+
+
 
     String getSafeWorkingDirectory() {
         if (isWindowsPlatform()) {

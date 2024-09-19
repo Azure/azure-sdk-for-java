@@ -12,7 +12,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-integration-azure-servicebus</artifactId>
-  <version>5.16.0</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-servicebus;current} -->
+  <version>5.17.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-servicebus;current} -->
 
   <name>Spring Integration Azure Service Bus</name>
   <description>Spring Integration Azure Service Bus</description>
@@ -40,24 +40,24 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-integration-azure-core</artifactId>
-      <version>5.16.0</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-core;current} -->
+      <version>5.17.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-core;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-integration-azure-core</artifactId>
-      <version>5.16.0</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-core;current} -->
+      <version>5.17.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-core;current} -->
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-messaging-azure-servicebus</artifactId>
-      <version>5.16.0</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure-servicebus;current} -->
+      <version>5.17.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure-servicebus;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-messaging-azure-servicebus</artifactId>
-      <version>5.16.0</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure-servicebus;current} -->
+      <version>5.17.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure-servicebus;current} -->
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
@@ -73,7 +73,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-serializer-json-jackson</artifactId>
-      <version>1.5.0</version> <!-- {x-version-update;com.azure:azure-core-serializer-json-jackson;dependency} -->
+      <version>1.5.1</version> <!-- {x-version-update;com.azure:azure-core-serializer-json-jackson;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
