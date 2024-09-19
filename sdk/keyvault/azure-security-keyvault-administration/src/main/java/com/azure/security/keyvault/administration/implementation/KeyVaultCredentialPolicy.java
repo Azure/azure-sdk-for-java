@@ -4,7 +4,10 @@ package com.azure.security.keyvault.administration.implementation;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipelineCallContext;
+import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
@@ -74,6 +77,9 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
         Map<String, String> attributeMap = new HashMap<>();
 
         for (String pair : attributes) {
+            // This is ugly, but we need to trim here because currently the 'claims' attribute comes after two spaces.
+            pair = pair.trim();
+
             if (pair.startsWith("claims=")) {
                 attributeMap.put("claims", pair.substring("claims=".length()).replaceAll("\"", ""));
             } else {
@@ -113,9 +119,7 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
                 // We fetched the challenge from the cache, but we have not initialized the scopes in the base yet.
                 TokenRequestContext tokenRequestContext = new TokenRequestContext()
                     .addScopes(this.challenge.getScopes())
-                    .setTenantId(this.challenge.getTenantId())
-                    .setCaeEnabled(true)
-                    .setClaims(this.challenge.getClaims());
+                    .setTenantId(this.challenge.getTenantId());
 
                 return setAuthorizationHeader(context, tokenRequestContext);
             }
@@ -183,8 +187,6 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
 
                 if (this.challenge == null) {
                     return Mono.just(false);
-                } else if (claims != null) {
-                    CHALLENGE_CACHE.put(authority, this.challenge.setClaims(claims));
                 }
             } else {
                 if (!disableChallengeResourceVerification) {
@@ -214,16 +216,20 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
                             String.format("The challenge authorization URI '%s' is invalid.", authorization), e));
                 }
 
-                this.challenge = new ChallengeParameters(authorizationUri, new String[] {scope}).setClaims(claims);
+                this.challenge = new ChallengeParameters(authorizationUri, new String[] {scope});
 
                 CHALLENGE_CACHE.put(authority, this.challenge);
             }
 
             TokenRequestContext tokenRequestContext = new TokenRequestContext()
                 .addScopes(this.challenge.getScopes())
-                .setTenantId(this.challenge.getTenantId())
-                .setCaeEnabled(true)
-                .setClaims(this.challenge.getClaims());
+                .setTenantId(this.challenge.getTenantId());
+
+            if (claims != null) {
+                tokenRequestContext
+                    .setCaeEnabled(true)
+                    .setClaims(claims);
+            }
 
             return setAuthorizationHeader(context, tokenRequestContext)
                 .then(Mono.just(true));
@@ -243,9 +249,7 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
             // We fetched the challenge from the cache, but we have not initialized the scopes in the base yet.
             TokenRequestContext tokenRequestContext = new TokenRequestContext()
                 .addScopes(this.challenge.getScopes())
-                .setTenantId(this.challenge.getTenantId())
-                .setCaeEnabled(true)
-                .setClaims(this.challenge.getClaims());
+                .setTenantId(this.challenge.getTenantId());
 
             setAuthorizationHeaderSync(context, tokenRequestContext);
 
@@ -310,8 +314,6 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
 
             if (this.challenge == null) {
                 return false;
-            } else if (claims != null) {
-                CHALLENGE_CACHE.put(authority, this.challenge.setClaims(claims));
             }
         } else {
             if (!disableChallengeResourceVerification) {
@@ -341,27 +343,117 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
                         String.format("The challenge authorization URI '%s' is invalid.", authorization), e));
             }
 
-            this.challenge = new ChallengeParameters(authorizationUri, new String[] {scope}).setClaims(claims);
+            this.challenge = new ChallengeParameters(authorizationUri, new String[] {scope});
 
             CHALLENGE_CACHE.put(authority, this.challenge);
         }
 
         TokenRequestContext tokenRequestContext = new TokenRequestContext()
             .addScopes(this.challenge.getScopes())
-            .setTenantId(this.challenge.getTenantId())
-            .setCaeEnabled(true)
-            .setClaims(this.challenge.getClaims());
+            .setTenantId(this.challenge.getTenantId());
+
+        if (claims != null) {
+            tokenRequestContext
+                .setCaeEnabled(true)
+                .setClaims(claims);
+        }
 
         setAuthorizationHeaderSync(context, tokenRequestContext);
 
         return true;
     }
 
+    @Override
+    public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+        if (!"https".equals(context.getHttpRequest().getUrl().getProtocol())) {
+            return Mono.error(new RuntimeException("Token credentials require a URL using the HTTPS protocol scheme."));
+        }
+
+        HttpPipelineNextPolicy nextPolicy = next.clone();
+
+        return authorizeRequest(context).then(Mono.defer(next::process)).flatMap(httpResponse -> {
+            String authHeader = httpResponse.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE);
+
+            if (httpResponse.getStatusCode() == 401 && authHeader != null) {
+                return authorizeRequestOnChallenge(context, httpResponse).flatMap(authorized -> {
+                    if (authorized) {
+                        // The body needs to be closed or read to the end to release the connection.
+                        httpResponse.close();
+
+                        return nextPolicy.process();
+                    } else {
+                        return Mono.just(httpResponse);
+                    }
+                });
+            }
+
+            return Mono.just(httpResponse);
+        });
+    }
+
+    @Override
+    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
+        if (!"https".equals(context.getHttpRequest().getUrl().getProtocol())) {
+            throw LOGGER.logExceptionAsError(
+                new RuntimeException("Token credentials require a URL using the HTTPS protocol scheme."));
+        }
+
+        HttpPipelineNextSyncPolicy firstClone = next.clone();
+
+        authorizeRequestSync(context);
+
+        HttpResponse firstResponse = next.processSync();
+        String firstAuthHeader = firstResponse.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE);
+
+        if (firstResponse.getStatusCode() == 401 && firstAuthHeader != null) {
+            if (authorizeRequestOnChallengeSync(context, firstResponse)) {
+                // The body needs to be closed or read to the end to release the connection.
+                firstResponse.close();
+
+                HttpPipelineNextSyncPolicy secondClone = firstClone.clone();
+                HttpResponse secondResponse = firstClone.processSync();
+                String secondAuthHeader = secondResponse.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE);
+
+                if (secondResponse.getStatusCode() == 401
+                    && secondAuthHeader != null
+                    // We should only retry if the first challenge does not have an 'insufficient claims' error.
+                    && !firstAuthHeader.contains("insufficient_claims")) {
+
+                    if (authorizeRequestOnChallengeSync(context, secondResponse)) {
+                        // The body needs to be closed or read to the end to release the connection.
+                        secondResponse.close();
+
+                        return secondClone.processSync();
+                    } else {
+                        return secondResponse;
+                    }
+                } else {
+                    return secondResponse;
+                }
+            } else {
+                return firstResponse;
+            }
+        }
+
+        return firstResponse;
+    }
+
+    private HttpResponse handleChallenge(HttpPipelineCallContext context, HttpResponse httpResponse,
+                                         HttpPipelineNextSyncPolicy nextPolicy) {
+        if (authorizeRequestOnChallengeSync(context, httpResponse)) {
+            // The body needs to be closed or read to the end to release the connection.
+            httpResponse.close();
+
+            return nextPolicy.processSync();
+        } else {
+            return httpResponse;
+        }
+    }
+
     private static class ChallengeParameters {
         private final URI authorizationUri;
         private final String tenantId;
         private final String[] scopes;
-        private String claims;
 
         ChallengeParameters(URI authorizationUri, String[] scopes) {
             this.authorizationUri = authorizationUri;
@@ -389,22 +481,6 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
          */
         public String getTenantId() {
             return tenantId;
-        }
-
-        /**
-         * Get the {@code claims} parameter from the challenge response.
-         */
-        public String getClaims() {
-            return claims;
-        }
-
-        /**
-         * Set the {@code claims} parameter from the challenge response.
-         */
-        public ChallengeParameters setClaims(String claims) {
-            this.claims = claims;
-
-            return this;
         }
     }
 
