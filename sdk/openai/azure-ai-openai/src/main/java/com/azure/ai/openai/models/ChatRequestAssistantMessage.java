@@ -237,7 +237,7 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
      * @param content the String content value to set.
      */
     public ChatRequestAssistantMessage(String content) {
-        this.content = BinaryData.fromString(content);
+        this.content = content == null ? null : BinaryData.fromString(content);
         this.stringContent = content;
         this.chatMessageContentItem = null;
     }
