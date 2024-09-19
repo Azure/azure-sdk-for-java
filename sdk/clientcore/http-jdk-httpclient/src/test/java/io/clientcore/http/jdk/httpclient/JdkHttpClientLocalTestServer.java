@@ -149,8 +149,8 @@ public final class JdkHttpClientLocalTestServer {
 
     private static LocalTestServer initializeProxyServer() {
         LocalTestServer proxyServer = new LocalTestServer((req, resp, requestBody) -> {
-            String requestUrl = req.getRequestURL().toString();
-            if (!Objects.equals(requestUrl, "/default")) {
+            String requestUri = req.getRequestURL().toString();
+            if (!Objects.equals(requestUri, "/default")) {
                 throw new ServletException("Unexpected request to proxy server");
             }
 

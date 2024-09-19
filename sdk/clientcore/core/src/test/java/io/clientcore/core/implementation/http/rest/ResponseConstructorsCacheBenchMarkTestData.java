@@ -11,7 +11,7 @@ import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.HttpResponse;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.http.serializer.DefaultJsonSerializer;
-import io.clientcore.core.implementation.util.UrlBuilder;
+import io.clientcore.core.implementation.util.UriBuilder;
 import io.clientcore.core.util.binarydata.BinaryData;
 import io.clientcore.core.util.serializer.ObjectSerializer;
 
@@ -19,8 +19,8 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -72,7 +72,7 @@ class ResponseConstructorsCacheBenchMarkTestData {
     }
 
     private static final ObjectSerializer SERIALIZER = new DefaultJsonSerializer();
-    private static final HttpRequest HTTP_REQUEST = new HttpRequest(HttpMethod.GET, createUrl());
+    private static final HttpRequest HTTP_REQUEST = new HttpRequest(HttpMethod.GET, createUri());
     private static final HttpHeaderName HELLO = HttpHeaderName.fromString("hello");
     private static final HttpHeaders RESPONSE_HEADERS = new HttpHeaders().set(HELLO, "world");
     private static final int RESPONSE_STATUS_CODE = 200;
@@ -97,10 +97,10 @@ class ResponseConstructorsCacheBenchMarkTestData {
         return this.inputs;
     }
 
-    private static URL createUrl() {
+    private static URI createUri() {
         try {
-            return UrlBuilder.parse("http://localhost").toUrl();
-        } catch (MalformedURLException e) {
+            return UriBuilder.parse("http://localhost").toUri();
+        } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
     }

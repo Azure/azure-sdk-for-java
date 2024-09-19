@@ -33,7 +33,7 @@ public class RequestOptionsJavaDocCodeSnippets {
      */
     public RequestOptions setJsonRequestBodyInRequestOptions() {
         // BEGIN: io.clientcore.core.http.rest.requestoptions.createjsonrequest
-        JsonArray photoUrls = Json.createArrayBuilder()
+        JsonArray photoUris = Json.createArrayBuilder()
             .add("https://imgur.com/pet1")
             .add("https://imgur.com/pet2")
             .build();
@@ -54,7 +54,7 @@ public class RequestOptionsJavaDocCodeSnippets {
             .add("name", "foo")
             .add("status", "available")
             .add("category", Json.createObjectBuilder().add("id", 0).add("name", "dog"))
-            .add("photoUrls", photoUrls)
+            .add("photoUris", photoUris)
             .add("tags", tags)
             .build();
 
@@ -65,7 +65,7 @@ public class RequestOptionsJavaDocCodeSnippets {
         RequestOptions options = new RequestOptions()
             .addRequestCallback(request -> request
                 // may already be set if request is created from a client
-                .setUrl("https://petstore.example.com/pet")
+                .setUri("https://petstore.example.com/pet")
                 .setHttpMethod(HttpMethod.POST)
                 .setBody(BinaryData.fromString(requestBodyStr))
                 .getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json"));

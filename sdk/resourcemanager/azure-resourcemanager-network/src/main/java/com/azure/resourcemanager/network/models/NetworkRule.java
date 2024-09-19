@@ -237,7 +237,6 @@ public final class NetworkRule extends FirewallPolicyRule {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

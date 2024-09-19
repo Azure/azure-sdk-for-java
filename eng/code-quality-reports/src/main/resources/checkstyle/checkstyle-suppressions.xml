@@ -81,9 +81,8 @@
   <suppress checks="IllegalImport" files="com.azure.messaging.servicebus.IntegrationTestBase.java"/>
   <suppress checks="IllegalImport" files="com.azure.messaging.servicebus.TracingIntegrationTests.java"/>
   <suppress checks="IllegalImport" files="com.azure.messaging.servicebus.LoggingSpanProcessor.java"/>
-  <suppress checks="IllegalImport" files="com.azure.messaging.eventhubs.TracingIntegrationTests.java"/>
-  <suppress checks="IllegalImport" files="com.azure.messaging.eventhubs.PublishEventsTracingWithCustomContextSample.java"/>
-  <suppress checks="IllegalImport" files="com.azure.messaging.eventhubs.EventProcessorWithTracingClientSample.java"/>
+  <suppress checks="IllegalImport" files="com.azure.messaging.eventhubs.*Sample.*java"/>
+  <suppress checks="IllegalImport" files="com.azure.messaging.eventhubs.*Test.*java"/>
 
   <!-- AzureSpringMonitorConfig defines Spring bean used in https://github.com/open-telemetry/opentelemetry-java-instrumentation/blob/main/instrumentation/spring/spring-boot-autoconfigure/src/main/java/io/opentelemetry/instrumentation/spring/autoconfigure/OpenTelemetryAutoConfiguration.java-->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
@@ -286,6 +285,8 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.ai.openai.(OpenAIClient|OpenAIAsyncClient).java"/>
   <!-- Checkstyle suppression for OpenAI Assistants client APIs that use Flux instead of PagedFlux for methods that return a collection -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.ai.openai.assistants.(AssistantsClient|AssistantsAsyncClient).java"/>
+  <!-- Checkstyle suppression for Inference client APIs that use Flux instead of PagedFlux for methods that return a collection -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.ai.inference.(ChatCompletionsClient|ChatCompletionsAsyncClient).java"/>
 
   <!-- jdbc sdk suppression -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"

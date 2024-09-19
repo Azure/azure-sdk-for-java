@@ -13,7 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-file-share</artifactId>
-  <version>12.24.0</version> <!-- {x-version-update;com.azure:azure-storage-file-share;current} -->
+  <version>12.25.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-file-share;current} -->
 
   <name>Microsoft Azure client library for File Share Storage</name>
   <description>This module contains client library for Microsoft Azure File Share Storage.</description>
@@ -81,13 +81,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-common</artifactId>
-      <version>12.27.0</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
+      <version>12.28.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-common</artifactId>
-      <version>12.27.0</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
+      <version>12.28.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
       <classifier>tests</classifier>
       <type>test-jar</type>
       <scope>test</scope>
@@ -148,7 +148,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.28.0</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
+      <version>12.29.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
       <scope>test</scope>
     </dependency>
     <dependency>

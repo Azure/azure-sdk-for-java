@@ -369,8 +369,6 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <version>3.2.5</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
         <configuration>
-          <!-- Sets the VM argument line used when unit tests are run. -->
-          <argLine>${surefireArgLine}</argLine>
           <includes>
             <include>**/Test*.java</include>
             <include>**/*Test.java</include>
@@ -405,33 +403,6 @@
               </includes>
             </fileset>
           </filesets>
-        </configuration>
-      </plugin>
-
-      <!--This plugin's configuration is used to store Eclipse m2e settings only.
-          It has no influence on the Maven build itself.-->
-      <plugin>
-        <groupId>org.eclipse.m2e</groupId>
-        <artifactId>lifecycle-mapping</artifactId>
-        <version>1.0.0</version> <!-- {x-version-update;org.eclipse.m2e:lifecycle-mapping;external_dependency} -->
-        <configuration>
-          <lifecycleMappingMetadata>
-            <pluginExecutions>
-              <pluginExecution>
-                <pluginExecutionFilter>
-                  <groupId>com.googlecode.addjars-maven-plugin</groupId>
-                  <artifactId>addjars-maven-plugin</artifactId>
-                  <versionRange>[1.0.5,)</versionRange>
-                  <goals>
-                    <goal>add-jars</goal>
-                  </goals>
-                </pluginExecutionFilter>
-                <action>
-                  <ignore/>
-                </action>
-              </pluginExecution>
-            </pluginExecutions>
-          </lifecycleMappingMetadata>
         </configuration>
       </plugin>
 
@@ -983,6 +954,14 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-failsafe-plugin</artifactId>
           <version>3.2.5</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+          <executions>
+            <execution>
+              <goals>
+                <goal>integration-test</goal>
+                <goal>verify</goal>
+              </goals>
+            </execution>
+          </executions>
           <configuration>
             <runOrder>alphabetical</runOrder>
             <useSystemClassLoader>false</useSystemClassLoader>
@@ -1114,6 +1093,33 @@
               <phase>verify</phase>
             </execution>
           </executions>
+        </plugin>
+
+        <!--This plugin's configuration is used to store Eclipse m2e settings only.
+          It has no influence on the Maven build itself.-->
+        <plugin>
+          <groupId>org.eclipse.m2e</groupId>
+          <artifactId>lifecycle-mapping</artifactId>
+          <version>1.0.0</version> <!-- {x-version-update;org.eclipse.m2e:lifecycle-mapping;external_dependency} -->
+          <configuration>
+            <lifecycleMappingMetadata>
+              <pluginExecutions>
+                <pluginExecution>
+                  <pluginExecutionFilter>
+                    <groupId>com.googlecode.addjars-maven-plugin</groupId>
+                    <artifactId>addjars-maven-plugin</artifactId>
+                    <versionRange>[1.0.5,)</versionRange>
+                    <goals>
+                      <goal>add-jars</goal>
+                    </goals>
+                  </pluginExecutionFilter>
+                  <action>
+                    <ignore/>
+                  </action>
+                </pluginExecution>
+              </pluginExecutions>
+            </lifecycleMappingMetadata>
+          </configuration>
         </plugin>
       </plugins>
     </pluginManagement>

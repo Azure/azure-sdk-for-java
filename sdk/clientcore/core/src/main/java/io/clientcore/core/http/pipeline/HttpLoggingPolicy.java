@@ -12,15 +12,17 @@ import io.clientcore.core.http.models.HttpResponse;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.http.HttpRequestAccessHelper;
 import io.clientcore.core.implementation.http.HttpResponseAccessHelper;
+import io.clientcore.core.implementation.util.ImplUtils;
 import io.clientcore.core.implementation.util.LoggingKeys;
 import io.clientcore.core.util.ClientLogger;
 import io.clientcore.core.util.binarydata.BinaryData;
 
 import java.io.IOException;
-import java.net.URL;
+import java.net.URI;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -144,9 +146,9 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         private void log(ClientLogger.LogLevel logLevel, ClientLogger logger, HttpRequest request) {
             ClientLogger.LoggingEventBuilder logBuilder = getLogBuilder(logLevel, logger);
 
-            if (httpLogDetailLevel.shouldLogUrl()) {
+            if (httpLogDetailLevel.shouldLogUri()) {
                 logBuilder.addKeyValue(LoggingKeys.HTTP_METHOD_KEY, request.getHttpMethod())
-                    .addKeyValue(LoggingKeys.URL_KEY, getRedactedUrl(request.getUrl(), allowedQueryParameterNames));
+                    .addKeyValue(LoggingKeys.URI_KEY, getRedactedUri(request.getUri(), allowedQueryParameterNames));
 
                 logBuilder.addKeyValue(LoggingKeys.TRY_COUNT_KEY, getRequestRetryCount(request));
             }
@@ -186,11 +188,11 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             }
         }
 
-        private void logUrl(Response<?> response, Duration duration, ClientLogger.LoggingEventBuilder logBuilder) {
-            if (httpLogDetailLevel.shouldLogUrl()) {
+        private void logUri(Response<?> response, Duration duration, ClientLogger.LoggingEventBuilder logBuilder) {
+            if (httpLogDetailLevel.shouldLogUri()) {
                 logBuilder.addKeyValue(LoggingKeys.STATUS_CODE_KEY, response.getStatusCode())
-                    .addKeyValue(LoggingKeys.URL_KEY,
-                        getRedactedUrl(response.getRequest().getUrl(), allowedQueryParameterNames))
+                    .addKeyValue(LoggingKeys.URI_KEY,
+                        getRedactedUri(response.getRequest().getUri(), allowedQueryParameterNames))
                     .addKeyValue(LoggingKeys.DURATION_MS_KEY, duration.toMillis());
             }
         }
@@ -214,7 +216,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             ClientLogger.LoggingEventBuilder logBuilder = getLogBuilder(logLevel, logger);
 
             logContentLength(response, logBuilder);
-            logUrl(response, duration, logBuilder);
+            logUri(response, duration, logBuilder);
             logHeaders(logger, response, logBuilder);
 
             if (httpLogDetailLevel.shouldLogBody()) {
@@ -233,55 +235,49 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     }
 
     /*
-     * Generates the redacted URL for logging.
+     * Generates the redacted URI for logging.
      *
-     * @param url URL where the request is being sent.
-     * @return A URL with query parameters redacted based on configurations in this policy.
+     * @param uri URI where the request is being sent.
+     * @return A URI with query parameters redacted based on configurations in this policy.
      */
-    private static String getRedactedUrl(URL url, Set<String> allowedQueryParameterNames) {
-        String query = url.getQuery();
-        StringBuilder urlBuilder = new StringBuilder();
+    private static String getRedactedUri(URI uri, Set<String> allowedQueryParameterNames) {
+        String query = uri.getQuery();
+        StringBuilder uriBuilder = new StringBuilder();
 
-        // Add the protocol, host and port to the urlBuilder
-        urlBuilder.append(url.getProtocol()).append("://").append(url.getHost());
+        // Add the protocol, host and port to the uriBuilder
+        uriBuilder.append(uri.getScheme()).append("://").append(uri.getHost());
 
-        if (url.getPort() != -1) {
-            urlBuilder.append(":").append(url.getPort());
+        if (uri.getPort() != -1) {
+            uriBuilder.append(":").append(uri.getPort());
         }
 
-        // Add the path to the urlBuilder
-        urlBuilder.append(url.getPath());
+        // Add the path to the uriBuilder
+        uriBuilder.append(uri.getPath());
 
         if (query != null && !query.isEmpty()) {
-            urlBuilder.append("?");
+            uriBuilder.append("?");
 
             // Parse and redact the query parameters
-            String[] queryParams = query.split("&");
-            for (String param : queryParams) {
-                String[] keyValue = param.split("=");
-
-                if (keyValue.length == 2) {
-                    String key = keyValue[0];
-                    String value = keyValue[1];
-
-                    urlBuilder.append(key);
-                    urlBuilder.append("=");
-
-                    if (allowedQueryParameterNames.contains(key.toLowerCase(Locale.ROOT))) {
-                        urlBuilder.append(value);
-                    } else {
-                        urlBuilder.append(REDACTED_PLACEHOLDER);
-                    }
-
-                    urlBuilder.append("&");
+            boolean firstQueryParam = true;
+            for (Map.Entry<String, String> kvp : new ImplUtils.QueryParameterIterable(query)) {
+                if (!firstQueryParam) {
+                    uriBuilder.append('&');
                 }
-            }
 
-            // Remove the trailing '&'
-            urlBuilder.deleteCharAt(urlBuilder.length() - 1);
+                uriBuilder.append(kvp.getKey());
+                uriBuilder.append('=');
+
+                if (allowedQueryParameterNames.contains(kvp.getKey().toLowerCase(Locale.ROOT))) {
+                    uriBuilder.append(kvp.getValue());
+                } else {
+                    uriBuilder.append(REDACTED_PLACEHOLDER);
+                }
+
+                firstQueryParam = false;
+            }
         }
 
-        return urlBuilder.toString();
+        return uriBuilder.toString();
     }
 
     /*
