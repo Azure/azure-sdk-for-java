@@ -27,7 +27,7 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 import java.util.function.Function;
 
 /**
- * An {@link ExecutorService} that is shared by multiple consumers.
+ * An {@link ScheduledExecutorService} that is shared by multiple consumers.
  * <p>
  * If {@link SharedExecutorService#setExecutorService(ScheduledExecutorService)} isn't called a default shared executor
  * service is created using the following configuration settings:
