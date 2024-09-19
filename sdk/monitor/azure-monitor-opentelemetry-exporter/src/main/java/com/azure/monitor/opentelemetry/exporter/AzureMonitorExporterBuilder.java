@@ -126,7 +126,7 @@ public final class AzureMonitorExporterBuilder implements ConnectionStringTrait<
             throw LOGGER.logExceptionAsError(new IllegalStateException(
                 "httpPipeline cannot be changed after any of the build methods have been called"));
         }
-        this.httpPipeline = httpPipeline;
+        this.httpPipeline = pipeline;
         return this;
     }
 
