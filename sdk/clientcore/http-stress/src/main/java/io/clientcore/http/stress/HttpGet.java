@@ -39,7 +39,7 @@ public class HttpGet extends ScenarioBase<StressOptions> {
     private static final ClientLogger LOGGER = new ClientLogger(HttpGet.class);
     private final HttpPipeline pipeline;
     private final URL url;
-    final ExecutorService executorService = Executors.newFixedThreadPool(options.getConcurrentTaskLimit());
+    final ExecutorService executorService = Executors.newFixedThreadPool(options.getParallel());
 
     // This is almost-unique-id generator. We could use UUID, but it's a bit more expensive to use.
     private final AtomicLong clientRequestId = new AtomicLong(Instant.now().getEpochSecond());
