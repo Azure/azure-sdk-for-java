@@ -4,8 +4,6 @@
 package io.clientcore.core.http.client;
 
 import io.clientcore.core.shared.LocalTestServer;
-import org.junit.jupiter.api.parallel.Execution;
-import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import javax.servlet.ServletException;
 import java.util.Base64;
@@ -15,7 +13,6 @@ import java.util.Objects;
  * A simple HTTP proxy server that enforce basic proxy authentication, once authenticated any request matching
  * {@code serviceEndpoints} will be responded with an empty HTTP 200.
  */
-@Execution(ExecutionMode.SAME_THREAD)
 public final class SimpleBasicAuthHttpProxyServer {
     private final String userName;
     private final String password;
