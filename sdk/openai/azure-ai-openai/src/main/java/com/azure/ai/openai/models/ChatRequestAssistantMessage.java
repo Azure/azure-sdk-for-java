@@ -24,6 +24,10 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
     @Generated
     private final BinaryData content;
 
+    private final String stringContent;
+
+    private final List<ChatMessageContentItem> chatMessageContentItem;
+
     /*
      * An optional name for the participant.
      */
@@ -148,11 +152,14 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("content", this.content.toObject(Object.class));
+        if (stringContent != null) {
+            jsonWriter.writeStringField("content", stringContent);
+        } else if (chatMessageContentItem != null) {
+            jsonWriter.writeArrayField("content", chatMessageContentItem, JsonWriter::writeJson);
+        }
         jsonWriter.writeStringField("role", this.role == null ? null : this.role.toString());
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeArrayField("tool_calls", this.toolCalls, (writer, element) -> writer.writeJson(element));
@@ -169,7 +176,6 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ChatRequestAssistantMessage.
      */
-    @Generated
     public static ChatRequestAssistantMessage fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             BinaryData content = null;
@@ -181,7 +187,17 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("content".equals(fieldName)) {
-                    content = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
+                    if (reader.currentToken() == JsonToken.STRING) {
+                        content = BinaryData.fromString(reader.getString());
+                    } else if (reader.currentToken() == JsonToken.START_ARRAY) {
+                        content = BinaryData.fromObject(
+                            reader.readArray(arrayReader -> arrayReader.readObject(ChatMessageContentItem::fromJson)));
+                    } else if (reader.currentToken() == JsonToken.NULL) {
+                        content = null;
+                    } else {
+                        throw new IllegalStateException("Unexpected 'content' type found when deserializing"
+                            + " ChatRequestAssistantMessage JSON object: " + reader.currentToken());
+                    }
                 } else if ("role".equals(fieldName)) {
                     role = ChatRole.fromString(reader.getString());
                 } else if ("name".equals(fieldName)) {
@@ -207,11 +223,12 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
     /**
      * Creates an instance of ChatRequestAssistantMessage class.
      *
-     * @param content the content value to set.
+     * @param content the Binary content value to set.
      */
-    @Generated
     public ChatRequestAssistantMessage(BinaryData content) {
         this.content = content;
+        this.stringContent = null;
+        this.chatMessageContentItem = null;
     }
 
     /**
@@ -221,5 +238,18 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
      */
     public ChatRequestAssistantMessage(String content) {
         this.content = BinaryData.fromString(content);
+        this.stringContent = content;
+        this.chatMessageContentItem = null;
+    }
+
+    /**
+     * Creates an instance of ChatRequestAssistantMessage class.
+     *
+     * @param content the List of ChatMessageContentItem content value to set.
+     */
+    public ChatRequestAssistantMessage(List<ChatMessageContentItem> content) {
+        this.content = BinaryData.fromObject(content);
+        this.stringContent = null;
+        this.chatMessageContentItem = content;
     }
 }
