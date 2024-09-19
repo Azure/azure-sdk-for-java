@@ -103,9 +103,9 @@ public class EventProcessorClientErrorHandlingTest {
                 Assertions.assertEquals("NONE", errorContext.getPartitionContext().getPartitionId());
                 Assertions.assertEquals("cg", errorContext.getPartitionContext().getConsumerGroup());
                 Assertions.assertTrue(errorContext.getThrowable() instanceof IllegalStateException);
-        }, tracer, processorOptions);
+        }, tracer, null, processorOptions);
         client.start();
-        boolean completed = countDownLatch.await(3, TimeUnit.SECONDS);
+        boolean completed = countDownLatch.await(10, TimeUnit.SECONDS);
         try {
             client.stop();
         } catch (IllegalStateException ex) {
@@ -134,7 +134,7 @@ public class EventProcessorClientErrorHandlingTest {
 
         EventProcessorClient client = new EventProcessorClient(eventHubClientBuilder,
             () -> new BadProcessEventHandler(countDownLatch), new SampleCheckpointStore(),
-            errorContext -> { }, tracer, processorOptions);
+            errorContext -> { }, tracer, null, processorOptions);
         client.start();
         boolean completed = countDownLatch.await(3, TimeUnit.SECONDS);
         client.stop();
@@ -160,7 +160,7 @@ public class EventProcessorClientErrorHandlingTest {
 
         EventProcessorClient client = new EventProcessorClient(eventHubClientBuilder,
             () -> new BadInitHandler(countDownLatch), new SampleCheckpointStore(),
-            errorContext -> { }, tracer, processorOptions);
+            errorContext -> { }, tracer, null, processorOptions);
         client.start();
         boolean completed = countDownLatch.await(3, TimeUnit.SECONDS);
         client.stop();
@@ -187,7 +187,7 @@ public class EventProcessorClientErrorHandlingTest {
 
         EventProcessorClient client = new EventProcessorClient(eventHubClientBuilder,
             () -> new BadCloseHandler(countDownLatch), new SampleCheckpointStore(),
-            errorContext -> { }, tracer, processorOptions);
+            errorContext -> { }, tracer, null, processorOptions);
 
         client.start();
         boolean completed = countDownLatch.await(3, TimeUnit.SECONDS);

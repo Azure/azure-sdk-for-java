@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -139,8 +140,30 @@ public final class PacketCaptureResultProperties extends PacketCaptureParameters
      */
     @Override
     public void validate() {
-        super.validate();
+        if (target() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property target in model PacketCaptureResultProperties"));
+        }
+        if (scope() != null) {
+            scope().validate();
+        }
+        if (storageLocation() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property storageLocation in model PacketCaptureResultProperties"));
+        } else {
+            storageLocation().validate();
+        }
+        if (filters() != null) {
+            filters().forEach(e -> e.validate());
+        }
+        if (captureSettings() != null) {
+            captureSettings().validate();
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PacketCaptureResultProperties.class);
 
     /**
      * {@inheritDoc}

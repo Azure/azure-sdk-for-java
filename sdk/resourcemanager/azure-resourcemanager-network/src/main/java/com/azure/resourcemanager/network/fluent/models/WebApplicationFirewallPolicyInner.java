@@ -10,6 +10,7 @@ import com.azure.core.management.SubResource;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.network.models.ApplicationGatewayForContainersReferenceDefinition;
 import com.azure.resourcemanager.network.models.ManagedRulesDefinition;
 import com.azure.resourcemanager.network.models.PolicySettings;
 import com.azure.resourcemanager.network.models.ProvisioningState;
@@ -40,14 +41,14 @@ public final class WebApplicationFirewallPolicyInner extends Resource {
     private String id;
 
     /*
-     * The name of the resource.
-     */
-    private String name;
-
-    /*
      * The type of the resource.
      */
     private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
 
     /**
      * Creates an instance of WebApplicationFirewallPolicyInner class.
@@ -94,16 +95,6 @@ public final class WebApplicationFirewallPolicyInner extends Resource {
     }
 
     /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
-    }
-
-    /**
      * Get the type property: The type of the resource.
      * 
      * @return the type value.
@@ -111,6 +102,16 @@ public final class WebApplicationFirewallPolicyInner extends Resource {
     @Override
     public String type() {
         return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -243,6 +244,16 @@ public final class WebApplicationFirewallPolicyInner extends Resource {
      */
     public List<SubResource> pathBasedRules() {
         return this.innerProperties() == null ? null : this.innerProperties().pathBasedRules();
+    }
+
+    /**
+     * Get the applicationGatewayForContainers property: A collection of references to application gateway for
+     * containers.
+     * 
+     * @return the applicationGatewayForContainers value.
+     */
+    public List<ApplicationGatewayForContainersReferenceDefinition> applicationGatewayForContainers() {
+        return this.innerProperties() == null ? null : this.innerProperties().applicationGatewayForContainers();
     }
 
     /**

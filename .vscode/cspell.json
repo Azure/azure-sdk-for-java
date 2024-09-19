@@ -837,6 +837,13 @@
       ]
     },
     {
+      "filename": "/sdk/ai/**",
+      "words": [
+        "ubinary",
+        "UBINARY"
+      ]
+    },
+    {
       "filename": "/sdk/datalakeanalytics/**",
       "words": [
         "adal",
