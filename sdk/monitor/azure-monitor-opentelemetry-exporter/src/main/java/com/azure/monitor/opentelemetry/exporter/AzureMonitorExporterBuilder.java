@@ -23,7 +23,6 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.HttpClientOptions;
-import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.opentelemetry.exporter.implementation.LogDataMapper;
 import com.azure.monitor.opentelemetry.exporter.implementation.MetricDataMapper;
@@ -91,7 +90,6 @@ public final class AzureMonitorExporterBuilder implements ConnectionStringTrait<
     private final List<HttpPipelinePolicy> httpPipelinePolicies = new ArrayList<>();
     private ClientOptions clientOptions;
     private RetryOptions retryOptions;
-    private RetryPolicy retryPolicy;
 
     private boolean frozen;
 
@@ -212,7 +210,6 @@ public final class AzureMonitorExporterBuilder implements ConnectionStringTrait<
      * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
      * documentation of types that implement this trait to understand the full set of implications.</p>
      * <p>
-     * Setting this is mutually exclusive with using {@link #retryPolicy(RetryPolicy)}.
      *
      * @param retryOptions The {@link RetryOptions} to use for all the requests made through the client.
      * @return The updated {@link AzureMonitorExporterBuilder} object.
@@ -224,24 +221,6 @@ public final class AzureMonitorExporterBuilder implements ConnectionStringTrait<
                 "retryOptions cannot be changed after any of the build methods have been called"));
         }
         this.retryOptions = retryOptions;
-        return this;
-    }
-
-    /**
-     * Sets the request {@link RetryPolicy} for all the requests made through the client. The default
-     * {@link RetryPolicy} will be used in the pipeline, if not provided.
-     * Setting this is mutually exclusive with using {@link #retryOptions(RetryOptions)}.
-     *
-     * @param retryPolicy {@link RetryPolicy}.
-     *
-     * @return The updated {@link AzureMonitorExporterBuilder}.
-     */
-    public AzureMonitorExporterBuilder retryPolicy(RetryPolicy retryPolicy) {
-        if (frozen) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException(
-                "retryPolicy cannot be changed after any of the build methods have been called"));
-        }
-        this.retryPolicy = retryPolicy;
         return this;
     }
 
@@ -436,10 +415,6 @@ public final class AzureMonitorExporterBuilder implements ConnectionStringTrait<
                 throw LOGGER.logExceptionAsError(new IllegalStateException(
                     "'clientOptions' is not supported when custom 'httpPipeline' is specified"));
             }
-            if (retryPolicy != null) {
-                throw LOGGER.logExceptionAsError(new IllegalStateException(
-                    "'retryPolicy' is not supported when custom 'httpPipeline' is specified"));
-            }
             if (retryOptions != null) {
                 throw LOGGER.logExceptionAsError(new IllegalStateException(
                     "'retryOptions' is not supported when custom 'httpPipeline' is specified"));
@@ -460,7 +435,9 @@ public final class AzureMonitorExporterBuilder implements ConnectionStringTrait<
             policies.add(new BearerTokenAuthenticationPolicy(credential, APPLICATIONINSIGHTS_AUTHENTICATION_SCOPE));
         }
 
-        policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
+        if(retryOptions != null) {
+            policies.add(new RetryPolicy(retryOptions));
+        }
 
         policies.addAll(httpPipelinePolicies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
