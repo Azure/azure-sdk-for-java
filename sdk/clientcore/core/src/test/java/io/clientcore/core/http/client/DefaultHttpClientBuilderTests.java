@@ -71,9 +71,9 @@ public class DefaultHttpClientBuilderTests {
                 .proxy(clientProxyOptions)
                 .build();
 
-            final String serviceUrl = "http://localhost:80" + SERVICE_ENDPOINT;
+            final String serviceUri = "http://localhost:80" + SERVICE_ENDPOINT;
 
-            try (Response<?> response = httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl))) {
+            try (Response<?> response = httpClient.send(new HttpRequest(HttpMethod.GET, serviceUri))) {
                 assertEquals(200, response.getStatusCode());
             }
         } finally {
@@ -100,9 +100,9 @@ public class DefaultHttpClientBuilderTests {
                 .configuration(configuration)
                 .build();
 
-            final String serviceUrl = "http://localhost:80" + SERVICE_ENDPOINT;
+            final String serviceUri = "http://localhost:80" + SERVICE_ENDPOINT;
 
-            try (Response<?> response = httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl))) {
+            try (Response<?> response = httpClient.send(new HttpRequest(HttpMethod.GET, serviceUri))) {
                 assertEquals(200, response.getStatusCode());
             }
         } finally {
@@ -127,9 +127,9 @@ public class DefaultHttpClientBuilderTests {
                 .configuration(configuration)
                 .build();
 
-            final String serviceUrl = "http://localhost:80" + SERVICE_ENDPOINT;
+            final String serviceUri = "http://localhost:80" + SERVICE_ENDPOINT;
 
-            try (Response<?> response = httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl))) {
+            try (Response<?> response = httpClient.send(new HttpRequest(HttpMethod.GET, serviceUri))) {
                 assertEquals(200, response.getStatusCode());
             }
         } finally {
@@ -151,10 +151,10 @@ public class DefaultHttpClientBuilderTests {
                 .proxy(mockPoxyOptions)
                 .build();
 
-            final String serviceUrl = "http://localhost:80" + SERVICE_ENDPOINT;
+            final String serviceUri = "http://localhost:80" + SERVICE_ENDPOINT;
 
             assertThrows(IOException.class,
-                () -> httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl)).close());
+                () -> httpClient.send(new HttpRequest(HttpMethod.GET, serviceUri)).close());
         } finally {
             proxyServer.shutdown();
         }
@@ -186,9 +186,9 @@ public class DefaultHttpClientBuilderTests {
                 .proxy(mockPoxyOptions)
                 .build();
 
-            final String serviceUrl = "http://localhost:80" + SERVICE_ENDPOINT;
+            final String serviceUri = "http://localhost:80" + SERVICE_ENDPOINT;
 
-            try (Response<?> response = httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl))) {
+            try (Response<?> response = httpClient.send(new HttpRequest(HttpMethod.GET, serviceUri))) {
                 assertNotNull(response);
             }
         } finally {
@@ -211,9 +211,9 @@ public class DefaultHttpClientBuilderTests {
                 .proxy(clientProxyOptions)
                 .build();
 
-            final String serviceUrl = "http://localhost:80" + SERVICE_ENDPOINT;
+            final String serviceUri = "http://localhost:80" + SERVICE_ENDPOINT;
 
-            try (Response<?> response = httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl))) {
+            try (Response<?> response = httpClient.send(new HttpRequest(HttpMethod.GET, serviceUri))) {
                 assertNotNull(response);
             }
         } finally {
